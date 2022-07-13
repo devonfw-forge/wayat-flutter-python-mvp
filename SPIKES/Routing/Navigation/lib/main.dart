@@ -15,7 +15,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Navigator Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -27,7 +28,9 @@ class MyApp extends StatelessWidget {
         'square'  :(context) => SquarePage(),
       },
       onGenerateRoute: (settings){
-
+        return MaterialPageRoute(
+          builder: (context) => MyHomePage(),
+        );
       },
     );
   }
