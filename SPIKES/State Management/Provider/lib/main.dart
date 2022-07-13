@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_app/models/lastName_model.dart';
 
-import 'models/model.dart';
+import 'models/name_model.dart';
 
 void main() => runApp(AppState());
 
+/*
+  CREATE AN INTERMEDIATE WIDGET TO MANAGE THE APP STATE
+*/
 class AppState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*
+      USE MULTIPROVIDER TO PUT ALL THE INFO YOU NEED.
+      EACH MODEL IS A DIFFERENT PROVIDER  
+    */
     return MultiProvider(
       providers: [
-          ChangeNotifierProvider<MyModel>(
-            create: ( _ ) => MyModel(),
+          ChangeNotifierProvider<NameModel>(
+            create: ( _ ) => NameModel(),
+            lazy: false,
+          ),
+          ChangeNotifierProvider<LastNameModel>(
+            create: ( _ ) => LastNameModel(),
             lazy: false,
           ),
       ],
@@ -22,6 +34,7 @@ class AppState extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,73 +42,79 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: Text('My App')),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-
                 Container(
                   padding: const EdgeInsets.all(20),
-                  color: Colors.green[200],
-                  child: Consumer<MyModel>(
-                    builder: (context, myModel, child) {
+                  /*
+                    USE THE CONSUMER<PROVIDER-YOU-NEED> WIDGET TO PASS THE INFO YOU WANT
+                  */
+                  child: Consumer<NameModel>(
+                    builder: (context, nameModel, child) {
                       return ElevatedButton(
-                        child: Text('Do something now'),
+                        child: Text('Get Name'),
                         onPressed: () {
-                          myModel.doSomethingNow();
+                          /*
+                            ONCE YOU GET THE INFO YOU CAN CALL THE METHODS OF THE PROVIDER
+                          */
+                          nameModel.getName();
                         },
                       );
                     }
                   ),
                 ),
-
                 Container(
                   padding: const EdgeInsets.all(35),
-                  color: Colors.blue[200],
-                  child: Consumer<MyModel>(
-                    builder: (context, myModel, child) {
-                      return Text(myModel.someValueNow);
+                  child: Consumer<NameModel>(
+                    builder: (context, nameModel, child) {
+                      /*
+                        YOU ALSO CAN CALL VARIABLES FROM THE PROVIDER
+                      */
+                      return Text(nameModel.name);
                     }
                   ),
                 ),
-
               ],
             ),
-            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-
                 Container(
                   padding: const EdgeInsets.all(20),
-                  color: Colors.green[200],
-                  child: Consumer<MyModel>(
+                  /*
+                    HERE WE CHANGE THE PROVIDER
+                  */
+                  child: Consumer<LastNameModel>(
                     builder: (context, myModel, child) {
                       return ElevatedButton(
-                        child: Text('Do something in 3 secs'),
+                        child: Text('Get Last Name'),
                         onPressed: () {
-                          myModel.doSomething3();
+                          /*
+                            HERE WE CAN USE THE METHODS OF THE SECOND PROVIDER
+                          */
+                          myModel.getLastName();
                         },
                       );
                     }
                   ),
                 ),
-
                 Container(
                   padding: const EdgeInsets.all(35),
-                  color: Colors.blue[200],
-                  child: Consumer<MyModel>(
+                  child: Consumer<LastNameModel>(
                     builder: (context, myModel, child) {
-                      return Text(myModel.someValue3);
+                      /*
+                        AND HERE WE USE THE VARIABLE OF THE SECOND PROVIDER
+                      */
+                      return Text(myModel.lastName);
                     }
                   ),
                 ),
-
               ],
             ),
           ],
-          
         ),
       ),
     );
