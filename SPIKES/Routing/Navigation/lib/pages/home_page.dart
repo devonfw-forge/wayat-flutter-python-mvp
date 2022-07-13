@@ -14,10 +14,12 @@ class MyHomePage extends StatelessWidget {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            textBaseline: TextBaseline.alphabetic,
             children: [
               ElevatedButton(
                 child: Text('Scafold Page'),
+                /*
+                  ON CLICK WE WILL OPEN THE SCREEN WE WANT
+                */
                 onPressed: (){
                   Navigator.pushNamed(context, 'scaffold');
                 }, 
@@ -25,6 +27,9 @@ class MyHomePage extends StatelessWidget {
               SizedBox(height: 10,),
               ElevatedButton(
                 child: Text('Square Page'),
+                /*
+                  ON CLICK WE WILL OPEN THE SCREEN WE WANT
+                */
                 onPressed: (){
                   Navigator.pushNamed(context, 'square');
                 }, 

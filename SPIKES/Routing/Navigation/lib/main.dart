@@ -21,12 +21,21 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(),
+      /* 
+        FIRST PAGE APPEARING 
+      */
       initialRoute: 'home',
+      /* 
+        ROUTE NAMES TO CALL THEM LATER 
+      */
       routes: {
         'home'    :(context) => MyHomePage(),
         'scaffold': (context) => ScaffoldPage(),
         'square'  :(context) => SquarePage(),
       },
+      /* 
+        WHEN CALLED A NO EXISTING ROUTE, THE APP WILL REDIRECT TO THIS ROUTE 
+      */
       onGenerateRoute: (settings){
         return MaterialPageRoute(
           builder: (context) => MyHomePage(),
