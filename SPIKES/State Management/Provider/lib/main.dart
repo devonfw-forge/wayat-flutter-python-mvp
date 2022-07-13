@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_app/models/lastName_model.dart';
 
-import 'models/model.dart';
+import 'models/name_model.dart';
 
 void main() => runApp(AppState());
 
@@ -11,8 +12,12 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-          ChangeNotifierProvider<MyModel>(
-            create: ( _ ) => MyModel(),
+          ChangeNotifierProvider<NameModel>(
+            create: ( _ ) => NameModel(),
+            lazy: false,
+          ),
+          ChangeNotifierProvider<LastNameModel>(
+            create: ( _ ) => LastNameModel(),
             lazy: false,
           ),
       ],
@@ -24,6 +29,7 @@ class AppState extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -37,13 +43,12 @@ class MyApp extends StatelessWidget {
 
                 Container(
                   padding: const EdgeInsets.all(20),
-                  color: Colors.green[200],
-                  child: Consumer<MyModel>(
-                    builder: (context, myModel, child) {
+                  child: Consumer<NameModel>(
+                    builder: (context, nameModel, child) {
                       return ElevatedButton(
-                        child: Text('Do something now'),
+                        child: Text('Get Name'),
                         onPressed: () {
-                          myModel.doSomethingNow();
+                          nameModel.getName();
                         },
                       );
                     }
@@ -52,10 +57,9 @@ class MyApp extends StatelessWidget {
 
                 Container(
                   padding: const EdgeInsets.all(35),
-                  color: Colors.blue[200],
-                  child: Consumer<MyModel>(
-                    builder: (context, myModel, child) {
-                      return Text(myModel.someValueNow);
+                  child: Consumer<NameModel>(
+                    builder: (context, nameModel, child) {
+                      return Text(nameModel.name);
                     }
                   ),
                 ),
@@ -69,13 +73,12 @@ class MyApp extends StatelessWidget {
 
                 Container(
                   padding: const EdgeInsets.all(20),
-                  color: Colors.green[200],
-                  child: Consumer<MyModel>(
+                  child: Consumer<LastNameModel>(
                     builder: (context, myModel, child) {
                       return ElevatedButton(
-                        child: Text('Do something in 3 secs'),
+                        child: Text('Get Last Name'),
                         onPressed: () {
-                          myModel.doSomething3();
+                          myModel.getLastName();
                         },
                       );
                     }
@@ -84,10 +87,9 @@ class MyApp extends StatelessWidget {
 
                 Container(
                   padding: const EdgeInsets.all(35),
-                  color: Colors.blue[200],
-                  child: Consumer<MyModel>(
+                  child: Consumer<LastNameModel>(
                     builder: (context, myModel, child) {
-                      return Text(myModel.someValue3);
+                      return Text(myModel.lastName);
                     }
                   ),
                 ),
