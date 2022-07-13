@@ -34,16 +34,16 @@ class AppState extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(title: Text('My App')),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -66,7 +66,6 @@ class MyApp extends StatelessWidget {
                     }
                   ),
                 ),
-
                 Container(
                   padding: const EdgeInsets.all(35),
                   child: Consumer<NameModel>(
@@ -78,14 +77,11 @@ class MyApp extends StatelessWidget {
                     }
                   ),
                 ),
-
               ],
             ),
-            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-
                 Container(
                   padding: const EdgeInsets.all(20),
                   /*
@@ -105,7 +101,6 @@ class MyApp extends StatelessWidget {
                     }
                   ),
                 ),
-
                 Container(
                   padding: const EdgeInsets.all(35),
                   child: Consumer<LastNameModel>(
@@ -117,11 +112,9 @@ class MyApp extends StatelessWidget {
                     }
                   ),
                 ),
-
               ],
             ),
           ],
-          
         ),
       ),
     );
