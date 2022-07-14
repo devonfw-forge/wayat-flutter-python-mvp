@@ -1,16 +1,12 @@
-# mobxandgetit
+# MobX with GetIt
 
-A new Flutter project.
+## PROS
+* Great way to separate internal implementation details from the UI 
+* With GetIt we can avoid adding and passing down parameters in the UI that do not relate to the UI itself
+* State can be accessed from any component
+* Does not need to add a lot of widgets to the widget tree, just wrap Observer on the elements that can be updated
+* Unlike setState, when the state changes only the widgets inside Observer get updated
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## CONS
+* The increased resource usage from GetIt
