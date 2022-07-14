@@ -1,16 +1,14 @@
 # auto_route
 
-A new Flutter project.
+Routing library that generates the boilerplate code for the default Flutter Router
 
-## Getting Started
+## PROS
+* Is just a generator of boilerplate for the default router
+* Makes setting up the routes incredibly easy compared to the default option
+* Great amount of options and features to decide how to handle the navigation
+* Great configurability
+* No added performance cost of third party libraries
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## CONS
+* Having to regenerate the code every time you want to update a route can be a bit tedious
+* Some small detail has to be touched in the generated code (importing packages e.g.)
