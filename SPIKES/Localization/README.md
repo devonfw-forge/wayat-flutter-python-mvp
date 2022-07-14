@@ -1,16 +1,13 @@
 # localization
 
-A new Flutter project.
+Useful to establish a format in the texts of the widgets. It uses the language configured in the client's operating system.
 
-## Getting Started
+## PROS:
 
-This project is a starting point for a Flutter application.
+* Use code generation
+* Easy to setup
+* Recommended approach by flutter
 
-A few resources to get you started if this is your first Flutter project:
+## CONS:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* It depends on the language of the operating system, not directly on the configuration of the app
