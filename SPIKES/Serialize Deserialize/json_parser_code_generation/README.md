@@ -1,16 +1,14 @@
-# test
+# JSON Serialization using code generation libraries
 
-A new Flutter project.
+Uses json_serializable library
 
-## Getting Started
+## PROS
 
-This project is a starting point for a Flutter application.
+- Code less error-prone (prevent typos).
+- Allows to run checks on each field in a simpler way
+- Perform compiles checks.
+- Avoid boilerplate code.
+- Better scaling.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## CONS
+- Requires some initial setup
