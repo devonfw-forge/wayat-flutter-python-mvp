@@ -1,16 +1,12 @@
-# provider_app
+# Provider
 
-A new Flutter project.
+## Pros
 
-## Getting Started
+- We can select the widget level of the provider for share the info with all the app or only one widget.
+- Intuitive
+- Easy to implement
 
-This project is a starting point for a Flutter application.
+## Cons
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Any change of the information will reload all the consumer widget.
+- The state of the provider cannot be disposed when it is not longer used.
