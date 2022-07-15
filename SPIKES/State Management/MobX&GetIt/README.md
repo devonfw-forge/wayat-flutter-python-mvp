@@ -1,4 +1,5 @@
 # MobX with GetIt
+Approach that will improve the separation between implementation details and will not add lots of boilerplate to the widget tree, improving readability and separation of concerns
 
 ## PROS
 * Great way to separate internal implementation details from the UI 
