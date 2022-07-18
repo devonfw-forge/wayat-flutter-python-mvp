@@ -7,6 +7,7 @@ class Appbar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+        leading: const Icon(Icons.person),
         backgroundColor: const Color.fromARGB(255, 98, 0, 116),
         title: const Text("Wayat"),
         actions: const <Widget>[LocationSwitch()]);

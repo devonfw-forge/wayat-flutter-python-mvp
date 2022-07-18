@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/common/appbar/appbar.dart';
+import 'package:wayat/common/bottom_navigation_bar/bottom_navigation_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }
