@@ -5,8 +5,11 @@ class BottomMenuComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("First bottom item"),
+    return Scaffold(
+      appBar: AppBar(title: const Text('First Menu Page')),
+      body: const Center(
+        child: Text("First bottom item"),
+      ),
     );
   }
 }
