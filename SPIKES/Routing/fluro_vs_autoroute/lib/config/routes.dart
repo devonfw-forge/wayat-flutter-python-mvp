@@ -11,7 +11,7 @@ class Routes {
 
   static String root = "/";
   static String itemsListRoute = "/components/";
-  static String itemRoute = "/components/";
+  static String itemRoute = "/components/:product";
 
   static final Handler _rootHandler = Handler(
       handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
@@ -25,8 +25,8 @@ class Routes {
 
   static final Handler _itemHandler = Handler(
       handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
-    Product item = params[0]!.first as Product;
-    return ItemComponent(product: item);
+    Product? product = context?.settings?.arguments as Product;
+    return ItemComponent(product: product);
   });
 
   static void configureRoutes(FluroRouter router) {

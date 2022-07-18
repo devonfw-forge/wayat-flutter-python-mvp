@@ -1,4 +1,5 @@
 import 'package:fluro_example_code/config/routes.dart';
+import 'package:fluro_example_code/mock/product.dart';
 
 import '../config/application.dart';
 import '../mock/data_items.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 class ItemsListComponent extends StatelessWidget {
   ItemsListComponent({Key? key}) : super(key: key);
 
-  final products = ProductList.productList;
+  final List<Product> products = ProductList.productList;
   get context => null;
 
   @override
@@ -21,14 +22,17 @@ class ItemsListComponent extends StatelessWidget {
                       leading: IconButton(
                           icon: const Icon(Icons.info_rounded),
                           splashRadius: 20,
-                          onPressed:
-                              () {}), //I try to set here itemTapped(products[index]), but it's not worked
+                          onPressed: () => itemTapped(
+                              context,
+                              products[
+                                  index])), //I try to set here itemTapped(products[index]), but it's not worked
                       title: Text(products[index].name),
                       trailing: Text("${products[index].price}€"),
                     )))));
   }
 
-  itemTapped(product) async {
-    return Application.router.navigateTo(context, Routes.itemRoute[product]);
+  itemTapped(BuildContext context, Product product) {
+    Application.router.navigateTo(context, Routes.itemRoute,
+        routeSettings: RouteSettings(arguments: product));
   }
 }
