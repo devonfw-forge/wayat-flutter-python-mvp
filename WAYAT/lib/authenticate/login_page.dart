@@ -71,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child:  TextFormField(
                 keyboardType: TextInputType.emailAddress,
+                obscureText: true,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.lock_outline),
                   labelText: 'Password',
