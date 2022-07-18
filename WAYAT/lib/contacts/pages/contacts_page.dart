@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:wayat/contacts/mock/contacts_mock.dart';
 import 'package:wayat/contacts/widgets/contact_tile.dart';
 import 'package:wayat/domain/contact.dart';
@@ -10,55 +8,44 @@ class ContactsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Contact> _availableContacts = ContactsMock.availableContacts();
-    List<Contact> _unavailableContacts = ContactsMock.unavailableContacts();
-
-    return Scaffold(
-      appBar: AppBar(title: const Text("Title")),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Text("Available Contacts"),
-            ),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _availableContacts.length,
-                itemBuilder: ((context, index) =>
-                    ContactTile(contact: _availableContacts[index]))),
-            const Divider(
-              endIndent: 15,
-              indent: 15,
-              height: 1,
-              thickness: 1,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Text("Unavailable Contacts"),
-            ),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _unavailableContacts.length,
-                itemBuilder: ((context, index) =>
-                    ContactTile(contact: _unavailableContacts[index]))),
-            const Divider(
-              endIndent: 15,
-              indent: 15,
-              height: 1,
-              thickness: 1,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Text("Not in Wayat"),
-            ),
-          ],
-        ),
-      ),
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        sectionTitle("Available Contacts"),
+        contactList(ContactsMock.availableContacts()),
+        divider(),
+        sectionTitle("Unavailable Contacts"),
+        contactList(ContactsMock.unavailableContacts()),
+        divider(),
+        sectionTitle("Not in Wayat")
+      ],
+    ));
+  }
+
+  ListView contactList(List<Contact> contacts) {
+    return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: contacts.length,
+        itemBuilder: ((context, index) =>
+            ContactTile(contact: contacts[index])));
+  }
+
+  Divider divider() {
+    return const Divider(
+      endIndent: 15,
+      indent: 15,
+      height: 1,
+      thickness: 1,
+    );
+  }
+
+  Padding sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+      child: Text(title),
     );
   }
 }

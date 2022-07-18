@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wayat/authenticate/login_page.dart';
 import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/contacts/page/contacts_page.dart';
+import 'package:wayat/contacts/pages/contacts_page.dart';
 
 void main() {
   registerRepositories();
