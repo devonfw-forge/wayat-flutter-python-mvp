@@ -22,10 +22,8 @@ class ItemsListComponent extends StatelessWidget {
                       leading: IconButton(
                           icon: const Icon(Icons.info_rounded),
                           splashRadius: 20,
-                          onPressed: () => itemTapped(
-                              context,
-                              products[
-                                  index])), //I try to set here itemTapped(products[index]), but it's not worked
+                          onPressed: () =>
+                              itemTapped(context, products[index])),
                       title: Text(products[index].name),
                       trailing: Text("${products[index].price}€"),
                     )))));
