@@ -1,4 +1,5 @@
 import 'package:background_geolocation_example/pages/home_page.dart';
+import 'package:background_geolocation_example/services/notification_service.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,12 +11,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NotificationService().init();
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
