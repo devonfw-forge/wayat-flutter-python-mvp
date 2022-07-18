@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wayat/pages/home_page.dart';
+
+import 'notifications/notifications_page.dart';
 
 
 void main() {
@@ -14,9 +15,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
       ),
-      home: const HomePage(),
+      home: const NotificationsPage(),
     );
   }
 }
