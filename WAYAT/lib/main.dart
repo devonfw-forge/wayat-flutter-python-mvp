@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/pages/home_page.dart';
 
-
 void main() {
+  registerRepositories();
   runApp(const MyApp());
+}
+
+void registerRepositories() {
+  //Register with GetIt all the singletons for the repos like this
+  //GetIt.I.registerLazySingleton<AbstractClass>(ImplementationClass());
 }
 
 class MyApp extends StatelessWidget {
