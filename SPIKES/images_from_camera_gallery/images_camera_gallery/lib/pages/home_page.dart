@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -9,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  XFile? currentSelectedImage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +22,9 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            (currentSelectedImage != null)
+                ? Image.file(File(currentSelectedImage!.path))
+                : Container(),
             ElevatedButton(
                 onPressed: () => showCameraOrGalleryPicker(context),
                 child: const Text("Pick image"))
@@ -27,8 +34,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _getFromGallery() async {
+  void _getFromGallery(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
+    XFile? newImage = await imagePicker.pickImage(source: source);
+    setState(() {
+      currentSelectedImage = newImage;
+    });
+    Navigator.pop(context);
   }
 
   void showCameraOrGalleryPicker(BuildContext context) {
@@ -46,10 +58,11 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () => _getFromGallery(ImageSource.camera),
                       icon: const Icon(Icons.camera_alt_rounded)),
                   IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.image_rounded))
+                      onPressed: () => _getFromGallery(ImageSource.gallery),
+                      icon: const Icon(Icons.image_rounded))
                 ],
               ),
             ),
