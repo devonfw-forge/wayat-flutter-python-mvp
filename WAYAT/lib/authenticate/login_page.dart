@@ -21,21 +21,25 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Form(
-          autovalidateMode: AutovalidateMode.always,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _loginTitle(),
-              Divider(thickness: 1,),
-              _emailInput(),
-              SizedBox(height: 30,),
-              _passwordInput(),
-              SizedBox(height: 30,),
-              _forgotButton(),
-              _submitButton(),
-            ],
-          ),
+        child: ListView(
+          children:[
+            Form(
+              autovalidateMode: AutovalidateMode.always,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _loginTitle(),
+                  Divider(thickness: 1,),
+                  _emailInput(),
+                  SizedBox(height: 30,),
+                  _passwordInput(),
+                  SizedBox(height: 30,),
+                  _forgotButton(),
+                  _submitButton(),
+                ],
+              ),
+            ),
+          ]
         ),
       ),
     );
