@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/authenticate/login_page.dart';
+import 'package:wayat/navigation/app_router.dart';
 
 void main() {
   registerRepositories();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 void registerRepositories() {
@@ -12,16 +13,19 @@ void registerRepositories() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final _appRouter = AppRouter();
+
+  MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }
