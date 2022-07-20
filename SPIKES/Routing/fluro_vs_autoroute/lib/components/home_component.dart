@@ -1,3 +1,5 @@
+import 'package:fluro_example_code/components/bottom_menu.dart';
+import 'package:fluro_example_code/components/bottom_menu2.dart';
 import 'package:fluro_example_code/config/application.dart';
 import 'package:fluro_example_code/config/routes.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,13 @@ class HomeComponent extends StatefulWidget {
 }
 
 class _HomeComponentState extends State<HomeComponent> {
+  int currentIndex = 0;
+  final screens = [
+    const HomeComponent(title: 'Home Page'),
+    const BottomMenuComponent(),
+    const BottomMenuSecondComponent()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +31,7 @@ class _HomeComponentState extends State<HomeComponent> {
                 onPressed: buttonTapped,
                 child: const Text("Navigate to items page"))),
         bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndex,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_rounded), label: "Home"),
@@ -30,7 +40,26 @@ class _HomeComponentState extends State<HomeComponent> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.menu_book_rounded), label: "Bottom Menu 2"),
           ],
+          onTap: (currentIndex) {
+            switch (currentIndex) {
+              case 0:
+                Application.router.navigateTo(context, Routes.root);
+                break;
+              case 1:
+                Application.router.navigateTo(context, Routes.bottomMenu);
+                break;
+              case 2:
+                Application.router.navigateTo(context, Routes.bottomMenu2);
+                break;
+            }
+          },
         ));
+  }
+
+  void onItemTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
   }
 
   void buttonTapped() {
