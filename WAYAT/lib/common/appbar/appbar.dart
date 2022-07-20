@@ -14,7 +14,7 @@ class Appbar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
         leading: const ProfileButton(),
         backgroundColor: const Color.fromARGB(255, 98, 0, 116),
-        title: Text(appLocalizations.title),
+        title: Text(appLocalizations.appTitle),
         actions: const <Widget>[LocationSwitch()]);
   }
 

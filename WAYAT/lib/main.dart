@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         // However, after the title is generated the AppLocalizations instance is the
         // first time it is not null
         GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.title;
+        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

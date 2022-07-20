@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
   TextButton _forgotButton() {
     return TextButton(
       // Forgotten password question text
-      child: Text(appLocalizations.forgotPasswQ),
+      child: Text(appLocalizations.forgotPasswQuestion),
       onPressed: (){
         //TODO: GO TO THE NEXT STEP
       },

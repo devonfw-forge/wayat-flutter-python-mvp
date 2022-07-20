@@ -1,10 +1,10 @@
 {
-    "title": "Wayat",
+    "appTitle": "Wayat",
 
     "login": "Iniciar sesión",
     "email": "Email",
     "password": "Contraseña",
-    "forgotPasswQ": "¿Olvidaste tu contraseña?",
+    "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
 
     "home": "Inicio",
     "contacts": "Contactos",
