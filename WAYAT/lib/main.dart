@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/authenticate/login_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/navigation/app_router.dart';
 
 void main() {
   registerRepositories();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 void registerRepositories() {
@@ -13,10 +14,13 @@ void registerRepositories() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final _appRouter = AppRouter();
+
+  MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Wayat',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -24,7 +28,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }
