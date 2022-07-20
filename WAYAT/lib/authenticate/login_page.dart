@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -27,11 +28,11 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _loginTitle(),
-              Divider(thickness: 1,),
+              const Divider(thickness: 1,),
               _emailInput(),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
               _passwordInput(),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
               _forgotButton(),
               _submitButton(),
             ],
@@ -44,8 +45,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Text _loginTitle() {
     return Text(
-              'Login',
-              style: TextStyle(fontSize: 40, color: Colors.blue),
+              AppLocalizations.of(context)!.login, // Login text
+              style: const TextStyle(fontSize: 40, color: Colors.blue),
             );
   }
 
@@ -58,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                   icon: const Icon(Icons.alternate_email),
                   hintText: 'example@email.com',
-                  labelText: 'Email',
+                  labelText: AppLocalizations.of(context)!.email, // Email text
                 ),
                 onChanged: (value) => setState((){}),
                 validator: (value) => EmailValidator.validate(_emailController.text) ? null : 'Enter a Valid Email',
@@ -72,9 +73,10 @@ class _LoginPageState extends State<LoginPage> {
               child:  TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.lock_outline),
-                  labelText: 'Password',
+                decoration: InputDecoration(
+                  icon: const Icon(Icons.lock_outline),
+                  // Password text
+                  labelText: AppLocalizations.of(context)!.password,
                 ),
               ),
             );
@@ -82,7 +84,8 @@ class _LoginPageState extends State<LoginPage> {
 
   TextButton _forgotButton() {
     return TextButton(
-              child: Text('Did you forgot your password?'),
+              // Forgotten password question text
+              child: Text(AppLocalizations.of(context)!.forgotPasswQ),
               onPressed: (){
                 //TODO: GO TO THE NEXT STEP
               },
@@ -93,8 +96,8 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
               padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
               child: ElevatedButton(
-                child: const Text('Enter'),
-                onPressed: EmailValidator.validate(_emailController.text) ? _submit : null, 
+                onPressed: EmailValidator.validate(_emailController.text) ? _submit : null,
+                child: Text(AppLocalizations.of(context)!.login), 
               ),
             );
   }
