@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wayat/common/bottom_navigation_bar/notification_icon_counter.dart';
+import 'package:wayat/navigation/bottom_navigation_bar/notification_icon_counter.dart';
 
-List<BottomNavigationBarItem> bottomNavigatorItems = [
+List<BottomNavigationBarItem> bottomNavigationBarItems = [
   const BottomNavigationBarItem(
     icon: Icon(Icons.home),
     label: 'Home',
