@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/navigation/app_router.dart';
 
-void main() {
+Future main() async {
+  await dotenv.load(fileName: "development.env");
   registerRepositories();
   runApp(MyApp());
 }
