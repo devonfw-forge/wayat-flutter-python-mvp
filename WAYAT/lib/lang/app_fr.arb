@@ -1,6 +1,14 @@
 {
+    "title": "Wayat",
+
     "login": "Se connecter",
     "email": "Email",
     "password": "Mot de passe",
-    "forgotPasswQ": "Avez-vous oublié votre mot de passe?"
+    "forgotPasswQ": "Avez-vous oublié votre mot de passe?",
+    
+    "home": "Home",
+    "contacts": "Contacts",
+    "addEvents": "Ajouter un événement",
+    "myEvents": "Mes événements",
+    "notifications": "Notifications"
 }

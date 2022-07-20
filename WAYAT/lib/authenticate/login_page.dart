@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/lang/lang_singleton.dart';
 
 
 
@@ -12,9 +13,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
+  
   final _emailController = TextEditingController();
   bool _isEmailValid = false;
+  final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
 
 
 
@@ -47,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Text _loginTitle() {
     return Text(
-      AppLocalizations.of(context)!.login, // Login text
+      appLocalizations.login, // Login text
       style: const TextStyle(fontSize: 40, color: Colors.blue),
     );
   }
@@ -61,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: InputDecoration(
           icon: const Icon(Icons.alternate_email),
           hintText: 'example@email.com',
-          labelText: AppLocalizations.of(context)!.email, // Email text
+          labelText: appLocalizations.email, // Email text
         ),
         onChanged: (value) => setState((){}),
         validator: (value) => EmailValidator.validate(_emailController.text) ? null : 'Enter a Valid Email',
@@ -78,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: InputDecoration(
           icon: const Icon(Icons.lock_outline),
           // Password text
-          labelText: AppLocalizations.of(context)!.password,
+          labelText: appLocalizations.password,
         ),
       ),
     );
@@ -87,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
   TextButton _forgotButton() {
     return TextButton(
       // Forgotten password question text
-      child: Text(AppLocalizations.of(context)!.forgotPasswQ),
+      child: Text(appLocalizations.forgotPasswQ),
       onPressed: (){
         //TODO: GO TO THE NEXT STEP
       },
@@ -99,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
       child: ElevatedButton(
         onPressed: EmailValidator.validate(_emailController.text) ? _submit : null,
-        child: Text(AppLocalizations.of(context)!.login), 
+        child: Text(appLocalizations.login), 
       ),
     );
   }

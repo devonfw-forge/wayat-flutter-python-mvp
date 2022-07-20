@@ -19,7 +19,7 @@ class _$AppRouter extends RootStackRouter {
   final Map<String, PageFactory> pagesMap = {
     HomeRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const HomePage());
+          routeData: routeData, child: HomePage());
     },
     LoginRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
