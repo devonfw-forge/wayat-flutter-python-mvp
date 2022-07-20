@@ -1,5 +1,7 @@
 # Provider
 
+- Package to manage the app state
+
 ## Pros
 
 - We can select the widget level of the provider for share the info with all the app or only one widget.
