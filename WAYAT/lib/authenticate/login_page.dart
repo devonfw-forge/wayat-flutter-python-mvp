@@ -21,8 +21,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ListView(
-          children:[
+        child: SingleChildScrollView(
+          child:
             Form(
               autovalidateMode: AutovalidateMode.always,
               child: Column(
@@ -39,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-          ]
         ),
       ),
     );
