@@ -1,0 +1,14 @@
+{
+    "appTitle": "Wayat",
+
+    "login": "Iniciar sesión",
+    "email": "Email",
+    "password": "Contraseña",
+    "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
+
+    "home": "Inicio",
+    "contacts": "Contactos",
+    "addEvents": "Añadir Eventos",
+    "myEvents": "Mis Eventos",
+    "notifications": "Notificaciones"
+}

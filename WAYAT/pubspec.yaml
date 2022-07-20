@@ -19,6 +19,10 @@ dependencies:
   badges: ^2.0.3
   # Email validation in forms
   email_validator: ^2.0.1
+  # Dependencies for internationalization with flutter:
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
   # Routing and navigation
   auto_route: ^4.2.0
 
@@ -32,4 +36,7 @@ dev_dependencies:
   # Process that generates code for AutoRoute and MobX
   build_runner: ^2.1.5
 flutter:
+  # Flag to generate internationalization files
+  generate: true
+
   uses-material-design: true

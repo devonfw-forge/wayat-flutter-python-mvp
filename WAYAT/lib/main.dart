@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wayat/authenticate/login_page.dart';
+import 'package:get_it/get_it.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.dart';
 
 void main() {
@@ -9,7 +11,8 @@ void main() {
 
 void registerRepositories() {
   //Register with GetIt all the singletons for the repos like this
-  //GetIt.I.registerLazySingleton<AbstractClass>(ImplementationClass());
+  //GetIt.I.registerLazySingleton<AbstractClass>(ImplementationClass())
+  GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,6 +24,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      onGenerateTitle: (context) {
+        // In the app build, the context does not contain an AppLocalizations instance.
+        // However, after the title is generated the AppLocalizations instance is the
+        // first time it is not null
+        GetIt.I.get<LangSingleton>().initialize(context);
+        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
+      },
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
