@@ -37,6 +37,7 @@ dependencies:
 
   mobx: ^2.0.7+4
   get_it: ^7.2.0
+  badges: ^2.0.3
   email_validator: ^2.0.1
 
 
