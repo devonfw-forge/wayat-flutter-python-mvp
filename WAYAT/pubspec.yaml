@@ -34,6 +34,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
+  mobx: ^2.0.7+4
+  get_it: ^7.2.0
+  badges: ^2.0.3
   # Package to validate email addresses
   email_validator: ^2.0.1
   # Dependencies for internationalization with flutter:
