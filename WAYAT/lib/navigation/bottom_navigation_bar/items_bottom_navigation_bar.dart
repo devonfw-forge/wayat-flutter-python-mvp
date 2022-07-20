@@ -7,24 +7,24 @@ List<BottomNavigationBarItem> bottomNavigationBarItems = [
     label: 'Home',
     backgroundColor: Colors.purple,
   ),
-  const BottomNavigationBarItem(
-    icon: Icon(Icons.people),
-    label: 'Contacts',
+  BottomNavigationBarItem(
+    icon: const Icon(Icons.people),
+    label: appLocalizations.contacts,
     backgroundColor: Colors.purple,
   ),
-  const BottomNavigationBarItem(
-    icon: Icon(Icons.add_circle),
-    label: 'Add Event',
+  BottomNavigationBarItem(
+    icon: const Icon(Icons.add_circle),
+    label: appLocalizations.addEvents,
     backgroundColor: Colors.purple,
   ),
-  const BottomNavigationBarItem(
-    icon: Icon(Icons.calendar_month),
-    label: 'My Events',
+  BottomNavigationBarItem(
+    icon: const Icon(Icons.calendar_month),
+    label: appLocalizations.myEvents,
     backgroundColor: Colors.purple,
   ),
-  const BottomNavigationBarItem(
-    icon: NotificationsCounter(),
-    label: 'Notifications',
+  BottomNavigationBarItem(
+    icon: const NotificationsCounter(),
+    label: appLocalizations.notifications,
     backgroundColor: Colors.purple,
   ),
 ];
