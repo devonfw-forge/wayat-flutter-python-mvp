@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wayat/common/bottom_navigation_bar/notification_icon_counter.dart';
+import 'items_bottom_navigation_bar.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -13,36 +13,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationBar(
-      onDestinationSelected: (int index) {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.shifting,
+      onTap: (int index) {
         setState(() {
           currentPageIndex = index;
         });
       },
-      selectedIndex: currentPageIndex,
-      labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-      destinations: const <Widget>[
-        NavigationDestination(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.people),
-          label: 'Contacts',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.add_circle),
-          label: 'Add Event',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.calendar_month),
-          label: 'My Events',
-        ),
-        NavigationDestination(
-          icon: NotificationsCounter(),
-          label: 'Notifications',
-        ),
-      ],
+      currentIndex: currentPageIndex,
+      items: bottomNavigatorItems,
     );
   }
 }
