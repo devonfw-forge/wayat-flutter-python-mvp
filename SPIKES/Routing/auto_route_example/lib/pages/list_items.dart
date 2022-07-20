@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route_example/mock/data_items.dart';
 import 'package:auto_route_example/navigation/app_router.dart';
-import 'package:auto_route_example/pages/item_page.dart';
 import 'package:flutter/material.dart';
 
 class ListItemsPage extends StatelessWidget {
