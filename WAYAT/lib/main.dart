@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wayat/event_detailed_view/pages/event_details_page.dart';
 
-import 'event_detailed_view/pages/event_details_page.dart';
 
 
 void main() {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  EventDetailsPage(),
+      home:  const EventDetailsPage(),
     );
   }
 }
