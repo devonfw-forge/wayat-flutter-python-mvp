@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:wayat/contacts/mock/contacts_mock.dart';
+import 'package:wayat/contacts/controller/contact_controller.dart';
 import 'package:wayat/contacts/widgets/contact_tile.dart';
 import 'package:wayat/domain/contact.dart';
 
 class ContactsPage extends StatelessWidget {
-  const ContactsPage({Key? key}) : super(key: key);
+  ContactsPage({Key? key}) : super(key: key);
+
+  final ContactController controller = ContactController();
 
   @override
   Widget build(BuildContext context) {
+    controller.updateContacts();
+
     return SingleChildScrollView(
         child: ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: [
         sectionTitle("Available Contacts"),
-        contactList(ContactsMock.availableContacts()),
+        contactList(controller.availableContacts),
         divider(),
         sectionTitle("Unavailable Contacts"),
-        contactList(ContactsMock.unavailableContacts()),
+        contactList(controller.unavailableContacts),
         divider(),
         sectionTitle("Not in Wayat")
       ],

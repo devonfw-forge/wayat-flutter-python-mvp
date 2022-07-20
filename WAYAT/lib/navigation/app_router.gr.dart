@@ -27,7 +27,7 @@ class _$AppRouter extends RootStackRouter {
     },
     ContactsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const ContactsPage());
+          routeData: routeData, child: ContactsPage());
     }
   };
 
