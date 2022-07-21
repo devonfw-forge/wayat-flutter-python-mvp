@@ -13,6 +13,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   # State management
   mobx: ^2.0.7+4
+  # MobX widgets
+  flutter_mobx: ^2.0.6+1
   # Dependency Injection
   get_it: ^7.2.0
   # Notification indicator
@@ -25,6 +27,7 @@ dependencies:
   intl: ^0.17.0
   # Routing and navigation
   auto_route: ^4.2.0
+  # Environment variables
   flutter_dotenv: ^5.0.2
 
 dev_dependencies:
