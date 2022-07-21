@@ -10,12 +10,7 @@ class NotificationsPage extends StatelessWidget {
     final String eventName = 'Event';
     final String eventDate = '14:30 1/2/22 18:30 2/2/22';
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('WAYAT'),
-        centerTitle: true,
-      ),
-      body: ListView(
+    return ListView(
         padding: EdgeInsets.all(10.0),
         children: [
           _invitationEventCard(eventName, eventDate),
@@ -25,8 +20,7 @@ class NotificationsPage extends StatelessWidget {
           _startEventCard(eventName, eventDate),
           _cancelEventCard(eventName, eventDate),
         ],
-      ),
-    );
+      );
   }
 
   Card _invitationEventCard(String eventName, String eventDate) {
