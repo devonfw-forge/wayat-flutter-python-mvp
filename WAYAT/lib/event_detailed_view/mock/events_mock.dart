@@ -1,4 +1,4 @@
-import 'package:wayat/event_detailed_view/model/event_model.dart';
+import 'package:wayat/domain/event.dart';
 
 class EventsMock {
   static final List<EventModel> events = [
