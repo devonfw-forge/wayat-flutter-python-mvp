@@ -92,6 +92,16 @@ class ContactsRoute extends PageRouteInfo<ContactsRouteArgs> {
   static const String name = 'ContactsRoute';
 }
 
+/// generated route for
+/// [ContactDetailPage]
+class ContactDetailRoute extends PageRouteInfo<ContactsRouteArgs> {
+  ContactDetailRoute({Key? key})
+      : super(ContactsRoute.name,
+            path: 'contacts-detail-page', args: ContactsRouteArgs(key: key));
+
+  static const String name = 'ContactDetailRoute';
+}
+
 class ContactsRouteArgs {
   const ContactsRouteArgs({this.key});
 
