@@ -22,7 +22,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     return SingleChildScrollView(
       child: Form(
         child: Column(
-          children: [],
+          children: const [],
         ),
       ),
     );

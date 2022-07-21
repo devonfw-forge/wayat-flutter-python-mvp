@@ -56,7 +56,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
           const Text('LOCATION'),
           const Text('START DATE - END DATE'),
           _participantsButton(),
-          Text('$eventDescription'),
+          Text(eventDescription),
           _viewMoreButton(),
           _eventCreatedInfo(),
         ],
