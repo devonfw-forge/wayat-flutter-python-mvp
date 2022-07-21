@@ -1,0 +1,14 @@
+{
+    "appTitle": "Wayat",
+
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "forgotPasswQuestion": "Did you forgot your password?",
+    
+    "home": "Home",
+    "contacts": "Contacts",
+    "addEvents": "Add Event",
+    "myEvents": "My Events",
+    "notifications": "Notifications"
+}
