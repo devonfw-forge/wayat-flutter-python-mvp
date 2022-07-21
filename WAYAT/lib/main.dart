@@ -18,6 +18,7 @@ void registerRepositories() {
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
 }
 
+
 class MyApp extends StatelessWidget {
   final _appRouter = AppRouter();
 
