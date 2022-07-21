@@ -40,6 +40,12 @@ class _$AppRouter extends RootStackRouter {
     NotificationsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const NotificationsPage());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: ContactsPage(key: args.key));
+    },
+    CreateEventRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const CreateEventPage());
     }
   };
 
@@ -52,6 +58,8 @@ class _$AppRouter extends RootStackRouter {
               path: 'contacts-page', parent: HomeRoute.name),
           RouteConfig(NotificationsRoute.name,
               path: 'notifications-page', parent: HomeRoute.name)
+          RouteConfig(CreateEventRoute.name,
+              path: 'create-event-page', parent: HomeRoute.name)
         ]),
         RouteConfig(LoginRoute.name, path: '/login')
       ];
@@ -124,4 +132,10 @@ class NotificationsRoute extends PageRouteInfo<void> {
       : super(NotificationsRoute.name, path: 'notifications-page');
 
   static const String name = 'NotificationsRoute';
+/// [CreateEventPage]
+class CreateEventRoute extends PageRouteInfo<void> {
+  const CreateEventRoute()
+      : super(CreateEventRoute.name, path: 'create-event-page');
+
+  static const String name = 'CreateEventRoute';
 }

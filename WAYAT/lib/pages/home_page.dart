@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
       routes: [
         HomeProvRoute(),
         ContactsRoute(),
-        NotificationsRoute(),
+        CreateEventRoute(),
         NotificationsRoute(),
         NotificationsRoute()
       ],
