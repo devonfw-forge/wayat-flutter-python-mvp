@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/common/bottom_navigation_bar/notification_icon_counter.dart';
 import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/navigation/bottom_navigation_bar/notification_icon_counter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+final AppLocalizations appLocalizations = GetIt.I.get<LangSingleton>().get();
 
-final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
-
-List<BottomNavigationBarItem> bottomNavigatorItems = [
-  BottomNavigationBarItem(
-    icon: const Icon(Icons.home),
-    label: appLocalizations.home,
+List<BottomNavigationBarItem> bottomNavigationBarItems = [
+  const BottomNavigationBarItem(
+    icon: Icon(Icons.home),
+    label: 'Home',
     backgroundColor: Colors.purple,
   ),
   BottomNavigationBarItem(
