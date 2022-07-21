@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wayat/authenticate/login_page.dart';
 import 'package:wayat/contacts/page/contacts_page.dart';
 import 'package:wayat/create_event/page/create_event_page.dart';
+import 'package:wayat/domain/contact.dart';
 import 'package:wayat/pages/home_page.dart';
 import '../contacts/page/contact_detail_page.dart';
 part 'app_router.gr.dart';

@@ -92,16 +92,6 @@ class ContactsRoute extends PageRouteInfo<ContactsRouteArgs> {
   static const String name = 'ContactsRoute';
 }
 
-/// generated route for
-/// [ContactDetailPage]
-class ContactDetailRoute extends PageRouteInfo<ContactsRouteArgs> {
-  ContactDetailRoute({Key? key})
-      : super(ContactsRoute.name,
-            path: 'contacts-detail-page', args: ContactsRouteArgs(key: key));
-
-  static const String name = 'ContactDetailRoute';
-}
-
 class ContactsRouteArgs {
   const ContactsRouteArgs({this.key});
 
@@ -120,4 +110,27 @@ class CreateEventRoute extends PageRouteInfo<void> {
       : super(CreateEventRoute.name, path: 'create-event-page');
 
   static const String name = 'CreateEventRoute';
+}
+
+/// generated route for
+/// [ContactDetailPage]
+class ContactDetailRoute extends PageRouteInfo<ContactDetailRouteArgs> {
+  ContactDetailRoute({Key? key, required Contact contact})
+      : super(ContactsRoute.name,
+            path: 'contacts-detail-page',
+            args: ContactDetailRouteArgs(key: key, contact: contact));
+
+  static const String name = 'ContactDetailRoute';
+}
+
+class ContactDetailRouteArgs {
+  const ContactDetailRouteArgs({this.key, required this.contact});
+
+  final Key? key;
+  final Contact contact;
+
+  @override
+  String toString() {
+    return 'ContactDetailRouteArgs{key: $key, contact: $contact}';
+  }
 }
