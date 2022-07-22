@@ -1,6 +1,6 @@
-import 'package:wayat/contacts/mock/contacts_mock.dart';
-import 'package:wayat/domain/contact.dart';
+import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/services/contact/contact_service.dart';
+import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class ContactServiceImpl extends ContactService {
   @override
