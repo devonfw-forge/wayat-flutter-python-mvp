@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud_example/models/employee_list.dart';
-import 'package:flutter_crud_example/screens/create_employee.dart';
-import 'package:flutter_crud_example/screens/update_employee.dart';
+import 'package:flutter_crud_example/pages/create_employee_page.dart';
+import 'package:flutter_crud_example/pages/home_page.dart';
+import 'package:flutter_crud_example/pages/update_employee_page.dart';
 import 'package:get_it/get_it.dart';
-
-import './screens/home.dart';
 
 void main() {
   registerStores();
