@@ -3,8 +3,8 @@ import 'package:auto_route_example/mock/data_items.dart';
 import 'package:auto_route_example/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 
-class ListItemsPage extends StatelessWidget {
-  ListItemsPage({Key? key}) : super(key: key);
+class ItemListPage extends StatelessWidget {
+  ItemListPage({Key? key}) : super(key: key);
 
   final products = ProductList.productList;
 

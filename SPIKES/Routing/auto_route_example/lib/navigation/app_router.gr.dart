@@ -21,11 +21,11 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const HomePage());
     },
-    ListItemsRoute.name: (routeData) {
-      final args = routeData.argsAs<ListItemsRouteArgs>(
-          orElse: () => const ListItemsRouteArgs());
+    ItemListRoute.name: (routeData) {
+      final args = routeData.argsAs<ItemListRouteArgs>(
+          orElse: () => const ItemListRouteArgs());
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: ListItemsPage(key: args.key));
+          routeData: routeData, child: ItemListPage(key: args.key));
     },
     ItemRoute.name: (routeData) {
       final args = routeData.argsAs<ItemRouteArgs>();
@@ -57,8 +57,7 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig(BottomMenuSecondRoute.name,
               path: 'bottom-menu-second-page', parent: HomeRoute.name)
         ]),
-        RouteConfig(ListItemsRoute.name, path: '/list-items-page'),
-        RouteConfig(ListItemsRoute.name, path: '/list-items-page'),
+        RouteConfig(ItemListRoute.name, path: '/item-list-page'),
         RouteConfig(ItemRoute.name, path: '/item-page')
       ];
 }
@@ -73,23 +72,23 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ListItemsPage]
-class ListItemsRoute extends PageRouteInfo<ListItemsRouteArgs> {
-  ListItemsRoute({Key? key})
-      : super(ListItemsRoute.name,
-            path: '/list-items-page', args: ListItemsRouteArgs(key: key));
+/// [ItemListPage]
+class ItemListRoute extends PageRouteInfo<ItemListRouteArgs> {
+  ItemListRoute({Key? key})
+      : super(ItemListRoute.name,
+            path: '/item-list-page', args: ItemListRouteArgs(key: key));
 
-  static const String name = 'ListItemsRoute';
+  static const String name = 'ItemListRoute';
 }
 
-class ListItemsRouteArgs {
-  const ListItemsRouteArgs({this.key});
+class ItemListRouteArgs {
+  const ItemListRouteArgs({this.key});
 
   final Key? key;
 
   @override
   String toString() {
-    return 'ListItemsRouteArgs{key: $key}';
+    return 'ItemListRouteArgs{key: $key}';
   }
 }
 
