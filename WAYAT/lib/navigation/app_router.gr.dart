@@ -27,9 +27,19 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const LoginPage());
     },
+    HomeProvRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: HomeProvPage());
+    },
     ContactsRoute.name: (routeData) {
       final args = routeData.argsAs<ContactsRouteArgs>(
           orElse: () => const ContactsRouteArgs());
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: ContactsPage(key: args.key));
+    },
+    NotificationsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const NotificationsPage());
       return MaterialPageX<dynamic>(
           routeData: routeData, child: ContactsPage(key: args.key));
     },
@@ -42,8 +52,12 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig(HomeRoute.name, path: '/', children: [
+          RouteConfig(HomeProvRoute.name,
+              path: 'home-prov-page', parent: HomeRoute.name),
           RouteConfig(ContactsRoute.name,
               path: 'contacts-page', parent: HomeRoute.name),
+          RouteConfig(NotificationsRoute.name,
+              path: 'notifications-page', parent: HomeRoute.name)
           RouteConfig(CreateEventRoute.name,
               path: 'create-event-page', parent: HomeRoute.name)
         ]),
@@ -83,6 +97,14 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [HomeProvPage]
+class HomeProvRoute extends PageRouteInfo<void> {
+  const HomeProvRoute() : super(HomeProvRoute.name, path: 'home-prov-page');
+
+  static const String name = 'HomeProvRoute';
+}
+
+/// generated route for
 /// [ContactsPage]
 class ContactsRoute extends PageRouteInfo<ContactsRouteArgs> {
   ContactsRoute({Key? key})
@@ -104,6 +126,12 @@ class ContactsRouteArgs {
 }
 
 /// generated route for
+/// [NotificationsPage]
+class NotificationsRoute extends PageRouteInfo<void> {
+  const NotificationsRoute()
+      : super(NotificationsRoute.name, path: 'notifications-page');
+
+  static const String name = 'NotificationsRoute';
 /// [CreateEventPage]
 class CreateEventRoute extends PageRouteInfo<void> {
   const CreateEventRoute()

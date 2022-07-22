@@ -17,11 +17,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsRouter(
       routes: [
+        HomeProvRoute(),
         ContactsRoute(),
-        ContactsRoute(),
-        const CreateEventRoute(),
-        ContactsRoute(),
-        ContactsRoute()
+        CreateEventRoute(),
+        NotificationsRoute(),
+        NotificationsRoute()
       ],
       builder: (context, child, animation) {
         final tabsRouter = AutoTabsRouter.of(context);
