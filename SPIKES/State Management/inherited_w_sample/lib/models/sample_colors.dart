@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// InheritedWidget class sample
+/// InheritedWidget sample, store the state of two colors
 class ColorsW extends InheritedWidget {
-  ColorsW({
+
+  const ColorsW({
     Key? key,
     required this.color1, 
     required this.color2, 
