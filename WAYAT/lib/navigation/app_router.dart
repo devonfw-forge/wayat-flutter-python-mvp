@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:wayat/authenticate/login_page.dart';
-import 'package:wayat/contacts/page/contact_detail_page.dart';
-import 'package:wayat/notifications/page/notifications_page.dart';
-import 'package:wayat/contacts/page/contacts_page.dart';
-import 'package:wayat/create_event/page/create_event_page.dart';
-import 'package:wayat/domain/contact.dart';
-import 'package:wayat/pages/home_page.dart';
-import 'package:wayat/pages/home_provisional.dart';
+import 'package:wayat/features/authentication/page/login_page.dart';
+import 'package:wayat/features/contacts/pages/contact_detail_page.dart';
+import 'package:wayat/features/contacts/pages/contacts_page.dart';
+import 'package:wayat/features/home/pages/home_page.dart';
+import 'package:wayat/features/home/pages/home_provisional.dart';
+import 'package:wayat/features/notifications/page/notifications_page.dart';
+import 'package:wayat/features/create_event/page/create_event_page.dart';
+import 'package:wayat/domain/contact/contact.dart';
 
 part 'app_router.gr.dart';
 

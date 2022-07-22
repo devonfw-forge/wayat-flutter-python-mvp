@@ -1,4 +1,7 @@
-### Flutter Generated
+### Build files
+windows/
+linux/
+macos/
 
 # Miscellaneous
 *.class

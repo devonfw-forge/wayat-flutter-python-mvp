@@ -9,7 +9,7 @@ class NavigateToListPage extends StatelessWidget {
     return Center(
         child: ElevatedButton(
             onPressed: () {
-              AutoRouter.of(context).pushNamed("/list-items-page");
+              AutoRouter.of(context).pushNamed("/item-list-page");
             },
             child: const Text("Navigate to items page")));
   }
