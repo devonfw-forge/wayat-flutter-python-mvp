@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:wayat/navigation/bottom_navigation_bar/notification_icon_counter.dart';
+import 'package:wayat/common/widgets/notification_icon_counter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final AppLocalizations appLocalizations = GetIt.I.get<LangSingleton>().get();
