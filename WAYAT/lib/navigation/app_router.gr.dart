@@ -27,6 +27,12 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const LoginPage());
     },
+    ContactDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<ContactDetailRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: ContactDetailPage(key: args.key, contact: args.contact));
+    },
     HomeProvRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: HomeProvPage());
@@ -37,15 +43,13 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: ContactsPage(key: args.key));
     },
-    NotificationsRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: const NotificationsPage());
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: ContactsPage(key: args.key));
-    },
     CreateEventRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const CreateEventPage());
+    },
+    NotificationsRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const NotificationsPage());
     }
   };
 
@@ -56,12 +60,13 @@ class _$AppRouter extends RootStackRouter {
               path: 'home-prov-page', parent: HomeRoute.name),
           RouteConfig(ContactsRoute.name,
               path: 'contacts-page', parent: HomeRoute.name),
+          RouteConfig(CreateEventRoute.name,
+              path: 'create-event-page', parent: HomeRoute.name),
           RouteConfig(NotificationsRoute.name,
               path: 'notifications-page', parent: HomeRoute.name)
-          RouteConfig(CreateEventRoute.name,
-              path: 'create-event-page', parent: HomeRoute.name)
         ]),
-        RouteConfig(LoginRoute.name, path: '/login')
+        RouteConfig(LoginRoute.name, path: '/login'),
+        RouteConfig(ContactDetailRoute.name, path: '/contact-detail-page')
       ];
 }
 
@@ -97,6 +102,30 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ContactDetailPage]
+class ContactDetailRoute extends PageRouteInfo<ContactDetailRouteArgs> {
+  ContactDetailRoute({Key? key, required Contact contact})
+      : super(ContactDetailRoute.name,
+            path: '/contact-detail-page',
+            args: ContactDetailRouteArgs(key: key, contact: contact));
+
+  static const String name = 'ContactDetailRoute';
+}
+
+class ContactDetailRouteArgs {
+  const ContactDetailRouteArgs({this.key, required this.contact});
+
+  final Key? key;
+
+  final Contact contact;
+
+  @override
+  String toString() {
+    return 'ContactDetailRouteArgs{key: $key, contact: $contact}';
+  }
+}
+
+/// generated route for
 /// [HomeProvPage]
 class HomeProvRoute extends PageRouteInfo<void> {
   const HomeProvRoute() : super(HomeProvRoute.name, path: 'home-prov-page');
@@ -126,12 +155,6 @@ class ContactsRouteArgs {
 }
 
 /// generated route for
-/// [NotificationsPage]
-class NotificationsRoute extends PageRouteInfo<void> {
-  const NotificationsRoute()
-      : super(NotificationsRoute.name, path: 'notifications-page');
-
-  static const String name = 'NotificationsRoute';
 /// [CreateEventPage]
 class CreateEventRoute extends PageRouteInfo<void> {
   const CreateEventRoute()
@@ -141,24 +164,10 @@ class CreateEventRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ContactDetailPage]
-class ContactDetailRoute extends PageRouteInfo<ContactDetailRouteArgs> {
-  ContactDetailRoute({Key? key, required Contact contact})
-      : super(ContactsRoute.name,
-            path: 'contacts-detail-page',
-            args: ContactDetailRouteArgs(key: key, contact: contact));
+/// [NotificationsPage]
+class NotificationsRoute extends PageRouteInfo<void> {
+  const NotificationsRoute()
+      : super(NotificationsRoute.name, path: 'notifications-page');
 
-  static const String name = 'ContactDetailRoute';
-}
-
-class ContactDetailRouteArgs {
-  const ContactDetailRouteArgs({this.key, required this.contact});
-
-  final Key? key;
-  final Contact contact;
-
-  @override
-  String toString() {
-    return 'ContactDetailRouteArgs{key: $key, contact: $contact}';
-  }
+  static const String name = 'NotificationsRoute';
 }

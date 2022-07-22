@@ -16,21 +16,24 @@ class ContactDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     contactController.updateContacts();
 
-    return Column(
-      children: [
-        ContactProfileTile(contact: contact),
-        divider(),
-        SingleChildScrollView(
-            child: ListView(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          children: [
-            divider(),
-            //eventList(eventController), //Push here controller of Events
-            divider(),
-          ],
-        )),
-      ],
+    return Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          ContactProfileTile(contact: contact),
+          divider(),
+          SingleChildScrollView(
+              child: ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            children: [
+              divider(),
+              //    eventList(eventController), //Push here controller of Events
+              divider(),
+            ],
+          )),
+        ]),
+      ),
     );
   }
 
