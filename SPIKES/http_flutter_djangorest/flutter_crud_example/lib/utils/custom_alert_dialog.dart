@@ -17,11 +17,11 @@ showAlertDialog(BuildContext context, msg1, msg2) {
       ],  
     );  
     
-    // show the dialog  
+    // Show an alert dialog  
     showDialog(  
-    context: context,  
-    builder: (BuildContext context) {  
-        return alert;  
-    },  
+      context: context,  
+      builder: (BuildContext context) {  
+          return alert;  
+      },  
     );  
 }
