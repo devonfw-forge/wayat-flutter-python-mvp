@@ -7,10 +7,8 @@ class ContactProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Form(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+    return Form(
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
       const SizedBox(height: 30),
       const CircleAvatar(
           backgroundImage:
@@ -29,7 +27,7 @@ class ContactProfileTile extends StatelessWidget {
         ],
       ),
       Divider(thickness: 2, color: Colors.grey.shade400),
-    ])));
+    ]));
   }
 
   TextButton _buttonEvent() {

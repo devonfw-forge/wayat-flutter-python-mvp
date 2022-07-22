@@ -14,10 +14,9 @@ Future main() async {
 
 void registerRepositories() {
   //Register with GetIt all the singletons for the repos like this
-  //GetIt.I.registerLazySingleton<AbstractClass>(ImplementationClass())
+  //GetIt.I.registerLazySingleton<AbstractClass>(() => ImplementationClass())
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
 }
-
 
 class MyApp extends StatelessWidget {
   final _appRouter = AppRouter();
