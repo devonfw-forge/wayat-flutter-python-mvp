@@ -29,6 +29,8 @@ dependencies:
   auto_route: ^4.2.0
   # Environment variables
   flutter_dotenv: ^5.0.2
+  #vertical_az_list_view
+  azlistview: ^2.0.0
 
 dev_dependencies:
   flutter_test:

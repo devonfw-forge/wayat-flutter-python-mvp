@@ -16,10 +16,18 @@ class ContactTile extends StatelessWidget {
       leading: const CircleAvatar(
           backgroundImage:
               NetworkImage('https://i.pravatar.cc/150?u=a042581f4e29026704d')),
-      title: Text(contact.displayName),
-      subtitle: Text("@${contact.username}"),
+      title: Text(
+        contact.displayName,
+        style: const TextStyle(
+          fontSize: 16,
+          fontFamily: 'Inter',
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.25,
+        ),
+      ),
       trailing: IconButton(
-        icon: const Icon(Icons.location_on_rounded),
+        icon: const Icon(Icons.add),
         onPressed: () {
           router.push(ContactDetailRoute(contact: contact));
         },
