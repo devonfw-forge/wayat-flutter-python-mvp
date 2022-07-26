@@ -1,6 +1,6 @@
-WAYAT/windows/
-WAYAT/linux/
-WAYAT/macos/
+wayat/frontend/windows/
+wayat/frontend/linux/
+wayat/frontend/macos/
 
 # Miscellaneous
 *.class
