@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/common/widgets/appbar/profile_button.dart';
-import 'package:wayat/common/widgets/appbar/switch_location.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 
-class Appbar extends StatelessWidget with PreferredSizeWidget {
-  Appbar({Key? key}) : super(key: key);
+class CustomAppBar extends StatelessWidget {
+  CustomAppBar({Key? key}) : super(key: key);
 
   final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        leading: const ProfileButton(),
-        backgroundColor: const Color.fromARGB(255, 98, 0, 116),
-        title: Text(appLocalizations.appTitle),
-        actions: const <Widget>[LocationSwitch()]);
+      systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarBrightness: Brightness.dark, //Dark icons for Android
+          statusBarIconBrightness: Brightness.dark //Dark icons for iOS
+          ),
+      backgroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: true,
+      title: Text(
+        appLocalizations.appTitle,
+        style: const TextStyle(
+            color: Color.fromARGB(255, 115, 88, 251),
+            fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
   @override
