@@ -36,9 +36,6 @@ class MyApp extends StatelessWidget {
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
       routerDelegate: _appRouter.delegate(),
       routeInformationParser: _appRouter.defaultRouteParser(),
     );

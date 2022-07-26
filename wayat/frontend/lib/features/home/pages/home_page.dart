@@ -18,22 +18,29 @@ class HomePage extends StatelessWidget {
     return AutoTabsRouter(
       routes: [
         const HomeProvRoute(),
-        ContactsRoute(),
         const CreateEventRoute(),
+        ContactsRoute(),
         const NotificationsRoute(),
-        const NotificationsRoute()
       ],
       builder: (context, child, animation) {
         final tabsRouter = AutoTabsRouter.of(context);
 
         return Scaffold(
-          appBar: Appbar(),
+          appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
           body: child,
-          bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.shifting,
-              currentIndex: tabsRouter.activeIndex,
-              onTap: tabsRouter.setActiveIndex,
-              items: bottomNavigationBarItems),
+          bottomNavigationBar: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            color: Colors.black,
+            child: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Colors.black,
+                selectedItemColor: Colors.white,
+                unselectedItemColor: Colors.white54,
+                currentIndex: tabsRouter.activeIndex,
+                onTap: tabsRouter.setActiveIndex,
+                items: bottomNavigationBarItems),
+          ),
         );
       },
     );
