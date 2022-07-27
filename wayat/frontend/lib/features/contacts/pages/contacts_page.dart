@@ -1,17 +1,15 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:wayat/features/contacts/controller/contact_controller.dart';
-import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:azlistview/azlistview.dart';
-import 'package:wayat/navigation/app_router.dart';
+import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class _AZContactItem extends ISuspensionBean {
-  final String title;
+  final Contact contact;
   final String tag;
 
-  _AZContactItem({required this.title, required this.tag});
+  _AZContactItem({required this.contact, required this.tag});
 
   @override
   String getSuspensionTag() => tag;
@@ -41,13 +39,12 @@ class _ContactsPage extends State<ContactsPage> {
   void initList(List<Contact> contacts) {
     this.contacts = contacts
         .map((contacts) => _AZContactItem(
-            title: contacts.displayName,
-            tag: contacts.displayName[0].toUpperCase()))
+            contact: contacts, tag: contacts.displayName[0].toUpperCase()))
         .toList();
 
     SuspensionUtil.sortListBySuspensionTag(this.contacts);
     SuspensionUtil.setShowSuspensionStatus(this.contacts);
-    setState(() {});
+    //setState(() {});
   }
 
   @override
@@ -87,32 +84,15 @@ class _ContactsPage extends State<ContactsPage> {
 
     return Column(
       children: [
-        Offstage(offstage: offstage, child: buildHeader(tag)),
+        Offstage(offstage: offstage, child: _buildHeader(tag)),
         Container(
             margin: const EdgeInsets.only(right: 16),
-            child: ListTile(
-              onTap: () {},
-              leading: const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://i.pravatar.cc/150?u=a042581f4e29026704d')),
-              title: Text(
-                contact.title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Inter',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.25,
-                ),
-              ),
-              trailing:
-                  IconButton(icon: const Icon(Icons.add), onPressed: () {}),
-            )),
+            child: ContactTile(contact: contact.contact))
       ],
     );
   }
 
-  Widget buildHeader(String tag) => Container(
+  Widget _buildHeader(String tag) => Container(
         height: 21,
         margin: const EdgeInsets.only(right: 16),
         padding: const EdgeInsets.only(left: 16),
