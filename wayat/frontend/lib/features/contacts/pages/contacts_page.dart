@@ -16,10 +16,9 @@ class _AZContactItem extends ISuspensionBean {
 }
 
 class ContactsPage extends StatefulWidget {
-  ContactsPage({Key? key, required this.onClickedItem}) : super(key: key);
+  ContactsPage({Key? key}) : super(key: key);
 
   final List<Contact> contacts = ContactsMock.contacts;
-  final ValueChanged<String> onClickedItem;
 
   @override
   State<ContactsPage> createState() => _ContactsPage();
@@ -36,6 +35,7 @@ class _ContactsPage extends State<ContactsPage> {
     initList(widget.contacts);
   }
 
+//Cut first letter and sort alphabet for building section title
   void initList(List<Contact> contacts) {
     this.contacts = contacts
         .map((contacts) => _AZContactItem(
@@ -44,7 +44,7 @@ class _ContactsPage extends State<ContactsPage> {
 
     SuspensionUtil.sortListBySuspensionTag(this.contacts);
     SuspensionUtil.setShowSuspensionStatus(this.contacts);
-    //setState(() {});
+    setState(() {});
   }
 
   @override
@@ -62,6 +62,7 @@ class _ContactsPage extends State<ContactsPage> {
         });
   }
 
+//Top title as "Select contact" or "Contacts"
   Padding sectionTitle(String title) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 13),
@@ -78,6 +79,7 @@ class _ContactsPage extends State<ContactsPage> {
         ));
   }
 
+//Build sorted list of contacts
   Widget _buildListItem(_AZContactItem contact) {
     final tag = contact.getSuspensionTag();
     final offstage = !contact.isShowSuspension;
@@ -92,6 +94,7 @@ class _ContactsPage extends State<ContactsPage> {
     );
   }
 
+//Build alphabet section title by first letter tag
   Widget _buildHeader(String tag) => Container(
         height: 21,
         margin: const EdgeInsets.only(right: 16),

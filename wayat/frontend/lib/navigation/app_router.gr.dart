@@ -41,11 +41,7 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<ContactsRouteArgs>(
           orElse: () => const ContactsRouteArgs());
       return MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: ContactsPage(
-            key: args.key,
-            onClickedItem: (String value) {},
-          ));
+          routeData: routeData, child: ContactsPage(key: args.key));
     },
     CreateEventRoute.name: (routeData) {
       return MaterialPageX<dynamic>(

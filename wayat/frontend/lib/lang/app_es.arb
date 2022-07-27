@@ -1,5 +1,5 @@
 {
-    "appTitle": "Wayat",
+    "appTitle": "wayat",
 
     "login": "Iniciar sesión",
     "email": "Email",
@@ -8,7 +8,9 @@
 
     "home": "Inicio",
     "contacts": "Contactos",
+    "events": "Eventos",
+    "profile": "Perfil",
+
     "addEvents": "Añadir Eventos",
-    "myEvents": "Mis Eventos",
     "notifications": "Notificaciones"
 }
