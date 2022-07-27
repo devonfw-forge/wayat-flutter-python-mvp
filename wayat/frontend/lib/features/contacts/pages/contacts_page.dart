@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:wayat/features/contacts/controller/contact_controller.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:azlistview/azlistview.dart';
+import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class _AZContactItem extends ISuspensionBean {
@@ -26,7 +28,7 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPage extends State<ContactsPage> {
-  List<_AZContactItem> contacts = [];
+  List<_AZContactItem> contacts = ContactsMock.contacts.cast<_AZContactItem>();
 
   final ContactController controller = ContactController();
 
@@ -63,15 +65,6 @@ class _ContactsPage extends State<ContactsPage> {
         });
   }
 
-  ListView contactList(List<Contact> contacts) {
-    return ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: contacts.length,
-        itemBuilder: ((context, index) =>
-            ContactTile(contact: contacts[index])));
-  }
-
   Padding sectionTitle(String title) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 13),
@@ -96,12 +89,25 @@ class _ContactsPage extends State<ContactsPage> {
       children: [
         Offstage(offstage: offstage, child: buildHeader(tag)),
         Container(
-          margin: const EdgeInsets.only(right: 16),
-          child: ListTile(
-            title: Text(contact.title),
-            onTap: () => widget.onClickedItem(contact.title),
-          ),
-        ),
+            margin: const EdgeInsets.only(right: 16),
+            child: ListTile(
+              onTap: () {},
+              leading: const CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      'https://i.pravatar.cc/150?u=a042581f4e29026704d')),
+              title: Text(
+                contact.title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Inter',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.25,
+                ),
+              ),
+              trailing:
+                  IconButton(icon: const Icon(Icons.add), onPressed: () {}),
+            )),
       ],
     );
   }
@@ -114,7 +120,7 @@ class _ContactsPage extends State<ContactsPage> {
         child: Text(
           tag,
           softWrap: false,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
       );
 }
