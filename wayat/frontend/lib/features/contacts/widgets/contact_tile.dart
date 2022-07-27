@@ -11,27 +11,32 @@ class ContactTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = AutoRouter.of(context);
 
-    return ListTile(
-      onTap: () {},
-      leading: const CircleAvatar(
-          backgroundImage:
-              NetworkImage('https://i.pravatar.cc/150?u=a042581f4e29026704d')),
-      title: Text(
-        contact.displayName,
-        style: const TextStyle(
-          fontSize: 16,
-          fontFamily: 'Inter',
-          fontStyle: FontStyle.normal,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 0.25,
+    return Column(
+      children: [
+        ListTile(
+          onTap: () {},
+          leading: const CircleAvatar(
+              backgroundImage: NetworkImage(
+                  'https://i.pravatar.cc/150?u=a042581f4e29026704d')),
+          title: Text(
+            contact.displayName,
+            style: const TextStyle(
+              fontSize: 16,
+              fontFamily: 'Inter',
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.25,
+            ),
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              router.push(ContactDetailRoute(contact: contact));
+            },
+          ),
         ),
-      ),
-      trailing: IconButton(
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          router.push(ContactDetailRoute(contact: contact));
-        },
-      ),
+        Divider(thickness: 1)
+      ],
     );
   }
 }
