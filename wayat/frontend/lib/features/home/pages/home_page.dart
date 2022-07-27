@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/navigation/app_router.dart';
+import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsRouter(
       routes: [
-        const HomeProvRoute(),
+        AddContactsRoute(),
         const CreateEventRoute(),
         ContactsRoute(),
         const NotificationsRoute(),

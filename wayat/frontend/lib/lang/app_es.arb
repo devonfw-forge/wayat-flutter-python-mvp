@@ -12,5 +12,10 @@
     "profile": "Perfil",
 
     "addEvents": "Añadir Eventos",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+
+    "next": "Siguiente",
+
+    "manageContactsTip": "Podrás modificar los\npermisos de tus contactos\ncuando quieras"
+
 }
