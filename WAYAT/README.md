@@ -1,1 +1,0 @@
-Main directory of WAYAT project

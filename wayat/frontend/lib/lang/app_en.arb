@@ -1,0 +1,16 @@
+{
+    "appTitle": "wayat",
+
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "forgotPasswQuestion": "Did you forgot your password?",
+    
+    "home": "Home",
+    "contacts": "Contacts",
+    "events": "Events",
+    "profile": "Profile",
+
+    "notifications": "Notifications",
+    "addEvents": "Add Event"
+}
