@@ -29,6 +29,10 @@ dependencies:
   auto_route: ^4.2.0
   # Environment variables
   flutter_dotenv: ^5.0.2
+  # Google Sign In
+  google_sign_in: ^5.4.0
+  # Http request for backend
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
