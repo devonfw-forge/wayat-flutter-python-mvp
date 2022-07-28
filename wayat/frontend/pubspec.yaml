@@ -29,11 +29,13 @@ dependencies:
   auto_route: ^4.2.0
   # Environment variables
   flutter_dotenv: ^5.0.2
+  # Key Value storage
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.1
   # AutoRoute dependencies for code generation
   analyzer: ^4.2.0 
   auto_route_generator: ^4.2.0

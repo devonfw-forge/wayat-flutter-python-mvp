@@ -12,5 +12,11 @@
     "profile": "Profile",
 
     "notifications": "Notifications",
-    "addEvents": "Add Event"
+    "addEvents": "Add Event",
+
+    "allowedContactsTitle": "Set your allowed contacts",
+    "@allowedContactsTitle": {
+        "description": "This is the title of the OnBoarding 1 page"
+    },
+    "allowedContactsBody": "Select the contacts you will allow to\nsee your location and events. You can\nalso create groups of family, friends,\nwork or whatever you wish."
 }

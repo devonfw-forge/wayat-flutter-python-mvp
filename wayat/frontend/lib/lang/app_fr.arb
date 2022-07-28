@@ -13,5 +13,8 @@
 
 
     "addEvents": "Ajouter un événement",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+
+    "allowedContactsTitle": "Définissez les contacts autorisés",
+    "allowedContactsBody": "Sélectionnez les contacts que vous\nautoriserez à voir votre emplacement\net vos événements. Vous pouvez également\ncréer des groupes de famille, d'amis, de travail\nou tout ce que vous souhaitez."
 }

@@ -10,70 +10,87 @@
 //
 // ignore_for_file: type=lint
 
-part of 'app_router.dart';
+import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:flutter/material.dart' as _i10;
 
-class _$AppRouter extends RootStackRouter {
-  _$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
+import '../domain/contact/contact.dart' as _i11;
+import '../features/authentication/page/login_page.dart' as _i2;
+import '../features/contacts/pages/contact_detail_page.dart' as _i3;
+import '../features/contacts/pages/contacts_page.dart' as _i6;
+import '../features/create_event/page/create_event_page.dart' as _i7;
+import '../features/home/pages/home_page.dart' as _i1;
+import '../features/home/pages/home_provisional.dart' as _i5;
+import '../features/notifications/page/notifications_page.dart' as _i8;
+import '../features/onboarding/page/onboarding_page.dart' as _i4;
+
+class AppRouter extends _i9.RootStackRouter {
+  AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
+      : super(navigatorKey);
 
   @override
-  final Map<String, PageFactory> pagesMap = {
+  final Map<String, _i9.PageFactory> pagesMap = {
     HomeRoute.name: (routeData) {
       final args =
           routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: HomePage(key: args.key));
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i1.HomePage(key: args.key));
     },
     LoginRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: const LoginPage());
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.LoginPage());
     },
     ContactDetailRoute.name: (routeData) {
       final args = routeData.argsAs<ContactDetailRouteArgs>();
-      return MaterialPageX<dynamic>(
+      return _i9.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: ContactDetailPage(key: args.key, contact: args.contact));
+          child: _i3.ContactDetailPage(key: args.key, contact: args.contact));
+    },
+    OnBoardingRoute.name: (routeData) {
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i4.OnBoardingPage());
     },
     HomeProvRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: HomeProvPage());
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i5.HomeProvPage());
     },
     ContactsRoute.name: (routeData) {
       final args = routeData.argsAs<ContactsRouteArgs>(
           orElse: () => const ContactsRouteArgs());
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: ContactsPage(key: args.key));
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i6.ContactsPage(key: args.key));
     },
     CreateEventRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: const CreateEventPage());
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i7.CreateEventPage());
     },
     NotificationsRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-          routeData: routeData, child: const NotificationsPage());
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i8.NotificationsPage());
     }
   };
 
   @override
-  List<RouteConfig> get routes => [
-        RouteConfig(HomeRoute.name, path: '/', children: [
-          RouteConfig(HomeProvRoute.name,
+  List<_i9.RouteConfig> get routes => [
+        _i9.RouteConfig(HomeRoute.name, path: '/', children: [
+          _i9.RouteConfig(HomeProvRoute.name,
               path: 'home-prov-page', parent: HomeRoute.name),
-          RouteConfig(ContactsRoute.name,
+          _i9.RouteConfig(ContactsRoute.name,
               path: 'contacts-page', parent: HomeRoute.name),
-          RouteConfig(CreateEventRoute.name,
+          _i9.RouteConfig(CreateEventRoute.name,
               path: 'create-event-page', parent: HomeRoute.name),
-          RouteConfig(NotificationsRoute.name,
+          _i9.RouteConfig(NotificationsRoute.name,
               path: 'notifications-page', parent: HomeRoute.name)
         ]),
-        RouteConfig(LoginRoute.name, path: '/login'),
-        RouteConfig(ContactDetailRoute.name, path: '/contact-detail-page')
+        _i9.RouteConfig(LoginRoute.name, path: '/login'),
+        _i9.RouteConfig(ContactDetailRoute.name, path: '/contact-detail-page'),
+        _i9.RouteConfig(OnBoardingRoute.name, path: '/on-boarding-page')
       ];
 }
 
 /// generated route for
-/// [HomePage]
-class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
-  HomeRoute({Key? key, List<PageRouteInfo>? children})
+/// [_i1.HomePage]
+class HomeRoute extends _i9.PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({_i10.Key? key, List<_i9.PageRouteInfo>? children})
       : super(HomeRoute.name,
             path: '/',
             args: HomeRouteArgs(key: key),
@@ -85,7 +102,7 @@ class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
 class HomeRouteArgs {
   const HomeRouteArgs({this.key});
 
-  final Key? key;
+  final _i10.Key? key;
 
   @override
   String toString() {
@@ -94,17 +111,17 @@ class HomeRouteArgs {
 }
 
 /// generated route for
-/// [LoginPage]
-class LoginRoute extends PageRouteInfo<void> {
+/// [_i2.LoginPage]
+class LoginRoute extends _i9.PageRouteInfo<void> {
   const LoginRoute() : super(LoginRoute.name, path: '/login');
 
   static const String name = 'LoginRoute';
 }
 
 /// generated route for
-/// [ContactDetailPage]
-class ContactDetailRoute extends PageRouteInfo<ContactDetailRouteArgs> {
-  ContactDetailRoute({Key? key, required Contact contact})
+/// [_i3.ContactDetailPage]
+class ContactDetailRoute extends _i9.PageRouteInfo<ContactDetailRouteArgs> {
+  ContactDetailRoute({_i10.Key? key, required _i11.Contact contact})
       : super(ContactDetailRoute.name,
             path: '/contact-detail-page',
             args: ContactDetailRouteArgs(key: key, contact: contact));
@@ -115,9 +132,9 @@ class ContactDetailRoute extends PageRouteInfo<ContactDetailRouteArgs> {
 class ContactDetailRouteArgs {
   const ContactDetailRouteArgs({this.key, required this.contact});
 
-  final Key? key;
+  final _i10.Key? key;
 
-  final Contact contact;
+  final _i11.Contact contact;
 
   @override
   String toString() {
@@ -126,17 +143,26 @@ class ContactDetailRouteArgs {
 }
 
 /// generated route for
-/// [HomeProvPage]
-class HomeProvRoute extends PageRouteInfo<void> {
+/// [_i4.OnBoardingPage]
+class OnBoardingRoute extends _i9.PageRouteInfo<void> {
+  const OnBoardingRoute()
+      : super(OnBoardingRoute.name, path: '/on-boarding-page');
+
+  static const String name = 'OnBoardingRoute';
+}
+
+/// generated route for
+/// [_i5.HomeProvPage]
+class HomeProvRoute extends _i9.PageRouteInfo<void> {
   const HomeProvRoute() : super(HomeProvRoute.name, path: 'home-prov-page');
 
   static const String name = 'HomeProvRoute';
 }
 
 /// generated route for
-/// [ContactsPage]
-class ContactsRoute extends PageRouteInfo<ContactsRouteArgs> {
-  ContactsRoute({Key? key})
+/// [_i6.ContactsPage]
+class ContactsRoute extends _i9.PageRouteInfo<ContactsRouteArgs> {
+  ContactsRoute({_i10.Key? key})
       : super(ContactsRoute.name,
             path: 'contacts-page', args: ContactsRouteArgs(key: key));
 
@@ -146,7 +172,7 @@ class ContactsRoute extends PageRouteInfo<ContactsRouteArgs> {
 class ContactsRouteArgs {
   const ContactsRouteArgs({this.key});
 
-  final Key? key;
+  final _i10.Key? key;
 
   @override
   String toString() {
@@ -155,8 +181,8 @@ class ContactsRouteArgs {
 }
 
 /// generated route for
-/// [CreateEventPage]
-class CreateEventRoute extends PageRouteInfo<void> {
+/// [_i7.CreateEventPage]
+class CreateEventRoute extends _i9.PageRouteInfo<void> {
   const CreateEventRoute()
       : super(CreateEventRoute.name, path: 'create-event-page');
 
@@ -164,8 +190,8 @@ class CreateEventRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [NotificationsPage]
-class NotificationsRoute extends PageRouteInfo<void> {
+/// [_i8.NotificationsPage]
+class NotificationsRoute extends _i9.PageRouteInfo<void> {
   const NotificationsRoute()
       : super(NotificationsRoute.name, path: 'notifications-page');
 
