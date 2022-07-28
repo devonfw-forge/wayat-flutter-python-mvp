@@ -55,10 +55,6 @@ coverage.xml
 *.mo
 *.pot
 
-# Flask stuff:
-instance/
-.webassets-cache
-
 # Scrapy stuff:
 .scrapy
 
@@ -128,5 +124,5 @@ dmypy.json
 # DB Files
 *.db
 
-# IDEA Files
+# IDEA configuration
 .idea
