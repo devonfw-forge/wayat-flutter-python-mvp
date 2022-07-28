@@ -1,1 +1,1 @@
-WAYAT Application using Flutter and Python
+wayat Application using Flutter and Python

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/navigation/app_router.dart';
+import 'package:wayat/navigation/app_router.gr.dart';
 
 class ContactTile extends StatelessWidget {
   final Contact contact;
