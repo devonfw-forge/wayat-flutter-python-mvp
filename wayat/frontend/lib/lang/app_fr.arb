@@ -16,7 +16,10 @@
     "notifications": "Notifications",
 
     "allowedContactsTitle": "Définissez les contacts autorisés",
-    "allowedContactsBody": "Sélectionnez les contacts que vous\nautoriserez à voir votre emplacement\net vos événements. Vous pouvez également\ncréer des groupes de famille, d'amis, de travail\nou tout ce que vous souhaitez.",
+    "allowedContactsBody": "Sélectionnez les contacts que vous\nautoriserez à voir votre emplacement.",
+
+    "importContactsTip": "Tout d'abord, sélectionnez les contacts\nqui seront autorisés à voir votre position.",
+    "manageContacts": "Gérer les contacts",
 
     "next": "Suivant",
     "skip": "Sauter"

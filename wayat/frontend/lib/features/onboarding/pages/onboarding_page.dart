@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/buttons/outlined_buttons.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
@@ -31,7 +30,7 @@ class OnBoardingPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 30)),
             const SizedBox(
-              height: 50,
+              height: 80,
             ),
             Text(
               appLocalizations.allowedContactsTitle,
