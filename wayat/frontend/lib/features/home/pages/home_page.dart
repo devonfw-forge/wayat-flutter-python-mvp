@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
-import 'package:wayat/features/onboarding/page/onboarding_page.dart';
+import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
 import 'package:wayat/lang/lang_singleton.dart';
@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
             bool isFirstLaunch = snapshot.data as bool;
 
             if (isFirstLaunch) {
-              return OnBoardingPage();
+              return const OnBoardingPage();
             } else {
               return AutoTabsRouter(
                 routes: [

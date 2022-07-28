@@ -18,5 +18,8 @@
     "@allowedContactsTitle": {
         "description": "This is the title of the OnBoarding 1 page"
     },
-    "allowedContactsBody": "Select the contacts you will allow to\nsee your location and events. You can\nalso create groups of family, friends,\nwork or whatever you wish."
+    "allowedContactsBody": "Select the contacts you will allow to\nsee your location and events. You can\nalso create groups of family, friends,\nwork or whatever you wish.",
+
+    "next": "Next",
+    "skip": "Skip"
 }
