@@ -19,8 +19,8 @@ import '../features/authentication/page/login_page.dart' as _i2;
 import '../features/contacts/pages/contact_detail_page.dart' as _i3;
 import '../features/contacts/pages/contacts_page.dart' as _i7;
 import '../features/create_event/page/create_event_page.dart' as _i8;
-import '../features/home/pages/home_page.dart' as _i1;
 import '../features/home/pages/home_provisional.dart' as _i6;
+import '../features/home/pages/launch_page.dart' as _i1;
 import '../features/notifications/page/notifications_page.dart' as _i9;
 import '../features/onboarding/pages/onboarding_page.dart' as _i4;
 import '../features/onboarding/pages/progress_page.dart' as _i5;
@@ -31,11 +31,11 @@ class AppRouter extends _i10.RootStackRouter {
 
   @override
   final Map<String, _i10.PageFactory> pagesMap = {
-    HomeRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
+    LaunchRoute.name: (routeData) {
+      final args = routeData.argsAs<LaunchRouteArgs>(
+          orElse: () => const LaunchRouteArgs());
       return _i10.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i1.HomePage(key: args.key));
+          routeData: routeData, child: _i1.LaunchPage(key: args.key));
     },
     LoginRoute.name: (routeData) {
       return _i10.MaterialPageX<dynamic>(
@@ -81,15 +81,15 @@ class AppRouter extends _i10.RootStackRouter {
 
   @override
   List<_i10.RouteConfig> get routes => [
-        _i10.RouteConfig(HomeRoute.name, path: '/', children: [
+        _i10.RouteConfig(LaunchRoute.name, path: '/', children: [
           _i10.RouteConfig(HomeProvRoute.name,
-              path: 'home-prov-page', parent: HomeRoute.name),
+              path: 'home-prov-page', parent: LaunchRoute.name),
           _i10.RouteConfig(ContactsRoute.name,
-              path: 'contacts-page', parent: HomeRoute.name),
+              path: 'contacts-page', parent: LaunchRoute.name),
           _i10.RouteConfig(CreateEventRoute.name,
-              path: 'create-event-page', parent: HomeRoute.name),
+              path: 'create-event-page', parent: LaunchRoute.name),
           _i10.RouteConfig(NotificationsRoute.name,
-              path: 'notifications-page', parent: HomeRoute.name)
+              path: 'notifications-page', parent: LaunchRoute.name)
         ]),
         _i10.RouteConfig(LoginRoute.name, path: '/login'),
         _i10.RouteConfig(ContactDetailRoute.name, path: '/contact-detail-page'),
@@ -100,25 +100,25 @@ class AppRouter extends _i10.RootStackRouter {
 }
 
 /// generated route for
-/// [_i1.HomePage]
-class HomeRoute extends _i10.PageRouteInfo<HomeRouteArgs> {
-  HomeRoute({_i11.Key? key, List<_i10.PageRouteInfo>? children})
-      : super(HomeRoute.name,
+/// [_i1.LaunchPage]
+class LaunchRoute extends _i10.PageRouteInfo<LaunchRouteArgs> {
+  LaunchRoute({_i11.Key? key, List<_i10.PageRouteInfo>? children})
+      : super(LaunchRoute.name,
             path: '/',
-            args: HomeRouteArgs(key: key),
+            args: LaunchRouteArgs(key: key),
             initialChildren: children);
 
-  static const String name = 'HomeRoute';
+  static const String name = 'LaunchRoute';
 }
 
-class HomeRouteArgs {
-  const HomeRouteArgs({this.key});
+class LaunchRouteArgs {
+  const LaunchRouteArgs({this.key});
 
   final _i11.Key? key;
 
   @override
   String toString() {
-    return 'HomeRouteArgs{key: $key}';
+    return 'LaunchRouteArgs{key: $key}';
   }
 }
 

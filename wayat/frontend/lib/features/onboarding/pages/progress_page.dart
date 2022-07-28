@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/features/onboarding/widgets/manage_contacts.dart';
-import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
+import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/services/first_launch/first_launch_service.dart';
 
 class ProgressOnboardingPage extends StatefulWidget {
   const ProgressOnboardingPage({Key? key}) : super(key: key);
@@ -43,7 +45,10 @@ class _ProgressOnboardingPageState extends State<ProgressOnboardingPage> {
           Flexible(
             flex: 1,
             child: TextButton(
-                onPressed: () => {},
+                onPressed: () {
+                  FirstLaunchService().setFinishedOnBoarding();
+                  AutoRouter.of(context).push(LaunchRoute());
+                },
                 child: Text(
                   appLocalizations.skip,
                   style: const TextStyle(

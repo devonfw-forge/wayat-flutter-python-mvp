@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
-import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
+import 'package:wayat/lang/app_localizations.dart';
 
 class ManageContactsBody extends StatelessWidget {
   const ManageContactsBody({Key? key}) : super(key: key);

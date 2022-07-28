@@ -12,4 +12,10 @@ class FirstLaunchService {
 
     return result;
   }
+
+  void setFinishedOnBoarding() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    preferences.setBool("firstLaunch", false);
+  }
 }
