@@ -31,6 +31,8 @@ dependencies:
   flutter_dotenv: ^5.0.2
   # Key Value storage
   shared_preferences: ^2.0.15
+  # Handles logic to import address books contacts
+  flutter_contacts: ^1.1.5
 
 dev_dependencies:
   flutter_test:
