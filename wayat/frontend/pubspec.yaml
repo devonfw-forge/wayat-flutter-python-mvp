@@ -29,6 +29,7 @@ dependencies:
   auto_route: ^4.2.0
   # Environment variables
   flutter_dotenv: ^5.0.2
+  flutter_contacts: ^1.1.5
 
 dev_dependencies:
   flutter_test:
