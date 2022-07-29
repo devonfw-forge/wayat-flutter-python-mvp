@@ -1,0 +1,26 @@
+{
+    "appTitle": "wayat",
+
+    "login": "Iniciar sesión",
+    "email": "Email",
+    "password": "Contraseña",
+    "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
+
+    "home": "Inicio",
+    "contacts": "Contactos",
+    "events": "Eventos",
+    "profile": "Perfil",
+
+    "addEvents": "Añadir Eventos",
+    "notifications": "Notificaciones",
+
+
+    "allowedContactsTitle": "Establece tus contactos",
+    "allowedContactsBody": "Selecciona los contactos que podrán\nver tu posición y eventos. También\npodrás crear grupos de familia, amigos,\ntrabajo o lo que desees.",
+
+    "importContactsTip": "En primer lugar, selecciona los\ncontactosque podrán ver tu posición.",
+    "manageContacts": "Gestionar contactos",
+
+    "next": "Siguiente",
+    "skip": "Saltar"
+}

@@ -1,0 +1,28 @@
+{
+    "appTitle": "wayat",
+
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "forgotPasswQuestion": "Did you forgot your password?",
+    
+    "home": "Home",
+    "contacts": "Contacts",
+    "events": "Events",
+    "profile": "Profile",
+
+    "notifications": "Notifications",
+    "addEvents": "Add Event",
+
+    "allowedContactsTitle": "Set your allowed contacts",
+    "@allowedContactsTitle": {
+        "description": "This is the title of the OnBoarding 1 page"
+    },
+    "allowedContactsBody": "Select the contacts you will allow to\nsee your location.",
+
+    "importContactsTip": "First of all, select the contacts that\nwill be allowed to see your location.",
+    "manageContacts": "Manage contacts",
+
+    "next": "Next",
+    "skip": "Skip"
+}
