@@ -1,5 +1,7 @@
 from typing import Optional
 import uuid as uuid_pkg
+
+from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
 from datetime import datetime
 
@@ -22,3 +24,10 @@ class BaseUUIDModel(SQLModel):
     )
     updated_at: Optional[datetime] = Field(default_factory=datetime.now)
     created_at: Optional[datetime] = Field(default_factory=datetime.now)
+
+
+class BaseCamelModel(BaseModel):
+    class Config:
+        @classmethod
+        def alias_generator(cls, string: str) -> str:
+            return ''.join([string.split('_')[0].lower()] + [word.capitalize() for word in string.split('_')[1:]])
