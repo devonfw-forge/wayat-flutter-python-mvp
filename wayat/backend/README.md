@@ -74,5 +74,18 @@ You can use the __name__ variable to take the current file name as the default o
 Configure the logging properties in the **_logging.yaml_** file. 
 You can find more information in the [logging](https://docs.python.org/3/library/logging.html#module-logging) documentation.
 
-## Database Management
+## Git Management
 
+The Wayat repository has `devon4py` as a subtree prefixed at `wayat/backend`. This allows us to bring new changes in the
+framework to the project easily. To do so, first we need to add `devon4py` as a remote:
+```shell
+git remote add devon4py https://github.com/devonfw-forge/devon4py.git
+```
+
+Once we have added the remote, we can bring new changes that were made in the `devon4py' repository by
+running:
+```shell
+git pull -s subtree --allow-unrelated-histories --no-commit --squash devon4py main
+```
+
+This will bring all the changes but won't commit them, so that we can decide what to merge in a new unique commit.
