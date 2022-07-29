@@ -20,9 +20,15 @@ Refer to [this link](https://www.jetbrains.com/help/pycharm/poetry.html) to conf
 
 ## Running on local
 
-Start the uvicorn live server with the command:
+You can launch the uvicorn server programmatically running directly the main.py file.
 
+```shell
+python main.py
 ```
+
+It is also possible to start the uvicorn live directly server with the command:
+
+```shell
 uvicorn main:api --reload
 ```
 
@@ -30,11 +36,6 @@ uvicorn main:api --reload
 - **_app_**: the object created inside of main.py with the line app = FastAPI().
 - _**--reload**_: make the server restart after code changes. Only use for development.
 
-You can also launch the uvicorn server programmatically running directly the main.py file.
-
-```
-python main.py
-```
 
 ## Environment Configuration
 
