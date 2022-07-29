@@ -1,0 +1,22 @@
+import 'dart:math';
+import 'package:wayat/domain/location/location.dart';
+
+import 'fake_location_service.dart';
+
+class LocationServiceImpl extends LocationService {
+  @override
+  Location getLocation() {
+    return _randomCoordinates();
+  }
+
+  Location _randomCoordinates() {
+    final random = Random();
+    double nextDouble(num min, num max) =>
+        min + random.nextDouble() * (max - min);
+
+    Location randomLocation = Location(
+        latitude: nextDouble(-90, 90), longitude: nextDouble(-180, 180));
+
+    return randomLocation;
+  }
+}
