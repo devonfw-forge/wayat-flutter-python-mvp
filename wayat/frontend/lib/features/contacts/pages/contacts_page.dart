@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wayat/features/contacts/controller/contact_controller.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:azlistview/azlistview.dart';
-import 'package:wayat/features/contacts/widgets/contact_tile.dart';
+import 'package:wayat/features/onboarding/widgets/import_contacts/contact_tile.dart';
 import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class _AZContactItem extends ISuspensionBean {
@@ -87,9 +87,7 @@ class _ContactsPage extends State<ContactsPage> {
     return Column(
       children: [
         Offstage(offstage: offstage, child: _buildHeader(tag)),
-        Container(
-            margin: const EdgeInsets.only(right: 16),
-            child: ContactTile(contact: contact.contact))
+        Container(margin: const EdgeInsets.only(right: 16), child: Container())
       ],
     );
   }

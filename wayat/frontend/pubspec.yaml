@@ -29,6 +29,7 @@ dependencies:
   auto_route: ^4.2.0
   # Environment variables
   flutter_dotenv: ^5.0.2
+  # AZ ListView for imported contacts
   azlistview: ^2.0.0
   # Key Value storage
   shared_preferences: ^2.0.15

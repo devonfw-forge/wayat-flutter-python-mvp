@@ -48,7 +48,7 @@ class OnBoardingPage extends StatelessWidget {
           ],
         ),
         Container(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 35),
             alignment: AlignmentDirectional.bottomCenter,
             child: CustomOutlinedButton(
                 text: appLocalizations.next,
