@@ -15,4 +15,9 @@ class Location {
       longitude: longitude ?? this.longitude,
     );
   }
+
+  @override
+  String toString() {
+    return 'Location(latitude: $latitude, longitude: $longitude)';
+  }
 }
