@@ -1,11 +1,10 @@
 import 'dart:math';
 import 'package:wayat/domain/location/location.dart';
-
-import 'fake_location_service.dart';
+import 'location_service.dart';
 
 class LocationServiceImpl extends LocationService {
   @override
-  Location getLocation() {
+  Location generateLocation() {
     return _randomCoordinates();
   }
 
