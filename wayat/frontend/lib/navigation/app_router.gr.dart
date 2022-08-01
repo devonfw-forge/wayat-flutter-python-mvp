@@ -33,9 +33,9 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: ContactDetailPage(key: args.key, contact: args.contact));
     },
-    HomeProvRoute.name: (routeData) {
+    HomeMapRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: HomeProvPage());
+          routeData: routeData, child: HomeMapPage());
     },
     ContactsRoute.name: (routeData) {
       final args = routeData.argsAs<ContactsRouteArgs>(
@@ -56,7 +56,7 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig(HomeRoute.name, path: '/', children: [
-          RouteConfig(HomeProvRoute.name,
+          RouteConfig(HomeMapRoute.name,
               path: 'home-prov-page', parent: HomeRoute.name),
           RouteConfig(ContactsRoute.name,
               path: 'contacts-page', parent: HomeRoute.name),
@@ -127,8 +127,8 @@ class ContactDetailRouteArgs {
 
 /// generated route for
 /// [HomeProvPage]
-class HomeProvRoute extends PageRouteInfo<void> {
-  const HomeProvRoute() : super(HomeProvRoute.name, path: 'home-prov-page');
+class HomeMapRoute extends PageRouteInfo<void> {
+  const HomeMapRoute() : super(HomeMapRoute.name, path: 'home-prov-page');
 
   static const String name = 'HomeProvRoute';
 }
