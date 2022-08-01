@@ -1,11 +1,11 @@
 import 'dart:math';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'location_service.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationServiceImpl extends LocationService {
   @override
-  ContactLocation getContactLocation(ContactLocation currentLocation) {
-    ContactLocation newLocation = currentLocation;
+  LatLng getContactLocation(ContactLocation currentLocation) {
     Random random = Random();
     double moveMeters = random.nextDouble() * 10; //increments 0..10 meters move
 
@@ -13,11 +13,12 @@ class LocationServiceImpl extends LocationService {
     double m = (1 / ((2 * pi / 360) * earth)) / 1000; //1 meter in degree
 
     //For latitude coordinates
-    newLocation.latitude = currentLocation.latitude + (moveMeters * m);
+    double newLatitude = currentLocation.latitude + (moveMeters * m);
     //For longtitude coordinates
-    newLocation.longitude = currentLocation.longitude +
+    double newLongitude = currentLocation.longitude +
         (moveMeters * m) / cos(currentLocation.longitude * (pi / 180));
 
-    return newLocation;
+    LatLng latLng = LatLng(newLatitude, newLongitude);
+    return latLng;
   }
 }

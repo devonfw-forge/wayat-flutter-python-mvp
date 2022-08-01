@@ -38,6 +38,11 @@ dependencies:
   shared_preferences: ^2.0.15
   # Handles logic to import address books contacts
   flutter_contacts: ^1.1.5
+  #Location
+  location: ^4.4.0
+  json_serializable: ^6.3.1
+  json_annotation: ^4.6.0
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
