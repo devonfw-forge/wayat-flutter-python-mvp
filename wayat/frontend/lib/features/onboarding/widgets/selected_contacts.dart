@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
-import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
-import 'package:wayat/services/contact/mock/contacts_mock.dart';
+import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
+import 'package:wayat/lang/app_localizations.dart';
 
-class AddContactsPage extends StatelessWidget {
-  final List<Contact> contacts = ContactsMock.availableContacts();
-  //final List<Contact> contacts;
+class SelectedContacts extends StatelessWidget {
+  final OnboardingController controller = GetIt.I.get<OnboardingController>();
 
-  AddContactsPage({Key? key}) : super(key: key);
-  //AddContactsPage({required this.contacts, Key? key}) : super(key: key);
+  SelectedContacts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [contactsScrollView(context), nextButton()],
-      ),
+    return Stack(
+      children: [contactsScrollView(context), nextButton(context)],
     );
   }
 
@@ -30,9 +27,9 @@ class AddContactsPage extends StatelessWidget {
           children: [
             contactsList(),
             CustomTextIconButton(
-                text: "Manage contacts",
+                text: appLocalizations.manageContacts,
                 icon: Icons.edit,
-                onPressed: () => debugPrint("Pressed")),
+                onPressed: () => controller.moveBack()),
             buttonMessageIndicator(context),
             const SizedBox(
               height: 80,
@@ -43,12 +40,15 @@ class AddContactsPage extends StatelessWidget {
     );
   }
 
-  Container nextButton() {
+  Container nextButton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(15),
       alignment: AlignmentDirectional.bottomCenter,
       child: CustomOutlinedButton(
-          text: appLocalizations.next, onPressed: () => debugPrint("Pressed")),
+          text: appLocalizations.next,
+          onPressed: () {
+            controller.finishOnBoarding(context);
+          }),
     );
   }
 
@@ -83,14 +83,16 @@ class AddContactsPage extends StatelessWidget {
   }
 
   Widget contactsList() {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: contacts.length,
-      itemBuilder: ((context, index) {
-        return contactChip(index);
-      }),
-    );
+    return Observer(builder: (context) {
+      return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: controller.selectedContacts.length,
+        itemBuilder: ((context, index) {
+          return contactChip(index);
+        }),
+      );
+    });
   }
 
   Widget contactChip(int index) {
@@ -104,7 +106,7 @@ class AddContactsPage extends StatelessWidget {
               "https://i.pravatar.cc/150?u=a042581f4e29026704d"),
           labelPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           label: Text(
-            contacts[index].displayName,
+            controller.selectedContacts[index].displayName,
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
           )),
     );

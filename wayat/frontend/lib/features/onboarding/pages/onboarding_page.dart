@@ -52,8 +52,8 @@ class OnBoardingPage extends StatelessWidget {
             alignment: AlignmentDirectional.bottomCenter,
             child: CustomOutlinedButton(
                 text: appLocalizations.next,
-                onPressed: () => AutoRouter.of(context)
-                    .push(const ProgressOnboardingRoute())))
+                onPressed: () =>
+                    AutoRouter.of(context).push(ProgressOnboardingRoute())))
       ])),
     );
   }
