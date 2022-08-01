@@ -13,13 +13,13 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i10;
 import 'package:flutter/material.dart' as _i11;
+import 'package:wayat/features/map/home_map_page.dart' as _i6;
 
 import '../domain/contact/contact.dart' as _i12;
 import '../features/authentication/page/login_page.dart' as _i2;
 import '../features/contacts/pages/contact_detail_page.dart' as _i3;
 import '../features/contacts/pages/contacts_page.dart' as _i7;
 import '../features/create_event/page/create_event_page.dart' as _i8;
-import '../features/home/pages/home_provisional.dart' as _i6;
 import '../features/home/pages/launch_page.dart' as _i1;
 import '../features/notifications/page/notifications_page.dart' as _i9;
 import '../features/onboarding/pages/onboarding_page.dart' as _i4;
@@ -61,9 +61,9 @@ class AppRouter extends _i10.RootStackRouter {
           opaque: true,
           barrierDismissible: false);
     },
-    HomeProvRoute.name: (routeData) {
+    HomeMapRoute.name: (routeData) {
       return _i10.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i6.HomeProvPage());
+          routeData: routeData, child: _i6.HomeMapPage());
     },
     ContactsRoute.name: (routeData) {
       final args = routeData.argsAs<ContactsRouteArgs>(
@@ -84,7 +84,7 @@ class AppRouter extends _i10.RootStackRouter {
   @override
   List<_i10.RouteConfig> get routes => [
         _i10.RouteConfig(LaunchRoute.name, path: '/', children: [
-          _i10.RouteConfig(HomeProvRoute.name,
+          _i10.RouteConfig(HomeMapRoute.name,
               path: 'home-prov-page', parent: LaunchRoute.name),
           _i10.RouteConfig(ContactsRoute.name,
               path: 'contacts-page', parent: LaunchRoute.name),
@@ -189,9 +189,9 @@ class ProgressOnboardingRouteArgs {
 }
 
 /// generated route for
-/// [_i6.HomeProvPage]
-class HomeProvRoute extends _i10.PageRouteInfo<void> {
-  const HomeProvRoute() : super(HomeProvRoute.name, path: 'home-prov-page');
+/// [_i6.HomeMapPage]
+class HomeMapRoute extends _i10.PageRouteInfo<void> {
+  const HomeMapRoute() : super(HomeMapRoute.name, path: 'home-map-page');
 
   static const String name = 'HomeProvRoute';
 }
