@@ -1,12 +1,10 @@
-from typing import Optional, List, NewType
+from typing import Optional, NewType
 from pydantic import BaseModel
-
-from app.common.base.base_entity import BaseCamelModel
 
 IDType = NewType("IDType", str)
 
 
-class UserID(BaseCamelModel):
+class UserID(BaseModel):
     id: IDType
 
 
@@ -17,12 +15,16 @@ class UpdateUserRequest(UserID):
     surname: Optional[str]
 
 
-class AddContactsRequest(BaseCamelModel):
+class AddContactsRequest(BaseModel):
     users: list[IDType]
 
 
-class UpdateShareLocationRequest(BaseCamelModel):
-    enable: bool
+class FindByPhoneRequest(BaseModel):
+    phones: list[str]
+
+
+class UpdatePreferencesRequest(BaseModel):
+    do_not_disturb: bool
 
 
 class UserDTO(UpdateUserRequest):
@@ -43,5 +45,5 @@ class UserWithPhoneResponse(UserID):
     image_url: str
 
 
-class ListUsersWithPhoneResponse(BaseCamelModel):
+class ListUsersWithPhoneResponse(BaseModel):
     users: list[UserWithPhoneResponse]
