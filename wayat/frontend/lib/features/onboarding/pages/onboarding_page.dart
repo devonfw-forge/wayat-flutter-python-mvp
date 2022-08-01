@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/common/widgets/buttons/outlined_buttons.dart';
+import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
@@ -48,7 +48,7 @@ class OnBoardingPage extends StatelessWidget {
           ],
         ),
         Container(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 35),
             alignment: AlignmentDirectional.bottomCenter,
             child: CustomOutlinedButton(
                 text: appLocalizations.next,

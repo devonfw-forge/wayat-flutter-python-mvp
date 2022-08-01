@@ -24,5 +24,7 @@
     "manageContacts": "Manage contacts",
 
     "next": "Next",
-    "skip": "Skip"
+    "skip": "Skip",
+
+    "selectContacts": "Select contacts"
 }

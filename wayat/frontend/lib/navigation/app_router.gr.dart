@@ -54,7 +54,7 @@ class AppRouter extends _i10.RootStackRouter {
     ProgressOnboardingRoute.name: (routeData) {
       return _i10.CustomPage<dynamic>(
           routeData: routeData,
-          child: const _i5.ProgressOnboardingPage(),
+          child: _i5.ProgressOnboardingPage(),
           transitionsBuilder: _i10.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
