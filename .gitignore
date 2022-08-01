@@ -156,5 +156,5 @@ SPIKES/Routing/Navigation/windows/flutter/generated_plugin_registrant.h
 SPIKES/Routing/Navigation/windows/flutter/generated_plugins.cmake
 SPIKES/State Management/MobX&GetIt/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 SPIKES/State Management/MobX&GetIt/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
-WAYAT/.env
+wayat/.env
 *.cc

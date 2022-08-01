@@ -13,11 +13,11 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
+          statusBarColor: Colors.white10,
           statusBarBrightness: Brightness.dark, //Dark icons for Android
           statusBarIconBrightness: Brightness.dark //Dark icons for iOS
           ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white10,
       elevation: 0,
       centerTitle: true,
       title: Text(
@@ -27,7 +27,4 @@ class CustomAppBar extends StatelessWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

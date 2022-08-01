@@ -14,7 +14,18 @@
     "notifications": "Notifications",
     "addEvents": "Add Event",
 
-    "next": "Next",
+    "manageContactsTip": "You'll be able to modify the\npermission of your contacts\nwhenever you want",
+    "allowedContactsTitle": "Set your allowed contacts",
+    "@allowedContactsTitle": {
+        "description": "This is the title of the OnBoarding 1 page"
+    },
+    "allowedContactsBody": "Select the contacts you will allow to\nsee your location.",
 
-    "manageContactsTip": "You'll be able to modify the\npermission of your contacts\nwhenever you want"
+    "importContactsTip": "First of all, select the contacts that\nwill be allowed to see your location.",
+    "manageContacts": "Manage contacts",
+
+    "next": "Next",
+    "skip": "Skip",
+
+    "selectContacts": "Select contacts"
 }

@@ -14,8 +14,18 @@
     "addEvents": "Añadir Eventos",
     "notifications": "Notificaciones",
 
+    "manageContactsTip": "Podrás modificar los\npermisos de tus contactos\ncuando quieras",
+
+
+    "allowedContactsTitle": "Establece tus contactos",
+    "allowedContactsBody": "Selecciona los contactos que podrán\nver tu posición y eventos. También\npodrás crear grupos de familia, amigos,\ntrabajo o lo que desees.",
+
+    "importContactsTip": "En primer lugar, selecciona los\ncontactosque podrán ver tu posición.",
+    "manageContacts": "Gestionar contactos",
+
     "next": "Siguiente",
+    "skip": "Saltar",
 
-    "manageContactsTip": "Podrás modificar los\npermisos de tus contactos\ncuando quieras"
 
+    "selectContacts": "Selecciona contactos"
 }
