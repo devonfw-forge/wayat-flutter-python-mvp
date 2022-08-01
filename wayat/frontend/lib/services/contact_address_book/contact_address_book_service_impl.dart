@@ -1,5 +1,5 @@
-import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:wayat/domain/contact/contact_address_book.dart';
 
 class ContactServiceImpl {
   static Future<List<ContactAdressBook>> getAll() async {

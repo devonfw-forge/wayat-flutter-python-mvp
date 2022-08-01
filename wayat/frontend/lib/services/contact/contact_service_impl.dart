@@ -7,4 +7,9 @@ class ContactServiceImpl extends ContactService {
   List<Contact> getAll() {
     return ContactsMock.contacts;
   }
+
+  @override
+  void sendRequests(List<Contact> contacts) {
+    //TODO: SEND REQUESTS TO BACKEND
+  }
 }

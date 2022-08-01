@@ -15,6 +15,8 @@
     "addEvents": "Ajouter un événement",
     "notifications": "Notifications",
 
+
+    "manageContactsTip": "Vous pourrez modifier les\nautorisations de vos contacts\nquand vous le voudrez.",
     "allowedContactsTitle": "Définissez les contacts autorisés",
     "allowedContactsBody": "Sélectionnez les contacts que vous\nautoriserez à voir votre emplacement.",
 
