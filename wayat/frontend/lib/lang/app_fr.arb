@@ -22,5 +22,7 @@
     "manageContacts": "Gérer les contacts",
 
     "next": "Suivant",
-    "skip": "Sauter"
+    "skip": "Sauter",
+
+    "selectContacts": "Sélectionner les contacts"
 }
