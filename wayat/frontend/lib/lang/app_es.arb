@@ -12,5 +12,18 @@
     "profile": "Perfil",
 
     "addEvents": "Añadir Eventos",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+
+
+    "allowedContactsTitle": "Establece tus contactos",
+    "allowedContactsBody": "Selecciona los contactos que podrán\nver tu posición y eventos. También\npodrás crear grupos de familia, amigos,\ntrabajo o lo que desees.",
+
+    "importContactsTip": "En primer lugar, selecciona los\ncontactosque podrán ver tu posición.",
+    "manageContacts": "Gestionar contactos",
+
+    "next": "Siguiente",
+    "skip": "Saltar",
+
+
+    "selectContacts": "Selecciona contactos"
 }

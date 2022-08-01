@@ -13,5 +13,16 @@
 
 
     "addEvents": "Ajouter un événement",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+
+    "allowedContactsTitle": "Définissez les contacts autorisés",
+    "allowedContactsBody": "Sélectionnez les contacts que vous\nautoriserez à voir votre emplacement.",
+
+    "importContactsTip": "Tout d'abord, sélectionnez les contacts\nqui seront autorisés à voir votre position.",
+    "manageContacts": "Gérer les contacts",
+
+    "next": "Suivant",
+    "skip": "Sauter",
+
+    "selectContacts": "Sélectionner les contacts"
 }
