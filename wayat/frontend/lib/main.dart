@@ -3,8 +3,9 @@ import 'package:flutter_config/flutter_config.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:wayat/navigation/app_router.dart';
+import 'package:wayat/navigation/app_router.gr.dart';
 
 Future main() async {
 
@@ -19,6 +20,8 @@ void registerRepositories() {
   //Register with GetIt all the singletons for the repos like this
   //GetIt.I.registerLazySingleton<AbstractClass>(() => ImplementationClass())
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
+  GetIt.I.registerLazySingleton<OnboardingController>(
+      () => OnboardingController());
 }
 
 class MyApp extends StatelessWidget {
