@@ -1,6 +1,6 @@
-import 'package:wayat/domain/location/location.dart';
+import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/service.dart';
 
 abstract class LocationService extends Service {
-  Location generateLocation();
+  ContactLocation getContactLocation(ContactLocation currentLocation);
 }
