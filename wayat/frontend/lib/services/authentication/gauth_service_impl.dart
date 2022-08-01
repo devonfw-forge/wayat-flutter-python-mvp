@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:wayat/services/authentication/gauth_service.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:wayat/services/request/request_service.dart';
 
 class GoogleAuthServiceImpl extends GoogleAuthService {
 
@@ -37,13 +39,9 @@ class GoogleAuthServiceImpl extends GoogleAuthService {
   }
 
   Future<bool> hasPhoneNumber() async {
-    http.Response userJson = await http.get(
-      Uri.parse("$_baseUrl/user"),
-      headers: { 
-        "Accept" : "application/json",
-        "IdToken" : await getIdToken()
-      });
-    final Map<String, dynamic> user = json.decode(userJson.body).cast<Map<String, dynamic>>();
+    RequestService requestService = GetIt.I.get<RequestService>();
+    // Gets backend data of the signed in user
+    final Map<String, dynamic> user = await requestService.sendGetRequest("user");
     if (!user.containsKey("phone_number") || user["phone_number"] == null) return false;
     return true;
   }
@@ -72,5 +70,6 @@ class GoogleAuthServiceImpl extends GoogleAuthService {
   @override
   Future<void> signOutGoogle() async {
     await _googleSignIn.signOut();
+    _idToken = "";
   }
 }

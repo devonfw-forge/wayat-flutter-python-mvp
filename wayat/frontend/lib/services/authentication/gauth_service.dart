@@ -7,7 +7,7 @@ abstract class GoogleAuthService extends Service {
   Future<GoogleSignInAccount?> signInGoogle();
 
   /// Returns the **account id token**.
-  Future<String?> getIdToken();
+  Future<String> getIdToken();
   
   /// Refresh the **account id token** using the non intercative sign in.
   /// 
