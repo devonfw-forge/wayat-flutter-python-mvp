@@ -34,8 +34,6 @@ abstract class _OnboardingController with Store {
       contacts.keys.where((element) => !contacts[element]!).toList();
 
   bool isSelected(Contact contact) {
-    debugPrint(selectedContacts.toString());
-    debugPrint(contact.toString());
     return selectedContacts.contains(contact);
   }
 
