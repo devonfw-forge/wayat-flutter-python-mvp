@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
+import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
-class ManageContactsBody extends StatelessWidget {
-  final OnboardingController controller;
+class InitialManageContactsTip extends StatelessWidget {
+  final OnboardingController controller = GetIt.I.get<OnboardingController>();
 
-  const ManageContactsBody({required this.controller, Key? key})
-      : super(key: key);
+  InitialManageContactsTip({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,10 @@ class ManageContactsBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextIconButton(
-            onPressed: () => {controller.moveToPage(2)},
+            onPressed: () => {
+                  controller
+                      .progressTo(OnBoardingProgress.importAddressBookContacts)
+                },
             icon: Icons.edit,
             text: appLocalizations.manageContacts),
         const SizedBox(
