@@ -5,11 +5,20 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
   await dotenv.load(fileName: "development.env");
   registerRepositories();
+
+  await initFirebase();  
+
   runApp(MyApp());
+}
+
+Future<void> initFirebase() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 }
 
 void registerRepositories() {
