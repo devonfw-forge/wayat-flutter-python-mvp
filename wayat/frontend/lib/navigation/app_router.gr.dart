@@ -52,9 +52,11 @@ class AppRouter extends _i10.RootStackRouter {
           routeData: routeData, child: const _i4.OnBoardingPage());
     },
     ProgressOnboardingRoute.name: (routeData) {
+      final args = routeData.argsAs<ProgressOnboardingRouteArgs>(
+          orElse: () => const ProgressOnboardingRouteArgs());
       return _i10.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i5.ProgressOnboardingPage(),
+          child: _i5.ProgressOnboardingPage(key: args.key),
           transitionsBuilder: _i10.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
@@ -165,11 +167,25 @@ class OnBoardingRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.ProgressOnboardingPage]
-class ProgressOnboardingRoute extends _i10.PageRouteInfo<void> {
-  const ProgressOnboardingRoute()
-      : super(ProgressOnboardingRoute.name, path: '/progress-onboarding-page');
+class ProgressOnboardingRoute
+    extends _i10.PageRouteInfo<ProgressOnboardingRouteArgs> {
+  ProgressOnboardingRoute({_i11.Key? key})
+      : super(ProgressOnboardingRoute.name,
+            path: '/progress-onboarding-page',
+            args: ProgressOnboardingRouteArgs(key: key));
 
   static const String name = 'ProgressOnboardingRoute';
+}
+
+class ProgressOnboardingRouteArgs {
+  const ProgressOnboardingRouteArgs({this.key});
+
+  final _i11.Key? key;
+
+  @override
+  String toString() {
+    return 'ProgressOnboardingRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

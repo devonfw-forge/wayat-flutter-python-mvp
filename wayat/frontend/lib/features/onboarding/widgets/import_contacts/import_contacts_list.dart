@@ -1,24 +1,19 @@
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
-import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
+import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/features/onboarding/widgets/import_contacts/contact_item.dart';
 import 'package:wayat/features/onboarding/widgets/import_contacts/contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class ImportedContactsList extends StatelessWidget {
-  //final List<Contact> contacts;
+  final OnboardingController controller = GetIt.I.get<OnboardingController>();
 
-  //const ImportedContactsList({required this.contacts, Key? key}) : super(key: key);
-
-  final OnboardingController controller;
-
-  const ImportedContactsList({required this.controller, Key? key})
-      : super(key: key);
+  ImportedContactsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +23,6 @@ class ImportedContactsList extends StatelessWidget {
         * 2. Make a call to the BackEnd to get the contacts that have Wayat 
         * 3. Wrap this widget in a FutureBuilder because the service call will be async
      */
-    controller.addAll(ContactsMock.contacts);
-
     List<AZContactItem> contactsAZ = generateContactRowData();
 
     return Stack(
@@ -97,7 +90,8 @@ class ImportedContactsList extends StatelessWidget {
         child: Observer(builder: (context) {
           return CustomFilledButton(
               text: appLocalizations.next,
-              onPressed: () => {},
+              onPressed: () =>
+                  {controller.progressTo(OnBoardingProgress.sendRequests)},
               enabled: controller.selectedContacts.isNotEmpty);
         }));
   }
@@ -127,7 +121,7 @@ class ImportedContactsList extends StatelessWidget {
             child: Observer(builder: (context) {
               return ContactTile(
                   contact: azItem.contact,
-                  selected: controller.contacts[azItem.contact]!,
+                  selected: controller.isSelected(azItem.contact),
                   onButtonTap: () => controller.updateSelected(azItem.contact));
             }))
       ],
