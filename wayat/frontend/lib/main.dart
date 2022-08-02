@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,7 +14,10 @@ import 'package:wayat/services/request/request_service.dart';
 import 'package:wayat/services/request/request_service_impl.dart';
 
 Future main() async {
-  await dotenv.load(fileName: "development.env");
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
+  
   registerRepositories();
 
   await initFirebase();  

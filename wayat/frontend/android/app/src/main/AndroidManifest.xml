@@ -8,6 +8,8 @@
         android:label="wayat"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="@string/GOOGLE_MAPS_KEY"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
