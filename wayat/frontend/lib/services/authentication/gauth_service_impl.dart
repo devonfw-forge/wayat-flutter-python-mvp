@@ -1,12 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:wayat/services/authentication/gauth_service.dart';
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/services/request/request_service.dart';
 
 class GoogleAuthServiceImpl extends GoogleAuthService {
@@ -21,9 +19,9 @@ class GoogleAuthServiceImpl extends GoogleAuthService {
 
   GoogleAuthServiceImpl({GoogleSignIn? gS}) {
     if (Platform.isAndroid) {
-      _baseUrl = dotenv.get('ANDROID_URL_PREFIX');
+      _baseUrl = FlutterConfig.get('ANDROID_BASE_URL')!;
     } else {
-      _baseUrl = dotenv.get('URL_PREFIX');
+      _baseUrl = FlutterConfig.get('BASE_URL')!;
     }
     if (gS != null) _googleSignIn = gS;
   }
