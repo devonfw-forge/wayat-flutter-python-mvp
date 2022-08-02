@@ -3,5 +3,5 @@ import 'package:wayat/services/service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 abstract class LocationService extends Service {
-  LatLng getContactLocation(ContactLocation currentLocation);
+  LatLng changeContactCoordinates(LatLng currentLocation);
 }
