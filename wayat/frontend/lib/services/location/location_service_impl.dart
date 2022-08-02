@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:wayat/domain/location/contact_location.dart';
+
 import 'location_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
