@@ -31,6 +31,22 @@ mixin _$OnboardingController on _OnboardingController, Store {
               name: '_OnboardingController.unselectedContacts'))
       .value;
 
+  late final _$onBoardingStateAtom =
+      Atom(name: '_OnboardingController.onBoardingState', context: context);
+
+  @override
+  OnBoardingState get onBoardingState {
+    _$onBoardingStateAtom.reportRead();
+    return super.onBoardingState;
+  }
+
+  @override
+  set onBoardingState(OnBoardingState value) {
+    _$onBoardingStateAtom.reportWrite(value, super.onBoardingState, () {
+      super.onBoardingState = value;
+    });
+  }
+
   late final _$currentPageAtom =
       Atom(name: '_OnboardingController.currentPage', context: context);
 
@@ -69,9 +85,20 @@ mixin _$OnboardingController on _OnboardingController, Store {
   @override
   void progressTo(OnBoardingProgress newPage) {
     final _$actionInfo = _$_OnboardingControllerActionController.startAction(
-        name: '_OnboardingController.progressToBody');
+        name: '_OnboardingController.progressTo');
     try {
       return super.progressTo(newPage);
+    } finally {
+      _$_OnboardingControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool moveBack() {
+    final _$actionInfo = _$_OnboardingControllerActionController.startAction(
+        name: '_OnboardingController.moveBack');
+    try {
+      return super.moveBack();
     } finally {
       _$_OnboardingControllerActionController.endAction(_$actionInfo);
     }
@@ -100,8 +127,20 @@ mixin _$OnboardingController on _OnboardingController, Store {
   }
 
   @override
+  void setOnBoardingState(OnBoardingState state) {
+    final _$actionInfo = _$_OnboardingControllerActionController.startAction(
+        name: '_OnboardingController.setOnBoardingState');
+    try {
+      return super.setOnBoardingState(state);
+    } finally {
+      _$_OnboardingControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+onBoardingState: ${onBoardingState},
 currentPage: ${currentPage},
 contacts: ${contacts},
 contactList: ${contactList},
