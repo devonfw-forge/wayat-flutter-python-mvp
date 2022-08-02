@@ -20,7 +20,7 @@ import '../features/contacts/pages/contact_detail_page.dart' as _i2;
 import '../features/contacts/pages/contacts_page.dart' as _i9;
 import '../features/create_event/page/create_event_page.dart' as _i10;
 import '../features/home/pages/home_page.dart' as _i4;
-import '../features/home/pages/home_provisional.dart' as _i8;
+import '../features/map/home_map_page.dart' as _i8;
 import '../features/notifications/page/notifications_page.dart' as _i11;
 import '../features/onboarding/pages/onboarding_page.dart' as _i6;
 import '../features/onboarding/pages/onboarding_wrapper.dart' as _i3;
@@ -75,9 +75,9 @@ class AppRouter extends _i12.RootStackRouter {
           opaque: true,
           barrierDismissible: false);
     },
-    HomeProvRoute.name: (routeData) {
+    HomeMapRoute.name: (routeData) {
       return _i12.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i8.HomeProvPage());
+          routeData: routeData, child: _i8.HomeMapPage());
     },
     ContactsRoute.name: (routeData) {
       final args = routeData.argsAs<ContactsRouteArgs>(
@@ -112,8 +112,8 @@ class AppRouter extends _i12.RootStackRouter {
               path: 'home-page',
               parent: RootWrapper.name,
               children: [
-                _i12.RouteConfig(HomeProvRoute.name,
-                    path: 'home-prov-page', parent: HomeRoute.name),
+                _i12.RouteConfig(HomeMapRoute.name,
+                    path: 'home-map-page', parent: HomeRoute.name),
                 _i12.RouteConfig(ContactsRoute.name,
                     path: 'contacts-page', parent: HomeRoute.name),
                 _i12.RouteConfig(CreateEventRoute.name,
@@ -260,11 +260,11 @@ class ProgressOnboardingRouteArgs {
 }
 
 /// generated route for
-/// [_i8.HomeProvPage]
-class HomeProvRoute extends _i12.PageRouteInfo<void> {
-  const HomeProvRoute() : super(HomeProvRoute.name, path: 'home-prov-page');
+/// [_i8.HomeMapPage]
+class HomeMapRoute extends _i12.PageRouteInfo<void> {
+  const HomeMapRoute() : super(HomeMapRoute.name, path: 'home-map-page');
 
-  static const String name = 'HomeProvRoute';
+  static const String name = 'HomeMapRoute';
 }
 
 /// generated route for
