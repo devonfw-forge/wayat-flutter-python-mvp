@@ -1,10 +1,16 @@
 import 'dart:math';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/services/location/mock/contact_location_mock.dart';
 
 import 'location_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationServiceImpl extends LocationService {
+  @override
+  List<ContactLocation> getAll() {
+    return ContactLocationMock.contacts;
+  }
+
   @override
   LatLng changeContactCoordinates(LatLng currentLocation) {
     Random random = Random();
