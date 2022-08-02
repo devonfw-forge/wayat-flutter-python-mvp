@@ -44,3 +44,8 @@ async def add_contact(request: AddContactsRequest):
 async def update_preferences(request: UpdatePreferencesRequest):
     # TODO
     pass
+
+@router.get("/contacts", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
+async def get_contacts():
+    # TODO
+    pass
