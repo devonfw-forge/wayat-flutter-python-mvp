@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,7 +11,7 @@ import 'package:wayat/services/request/request_service.dart';
 
 class GoogleAuthServiceImpl extends GoogleAuthService {
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
+  late GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email'
     ],
@@ -20,12 +19,13 @@ class GoogleAuthServiceImpl extends GoogleAuthService {
   String? _idToken;
   late String _baseUrl;
 
-  GoogleAuthServiceImpl() {
+  GoogleAuthServiceImpl({GoogleSignIn? gS}) {
     if (Platform.isAndroid) {
       _baseUrl = dotenv.get('ANDROID_URL_PREFIX');
     } else {
       _baseUrl = dotenv.get('URL_PREFIX');
     }
+    if (gS != null) _googleSignIn = gS;
   }
 
   @override
