@@ -1,9 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/features/onboarding/controller/onboarding_state.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/first_launch/first_launch_service.dart';
@@ -15,6 +16,9 @@ class OnboardingController = _OnboardingController with _$OnboardingController;
 abstract class _OnboardingController with Store {
   ContactService contactService = ContactServiceImpl();
   FirstLaunchService firstLaunchService = FirstLaunchService();
+
+  @observable
+  OnBoardingState onBoardingState = OnBoardingState.NotStarted;
 
   @observable
   OnBoardingProgress currentPage = OnBoardingProgress.initialManageContactsTip;
@@ -39,8 +43,8 @@ abstract class _OnboardingController with Store {
 
   void finishOnBoarding(BuildContext context) {
     contactService.sendRequests(selectedContacts);
-    firstLaunchService.setFinishedOnBoarding();
-    AutoRouter.of(context).push(LaunchRoute());
+    SessionState userSession = GetIt.I.get<SessionState>();
+    userSession.doneOnBoarding();
   }
 
   @action
@@ -73,5 +77,10 @@ abstract class _OnboardingController with Store {
     for (var contact in contactList) {
       contacts[contact] = false;
     }
+  }
+
+  @action
+  void setOnBoardingState(OnBoardingState state) {
+    onBoardingState = state;
   }
 }
