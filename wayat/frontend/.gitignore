@@ -3,6 +3,9 @@ windows/
 linux/
 macos/
 
+# Environment variables
+*.env
+
 # Miscellaneous
 *.class
 *.lock
