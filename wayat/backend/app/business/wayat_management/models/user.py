@@ -35,7 +35,7 @@ class UserDTO(UpdateUserRequest):
 
 # Responses
 class UserProfileResponse(UserDTO):
-    pass
+    new_user: bool
 
 
 class UserWithPhoneResponse(UserID):
