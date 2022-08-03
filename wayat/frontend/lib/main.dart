@@ -3,15 +3,10 @@ import 'package:flutter_config/flutter_config.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:wayat/services/authentication/auth_service.dart';
-import 'package:wayat/services/authentication/gauth_service_impl.dart';
-import 'package:wayat/services/request/request_service.dart';
-import 'package:wayat/services/request/request_service_impl.dart';
 
 Future main() async {
 

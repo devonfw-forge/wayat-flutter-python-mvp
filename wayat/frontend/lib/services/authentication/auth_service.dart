@@ -1,6 +1,6 @@
-import 'package:wayat/services/service.dart';
+import 'package:wayat/services/request/request_service.dart';
 
-abstract class AuthService extends Service {
+abstract class AuthService extends RequestService {
 
   /// *Sign in* process.
   Future<dynamic> signIn();

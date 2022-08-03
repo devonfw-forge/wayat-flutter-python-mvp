@@ -1,11 +1,7 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_config/flutter_config.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
-import 'dart:io';
-import 'package:wayat/services/request/request_service.dart';
 
 class GoogleAuthService extends AuthService {
 
@@ -15,14 +11,8 @@ class GoogleAuthService extends AuthService {
     ],
   );
   String? _idToken;
-  late String _baseUrl;
 
   GoogleAuthService({GoogleSignIn? gS}) {
-    if (Platform.isAndroid) {
-      _baseUrl = FlutterConfig.get('ANDROID_BASE_URL')!;
-    } else {
-      _baseUrl = FlutterConfig.get('BASE_URL')!;
-    }
     if (gS != null) _googleSignIn = gS;
   }
 
@@ -38,9 +28,8 @@ class GoogleAuthService extends AuthService {
 
   @override
   Future<bool> hasPhoneNumber() async {
-    RequestService requestService = GetIt.I.get<RequestService>();
     // Gets backend data of the signed in user
-    final Map<String, dynamic> user = await requestService.sendGetRequest("users/profile");
+    final Map<String, dynamic> user = await super.sendGetRequest("users/profile");
     if (!user.containsKey("phone_number") || user["phone_number"] == null) return false;
     return true;
   }
