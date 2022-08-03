@@ -1,6 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future main() async {
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
