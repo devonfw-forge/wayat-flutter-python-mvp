@@ -1,4 +1,4 @@
-package com.example.firestore
+package com.wayatspyke.capgemini
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -10,6 +10,9 @@
 .svn/
 migrate_working_dir/
 
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+
 # IntelliJ related
 *.iml
 *.ipr
