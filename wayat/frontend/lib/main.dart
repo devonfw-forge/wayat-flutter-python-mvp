@@ -36,10 +36,6 @@ void registerRepositories() {
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
-  GetIt.I.registerLazySingleton<AuthService>(
-      () => GoogleAuthService());
-  GetIt.I.registerLazySingleton<RequestService>(
-      () => RequestServiceImpl());
 }
 
 class MyApp extends StatelessWidget {
