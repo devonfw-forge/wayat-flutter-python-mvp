@@ -6,25 +6,43 @@ part 'session_state.g.dart';
 class SessionState = _SessionState with _$SessionState;
 
 abstract class _SessionState with Store {
-  @observable
-  String token = '';
 
   @observable
-  bool isLoggedIn = false;
+  bool finishLoggedIn = false;
+
+  @observable
+  bool googleSignedIn = false;
+
+  @observable
+  bool phoneValidation = false;
 
   @observable
   bool hasDoneOnboarding = false;
   //bool get isLoggedIn => token.isEmpty;
 
   @action
-  void setToken(String newToken) {
-    token = newToken;
-    isLoggedIn = true;
-    debugPrint(isLoggedIn.toString());
+  void doneOnBoarding() {
+    hasDoneOnboarding = true;
   }
 
   @action
-  void doneOnBoarding() {
-    hasDoneOnboarding = true;
+  void setGoogleSignIn(bool signedIn) {
+    googleSignedIn = signedIn;
+  }
+
+  @action
+  void setPhoneValidation(bool phoneValidated) {
+    phoneValidation = phoneValidated;
+  }
+
+  @action
+  void setFinishLoggedIn(bool finishedLoggedIn) {
+    finishLoggedIn = finishedLoggedIn;
+  }
+
+  @action
+  void googleLogin () {
+    // TODO: CALL THE SERVICE AND PUT THE TOKEN
+    setGoogleSignIn(true);
   }
 }
