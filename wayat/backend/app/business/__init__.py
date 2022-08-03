@@ -1,7 +1,6 @@
 from fastapi import APIRouter
-from app.business.wayat_management.controllers.user import router as user_router
 
-# Include all routers here
+from app.business.wayat_management.controllers import wayat_router
 
 all_router = APIRouter()
-all_router.include_router(user_router)
+all_router.include_router(wayat_router)
