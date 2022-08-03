@@ -17,7 +17,8 @@ class ContactLocationMock {
       displayName: "User pepe",
       username: "pepe",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.487762537239135,
       longitude: -0.46046622208940335,
     ),
@@ -26,7 +27,8 @@ class ContactLocationMock {
       displayName: "Pepe USer",
       username: "pepeuser",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.444825299007185,
       longitude: -0.37600882598488544,
     ),
@@ -35,7 +37,8 @@ class ContactLocationMock {
       displayName: "Name",
       username: "name",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.456887507422074,
       longitude: -0.2858866045318938,
     ),
@@ -44,7 +47,8 @@ class ContactLocationMock {
       displayName: "DisplayName User",
       username: "display",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.52352332959457,
       longitude: -0.4156626035399936,
     ),
@@ -53,7 +57,8 @@ class ContactLocationMock {
       displayName: "Test test",
       username: "test",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.49862516861606,
       longitude: -0.4026163391010844,
     ),
@@ -62,7 +67,8 @@ class ContactLocationMock {
       displayName: "Test testing",
       username: "testing",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.460333469009,
       longitude: -0.4506815238456867,
     ),
@@ -71,7 +77,8 @@ class ContactLocationMock {
       displayName: "Testing testing",
       username: "testingtesting",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 37.5702,
       longitude: -0.786805,
     ),
@@ -80,7 +87,8 @@ class ContactLocationMock {
       displayName: "Testing test",
       username: "testingtest",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.1702,
       longitude: -0.686805,
     ),
@@ -89,7 +97,8 @@ class ContactLocationMock {
       displayName: "User the second",
       username: "USERsecond",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 42.9702,
       longitude: -0.386805,
     ),
@@ -98,7 +107,8 @@ class ContactLocationMock {
       displayName: "User the third",
       username: "third",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 43.9702,
       longitude: -0.486805,
     ),
@@ -107,7 +117,8 @@ class ContactLocationMock {
       displayName: "User the fourth",
       username: "fourth",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.9702,
       longitude: -0.386805,
     ),
@@ -116,7 +127,8 @@ class ContactLocationMock {
       displayName: "User the fifth",
       username: "fifth",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 36.2702,
       longitude: -0.686805,
     ),
@@ -125,7 +137,8 @@ class ContactLocationMock {
       displayName: "User the barbarian",
       username: "barbarian",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 44.9702,
       longitude: -0.586805,
     ),
@@ -134,7 +147,8 @@ class ContactLocationMock {
       displayName: "User the wise",
       username: "wise",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 42.3702,
       longitude: -0.786805,
     ),

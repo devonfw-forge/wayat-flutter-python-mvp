@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/location/mock/contact_location_mock.dart';
 import 'dart:ui' as ui;
+import 'contact_circle_avatar.dart';
 
 class HomeMapPage extends StatefulWidget {
   const HomeMapPage({Key? key}) : super(key: key);
