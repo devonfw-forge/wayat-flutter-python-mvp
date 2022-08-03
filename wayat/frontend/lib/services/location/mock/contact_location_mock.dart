@@ -7,7 +7,8 @@ class ContactLocationMock {
       displayName: "User active",
       username: "active",
       email: "user@mail.com",
-      imageUrl: "url",
+      imageUrl:
+          "https://support.hubstaff.com/wp-content/uploads/2019/08/good-pic.png",
       latitude: 39.46799126816723,
       longitude: -0.3559132477211037,
     ),

@@ -20,13 +20,24 @@ class HomeMapPageState extends State<HomeMapPage> {
     zoom: 12,
   );
 
+  //Google map controller
   GoogleMapController? _mapController;
-  Location currentLocation = Location();
-  List<Marker> markers = [];
-  List<ContactLocation> contacts = ContactLocationMock.contacts;
-  late BitmapDescriptor _markerIcon;
+  GoogleMapController? get mapController => _mapController;
 
-  void getLocation() async {
+  //current user location
+  Location currentLocation = Location();
+
+  //contacts markers
+  final Set<Marker> _markers = {};
+  Set<Marker> get markers => _markers;
+
+  List<ContactLocation> contacts = ContactLocationMock.contacts;
+
+  BitmapDescriptor _markerIcon =
+      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+
+  //Get current user location
+  void _getLocation() async {
     currentLocation.onLocationChanged.listen((LocationData loc) {
       _mapController?.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -46,7 +57,17 @@ class HomeMapPageState extends State<HomeMapPage> {
     return byteData!.buffer.asUint8List();
   }
 
-  getContactsMarkers() async {
+  void _getContactsMarkers() {
+    for (var contact in contacts) {
+      _markers.add(Marker(
+          markerId: MarkerId(contact.username.toString()),
+          position: LatLng(contact.latitude, contact.longitude),
+          icon: _markerIcon,
+          infoWindow: InfoWindow(title: contact.username)));
+    }
+  }
+
+  void _getContactsAvatar() async {
     for (var contact in contacts) {
       Uint8List image = await loadNetworkImage(contact.imageUrl);
       final ui.Codec markerImageCodec = await ui.instantiateImageCodec(
@@ -58,22 +79,17 @@ class HomeMapPageState extends State<HomeMapPage> {
           await frameInfo.image.toByteData(format: ui.ImageByteFormat.png);
       final Uint8List resizedImageMarker = byteData!.buffer.asUint8List();
       _markerIcon = BitmapDescriptor.fromBytes(resizedImageMarker);
-
-      markers.add(Marker(
-          markerId: MarkerId(contact.username.toString()),
-          position: LatLng(contact.latitude, contact.longitude),
-          icon: _markerIcon,
-          infoWindow: InfoWindow(title: contact.username)));
+      setState(() {});
     }
-    setState(() {});
   }
 
   @override
   void initState() {
-    getContactsMarkers();
     super.initState();
     setState(() {
-      getLocation();
+      // _getLocation();
+      _getContactsAvatar();
+      _getContactsMarkers();
     });
   }
 
@@ -87,6 +103,8 @@ class HomeMapPageState extends State<HomeMapPage> {
   Widget build(BuildContext context) {
     return Stack(children: [
       GoogleMap(
+        initialCameraPosition: _valencia,
+        zoomControlsEnabled: true,
         myLocationEnabled: true,
         zoomGesturesEnabled: true,
         buildingsEnabled: true,
@@ -95,10 +113,8 @@ class HomeMapPageState extends State<HomeMapPage> {
         scrollGesturesEnabled: true,
         rotateGesturesEnabled: true,
         tiltGesturesEnabled: true,
-        zoomControlsEnabled: true,
-        initialCameraPosition: _valencia,
         mapType: MapType.normal,
-        markers: Set<Marker>.of(markers),
+        markers: _markers,
         onMapCreated: _onMapCreated,
       )
     ]);
