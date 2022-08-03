@@ -8,7 +8,7 @@ import 'package:wayat/features/onboarding/controller/onboarding_controller.dart'
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:wayat/services/authentication/gauth_service.dart';
+import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
 import 'package:wayat/services/request/request_service.dart';
 import 'package:wayat/services/request/request_service_impl.dart';
@@ -36,8 +36,8 @@ void registerRepositories() {
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
-  GetIt.I.registerLazySingleton<GoogleAuthService>(
-      () => GoogleAuthServiceImpl());
+  GetIt.I.registerLazySingleton<AuthService>(
+      () => GoogleAuthService());
   GetIt.I.registerLazySingleton<RequestService>(
       () => RequestServiceImpl());
 }

@@ -1,7 +1,7 @@
 import 'package:wayat/services/service.dart';
 
-abstract class GooglePhoneService extends Service {
-
+abstract class PhoneService extends Service {
+  
   /// Wait for the user to complete the recaptcha and for an SMS code to be sent.\
   /// **This method updates the ```_verificationId```.** 
   /// #### Usage:

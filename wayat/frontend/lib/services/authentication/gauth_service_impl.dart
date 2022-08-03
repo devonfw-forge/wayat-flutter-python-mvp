@@ -3,11 +3,11 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:wayat/services/authentication/gauth_service.dart';
+import 'package:wayat/services/authentication/auth_service.dart';
 import 'dart:io';
 import 'package:wayat/services/request/request_service.dart';
 
-class GoogleAuthServiceImpl extends GoogleAuthService {
+class GoogleAuthService extends AuthService {
 
   late GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
@@ -17,7 +17,7 @@ class GoogleAuthServiceImpl extends GoogleAuthService {
   String? _idToken;
   late String _baseUrl;
 
-  GoogleAuthServiceImpl({GoogleSignIn? gS}) {
+  GoogleAuthService({GoogleSignIn? gS}) {
     if (Platform.isAndroid) {
       _baseUrl = FlutterConfig.get('ANDROID_BASE_URL')!;
     } else {
@@ -27,7 +27,7 @@ class GoogleAuthServiceImpl extends GoogleAuthService {
   }
 
   @override
-  Future<GoogleSignInAccount?> signInGoogle() async {
+  Future<GoogleSignInAccount?> signIn() async {
     try{
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
       if (account == null) return null;
@@ -36,10 +36,11 @@ class GoogleAuthServiceImpl extends GoogleAuthService {
     } on PlatformException {return null;}
   }
 
+  @override
   Future<bool> hasPhoneNumber() async {
     RequestService requestService = GetIt.I.get<RequestService>();
     // Gets backend data of the signed in user
-    final Map<String, dynamic> user = await requestService.sendGetRequest("user");
+    final Map<String, dynamic> user = await requestService.sendGetRequest("users/profile");
     if (!user.containsKey("phone_number") || user["phone_number"] == null) return false;
     return true;
   }
@@ -66,7 +67,7 @@ class GoogleAuthServiceImpl extends GoogleAuthService {
   }
 
   @override
-  Future<void> signOutGoogle() async {
+  Future<void> signOut() async {
     await _googleSignIn.signOut();
     _idToken = "";
   }
