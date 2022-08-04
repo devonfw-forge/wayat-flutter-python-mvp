@@ -1,12 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
+import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
-  final MapController controller = MapController();
+  late MapController controller;
+  late GoogleMapController gMapController;
 
   HomeMapPage({Key? key}) : super(key: key);
 
@@ -17,28 +21,44 @@ class HomeMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller = MapController(
+        onMarkerPressed: (contact) => showContactDialog(contact, context));
+
     return Stack(
       children: [
         Observer(builder: (context) {
           Set<Marker> markers = controller.markers;
-          return GoogleMap(
-            initialCameraPosition: _valencia,
-            zoomControlsEnabled: true,
-            tiltGesturesEnabled: false,
-            myLocationEnabled: false,
-            zoomGesturesEnabled: true,
-            buildingsEnabled: true,
-            cameraTargetBounds: CameraTargetBounds.unbounded,
-            scrollGesturesEnabled: false,
-            rotateGesturesEnabled: false,
-            mapType: MapType.normal,
-            markers: markers,
-            onMapCreated: (_) => controller.getMarkers(),
-          );
+          return googleMap(markers);
         }),
         _bottomSheet()
       ],
     );
+  }
+
+  GoogleMap googleMap(Set<Marker> markers) {
+    return GoogleMap(
+        initialCameraPosition: _valencia,
+        zoomControlsEnabled: false,
+        tiltGesturesEnabled: false,
+        myLocationEnabled: false,
+        zoomGesturesEnabled: true,
+        buildingsEnabled: true,
+        cameraTargetBounds: CameraTargetBounds.unbounded,
+        scrollGesturesEnabled: false,
+        rotateGesturesEnabled: false,
+        mapType: MapType.normal,
+        markers: markers,
+        onMapCreated: (googleMapController) {
+          gMapController = googleMapController;
+          controller.getMarkers();
+        },
+        onCameraMove: (pos) => {
+              if (pos.target != _valencia.target)
+                {
+                  gMapController
+                      .moveCamera(CameraUpdate.newLatLng(_valencia.target))
+                }
+            });
   }
 
   DraggableScrollableSheet _bottomSheet() {
@@ -107,5 +127,16 @@ class HomeMapPage extends StatelessWidget {
         })
       ],
     );
+  }
+
+  void showContactDialog(Contact contact, BuildContext context) {
+    debugPrint("Pressed ${contact.displayName}");
+    showDialog(
+        context: context,
+        builder: (context) {
+          return ContactDialog(
+            contact: contact,
+          );
+        });
   }
 }

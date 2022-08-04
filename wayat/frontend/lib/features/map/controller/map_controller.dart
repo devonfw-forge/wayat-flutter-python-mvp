@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 import 'package:wayat/services/location/mock/contact_location_mock.dart';
@@ -11,6 +12,10 @@ part 'map_controller.g.dart';
 class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
+  Function(Contact contact) onMarkerPressed;
+
+  _MapController({required this.onMarkerPressed});
+
   ImageService imageService = ImageService();
 
   @observable
@@ -38,7 +43,8 @@ abstract class _MapController with Store {
               infoWindow: InfoWindow(
                   title: "Marker ${e.displayName}",
                   snippet: "Marker ${e.email}"),
-              icon: bitmaps[e.imageUrl]!),
+              icon: bitmaps[e.imageUrl]!,
+              onTap: () => onMarkerPressed(e)),
         )
         .toSet();
 
