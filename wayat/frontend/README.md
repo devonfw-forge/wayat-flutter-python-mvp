@@ -5,13 +5,13 @@ TODO DESCRIPTION
 ## Getting Started
 
 In order to run the wayat frontend project in debug mode, dependencies must be downloaded first:
-    ~~~
-    flutter pub get
-    ~~~
+~~~
+flutter pub get
+~~~
 To generate AutoRouting files:
-    ~~~
-    flutter pub run build_runner watch --delete-conflicting-outputs
-    ~~~
+~~~
+flutter pub run build_runner watch --delete-conflicting-outputs
+~~~
 
 ## Considerations
 
