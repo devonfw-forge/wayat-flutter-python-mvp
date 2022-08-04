@@ -9,6 +9,38 @@ part of 'map_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$MapController on _MapController, Store {
+  late final _$currentLocationAtom =
+      Atom(name: '_MapController.currentLocation', context: context);
+
+  @override
+  Location get currentLocation {
+    _$currentLocationAtom.reportRead();
+    return super.currentLocation;
+  }
+
+  @override
+  set currentLocation(Location value) {
+    _$currentLocationAtom.reportWrite(value, super.currentLocation, () {
+      super.currentLocation = value;
+    });
+  }
+
+  late final _$markersAtom =
+      Atom(name: '_MapController.markers', context: context);
+
+  @override
+  ObservableSet<Marker> get markers {
+    _$markersAtom.reportRead();
+    return super.markers;
+  }
+
+  @override
+  set markers(ObservableSet<Marker> value) {
+    _$markersAtom.reportWrite(value, super.markers, () {
+      super.markers = value;
+    });
+  }
+
   late final _$sharingLocationAtom =
       Atom(name: '_MapController.sharingLocation', context: context);
 
@@ -29,6 +61,17 @@ mixin _$MapController on _MapController, Store {
       ActionController(name: '_MapController', context: context);
 
   @override
+  void setMarkers(Set<Marker> newMarkers) {
+    final _$actionInfo = _$_MapControllerActionController.startAction(
+        name: '_MapController.setMarkers');
+    try {
+      return super.setMarkers(newMarkers);
+    } finally {
+      _$_MapControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setSharingLocation(bool newValue) {
     final _$actionInfo = _$_MapControllerActionController.startAction(
         name: '_MapController.setSharingLocation');
@@ -42,6 +85,8 @@ mixin _$MapController on _MapController, Store {
   @override
   String toString() {
     return '''
+currentLocation: ${currentLocation},
+markers: ${markers},
 sharingLocation: ${sharingLocation}
     ''';
   }

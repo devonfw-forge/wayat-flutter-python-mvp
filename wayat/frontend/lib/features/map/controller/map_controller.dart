@@ -24,12 +24,11 @@ abstract class _MapController with Store {
   @observable
   bool sharingLocation = false;
 
-  @action
   Future getMarkers() async {
     Map<String, BitmapDescriptor> bitmaps = await imageService
         .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
 
-    markers = ObservableSet.of(contacts
+    Set<Marker> newMarkers = contacts
         .map(
           (e) => Marker(
               markerId: MarkerId(e.displayName +
@@ -41,9 +40,14 @@ abstract class _MapController with Store {
                   snippet: "Marker ${e.email}"),
               icon: bitmaps[e.imageUrl]!),
         )
-        .toSet());
+        .toSet();
 
-    debugPrint(markers.toString());
+    setMarkers(newMarkers);
+  }
+
+  @action
+  void setMarkers(Set<Marker> newMarkers) {
+    markers = ObservableSet.of(newMarkers);
   }
 
   @action

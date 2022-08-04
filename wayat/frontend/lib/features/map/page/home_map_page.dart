@@ -17,22 +17,23 @@ class HomeMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.getMarkers();
-
     return Stack(
       children: [
         Observer(builder: (context) {
+          Set<Marker> markers = controller.markers;
           return GoogleMap(
             initialCameraPosition: _valencia,
             zoomControlsEnabled: true,
-            myLocationEnabled: true,
+            tiltGesturesEnabled: false,
+            myLocationEnabled: false,
             zoomGesturesEnabled: true,
             buildingsEnabled: true,
             cameraTargetBounds: CameraTargetBounds.unbounded,
             scrollGesturesEnabled: false,
             rotateGesturesEnabled: false,
             mapType: MapType.normal,
-            markers: controller.markers,
+            markers: markers,
+            onMapCreated: (_) => controller.getMarkers(),
           );
         }),
         _bottomSheet()
