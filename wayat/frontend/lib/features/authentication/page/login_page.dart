@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,12 +12,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
   final _emailController = TextEditingController();
   bool _isEmailValid = false;
   final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
-
-
+  final SessionState userSession = GetIt.I.get<SessionState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +28,17 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _loginTitle(),
-                const Divider(thickness: 1,),
+                const Divider(
+                  thickness: 1,
+                ),
                 _emailInput(),
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
                 _passwordInput(),
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
                 _forgotButton(),
                 _submitButton(),
               ],
@@ -44,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-    
   }
 
   Text _loginTitle() {
@@ -57,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
   Container _emailInput() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child:  TextFormField(
+      child: TextFormField(
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
@@ -65,8 +67,10 @@ class _LoginPageState extends State<LoginPage> {
           hintText: 'example@email.com',
           labelText: appLocalizations.email, // Email text
         ),
-        onChanged: (value) => setState((){}),
-        validator: (value) => EmailValidator.validate(_emailController.text) ? null : 'Enter a Valid Email',
+        onChanged: (value) => setState(() {}),
+        validator: (value) => EmailValidator.validate(_emailController.text)
+            ? null
+            : 'Enter a Valid Email',
       ),
     );
   }
@@ -74,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
   Container _passwordInput() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child:  TextFormField(
+      child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         obscureText: true,
         decoration: InputDecoration(
@@ -90,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
     return TextButton(
       // Forgotten password question text
       child: Text(appLocalizations.forgotPasswQuestion),
-      onPressed: (){
+      onPressed: () {
         //TODO: GO TO THE NEXT STEP
       },
     );
@@ -100,19 +104,19 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
       child: ElevatedButton(
-        onPressed: EmailValidator.validate(_emailController.text) ? _submit : null,
-        child: Text(appLocalizations.login), 
+        onPressed: _submit,
+        //onPressed: EmailValidator.validate(_emailController.text) ? _submit : null,
+        child: Text(appLocalizations.login),
       ),
     );
   }
 
   void _submit() {
-    _isEmailValid = EmailValidator.validate(_emailController.text);
-    if (_isEmailValid)
-    {
-      //TODO: GO TO THE NEXT STEP
-    }
+    //_isEmailValid = EmailValidator.validate(_emailController.text);
+    //if (_isEmailValid)
+    //{
+    ////TODO: GO TO THE NEXT STEP
+    //}
+    userSession.setToken("newToken");
   }
 }
-
-

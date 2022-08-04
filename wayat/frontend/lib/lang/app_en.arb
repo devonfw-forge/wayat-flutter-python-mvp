@@ -27,5 +27,7 @@
     "next": "Next",
     "skip": "Skip",
 
-    "selectContacts": "Select contacts"
+    "selectContacts": "Select contacts",
+
+    "sharingLocation": "Sharing Location"
 }

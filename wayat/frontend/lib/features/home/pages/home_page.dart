@@ -11,10 +11,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AutoTabsRouter(
       routes: [
-        const HomeMapRoute(),
+        HomeMapRoute(),
         const CreateEventRoute(),
         ContactsRoute(),
         const NotificationsRoute(),
