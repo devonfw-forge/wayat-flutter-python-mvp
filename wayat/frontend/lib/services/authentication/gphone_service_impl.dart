@@ -5,6 +5,18 @@ class GooglePhoneServiceImpl extends PhoneService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _verificationId = "";
   
+  /// Wait for the user to complete the recaptcha and for an SMS code to be sent.\
+  /// **This method updates the ```verificationId```.** 
+  /// #### Usage:
+  /// ```
+  /// AuthService auth = GoogleAuthService();
+  /// /* Google sign in process, then: */
+  /// await auth.sendSMSCode('+34612345678');
+  /// ```
+  /// #### Verify with: 
+  /// ```
+  /// await auth.verifySMSCode('123456');
+  /// ``
   @override
   Future<void> sendSMSCode(String phoneNumber) async {
     await _auth.verifyPhoneNumber(
@@ -15,6 +27,8 @@ class GooglePhoneServiceImpl extends PhoneService {
         codeAutoRetrievalTimeout: _onCodeTimeout);
   }
 
+  /// Verify the SMS code sent to the user, it should be called after
+  /// the cade has been sent
   @override
   Future<bool> verifySMSCode(String smsCode) async {
     // Create a PhoneAuthCredential with the code

@@ -16,6 +16,7 @@ class GoogleAuthService extends AuthService {
     if (gS != null) _googleSignIn = gS;
   }
 
+  /// Google *sign in* process
   @override
   Future<GoogleSignInAccount?> signIn() async {
     try{
@@ -26,6 +27,8 @@ class GoogleAuthService extends AuthService {
     } on PlatformException {return null;}
   }
 
+  /// Checks if the current user has a phone number, sending a **GET** 
+  /// request to the *backend* service 
   @override
   Future<bool> hasPhoneNumber() async {
     // Gets backend data of the signed in user
@@ -34,6 +37,10 @@ class GoogleAuthService extends AuthService {
     return true;
   }
 
+
+  /// Refresh the **account id token**
+  /// 
+  /// Throws on [Exception] if there is no authenticated user
   @override
   Future<String> getIdToken() async {
     if (_idToken == null || DateTime.now().isAfter(_getTokenExpirationTime(_idToken!))) {
@@ -46,6 +53,7 @@ class GoogleAuthService extends AuthService {
     return Jwt.getExpiryDate(token) ?? DateTime.now();
   }
 
+  /// Refresh the google **account id token**
   @override
   Future<void> refreshIdToken() async {
     // By signing in silently (no interaction) it will get auth params 
@@ -55,6 +63,7 @@ class GoogleAuthService extends AuthService {
     _idToken = (await account.authentication).idToken;
   }
 
+  /// *Sign out* the current user.
   @override
   Future<void> signOut() async {
     await _googleSignIn.signOut();
