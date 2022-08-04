@@ -10,10 +10,9 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
 Future main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
-  
+
   registerRepositories();
   runApp(MyApp());
 }
