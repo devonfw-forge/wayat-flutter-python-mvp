@@ -11,6 +11,7 @@
     "phoneVerificationDescription": "A verification code will be sent to your phone",
     "codeVerificationTitle": "Code verification",
     "verificationCodeDescription": "Insert the code you received",
+    "resendCode": "Resend code",
     
     "home": "Home",
     "contacts": "Contacts",

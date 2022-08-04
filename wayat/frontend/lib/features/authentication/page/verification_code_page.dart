@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 
 class CodeValidationPage extends StatefulWidget {
@@ -87,6 +87,7 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
         child: Column(
           children: [
             _codeInput(),
+            _resendCode(),
             _submitButton(),
           ],
         ));
@@ -100,12 +101,25 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
     );
   }
 
+  Container _resendCode() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.refresh),
+          Text(appLocalizations.resendCode),
+        ],
+      ),
+    );
+  }
+
   Container _submitButton() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-      child: ElevatedButton(
-        onPressed: !validCode ? null : _submit,
-        child: Text(appLocalizations.sendVerificationButton),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: CustomOutlinedButton(
+        onPressed: _submit,
+        text: appLocalizations.sendVerificationButton,
       ),
     );
   }
