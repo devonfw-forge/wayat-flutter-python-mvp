@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wayat/services/authentication/phone_service.dart';
 
-class GooglePhoneServiceImpl extends PhoneService {
+class GooglePhoneService extends PhoneService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _verificationId = "";
   

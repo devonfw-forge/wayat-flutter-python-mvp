@@ -2,6 +2,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
+import 'package:wayat/services/authentication/gphone_service_impl.dart';
+import 'package:wayat/services/authentication/phone_service.dart';
 
 part 'session_state.g.dart';
 
@@ -20,10 +22,12 @@ abstract class _SessionState with Store {
 
   @observable
   bool hasDoneOnboarding = false;
-  //bool get isLoggedIn => token.isEmpty;
 
   final AuthService _authService = GoogleAuthService();
   AuthService get authService => _authService;
+  
+  final PhoneService _phoneService = GooglePhoneService();
+  PhoneService get phoneService => _phoneService;
 
   @action
   void doneOnBoarding() {
@@ -47,8 +51,12 @@ abstract class _SessionState with Store {
 
   @action
   Future<void> googleLogin () async {
-    if (await (authService as GoogleAuthService).signIn() != null) {
+    GoogleAuthService googleAuth = (authService as GoogleAuthService);
+    if (await googleAuth.signIn() != null) {
       setGoogleSignIn(true);
+      //if (await googleAuth.hasPhoneNumber()) {
+      //  setPhoneValidation(true);
+      //}
     }
   }
 }

@@ -19,6 +19,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
   final userSession = GetIt.I.get<SessionState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool validPhone = false;
+  String phone_number = "";
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +85,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
       onChanged: (phone) {
         setState(() {
           validPhone = _formKey.currentState!.validate();
+          if (validPhone) phone_number = phone.completeNumber;
         });
       },
     );
@@ -100,6 +102,9 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
   }
 
   _submit() {
-    userSession.setPhoneValidation(_formKey.currentState!.validate());
+    if (_formKey.currentState!.validate() && phone_number != "") {
+      userSession.phoneService.sendSMSCode(phone_number);
+      userSession.setPhoneValidation(true);
+    }
   }
 }
