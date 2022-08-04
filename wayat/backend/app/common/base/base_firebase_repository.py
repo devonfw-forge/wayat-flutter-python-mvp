@@ -1,6 +1,6 @@
 import json
 from functools import lru_cache
-from typing import TypeVar, Generic, Type, Callable, overload, Any
+from typing import TypeVar, Generic, Type, overload, Any
 
 from fastapi import Depends
 from google.cloud.firestore import AsyncClient, AsyncCollectionReference, AsyncDocumentReference
@@ -52,11 +52,6 @@ class BaseFirestoreRepository(Generic[ModelType]):
         snapshot = await self._get_document_reference(document_id).get()
         return self._model(document_id=snapshot.id, **snapshot.to_dict()) if snapshot.exists else None
 
-    def add_callback(self, document_id: str, callback: Callable):
-        # TODO: Async client does not implement on_snapshot, we need to use the sync client
-        # return self._get_document_reference(document_id).on_snapshot(callback)
-        raise NotImplementedError
-
     async def add(self, *, model: ModelType):
         await self._get_document_reference(model.document_id).create(model.dict(exclude={"document_id"}))
 
@@ -73,9 +68,9 @@ class BaseFirestoreRepository(Generic[ModelType]):
                      data: dict[str, Any] | None = None,
                      document_id: str | None = None):
         if model is not None:
-            await self._get_document_reference(model.document_id).update(model.dict(exclude={"document_id"}))
+            await self._get_document_reference(model.document_id).set(document_data=model.dict(exclude={"document_id"}), merge=True)
         elif data is not None and document_id is not None:
-            await self._get_document_reference(document_id).update(data)
+            await self._get_document_reference(document_id).set(document_data=data, merge=True)
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
 
