@@ -1,4 +1,4 @@
-package com.wayatspyke.capgemini
+package com.capgemini.wayat
 
 import io.flutter.embedding.android.FlutterActivity
 
