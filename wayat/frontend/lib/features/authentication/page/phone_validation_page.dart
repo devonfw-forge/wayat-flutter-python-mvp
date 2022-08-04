@@ -44,7 +44,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   Container _phoneDescription() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         children: [
           Text(
@@ -54,7 +54,8 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
           const SizedBox(
             height: 10,
           ),
-          Text(appLocalizations.phoneVerificationDescription, textAlign: TextAlign.center),
+          Text(appLocalizations.phoneVerificationDescription,
+              textAlign: TextAlign.center),
           const SizedBox(
             height: 25,
           ),
@@ -76,14 +77,14 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   IntlPhoneField _phoneInput() {
     return IntlPhoneField(
-      decoration: const InputDecoration(
-      labelText: 'Phone Number',
-      border: OutlineInputBorder(
-        borderSide: BorderSide(),
-      )),
+      decoration: InputDecoration(
+          labelText: 'Phone Number',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
       onChanged: (phone) {
-        setState(() { validPhone = _formKey.currentState!.validate(); });
+        setState(() {
+          validPhone = _formKey.currentState!.validate();
+        });
       },
     );
   }
