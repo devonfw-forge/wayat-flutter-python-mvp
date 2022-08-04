@@ -28,5 +28,5 @@ FROM base as final
 COPY --from=builder /venv /venv
 COPY docker/docker-entrypoint.sh ./
 
-COPY main.py logging.yaml TEST.env PROD.env ./
+COPY main.py logging.yaml TEST.env PROD.env firebase.json ./
 CMD ["./docker-entrypoint.sh"]

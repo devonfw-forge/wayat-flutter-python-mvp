@@ -1,13 +1,13 @@
 from functools import lru_cache
-from typing import Optional
+
 from fastapi import Depends, FastAPI
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from pydantic import BaseSettings, ValidationError
+from pydantic import BaseSettings
 
 from app.common.core.configuration import load_env_file_on_settings
+from app.common.core.identity_provider import IdentityProvider, User
 from app.common.exceptions.http import BearerAuthenticationNeededException, InvalidFirebaseAuthenticationException, \
     UnauthorizedException
-from app.common.core.identity_provider import IdentityProvider, User
 
 
 class FirebaseSettings(BaseSettings):
@@ -18,7 +18,7 @@ class FirebaseSettings(BaseSettings):
         env_file = "TEST.env"
 
 
-@lru_cache()
+@lru_cache
 def get_firebase_settings() -> FirebaseSettings:
     return load_env_file_on_settings(FirebaseSettings)
 
