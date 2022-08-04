@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
-import 'package:wayat/common/widgets/components/login_title.dart';
+import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 
