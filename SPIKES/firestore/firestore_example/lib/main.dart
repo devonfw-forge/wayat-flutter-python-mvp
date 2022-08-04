@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firestore/app_state/app_controller.dart';
+import 'package:firestore/services/counter_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -57,7 +58,7 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => { CounterService().increaseCounter(1)  },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
