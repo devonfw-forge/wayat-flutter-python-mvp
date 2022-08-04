@@ -14,12 +14,16 @@ class LoginWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
       bool signedIn = controller.googleSignedIn;
+      bool validPhone = controller.phoneValidation;
       return AutoRouter.declarative(
           routes: (_) => [
                 if (!signedIn)
                   const LoginRoute()
                 else
-                  const PhoneValidationRoute()
+                  if (!validPhone)
+                    const PhoneValidationRoute()
+                  else
+                    const CodeValidationRoute()
               ]);
     });
   }

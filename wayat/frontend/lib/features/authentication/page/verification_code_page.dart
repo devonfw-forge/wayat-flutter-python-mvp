@@ -5,18 +5,18 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 
-class PhoneValidationPage extends StatefulWidget {
-  const PhoneValidationPage({Key? key}) : super(key: key);
+class CodeValidationPage extends StatefulWidget {
+  const CodeValidationPage({Key? key}) : super(key: key);
 
   @override
-  State<PhoneValidationPage> createState() => _PhoneValidationPageState();
+  State<CodeValidationPage> createState() => _CodeValidationPageState();
 }
 
-class _PhoneValidationPageState extends State<PhoneValidationPage> {
+class _CodeValidationPageState extends State<CodeValidationPage> {
   final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
   final userSession = GetIt.I.get<SessionState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  bool validPhone = false;
+  bool validCode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +31,8 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
             children: [
               _logoWayat(),
               _loginTitle(),
-              _phoneDescription(),
-              _formPhone(),
+              _codeDescription(),
+              _formCode(),
             ],
           ),
         ),
@@ -63,64 +63,54 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
     );
   }
 
-  Container _phoneDescription() {
+  Container _codeDescription() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
       child: Column(
         children: [
           Text(
-            appLocalizations.phoneVerificationTitle,
+            appLocalizations.codeVerificationTitle,
             style: TextStyle(fontSize: 20),
           ),
           SizedBox(
             height: 10,
           ),
-          Text(appLocalizations.phoneVerificationDescription, textAlign: TextAlign.center),
+          Text(appLocalizations.verificationCodeDescription, textAlign: TextAlign.center),
         ],
       ),
     );
   }
 
-  Form _formPhone() {
+  Form _formCode() {
     return Form(
         key: _formKey,
         child: Column(
           children: [
-            _phoneInput(),
+            _codeInput(),
             _submitButton(),
           ],
         ));
   }
 
-  Container _phoneInput() {
+  Container _codeInput() {
     return Container(
-        child: IntlPhoneField(
-      decoration: InputDecoration(
-          labelText: 'Phone Number',
-          border: OutlineInputBorder(
-            borderSide: BorderSide(),
-          )),
-      initialCountryCode: 'ES',
-      onChanged: (phone) {
-        if (_formKey.currentState!.validate()) {
-          validPhone = true;
-        }
-        setState(() {});
-      },
-    ));
+        child: TextField(
+          keyboardType: TextInputType.number,
+        )
+    );
   }
 
   Container _submitButton() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
       child: ElevatedButton(
-        onPressed: !validPhone ? null : _submit,
-        child: Text(appLocalizations.sendPhoneButton),
+        onPressed: !validCode ? null : _submit,
+        child: Text(appLocalizations.sendVerificationButton),
       ),
     );
   }
 
   _submit() {
-    userSession.setPhoneValidation(_formKey.currentState!.validate());
+    // TODO: UPDATE THE USERSESSION STATE TO GO HOME
   }
 }
