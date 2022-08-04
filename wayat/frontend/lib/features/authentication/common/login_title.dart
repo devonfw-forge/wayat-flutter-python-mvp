@@ -10,7 +10,7 @@ class CustomLoginTitle extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.10,
       child: Text(
         appLocalizations.login,
-        style: const TextStyle(fontSize: 20),
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
       ),
     );
   }

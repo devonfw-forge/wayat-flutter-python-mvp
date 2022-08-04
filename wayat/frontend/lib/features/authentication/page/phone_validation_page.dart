@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
-import 'package:wayat/common/widgets/components/login_title.dart';
+import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 
@@ -44,7 +44,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   Container _phoneDescription() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         children: [
           Text(
@@ -54,7 +54,8 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
           const SizedBox(
             height: 10,
           ),
-          Text(appLocalizations.phoneVerificationDescription, textAlign: TextAlign.center),
+          Text(appLocalizations.phoneVerificationDescription,
+              textAlign: TextAlign.center),
           const SizedBox(
             height: 25,
           ),
@@ -76,21 +77,14 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   IntlPhoneField _phoneInput() {
     return IntlPhoneField(
-      decoration: const InputDecoration(
-      labelText: 'Phone Number',
-      border: OutlineInputBorder(
-        borderSide: BorderSide(),
-      )),
+      decoration: InputDecoration(
+          labelText: 'Phone Number',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
       onChanged: (phone) {
-    if (_formKey.currentState!.validate()) {
-      validPhone = true;
-    }
-    else
-    {
-      validPhone = false;
-    }
-    setState(() {});
+        setState(() {
+          validPhone = _formKey.currentState!.validate();
+        });
       },
     );
   }

@@ -158,3 +158,4 @@ SPIKES/State Management/MobX&GetIt/ios/Runner.xcodeproj/project.xcworkspace/xcsh
 SPIKES/State Management/MobX&GetIt/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
 wayat/.env
 *.cc
+SPIKES/firestore/firestore_example/android/app/google-services.json
