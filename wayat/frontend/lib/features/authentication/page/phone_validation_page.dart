@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/buttons/outlined_button.dart';
+import 'package:wayat/common/widgets/components/login_title.dart';
+import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 
 class PhoneValidationPage extends StatefulWidget {
@@ -24,41 +26,18 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.2,
+              horizontal: MediaQuery.of(context).size.width * 0.1,
               vertical: MediaQuery.of(context).size.height * 0.1),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _logoWayat(),
-              _loginTitle(),
+              const CustomWayatTitle(),
+              const CustomLoginTitle(),
               _phoneDescription(),
               _formPhone(),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  SizedBox _logoWayat() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.2,
-      child: Text(
-        appLocalizations.appTitle,
-        style: const TextStyle(
-            color: ColorTheme.primaryColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 28),
-      ),
-    );
-  }
-
-  SizedBox _loginTitle() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.15,
-      child: Text(
-        appLocalizations.login,
-        style: const TextStyle(fontSize: 20),
       ),
     );
   }
@@ -70,12 +49,15 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
         children: [
           Text(
             appLocalizations.phoneVerificationTitle,
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(appLocalizations.phoneVerificationDescription, textAlign: TextAlign.center),
+          const SizedBox(
+            height: 25,
+          ),
         ],
       ),
     );
@@ -92,30 +74,33 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
         ));
   }
 
-  Container _phoneInput() {
-    return Container(
-        child: IntlPhoneField(
-      decoration: InputDecoration(
-          labelText: 'Phone Number',
-          border: OutlineInputBorder(
-            borderSide: BorderSide(),
-          )),
+  IntlPhoneField _phoneInput() {
+    return IntlPhoneField(
+      decoration: const InputDecoration(
+      labelText: 'Phone Number',
+      border: OutlineInputBorder(
+        borderSide: BorderSide(),
+      )),
       initialCountryCode: 'ES',
       onChanged: (phone) {
-        if (_formKey.currentState!.validate()) {
-          validPhone = true;
-        }
-        setState(() {});
+    if (_formKey.currentState!.validate()) {
+      validPhone = true;
+    }
+    else
+    {
+      validPhone = false;
+    }
+    setState(() {});
       },
-    ));
+    );
   }
 
   Container _submitButton() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-      child: ElevatedButton(
+      padding: const EdgeInsets.only(top: 30),
+      child: CustomOutlinedButton(
         onPressed: !validPhone ? null : _submit,
-        child: Text(appLocalizations.sendPhoneButton),
+        text: appLocalizations.sendPhoneButton,
       ),
     );
   }

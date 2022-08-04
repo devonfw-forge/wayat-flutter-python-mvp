@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/buttons/outlined_button.dart';
+import 'package:wayat/common/widgets/components/login_title.dart';
+import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 
 class CodeValidationPage extends StatefulWidget {
@@ -24,41 +25,18 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.2,
+              horizontal: MediaQuery.of(context).size.width * 0.1,
               vertical: MediaQuery.of(context).size.height * 0.1),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _logoWayat(),
-              _loginTitle(),
+              const CustomWayatTitle(),
+              const CustomLoginTitle(),
               _codeDescription(),
               _formCode(),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  SizedBox _logoWayat() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.2,
-      child: Text(
-        appLocalizations.appTitle,
-        style: const TextStyle(
-            color: ColorTheme.primaryColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 28),
-      ),
-    );
-  }
-
-  SizedBox _loginTitle() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.15,
-      child: Text(
-        appLocalizations.login,
-        style: const TextStyle(fontSize: 20),
       ),
     );
   }
@@ -70,12 +48,15 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
         children: [
           Text(
             appLocalizations.codeVerificationTitle,
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(appLocalizations.verificationCodeDescription, textAlign: TextAlign.center),
+          const SizedBox(
+            height: 25,
+          ),
         ],
       ),
     );
@@ -87,30 +68,49 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
         child: Column(
           children: [
             _codeInput(),
+            _resendCode(),
             _submitButton(),
           ],
         ));
   }
 
-  Container _codeInput() {
-    return Container(
-        child: TextField(
-          keyboardType: TextInputType.number,
+  TextField _codeInput() {
+    return TextField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        label: Text(appLocalizations.codeVerificationTitle),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
         )
-    );
-  }
-
-  Container _submitButton() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-      child: ElevatedButton(
-        onPressed: !validCode ? null : _submit,
-        child: Text(appLocalizations.sendVerificationButton),
       ),
     );
   }
 
+  Container _resendCode() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: TextButton(
+        style: TextButton.styleFrom(primary: Colors.black),
+        onPressed: (){},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.refresh),
+            Text(appLocalizations.resendCode),
+          ],
+        ),
+      ),
+    );
+  }
+
+  CustomOutlinedButton _submitButton() {
+    return CustomOutlinedButton(
+      onPressed: _submit,
+      text: appLocalizations.sendVerificationButton,
+    );
+  }
+
   _submit() {
-    // TODO: UPDATE THE USERSESSION STATE TO GO HOME
+    userSession.setFinishLoggedIn(true);
   }
 }

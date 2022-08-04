@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
-  final Function onPressed;
+  final void Function()? onPressed;
   final String text;
 
   const CustomOutlinedButton(
@@ -17,12 +17,12 @@ class CustomOutlinedButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(1000.0),
         ),
-        side: const BorderSide(width: 1),
+        side: (onPressed == null) ? null : const BorderSide(width: 1),
       ),
-      onPressed: () => onPressed(),
+      onPressed: onPressed,
       child: Text(
         text,
-        style: const TextStyle(color: Colors.black, fontSize: 15),
+        style:  (onPressed == null) ? const TextStyle(color: Colors.grey, fontSize: 15) : const TextStyle(color: Colors.black, fontSize: 15),
       ),
     );
   }

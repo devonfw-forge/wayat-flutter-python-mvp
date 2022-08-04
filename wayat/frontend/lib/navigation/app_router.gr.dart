@@ -22,7 +22,7 @@ import '../features/contacts/pages/contact_detail_page.dart' as _i2;
 import '../features/contacts/pages/contacts_page.dart' as _i9;
 import '../features/create_event/page/create_event_page.dart' as _i10;
 import '../features/home/pages/home_page.dart' as _i4;
-import '../features/map/home_map_page.dart' as _i8;
+import '../features/map/page/home_map_page.dart' as _i8;
 import '../features/notifications/page/notifications_page.dart' as _i11;
 import '../features/onboarding/pages/onboarding_page.dart' as _i6;
 import '../features/onboarding/pages/onboarding_wrapper.dart' as _i3;
@@ -306,6 +306,7 @@ class HomeMapRoute extends _i15.PageRouteInfo<void> {
 
   static const String name = 'HomeMapRoute';
 }
+
 
 /// generated route for
 /// [_i9.ContactsPage]
