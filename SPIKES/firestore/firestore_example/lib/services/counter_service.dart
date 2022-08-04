@@ -15,7 +15,7 @@ class Increment {
 
   Increment(this.increment);
 
-  Map<String, String> toMap() {
-    return {"increment": increment.toString()};
+  Map<String, dynamic> toMap() {
+    return {"increment": increment};
   }
 }
