@@ -68,9 +68,9 @@ class BaseFirestoreRepository(Generic[ModelType]):
                      data: dict[str, Any] | None = None,
                      document_id: str | None = None):
         if model is not None:
-            await self._get_document_reference(model.document_id).set(document_data=model.dict(exclude={"document_id"}), merge=True)
+            await self._get_document_reference(model.document_id).update(model.dict(exclude={"document_id"}))
         elif data is not None and document_id is not None:
-            await self._get_document_reference(document_id).set(document_data=data, merge=True)
+            await self._get_document_reference(document_id).update(data)
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
 
