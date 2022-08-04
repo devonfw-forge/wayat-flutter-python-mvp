@@ -28,5 +28,7 @@ FROM base as final
 COPY --from=builder /venv /venv
 COPY docker/docker-entrypoint.sh ./
 
+RUN wget https://storage.cloud.google.com/wayat_secrets/firebase.json
+
 COPY main.py logging.yaml TEST.env PROD.env firebase.json ./
 CMD ["./docker-entrypoint.sh"]
