@@ -24,7 +24,10 @@ class GoogleAuthService extends AuthService {
       if (account == null) return null;
       _idToken = (await account.authentication).idToken;
       return account;
-    } on PlatformException {return null;}
+    } on PlatformException catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   /// Checks if the current user has a phone number, sending a **GET** 

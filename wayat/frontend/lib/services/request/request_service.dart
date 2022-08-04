@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:wayat/services/service.dart';
@@ -7,7 +8,7 @@ import 'package:wayat/services/service.dart';
 abstract class RequestService extends Service {
   /// Generetes a *dictionary* with the headers for backend connection
   Future<Map<String, String>> _getHeaders() async{
-    AuthService authService = GetIt.I.get<AuthService>();
+    AuthService authService = GetIt.I.get<SessionState>().authService;
     return { 
       "Accept" : "application/json",
       "IdToken" : await authService.getIdToken()
