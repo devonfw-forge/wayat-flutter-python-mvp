@@ -19,9 +19,23 @@ class HomeMapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const GoogleMap(
-          initialCameraPosition: _valencia,
-        ),
+        Observer(builder: (context) {
+          Set<Marker> markers = controller.markers;
+          return GoogleMap(
+            initialCameraPosition: _valencia,
+            zoomControlsEnabled: true,
+            tiltGesturesEnabled: false,
+            myLocationEnabled: false,
+            zoomGesturesEnabled: true,
+            buildingsEnabled: true,
+            cameraTargetBounds: CameraTargetBounds.unbounded,
+            scrollGesturesEnabled: false,
+            rotateGesturesEnabled: false,
+            mapType: MapType.normal,
+            markers: markers,
+            onMapCreated: (_) => controller.getMarkers(),
+          );
+        }),
         _bottomSheet()
       ],
     );
