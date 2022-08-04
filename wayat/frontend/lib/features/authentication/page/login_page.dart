@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/lang/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,111 +13,49 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
-  bool _isEmailValid = false;
-  final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
   final SessionState userSession = GetIt.I.get<SessionState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SafeArea(
         child: SingleChildScrollView(
-          child: Form(
-            autovalidateMode: AutovalidateMode.always,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _loginTitle(),
-                const Divider(
-                  thickness: 1,
-                ),
-                _emailInput(),
-                const SizedBox(
-                  height: 30,
-                ),
-                _passwordInput(),
-                const SizedBox(
-                  height: 30,
-                ),
-                _forgotButton(),
-                _submitButton(),
-              ],
-            ),
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width *0.2, vertical: MediaQuery.of(context).size.height *0.1),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _logoWayat(), 
+              _loginTitle(), 
+              _signInButton()],
           ),
         ),
       ),
     );
   }
 
-  Text _loginTitle() {
-    return Text(
-      appLocalizations.login, // Login text
-      style: const TextStyle(fontSize: 40, color: Colors.blue),
+  SizedBox _logoWayat() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.2,
+      child: Text(appLocalizations.appTitle, style: const TextStyle(color: ColorTheme.primaryColor, fontWeight: FontWeight.bold, fontSize: 28),),
     );
   }
 
-  Container _emailInput() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextFormField(
-        controller: _emailController,
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          icon: const Icon(Icons.alternate_email),
-          hintText: 'example@email.com',
-          labelText: appLocalizations.email, // Email text
-        ),
-        onChanged: (value) => setState(() {}),
-        validator: (value) => EmailValidator.validate(_emailController.text)
-            ? null
-            : 'Enter a Valid Email',
+  SizedBox _loginTitle() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.15,
+      child: Text(
+        appLocalizations.login,
+        style: const TextStyle(fontSize: 20),
       ),
     );
   }
 
-  Container _passwordInput() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        obscureText: true,
-        decoration: InputDecoration(
-          icon: const Icon(Icons.lock_outline),
-          // Password text
-          labelText: appLocalizations.password,
-        ),
-      ),
-    );
-  }
-
-  TextButton _forgotButton() {
-    return TextButton(
-      // Forgotten password question text
-      child: Text(appLocalizations.forgotPasswQuestion),
+  SignInButton _signInButton() {
+    return SignInButton(
+      Buttons.Google,
       onPressed: () {
-        //TODO: GO TO THE NEXT STEP
+        userSession.googleLogin();
       },
     );
-  }
-
-  Container _submitButton() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
-      child: ElevatedButton(
-        onPressed: _submit,
-        //onPressed: EmailValidator.validate(_emailController.text) ? _submit : null,
-        child: Text(appLocalizations.login),
-      ),
-    );
-  }
-
-  void _submit() {
-    //_isEmailValid = EmailValidator.validate(_emailController.text);
-    //if (_isEmailValid)
-    //{
-    ////TODO: GO TO THE NEXT STEP
-    //}
-    userSession.setToken("newToken");
   }
 }

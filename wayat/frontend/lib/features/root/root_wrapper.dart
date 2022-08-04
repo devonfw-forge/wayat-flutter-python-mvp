@@ -13,7 +13,7 @@ class RootWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      bool loggedIn = userSession.isLoggedIn;
+      bool loggedIn = userSession.finishLoggedIn;
       bool doneOnBoarding = userSession.hasDoneOnboarding;
       return AutoRouter.declarative(
           routes: (_) => [
@@ -23,7 +23,7 @@ class RootWrapper extends StatelessWidget {
                   else
                     const HomeRoute()
                 else
-                  const LoginRoute()
+                  LoginWrapper()
               ]);
     });
   }

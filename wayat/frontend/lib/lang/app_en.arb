@@ -2,9 +2,15 @@
     "appTitle": "wayat",
 
     "login": "Login",
+    "sendPhoneButton": "Send verification",
+    "sendVerificationButton": "Send verification",
     "email": "Email",
     "password": "Password",
     "forgotPasswQuestion": "Did you forgot your password?",
+    "phoneVerificationTitle": "Phone verification",
+    "phoneVerificationDescription": "A verification code will be sent to your phone",
+    "codeVerificationTitle": "Code verification",
+    "verificationCodeDescription": "Insert the code you received",
     
     "home": "Home",
     "contacts": "Contacts",
