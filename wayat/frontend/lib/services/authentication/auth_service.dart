@@ -7,9 +7,6 @@ abstract class AuthService extends RequestService {
 
   /// Returns the **account id token**
   Future<String> getIdToken();
-  
-  /// Refresh the **account id token**
-  Future<void> refreshIdToken();
 
   /// *Sign out* the current user
   Future<void> signOut();

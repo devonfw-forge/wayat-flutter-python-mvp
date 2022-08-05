@@ -4,7 +4,10 @@
     "login": "Iniciar sesión",
     "email": "Email",
     "password": "Contraseña",
+    "phoneNumber": "Número de teléfono",
+    "sendVerification": "Enviar verificación",
     "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
+    "phoneVerificationTitle": "Verificación del teléfono",
 
     "home": "Inicio",
     "contacts": "Contactos",

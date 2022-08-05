@@ -1,5 +1,5 @@
 import 'package:flutter_config/flutter_config.dart';
 
-class Service {
+abstract class Service {
   String baseUrl = FlutterConfig.get('BASE_URL')!;
 }

@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wayat/services/authentication/phone_service.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 
-class GooglePhoneService extends PhoneService {
+class GooglePhoneService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _verificationId = "";
   
@@ -16,49 +17,55 @@ class GooglePhoneService extends PhoneService {
   /// #### Verify with: 
   /// ```
   /// await auth.verifySMSCode('123456');
-  /// ``
-  @override
-  Future<void> sendSMSCode(String phoneNumber) async {
+  /// ```
+  /// ------------------------------------
+  /// Throw [FirebaseAuthException] with ```invalid-phone-number``` code
+  Future<void> sendGoogleSMSCode(
+    {
+      required String phoneNumber,
+      void Function(FirebaseAuthException)? verificationFailed,
+      void Function(String)? codeTimeout,
+      void Function(String verificationId, int? forceResendingToken)? codeSent
+    }
+  ) async {
     await _auth.verifyPhoneNumber(
-        phoneNumber: phoneNumber,
-        verificationCompleted: _onVerificationCompleted,
-        verificationFailed: _onVerificationFailed,
-        codeSent: _onCodeSent,
-        codeAutoRetrievalTimeout: _onCodeTimeout);
+      phoneNumber: phoneNumber,
+      verificationCompleted: _onVerificationCompleted,
+      verificationFailed: 
+        verificationFailed ?? _onVerificationFailed,
+      codeSent: codeSent ?? _onCodeSent,
+      codeAutoRetrievalTimeout: 
+        codeTimeout ?? _onCodeTimeout,
+      //timeout: const Duration(seconds: 2*60)
+    );
   }
 
   /// Verify the SMS code sent to the user, it should be called after
   /// the cade has been sent
-  @override
-  Future<bool> verifySMSCode(String smsCode) async {
+  /// ------------------------------------
+  /// Throw [FirebaseAuthException] with code :
+  /// * ```invalid-verification-code``` if verification code is invalid
+  /// * ```session-expired``` if timeout session has been reached 
+  Future<void> verifyGoogleSMSCode(String smsCode) async {
     // Create a PhoneAuthCredential with the code
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: _verificationId, smsCode: smsCode);
 
     // Sign the user in (or link) with the credential
-    try{
-      await _auth.signInWithCredential(credential);
-    } on FirebaseAuthException catch (e) {
-      if(e.code == 'invalid-verification-code'){
-        return false;
-      }
-      rethrow;
-    }
-    return true;
+    await _auth.signInWithCredential(credential);
   }
 
   void _onVerificationCompleted(PhoneAuthCredential authCredential) async {}
 
   void _onVerificationFailed(FirebaseAuthException exception) {
     // Posible code exception: 'invalid-phone-number'
-    throw exception;
   }
 
   void _onCodeSent(String verificationId, int? forceResendingToken) {
     _verificationId = verificationId;
+    // Proceed to SMS code validation
+    GetIt.I.get<SessionState>().setPhoneValidation(true);
   }
 
-  void _onCodeTimeout(String timeout) {
-    // TODO on code timeout it should open a dialog and resend an sms codes
-  }
+  void _onCodeTimeout(String timeout) {}
 }

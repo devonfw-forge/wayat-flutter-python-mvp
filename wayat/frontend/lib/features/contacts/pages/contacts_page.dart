@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:wayat/features/contacts/controller/contact_controller.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:azlistview/azlistview.dart';
-import 'package:wayat/features/onboarding/widgets/import_contacts/contact_tile.dart';
 import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class _AZContactItem extends ISuspensionBean {

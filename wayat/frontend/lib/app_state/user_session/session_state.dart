@@ -3,7 +3,6 @@ import 'package:mobx/mobx.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
 import 'package:wayat/services/authentication/gphone_service_impl.dart';
-import 'package:wayat/services/authentication/phone_service.dart';
 
 part 'session_state.g.dart';
 
@@ -26,8 +25,10 @@ abstract class _SessionState with Store {
   final AuthService _authService = GoogleAuthService();
   AuthService get authService => _authService;
   
-  final PhoneService _phoneService = GooglePhoneService();
-  PhoneService get phoneService => _phoneService;
+  final GooglePhoneService _phoneService = GooglePhoneService();
+  GooglePhoneService get phoneService => _phoneService;
+
+  String phoneNumber = "";
 
   @action
   void doneOnBoarding() {

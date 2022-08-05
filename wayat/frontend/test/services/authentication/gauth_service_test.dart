@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -10,22 +12,25 @@ void main() {
   late GoogleSignIn googleSignIn;
   late GoogleAuthService googleAuthService;
 
-  setUpAll(() {
+  setUpAll(() async {
     FlutterConfig.loadValueForTesting({
       'BASE_URL': 'http://10.0.2.2:8000'
     });
+    TestWidgetsFlutterBinding.ensureInitialized();
+    setupFirebaseCoreMocks();
+    await Firebase.initializeApp();
     googleSignIn = CustomMockGoogleSignIn();
     googleAuthService = GoogleAuthService(gS: googleSignIn);
     GetIt.I.registerLazySingleton<AuthService>(
       () => GoogleAuthService(gS: googleSignIn));
   });
 
-  test('Google Sign In Account is not null', () async {
+  test('Google Sign In Account should not be null', () async {
     expect(await googleAuthService.signIn(), isNotNull, 
       reason: "GoogleSignInAccount after sign in can not be null");
   });
 
-  test('Get id token is not empty after sign in', () async {
+  test('Get id token should not be empty after sign in', () async {
     expect(await googleAuthService.getIdToken(), isNotEmpty, 
       reason: "Id Token should not be an empty string after sign in");
   });
