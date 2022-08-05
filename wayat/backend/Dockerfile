@@ -27,10 +27,6 @@ FROM base as final
 
 COPY --from=builder /venv /venv
 COPY docker/docker-entrypoint.sh ./
-COPY docker/download-secrets.sh ./
 
-RUN apt-get update && apt-get install -y wget
-RUN ./download-secrets.sh
-
-COPY main.py logging.yaml TEST.env PROD.env ./
+COPY main.py logging.yaml TEST.env PROD.env firebase.json ./
 CMD ["./docker-entrypoint.sh"]
