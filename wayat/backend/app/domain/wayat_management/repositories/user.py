@@ -14,7 +14,6 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def create(self, *,
                      uid: str,
                      name: Optional[str],
-                     surname: Optional[str],
                      email: Optional[str],
                      phone: Optional[str],
                      image_url: Optional[str]
@@ -22,7 +21,6 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         entity = UserEntity(
             document_id=uid,
             name=name,
-            surname=surname,
             email=email,
             phone=phone,
             image_url=image_url,

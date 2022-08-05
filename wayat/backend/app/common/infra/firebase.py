@@ -14,7 +14,6 @@ from app.common.exceptions.http import BearerAuthenticationNeededException, Inva
 class FirebaseAuthenticatedUser(User):
     picture: Optional[str]
     name: Optional[str]
-    surname: Optional[str]
 
 
 class FirebaseSettings(BaseSettings):
@@ -59,8 +58,7 @@ class FirebaseService(IdentityProvider):
                 email=decoded_token["email"],
                 roles=roles,
                 phone=decoded_token.get("phone", None),
-                name=decoded_token.get("given_name", None),
-                surname=decoded_token.get("family_name", None),
+                name=decoded_token.get("name", None),
                 picture=decoded_token.get("picture", None)
             )
             return user

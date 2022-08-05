@@ -10,7 +10,6 @@ def map_to_dto(entity: UserEntity) -> UserDTO:
     return None if entity is None else UserDTO(
         id=entity.document_id,
         name=entity.name,
-        surname=entity.surname,
         email=entity.email,
         phone=entity.phone,
         image_url=entity.image_url,
@@ -30,7 +29,6 @@ class UserService:
             user_entity = await self.user_repository.create(
                 uid=uid,
                 name=default_data.name,
-                surname=default_data.surname,
                 email=default_data.email,
                 phone=default_data.phone,
                 image_url=default_data.picture
