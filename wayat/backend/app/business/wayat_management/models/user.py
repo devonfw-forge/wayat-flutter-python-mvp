@@ -12,7 +12,6 @@ class UserID(BaseModel):
 class UpdateUserRequest(UserID):
     name: Optional[str]
     phone: Optional[str]
-    surname: Optional[str]
 
 
 class AddContactsRequest(BaseModel):
@@ -29,7 +28,7 @@ class UpdatePreferencesRequest(BaseModel):
 
 class UserDTO(UpdateUserRequest):
     email: str
-    image_url: str
+    image_url: Optional[str]
     do_not_disturb: bool
 
 
@@ -41,7 +40,6 @@ class UserProfileResponse(UserDTO):
 class UserWithPhoneResponse(UserID):
     phone: str
     name: str
-    surname: Optional[str]
     image_url: str
 
 

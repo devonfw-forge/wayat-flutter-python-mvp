@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
@@ -10,6 +10,9 @@ from app.business.wayat_management.models.user import (
     AddContactsRequest,
     UpdatePreferencesRequest,
 )
+from app.business.wayat_management.services.user import UserService
+from app.common import get_user, User
+from app.common.infra.firebase import FirebaseAuthenticatedUser
 
 router = APIRouter(prefix="/users")
 
@@ -17,8 +20,10 @@ logger = logging.getLogger(__name__)
 
 
 @router.get("/profile", description="Get a user profile", response_model=UserProfileResponse)
-async def get_user_profile():
-    logger.info("Retrieving user profile information")
+async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user()),
+                           user_service: UserService = Depends()):
+    user_dto, new_user = await user_service.get_or_create(user.uid, user)
+    return UserProfileResponse(**user_dto.dict(), new_user=new_user)
 
 
 @router.post("/profile", description="Update a user profile")
