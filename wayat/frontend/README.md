@@ -2,6 +2,48 @@
 
 TODO DESCRIPTION
 
+## Architecture
+
+It has been chosen a [feature based architecture](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0) with some changes: domains, common functionalities and widgets, internatinalization (language translations), app state and app routing have their own directories isolated from the features as shown in this example:
+
+~~~
+PROJECT
+├── domain
+│   ├── contact
+│   │   └── contact.dart
+│   └── ...
+├── common
+│   └── widgets
+│       ├── event_card.dart
+│       └── custom_textfield.dart
+├── features
+│   ├── create_event
+│   │   ├── page
+│   │   │   └── create_event_page.dart
+│   │   ├── widgets
+│   │   │   └── event_card.dart
+│   │   └── controller
+│   │       └── create_event_controller.dart
+│   └── ...
+├── app_state
+│   └── events_state
+│       ├── event_state.dart
+│       ├── event_state.g.dart
+│       └── event_state_impl.dart
+├── services
+│   ├── contact
+│   │   ├── contact_service.dart
+│   │   └── contact_service_impl.dart
+│   └── ...
+├── lang
+│   ├── app_es.arb
+│   ├── app_en.arb
+│   └── app_fr.arb
+└── navigation
+    ├── app_router.dart
+    └── app_router.gr.dart
+~~~
+
 ## Getting Started
 
 In order to run the wayat frontend project in debug mode, dependencies must be downloaded first:
