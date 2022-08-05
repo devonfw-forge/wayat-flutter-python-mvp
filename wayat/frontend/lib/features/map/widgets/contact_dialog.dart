@@ -52,46 +52,70 @@ class ContactDialog extends StatelessWidget {
   }
 
   Widget userInformation() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CircleAvatar(
-            radius: (22),
-            backgroundColor: Colors.black,
-            child: Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.network(contact.imageUrl),
-              ),
-            )),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              contact.displayName,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+              radius: (22),
+              backgroundColor: Colors.black,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.network(contact.imageUrl),
+                ),
+              )),
+          const SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  contact.displayName,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                addressFuture(),
+                Text(
+                  timeago.format(contact.lastUpdated),
+                  style: const TextStyle(fontSize: 17, color: Colors.black54),
+                )
+              ],
             ),
-            //TODO: UPDATE THIS TEXTFIELD WHEN THE SERVICE TO CONVERT COORDINATES TO ADDRESS IS MERGED
-            Text(
-              contact.email,
-              style: const TextStyle(fontSize: 17, color: Colors.black54),
-            ),
-            Text(
-              timeago.format(contact.lastUpdated),
-              style: const TextStyle(fontSize: 17, color: Colors.black54),
-            )
-          ],
-        ),
-        CircleIconButton(
-          onPressed: () =>
-              GoogleMapsService.openMaps(contact.latitude, contact.longitude),
-          icon: Icons.directions_outlined,
-          backgroundColor: Colors.transparent,
-        ),
-      ],
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          CircleIconButton(
+            onPressed: () =>
+                GoogleMapsService.openMaps(contact.latitude, contact.longitude),
+            icon: Icons.directions_outlined,
+            backgroundColor: Colors.transparent,
+          ),
+        ],
+      ),
     );
+  }
+
+  FutureBuilder<String> addressFuture() {
+    return FutureBuilder(
+        future: GoogleMapsService.getAddressFromCoordinates(
+            LatLng(contact.latitude, contact.longitude)),
+        builder: ((context, snapshot) {
+          if (snapshot.hasData) {
+            return Text(
+              snapshot.data.toString(),
+              style: const TextStyle(fontSize: 17, color: Colors.black54),
+            );
+          } else {
+            return Text("No address");
+          }
+        }));
   }
 
   Widget mapSection(BuildContext context) {
