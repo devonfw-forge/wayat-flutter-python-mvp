@@ -28,10 +28,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         await self.add(model=entity)
         return entity
 
-    async def find_by_phone(self, *, phones: list[str]):
-        stream = super()._get_collection_reference().where('phone', 'in', phones).stream()
-        models = []
-        for snapshot in stream:
-            models.append(self._model(document_id=snapshot.id, **snapshot.to_dict()))
-        return models
+    def find_by_phone(self, *, phones: list[str]):
+        return self.where('phone', 'in', phones)
+
 

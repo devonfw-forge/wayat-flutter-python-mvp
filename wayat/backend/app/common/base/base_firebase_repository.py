@@ -74,6 +74,28 @@ class BaseFirestoreRepository(Generic[ModelType]):
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
 
+    def where(self, field: str, operation: str, value: Any):
+        all_snapshots = []
+
+        def find(sublist: list[Any]):
+            stream = self._get_collection_reference().where(field, operation, sublist).stream()
+            return stream
+
+        if operation == 'in':
+            residual = len(value) % 10
+            num_iterations = len(value) // 10
+            if residual > 0:
+                num_iterations += 1
+            for i in range(0, num_iterations):
+                all_snapshots += find(value[i * 10:(i + 1) * 10])
+        else:
+            all_snapshots = find(value)
+
+        models = []
+        for snapshot in all_snapshots:
+            models.append(self._model(document_id=snapshot.id, **snapshot.to_dict()))
+        return models
+
     async def delete(self, *, model: ModelType | None = None, document_id: str | None = None):
         id_to_delete = document_id or (model.document_id if model else None)
         if not id_to_delete:
