@@ -1,14 +1,40 @@
 {
-    "appTitle": "Wayat",
+    "appTitle": "wayat",
 
-    "login": "Login",
+    "login": "Log in",
+    "sendPhoneButton": "Send verification",
+    "sendVerificationButton": "Send verification",
     "email": "Email",
     "password": "Password",
     "forgotPasswQuestion": "Did you forgot your password?",
+    "phoneVerificationTitle": "Phone verification",
+    "phoneVerificationDescription": "A verification code will be sent to your phone",
+    "codeVerificationTitle": "Code verification",
+    "verificationCodeDescription": "Insert the code you received",
+    "resendCode": "Resend code",
     
     "home": "Home",
     "contacts": "Contacts",
+    "events": "Events",
+    "profile": "Profile",
+
+    "notifications": "Notifications",
     "addEvents": "Add Event",
-    "myEvents": "My Events",
-    "notifications": "Notifications"
+
+    "manageContactsTip": "You'll be able to modify the\npermission of your contacts\nwhenever you want",
+    "allowedContactsTitle": "Set your allowed contacts",
+    "@allowedContactsTitle": {
+        "description": "This is the title of the OnBoarding 1 page"
+    },
+    "allowedContactsBody": "Select the contacts you will allow to\nsee your location.",
+
+    "importContactsTip": "First of all, select the contacts that\nwill be allowed to see your location.",
+    "manageContacts": "Manage contacts",
+
+    "next": "Next",
+    "skip": "Skip",
+
+    "selectContacts": "Select contacts",
+
+    "sharingLocation": "Sharing Location"
 }
