@@ -20,7 +20,7 @@ class BaseFirebaseModel(BaseModel):
 ModelType = TypeVar("ModelType", bound=BaseFirebaseModel)
 
 
-def _get_async_client():
+def get_async_client():
     return AsyncClient.from_service_account_info(_get_account_info())
 
 
@@ -34,7 +34,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
     def __init__(self, *,
                  collection_path: str | tuple[str],
                  model: Type[ModelType],
-                 client: AsyncClient = Depends(_get_async_client)):
+                 client: AsyncClient = Depends(get_async_client)):
         """
         Object with default methods to Create, Read, Update and Delete (CRUD) from a Firestore Collection.
         """
