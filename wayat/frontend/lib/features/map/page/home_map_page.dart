@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
   final MapController controller = MapController();
+  final LocationState locationState = GetIt.I.get<LocationState>();
 
   HomeMapPage({Key? key}) : super(key: key);
-
-  static const CameraPosition _valencia = CameraPosition(
-    target: LatLng(39.4702, -0.376805),
-    zoom: 14.4746,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +19,12 @@ class HomeMapPage extends StatelessWidget {
       children: [
         Observer(builder: (context) {
           Set<Marker> markers = controller.markers;
+          LatLng currentLocation = LatLng(
+              locationState.currentLocation.latitude!,
+              locationState.currentLocation.longitude!);
           return GoogleMap(
-            initialCameraPosition: _valencia,
+            initialCameraPosition:
+                CameraPosition(target: currentLocation, zoom: 14.5),
             zoomControlsEnabled: true,
             tiltGesturesEnabled: false,
             myLocationEnabled: false,

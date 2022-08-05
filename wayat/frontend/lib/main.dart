@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
@@ -11,17 +12,22 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
 
-  registerRepositories();
+  await registerRepositories();
   runApp(MyApp());
 }
 
-void registerRepositories() {
+Future registerRepositories() async {
   //Register with GetIt all the singletons for the repos like this
   //GetIt.I.registerLazySingleton<AbstractClass>(() => ImplementationClass())
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+
+  //This is not instanced as Lazy because it needs to be running from the start
+  LocationState locationState = LocationState();
+  await locationState.initialize();
+  GetIt.I.registerSingleton<LocationState>(locationState);
 }
 
 class MyApp extends StatelessWidget {
