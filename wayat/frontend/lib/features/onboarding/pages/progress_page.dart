@@ -6,6 +6,7 @@ import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
+import 'package:wayat/features/onboarding/controller/onboarding_state.dart';
 import 'package:wayat/features/onboarding/widgets/selected_contacts.dart';
 import 'package:wayat/features/onboarding/widgets/import_contacts/import_contacts_list.dart';
 import 'package:wayat/features/onboarding/widgets/initial_manage_tip.dart';
@@ -15,11 +16,10 @@ import 'package:wayat/services/contact/mock/contacts_mock.dart';
 import 'package:wayat/services/first_launch/first_launch_service.dart';
 
 class ProgressOnboardingPage extends StatelessWidget {
-  ProgressOnboardingPage({Key? key}) : super(key: key);
-
   final OnboardingController controller = GetIt.I.get<OnboardingController>();
-
   final totalPages = OnBoardingProgress.values.length;
+
+  ProgressOnboardingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class ProgressOnboardingPage extends StatelessWidget {
                 onPressed: () {
                   bool movedBack = controller.moveBack();
                   if (!movedBack) {
-                    AutoRouter.of(context).pop();
+                    controller.setOnBoardingState(OnBoardingState.NotStarted);
                   }
                 },
                 icon: const Icon(Icons.arrow_back)),

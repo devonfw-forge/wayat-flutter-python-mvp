@@ -1,10 +1,17 @@
 {
     "appTitle": "wayat",
 
-    "login": "Login",
+    "login": "Log in",
+    "sendPhoneButton": "Send verification",
+    "sendVerificationButton": "Send verification",
     "email": "Email",
     "password": "Password",
     "forgotPasswQuestion": "Did you forgot your password?",
+    "phoneVerificationTitle": "Phone verification",
+    "phoneVerificationDescription": "A verification code will be sent to your phone",
+    "codeVerificationTitle": "Code verification",
+    "verificationCodeDescription": "Insert the code you received",
+    "resendCode": "Resend code",
     
     "home": "Home",
     "contacts": "Contacts",
@@ -27,5 +34,7 @@
     "next": "Next",
     "skip": "Skip",
 
-    "selectContacts": "Select contacts"
+    "selectContacts": "Select contacts",
+
+    "sharingLocation": "Sharing Location"
 }

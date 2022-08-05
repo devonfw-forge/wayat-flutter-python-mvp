@@ -26,5 +26,7 @@
     "next": "Suivant",
     "skip": "Sauter",
 
-    "selectContacts": "Sélectionner les contacts"
+    "selectContacts": "Sélectionner les contacts",
+
+    "sharingLocation": "Lieu de partage"
 }
