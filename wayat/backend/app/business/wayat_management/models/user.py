@@ -29,7 +29,7 @@ class UpdatePreferencesRequest(BaseModel):
 
 class UserDTO(UpdateUserRequest):
     email: str
-    image_url: str
+    image_url: Optional[str]
     do_not_disturb: bool
 
 
