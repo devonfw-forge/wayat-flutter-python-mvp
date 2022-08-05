@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:testing_app/components/wayat_title.dart';
 // import 'package:get_it/get_it.dart';
 // import 'package:wayat/app_state/user_session/session_state.dart';
 // import 'package:wayat/features/authentication/common/login_title.dart';
@@ -39,16 +38,42 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  SignInButton _signInButton() {
-    return SignInButton(
-      shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Colors.black12),
-          borderRadius: BorderRadius.circular(10)),
-      elevation: 0.0,
-      Buttons.Google,
-      onPressed: () {
-        // userSession.googleLogin();
-      },
+  Widget _signInButton() {
+    return InkWell(
+      onTap: () {},
+      child: Ink(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Image.asset(
+                'assets/image/activer-desactiver-ok-google-assistant5.png',
+                height: 20,
+              ),
+              SizedBox(width: 12),
+              Text('Log in with Google'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomWayatTitle extends StatelessWidget {
+  const CustomWayatTitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'wayat',
+      style: const TextStyle(
+          color: Colors.purple, fontWeight: FontWeight.bold, fontSize: 28),
     );
   }
 }
@@ -58,12 +83,9 @@ class CustomLoginTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.10,
-      child: Text(
-        'Login',
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-      ),
+    return Text(
+      'Login',
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
     );
   }
 }
