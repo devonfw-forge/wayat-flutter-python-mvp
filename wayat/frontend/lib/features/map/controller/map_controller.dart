@@ -12,7 +12,7 @@ part 'map_controller.g.dart';
 class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
-  Function(Contact contact) onMarkerPressed;
+  Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
 
   _MapController({required this.onMarkerPressed});
 
@@ -40,11 +40,8 @@ abstract class _MapController with Store {
                   e.longitude.toString() +
                   e.latitude.toString()),
               position: LatLng(e.latitude, e.longitude),
-              infoWindow: InfoWindow(
-                  title: "Marker ${e.displayName}",
-                  snippet: "Marker ${e.email}"),
               icon: bitmaps[e.imageUrl]!,
-              onTap: () => onMarkerPressed(e)),
+              onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),
         )
         .toSet();
 

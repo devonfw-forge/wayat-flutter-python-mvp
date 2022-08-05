@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/common/widgets/switch.dart';
-import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -22,7 +21,8 @@ class HomeMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     controller = MapController(
-        onMarkerPressed: (contact) => showContactDialog(contact, context));
+        onMarkerPressed: (contact, icon) =>
+            showContactDialog(contact, icon, context));
 
     return Stack(
       children: [
@@ -48,6 +48,7 @@ class HomeMapPage extends StatelessWidget {
         rotateGesturesEnabled: false,
         mapType: MapType.normal,
         markers: markers,
+        onLongPress: (_) => controller.getMarkers(),
         onMapCreated: (googleMapController) {
           gMapController = googleMapController;
           controller.getMarkers();
@@ -129,13 +130,15 @@ class HomeMapPage extends StatelessWidget {
     );
   }
 
-  void showContactDialog(Contact contact, BuildContext context) {
+  void showContactDialog(
+      ContactLocation contact, BitmapDescriptor icon, BuildContext context) {
     debugPrint("Pressed ${contact.displayName}");
     showDialog(
         context: context,
         builder: (context) {
           return ContactDialog(
             contact: contact,
+            icon: icon,
           );
         });
   }
