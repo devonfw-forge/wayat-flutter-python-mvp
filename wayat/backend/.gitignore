@@ -126,3 +126,6 @@ dmypy.json
 
 # IDEA configuration
 .idea
+
+# Firebase local .json
+firebase.json

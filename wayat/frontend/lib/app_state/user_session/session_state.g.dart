@@ -9,34 +9,51 @@ part of 'session_state.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SessionState on _SessionState, Store {
-  late final _$tokenAtom = Atom(name: '_SessionState.token', context: context);
+  late final _$finishLoggedInAtom =
+      Atom(name: '_SessionState.finishLoggedIn', context: context);
 
   @override
-  String get token {
-    _$tokenAtom.reportRead();
-    return super.token;
+  bool get finishLoggedIn {
+    _$finishLoggedInAtom.reportRead();
+    return super.finishLoggedIn;
   }
 
   @override
-  set token(String value) {
-    _$tokenAtom.reportWrite(value, super.token, () {
-      super.token = value;
+  set finishLoggedIn(bool value) {
+    _$finishLoggedInAtom.reportWrite(value, super.finishLoggedIn, () {
+      super.finishLoggedIn = value;
     });
   }
 
-  late final _$isLoggedInAtom =
-      Atom(name: '_SessionState.isLoggedIn', context: context);
+  late final _$googleSignedInAtom =
+      Atom(name: '_SessionState.googleSignedIn', context: context);
 
   @override
-  bool get isLoggedIn {
-    _$isLoggedInAtom.reportRead();
-    return super.isLoggedIn;
+  bool get googleSignedIn {
+    _$googleSignedInAtom.reportRead();
+    return super.googleSignedIn;
   }
 
   @override
-  set isLoggedIn(bool value) {
-    _$isLoggedInAtom.reportWrite(value, super.isLoggedIn, () {
-      super.isLoggedIn = value;
+  set googleSignedIn(bool value) {
+    _$googleSignedInAtom.reportWrite(value, super.googleSignedIn, () {
+      super.googleSignedIn = value;
+    });
+  }
+
+  late final _$phoneValidationAtom =
+      Atom(name: '_SessionState.phoneValidation', context: context);
+
+  @override
+  bool get phoneValidation {
+    _$phoneValidationAtom.reportRead();
+    return super.phoneValidation;
+  }
+
+  @override
+  set phoneValidation(bool value) {
+    _$phoneValidationAtom.reportWrite(value, super.phoneValidation, () {
+      super.phoneValidation = value;
     });
   }
 
@@ -60,17 +77,6 @@ mixin _$SessionState on _SessionState, Store {
       ActionController(name: '_SessionState', context: context);
 
   @override
-  void setToken(String newToken) {
-    final _$actionInfo = _$_SessionStateActionController.startAction(
-        name: '_SessionState.setToken');
-    try {
-      return super.setToken(newToken);
-    } finally {
-      _$_SessionStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void doneOnBoarding() {
     final _$actionInfo = _$_SessionStateActionController.startAction(
         name: '_SessionState.doneOnBoarding');
@@ -82,10 +88,55 @@ mixin _$SessionState on _SessionState, Store {
   }
 
   @override
+  void setGoogleSignIn(bool signedIn) {
+    final _$actionInfo = _$_SessionStateActionController.startAction(
+        name: '_SessionState.setGoogleSignIn');
+    try {
+      return super.setGoogleSignIn(signedIn);
+    } finally {
+      _$_SessionStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPhoneValidation(bool phoneValidated) {
+    final _$actionInfo = _$_SessionStateActionController.startAction(
+        name: '_SessionState.setPhoneValidation');
+    try {
+      return super.setPhoneValidation(phoneValidated);
+    } finally {
+      _$_SessionStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setFinishLoggedIn(bool finishedLoggedIn) {
+    final _$actionInfo = _$_SessionStateActionController.startAction(
+        name: '_SessionState.setFinishLoggedIn');
+    try {
+      return super.setFinishLoggedIn(finishedLoggedIn);
+    } finally {
+      _$_SessionStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void googleLogin() {
+    final _$actionInfo = _$_SessionStateActionController.startAction(
+        name: '_SessionState.googleLogin');
+    try {
+      return super.googleLogin();
+    } finally {
+      _$_SessionStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-token: ${token},
-isLoggedIn: ${isLoggedIn},
+finishLoggedIn: ${finishLoggedIn},
+googleSignedIn: ${googleSignedIn},
+phoneValidation: ${phoneValidation},
 hasDoneOnboarding: ${hasDoneOnboarding}
     ''';
   }

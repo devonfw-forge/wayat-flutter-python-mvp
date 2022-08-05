@@ -32,12 +32,16 @@ dependencies:
   flutter_config: ^2.0.0
   # Google maps
   google_maps_flutter: ^2.1.10
+  # Google sign in button
+  flutter_signin_button: ^2.0.0
   # AZ ListView for imported contacts
   azlistview: ^2.0.0
   # Key Value storage
   shared_preferences: ^2.0.15
   # Handles logic to import address books contacts
   flutter_contacts: ^1.1.5
+  # Phone textfield with countries
+  intl_phone_field: ^3.1.0
   #Location
   location: ^4.4.0
   json_serializable: ^6.3.1
@@ -45,6 +49,11 @@ dependencies:
   http: ^0.13.4
   flutter_cache_manager: ^3.3.0
   image: ^3.2.0
+  # For the x minutes ago in the Pop Up for the Map contacts
+  timeago: ^3.2.2
+  # To launch google maps app
+  url_launcher: ^6.1.5
+
 
 dev_dependencies:
   flutter_test:
