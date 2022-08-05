@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testing_app/src/page/home_page.dart';
+import 'package:testing_app/src/page/login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       home: Scaffold(
-        body: TestWidget(title: 'Hello World', message: 'Hello'),
+        body: LoginPage(),
       ),
     );
   }

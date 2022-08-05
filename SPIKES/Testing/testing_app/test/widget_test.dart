@@ -6,7 +6,9 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:testing_app/src/page/home_page.dart';
+import 'package:testing_app/components/wayat_title.dart';
+import 'package:testing_app/main.dart';
+import 'package:testing_app/src/page/login_page.dart';
 
 void main() {
   // Define a test. The TestWidgets function also provides a WidgetTester
@@ -15,9 +17,8 @@ void main() {
   testWidgets(
     'MyWidget has a title and message', 
     (tester) async {
-      await tester.pumpWidget(const TestWidget(title: 'T', message: 'M'));
-      expect(find.text('T'), findsOneWidget);
-      expect(find.text('M'), findsOneWidget);
+      await tester.pumpWidget(MyApp());
+      // expect(find.widgetWithText(CustomWayatTitle, 'wayat'), findsOneWidget);
     }
   );
 }
