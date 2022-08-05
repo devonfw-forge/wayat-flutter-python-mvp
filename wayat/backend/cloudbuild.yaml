@@ -1,4 +1,4 @@
-# [START cloudbuild_quickstart_build]
+# [START Wayat Backend Build]
 steps:
   - name: gcr.io/cloud-builders/gsutil
     args:
@@ -33,4 +33,4 @@ steps:
 images:
   - >-
     gcr.io/poc-cloudnative-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
-# [END cloudbuild_quickstart_build]
+# [END Wayat Backend Build]
