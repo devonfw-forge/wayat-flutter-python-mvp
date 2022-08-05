@@ -1,0 +1,11 @@
+# [START cloudbuild_quickstart_build]
+steps:
+  - name: 'gcr.io/cloud-builders/gsutil'
+    dir: 'wayat/backend'
+    args: [ 'cp', 'gs://wayat_secrets/firebase.json', '.' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'wayat/backend'
+    args: [ 'build', '-t', 'gcr.io/poc-cloudnative-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA', '.' ]
+images:
+  - 'gcr.io/poc-cloudnative-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA'
+# [END cloudbuild_quickstart_build]
