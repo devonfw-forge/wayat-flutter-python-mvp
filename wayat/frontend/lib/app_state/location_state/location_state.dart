@@ -17,10 +17,13 @@ abstract class _LocationState with Store {
   LatLng currentLocation = const LatLng(0, 0);
   @observable
   ShareLocationMode locationMode = ShareLocationMode.Passive;
+  @observable
+  bool shareLocationEnabled = true;
 
   Future initialize() async {
     debugPrint("Initializing from state");
-    shareLocationService = await ShareLocationServiceImpl.create(locationMode);
+    shareLocationService = await ShareLocationServiceImpl.create(
+        locationMode, shareLocationEnabled);
     debugPrint("Service created");
     LocationData currentLocationData =
         shareLocationService.getCurrentLocation();
@@ -29,8 +32,15 @@ abstract class _LocationState with Store {
     debugPrint("Current location in state $currentLocation");
   }
 
+  @action
   void setLocationMode(ShareLocationMode newMode) {
     locationMode = newMode;
     shareLocationService.setShareLocationMode(newMode);
+  }
+
+  @action
+  void setShareLocationEnabled(bool shareLocation) {
+    shareLocationEnabled = shareLocation;
+    shareLocationService.setShareLocationEnabled(shareLocation);
   }
 }

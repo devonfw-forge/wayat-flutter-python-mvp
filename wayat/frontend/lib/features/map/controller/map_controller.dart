@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 import 'package:wayat/services/location/mock/contact_location_mock.dart';
@@ -26,9 +24,6 @@ abstract class _MapController with Store {
 
   List<ContactLocation> contacts = ContactLocationMock.contacts;
 
-  @observable
-  bool sharingLocation = false;
-
   Future getMarkers() async {
     Map<String, BitmapDescriptor> bitmaps = await imageService
         .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
@@ -51,10 +46,5 @@ abstract class _MapController with Store {
   @action
   void setMarkers(Set<Marker> newMarkers) {
     markers = ObservableSet.of(newMarkers);
-  }
-
-  @action
-  void setSharingLocation(bool newValue) {
-    sharingLocation = newValue;
   }
 }

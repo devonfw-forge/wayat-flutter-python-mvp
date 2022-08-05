@@ -122,9 +122,9 @@ class HomeMapPage extends StatelessWidget {
         ),
         Observer(builder: (context) {
           return CustomSwitch(
-            value: controller.sharingLocation,
+            value: locationState.shareLocationEnabled,
             onChanged: (newValue) {
-              controller.setSharingLocation(newValue);
+              locationState.setShareLocationEnabled(newValue);
             },
           );
         })

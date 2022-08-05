@@ -41,11 +41,54 @@ mixin _$LocationState on _LocationState, Store {
     });
   }
 
+  late final _$shareLocationEnabledAtom =
+      Atom(name: '_LocationState.shareLocationEnabled', context: context);
+
+  @override
+  bool get shareLocationEnabled {
+    _$shareLocationEnabledAtom.reportRead();
+    return super.shareLocationEnabled;
+  }
+
+  @override
+  set shareLocationEnabled(bool value) {
+    _$shareLocationEnabledAtom.reportWrite(value, super.shareLocationEnabled,
+        () {
+      super.shareLocationEnabled = value;
+    });
+  }
+
+  late final _$_LocationStateActionController =
+      ActionController(name: '_LocationState', context: context);
+
+  @override
+  void setLocationMode(ShareLocationMode newMode) {
+    final _$actionInfo = _$_LocationStateActionController.startAction(
+        name: '_LocationState.setLocationMode');
+    try {
+      return super.setLocationMode(newMode);
+    } finally {
+      _$_LocationStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setShareLocationEnabled(bool shareLocation) {
+    final _$actionInfo = _$_LocationStateActionController.startAction(
+        name: '_LocationState.setShareLocationEnabled');
+    try {
+      return super.setShareLocationEnabled(shareLocation);
+    } finally {
+      _$_LocationStateActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 currentLocation: ${currentLocation},
-locationMode: ${locationMode}
+locationMode: ${locationMode},
+shareLocationEnabled: ${shareLocationEnabled}
     ''';
   }
 }

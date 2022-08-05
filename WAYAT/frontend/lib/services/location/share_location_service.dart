@@ -9,4 +9,6 @@ abstract class ShareLocationService {
   LocationData getCurrentLocation();
 
   void setShareLocationMode(ShareLocationMode shareLocationMode);
+
+  void setShareLocationEnabled(bool shareLocation);
 }

@@ -19,6 +19,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late LocationData currentLocation;
   late ShareLocationMode shareLocationMode;
   late DateTime lastShared;
+  late bool shareLocationEnabled;
 
   /// Creates a ShareLocationService.
   ///
@@ -27,7 +28,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
   ///
   /// It can throw A NoLocationServiceException if the call
   /// to Location.requestService() results in an error
-  static Future<ShareLocationServiceImpl> create(ShareLocationMode mode) async {
+  static Future<ShareLocationServiceImpl> create(
+      ShareLocationMode mode, bool shareLocation) async {
     Location location = Location();
 
     bool locationServiceEnabled = await location.serviceEnabled();
@@ -55,7 +57,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
     debugPrint("initial location $initialLocation");
 
     debugPrint("Creating location service");
-    return ShareLocationServiceImpl._create(initialLocation, mode);
+    return ShareLocationServiceImpl._create(
+        initialLocation, mode, shareLocation);
   }
 
   /// Private factory for the location service
@@ -63,19 +66,22 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// It needs to be divided in private and public static factory to be able to
   /// make the necessary async calls in the public version
   ShareLocationServiceImpl._create(
-      LocationData initialLocation, ShareLocationMode mode)
+      LocationData initialLocation, ShareLocationMode mode, bool shareLocation)
       : super.create() {
     location = Location.instance;
     shareLocationMode = mode;
     lastShared = DateTime.now();
     currentLocation = initialLocation;
+    shareLocationEnabled = shareLocation;
 
     location.enableBackgroundMode(enable: true);
 
     debugPrint("Listening locations");
     location.onLocationChanged.listen((LocationData newLocation) {
       debugPrint("Location changed");
-      manageLocationChange(newLocation);
+      if (shareLocationEnabled) {
+        manageLocationChange(newLocation);
+      }
     });
     debugPrint("Finished creation process");
   }
@@ -114,6 +120,11 @@ class ShareLocationServiceImpl extends ShareLocationService {
   @override
   void setShareLocationMode(ShareLocationMode shareLocationMode) {
     this.shareLocationMode = shareLocationMode;
+  }
+
+  @override
+  void setShareLocationEnabled(bool shareLocation) {
+    shareLocationEnabled = shareLocation;
   }
 
   double calculateDistance(LocationData newLocation) {
