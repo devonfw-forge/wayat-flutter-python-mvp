@@ -67,7 +67,4 @@ class UserService:
             )
 
     async def get_contacts(self, uid):
-        self_user = await self._user_repository.get(uid)
-        coroutines = [self._user_repository.get(u) for u in self_user.contacts]
-        contacts_entities: list[UserEntity | None] = await asyncio.gather(*coroutines)
-        return list(map(map_to_dto, contacts_entities))
+        return list(map(map_to_dto, await self._user_repository.get_contacts(uid)))

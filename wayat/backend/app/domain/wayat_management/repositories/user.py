@@ -1,10 +1,12 @@
+import asyncio
+import datetime
 from typing import Optional
 
 from fastapi import Depends
-from google.cloud.firestore import AsyncClient
+from google.cloud.firestore import AsyncClient, GeoPoint
 
 from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
-from app.domain.wayat_management.models.user import UserEntity
+from app.domain.wayat_management.models.user import UserEntity, Location
 
 
 class UserRepository(BaseFirestoreRepository[UserEntity]):
@@ -31,4 +33,9 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def find_by_phone(self, *, phones: list[str]):
         return [item async for item in self.where("phone", 'in', phones)]
 
+    async def get_contacts(self, uid: str):
+        self_user = await self.get(uid)
+        coroutines = [self.get(u) for u in self_user.contacts]
+        contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)
+        return contacts_entities
 
