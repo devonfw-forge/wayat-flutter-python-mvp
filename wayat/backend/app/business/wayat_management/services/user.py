@@ -73,11 +73,11 @@ class UserService:
 
     async def add_contact_to_user(self, *, uid: str, contact: str):
         user = await self._user_repository.get(uid)
-        existing_contacts: set[str] = set(user.contacts)
-        new_contacts = existing_contacts.add(contact)
+        user_contacts: set[str] = set(user.contacts)
+        user_contacts.add(contact)
         await self._user_repository.update(
             document_id=uid,
-            data={"contacts": new_contacts}
+            data={"contacts": user_contacts}
         )
 
     async def get_contacts(self, uid):
