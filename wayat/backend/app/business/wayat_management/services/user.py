@@ -57,9 +57,11 @@ class UserService:
     async def add_contacts(self, *, uid: str, users: list[str]):
         coroutines = [self._user_repository.get(u) for u in users]
         contacts_entities: list[UserEntity | None] = await asyncio.gather(*coroutines)
+        found_contacts = {e.document_id for e in contacts_entities if e is not None}
         self_user = await self._user_repository.get(uid)
-        new_contacts = set(self_user.contacts)
-        for c in contacts_entities:
-            if c is not None:
-                new_contacts.add(c.document_id)
-        await self._user_repository.update(document_id=uid, data={"contacts": new_contacts})
+        existing_contacts = set(self_user.contacts)
+        if found_contacts.difference(existing_contacts):
+            await self._user_repository.update(
+                document_id=uid,
+                data={"contacts": existing_contacts.union(found_contacts)}
+            )
