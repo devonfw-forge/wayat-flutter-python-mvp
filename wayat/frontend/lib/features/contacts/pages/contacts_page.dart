@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:wayat/features/contacts/controller/contact_controller.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:azlistview/azlistview.dart';
-import 'package:wayat/features/onboarding/widgets/import_contacts/contact_tile.dart';
 import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class _AZContactItem extends ISuspensionBean {
@@ -39,7 +38,7 @@ class _ContactsPage extends State<ContactsPage> {
   void initList(List<Contact> contacts) {
     this.contacts = contacts
         .map((contacts) => _AZContactItem(
-            contact: contacts, tag: contacts.displayName[0].toUpperCase()))
+            contact: contacts, tag: contacts.name[0].toUpperCase()))
         .toList();
 
     SuspensionUtil.sortListBySuspensionTag(this.contacts);

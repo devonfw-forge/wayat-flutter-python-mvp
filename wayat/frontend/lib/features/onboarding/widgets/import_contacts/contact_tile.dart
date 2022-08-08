@@ -34,7 +34,7 @@ class ContactTile extends StatelessWidget {
                   backgroundImage: NetworkImage(
                       'https://i.pravatar.cc/150?u=a042581f4e29026704d')),
           title: Text(
-            contact.displayName,
+            contact.name,
             style: const TextStyle(
               fontSize: 16,
               fontFamily: 'Inter',

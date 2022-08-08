@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
+import 'package:wayat/lang/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -38,16 +38,31 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  SignInButton _signInButton() {
-    return SignInButton(
-      shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Colors.black12),
-          borderRadius: BorderRadius.circular(10)),
-      elevation: 0.0,
-      Buttons.Google,
-      onPressed: () {
-        userSession.googleLogin();
+  Widget _signInButton() {
+    return InkWell(
+      onTap: () async {
+        await userSession.googleLogin();
       },
+      child: Ink(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/google_icon.png',
+                height: 20,
+              ),
+              const SizedBox(width: 12),
+              Text(appLocalizations.loginGoogle),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -99,7 +99,7 @@ class ImportedContactsList extends StatelessWidget {
   List<AZContactItem> generateContactRowData() {
     List<AZContactItem> result = controller.contactList
         .map((contact) => AZContactItem(
-            contact: contact, tag: contact.displayName[0].toUpperCase()))
+            contact: contact, tag: contact.name[0].toUpperCase()))
         .toList();
 
     SuspensionUtil.sortListBySuspensionTag(result);
