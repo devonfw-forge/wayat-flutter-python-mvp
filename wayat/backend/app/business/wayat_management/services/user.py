@@ -5,6 +5,7 @@ from fastapi import Depends
 from app.business.wayat_management.models.user import UserDTO, IDType
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
+from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
 
@@ -21,8 +22,9 @@ def map_to_dto(entity: UserEntity) -> UserDTO:
 
 
 class UserService:
-    def __init__(self, user_repository: UserRepository = Depends()):
+    def __init__(self, user_repository: UserRepository = Depends(), status_repository: StatusRepository = Depends()):
         self._user_repository = user_repository
+        self._status_repository = status_repository
 
     async def get_or_create(self, uid: str, default_data: FirebaseAuthenticatedUser) -> tuple[UserDTO, bool]:
         user_entity = await self._user_repository.get(uid)
@@ -36,6 +38,7 @@ class UserService:
                 phone=default_data.phone,
                 image_url=default_data.picture
             )
+            await self._status_repository.initialize(uid)
         return map_to_dto(user_entity), new_user
 
     async def find_by_phone(self, phones: list[str]):
@@ -67,7 +70,4 @@ class UserService:
             )
 
     async def get_contacts(self, uid):
-        self_user = await self._user_repository.get(uid)
-        coroutines = [self._user_repository.get(u) for u in self_user.contacts]
-        contacts_entities: list[UserEntity | None] = await asyncio.gather(*coroutines)
-        return list(map(map_to_dto, contacts_entities))
+        return list(map(map_to_dto, await self._user_repository.get_contacts(uid)))

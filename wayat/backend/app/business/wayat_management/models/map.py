@@ -10,7 +10,6 @@ class Coordinates(BaseModel):
 
 class LocationUpdateRequest(BaseModel):
     position: Coordinates
-    timestamp: int
 
 
 class UpdateMapRequest(BaseModel):
