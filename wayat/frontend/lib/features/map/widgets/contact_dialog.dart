@@ -95,7 +95,8 @@ class ContactDialog extends StatelessWidget {
   }
 
   Widget mapSection(BuildContext context) {
-    return Expanded(
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.4,
       child: Stack(
         children: [
           googleMap(),
