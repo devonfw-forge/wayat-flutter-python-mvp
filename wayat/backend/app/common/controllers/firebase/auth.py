@@ -30,7 +30,7 @@ def set_user_admin(user: User = Depends(get_user())):
 def login(user: EmailPassword = Depends()):
     import requests
     res = requests.post(
-        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key"
-        "=AIzaSyD3T5gpP1hu9FeV9E4g9ZNglqlov-iee9g",
+        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key="
+        "AIzaSyCEILvlgyqTS4Kwv5Ed3lKf6ZFHX_1HgTg",
         json={"email": user.email, "password": user.password, "returnSecureToken": "true"})
     return res.json()

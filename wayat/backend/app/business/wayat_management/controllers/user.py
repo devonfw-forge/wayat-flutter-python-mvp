@@ -46,9 +46,9 @@ async def get_users_filtered(request: FindByPhoneRequest, user_service: UserServ
 
 
 @router.post("/add-contact", description="Add a list of users to the contact list")
-async def add_contact(request: AddContactsRequest):
-    # TODO
-    pass
+async def add_contact(request: AddContactsRequest, user_service: UserService = Depends(UserService),
+                      user: FirebaseAuthenticatedUser = Depends(get_user())):
+    await user_service.add_contacts(uid=user.uid, users=request.users)
 
 
 @router.post("/preferences", description="Update the preferences of a user")
