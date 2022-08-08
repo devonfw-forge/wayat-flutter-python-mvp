@@ -13,20 +13,21 @@ def map_to_dto(entity: UserEntity) -> UserDTO:
         email=entity.email,
         phone=entity.phone,
         image_url=entity.image_url,
-        do_not_disturb=entity.do_not_disturb
+        do_not_disturb=entity.do_not_disturb,
+        onboarding_completed=entity.onboarding_completed,
     )
 
 
 class UserService:
     def __init__(self, user_repository: UserRepository = Depends()):
-        self.user_repository = user_repository
+        self._user_repository = user_repository
 
     async def get_or_create(self, uid: str, default_data: FirebaseAuthenticatedUser) -> tuple[UserDTO, bool]:
-        user_entity = await self.user_repository.get(uid)
+        user_entity = await self._user_repository.get(uid)
         new_user = False
         if user_entity is None:
             new_user = True
-            user_entity = await self.user_repository.create(
+            user_entity = await self._user_repository.create(
                 uid=uid,
                 name=default_data.name,
                 email=default_data.email,
@@ -36,6 +37,17 @@ class UserService:
         return map_to_dto(user_entity), new_user
 
     async def find_by_phone(self, phones: list[str]):
-        user_entities = await self.user_repository.find_by_phone(phones=phones)
+        user_entities = await self._user_repository.find_by_phone(phones=phones)
         return list(map(map_to_dto, user_entities))
 
+    async def update_user(self,
+                          uid: str,
+                          **kwargs
+                          ):
+        # Filter only valid keys
+        valid_keys = {"name", "phone", "onboarding_completed"} & kwargs.keys()
+        update_data = {key: kwargs[key] for key in valid_keys}
+
+        # Update required fields only
+        if update_data:
+            await self._user_repository.update(document_id=uid, data=update_data)
