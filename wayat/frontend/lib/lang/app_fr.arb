@@ -28,5 +28,10 @@
 
     "selectContacts": "Sélectionner les contacts",
 
-    "sharingLocation": "Lieu de partage"
+    "sharingLocation": "Lieu de partage",
+
+    "viewProfile" : "Voir le profil",
+    "close" : "Fermer",
+    "loadingAddress" : "Adresse de chargement",
+    "noAddress" : "Aucune adresse trouvée"
 }
