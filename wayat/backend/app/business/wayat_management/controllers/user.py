@@ -8,7 +8,7 @@ from app.business.wayat_management.models.user import (
     ListUsersWithPhoneResponse,
     FindByPhoneRequest,
     AddContactsRequest,
-    UpdatePreferencesRequest,
+    UpdatePreferencesRequest, UserWithPhoneResponse,
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user, User
@@ -34,9 +34,10 @@ async def update_user_profile(request: UpdateUserRequest):
 @router.post("/find-by-phone",
              description="Get a list of users filtered by phone",
              response_model=ListUsersWithPhoneResponse)
-async def get_users_filtered(request: FindByPhoneRequest):
-    # TODO
-    pass
+async def get_users_filtered(request: FindByPhoneRequest, user_service: UserService = Depends(UserService)):
+    users = user_service.find_by_phone(request.phones)
+    users_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in users]
+    return ListUsersWithPhoneResponse(users=users_phone)
 
 
 @router.post("/add-contact", description="Add a list of users to the contact list")
