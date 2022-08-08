@@ -9,9 +9,10 @@ class UserID(BaseModel):
 
 
 # Requests
-class UpdateUserRequest(UserID):
+class UpdateUserRequest(BaseModel):
     name: Optional[str]
     phone: Optional[str]
+    onboarding_completed: Optional[bool]
 
 
 class AddContactsRequest(BaseModel):
