@@ -65,7 +65,10 @@ dependencies:
   json_annotation: ^4.6.0
   flutter_cache_manager: ^3.3.0
   image: ^3.2.0
-  firebase_core_platform_interface: ^4.5.0
+  # For the x minutes ago in the Pop Up for the Map contacts
+  timeago: ^3.2.2
+  # To launch google maps app
+  url_launcher: ^6.1.5
 
 dev_dependencies:
   flutter_test:

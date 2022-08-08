@@ -42,5 +42,10 @@
 
     "selectContacts": "Select contacts",
 
-    "sharingLocation": "Sharing Location"
-}
+    "sharingLocation": "Sharing Location",
+
+    "viewProfile": "View profile",
+    "close": "Close",
+    "loadingAddress": "Loading address",
+    "noAddress": "Could not find address"
+} 

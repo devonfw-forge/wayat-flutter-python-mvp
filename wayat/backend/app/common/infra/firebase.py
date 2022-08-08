@@ -1,13 +1,19 @@
 from functools import lru_cache
-from typing import Optional
+from typing import Optional, Any
+
 from fastapi import Depends, FastAPI
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from pydantic import BaseSettings, ValidationError
+from pydantic import BaseSettings
 
 from app.common.core.configuration import load_env_file_on_settings
+from app.common.core.identity_provider import IdentityProvider, User
 from app.common.exceptions.http import BearerAuthenticationNeededException, InvalidFirebaseAuthenticationException, \
     UnauthorizedException
-from app.common.core.identity_provider import IdentityProvider, User
+
+
+class FirebaseAuthenticatedUser(User):
+    picture: Optional[str]
+    name: Optional[str]
 
 
 class FirebaseSettings(BaseSettings):
@@ -18,7 +24,7 @@ class FirebaseSettings(BaseSettings):
         env_file = "TEST.env"
 
 
-@lru_cache()
+@lru_cache
 def get_firebase_settings() -> FirebaseSettings:
     return load_env_file_on_settings(FirebaseSettings)
 
@@ -26,13 +32,14 @@ def get_firebase_settings() -> FirebaseSettings:
 class FirebaseService(IdentityProvider):
     def __init__(self, settings: FirebaseSettings):
         import firebase_admin
-        firebase_credentials = firebase_admin.credentials.Certificate(settings.credentials_file)  # TODO Refactor to GC library
+        firebase_credentials = firebase_admin.credentials.Certificate(settings.credentials_file)
         self._client = firebase_admin.initialize_app(credential=firebase_credentials)
 
     def get_current_user(self, required_roles: list[str] | None = None):
         from firebase_admin import auth
 
-        def validate_token(credential: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False))) -> User:
+        def validate_token(credential: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False)))\
+                -> FirebaseAuthenticatedUser:
             if credential is None:
                 raise BearerAuthenticationNeededException()
             try:
@@ -46,7 +53,14 @@ class FirebaseService(IdentityProvider):
                 for r in required_roles:
                     if r not in roles:
                         raise UnauthorizedException(required_roles)
-            user: User = User(uid=decoded_token['uid'], email=decoded_token['email'], roles=roles)
+            user: FirebaseAuthenticatedUser = FirebaseAuthenticatedUser(
+                uid=decoded_token["uid"],
+                email=decoded_token["email"],
+                roles=roles,
+                phone=decoded_token.get("phone", None),
+                name=decoded_token.get("name", None),
+                picture=decoded_token.get("picture", None)
+            )
             return user
 
         return validate_token

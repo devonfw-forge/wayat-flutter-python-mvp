@@ -3,6 +3,10 @@ import 'package:wayat/domain/contact/contact.dart';
 class ContactLocation extends Contact {
   double latitude;
   double longitude;
+  DateTime lastUpdated;
+
+  int get hashCode =>
+      latitude.hashCode ^ longitude.hashCode ^ lastUpdated.hashCode;
 
   ContactLocation(
       {required super.available,
@@ -11,7 +15,8 @@ class ContactLocation extends Contact {
       required super.imageUrl,
       required super.phone,
       required this.latitude,
-      required this.longitude});
+      required this.longitude,
+      required this.lastUpdated});
 
   @override
   ContactLocation copyWith({
@@ -22,6 +27,7 @@ class ContactLocation extends Contact {
     String? phone,
     double? latitude,
     double? longitude,
+    DateTime? lastUpdated
   }) {
     return ContactLocation(
       available: available ?? this.available,
@@ -31,6 +37,7 @@ class ContactLocation extends Contact {
       phone: phone ?? this.phone,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      lastUpdated: lastUpdated ?? this.lastUpdated
     );
   }
 
@@ -40,6 +47,7 @@ class ContactLocation extends Contact {
     return <String, dynamic>{
       'latitude': latitude,
       'longitude': longitude,
+      'lastUpdated': lastUpdated
     };
   }
 
@@ -52,6 +60,7 @@ class ContactLocation extends Contact {
       phone: map['phone'] as String,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
+      lastUpdated: map['lastUpdated'] as DateTime
     );
   }
 }

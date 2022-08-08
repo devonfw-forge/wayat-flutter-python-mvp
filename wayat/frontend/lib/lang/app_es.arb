@@ -33,5 +33,10 @@
 
     "selectContacts": "Selecciona contactos",
 
-    "sharingLocation": "Compartir ubicación"
+    "sharingLocation": "Compartir ubicación",
+
+    "viewProfile": "Ver perfil",
+    "close": "Cerrar",
+    "loadingAddress": "Cargando dirección",
+    "noAddress": "No se encontró la dirección"
 }
