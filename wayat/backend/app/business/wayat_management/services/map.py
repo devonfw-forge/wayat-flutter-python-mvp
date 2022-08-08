@@ -32,12 +32,12 @@ class MapService:
 
     async def _update_contact_status(self, uid: str, contact_uid: str, latitude: float, longitude: float):
         contact_status = await self._status_repository.get(contact_uid)
-        old_contact_ref = set(filter(lambda x: x.uid != uid, contact_status.contact_refs))
-        old_contact_ref.add(
+        old_contact_ref = list(filter(lambda x: x.uid != uid, contact_status.contact_refs))
+        old_contact_ref.append(
             ContactRefInfo(uid=uid, last_updated=datetime.datetime.utcnow(), location=GeoPoint(latitude, longitude))
         )
         await self._status_repository.update(
-            data={"contacts_ref": old_contact_ref, "last_updated": datetime.datetime.utcnow()},
+            data={"contact_refs": [x.dict() for x in old_contact_ref], "last_updated": datetime.datetime.utcnow()},
             document_id=contact_uid
         )
 

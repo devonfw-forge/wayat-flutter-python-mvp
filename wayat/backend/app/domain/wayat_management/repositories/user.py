@@ -41,5 +41,5 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
 
     async def update_user_location(self, uid: str, latitude: float, longitude: float):
         location: Location = Location(value=GeoPoint(latitude, longitude), last_updated=datetime.datetime.utcnow())
-        await self.update(data={"location": location}, document_id=uid)
+        await self.update(data={"location": location.dict()}, document_id=uid)
 
