@@ -26,9 +26,13 @@ async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user())
     return UserProfileResponse(**user_dto.dict(), new_user=new_user)
 
 
-@router.post("/profile", description="Update a user profile")
-async def update_user_profile(request: UpdateUserRequest):
-    logger.info(f"Updating user with values{request=}")
+@router.post("/profile",
+             description="Update a user profile, setting those values that were explicitly set, even if set to null")
+async def update_user_profile(request: UpdateUserRequest,
+                              user: FirebaseAuthenticatedUser = Depends(get_user()),
+                              user_service: UserService = Depends()):
+    logger.info(f"Updating {user.uid=} with values {request.dict(exclude_unset=True)}")
+    await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
 
 
 @router.post("/find-by-phone",

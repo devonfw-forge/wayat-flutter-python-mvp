@@ -40,3 +40,14 @@ class UserService:
         user_entities = await self._user_repository.find_by_phone(phones=phones)
         return list(map(map_to_dto, user_entities))
 
+    async def update_user(self,
+                          uid: str,
+                          **kwargs
+                          ):
+        # Filter only valid keys
+        valid_keys = {"name", "phone", "onboarding_completed"} & kwargs.keys()
+        update_data = {key: kwargs[key] for key in valid_keys}
+
+        # Update required fields only
+        if update_data:
+            await self._user_repository.update(document_id=uid, data=update_data)
