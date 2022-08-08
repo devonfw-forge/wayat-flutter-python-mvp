@@ -58,6 +58,8 @@ async def update_preferences(request: UpdatePreferencesRequest):
 
 
 @router.get("/contacts", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
-async def get_contacts():
-    # TODO
-    pass
+async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
+                       user_service: UserService = Depends(UserService)):
+    cts = await user_service.get_contacts(user.uid)
+    contacts_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in cts]
+    return ListUsersWithPhoneResponse(users=contacts_phone)
