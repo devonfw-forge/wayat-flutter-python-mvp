@@ -28,7 +28,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         await self.add(model=entity)
         return entity
 
-    def find_by_phone(self, *, phones: list[str]):
-        return self.where('phone', 'in', phones)
+    async def find_by_phone(self, *, phones: list[str]):
+        return [item async for item in self.where("phone", 'in', phones)]
 
 

@@ -35,7 +35,7 @@ class UserService:
             )
         return map_to_dto(user_entity), new_user
 
-    def find_by_phone(self, phones: list[str]):
-        user_entities = self.user_repository.find_by_phone(phones=phones)
+    async def find_by_phone(self, phones: list[str]):
+        user_entities = await self.user_repository.find_by_phone(phones=phones)
         return list(map(map_to_dto, user_entities))
 

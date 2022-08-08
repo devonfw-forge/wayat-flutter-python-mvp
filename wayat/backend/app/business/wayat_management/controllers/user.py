@@ -35,7 +35,7 @@ async def update_user_profile(request: UpdateUserRequest):
              description="Get a list of users filtered by phone",
              response_model=ListUsersWithPhoneResponse)
 async def get_users_filtered(request: FindByPhoneRequest, user_service: UserService = Depends(UserService)):
-    users = user_service.find_by_phone(request.phones)
+    users = await user_service.find_by_phone(request.phones)
     users_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in users]
     return ListUsersWithPhoneResponse(users=users_phone)
 

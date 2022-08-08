@@ -1,6 +1,6 @@
 import json
 from functools import lru_cache
-from typing import TypeVar, Generic, Type, overload, Any
+from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator
 
 from fastapi import Depends
 from google.cloud.firestore import AsyncClient, AsyncCollectionReference, AsyncDocumentReference
@@ -74,12 +74,12 @@ class BaseFirestoreRepository(Generic[ModelType]):
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
 
-    def where(self, field: str, operation: str, value: Any):
-        all_snapshots = []
+    async def where(self, field: str, operation: str, value: Any) -> AsyncGenerator[ModelType, None]:
+        all_generators = []
 
         def find(sublist: list[Any]):
             stream = self._get_collection_reference().where(field, operation, sublist).stream()
-            return stream
+            return stream # .stream() returns AsyncGenerator in the async client
 
         if operation == 'in':
             residual = len(value) % 10
@@ -87,14 +87,13 @@ class BaseFirestoreRepository(Generic[ModelType]):
             if residual > 0:
                 num_iterations += 1
             for i in range(0, num_iterations):
-                all_snapshots += find(value[i * 10:(i + 1) * 10])
+                all_generators.append(find(value[i * 10:(i + 1) * 10]))
         else:
-            all_snapshots = find(value)
+            all_generators = find(value)
 
-        models = []
-        for snapshot in all_snapshots:
-            models.append(self._model(document_id=snapshot.id, **snapshot.to_dict()))
-        return models
+        for generator in all_generators:
+            async for item in generator:
+                yield self._model(document_id=item.id, **item.to_dict())
 
     async def delete(self, *, model: ModelType | None = None, document_id: str | None = None):
         id_to_delete = document_id or (model.document_id if model else None)
