@@ -29,6 +29,7 @@ class UpdatePreferencesRequest(BaseModel):
 
 class UserDTO(UpdateUserRequest):
     email: str
+    id: str
     image_url: Optional[str]
     do_not_disturb: bool
     onboarding_completed: bool
