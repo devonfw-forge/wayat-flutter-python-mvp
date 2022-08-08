@@ -53,7 +53,6 @@ class GooglePhoneService {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: _verificationId, smsCode: smsCode);
 
-    // Sign the user in (or link) with the credential
     await _auth.signInWithCredential(credential);
   }
 

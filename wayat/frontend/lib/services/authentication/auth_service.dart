@@ -14,8 +14,12 @@ abstract class AuthService extends RequestService {
   /// Checks if the current user has a phone number
   Future<bool> hasPhoneNumber();
 
+  Future<bool> isOnboardingCompleted();
+
   Future<bool> updatePhone(String phone);
 
   /// Sets onboarding as done for the current user
   Future<bool> updateOnboarding();
+
+  Future<dynamic> signInSilently();
 }

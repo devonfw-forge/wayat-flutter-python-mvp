@@ -10,7 +10,7 @@ abstract class RequestService extends Service {
   Future<Map<String, String>> _getHeaders() async{
     AuthService authService = GetIt.I.get<SessionState>().authService;
     return { 
-      "Accept" : "application/json",
+      "Content-Type" : "application/json",
       "Authorization" : "Bearer ${await authService.getIdToken()}"
     };
   }
@@ -30,9 +30,8 @@ abstract class RequestService extends Service {
     http.Response resultJson = await http.post(
       Uri.parse("$baseUrl/$subPath"),
       headers: await _getHeaders(),
-      body: body
+      body: jsonEncode(body)
     );
-    print(resultJson.body);
     // Checks if a 20X status code is returned
     return resultJson.statusCode/10 == 20;
   }

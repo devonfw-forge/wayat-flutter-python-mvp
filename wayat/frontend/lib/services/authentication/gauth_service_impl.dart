@@ -57,11 +57,18 @@ class GoogleAuthService extends AuthService {
       }
     );
   }
+  
+  @override
+  Future<bool> isOnboardingCompleted() async {
+    final Map<String, dynamic> user = await super.sendGetRequest("users/profile");
+    return user["onboarding_completed"];
+  }
 
+  @override
   Future<bool> updateOnboarding() async {
     return await super.sendPostRequest("users/profile",
       {
-        "onboarding_done": true
+        "onboarding_completed": true
       }
     );
   }
@@ -81,6 +88,20 @@ class GoogleAuthService extends AuthService {
     return await _auth.currentUser!.getIdToken();
   }
 
+  @override
+  Future<GoogleSignInAccount?> signInSilently() async {
+    final GoogleSignInAccount? account =  await _googleSignIn.signInSilently();
+    if (account == null) return null;
+    GoogleSignInAuthentication gauth = await account.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: gauth.accessToken,
+      idToken: gauth.idToken,
+    );
+    await _auth.signInWithCredential(credential);
+    if (_auth.currentUser == null) return null;
+    return account;
+  }
+  
   /// *Sign out* the current user.
   @override
   Future<void> signOut() async {

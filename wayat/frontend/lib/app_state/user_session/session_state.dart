@@ -1,5 +1,4 @@
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/user/user.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
@@ -25,7 +24,7 @@ abstract class _SessionState with Store {
   bool hasDoneOnboarding = false;
 
   @observable
-  late User currentUser;
+  User currentUser = User(name: "", email: "", imageUrl: "", phone: "");
 
   final AuthService _authService = GoogleAuthService();
   AuthService get authService => _authService;
@@ -70,6 +69,9 @@ abstract class _SessionState with Store {
       if (await googleAuth.hasPhoneNumber()) {
         setPhoneValidation(true);
         setFinishLoggedIn(true);
+        if (await googleAuth.isOnboardingCompleted()) {
+          doneOnBoarding();
+        }
       }
     }
   }

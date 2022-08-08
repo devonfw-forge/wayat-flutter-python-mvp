@@ -100,7 +100,7 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
           }
           else {
             setState(() {
-              _errorCodeMsg = "Codigo SMS debe ser de 6 digitos";
+              _errorCodeMsg = appLocalizations.smsSixDigitsMsg;
             });
           }
         });
@@ -157,6 +157,7 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
       GooglePhoneService phoneService = userSession.phoneService;
       try{
         await phoneService.verifyGoogleSMSCode(_inputSmsCode);
+        await userSession.authService.signInSilently();
         bool updated = await userSession.authService.updatePhone(userSession.phoneNumber);
         if (updated) {
           userSession.setFinishLoggedIn(true);
@@ -180,6 +181,11 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
             codeTimeout: _codeTimeout,
             verificationFailed: _codeFailed
           );
+        }
+        else {
+          setState(() {
+            _errorCodeMsg = e.code;
+          });
         }
       }
     }

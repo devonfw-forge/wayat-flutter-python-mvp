@@ -40,8 +40,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _signInButton() {
     return InkWell(
-      onTap: () {
-        userSession.googleLogin();
+      onTap: () async {
+        await userSession.googleLogin();
       },
       child: Ink(
         decoration: BoxDecoration(
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                 'assets/images/google_icon.png',
                 height: 20,
               ),
-              SizedBox(width: 12),
+              const SizedBox(width: 12),
               Text(appLocalizations.loginGoogle),
             ],
           ),
