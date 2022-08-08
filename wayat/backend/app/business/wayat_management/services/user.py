@@ -1,6 +1,8 @@
+import asyncio
+
 from fastapi import Depends
 
-from app.business.wayat_management.models.user import UserDTO
+from app.business.wayat_management.models.user import UserDTO, IDType
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.user import UserRepository
@@ -51,3 +53,12 @@ class UserService:
         # Update required fields only
         if update_data:
             await self._user_repository.update(document_id=uid, data=update_data)
+
+    async def add_contacts(self, *, uid: IDType, users: list[IDType]):
+        coroutines = [self._user_repository.get(u) for u in users]
+        contacts_entities: list[UserEntity | None] = await asyncio.gather(*coroutines)
+        self_user = await self._user_repository.get(uid)
+        new_contacts = set(self_user.contacts)
+        for c in contacts_entities:
+            if c is not None:
+                new_contacts.add(c)
