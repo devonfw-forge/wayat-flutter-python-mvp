@@ -8,3 +8,6 @@ from google.cloud.firestore import AsyncClient
 class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
     def __init__(self, client: AsyncClient = Depends(get_async_client)):
         super(StatusRepository, self).__init__(collection_path="status", model=AppStatusEntity, client=client)
+
+    async def initialize(self, uid: str):
+        await self.add(model=AppStatusEntity(document_id=uid))
