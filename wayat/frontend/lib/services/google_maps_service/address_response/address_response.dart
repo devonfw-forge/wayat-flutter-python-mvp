@@ -14,8 +14,8 @@ class AddressResponse {
 
   String firstValidAddress() {
     Address firstAddress = results.first;
-    String number = firstAddress.addressComponents.first.longName;
-    String street = firstAddress.addressComponents[1].longName;
+    String number = firstAddress.addressComponents.first.shortName;
+    String street = firstAddress.addressComponents[1].shortName;
     String city = firstAddress.addressComponents[2].longName;
     return "$street, $number, $city";
   }
