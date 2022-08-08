@@ -11,7 +11,7 @@ from app.business.wayat_management.models.user import (
     UpdatePreferencesRequest, UserWithPhoneResponse,
 )
 from app.business.wayat_management.services.user import UserService
-from app.common import get_user, User
+from app.common import get_user
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 
 router = APIRouter(prefix="/users")
@@ -33,7 +33,8 @@ async def update_user_profile(request: UpdateUserRequest):
 
 @router.post("/find-by-phone",
              description="Get a list of users filtered by phone",
-             response_model=ListUsersWithPhoneResponse)
+             response_model=ListUsersWithPhoneResponse,
+             dependencies=[Depends(get_user())])
 async def get_users_filtered(request: FindByPhoneRequest, user_service: UserService = Depends(UserService)):
     users = await user_service.find_by_phone(request.phones)
     users_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in users]
