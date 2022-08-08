@@ -4,7 +4,22 @@
     "login": "Iniciar sesión",
     "email": "Email",
     "password": "Contraseña",
+    "phoneNumber": "Número de teléfono",
+    "sendVerification": "Enviar verificación",
     "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
+    "phoneVerificationTitle": "Verificación del teléfono",
+    "phoneVerificationDescription": "Se enviará un código de verificación a su teléfono",
+    "phonePageDescription": "Se requiere un número de teléfono válido",
+    "codeVerificationTitle": "Código de verificación",
+    "verificationCodeDescription": "Inserta el código recibido",
+    "resendCode": "Reenviar código",
+    "invalidPhoneNumber": "Número de teléfono inválido",
+    "tooManyTries": "Muchos intentos, prueba más tarde",
+    "timeoutSmsCodeMsg": "El código enviado ya no es válido",
+    "invalidSmsCode": "Código inválido",
+    "expiredSessionSmsCodeMsg": "La sesión ha expirado, reenviando código",
+    "phoneUpdateError": "Error al configurar el número de teléfono",
+    "smsSixDigitsMsg": "Codigo SMS debe ser de 6 digitos",
 
     "home": "Inicio",
     "contacts": "Contactos",
@@ -29,5 +44,10 @@
 
     "selectContacts": "Selecciona contactos",
 
-    "sharingLocation": "Compartir ubicación"
+    "sharingLocation": "Compartir ubicación",
+
+    "viewProfile": "Ver perfil",
+    "close": "Cerrar",
+    "loadingAddress": "Cargando dirección",
+    "noAddress": "No se encontró la dirección"
 }

@@ -16,8 +16,8 @@ class ContactTile extends StatelessWidget {
       leading: const CircleAvatar(
           backgroundImage:
               NetworkImage('https://i.pravatar.cc/150?u=a042581f4e29026704d')),
-      title: Text(contact.displayName),
-      subtitle: Text("@${contact.username}"),
+      title: Text(contact.name),
+      subtitle: Text("@${contact.name}"),
       trailing: IconButton(
         icon: const Icon(Icons.location_on_rounded),
         onPressed: () {

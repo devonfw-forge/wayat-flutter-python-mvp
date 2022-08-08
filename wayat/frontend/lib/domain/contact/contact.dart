@@ -1,56 +1,53 @@
 import 'dart:convert';
 
-class Contact {
+import 'package:wayat/domain/user/user.dart';
+
+class Contact extends User{
   bool available;
-  String displayName;
-  String username;
-  String email;
-  String imageUrl;
 
   Contact({
     required this.available,
-    required this.displayName,
-    required this.username,
-    required this.email,
-    required this.imageUrl,
+    required super.name,
+    required super.email,
+    required super.imageUrl,
+    required super.phone,
   });
 
+  @override
   Contact copyWith({
     bool? available,
-    String? displayName,
-    String? username,
+    String? name,
     String? email,
     String? imageUrl,
+    String? phone,
   }) {
     return Contact(
       available: available ?? this.available,
-      displayName: displayName ?? this.displayName,
-      username: username ?? this.username,
+      name: name ?? this.name,
       email: email ?? this.email,
       imageUrl: imageUrl ?? this.imageUrl,
+      phone: phone ?? this.phone,
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'available': available,
-      'displayName': displayName,
-      'username': username,
-      'email': email,
-      'imageUrl': imageUrl,
-    };
+    Map<String, dynamic> map = super.toMap();
+    map['available'] = available;
+    return map;
   }
 
   factory Contact.fromMap(Map<String, dynamic> map) {
     return Contact(
       available: map['available'] as bool,
-      displayName: map['displayName'] as String,
-      username: map['username'] as String,
+      name: map['name'] as String,
       email: map['email'] as String,
       imageUrl: map['imageUrl'] as String,
+      phone: map['phone'] as String,
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
   factory Contact.fromJson(String source) =>
@@ -58,7 +55,7 @@ class Contact {
 
   @override
   String toString() {
-    return 'Contact(available: $available, displayName: $displayName, username: $username, email: $email, imageUrl: $imageUrl)';
+    return 'Contact(available: $available, name: $name, email: $email, imageUrl: $imageUrl)';
   }
 
   @override
@@ -66,18 +63,12 @@ class Contact {
     if (identical(this, other)) return true;
 
     return other.available == available &&
-        other.displayName == displayName &&
-        other.username == username &&
-        other.email == email &&
-        other.imageUrl == imageUrl;
+        super == other;
   }
 
   @override
   int get hashCode {
     return available.hashCode ^
-        displayName.hashCode ^
-        username.hashCode ^
-        email.hashCode ^
-        imageUrl.hashCode;
+        super.hashCode;
   }
 }
