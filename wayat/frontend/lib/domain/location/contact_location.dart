@@ -5,8 +5,9 @@ class ContactLocation extends Contact {
   double longitude;
   DateTime lastUpdated;
 
+  @override
   int get hashCode =>
-      latitude.hashCode ^ longitude.hashCode ^ lastUpdated.hashCode;
+      super.hashCode ^ latitude.hashCode ^ longitude.hashCode ^ lastUpdated.hashCode;
 
   ContactLocation(
       {required super.available,
