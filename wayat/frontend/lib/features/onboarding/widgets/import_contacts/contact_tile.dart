@@ -30,9 +30,7 @@ class ContactTile extends StatelessWidget {
                     )
                   ],
                 )
-              : const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://i.pravatar.cc/150?u=a042581f4e29026704d')),
+              : CircleAvatar(backgroundImage: NetworkImage(contact.imageUrl)),
           title: Text(
             contact.name,
             style: const TextStyle(

@@ -26,8 +26,9 @@ abstract class _OnboardingController with Store {
   void importContacts() async {
     List<ContactAdressBook> importedContacts =
         await ContactsAddressServiceImpl.getAll();
-    contactService.getFilteredContacts(importedContacts);
-    addAll(importedContacts);
+    List<Contact> filteredContacts =
+        await contactService.getFilteredContacts(importedContacts);
+    addAll(filteredContacts);
   }
 
   @observable
