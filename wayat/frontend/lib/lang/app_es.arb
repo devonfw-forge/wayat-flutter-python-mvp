@@ -8,6 +8,7 @@
     "sendVerification": "Enviar verificación",
     "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
     "phoneVerificationTitle": "Verificación del teléfono",
+    "phoneUpdateError": "Error al configurar el número de teléfono",
 
     "home": "Inicio",
     "contacts": "Contactos",

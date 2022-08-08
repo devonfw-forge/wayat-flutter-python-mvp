@@ -157,7 +157,14 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
       GooglePhoneService phoneService = userSession.phoneService;
       try{
         await phoneService.verifyGoogleSMSCode(_inputSmsCode);
-        userSession.setFinishLoggedIn(true);
+        bool updated = await userSession.authService.updatePhone(userSession.phoneNumber);
+        if (updated) {
+          userSession.setFinishLoggedIn(true);
+        } else {
+          setState(() {
+            _errorCodeMsg = appLocalizations.phoneUpdateError;
+          });
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == "invalid-verification-code") {
           setState(() {

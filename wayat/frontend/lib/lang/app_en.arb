@@ -17,6 +17,7 @@
     "timeoutSmsCodeMsg": "Code sent is no longer valid",
     "invalidSmsCode": "Invalid code",
     "expiredSessionSmsCodeMsg": "Session has expired, resending code",
+    "phoneUpdateError": "Error setting phone number",
     
     "home": "Home",
     "contacts": "Contacts",

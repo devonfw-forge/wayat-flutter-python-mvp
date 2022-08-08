@@ -38,7 +38,7 @@ class _ContactsPage extends State<ContactsPage> {
   void initList(List<Contact> contacts) {
     this.contacts = contacts
         .map((contacts) => _AZContactItem(
-            contact: contacts, tag: contacts.displayName[0].toUpperCase()))
+            contact: contacts, tag: contacts.name[0].toUpperCase()))
         .toList();
 
     SuspensionUtil.sortListBySuspensionTag(this.contacts);

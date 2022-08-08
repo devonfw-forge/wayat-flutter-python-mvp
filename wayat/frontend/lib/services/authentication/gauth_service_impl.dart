@@ -1,3 +1,4 @@
+import 'package:wayat/domain/user/user.dart' as wayat;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -42,8 +43,33 @@ class GoogleAuthService extends AuthService {
   Future<bool> hasPhoneNumber() async {
     // Gets backend data of the signed in user
     final Map<String, dynamic> user = await super.sendGetRequest("users/profile");
-    if (!user.containsKey("phone") || user["phone"] == "") return false;
+    if (!user.containsKey("phone") || user["phone"] == null || user["phone"] == "") {
+      return false;
+    }
     return true;
+  }
+
+  @override
+  Future<bool> updatePhone(String phone) async {
+    return await super.sendPostRequest("users/profile",
+      {
+        "phone": phone
+      }
+    );
+  }
+
+  Future<bool> updateOnboarding() async {
+    return await super.sendPostRequest("users/profile",
+      {
+        "onboarding_done": true
+      }
+    );
+  }
+
+  /// Gets backend data of the current signed in user 
+  Future<wayat.User> getUserData() async {
+    final Map<String, dynamic> user = await super.sendGetRequest("users/profile");
+    return wayat.User.fromJson(user.toString());
   }
 
 

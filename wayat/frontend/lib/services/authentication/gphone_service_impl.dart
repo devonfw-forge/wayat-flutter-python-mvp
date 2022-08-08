@@ -5,6 +5,7 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 class GooglePhoneService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _verificationId = "";
+  int? _forceResendingToken;
   
   /// Wait for the user to complete the recaptcha and for an SMS code to be sent.\
   /// **This method updates the ```verificationId```.** 
@@ -36,7 +37,8 @@ class GooglePhoneService {
       codeSent: codeSent ?? _onCodeSent,
       codeAutoRetrievalTimeout: 
         codeTimeout ?? _onCodeTimeout,
-      //timeout: const Duration(seconds: 2*60)
+      timeout: const Duration(seconds: 2*60),
+      forceResendingToken: _forceResendingToken
     );
   }
 
@@ -63,6 +65,7 @@ class GooglePhoneService {
 
   void _onCodeSent(String verificationId, int? forceResendingToken) {
     _verificationId = verificationId;
+    _forceResendingToken = forceResendingToken;
     // Proceed to SMS code validation
     GetIt.I.get<SessionState>().setPhoneValidation(true);
   }

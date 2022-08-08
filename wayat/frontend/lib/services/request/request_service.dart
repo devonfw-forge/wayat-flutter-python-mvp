@@ -11,7 +11,7 @@ abstract class RequestService extends Service {
     AuthService authService = GetIt.I.get<SessionState>().authService;
     return { 
       "Accept" : "application/json",
-      "IdToken" : await authService.getIdToken()
+      "Authorization" : "Bearer ${await authService.getIdToken()}"
     };
   }
   
@@ -21,7 +21,7 @@ abstract class RequestService extends Service {
       Uri.parse("$baseUrl/$subPath"),
       headers: await _getHeaders()
     );
-    return json.decode(resultJson.body).cast<Map<String, dynamic>>();
+    return json.decode(resultJson.body) as Map<String, dynamic>;
   }
   
   /// Sends a **POST** request to [baseUrl]/[subPath] and with [body] as content, 
@@ -32,6 +32,7 @@ abstract class RequestService extends Service {
       headers: await _getHeaders(),
       body: body
     );
+    print(resultJson.body);
     // Checks if a 20X status code is returned
     return resultJson.statusCode/10 == 20;
   }

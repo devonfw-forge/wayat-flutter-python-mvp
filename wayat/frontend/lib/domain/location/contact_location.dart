@@ -6,29 +6,29 @@ class ContactLocation extends Contact {
 
   ContactLocation(
       {required super.available,
-      required super.displayName,
-      required super.username,
+      required super.name,
       required super.email,
       required super.imageUrl,
+      required super.phone,
       required this.latitude,
       required this.longitude});
 
   @override
   ContactLocation copyWith({
     bool? available,
-    String? displayName,
-    String? username,
+    String? name,
     String? email,
     String? imageUrl,
+    String? phone,
     double? latitude,
     double? longitude,
   }) {
     return ContactLocation(
       available: available ?? this.available,
-      displayName: displayName ?? this.displayName,
-      username: username ?? this.username,
+      name: name ?? this.name,
       email: email ?? this.email,
       imageUrl: imageUrl ?? this.imageUrl,
+      phone: phone ?? this.phone,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
     );
@@ -46,10 +46,10 @@ class ContactLocation extends Contact {
   factory ContactLocation.fromMap(Map<String, dynamic> map) {
     return ContactLocation(
       available: map['available'] as bool,
-      displayName: map['displayName'] as String,
-      username: map['username'] as String,
+      name: map['name'] as String,
       email: map['email'] as String,
       imageUrl: map['imageUrl'] as String,
+      phone: map['phone'] as String,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
     );
