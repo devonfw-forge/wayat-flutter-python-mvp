@@ -17,6 +17,7 @@ class ContactDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 15),
       elevation: 0,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
@@ -30,7 +31,7 @@ class ContactDialog extends StatelessWidget {
 
   Widget dataSection(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
         child: Column(
           children: [
             userInformation(),
@@ -72,7 +73,7 @@ class ContactDialog extends StatelessWidget {
                 ),
               )),
           const SizedBox(
-            width: 20,
+            width: 15,
           ),
           Expanded(
             child: Column(
@@ -92,7 +93,7 @@ class ContactDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            width: 20,
+            width: 15,
           ),
           CircleIconButton(
             onPressed: () =>
@@ -125,7 +126,8 @@ class ContactDialog extends StatelessWidget {
   }
 
   Widget mapSection(BuildContext context) {
-    return Expanded(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.45,
       child: Stack(
         children: [
           googleMap(),
