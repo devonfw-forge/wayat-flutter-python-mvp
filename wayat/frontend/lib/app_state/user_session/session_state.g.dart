@@ -73,6 +73,22 @@ mixin _$SessionState on _SessionState, Store {
     });
   }
 
+  late final _$currentUserAtom =
+      Atom(name: '_SessionState.currentUser', context: context);
+
+  @override
+  User? get currentUser {
+    _$currentUserAtom.reportRead();
+    return super.currentUser;
+  }
+
+  @override
+  set currentUser(User? value) {
+    _$currentUserAtom.reportWrite(value, super.currentUser, () {
+      super.currentUser = value;
+    });
+  }
+
   late final _$googleLoginAsyncAction =
       AsyncAction('_SessionState.googleLogin', context: context);
 
@@ -134,7 +150,8 @@ mixin _$SessionState on _SessionState, Store {
 finishLoggedIn: ${finishLoggedIn},
 googleSignedIn: ${googleSignedIn},
 phoneValidation: ${phoneValidation},
-hasDoneOnboarding: ${hasDoneOnboarding}
+hasDoneOnboarding: ${hasDoneOnboarding},
+currentUser: ${currentUser}
     ''';
   }
 }

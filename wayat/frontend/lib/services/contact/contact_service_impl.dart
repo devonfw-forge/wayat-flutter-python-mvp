@@ -18,11 +18,15 @@ class ContactServiceImpl extends ContactService {
   }
 
   @override
-  void setUpContactsListener(Function onContactsUpdate) {
+  void setUpContactsListener(Function onContactsUpdate) async {
+    debugPrint("Setting up contacts listener");
     final docRef = db.collection("status").doc("7cQMpsydsfeyIVhmQO3RJaHkwJA2");
+    final docData = await docRef.get();
+    //print("Imperative " + docData.data()!["active"].toString());
     docRef.snapshots().listen(
-          (event) => debugPrint(event.data().toString()),
+          (event) => debugPrint("Listener ${event.data()}"),
           onError: (error) => print("Listen failed: $error"),
         );
+    debugPrint("Listener set up");
   }
 }

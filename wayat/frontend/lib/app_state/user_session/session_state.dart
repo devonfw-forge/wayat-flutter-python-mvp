@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/user/user.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
@@ -11,7 +11,6 @@ part 'session_state.g.dart';
 class SessionState = _SessionState with _$SessionState;
 
 abstract class _SessionState with Store {
-
   @observable
   bool finishLoggedIn = false;
 
@@ -25,11 +24,11 @@ abstract class _SessionState with Store {
   bool hasDoneOnboarding = false;
 
   @observable
-  late User currentUser;
+  User? currentUser;
 
   final AuthService _authService = GoogleAuthService();
   AuthService get authService => _authService;
-  
+
   final GooglePhoneService _phoneService = GooglePhoneService();
   GooglePhoneService get phoneService => _phoneService;
 
@@ -56,16 +55,15 @@ abstract class _SessionState with Store {
   }
 
   @action
-  Future<void> googleLogin () async {
+  Future<void> googleLogin() async {
     GoogleAuthService googleAuth = (authService as GoogleAuthService);
     GoogleSignInAccount? gaccount = await googleAuth.signIn();
     if (gaccount != null) {
       currentUser = User(
-        name: gaccount.displayName ?? "", 
-        email: gaccount.email, 
-        imageUrl: gaccount.photoUrl ?? "", 
-        phone: ""
-      );
+          name: gaccount.displayName ?? "",
+          email: gaccount.email,
+          imageUrl: gaccount.photoUrl ?? "",
+          phone: "");
       setGoogleSignIn(true);
       if (await googleAuth.hasPhoneNumber()) {
         setPhoneValidation(true);
