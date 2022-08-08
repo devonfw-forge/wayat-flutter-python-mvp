@@ -9,3 +9,4 @@ class UserEntity(BaseFirebaseModel):
     phone: Optional[str]
     image_url: Optional[str]
     do_not_disturb: bool = False
+    onboarding_completed: bool = False

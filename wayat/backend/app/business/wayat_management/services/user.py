@@ -13,7 +13,8 @@ def map_to_dto(entity: UserEntity) -> UserDTO:
         email=entity.email,
         phone=entity.phone,
         image_url=entity.image_url,
-        do_not_disturb=entity.do_not_disturb
+        do_not_disturb=entity.do_not_disturb,
+        onboarding_completed=entity.onboarding_completed,
     )
 
 
