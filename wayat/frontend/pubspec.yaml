@@ -48,9 +48,6 @@ dependencies:
   http: ^0.13.4
   # Decoding Token ID
   jwt_decode: ^0.3.1
-  
-  firebase_core: ^1.20.0
-  
   # Testing
   google_sign_in_mocks: ^0.2.1
   firebase_auth_mocks: ^0.8.5+1
