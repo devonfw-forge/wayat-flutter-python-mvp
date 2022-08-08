@@ -73,6 +73,14 @@ mixin _$SessionState on _SessionState, Store {
     });
   }
 
+  late final _$googleLoginAsyncAction =
+      AsyncAction('_SessionState.googleLogin', context: context);
+
+  @override
+  Future<void> googleLogin() {
+    return _$googleLoginAsyncAction.run(() => super.googleLogin());
+  }
+
   late final _$_SessionStateActionController =
       ActionController(name: '_SessionState', context: context);
 
@@ -115,17 +123,6 @@ mixin _$SessionState on _SessionState, Store {
         name: '_SessionState.setFinishLoggedIn');
     try {
       return super.setFinishLoggedIn(finishedLoggedIn);
-    } finally {
-      _$_SessionStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void googleLogin() {
-    final _$actionInfo = _$_SessionStateActionController.startAction(
-        name: '_SessionState.googleLogin');
-    try {
-      return super.googleLogin();
     } finally {
       _$_SessionStateActionController.endAction(_$actionInfo);
     }

@@ -36,7 +36,7 @@ abstract class _MapController with Store {
     Set<Marker> newMarkers = contacts
         .map(
           (e) => Marker(
-              markerId: MarkerId(e.displayName +
+              markerId: MarkerId(e.name +
                   e.longitude.toString() +
                   e.latitude.toString()),
               position: LatLng(e.latitude, e.longitude),
