@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/services/authentication/gphone_service_impl.dart';
 
 class CodeValidationPage extends StatefulWidget {
   const CodeValidationPage({Key? key}) : super(key: key);
@@ -17,7 +20,8 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
   final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
   final userSession = GetIt.I.get<SessionState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  bool validCode = false;
+  String _inputSmsCode = "";
+  String _errorCodeMsg = "";
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +80,31 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
 
   TextField _codeInput() {
     return TextField(
+      // Only numbers are allowed as input 
       keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      ],
       decoration: InputDecoration(
+        errorText: _errorCodeMsg != "" ? _errorCodeMsg : null,
         label: Text(appLocalizations.codeVerificationTitle),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         )
       ),
+      onChanged: (smsCode) {
+        setState(() {
+          if (smsCode.length == 6) {
+            _errorCodeMsg = "";
+            _inputSmsCode = smsCode;
+          }
+          else {
+            setState(() {
+              _errorCodeMsg = "Codigo SMS debe ser de 6 digitos";
+            });
+          }
+        });
+      },
     );
   }
 
@@ -91,7 +113,13 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: TextButton(
         style: TextButton.styleFrom(primary: Colors.black),
-        onPressed: (){},
+        onPressed: () async {
+          await userSession.phoneService.sendGoogleSMSCode(
+            phoneNumber: userSession.phoneNumber,
+            codeTimeout: _codeTimeout,
+            verificationFailed: _codeFailed
+          );
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -102,15 +130,58 @@ class _CodeValidationPageState extends State<CodeValidationPage> {
       ),
     );
   }
+  
+  void _codeFailed(FirebaseAuthException exception) {
+    if (exception.code == "invalid-phone-number") {
+      setState(() {
+        _errorCodeMsg = appLocalizations.invalidPhoneNumber;
+      });
+    }
+  }
+
+  void _codeTimeout(String timeout) {
+    setState(() {
+      _errorCodeMsg = appLocalizations.timeoutSmsCodeMsg;
+    });
+  }
 
   CustomOutlinedButton _submitButton() {
     return CustomOutlinedButton(
       onPressed: _submit,
-      text: appLocalizations.sendVerificationButton,
+      text: appLocalizations.sendVerification,
     );
   }
 
-  _submit() {
-    userSession.setFinishLoggedIn(true);
+  _submit() async {
+    if (_inputSmsCode != "") { 
+      GooglePhoneService phoneService = userSession.phoneService;
+      try{
+        await phoneService.verifyGoogleSMSCode(_inputSmsCode);
+        bool updated = await userSession.authService.updatePhone(userSession.phoneNumber);
+        if (updated) {
+          userSession.setFinishLoggedIn(true);
+        } else {
+          setState(() {
+            _errorCodeMsg = appLocalizations.phoneUpdateError;
+          });
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == "invalid-verification-code") {
+          setState(() {
+            _errorCodeMsg = appLocalizations.invalidSmsCode;
+          });
+        }
+        else if (e.code == "session-expired") {
+          setState(() {
+            _errorCodeMsg = appLocalizations.expiredSessionSmsCodeMsg;
+          });
+          await userSession.phoneService.sendGoogleSMSCode(
+            phoneNumber: userSession.phoneNumber,
+            codeTimeout: _codeTimeout,
+            verificationFailed: _codeFailed
+          );
+        }
+      }
+    }
   }
 }

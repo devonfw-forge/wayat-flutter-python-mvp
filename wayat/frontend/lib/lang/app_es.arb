@@ -4,7 +4,11 @@
     "login": "Iniciar sesión",
     "email": "Email",
     "password": "Contraseña",
+    "phoneNumber": "Número de teléfono",
+    "sendVerification": "Enviar verificación",
     "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
+    "phoneVerificationTitle": "Verificación del teléfono",
+    "phoneUpdateError": "Error al configurar el número de teléfono",
 
     "home": "Inicio",
     "contacts": "Contactos",
@@ -29,5 +33,10 @@
 
     "selectContacts": "Selecciona contactos",
 
-    "sharingLocation": "Compartir ubicación"
+    "sharingLocation": "Compartir ubicación",
+
+    "viewProfile": "Ver perfil",
+    "close": "Cerrar",
+    "loadingAddress": "Cargando dirección",
+    "noAddress": "No se encontró la dirección"
 }

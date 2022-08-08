@@ -132,7 +132,6 @@ class HomeMapPage extends StatelessWidget {
 
   void showContactDialog(
       ContactLocation contact, BitmapDescriptor icon, BuildContext context) {
-    debugPrint("Pressed ${contact.displayName}");
     showDialog(
         context: context,
         builder: (context) {
