@@ -17,6 +17,6 @@ class ContactRefInfo(BaseModel):
 
 class AppStatusEntity(BaseFirebaseModel):
     active: bool = False
-    last_updated: datetime.datetime = datetime.datetime.now()
+    last_updated: datetime.datetime = datetime.datetime.utcnow()
     contact_refs: list[ContactRefInfo] = Field(default_factory=list)
 

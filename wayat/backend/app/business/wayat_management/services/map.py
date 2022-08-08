@@ -34,10 +34,10 @@ class MapService:
         contact_status = await self._status_repository.get(contact_uid)
         old_contact_ref = set(filter(lambda x: x.uid != uid, contact_status.contact_refs))
         old_contact_ref.add(
-            ContactRefInfo(uid=uid, last_updated=datetime.datetime.now(), location=GeoPoint(latitude, longitude))
+            ContactRefInfo(uid=uid, last_updated=datetime.datetime.utcnow(), location=GeoPoint(latitude, longitude))
         )
         await self._status_repository.update(
-            data={"contacts_ref": old_contact_ref, "last_updated": datetime.datetime.now()},
+            data={"contacts_ref": old_contact_ref, "last_updated": datetime.datetime.utcnow()},
             document_id=contact_uid
         )
 
