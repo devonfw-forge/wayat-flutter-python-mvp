@@ -53,6 +53,9 @@ dependencies:
   timeago: ^3.2.2
   # To launch google maps app
   url_launcher: ^6.1.5
+  #Firebase dependencies
+  firebase_core: ^1.20.0
+  cloud_firestore: ^3.4.3
 
 
 dev_dependencies:
