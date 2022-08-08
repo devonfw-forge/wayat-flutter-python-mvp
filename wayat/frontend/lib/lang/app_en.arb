@@ -2,6 +2,7 @@
     "appTitle": "wayat",
 
     "login": "Log in",
+    "loginGoogle": "Log in with Google",
     "email": "Email",
     "password": "Password",
     "phoneNumber": "Phone number",

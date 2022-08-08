@@ -80,7 +80,7 @@ class ContactDialog extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  contact.displayName,
+                  contact.name,
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
@@ -165,7 +165,7 @@ class ContactDialog extends StatelessWidget {
               target: LatLng(contact.latitude, contact.longitude), zoom: 16),
           markers: {
             Marker(
-                markerId: MarkerId(contact.displayName),
+                markerId: MarkerId(contact.name),
                 position: LatLng(contact.latitude, contact.longitude),
                 icon: icon)
           },
