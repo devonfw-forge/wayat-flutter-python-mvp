@@ -1,6 +1,7 @@
 # wayat
 
-TODO DESCRIPTION
+Section of the wayat project responsible for displaying the graphical user interface and connecting it whit the backend section. After assessing different [options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options) for state control between widgets, it was decided to use GetIt and MobX due to its 
+simplicity and the benefits they offer to write less code. Additionally, for navigation and routing it has been studied several [options](https://docs.flutter.dev/development/ui/navigation) but finally was decided to use [AutoRoute](https://pub.dev/packages/auto_route) due to its potential to set navigation declaratively and avoid extra code. In the other hand, for translations it has been established internationalization in English, Spanish and French (the language is updated along with the change of language in the system in which the app is launched).
 
 ## Architecture
 
