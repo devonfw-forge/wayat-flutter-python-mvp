@@ -42,6 +42,9 @@ abstract class _SessionState with Store {
 
   Future<bool> isLogged() async {
     final logged = await authService.signInSilently();
+    if (logged != null) {
+      currentUser = await (authService as GoogleAuthService).getUserData();
+    }
     return logged != null;
   }
 

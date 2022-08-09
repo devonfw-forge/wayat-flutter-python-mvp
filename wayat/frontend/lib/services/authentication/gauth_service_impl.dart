@@ -77,7 +77,8 @@ class GoogleAuthService extends AuthService {
   Future<wayat.User> getUserData() async {
     final Map<String, dynamic> user =
         await super.sendGetRequest("users/profile");
-    return wayat.User.fromJson(user.toString());
+    print(user.toString());
+    return wayat.User.fromMap(user);
   }
 
   /// Refresh the **account id token**

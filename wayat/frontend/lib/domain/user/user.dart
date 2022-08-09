@@ -37,7 +37,7 @@ class User {
       'id': id,
       'name': name,
       'email': email,
-      'imageUrl': imageUrl,
+      'image_url': imageUrl,
       'phone': phone,
     };
   }
@@ -47,7 +47,7 @@ class User {
       id: map['id'] as String,
       name: map['name'] as String,
       email: map['email'] as String,
-      imageUrl: map['imageUrl'] as String,
+      imageUrl: map['image_url'] as String,
       phone: map['phone'] as String,
     );
   }

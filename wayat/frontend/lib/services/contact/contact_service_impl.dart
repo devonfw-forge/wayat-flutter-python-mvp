@@ -33,8 +33,9 @@ class ContactServiceImpl extends ContactService {
   @override
   Future<List<Contact>> getFilteredContacts(
       List<ContactAdressBook> importedContacts) async {
-    List<String> phoneList =
-        importedContacts.map((e) => e.phoneNumber.replaceAll(RegExp(r' '), '')).toList();
+    List<String> phoneList = importedContacts
+        .map((e) => e.phoneNumber.replaceAll(RegExp(r' '), ''))
+        .toList();
 
     //super.sendPostRequest("/users/find-by-phone", bod)
     print("LIST: $phoneList");
@@ -53,6 +54,7 @@ class ContactServiceImpl extends ContactService {
   @override
   void setUpContactsListener(Function onContactsUpdate) async {
     debugPrint("Setting up contacts listener");
+    print("AAAAAAA" + GetIt.I.get<SessionState>().currentUser.id);
     final docRef =
         db.collection("status").doc(GetIt.I.get<SessionState>().currentUser.id);
     _getUsersFromContactRefs((await docRef.get()).data()!);
@@ -66,25 +68,27 @@ class ContactServiceImpl extends ContactService {
   void _getUsersFromContactRefs(Map<String, dynamic> firestoreData) async {
     List<Contact> contacts = await getAll();
     print(firestoreData);
-    List<ContactLocation> contactLocations =
-        (firestoreData["contact_refs"] as List).map((e) {
-      Contact contact =
-          contacts.firstWhere((contact) => contact.id == e["uid"]);
-      GeoPoint loc = e["location"];
-      Timestamp lastUpdated = e["last_updated"];
-      ContactLocation located = ContactLocation(
-          available: true,
-          id: contact.id,
-          name: contact.name,
-          email: contact.name,
-          imageUrl: contact.imageUrl,
-          phone: contact.phone,
-          latitude: loc.latitude,
-          longitude: loc.longitude,
-          lastUpdated: lastUpdated.toDate());
-      return located;
-    }).toList();
+    if ((firestoreData["contact_refs"] as List).isNotEmpty) {
+      List<ContactLocation> contactLocations =
+          (firestoreData["contact_refs"] as List).map((e) {
+        Contact contact =
+            contacts.firstWhere((contact) => contact.id == e["uid"]);
+        GeoPoint loc = e["location"];
+        Timestamp lastUpdated = e["last_updated"];
+        ContactLocation located = ContactLocation(
+            available: true,
+            id: contact.id,
+            name: contact.name,
+            email: contact.name,
+            imageUrl: contact.imageUrl,
+            phone: contact.phone,
+            latitude: loc.latitude,
+            longitude: loc.longitude,
+            lastUpdated: lastUpdated.toDate());
+        return located;
+      }).toList();
 
-    GetIt.I.get<ContactsLocationState>().setContactList(contactLocations);
+      GetIt.I.get<ContactsLocationState>().setContactList(contactLocations);
+    }
   }
 }
