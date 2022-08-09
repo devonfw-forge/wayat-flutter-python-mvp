@@ -52,13 +52,13 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
       child: Column(
         children: [
           Text(
-            appLocalizations.phoneVerificationTitle,
+            appLocalizations.phoneNumber,
             style: const TextStyle(fontSize: 20),
           ),
           const SizedBox(
             height: 10,
           ),
-          Text(appLocalizations.phoneVerificationDescription,
+          Text(appLocalizations.phonePageDescription,
               textAlign: TextAlign.center),
           const SizedBox(
             height: 25,
@@ -81,7 +81,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   IntlPhoneField _phoneInput() {
     return IntlPhoneField(
-      // Only numbers are allowed as input 
+      // Only numbers are allowed as input
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -105,46 +105,22 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
       padding: const EdgeInsets.only(top: 30),
       child: CustomOutlinedButton(
         onPressed: !_validPhone ? null : _submit,
-        text: appLocalizations.sendVerification,
+        text: appLocalizations.next,
       ),
     );
   }
 
   _submit() async {
-    if (_formKey.currentState!.validate() && _phoneNumber != "") {
-      try{
-        await userSession.phoneService.sendGoogleSMSCode(
-          phoneNumber: _phoneNumber,
-          verificationFailed: _phoneCodeFailed,
-          codeTimeout: _phoneCodeTimeout
-        );
-        userSession.phoneNumber = _phoneNumber;
-      } on FirebaseAuthException catch (e) {
-        if (e.code == "invalid-phone-number") {
-          setState(() {
-            _errorPhoneMsg = appLocalizations.invalidPhoneNumber;
-          });
-        }
-      }
-    }
-  }
-
-  void _phoneCodeFailed(FirebaseAuthException exception) {
-    if (exception.code == "invalid-phone-number") {
+    userSession.phoneNumber = _phoneNumber;
+    bool updated =
+        await userSession.authService.updatePhone(userSession.phoneNumber);
+    userSession.currentUser.phone = userSession.phoneNumber;
+    if (updated) {
+      userSession.setFinishLoggedIn(true);
+    } else {
       setState(() {
-        _errorPhoneMsg = appLocalizations.invalidPhoneNumber;
+        _errorPhoneMsg = appLocalizations.phoneUpdateError;
       });
     }
-    else if (exception.code == "too-many-requests") {
-      setState(() {
-        _errorPhoneMsg = appLocalizations.tooManyTries;
-      });
-    }
-  }
-
-  void _phoneCodeTimeout(String timeout) {
-    setState(() {
-      _errorPhoneMsg = appLocalizations.timeoutSmsCodeMsg;
-    });
   }
 }

@@ -102,8 +102,8 @@ class SelectedContacts extends StatelessWidget {
       child: Chip(
           backgroundColor: Colors.transparent,
           side: const BorderSide(color: Colors.black, width: 1),
-          avatar: chipProfilePicture(
-              "https://i.pravatar.cc/150?u=a042581f4e29026704d"),
+          avatar:
+              chipProfilePicture(controller.selectedContacts[index].imageUrl),
           labelPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           label: Text(
             controller.selectedContacts[index].name,

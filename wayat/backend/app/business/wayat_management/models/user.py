@@ -9,9 +9,10 @@ class UserID(BaseModel):
 
 
 # Requests
-class UpdateUserRequest(UserID):
+class UpdateUserRequest(BaseModel):
     name: Optional[str]
     phone: Optional[str]
+    onboarding_completed: Optional[bool]
 
 
 class AddContactsRequest(BaseModel):
@@ -28,8 +29,10 @@ class UpdatePreferencesRequest(BaseModel):
 
 class UserDTO(UpdateUserRequest):
     email: str
+    id: str
     image_url: Optional[str]
     do_not_disturb: bool
+    onboarding_completed: bool
 
 
 # Responses

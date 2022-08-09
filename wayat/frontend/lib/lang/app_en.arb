@@ -10,6 +10,7 @@
     "forgotPasswQuestion": "Did you forgot your password?",
     "phoneVerificationTitle": "Phone verification",
     "phoneVerificationDescription": "A verification code will be sent to your phone",
+    "phonePageDescription": "A valid phone number is required",
     "codeVerificationTitle": "Code verification",
     "verificationCodeDescription": "Insert the code you received",
     "resendCode": "Resend code",
@@ -19,6 +20,7 @@
     "invalidSmsCode": "Invalid code",
     "expiredSessionSmsCodeMsg": "Session has expired, resending code",
     "phoneUpdateError": "Error setting phone number",
+    "smsSixDigitsMsg": "SMS code must be 6 digits",
     
     "home": "Home",
     "contacts": "Contacts",

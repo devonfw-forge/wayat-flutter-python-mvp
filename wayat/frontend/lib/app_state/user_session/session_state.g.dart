@@ -77,13 +77,13 @@ mixin _$SessionState on _SessionState, Store {
       Atom(name: '_SessionState.currentUser', context: context);
 
   @override
-  User? get currentUser {
+  User get currentUser {
     _$currentUserAtom.reportRead();
     return super.currentUser;
   }
 
   @override
-  set currentUser(User? value) {
+  set currentUser(User value) {
     _$currentUserAtom.reportWrite(value, super.currentUser, () {
       super.currentUser = value;
     });
@@ -95,6 +95,15 @@ mixin _$SessionState on _SessionState, Store {
   @override
   Future<void> googleLogin() {
     return _$googleLoginAsyncAction.run(() => super.googleLogin());
+  }
+
+  late final _$finishLoginProcessAsyncAction =
+      AsyncAction('_SessionState.finishLoginProcess', context: context);
+
+  @override
+  Future<void> finishLoginProcess(GoogleAuthService googleAuth) {
+    return _$finishLoginProcessAsyncAction
+        .run(() => super.finishLoginProcess(googleAuth));
   }
 
   late final _$_SessionStateActionController =
