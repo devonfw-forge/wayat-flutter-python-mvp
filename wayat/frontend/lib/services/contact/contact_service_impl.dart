@@ -25,16 +25,18 @@ class ContactServiceImpl extends ContactService {
   }
 
   @override
-  void sendRequests(List<Contact> contacts) {
-    super.sendPostRequest(
+  Future<void> sendRequests(List<Contact> contacts) async {
+    print("SENDD: ${{"users": contacts.map((e) => e.id).toList()}}");
+    Response res = await super.sendPostRequest(
         "users/add-contact", {"users": contacts.map((e) => e.id).toList()});
+    print("RESSS: ${res.statusCode} ${res.body}");
   }
 
   @override
   Future<List<Contact>> getFilteredContacts(
       List<ContactAdressBook> importedContacts) async {
     List<String> phoneList =
-        importedContacts.map((e) => e.phoneNumber.replaceAll(RegExp(r' '), '')).toList();
+        importedContacts.map((e) => e.phoneNumber.replaceAll(' ', '')).toList();
 
     //super.sendPostRequest("/users/find-by-phone", bod)
     print("LIST: $phoneList");
