@@ -34,26 +34,34 @@ dependencies:
   flutter_config: ^2.0.0
   # Google maps
   google_maps_flutter: ^2.1.10
-  # Google sign in button
-  flutter_signin_button: ^2.0.0
   # AZ ListView for imported contacts
   azlistview: ^2.0.0
   # Key Value storage
   shared_preferences: ^2.0.15
   # Handles logic to import address books contacts
   flutter_contacts: ^1.1.5
+  # Google Sign In
+  google_sign_in: ^5.4.0
+  # Http request for backend
+  http: ^0.13.4
+  # Decoding Token ID
+  jwt_decode: ^0.3.1
+  # Phone validation
+  phone_number: ^0.12.0+2
   # Phone textfield with countries
   intl_phone_field: ^3.1.0
   json_serializable: ^6.3.1
   json_annotation: ^4.6.0
-  http: ^0.13.4
   flutter_cache_manager: ^3.3.0
   image: ^3.2.0
   # For the x minutes ago in the Pop Up for the Map contacts
   timeago: ^3.2.2
   # To launch google maps app
   url_launcher: ^6.1.5
-
+  #Firebase dependencies
+  firebase_core: ^1.20.0
+  cloud_firestore: ^3.4.3
+  firebase_auth: ^3.6.1
 
 dev_dependencies:
   flutter_test:
@@ -77,4 +85,4 @@ flutter:
   uses-material-design: true
   assets:
     - .env
-    - assets/images/dialog.png
+    - assets/images/

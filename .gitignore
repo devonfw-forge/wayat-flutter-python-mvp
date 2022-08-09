@@ -3,6 +3,10 @@ wayat/frontend/linux/
 wayat/frontend/macos/
 
 # Miscellaneous
+*.cc
+*.h
+*.cmake
+*.env
 *.class
 *.lock
 *.log
@@ -124,38 +128,6 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
-SPIKES/images_from_camera_gallery/images_camera_gallery/linux/flutter/generated_plugin_registrant.cc
-SPIKES/images_from_camera_gallery/images_camera_gallery/linux/flutter/generated_plugin_registrant.h
-SPIKES/images_from_camera_gallery/images_camera_gallery/linux/flutter/generated_plugins.cmake
-SPIKES/images_from_camera_gallery/images_camera_gallery/windows/flutter/generated_plugin_registrant.cc
-SPIKES/images_from_camera_gallery/images_camera_gallery/windows/flutter/generated_plugin_registrant.h
-SPIKES/images_from_camera_gallery/images_camera_gallery/windows/flutter/generated_plugins.cmake
-SPIKES/Localization/linux/flutter/generated_plugin_registrant.cc
-SPIKES/Localization/linux/flutter/generated_plugin_registrant.h
-SPIKES/Localization/linux/flutter/generated_plugins.cmake
-SPIKES/Localization/windows/flutter/generated_plugin_registrant.cc
-SPIKES/Localization/windows/flutter/generated_plugin_registrant.h
-SPIKES/Localization/windows/flutter/generated_plugins.cmake
-SPIKES/Routing/auto_route_example/linux/flutter/generated_plugin_registrant.cc
-SPIKES/Routing/auto_route_example/linux/flutter/generated_plugin_registrant.h
-SPIKES/Routing/auto_route_example/linux/flutter/generated_plugins.cmake
-SPIKES/Routing/auto_route_example/windows/flutter/generated_plugin_registrant.cc
-SPIKES/Routing/auto_route_example/windows/flutter/generated_plugin_registrant.h
-SPIKES/Routing/auto_route_example/windows/flutter/generated_plugins.cmake
-SPIKES/Routing/fluro_vs_autoroute/linux/flutter/generated_plugin_registrant.cc
-SPIKES/Routing/fluro_vs_autoroute/linux/flutter/generated_plugin_registrant.h
-SPIKES/Routing/fluro_vs_autoroute/linux/flutter/generated_plugins.cmake
-SPIKES/Routing/fluro_vs_autoroute/windows/flutter/generated_plugin_registrant.cc
-SPIKES/Routing/fluro_vs_autoroute/windows/flutter/generated_plugin_registrant.h
-SPIKES/Routing/fluro_vs_autoroute/windows/flutter/generated_plugins.cmake
-SPIKES/Routing/Navigation/linux/flutter/generated_plugin_registrant.cc
-SPIKES/Routing/Navigation/linux/flutter/generated_plugin_registrant.h
-SPIKES/Routing/Navigation/linux/flutter/generated_plugins.cmake
-SPIKES/Routing/Navigation/windows/flutter/generated_plugin_registrant.cc
-SPIKES/Routing/Navigation/windows/flutter/generated_plugin_registrant.h
-SPIKES/Routing/Navigation/windows/flutter/generated_plugins.cmake
-SPIKES/State Management/MobX&GetIt/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-SPIKES/State Management/MobX&GetIt/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
 wayat/.env
-*.cc
 SPIKES/firestore/firestore_example/android/app/google-services.json

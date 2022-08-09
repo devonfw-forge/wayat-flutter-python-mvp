@@ -1,6 +1,6 @@
 import json
 from functools import lru_cache
-from typing import TypeVar, Generic, Type, overload, Any
+from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator
 
 from fastapi import Depends
 from google.cloud.firestore import AsyncClient, AsyncCollectionReference, AsyncDocumentReference
@@ -20,7 +20,7 @@ class BaseFirebaseModel(BaseModel):
 ModelType = TypeVar("ModelType", bound=BaseFirebaseModel)
 
 
-def _get_async_client():
+def get_async_client():
     return AsyncClient.from_service_account_info(_get_account_info())
 
 
@@ -34,7 +34,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
     def __init__(self, *,
                  collection_path: str | tuple[str],
                  model: Type[ModelType],
-                 client: AsyncClient = Depends(_get_async_client)):
+                 client: AsyncClient = Depends(get_async_client)):
         """
         Object with default methods to Create, Read, Update and Delete (CRUD) from a Firestore Collection.
         """
@@ -73,6 +73,27 @@ class BaseFirestoreRepository(Generic[ModelType]):
             await self._get_document_reference(document_id).update(data)
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
+
+    async def where(self, field: str, operation: str, value: Any) -> AsyncGenerator[ModelType, None]:
+        all_generators = []
+
+        def find(sublist: list[Any]):
+            stream = self._get_collection_reference().where(field, operation, sublist).stream()
+            return stream # .stream() returns AsyncGenerator in the async client
+
+        if operation == 'in':
+            residual = len(value) % 10
+            num_iterations = len(value) // 10
+            if residual > 0:
+                num_iterations += 1
+            for i in range(0, num_iterations):
+                all_generators.append(find(value[i * 10:(i + 1) * 10]))
+        else:
+            all_generators = find(value)
+
+        for generator in all_generators:
+            async for item in generator:
+                yield self._model(document_id=item.id, **item.to_dict())
 
     async def delete(self, *, model: ModelType | None = None, document_id: str | None = None):
         id_to_delete = document_id or (model.document_id if model else None)

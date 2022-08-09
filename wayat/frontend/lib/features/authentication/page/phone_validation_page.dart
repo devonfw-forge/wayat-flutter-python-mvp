@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -18,7 +20,9 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
   final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
   final userSession = GetIt.I.get<SessionState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  bool validPhone = false;
+  bool _validPhone = false;
+  String _phoneNumber = "";
+  String _errorPhoneMsg = "";
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +52,13 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
       child: Column(
         children: [
           Text(
-            appLocalizations.phoneVerificationTitle,
+            appLocalizations.phoneNumber,
             style: const TextStyle(fontSize: 20),
           ),
           const SizedBox(
             height: 10,
           ),
-          Text(appLocalizations.phoneVerificationDescription,
+          Text(appLocalizations.phonePageDescription,
               textAlign: TextAlign.center),
           const SizedBox(
             height: 25,
@@ -77,13 +81,20 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   IntlPhoneField _phoneInput() {
     return IntlPhoneField(
+      // Only numbers are allowed as input
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      ],
       decoration: InputDecoration(
-          labelText: 'Phone Number',
+          errorText: _errorPhoneMsg != "" ? _errorPhoneMsg : null,
+          labelText: appLocalizations.phoneNumber,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
       onChanged: (phone) {
         setState(() {
-          validPhone = _formKey.currentState!.validate();
+          _validPhone = _formKey.currentState!.validate();
+          if (_validPhone) _phoneNumber = phone.completeNumber;
         });
       },
     );
@@ -93,13 +104,23 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
     return Container(
       padding: const EdgeInsets.only(top: 30),
       child: CustomOutlinedButton(
-        onPressed: !validPhone ? null : _submit,
-        text: appLocalizations.sendPhoneButton,
+        onPressed: !_validPhone ? null : _submit,
+        text: appLocalizations.next,
       ),
     );
   }
 
-  _submit() {
-    userSession.setPhoneValidation(_formKey.currentState!.validate());
+  _submit() async {
+    userSession.phoneNumber = _phoneNumber;
+    bool updated =
+        await userSession.authService.updatePhone(userSession.phoneNumber);
+    userSession.currentUser.phone = userSession.phoneNumber;
+    if (updated) {
+      userSession.setFinishLoggedIn(true);
+    } else {
+      setState(() {
+        _errorPhoneMsg = appLocalizations.phoneUpdateError;
+      });
+    }
   }
 }

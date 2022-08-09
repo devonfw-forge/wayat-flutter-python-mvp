@@ -56,6 +56,28 @@ mixin _$MapController on _MapController, Store {
   }
 
   @override
+  void setContacts(List<ContactLocation> newContacts) {
+    final _$actionInfo = _$_MapControllerActionController.startAction(
+        name: '_MapController.setContacts');
+    try {
+      return super.setContacts(newContacts);
+    } finally {
+      _$_MapControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSharingLocation(bool newValue) {
+    final _$actionInfo = _$_MapControllerActionController.startAction(
+        name: '_MapController.setSharingLocation');
+    try {
+      return super.setSharingLocation(newValue);
+    } finally {
+      _$_MapControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentLocation: ${currentLocation},

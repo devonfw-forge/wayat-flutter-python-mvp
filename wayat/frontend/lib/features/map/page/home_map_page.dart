@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
@@ -11,6 +12,8 @@ import 'package:wayat/lang/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
   final LocationState locationState = GetIt.I.get<LocationState>();
+  ContactsLocationState contactsLocationState =
+      GetIt.I.get<ContactsLocationState>();
   late MapController controller;
   late GoogleMapController gMapController;
 
@@ -25,6 +28,11 @@ class HomeMapPage extends StatelessWidget {
     return Stack(
       children: [
         Observer(builder: (context) {
+          List<ContactLocation> contacts = contactsLocationState.contacts;
+          if (contacts != controller.contacts) {
+            controller.setContacts(contacts);
+            controller.getMarkers();
+          }
           Set<Marker> markers = controller.markers;
           LatLng currentLocation = LatLng(
               locationState.currentLocation.latitude,
@@ -50,10 +58,10 @@ class HomeMapPage extends StatelessWidget {
         rotateGesturesEnabled: false,
         mapType: MapType.normal,
         markers: markers,
-        onLongPress: (_) => controller.getMarkers(),
+        onLongPress: (_) => controller.markers,
         onMapCreated: (googleMapController) {
           gMapController = googleMapController;
-          controller.getMarkers();
+          controller.markers;
         },
         onCameraMove: (pos) => {
               if (pos.target != currentLocation)
@@ -134,7 +142,6 @@ class HomeMapPage extends StatelessWidget {
 
   void showContactDialog(
       ContactLocation contact, BitmapDescriptor icon, BuildContext context) {
-    debugPrint("Pressed ${contact.displayName}");
     showDialog(
         context: context,
         builder: (context) {

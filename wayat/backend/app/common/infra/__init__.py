@@ -17,7 +17,7 @@ class IDPType(Enum):
     FIREBASE = FirebaseService, FirebaseSettings
 
 
-def __get_idp() -> (IdentityProvider, IDPType):
+def __get_idp() -> tuple[IdentityProvider, IDPType]:
     """Factory that creates the instance of the Identity Provider given the app configuration"""
     for idp_enum_value in IDPType:
         try:
