@@ -39,7 +39,10 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)
         return contacts_entities
 
-    async def update_user_location(self, uid: str, latitude: float, longitude: float):
+    async def update_user_location(self, uid: str, latitude: float, longitude: float) -> None:
         location: Location = Location(value=GeoPoint(latitude, longitude), last_updated=datetime.datetime.utcnow())
         await self.update(data={"location": location.dict()}, document_id=uid)
 
+    async def get_user_location(self, uid: str) -> Location:
+        user_entity = await self.get(uid)
+        return user_entity.location
