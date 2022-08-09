@@ -89,14 +89,6 @@ mixin _$SessionState on _SessionState, Store {
     });
   }
 
-  late final _$googleLoginAsyncAction =
-      AsyncAction('_SessionState.googleLogin', context: context);
-
-  @override
-  Future<void> googleLogin() {
-    return _$googleLoginAsyncAction.run(() => super.googleLogin());
-  }
-
   late final _$finishLoginProcessAsyncAction =
       AsyncAction('_SessionState.finishLoginProcess', context: context);
 
@@ -104,6 +96,14 @@ mixin _$SessionState on _SessionState, Store {
   Future<void> finishLoginProcess(GoogleAuthService googleAuth) {
     return _$finishLoginProcessAsyncAction
         .run(() => super.finishLoginProcess(googleAuth));
+  }
+
+  late final _$googleLoginAsyncAction =
+      AsyncAction('_SessionState.googleLogin', context: context);
+
+  @override
+  Future<void> googleLogin() {
+    return _$googleLoginAsyncAction.run(() => super.googleLogin());
   }
 
   late final _$_SessionStateActionController =

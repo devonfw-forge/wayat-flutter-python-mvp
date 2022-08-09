@@ -14,6 +14,8 @@ class LoginWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
+      bool signedIn = controller.googleSignedIn;
+      bool validPhone = controller.phoneValidation;
       return FutureBuilder(
           future: controller.isLogged(),
           builder: (_, snapshot) {
@@ -22,8 +24,6 @@ class LoginWrapper extends StatelessWidget {
                 controller.finishLoginProcess(
                     controller.authService as GoogleAuthService);
               }
-              bool signedIn = controller.googleSignedIn;
-              bool validPhone = controller.phoneValidation;
               return AutoRouter.declarative(
                   routes: (_) => [
                         if (!signedIn)

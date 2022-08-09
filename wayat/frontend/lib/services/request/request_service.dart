@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
@@ -10,7 +11,7 @@ abstract class RequestService extends Service {
   Future<Map<String, String>> _getHeaders() async {
     AuthService authService = GetIt.I.get<SessionState>().authService;
     return {
-      "Content-Type": "application/json",
+      "Content-Type": ContentType.json.toString(),
       "Authorization": "Bearer ${await authService.getIdToken()}"
     };
   }

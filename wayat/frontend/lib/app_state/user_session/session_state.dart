@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/user/user.dart';
@@ -41,6 +42,9 @@ abstract class _SessionState with Store {
 
   Future<bool> isLogged() async {
     final logged = await authService.signInSilently();
+    if (logged != null) {
+      currentUser = await (authService as GoogleAuthService).getUserData();
+    }
     return logged != null;
   }
 
@@ -55,8 +59,21 @@ abstract class _SessionState with Store {
   }
 
   @action
-  void setFinishLoggedIn(bool finishedLoggedIn) {
+  void setFinishLoggedIn(bool finishedLoggedIn) async {
+    currentUser = await (authService as GoogleAuthService).getUserData();
     finishLoggedIn = finishedLoggedIn;
+  }
+
+  @action
+  Future<void> finishLoginProcess(GoogleAuthService googleAuth) async {
+    setGoogleSignIn(true);
+    if (await googleAuth.hasPhoneNumber()) {
+      setPhoneValidation(true);
+      setFinishLoggedIn(true);
+      if (await googleAuth.isOnboardingCompleted()) {
+        doneOnBoarding();
+      }
+    }
   }
 
   @action
@@ -70,18 +87,11 @@ abstract class _SessionState with Store {
           email: gaccount.email,
           imageUrl: gaccount.photoUrl ?? "",
           phone: "");
-      await finishLoginProcess(googleAuth);
-    }
-  }
-
-  @action
-  Future<void> finishLoginProcess(GoogleAuthService googleAuth) async {
-    setGoogleSignIn(true);
-    if (await googleAuth.hasPhoneNumber()) {
-      setPhoneValidation(true);
-      setFinishLoggedIn(true);
-      if (await googleAuth.isOnboardingCompleted()) {
-        doneOnBoarding();
+      setGoogleSignIn(true);
+      if (await googleAuth.hasPhoneNumber()) {
+        setPhoneValidation(true);
+        setFinishLoggedIn(true);
+        await finishLoginProcess(googleAuth);
       }
     }
   }
