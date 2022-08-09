@@ -13,7 +13,8 @@ abstract class _ContactsLocationState with Store {
   ContactService contactService = ContactServiceImpl();
 
   _ContactsLocationState() {
-    contactService.setUpContactsListener(setContactList);
+    contactService
+        .setUpContactsListener((contacts) => setContactList(contacts));
   }
 
   @observable
@@ -22,6 +23,7 @@ abstract class _ContactsLocationState with Store {
   @action
   void setContactList(List<ContactLocation> newContacts) {
     contacts = newContacts;
+    print("IN CONTACT LOCATION STATE " + contacts.toString());
   }
 
   void fetchContacts() {}

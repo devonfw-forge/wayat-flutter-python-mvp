@@ -32,7 +32,10 @@ class HomeMapPage extends StatelessWidget {
       children: [
         Observer(builder: (context) {
           List<ContactLocation> contacts = contactsLocationState.contacts;
-          controller.setContacts(contacts);
+          if (contacts != controller.contacts) {
+            controller.setContacts(contacts);
+            controller.getMarkers();
+          }
           Set<Marker> markers = controller.markers;
           return googleMap(markers);
         }),
@@ -54,10 +57,10 @@ class HomeMapPage extends StatelessWidget {
         rotateGesturesEnabled: false,
         mapType: MapType.normal,
         markers: markers,
-        onLongPress: (_) => controller.getMarkers(),
+        onLongPress: (_) => controller.markers,
         onMapCreated: (googleMapController) {
           gMapController = googleMapController;
-          controller.getMarkers();
+          controller.markers;
         },
         onCameraMove: (pos) => {
               if (pos.target != _valencia.target)

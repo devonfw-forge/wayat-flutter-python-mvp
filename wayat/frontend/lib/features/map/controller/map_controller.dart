@@ -61,7 +61,7 @@ abstract class _MapController with Store {
 
   @action
   void setContacts(List<ContactLocation> newContacts) {
-    contacts = newContacts;
+    if (contacts != newContacts) contacts = newContacts;
   }
 
   @action

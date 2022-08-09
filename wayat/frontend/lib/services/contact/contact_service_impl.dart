@@ -53,20 +53,26 @@ class ContactServiceImpl extends ContactService {
   }
 
   @override
-  void setUpContactsListener(Function onContactsUpdate) async {
+  void setUpContactsListener(
+      Function(List<ContactLocation>) onContactsUpdate) async {
     debugPrint("Setting up contacts listener");
     print("AAAAAAA" + GetIt.I.get<SessionState>().currentUser.id);
     final docRef =
         db.collection("status").doc(GetIt.I.get<SessionState>().currentUser.id);
-    _getUsersFromContactRefs((await docRef.get()).data()!);
+    onContactsUpdate(
+        await _getUsersFromContactRefs((await docRef.get()).data()!));
     docRef.snapshots().listen(
-          (event) => _getUsersFromContactRefs(event.data()!),
+          (event) async =>
+              onContactsUpdate(await _getUsersFromContactRefs(event.data()!)),
           onError: (error) => print("Listen failed: $error"),
         );
     debugPrint("Listener set up");
   }
 
-  void _getUsersFromContactRefs(Map<String, dynamic> firestoreData) async {
+  Future<List<ContactLocation>> _getUsersFromContactRefs(
+      Map<String, dynamic> firestoreData) async {
+    print("GET USER FROM CONTACT REFS");
+
     List<Contact> contacts = await getAll();
     print(firestoreData);
     if ((firestoreData["contact_refs"] as List).isNotEmpty) {
@@ -89,7 +95,10 @@ class ContactServiceImpl extends ContactService {
         return located;
       }).toList();
 
-      GetIt.I.get<ContactsLocationState>().setContactList(contactLocations);
+      print("CONTACT LOCATIONS " + contactLocations.toString());
+
+      return contactLocations;
     }
+    return [];
   }
 }
