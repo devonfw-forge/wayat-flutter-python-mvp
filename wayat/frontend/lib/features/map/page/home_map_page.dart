@@ -37,6 +37,7 @@ class HomeMapPage extends StatelessWidget {
           LatLng currentLocation = LatLng(
               locationState.currentLocation.latitude,
               locationState.currentLocation.longitude);
+          gMapController.moveCamera(CameraUpdate.newLatLng(currentLocation));
           return googleMap(markers, currentLocation);
         }),
         _bottomSheet()

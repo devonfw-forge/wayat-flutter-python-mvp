@@ -22,8 +22,8 @@ abstract class _LocationState with Store {
 
   Future initialize() async {
     debugPrint("Initializing from state");
-    shareLocationService = await ShareLocationServiceImpl.create(
-        locationMode, shareLocationEnabled);
+    shareLocationService = await ShareLocationServiceImpl.create(locationMode,
+        shareLocationEnabled, (newLoc) => setCurrentLocation(newLoc));
     debugPrint("Service created");
     LocationData currentLocationData =
         shareLocationService.getCurrentLocation();
@@ -42,5 +42,10 @@ abstract class _LocationState with Store {
   void setShareLocationEnabled(bool shareLocation) {
     shareLocationEnabled = shareLocation;
     shareLocationService.setShareLocationEnabled(shareLocation);
+  }
+
+  @action
+  void setCurrentLocation(LatLng newLocation) {
+    currentLocation = newLocation;
   }
 }

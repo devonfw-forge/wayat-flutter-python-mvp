@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
@@ -20,6 +23,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late ShareLocationMode shareLocationMode;
   late DateTime lastShared;
   late bool shareLocationEnabled;
+  late Function(LatLng) changeLocationStateCallback;
 
   /// Creates a ShareLocationService.
   ///
@@ -28,8 +32,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
   ///
   /// It can throw A NoLocationServiceException if the call
   /// to Location.requestService() results in an error
-  static Future<ShareLocationServiceImpl> create(
-      ShareLocationMode mode, bool shareLocation) async {
+  static Future<ShareLocationServiceImpl> create(ShareLocationMode mode,
+      bool shareLocation, Function(LatLng) onLocationChangedCallback) async {
     Location location = Location();
 
     bool locationServiceEnabled = await location.serviceEnabled();
@@ -58,7 +62,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     debugPrint("Creating location service");
     return ShareLocationServiceImpl._create(
-        initialLocation, mode, shareLocation);
+        initialLocation, mode, shareLocation, onLocationChangedCallback);
   }
 
   /// Private factory for the location service
@@ -66,28 +70,29 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// It needs to be divided in private and public static factory to be able to
   /// make the necessary async calls in the public version
   ShareLocationServiceImpl._create(
-      LocationData initialLocation, ShareLocationMode mode, bool shareLocation)
+      LocationData initialLocation,
+      ShareLocationMode mode,
+      bool shareLocation,
+      Function(LatLng) onLocationChangedCallback)
       : super.create() {
     location = Location.instance;
     shareLocationMode = mode;
     lastShared = DateTime.now();
     currentLocation = initialLocation;
     shareLocationEnabled = shareLocation;
+    changeLocationStateCallback = onLocationChangedCallback;
 
     location.enableBackgroundMode(enable: true);
 
-    debugPrint("Listening locations");
     location.onLocationChanged.listen((LocationData newLocation) {
       debugPrint("Location changed");
       if (shareLocationEnabled) {
         manageLocationChange(newLocation);
       }
     });
-    debugPrint("Finished creation process");
   }
 
   void manageLocationChange(LocationData newLocation) {
-    debugPrint("Managing location");
     if (shareLocationMode == ShareLocationMode.Passive) {
       DateTime now = DateTime.now();
       debugPrint("${lastShared.difference(now)}");
@@ -107,13 +112,19 @@ class ShareLocationServiceImpl extends ShareLocationService {
   }
 
   @override
-  void sendLocationToBack(LocationData newLocation) {
-    debugPrint("Location $newLocation sent to Back at $lastShared");
+  void sendLocationToBack(LocationData locationData) {
+    changeLocationStateCallback(
+        LatLng(locationData.latitude!, locationData.longitude!));
+    super.sendPostRequest("/map/update-location", {
+      "position": {
+        "longitude": locationData.longitude,
+        "latitude": locationData.latitude
+      }
+    });
   }
 
   @override
   LocationData getCurrentLocation() {
-    debugPrint("Current location $currentLocation");
     return currentLocation;
   }
 
