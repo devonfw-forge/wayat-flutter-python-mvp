@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 @router.get("/profile", description="Get a user profile", response_model=UserProfileResponse)
 async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user()),
                            user_service: UserService = Depends()):
+    logger.debug(f"Getting user profile with id {user.uid}")
     user_dto, new_user = await user_service.get_or_create(user.uid, user)
     return UserProfileResponse(**user_dto.dict(), new_user=new_user)
 
@@ -40,6 +41,7 @@ async def update_user_profile(request: UpdateUserRequest,
              response_model=ListUsersWithPhoneResponse,
              dependencies=[Depends(get_user())])
 async def get_users_filtered(request: FindByPhoneRequest, user_service: UserService = Depends(UserService)):
+    logger.debug(f"Getting contacts with phones {request.phones}")
     users = await user_service.find_by_phone(request.phones)
     users_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in users]
     return ListUsersWithPhoneResponse(users=users_phone)
@@ -48,6 +50,7 @@ async def get_users_filtered(request: FindByPhoneRequest, user_service: UserServ
 @router.post("/add-contact", description="Add a list of users to the contact list")
 async def add_contact(request: AddContactsRequest, user_service: UserService = Depends(UserService),
                       user: FirebaseAuthenticatedUser = Depends(get_user())):
+    logger.debug(f"Adding contacts {request.users}")
     await user_service.add_contacts(uid=user.uid, users=request.users)
 
 
@@ -60,6 +63,7 @@ async def update_preferences(request: UpdatePreferencesRequest):
 @router.get("/contacts", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
 async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
                        user_service: UserService = Depends(UserService)):
+    logger.debug(f"Getting contacts for user {user.uid}")
     cts = await user_service.get_contacts(user.uid)
     contacts_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in cts]
     return ListUsersWithPhoneResponse(users=contacts_phone)
