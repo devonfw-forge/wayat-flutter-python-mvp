@@ -48,7 +48,7 @@ class User {
       name: map['name'] as String,
       email: map['email'] as String,
       imageUrl: map['image_url'] as String,
-      phone: map['phone'] as String,
+      phone: map['phone'] ?? "",
     );
   }
 
