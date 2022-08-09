@@ -8,7 +8,6 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();

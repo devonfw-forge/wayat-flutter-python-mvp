@@ -40,18 +40,12 @@ mixin _$ContactController on _ContactController, Store {
     });
   }
 
-  late final _$_ContactControllerActionController =
-      ActionController(name: '_ContactController', context: context);
+  late final _$updateContactsAsyncAction =
+      AsyncAction('_ContactController.updateContacts', context: context);
 
   @override
-  void updateContacts() {
-    final _$actionInfo = _$_ContactControllerActionController.startAction(
-        name: '_ContactController.updateContacts');
-    try {
-      return super.updateContacts();
-    } finally {
-      _$_ContactControllerActionController.endAction(_$actionInfo);
-    }
+  Future<dynamic> updateContacts() {
+    return _$updateContactsAsyncAction.run(() => super.updateContacts());
   }
 
   @override
