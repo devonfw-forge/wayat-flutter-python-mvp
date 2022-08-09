@@ -34,9 +34,10 @@ class ContactServiceImpl extends ContactService {
   Future<List<Contact>> getFilteredContacts(
       List<ContactAdressBook> importedContacts) async {
     List<String> phoneList =
-        importedContacts.map((e) => e.phoneNumber).toList();
+        importedContacts.map((e) => e.phoneNumber.replaceAll(RegExp(r' '), '')).toList();
 
     //super.sendPostRequest("/users/find-by-phone", bod)
+    print("LIST: $phoneList");
     Response response = await super
         .sendPostRequest("users/find-by-phone", {"phones": phoneList});
     Map<String, dynamic> jsonBody = jsonDecode(response.body);
