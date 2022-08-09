@@ -23,9 +23,6 @@ class ProgressOnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: REMOVE THIS WHEN THE BACKEND IS COMPLETED TO ADD CONTACTS
-    controller.addAll(ContactsMock.contacts);
-
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(40), child: CustomAppBar()),

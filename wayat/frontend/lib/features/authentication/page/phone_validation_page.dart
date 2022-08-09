@@ -81,7 +81,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   IntlPhoneField _phoneInput() {
     return IntlPhoneField(
-      // Only numbers are allowed as input 
+      // Only numbers are allowed as input
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -112,7 +112,8 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   _submit() async {
     userSession.phoneNumber = _phoneNumber;
-    bool updated = await userSession.authService.updatePhone(userSession.phoneNumber);
+    bool updated =
+        await userSession.authService.updatePhone(userSession.phoneNumber);
     userSession.currentUser.phone = userSession.phoneNumber;
     if (updated) {
       userSession.setFinishLoggedIn(true);
