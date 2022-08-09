@@ -59,7 +59,8 @@ abstract class _SessionState with Store {
   }
 
   @action
-  void setFinishLoggedIn(bool finishedLoggedIn) {
+  void setFinishLoggedIn(bool finishedLoggedIn) async {
+    currentUser = await (authService as GoogleAuthService).getUserData();
     finishLoggedIn = finishedLoggedIn;
   }
 
