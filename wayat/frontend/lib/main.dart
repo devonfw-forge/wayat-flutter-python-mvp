@@ -33,7 +33,8 @@ void registerRepositories() {
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-  GetIt.I.registerSingleton<ContactsLocationState>(ContactsLocationState());
+  GetIt.I.registerLazySingleton<ContactsLocationState>(
+      () => ContactsLocationState());
 }
 
 class MyApp extends StatelessWidget {
