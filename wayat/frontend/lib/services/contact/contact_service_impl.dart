@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/services/contact/contact_service.dart';
@@ -9,10 +11,16 @@ import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class ContactServiceImpl extends ContactService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
+  ContactsLocationState contactsLocationState =
+      GetIt.I.get<ContactsLocationState>();
 
   @override
-  List<Contact> getAll() {
-    return ContactsMock.contacts;
+  Future<List<Contact>> getAll() async {
+    Map<String, dynamic> response = await sendGetRequest("users/contacts");
+    List<Contact> contacts = (response["users"] as List<dynamic>)
+        .map((e) => Contact.fromMap(e))
+        .toList();
+    return contacts;
   }
 
   @override
@@ -45,11 +53,15 @@ class ContactServiceImpl extends ContactService {
     debugPrint("Setting up contacts listener");
     final docRef = db.collection("status").doc("7cQMpsydsfeyIVhmQO3RJaHkwJA2");
     final docData = await docRef.get();
-    //print("Imperative " + docData.data()!["active"].toString());
     docRef.snapshots().listen(
-          (event) => debugPrint("Listener ${event.data()}"),
+          (event) => _getUsersFromContactRefs(event.data()!),
           onError: (error) => print("Listen failed: $error"),
         );
     debugPrint("Listener set up");
+  }
+
+  void _getUsersFromContactRefs(Map<String, dynamic> firestoreData) async {
+    List<Contact> contacts = await getAll();
+    //TODO: BUILD CONTACT LOCATION LIST WITH FIRESTORE DATA AND CONTACT LIST USING THE IDS
   }
 }
