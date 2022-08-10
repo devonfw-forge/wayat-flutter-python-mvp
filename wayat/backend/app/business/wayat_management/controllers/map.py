@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 async def update_location(request: LocationUpdateRequest,
                           user: FirebaseAuthenticatedUser = Depends(get_user()),
                           map_service: MapService = Depends()):
+    logger.debug(f"Updating location {request.position}")
     await map_service.update_location(user.uid, request.position.latitude, request.position.longitude)
 
 
