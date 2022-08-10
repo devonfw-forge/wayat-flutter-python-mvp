@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:wayat/domain/user/user.dart';
 
-class Contact extends User{
+class Contact extends User {
   bool available;
 
   Contact({
     required this.available,
+    required super.id,
     required super.name,
     required super.email,
     required super.imageUrl,
@@ -16,6 +17,7 @@ class Contact extends User{
   @override
   Contact copyWith({
     bool? available,
+    String? id,
     String? name,
     String? email,
     String? imageUrl,
@@ -23,6 +25,7 @@ class Contact extends User{
   }) {
     return Contact(
       available: available ?? this.available,
+      id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       imageUrl: imageUrl ?? this.imageUrl,
@@ -39,10 +42,11 @@ class Contact extends User{
 
   factory Contact.fromMap(Map<String, dynamic> map) {
     return Contact(
-      available: map['available'] as bool,
+      id: map['id'] as String,
+      available: map['available'] ?? false,
       name: map['name'] as String,
-      email: map['email'] as String,
-      imageUrl: map['imageUrl'] as String,
+      email: map['email'] ?? "",
+      imageUrl: map['image_url'] as String,
       phone: map['phone'] as String,
     );
   }
@@ -62,13 +66,11 @@ class Contact extends User{
   bool operator ==(covariant Contact other) {
     if (identical(this, other)) return true;
 
-    return other.available == available &&
-        super == other;
+    return other.available == available && super == other;
   }
 
   @override
   int get hashCode {
-    return available.hashCode ^
-        super.hashCode;
+    return available.hashCode ^ super.hashCode;
   }
 }

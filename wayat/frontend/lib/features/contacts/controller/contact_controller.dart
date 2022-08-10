@@ -22,7 +22,7 @@ abstract class _ContactController with Store {
       _contacts.where((contact) => !contact.available).toList();
 
   @action
-  void updateContacts() {
-    _contacts = ObservableList.of(_service.getAll());
+  Future updateContacts() async {
+    _contacts = ObservableList.of(await _service.getAll());
   }
 }

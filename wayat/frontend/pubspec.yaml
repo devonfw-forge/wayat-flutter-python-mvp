@@ -40,9 +40,6 @@ dependencies:
   flutter_contacts: ^1.1.5
   # Google Sign In
   google_sign_in: ^5.4.0
-  # Firebase Auth
-  firebase_auth: ^3.6.1
-  firebase_core: ^1.20.0
   # Http request for backend
   http: ^0.13.4
   # Decoding Token ID
@@ -61,6 +58,10 @@ dependencies:
   timeago: ^3.2.2
   # To launch google maps app
   url_launcher: ^6.1.5
+  #Firebase dependencies
+  firebase_core: ^1.20.0
+  cloud_firestore: ^3.4.3
+  firebase_auth: ^3.6.1
 
 dev_dependencies:
   flutter_test:

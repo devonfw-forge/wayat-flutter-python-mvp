@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/user/user.dart';
@@ -10,7 +11,6 @@ part 'session_state.g.dart';
 class SessionState = _SessionState with _$SessionState;
 
 abstract class _SessionState with Store {
-
   @observable
   bool finishLoggedIn = false;
 
@@ -24,11 +24,11 @@ abstract class _SessionState with Store {
   bool hasDoneOnboarding = false;
 
   @observable
-  User currentUser = User(name: "", email: "", imageUrl: "", phone: "");
+  User currentUser = User(id: "", name: "", email: "", imageUrl: "", phone: "");
 
   final AuthService _authService = GoogleAuthService();
   AuthService get authService => _authService;
-  
+
   final GooglePhoneService _phoneService = GooglePhoneService();
   GooglePhoneService get phoneService => _phoneService;
 
@@ -36,7 +36,16 @@ abstract class _SessionState with Store {
 
   @action
   void doneOnBoarding() {
+    authService.updateOnboarding();
     hasDoneOnboarding = true;
+  }
+
+  Future<bool> isLogged() async {
+    final logged = await authService.signInSilently();
+    if (logged != null) {
+      currentUser = await (authService as GoogleAuthService).getUserData();
+    }
+    return logged != null;
   }
 
   @action
@@ -50,28 +59,39 @@ abstract class _SessionState with Store {
   }
 
   @action
-  void setFinishLoggedIn(bool finishedLoggedIn) {
+  void setFinishLoggedIn(bool finishedLoggedIn) async {
+    currentUser = await (authService as GoogleAuthService).getUserData();
     finishLoggedIn = finishedLoggedIn;
   }
 
   @action
-  Future<void> googleLogin () async {
+  Future<void> finishLoginProcess(GoogleAuthService googleAuth) async {
+    setGoogleSignIn(true);
+    if (await googleAuth.hasPhoneNumber()) {
+      setPhoneValidation(true);
+      setFinishLoggedIn(true);
+      if (await googleAuth.isOnboardingCompleted()) {
+        doneOnBoarding();
+      }
+    }
+  }
+
+  @action
+  Future<void> googleLogin() async {
     GoogleAuthService googleAuth = (authService as GoogleAuthService);
     GoogleSignInAccount? gaccount = await googleAuth.signIn();
     if (gaccount != null) {
       currentUser = User(
-        name: gaccount.displayName ?? "", 
-        email: gaccount.email, 
-        imageUrl: gaccount.photoUrl ?? "", 
-        phone: ""
-      );
+          id: gaccount.id,
+          name: gaccount.displayName ?? "",
+          email: gaccount.email,
+          imageUrl: gaccount.photoUrl ?? "",
+          phone: "");
       setGoogleSignIn(true);
       if (await googleAuth.hasPhoneNumber()) {
         setPhoneValidation(true);
         setFinishLoggedIn(true);
-        if (await googleAuth.isOnboardingCompleted()) {
-          doneOnBoarding();
-        }
+        await finishLoginProcess(googleAuth);
       }
     }
   }
