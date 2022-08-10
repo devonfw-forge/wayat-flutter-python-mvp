@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _signInButton() {
     return InkWell(
       onTap: () async {
-        await userSession.googleLogin();
+        await userSession.login();
       },
       child: Ink(
         decoration: BoxDecoration(
