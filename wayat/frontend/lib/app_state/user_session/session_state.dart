@@ -54,7 +54,7 @@ abstract class _SessionState with Store {
   Future<void> updateCurrentUser() async {
     currentUser ??= await authService.getUserData();
   }
-  
+
   @action
   Future<bool> updatePhone(String phone) async {
     currentUser!.phone = phone;
@@ -73,9 +73,9 @@ abstract class _SessionState with Store {
   Future<void> doLoginProcess() async {
     setGoogleSignIn(true);
     if (await hasPhoneNumber()) {
-      setFinishLoggedIn(true);
+      await setFinishLoggedIn(true);
       if (await isOnboardingCompleted()) {
-        doneOnBoarding();
+        await doneOnBoarding();
       }
     }
   }
@@ -83,11 +83,7 @@ abstract class _SessionState with Store {
   Future<void> login() async {
     GoogleSignInAccount? gaccount = await authService.signIn();
     if (gaccount != null) {
-      setGoogleSignIn(true);
-      if (await hasPhoneNumber()) {
-        setFinishLoggedIn(true);
-        await doLoginProcess();
-      }
+      await doLoginProcess();
     }
   }
 

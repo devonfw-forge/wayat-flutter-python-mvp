@@ -21,6 +21,7 @@ class LoginWrapper extends StatelessWidget {
           builder: (_, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data as bool) {
+                print("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 controller.doLoginProcess();
               }
               return AutoRouter.declarative(
