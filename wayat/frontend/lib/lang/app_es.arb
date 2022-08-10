@@ -2,25 +2,15 @@
     "appTitle": "wayat",
 
     "login": "Iniciar sesión",
+    "loginGoogle": "Iniciar sesión con Google",
     "email": "Email",
     "password": "Contraseña",
     "phoneNumber": "Número de teléfono",
-    "sendVerification": "Enviar verificación",
     "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
-    "phoneVerificationTitle": "Verificación del teléfono",
-    "phoneVerificationDescription": "Se enviará un código de verificación a su teléfono",
     "phonePageDescription": "Se requiere un número de teléfono válido",
-    "codeVerificationTitle": "Código de verificación",
-    "verificationCodeDescription": "Inserta el código recibido",
-    "resendCode": "Reenviar código",
     "invalidPhoneNumber": "Número de teléfono inválido",
-    "tooManyTries": "Muchos intentos, prueba más tarde",
-    "timeoutSmsCodeMsg": "El código enviado ya no es válido",
-    "invalidSmsCode": "Código inválido",
-    "expiredSessionSmsCodeMsg": "La sesión ha expirado, reenviando código",
     "phoneUpdateError": "Error al configurar el número de teléfono",
-    "smsSixDigitsMsg": "Codigo SMS debe ser de 6 digitos",
-
+    
     "home": "Inicio",
     "contacts": "Contactos",
     "events": "Eventos",
@@ -30,8 +20,6 @@
     "notifications": "Notificaciones",
 
     "manageContactsTip": "Podrás modificar los\npermisos de tus contactos\ncuando quieras",
-
-
     "allowedContactsTitle": "Establece tus contactos",
     "allowedContactsBody": "Selecciona los contactos que podrán\nver tu posición y eventos. También\npodrás crear grupos de familia, amigos,\ntrabajo o lo que desees.",
 
@@ -40,7 +28,6 @@
 
     "next": "Siguiente",
     "skip": "Saltar",
-
 
     "selectContacts": "Selecciona contactos",
 

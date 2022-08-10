@@ -4,7 +4,7 @@ from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator
 
 from fastapi import Depends
 from google.cloud.firestore import AsyncClient, AsyncCollectionReference, AsyncDocumentReference
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from app.common.infra import get_firebase_settings
 
@@ -60,16 +60,20 @@ class BaseFirestoreRepository(Generic[ModelType]):
         ...
 
     @overload
-    async def update(self, *, data: dict[str, Any], document_id: str):
+    async def update(self, *, data: dict[str, Any], document_id: str, validate=True):
         ...
 
     async def update(self, *,
                      model: ModelType | None = None,
                      data: dict[str, Any] | None = None,
-                     document_id: str | None = None):
+                     document_id: str | None = None,
+                     validate=True):
         if model is not None:
             await self._get_document_reference(model.document_id).update(model.dict(exclude={"document_id"}))
         elif data is not None and document_id is not None:
+            not_defined_values = set(data.keys()).difference(self._model.__fields__.keys())
+            if validate and not_defined_values:
+                raise ValidationError(f"Tried to update fields {not_defined_values} which are not present in the model")
             await self._get_document_reference(document_id).update(data)
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
@@ -99,4 +103,4 @@ class BaseFirestoreRepository(Generic[ModelType]):
         id_to_delete = document_id or (model.document_id if model else None)
         if not id_to_delete:
             raise ValueError("Either model or document_id must be passed as argument")
-        await self._get_document_reference(document_id).delete()
+        await self._get_document_reference(id_to_delete).delete()

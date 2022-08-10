@@ -1,4 +1,4 @@
-import 'package:wayat/domain/user/user.dart' as wayat;
+import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -34,50 +34,12 @@ class GoogleAuthService extends AuthService {
     }
   }
 
-  /// Checks if the current user has a phone number, sending a **GET**
-  /// request to the *backend* service
-  @override
-  Future<bool> hasPhoneNumber() async {
-    // Gets backend data of the signed in user
-    final Map<String, dynamic> user =
-        await super.sendGetRequest("users/profile");
-    if (!user.containsKey("phone") ||
-        user["phone"] == null ||
-        user["phone"] == "") {
-      return false;
-    }
-    return true;
-  }
-
-  @override
-  Future<bool> updatePhone(String phone) async {
-    return (await super.sendPostRequest("users/profile", {"phone": phone}))
-                .statusCode /
-            10 ==
-        20;
-  }
-
-  @override
-  Future<bool> isOnboardingCompleted() async {
-    final Map<String, dynamic> user =
-        await super.sendGetRequest("users/profile");
-    return user["onboarding_completed"];
-  }
-
-  @override
-  Future<bool> updateOnboarding() async {
-    return (await super.sendPostRequest(
-                    "users/profile", {"onboarding_completed": true}))
-                .statusCode /
-            10 ==
-        20;
-  }
-
   /// Gets backend data of the current signed in user
-  Future<wayat.User> getUserData() async {
+  @override
+  Future<MyUser> getUserData() async {
     final Map<String, dynamic> user =
         await super.sendGetRequest("users/profile");
-    return wayat.User.fromMap(user);
+    return MyUser.fromMap(user);
   }
 
   /// Refresh the **account id token**

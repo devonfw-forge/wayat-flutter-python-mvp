@@ -3,7 +3,7 @@ import datetime
 from typing import Optional
 
 from fastapi import Depends
-from google.cloud.firestore import AsyncClient, GeoPoint
+from google.cloud.firestore import AsyncClient
 
 from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.wayat_management.models.user import UserEntity, Location
@@ -36,10 +36,16 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def get_contacts(self, uid: str):
         self_user = await self.get(uid)
         coroutines = [self.get(u) for u in self_user.contacts]
-        contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)
+        contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)  # type: ignore
         return contacts_entities
 
-    async def update_user_location(self, uid: str, latitude: float, longitude: float):
-        location: Location = Location(value=GeoPoint(latitude, longitude), last_updated=datetime.datetime.utcnow())
+    async def update_user_location(self, uid: str, latitude: float, longitude: float) -> None:
+        location: Location = Location(
+            value=(latitude, longitude),
+            last_updated=datetime.datetime.now(datetime.timezone.utc)
+        )
         await self.update(data={"location": location.dict()}, document_id=uid)
 
+    async def get_user_location(self, uid: str) -> Location | None:
+        user_entity = await self.get(uid)
+        return user_entity.location if user_entity else None
