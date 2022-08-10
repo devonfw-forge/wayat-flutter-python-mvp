@@ -21,8 +21,7 @@ class LoginWrapper extends StatelessWidget {
           builder: (_, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data as bool) {
-                controller.finishLoginProcess(
-                    controller.authService as GoogleAuthService);
+                controller.doLoginProcess();
               }
               return AutoRouter.declarative(
                   routes: (_) => [
@@ -31,7 +30,7 @@ class LoginWrapper extends StatelessWidget {
                         else if (!validPhone)
                           const PhoneValidationRoute()
                         else
-                          const CodeValidationRoute()
+                          OnBoardingRoute()
                       ]);
             } else {
               return Container(

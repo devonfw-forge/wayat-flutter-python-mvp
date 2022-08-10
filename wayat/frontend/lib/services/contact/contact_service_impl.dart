@@ -56,9 +56,9 @@ class ContactServiceImpl extends ContactService {
   void setUpContactsListener(
       Function(List<ContactLocation>) onContactsUpdate) async {
     debugPrint("Setting up contacts listener");
-    print("AAAAAAA" + GetIt.I.get<SessionState>().currentUser.id);
+    print("AAAAAAA" + GetIt.I.get<SessionState>().currentUser!.id);
     final docRef =
-        db.collection("status").doc(GetIt.I.get<SessionState>().currentUser.id);
+        db.collection("status").doc(GetIt.I.get<SessionState>().currentUser!.id);
     onContactsUpdate(
         await _getUsersFromContactRefs((await docRef.get()).data()!));
     docRef.snapshots().listen(

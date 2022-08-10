@@ -111,10 +111,8 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
   }
 
   _submit() async {
-    userSession.phoneNumber = _phoneNumber;
     bool updated =
-        await userSession.authService.updatePhone(userSession.phoneNumber);
-    userSession.currentUser.phone = userSession.phoneNumber;
+        await userSession.updatePhone(_phoneNumber);
     if (updated) {
       userSession.setFinishLoggedIn(true);
     } else {
