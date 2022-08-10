@@ -16,6 +16,6 @@ class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
 
     async def set_contact_refs(self, uid: str, contact_refs: list[ContactRefInfo]):
         await self.update(document_id=uid, data={
-            "contact_refs": contact_refs,
+            "contact_refs": [contact.dict() for contact in contact_refs],
             "last_updated": datetime.utcnow()
         })
