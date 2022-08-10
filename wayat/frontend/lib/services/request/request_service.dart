@@ -18,7 +18,6 @@ abstract class RequestService extends Service {
 
   /// Sends a **GET** request to [baseUrl]/[subPath], using the configured authentication
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
-    print("REQUEST GET $subPath");
     http.Response resultJson = await http.get(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders());
     return json.decode(resultJson.body) as Map<String, dynamic>;
@@ -28,7 +27,6 @@ abstract class RequestService extends Service {
   /// using the configured authentication
   Future<http.Response> sendPostRequest(
       String subPath, Map<String, dynamic> body) async {
-    print("REQUEST POST $subPath, $body");
     http.Response response = await http.post(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders(), body: jsonEncode(body));
     return response;

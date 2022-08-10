@@ -6,7 +6,6 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/authentication/common/loading_widget.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
-import 'package:wayat/services/authentication/gauth_service_impl.dart';
 
 class LoginWrapper extends StatelessWidget {
   final SessionState controller = GetIt.I.get<SessionState>();
@@ -25,13 +24,13 @@ class LoginWrapper extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               return AutoRouter.declarative(
                   routes: (_) => [
-                        if (!signedIn)
-                          const LoginRoute()
-                        else if (currentUser != null)
-                          const PhoneValidationRoute()
-                        else
-                          const LoadingRoute()
-                      ]);
+                    if (!signedIn)
+                      const LoginRoute()
+                    else if (currentUser != null)
+                      const PhoneValidationRoute()
+                    else
+                      const LoadingRoute()
+                  ]);
             } else {
               return const LoadingWidget();
             }
