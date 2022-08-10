@@ -57,17 +57,19 @@ abstract class _SessionState with Store {
 
   @action
   Future<bool> updatePhone(String phone) async {
-    currentUser!.phone = phone;
-    return (await authService.sendPostRequest("users/profile", {"phone": phone}))
-                .statusCode / 10 == 20;
+    bool done = (await authService.sendPostRequest("users/profile", {"phone": phone}))
+      .statusCode / 10 == 20;
+    if (done) currentUser!.phone = phone;
+    return done;
   }
 
   @action
   Future<bool> updateOnboarding() async {
-    currentUser!.onboardingCompleted = true;
-    return (await authService.sendPostRequest(
-                    "users/profile", {"onboarding_completed": true}))
-                .statusCode / 10 == 20;
+    bool done = (await authService.sendPostRequest(
+      "users/profile", {"onboarding_completed": true}))
+      .statusCode / 10 == 20;
+    if (done) currentUser!.onboardingCompleted = true;
+    return done;
   }
 
   Future<void> doLoginProcess() async {
