@@ -103,4 +103,4 @@ class BaseFirestoreRepository(Generic[ModelType]):
         id_to_delete = document_id or (model.document_id if model else None)
         if not id_to_delete:
             raise ValueError("Either model or document_id must be passed as argument")
-        await self._get_document_reference(document_id).delete()
+        await self._get_document_reference(id_to_delete).delete()

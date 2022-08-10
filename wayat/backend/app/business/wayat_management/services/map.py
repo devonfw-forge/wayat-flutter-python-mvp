@@ -1,11 +1,10 @@
 import asyncio
-from datetime import datetime, timezone
+from datetime import datetime
 
 from fastapi import Depends
-from google.cloud.firestore import GeoPoint
 
 from app.domain.wayat_management.models.status import ContactRefInfo
-from app.domain.wayat_management.models.user import Location, UserEntity
+from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
@@ -32,7 +31,7 @@ class MapService:
         new_contact_refs = []
 
         for contact_uid in user_to_update.contacts:
-            contact_location: Location | None = await self._user_repository.get_user_location(contact_uid)
+            contact_location = await self._user_repository.get_user_location(contact_uid)
             if contact_location is not None:
                 new_contact_refs.append(
                     ContactRefInfo(
@@ -61,4 +60,3 @@ class MapService:
 
     def _needs_update(self, last_updated: datetime):
         return (datetime.now(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
-
