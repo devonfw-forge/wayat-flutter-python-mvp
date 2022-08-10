@@ -26,7 +26,10 @@ class MapService:
         await self._update_contacts_mode(uid, latitude, longitude)
 
     async def regenerate_map_status(self, uid: str):
-        user_to_update: UserEntity = await self._user_repository.get(uid)
+        user_to_update = await self._user_repository.get(uid)
+
+        if not user_to_update:
+            return
 
         new_contact_refs = []
 
