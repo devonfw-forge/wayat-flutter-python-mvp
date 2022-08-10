@@ -10,6 +10,7 @@
 //
 // ignore_for_file: type=lint
 
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i15;
 import 'package:flutter/material.dart' as _i16;
 
@@ -80,8 +81,10 @@ class AppRouter extends _i15.RootStackRouter {
           barrierDismissible: false);
     },
     HomeMapRoute.name: (routeData) {
+      final args = routeData.argsAs<HomeMapRouteArgs>(
+          orElse: () => const HomeMapRouteArgs());
       return _i15.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i8.HomeMapPage());
+          routeData: routeData, child: _i8.HomeMapPage(key: args.key));
     },
     ContactsRoute.name: (routeData) {
       final args = routeData.argsAs<ContactsRouteArgs>(
@@ -301,12 +304,24 @@ class ProgressOnboardingRouteArgs {
 
 /// generated route for
 /// [_i8.HomeMapPage]
-class HomeMapRoute extends _i15.PageRouteInfo<void> {
-  const HomeMapRoute() : super(HomeMapRoute.name, path: 'home-map-page');
+class HomeMapRoute extends _i15.PageRouteInfo<HomeMapRouteArgs> {
+  HomeMapRoute({_i16.Key? key})
+      : super(HomeMapRoute.name,
+            path: 'home-map-page', args: HomeMapRouteArgs(key: key));
 
   static const String name = 'HomeMapRoute';
 }
 
+class HomeMapRouteArgs {
+  const HomeMapRouteArgs({this.key});
+
+  final _i16.Key? key;
+
+  @override
+  String toString() {
+    return 'HomeMapRouteArgs{key: $key}';
+  }
+}
 
 /// generated route for
 /// [_i9.ContactsPage]

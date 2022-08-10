@@ -73,6 +73,39 @@ mixin _$SessionState on _SessionState, Store {
     });
   }
 
+  late final _$currentUserAtom =
+      Atom(name: '_SessionState.currentUser', context: context);
+
+  @override
+  User get currentUser {
+    _$currentUserAtom.reportRead();
+    return super.currentUser;
+  }
+
+  @override
+  set currentUser(User value) {
+    _$currentUserAtom.reportWrite(value, super.currentUser, () {
+      super.currentUser = value;
+    });
+  }
+
+  late final _$finishLoginProcessAsyncAction =
+      AsyncAction('_SessionState.finishLoginProcess', context: context);
+
+  @override
+  Future<void> finishLoginProcess(GoogleAuthService googleAuth) {
+    return _$finishLoginProcessAsyncAction
+        .run(() => super.finishLoginProcess(googleAuth));
+  }
+
+  late final _$googleLoginAsyncAction =
+      AsyncAction('_SessionState.googleLogin', context: context);
+
+  @override
+  Future<void> googleLogin() {
+    return _$googleLoginAsyncAction.run(() => super.googleLogin());
+  }
+
   late final _$_SessionStateActionController =
       ActionController(name: '_SessionState', context: context);
 
@@ -121,23 +154,13 @@ mixin _$SessionState on _SessionState, Store {
   }
 
   @override
-  void googleLogin() {
-    final _$actionInfo = _$_SessionStateActionController.startAction(
-        name: '_SessionState.googleLogin');
-    try {
-      return super.googleLogin();
-    } finally {
-      _$_SessionStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 finishLoggedIn: ${finishLoggedIn},
 googleSignedIn: ${googleSignedIn},
 phoneValidation: ${phoneValidation},
-hasDoneOnboarding: ${hasDoneOnboarding}
+hasDoneOnboarding: ${hasDoneOnboarding},
+currentUser: ${currentUser}
     ''';
   }
 }

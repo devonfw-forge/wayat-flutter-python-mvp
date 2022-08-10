@@ -2,16 +2,25 @@
     "appTitle": "wayat",
 
     "login": "Log in",
-    "sendPhoneButton": "Send verification",
-    "sendVerificationButton": "Send verification",
+    "loginGoogle": "Log in with Google",
     "email": "Email",
     "password": "Password",
+    "phoneNumber": "Phone number",
+    "sendVerification": "Send verification",
     "forgotPasswQuestion": "Did you forgot your password?",
     "phoneVerificationTitle": "Phone verification",
     "phoneVerificationDescription": "A verification code will be sent to your phone",
+    "phonePageDescription": "A valid phone number is required",
     "codeVerificationTitle": "Code verification",
     "verificationCodeDescription": "Insert the code you received",
     "resendCode": "Resend code",
+    "invalidPhoneNumber": "Invalid phone number",
+    "tooManyTries": "Too many tries, try again later",
+    "timeoutSmsCodeMsg": "Code sent is no longer valid",
+    "invalidSmsCode": "Invalid code",
+    "expiredSessionSmsCodeMsg": "Session has expired, resending code",
+    "phoneUpdateError": "Error setting phone number",
+    "smsSixDigitsMsg": "SMS code must be 6 digits",
     
     "home": "Home",
     "contacts": "Contacts",
@@ -36,5 +45,10 @@
 
     "selectContacts": "Select contacts",
 
-    "sharingLocation": "Sharing Location"
-}
+    "sharingLocation": "Sharing Location",
+
+    "viewProfile": "View profile",
+    "close": "Close",
+    "loadingAddress": "Loading address",
+    "noAddress": "Could not find address"
+} 

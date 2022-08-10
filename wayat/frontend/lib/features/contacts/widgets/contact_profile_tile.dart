@@ -10,13 +10,11 @@ class ContactProfileTile extends StatelessWidget {
     return Form(
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
       const SizedBox(height: 30),
-      const CircleAvatar(
-          backgroundImage:
-              NetworkImage('https://i.pravatar.cc/150?u=a042581f4e29026704ds')),
+      CircleAvatar(backgroundImage: NetworkImage(contact.imageUrl)),
       const SizedBox(height: 8),
-      Text(contact.displayName),
+      Text(contact.name),
       const SizedBox(height: 8),
-      Text("@${contact.username}"),
+      Text("@${contact.name}"),
       const SizedBox(height: 16),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,

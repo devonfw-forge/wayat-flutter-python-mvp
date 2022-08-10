@@ -1,0 +1,36 @@
+# [START Wayat Backend Build]
+steps:
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp
+      - 'gs://wayat_secrets/firebase.json'
+      - .
+    dir: wayat/backend
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - >-
+        gcr.io/poc-cloudnative-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
+      - .
+    dir: wayat/backend
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - >-
+        gcr.io/poc-cloudnative-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    args:
+      - run
+      - deploy
+      - wayat-flutter-python-mvp
+      - '--image'
+      - >-
+        gcr.io/poc-cloudnative-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
+      - '--region'
+      - europe-southwest1
+    entrypoint: gcloud
+images:
+  - >-
+    gcr.io/poc-cloudnative-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
+# [END Wayat Backend Build]

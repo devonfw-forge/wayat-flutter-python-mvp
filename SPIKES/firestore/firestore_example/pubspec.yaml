@@ -1,0 +1,28 @@
+name: firestore
+description: A new Flutter project.
+publish_to: 'none' 
+version: 1.0.0+1
+environment:
+  sdk: ">=2.17.6 <3.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  # State management
+  mobx: ^2.0.7+4
+  # MobX widgets
+  flutter_mobx: ^2.0.6+1
+  cupertino_icons: ^1.0.2
+  firebase_core: ^1.20.0
+  cloud_firestore: ^3.4.3
+  firebase_auth: ^3.6.2
+  http: ^0.13.5
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  # Process that generates code for AutoRoute and MobX
+  build_runner: ^2.1.5
+  # MobX code generator
+  mobx_codegen: ^2.0.7
+flutter:
+  uses-material-design: true
