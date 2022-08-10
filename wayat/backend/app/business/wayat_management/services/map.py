@@ -4,7 +4,6 @@ from datetime import datetime
 from fastapi import Depends
 
 from app.domain.wayat_management.models.status import ContactRefInfo
-from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
@@ -48,12 +47,16 @@ class MapService:
 
     async def _update_contacts_status(self, uid: str):
         self_user = await self._user_repository.get(uid)
+        if not self_user:
+            return
+
         user_contacts_uids = self_user.contacts
         coroutines = [self._update_contact_status(c) for c in user_contacts_uids]
         await asyncio.gather(*coroutines)
 
     async def _update_contact_status(self, contact_uid: str):
         contact_status = await self._status_repository.get(contact_uid)
+
         if self._needs_update(contact_status.last_updated):
             await self.regenerate_map_status(contact_uid)
 
