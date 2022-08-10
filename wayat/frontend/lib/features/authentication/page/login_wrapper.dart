@@ -16,12 +16,13 @@ class LoginWrapper extends StatelessWidget {
     return Observer(builder: (_) {
       bool signedIn = controller.googleSignedIn;
       bool validPhone = controller.phoneValidation;
+      print("OBSERVER RELOADED");
       return FutureBuilder(
           future: controller.isLogged(),
           builder: (_, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data as bool) {
-                print("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                print("FUTURE BUILDER RELOADED");
                 controller.doLoginProcess();
               }
               return AutoRouter.declarative(

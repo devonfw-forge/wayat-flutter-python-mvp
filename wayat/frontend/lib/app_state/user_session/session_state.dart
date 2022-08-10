@@ -45,7 +45,6 @@ abstract class _SessionState with Store {
 
   @action
   Future<void> setFinishLoggedIn(bool finishedLoggedIn) async {
-    currentUser ??= await authService.getUserData();
     googleSignedIn = finishedLoggedIn;
     finishLoggedIn = finishedLoggedIn;
   }
@@ -74,6 +73,7 @@ abstract class _SessionState with Store {
 
   Future<void> doLoginProcess() async {
     setGoogleSignIn(true);
+    await updateCurrentUser();
     if (await hasPhoneNumber()) {
       await setFinishLoggedIn(true);
       if (await isOnboardingCompleted()) {
@@ -91,7 +91,6 @@ abstract class _SessionState with Store {
 
   Future<bool> hasPhoneNumber() async {
     // Gets backend data of the signed in user if it is null
-    await updateCurrentUser();
     if (currentUser!.phone == "") {
       return false;
     }
@@ -100,7 +99,6 @@ abstract class _SessionState with Store {
 
   Future<bool> isOnboardingCompleted() async {
     // Gets backend data of the signed in user if it is null
-    await updateCurrentUser();
     return currentUser!.onboardingCompleted;
   }
 }
