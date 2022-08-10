@@ -41,22 +41,6 @@ mixin _$SessionState on _SessionState, Store {
     });
   }
 
-  late final _$phoneValidationAtom =
-      Atom(name: '_SessionState.phoneValidation', context: context);
-
-  @override
-  bool get phoneValidation {
-    _$phoneValidationAtom.reportRead();
-    return super.phoneValidation;
-  }
-
-  @override
-  set phoneValidation(bool value) {
-    _$phoneValidationAtom.reportWrite(value, super.phoneValidation, () {
-      super.phoneValidation = value;
-    });
-  }
-
   late final _$hasDoneOnboardingAtom =
       Atom(name: '_SessionState.hasDoneOnboarding', context: context);
 
@@ -97,29 +81,28 @@ mixin _$SessionState on _SessionState, Store {
     return _$doneOnBoardingAsyncAction.run(() => super.doneOnBoarding());
   }
 
-  late final _$setFinishLoggedInAsyncAction =
-      AsyncAction('_SessionState.setFinishLoggedIn', context: context);
+  late final _$updateCurrentUserAsyncAction =
+      AsyncAction('_SessionState.updateCurrentUser', context: context);
 
   @override
-  Future setFinishLoggedIn(bool finishedLoggedIn) {
-    return _$setFinishLoggedInAsyncAction
-        .run(() => super.setFinishLoggedIn(finishedLoggedIn));
+  Future<dynamic> updateCurrentUser() {
+    return _$updateCurrentUserAsyncAction.run(() => super.updateCurrentUser());
   }
 
-  late final _$doLoginProcessAsyncAction =
-      AsyncAction('_SessionState.doLoginProcess', context: context);
+  late final _$updatePhoneAsyncAction =
+      AsyncAction('_SessionState.updatePhone', context: context);
 
   @override
-  Future<void> doLoginProcess() {
-    return _$doLoginProcessAsyncAction.run(() => super.doLoginProcess());
+  Future<bool> updatePhone(String phone) {
+    return _$updatePhoneAsyncAction.run(() => super.updatePhone(phone));
   }
 
-  late final _$loginAsyncAction =
-      AsyncAction('_SessionState.login', context: context);
+  late final _$updateOnboardingAsyncAction =
+      AsyncAction('_SessionState.updateOnboarding', context: context);
 
   @override
-  Future<void> login() {
-    return _$loginAsyncAction.run(() => super.login());
+  Future<bool> updateOnboarding() {
+    return _$updateOnboardingAsyncAction.run(() => super.updateOnboarding());
   }
 
   late final _$_SessionStateActionController =
@@ -137,11 +120,21 @@ mixin _$SessionState on _SessionState, Store {
   }
 
   @override
+  void setFinishLoggedIn(bool finishedLoggedIn) {
+    final _$actionInfo = _$_SessionStateActionController.startAction(
+        name: '_SessionState.setFinishLoggedIn');
+    try {
+      return super.setFinishLoggedIn(finishedLoggedIn);
+    } finally {
+      _$_SessionStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 finishLoggedIn: ${finishLoggedIn},
 googleSignedIn: ${googleSignedIn},
-phoneValidation: ${phoneValidation},
 hasDoneOnboarding: ${hasDoneOnboarding},
 currentUser: ${currentUser}
     ''';

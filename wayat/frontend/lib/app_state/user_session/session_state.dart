@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -16,9 +18,6 @@ abstract class _SessionState with Store {
   bool googleSignedIn = false;
 
   @observable
-  bool phoneValidation = false;
-
-  @observable
   bool hasDoneOnboarding = false;
 
   @observable
@@ -33,31 +32,39 @@ abstract class _SessionState with Store {
     hasDoneOnboarding = true;
   }
 
-  Future<bool> isLogged() async {
-    final logged = await authService.signInSilently();
-    return logged != null;
+  Future isLogged() async {
+    if (!googleSignedIn) {
+      GoogleSignInAccount? account = await authService.signInSilently();
+      if (account != null) {
+        await doLoginProcess();
+      }
+    }
   }
 
   @action
   void setGoogleSignIn(bool signedIn) {
-    googleSignedIn = signedIn;
+    if (googleSignedIn != signedIn) {
+      googleSignedIn = signedIn;
+    }
   }
 
   @action
-  Future<void> setFinishLoggedIn(bool finishedLoggedIn) async {
-    googleSignedIn = finishedLoggedIn;
+  void setFinishLoggedIn(bool finishedLoggedIn) {
     finishLoggedIn = finishedLoggedIn;
   }
 
   @action
-  Future<void> updateCurrentUser() async {
+  Future updateCurrentUser() async {
     currentUser ??= await authService.getUserData();
   }
 
   @action
   Future<bool> updatePhone(String phone) async {
-    bool done = (await authService.sendPostRequest("users/profile", {"phone": phone}))
-      .statusCode / 10 == 20;
+    bool done =
+        (await authService.sendPostRequest("users/profile", {"phone": phone}))
+                    .statusCode /
+                10 ==
+            20;
     if (done) currentUser!.phone = phone;
     return done;
   }
@@ -65,40 +72,46 @@ abstract class _SessionState with Store {
   @action
   Future<bool> updateOnboarding() async {
     bool done = (await authService.sendPostRequest(
-      "users/profile", {"onboarding_completed": true}))
-      .statusCode / 10 == 20;
+                    "users/profile", {"onboarding_completed": true}))
+                .statusCode /
+            10 ==
+        20;
     if (done) currentUser!.onboardingCompleted = true;
     return done;
   }
 
-  Future<void> doLoginProcess() async {
-    setGoogleSignIn(true);
-    await updateCurrentUser();
-    if (await hasPhoneNumber()) {
-      await setFinishLoggedIn(true);
-      if (await isOnboardingCompleted()) {
-        await doneOnBoarding();
+  Future doLoginProcess() async {
+    if (!googleSignedIn) {
+      await initializeUserSession();
+      if (currentUser!.phone != "") {
+        setFinishLoggedIn(true);
       }
     }
   }
 
-  Future<void> login() async {
+  /// Sets the state to signed in and retrieves the user
+  /// from the server
+  Future initializeUserSession() async {
+    setGoogleSignIn(true);
+    await updateCurrentUser();
+    hasDoneOnboarding = currentUser!.onboardingCompleted;
+  }
+
+  Future login() async {
     GoogleSignInAccount? gaccount = await authService.signIn();
     if (gaccount != null) {
       await doLoginProcess();
+
+      return;
     }
   }
 
-  Future<bool> hasPhoneNumber() async {
-    // Gets backend data of the signed in user if it is null
-    if (currentUser!.phone == "") {
-      return false;
-    }
-    return true;
-  }
-
-  Future<bool> isOnboardingCompleted() async {
+  bool isOnboardingCompleted() {
     // Gets backend data of the signed in user if it is null
     return currentUser!.onboardingCompleted;
+  }
+
+  bool hasPhone() {
+    return currentUser != null && currentUser!.phone != "";
   }
 }

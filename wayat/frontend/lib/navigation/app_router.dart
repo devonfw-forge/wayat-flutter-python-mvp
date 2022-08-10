@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/login_wrapper.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
@@ -29,7 +30,8 @@ import 'package:wayat/features/root/root_wrapper.dart';
     ]),
     AutoRoute(page: LoginWrapper, children: [
       AutoRoute(page: LoginPage),
-      AutoRoute(page: PhoneValidationPage)
+      AutoRoute(page: PhoneValidationPage),
+      AutoRoute(page: LoadingPage)
     ]),
   ]),
   AutoRoute(page: ContactDetailPage),

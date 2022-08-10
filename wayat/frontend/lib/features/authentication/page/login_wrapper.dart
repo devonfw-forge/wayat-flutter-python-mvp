@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/features/authentication/common/loading_widget.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
 
@@ -14,34 +16,24 @@ class LoginWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
+      Future silentLogin = controller.isLogged();
       bool signedIn = controller.googleSignedIn;
-      bool validPhone = controller.phoneValidation;
-      print("OBSERVER RELOADED");
+      MyUser? currentUser = controller.currentUser;
       return FutureBuilder(
-          future: controller.isLogged(),
+          future: silentLogin,
           builder: (_, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data as bool) {
-                print("FUTURE BUILDER RELOADED");
-                controller.doLoginProcess();
-              }
+            if (snapshot.connectionState == ConnectionState.done) {
               return AutoRouter.declarative(
                   routes: (_) => [
                         if (!signedIn)
                           const LoginRoute()
-                        else if (!validPhone)
+                        else if (currentUser != null)
                           const PhoneValidationRoute()
                         else
-                          OnBoardingRoute()
+                          const LoadingRoute()
                       ]);
             } else {
-              return Container(
-                color: Colors.white,
-                child: const Center(
-                    child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                )),
-              );
+              return const LoadingWidget();
             }
           });
     });
