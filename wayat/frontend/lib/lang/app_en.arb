@@ -35,6 +35,10 @@
     "selectContacts": "Select contacts",
 
     "sharingLocation": "Sharing Location",
+    "activeSharingLocation": "Active sharing Location",
+    "doNotDisturb": "Set do not disturb",
+    "editProfile": "Edit Profile",
+    "preferences": "Preferences",
 
     "viewProfile": "View profile",
     "close": "Close",

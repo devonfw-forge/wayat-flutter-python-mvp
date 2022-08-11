@@ -32,6 +32,10 @@
     "selectContacts": "Selecciona contactos",
 
     "sharingLocation": "Compartir ubicación",
+    "activeSharingLocation": "Ubicación activa",
+    "doNotDisturb": "Establecer no molestar",
+    "editProfile": "Editar Perfil",
+    "preferences": "Preferencias",
 
     "viewProfile": "Ver perfil",
     "close": "Cerrar",
