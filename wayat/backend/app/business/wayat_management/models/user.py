@@ -25,12 +25,14 @@ class FindByPhoneRequest(BaseModel):
 
 class UpdatePreferencesRequest(BaseModel):
     do_not_disturb: bool
+    share_location: bool
 
 
 class UserDTO(UpdateUserRequest):
     email: str
     id: str
     image_url: Optional[str]
+    share_location: bool
     do_not_disturb: bool
     onboarding_completed: bool
 
