@@ -8,7 +8,7 @@ from app.business.wayat_management.models.user import (
     ListUsersWithPhoneResponse,
     FindByPhoneRequest,
     AddContactsRequest,
-    UpdatePreferencesRequest, UserWithPhoneResponse,
+    UpdatePreferencesRequest, UserWithPhoneResponse, PendingFriendsRequests,
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
@@ -67,3 +67,9 @@ async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
     cts = await user_service.get_contacts(user.uid)
     contacts_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in cts]
     return ListUsersWithPhoneResponse(users=contacts_phone)
+
+
+@router.get("/friend-requests", description="Returns pending sent and received friendship requests",
+            response_model=PendingFriendsRequests)
+async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user())):
+    pass

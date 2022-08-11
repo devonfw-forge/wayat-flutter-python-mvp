@@ -50,3 +50,8 @@ class UserWithPhoneResponse(UserID):
 
 class ListUsersWithPhoneResponse(BaseModel):
     users: list[UserWithPhoneResponse]
+
+
+class PendingFriendsRequests(BaseModel):
+    sent_requests: list[UserWithPhoneResponse]
+    pending_requests: list[UserWithPhoneResponse]
