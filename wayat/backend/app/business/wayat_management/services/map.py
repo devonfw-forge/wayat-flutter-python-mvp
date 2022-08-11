@@ -1,5 +1,6 @@
 import asyncio
 import functools
+import logging
 from datetime import datetime, timezone
 from functools import lru_cache
 from typing import overload
@@ -7,15 +8,20 @@ from typing import overload
 from fastapi import Depends
 from pydantic import BaseSettings
 
+from app.common.base.base_firebase_repository import GeoPoint
 from app.common.core.configuration import load_env_file_on_settings
+from app.common.utils import haversine_distance
 from app.domain.wayat_management.models.status import ContactRefInfo
-from app.domain.wayat_management.models.user import UserEntity
+from app.domain.wayat_management.models.user import UserEntity, Location
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
+
+logger = logging.getLogger(__name__)
 
 
 class MapSettings(BaseSettings):
     update_threshold: int
+    distance_threshold: float
 
     class Config:
         env_prefix = "MAP_"
@@ -36,6 +42,7 @@ class MapService:
         self._user_repository = user_repository
         self._status_repository = status_repository
         self._update_threshold = map_settings.update_threshold  # minimum seconds between updates
+        self._distance_threshold = map_settings.distance_threshold  # range (km) in which users become active
 
     async def update_location(self,
                               uid: str,
@@ -80,7 +87,7 @@ class MapService:
 
     async def _update_contacts_status(self, uid: str, latitude: float, longitude: float):
         contacts_with_map_open = await self._user_repository.find_contacts_with_map_open(uid)
-        contacts_in_range = [c for c in contacts_with_map_open if self._in_range(latitude, longitude, c)]
+        contacts_in_range = [c for c in contacts_with_map_open if self._in_range(latitude, longitude, c.location)]
 
         # Update my active status if at least one friend is looking at me
         active_value = len(contacts_in_range) != 0
@@ -98,6 +105,10 @@ class MapService:
     def _needs_update(self, last_updated: datetime):
         return (datetime.now(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
 
-    def _in_range(self, latitude: float, longitude: float, contact: UserEntity):
-        # TODO: Finish
-        return True
+    def _in_range(self, latitude: float, longitude: float, contact_location: Location):
+        if contact_location is None or contact_location.value is None:
+            return False
+        location = contact_location.value
+        distance = haversine_distance(latitude, longitude, location.latitude, location.longitude)
+        logger.debug(f"Distance of {distance} calculated")
+        return distance < self._distance_threshold
