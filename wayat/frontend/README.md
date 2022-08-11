@@ -1,7 +1,7 @@
 # wayat
 
 Section of the wayat project responsible for displaying the graphical user interface and connecting it whit the backend section. After assessing different [options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options) for state control between widgets, it was decided to use GetIt and MobX due to its 
-simplicity and the benefits they offer to write less code. Additionally, for navigation and routing it has been studied several [options](https://docs.flutter.dev/development/ui/navigation) but finally was decided to use [AutoRoute](https://pub.dev/packages/auto_route) due to its potential to set navigation declaratively and avoid extra code. In the other hand, for translations it has been established internationalization in English, Spanish and French (the language is updated along with the change of language in the system in which the app is launched).
+simplicity and the benefits they offer to write less code. Additionally, for navigation and routing it has been studied several [options](https://docs.flutter.dev/development/ui/navigation) but finally it was decided to use [AutoRoute](https://pub.dev/packages/auto_route) due to its potential to set navigation declaratively and avoid extra code. In the other hand, for translations it has been established internationalization in English, Spanish and French (the language is updated along with the change of language in the system in which the app is launched).
 
 ## Architecture
 
@@ -67,4 +67,6 @@ An *.env* file containing the following keys must be included in the root of the
 
 Additionally, a file must be added with the credentials for the app in firestore and Google services, because the authentication by google and the firestore service is used. This file is called *google-services.json* and should contain ***com.capgemini.wayat*** as app name. 
 
-For **ANDROID** builds the *google-services.json* file should be pasted in ```frontend/android/app``` path folder.
+For **ANDROID** the *google-services.json* file should be pasted in ```frontend/android/app``` path folder.
+
+Lastly and most importantly, in order to execute and build the flutter app it is required to set the **GOOGLE_MAPS_KEY** as an environment variable.
