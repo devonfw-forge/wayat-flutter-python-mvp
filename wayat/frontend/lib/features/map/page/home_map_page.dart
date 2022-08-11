@@ -34,18 +34,17 @@ class HomeMapPage extends StatelessWidget {
             controller.getMarkers();
           }
           Set<Marker> markers = controller.markers;
-          LatLng currentLocation = LatLng(
-              locationState.currentLocation.latitude,
-              locationState.currentLocation.longitude);
-          gMapController.moveCamera(CameraUpdate.newLatLng(currentLocation));
-          return googleMap(markers, currentLocation);
+          return googleMap(markers);
         }),
         _bottomSheet()
       ],
     );
   }
 
-  GoogleMap googleMap(Set<Marker> markers, LatLng currentLocation) {
+  GoogleMap googleMap(Set<Marker> markers) {
+    LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
+        locationState.currentLocation.longitude);
+
     return GoogleMap(
         initialCameraPosition:
             CameraPosition(target: currentLocation, zoom: 14.5),
@@ -62,6 +61,7 @@ class HomeMapPage extends StatelessWidget {
         onLongPress: (_) => controller.markers,
         onMapCreated: (googleMapController) {
           gMapController = googleMapController;
+          gMapController.moveCamera(CameraUpdate.newLatLng(currentLocation));
           controller.markers;
         },
         onCameraMove: (pos) => {
