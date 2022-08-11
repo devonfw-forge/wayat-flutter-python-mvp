@@ -1,5 +1,5 @@
-import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class Service {
-  String baseUrl = FlutterConfig.get('BASE_URL')!;
+  String baseUrl = dotenv.get('BASE_URL');
 }

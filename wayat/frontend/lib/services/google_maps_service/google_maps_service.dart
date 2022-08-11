@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,7 +18,7 @@ class GoogleMapsService {
   }
 
   static Future<String> getAddressFromCoordinates(LatLng coords) async {
-    String mapsKey = FlutterConfig.get('GOOGLE_MAPS_KEY') ?? '';
+    String mapsKey = dotenv.get('GOOGLE_MAPS_KEY');
 
     Uri url = Uri.parse(
         "https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.latitude},${coords.longitude}&key=$mapsKey");

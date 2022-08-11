@@ -29,7 +29,7 @@ dependencies:
   auto_route: ^4.2.0
   path: ^1.8.1
   # Environment variables
-  flutter_config: ^2.0.0
+  flutter_dotenv: ^5.0.2
   # Google maps
   google_maps_flutter: ^2.1.10
   # AZ ListView for imported contacts
