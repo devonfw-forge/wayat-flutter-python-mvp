@@ -36,6 +36,11 @@ async def update_user_profile(request: UpdateUserRequest,
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
 
 
+@router.post("/profile/picture", description="Updates the user profile picture")
+async def update_profile_picture(user: FirebaseAuthenticatedUser = Depends(get_user())):
+    pass
+
+
 @router.post("/find-by-phone",
              description="Get a list of users filtered by phone",
              response_model=ListUsersWithPhoneResponse,
@@ -86,7 +91,6 @@ async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAut
     pass
 
 
-@router.delete("/sent-requests/{contact_id}", description="Cancel a sent friendship request")
+@router.delete("/friend-requests/sent/{contact_id}", description="Cancel a sent friendship request")
 async def cancel_friend_request(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user())):
     pass
-
