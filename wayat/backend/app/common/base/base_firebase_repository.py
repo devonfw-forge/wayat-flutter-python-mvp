@@ -83,7 +83,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
 
         def find(sublist: list[Any]):
             stream = self._get_collection_reference().where(field, operation, sublist).stream()
-            return stream # .stream() returns AsyncGenerator in the async client
+            return stream  # .stream() returns AsyncGenerator in the async client
 
         if operation == 'in':
             residual = len(value) % 10
@@ -96,7 +96,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
             all_generators = find(value)
 
         for generator in all_generators:
-            async for item in generator:
+            async for item in generator: # type: ignore
                 yield self._model(document_id=item.id, **item.to_dict())
 
     async def delete(self, *, model: ModelType | None = None, document_id: str | None = None):
