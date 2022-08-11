@@ -1,6 +1,5 @@
 import asyncio
 from typing import Optional
-
 from fastapi import Depends
 from google.cloud.firestore import AsyncClient
 
@@ -50,3 +49,15 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         user_entity = await self.get(uid)
         return user_entity.location if user_entity else None
 
+    async def find_contacts_with_map_open(self, uid: str) -> list[UserEntity]:
+        result_stream = (
+            self._get_collection_reference()
+            .where("contacts", "array_contains", uid)
+            .where("map_open", "==", True)
+            .where("map_valid_until", ">", get_current_time())
+            .stream()
+        )
+        return [self._model(document_id=result.id, **result.to_dict()) async for result in result_stream] # type: ignore
+
+    async def update_last_status(self, uid: str):
+        await self.update(document_id=uid, data={"last_status_update": get_current_time()})
