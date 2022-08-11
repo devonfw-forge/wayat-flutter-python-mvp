@@ -52,6 +52,11 @@ class ListUsersWithPhoneResponse(BaseModel):
     users: list[UserWithPhoneResponse]
 
 
-class PendingFriendsRequests(BaseModel):
+class PendingFriendsRequestsResponse(BaseModel):
     sent_requests: list[UserWithPhoneResponse]
     pending_requests: list[UserWithPhoneResponse]
+
+
+class HandleFriendRequestRequest(BaseModel):
+    uid: str
+    accept: bool

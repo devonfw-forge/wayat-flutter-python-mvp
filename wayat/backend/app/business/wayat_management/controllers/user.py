@@ -8,7 +8,7 @@ from app.business.wayat_management.models.user import (
     ListUsersWithPhoneResponse,
     FindByPhoneRequest,
     AddContactsRequest,
-    UpdatePreferencesRequest, UserWithPhoneResponse, PendingFriendsRequests,
+    UpdatePreferencesRequest, UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest,
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
@@ -74,8 +74,14 @@ async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
 async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user())):
     pass
 
+
 @router.get("/friend-requests", description="Returns pending sent and received friendship requests",
-            response_model=PendingFriendsRequests)
+            response_model=PendingFriendsRequestsResponse)
 async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user())):
+    pass
+
+
+@router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
+async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
     pass
 
