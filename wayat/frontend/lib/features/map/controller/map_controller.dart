@@ -1,3 +1,6 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:mobx/mobx.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -23,15 +26,15 @@ abstract class _MapController with Store {
   ImageService imageService = ImageService();
 
   @observable
+  bool sharingLocation = true;
+
+  @observable
   Location currentLocation = Location();
 
   @observable
   ObservableSet<Marker> markers = ObservableSet.of({});
 
   List<ContactLocation> contacts = [];
-
-  @observable
-  bool sharingLocation = false;
 
   Future getMarkers() async {
     Set<Marker> newMarkers = await generateMarkers();
@@ -68,9 +71,8 @@ abstract class _MapController with Store {
       Set<Marker> newMarkers = contacts
           .map(
             (e) => Marker(
-                markerId: MarkerId(e.name +
-                    e.longitude.toString() +
-                    e.latitude.toString()),
+                markerId: MarkerId(
+                    e.name + e.longitude.toString() + e.latitude.toString()),
                 position: newPosition,
                 icon: bitmaps[e.imageUrl]!,
                 onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),

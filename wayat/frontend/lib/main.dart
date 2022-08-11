@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
@@ -14,18 +15,23 @@ Future main() async {
   await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
 
-  registerRepositories();
+  await registerSingletons();
 
   runApp(MyApp());
 }
 
-void registerRepositories() {
+Future registerSingletons() async {
   //Register with GetIt all the singletons for the repos like this
   //GetIt.I.registerLazySingleton<AbstractClass>(() => ImplementationClass())
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+
+  //This is not instanced as Lazy because it needs to be running from the start
+  LocationState locationState = LocationState();
+  await locationState.initialize();
+  GetIt.I.registerSingleton<LocationState>(locationState);
   GetIt.I.registerLazySingleton<ContactsLocationState>(
       () => ContactsLocationState());
 }

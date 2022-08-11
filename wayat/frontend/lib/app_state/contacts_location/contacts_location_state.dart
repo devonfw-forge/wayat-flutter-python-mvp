@@ -23,7 +23,6 @@ abstract class _ContactsLocationState with Store {
   @action
   void setContactList(List<ContactLocation> newContacts) {
     contacts = newContacts;
-    print("IN CONTACT LOCATION STATE " + contacts.toString());
   }
 
   void fetchContacts() {}
