@@ -14,7 +14,10 @@
     "home": "Home",
     "contacts": "Contacts",
     "events": "Events",
+
     "profile": "Profile",
+    "editProfile": "Edit Profile",
+    "viewProfile": "View profile",
 
     "notifications": "Notifications",
     "addEvents": "Add Event",
@@ -37,10 +40,16 @@
     "sharingLocation": "Sharing Location",
     "activeSharingLocation": "Active sharing Location",
     "doNotDisturb": "Set do not disturb",
-    "editProfile": "Edit Profile",
+    
     "preferences": "Preferences",
+    "faqs": "FAQS",
+    "Terms": "Terms",
 
-    "viewProfile": "View profile",
+    "information": "Information",
+    "darkTheme": "Enable dark theme",
+    "Language": "English",
+
+   
     "close": "Close",
     "loadingAddress": "Loading address",
     "noAddress": "Could not find address"

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:wayat/common/widgets/buttons/outlined_button.dart';
+import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import '../../../common/widgets/appbar/appbar.dart';
@@ -21,6 +22,7 @@ class ProfilePage extends StatelessWidget {
           children: [
             _buildProfilePart(),
             _buildShareLocationPart(),
+            _buildFaqInformationPart(),
           ],
         ));
   }
@@ -28,11 +30,9 @@ class ProfilePage extends StatelessWidget {
   Widget _buildProfilePart() {
     return Stack(
       alignment: Alignment.center,
-      children: [
-        Positioned(
-            top: 10,
-            child:
-                CircleAvatar(backgroundImage: NetworkImage(contact.imageUrl))),
+      children: <Widget>[
+        CircleAvatar(
+            radius: 95.0, backgroundImage: NetworkImage(contact.imageUrl)),
         const SizedBox(height: 16),
         Text(contact.name),
       ],
@@ -42,19 +42,40 @@ class ProfilePage extends StatelessWidget {
   Widget _buildShareLocationPart() {
     return Stack(
       children: [
-        const Text('Share location'),
+        Text(appLocalizations.sharingLocation),
         _activeSharingLocationButton(),
         _setDoNotDisturbButton(),
-        Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 35),
-            alignment: AlignmentDirectional.center,
-            child: CustomOutlinedButton(
-                text: appLocalizations.editProfile, onPressed: () {})),
-        Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 35),
-            alignment: AlignmentDirectional.center,
-            child: CustomOutlinedButton(
-                text: appLocalizations.preferences, onPressed: () {}))
+        CustomCard(
+            text: appLocalizations.editProfile,
+            onTap: () {
+              //AutoRoute to edit_profile page
+            }),
+        const SizedBox(height: 24),
+        CustomCard(
+            text: appLocalizations.preferences,
+            onTap: (
+                //AutoRoute to preferences page
+                ) {}),
+        const SizedBox(height: 48),
+      ],
+    );
+  }
+
+  Widget _buildFaqInformationPart() {
+    return Stack(
+      children: [
+        Text(appLocalizations.information),
+        CustomCard(
+            text: appLocalizations.faqs,
+            onTap: () {
+              //AutoRoute to Faqs page
+            }),
+        const SizedBox(height: 24),
+        CustomCard(
+            text: appLocalizations.terms,
+            onTap: () {
+              //AutoRoute to Terms page
+            }),
       ],
     );
   }
@@ -66,7 +87,9 @@ class ProfilePage extends StatelessWidget {
         Text(
           appLocalizations.sharingLocation,
           style: const TextStyle(
-              fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
+              fontWeight: FontWeight.w400,
+              color: ColorTheme.primaryColorTransparent,
+              fontSize: 16),
         ),
         Observer(builder: (context) {
           return CustomSwitch(
@@ -87,7 +110,9 @@ class ProfilePage extends StatelessWidget {
         Text(
           appLocalizations.doNotDisturb,
           style: const TextStyle(
-              fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
+              fontWeight: FontWeight.w400,
+              color: ColorTheme.primaryColorTransparent,
+              fontSize: 16),
         ),
         Observer(builder: (context) {
           return CustomSwitch(

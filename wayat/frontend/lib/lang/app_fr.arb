@@ -4,7 +4,9 @@
     "login": "Se connecter",
     "loginGoogle": "Connectez-vous avec Google",
     "email": "Email",
+    "changeEmail": "Changer l'e-mail"
     "password": "Mot de passe",
+    "changePassword": "Changer le mot de passe" 
     "phoneNumber": "Numéro de téléphone",
     "forgotPasswQuestion": "Avez-vous oublié votre mot de passe?",
     "phonePageDescription": "Un numéro de téléphone valide est requis",
@@ -14,7 +16,11 @@
     "home": "Home",
     "contacts": "Contacts",
     "events": "Evénements",
+    "name": "Nom"
+
     "profile": "Profil",
+    "editProfile": "Editer le Profil",
+    "viewProfile" : "Voir le profil",
 
     "addEvents": "Ajouter un événement",
     "notifications": "Notifications",
@@ -34,10 +40,15 @@
     "sharingLocation": "Lieu de partage",
     "activeSharingLocation": "Emplacement actif",
     "doNotDisturb": "Ne pas déranger",
-    "editProfile": "Editer le Profil",
-    "preferences": "Préférences",
 
-    "viewProfile" : "Voir le profil",
+    "preferences": "Préférences",
+    "faqs": "FAQS",
+    "Terms": "Conditions",
+
+    "information": "Informations",
+    "darkTheme": "Activer le thème sombre",
+    "Language": "Langue",
+
     "close" : "Fermer",
     "loadingAddress" : "Adresse de chargement",
     "noAddress" : "Aucune adresse trouvée"
