@@ -85,3 +85,8 @@ async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user
 async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
     pass
 
+
+@router.delete("/sent-requests/{contact_id}", description="Cancel a sent friendship request")
+async def cancel_friend_request(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user())):
+    pass
+
