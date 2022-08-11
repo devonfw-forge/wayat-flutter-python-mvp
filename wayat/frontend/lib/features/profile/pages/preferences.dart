@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import '../../../common/widgets/appbar/appbar.dart';

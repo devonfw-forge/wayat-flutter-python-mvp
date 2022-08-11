@@ -20,7 +20,9 @@ class ProfilePage extends StatelessWidget {
             preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
         body: ListView(
           children: [
+            const SizedBox(height: 16),
             _buildProfilePart(),
+            const SizedBox(height: 32),
             _buildShareLocationPart(),
             _buildFaqInformationPart(),
           ],
@@ -40,7 +42,9 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildShareLocationPart() {
-    return Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(appLocalizations.sharingLocation),
         _activeSharingLocationButton(),
@@ -50,19 +54,19 @@ class ProfilePage extends StatelessWidget {
             onTap: () {
               //AutoRoute to edit_profile page
             }),
-        const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.preferences,
             onTap: (
                 //AutoRoute to preferences page
                 ) {}),
-        const SizedBox(height: 48),
       ],
     );
   }
 
   Widget _buildFaqInformationPart() {
-    return Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(appLocalizations.information),
         CustomCard(
@@ -70,7 +74,6 @@ class ProfilePage extends StatelessWidget {
             onTap: () {
               //AutoRoute to Faqs page
             }),
-        const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.terms,
             onTap: () {

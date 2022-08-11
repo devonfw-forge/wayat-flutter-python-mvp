@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import '../../../common/widgets/appbar/appbar.dart';
 import '../../../domain/contact/contact.dart';
@@ -16,7 +15,9 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
-        body: ListView(
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildProfileImage(),
             _nameCard(),
