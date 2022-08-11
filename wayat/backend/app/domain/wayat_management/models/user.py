@@ -1,10 +1,11 @@
-import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from google.cloud.firestore import GeoPoint as _GeoPoint
 from pydantic import Field, BaseModel
 
 from app.common.base.base_firebase_repository import BaseFirebaseModel
+from app.common.utils import get_current_time
 
 
 class GeoPoint(_GeoPoint):
@@ -41,7 +42,7 @@ class GeoPoint(_GeoPoint):
     
 
 class Location(BaseModel):
-    last_updated: datetime.datetime
+    last_updated: datetime
     value: GeoPoint
 
 
@@ -54,4 +55,5 @@ class UserEntity(BaseFirebaseModel):
     onboarding_completed: bool = False
     contacts: list = Field(default_factory=list)
     map_open: bool = False
+    map_valid_until: datetime = Field(default_factory=get_current_time)
     location: Optional[Location]
