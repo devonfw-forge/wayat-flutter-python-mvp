@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
@@ -40,27 +37,21 @@ class ShareLocationServiceImpl extends ShareLocationService {
     if (!locationServiceEnabled) {
       locationServiceEnabled = await location.requestService();
       if (!locationServiceEnabled) {
-        debugPrint("No location service enabled");
         throw NoLocationServiceException();
       }
     }
 
     PermissionStatus permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
-      debugPrint("Requesting permission");
       permissionGranted = await location.requestPermission();
 
       if (permissionGranted == PermissionStatus.denied) {
-        debugPrint("No permission");
         throw RejectedLocationException();
       }
     }
 
-    debugPrint("Setting initial Location");
     LocationData initialLocation = await location.getLocation();
-    debugPrint("initial location $initialLocation");
 
-    debugPrint("Creating location service");
     return ShareLocationServiceImpl._create(
         initialLocation, mode, shareLocation, onLocationChangedCallback);
   }
@@ -85,7 +76,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
     location.enableBackgroundMode(enable: true);
 
     location.onLocationChanged.listen((LocationData newLocation) {
-      debugPrint("Location changed");
       if (shareLocationEnabled) {
         manageLocationChange(newLocation);
       }
@@ -95,11 +85,9 @@ class ShareLocationServiceImpl extends ShareLocationService {
   void manageLocationChange(LocationData newLocation) {
     if (shareLocationMode == ShareLocationMode.Passive) {
       DateTime now = DateTime.now();
-      debugPrint("${lastShared.difference(now)}");
 
       if (lastShared.difference(now).abs() < passiveMinTime &&
           calculateDistance(newLocation) < passiveMinDistance) {
-        debugPrint("Not sharing");
         return;
       }
     } else if (calculateDistance(newLocation) < activeMinDistance) {

@@ -84,6 +84,17 @@ mixin _$LocationState on _LocationState, Store {
   }
 
   @override
+  void setCurrentLocation(LatLng newLocation) {
+    final _$actionInfo = _$_LocationStateActionController.startAction(
+        name: '_LocationState.setCurrentLocation');
+    try {
+      return super.setCurrentLocation(newLocation);
+    } finally {
+      _$_LocationStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentLocation: ${currentLocation},

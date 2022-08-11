@@ -1,8 +1,8 @@
 import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
-import 'package:wayat/services/request/request_service.dart';
+import 'package:wayat/services/request/rest_service.dart';
 
-abstract class ShareLocationService extends RequestService {
+abstract class ShareLocationService extends RESTService {
   ShareLocationService.create();
 
   void sendLocationToBack(LocationData locationData);

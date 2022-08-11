@@ -94,4 +94,9 @@ class ContactServiceImpl extends ContactService {
     }
     return [];
   }
+
+  @override
+  void removeContact(Contact contact) {
+    //TODO: CALL API TO REMOVE THE CONTACT
+  }
 }
