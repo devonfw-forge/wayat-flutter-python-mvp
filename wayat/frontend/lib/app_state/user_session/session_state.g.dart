@@ -89,6 +89,15 @@ mixin _$SessionState on _SessionState, Store {
     });
   }
 
+  late final _$setFinishLoggedInAsyncAction =
+      AsyncAction('_SessionState.setFinishLoggedIn', context: context);
+
+  @override
+  Future setFinishLoggedIn(bool finishedLoggedIn) {
+    return _$setFinishLoggedInAsyncAction
+        .run(() async => super.setFinishLoggedIn(finishedLoggedIn));
+  }
+
   late final _$finishLoginProcessAsyncAction =
       AsyncAction('_SessionState.finishLoginProcess', context: context);
 
@@ -137,17 +146,6 @@ mixin _$SessionState on _SessionState, Store {
         name: '_SessionState.setPhoneValidation');
     try {
       return super.setPhoneValidation(phoneValidated);
-    } finally {
-      _$_SessionStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setFinishLoggedIn(bool finishedLoggedIn) {
-    final _$actionInfo = _$_SessionStateActionController.startAction(
-        name: '_SessionState.setFinishLoggedIn');
-    try {
-      return super.setFinishLoggedIn(finishedLoggedIn);
     } finally {
       _$_SessionStateActionController.endAction(_$actionInfo);
     }

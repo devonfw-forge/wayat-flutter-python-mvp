@@ -11,24 +11,24 @@ import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart';
 
-import 'onboarding_test.mocks.dart';
+import 'onboarding_controller_test.mocks.dart';
 
 @GenerateMocks([
-  SessionState,
-  OnboardingController
+  OnboardingController,
+  ContactsAddressServiceImpl
 ], customMocks: [
-  MockSpec<SessionState>(
-      as: #MockSessionStateRelaxed, onMissingStub: OnMissingStub.returnDefault),
   MockSpec<OnboardingController>(
       as: #MockOnboardingRelaxed, onMissingStub: OnMissingStub.returnDefault),
+  MockSpec<ContactsAddressServiceImpl>(
+      as: #MockContactsAddressServiceImplRelaxed, onMissingStub: OnMissingStub.returnDefault),
 ])
 void main() {
 
   late OnboardingController controller;
 
   setUpAll(() {
-    GetIt.I.registerSingleton<SessionState>(MockSessionState());
     GetIt.I.registerSingleton<OnboardingController>(MockOnboardingController());
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     controller = GetIt.I.get<OnboardingController>();
@@ -48,30 +48,15 @@ void main() {
     );
   }
 
-  testWidgets('Onboarding has a app title', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
-    expect(find.text(appLocalizations.appTitle), findsOneWidget);
-  });
+  // testWidgets('Onboarding has a next button', (tester) async {
+  //   await tester.pumpWidget(_createApp(OnBoardingPage()));
+  //   expect(find.widgetWithText(CustomOutlinedButton, appLocalizations.next), findsOneWidget);
+  // });
 
-  testWidgets('Onboarding has a allowed contacts title', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
-    expect(find.text(appLocalizations.allowedContactsTitle), findsOneWidget);
-  });
-
-  testWidgets('Onboarding has a allowed contacts description', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
-    expect(find.text(appLocalizations.allowedContactsBody), findsOneWidget);
-  });
-
-  testWidgets('Onboarding has a next button', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
-    expect(find.widgetWithText(CustomOutlinedButton, appLocalizations.next), findsOneWidget);
-  });
-
-  testWidgets('OnBoarding next step', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
-    await tester.tap(find.byType(CustomOutlinedButton));
-    await tester.pumpAndSettle();
-    verify(controller.setOnBoardingState(OnBoardingState.Current)).called(1);
-  });
+  // testWidgets('OnBoarding next step', (tester) async {
+  //   await tester.pumpWidget(_createApp(OnBoardingPage()));
+  //   await tester.tap(find.byType(CustomOutlinedButton));
+  //   await tester.pumpAndSettle();
+  //   verify(controller.setOnBoardingState(OnBoardingState.Current)).called(1);
+  // });
 }

@@ -16,13 +16,7 @@ Future main() async {
 
   registerRepositories();
 
-  await initFirebase();
-
   runApp(MyApp());
-}
-
-Future<void> initFirebase() async {
-  await Firebase.initializeApp();
 }
 
 void registerRepositories() {
