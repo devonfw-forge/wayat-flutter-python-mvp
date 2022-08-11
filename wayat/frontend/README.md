@@ -1,10 +1,21 @@
 # wayat
 
-Section of the wayat project responsible for displaying the graphical user interface and connecting it whit the backend section. After assessing different [options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options) for state control between widgets, it was decided to use [GetIt](https://pub.dev/packages/get_it) and [MobX](https://mobx.netlify.app/getting-started/) due to its simplicity and the benefits they offer to write less code. Additionally, for navigation and routing it has been studied several [options](https://docs.flutter.dev/development/ui/navigation) but finally it was decided to use [AutoRoute](https://pub.dev/packages/auto_route) due to its potential to set navigation declaratively and avoid extra code. In the other hand, for translations it has been established [internationalization](https://docs.flutter.dev/development/accessibility-and-localization/internationalization) in English, Spanish and French (the language is updated along with the change of language in the system in which the app is launched).
+Client side of the Wayat project responsible for displaying the graphical user interface and connecting it whit the backend section.
+
+## State management
+After assessing different [options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options) for state control between widgets, it was decided to use:
+* [MobX](https://mobx.netlify.app/getting-started/): State management library that offers separation of concerns and leaves implementation details outside of the UI
+* [GetIt](https://pub.dev/packages/get_it): Dependency injection library that removes the necessity to pass every state management controller as arguments, reducing the amount of code needed and improving code quality (or something like that)
+
+## Navigation
+Additionally, for navigation and routing it has been studied several [options](https://docs.flutter.dev/development/ui/navigation) but finally it was decided to use [AutoRoute](https://pub.dev/packages/auto_route) due to its potential to set navigation declaratively and avoid extra code. 
+
+## Internationalization
+In the other hand, for translations it has been established [internationalization](https://docs.flutter.dev/development/accessibility-and-localization/internationalization) in English, Spanish and French (the language is updated along with the change of language in the system in which the app is launched).
 
 ## Architecture
 
-It has been chosen a [feature based architecture](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0) with some changes: domains, common functionalities and widgets, internatinalization (language translations), app state and app routing have their own directories isolated from the features as shown in this example:
+It has been chosen a [feature based architecture](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0) with some changes: domains, common functionalities and widgets, internatinalization, global state management and navigation have their own directories isolated from the features as shown in this example:
 
 ~~~
 PROJECT
@@ -52,11 +63,12 @@ In order to run the wayat frontend project in debug mode, dependencies must be d
 flutter pub get
 ~~~
 
-To generate AutoRouting files:
+To generate MobX stores, Routes and json serialization classes:
 
 ~~~
 flutter pub run build_runner watch --delete-conflicting-outputs
 ~~~
+Also, the command should be left running in a terminal instance located in the project folder to make development easier when modifying files that need to generate extra code
 
 ## Considerations
 
