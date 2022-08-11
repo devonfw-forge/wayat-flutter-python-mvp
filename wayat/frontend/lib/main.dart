@@ -27,11 +27,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-
-  //This is not instanced as Lazy because it needs to be running from the start
-  LocationState locationState = LocationState();
-  await locationState.initialize();
-  GetIt.I.registerSingleton<LocationState>(locationState);
+  GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
   GetIt.I.registerLazySingleton<ContactsLocationState>(
       () => ContactsLocationState());
 }

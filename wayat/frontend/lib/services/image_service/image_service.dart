@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
-import 'dart:math' as math;
 
 class ImageService {
   Future<BitmapDescriptor> _getBitmapFromUrl(String url) async {
