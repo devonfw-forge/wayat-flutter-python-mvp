@@ -15,10 +15,10 @@ import 'package:auto_route/auto_route.dart' as _i15;
 import 'package:flutter/material.dart' as _i16;
 
 import '../domain/contact/contact.dart' as _i17;
+import '../features/authentication/page/loading_page.dart' as _i14;
 import '../features/authentication/page/login_page.dart' as _i12;
 import '../features/authentication/page/login_wrapper.dart' as _i5;
 import '../features/authentication/page/phone_validation_page.dart' as _i13;
-import '../features/authentication/page/verification_code_page.dart' as _i14;
 import '../features/contacts/pages/contact_detail_page.dart' as _i2;
 import '../features/contacts/pages/contacts_page.dart' as _i9;
 import '../features/create_event/page/create_event_page.dart' as _i10;
@@ -108,9 +108,9 @@ class AppRouter extends _i15.RootStackRouter {
       return _i15.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i13.PhoneValidationPage());
     },
-    CodeValidationRoute.name: (routeData) {
+    LoadingRoute.name: (routeData) {
       return _i15.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i14.CodeValidationPage());
+          routeData: routeData, child: const _i14.LoadingPage());
     }
   };
 
@@ -148,8 +148,8 @@ class AppRouter extends _i15.RootStackRouter {
                     path: 'login-page', parent: LoginWrapper.name),
                 _i15.RouteConfig(PhoneValidationRoute.name,
                     path: 'phone-validation-page', parent: LoginWrapper.name),
-                _i15.RouteConfig(CodeValidationRoute.name,
-                    path: 'code-validation-page', parent: LoginWrapper.name)
+                _i15.RouteConfig(LoadingRoute.name,
+                    path: 'loading-page', parent: LoginWrapper.name)
               ])
         ]),
         _i15.RouteConfig(ContactDetailRoute.name, path: '/contact-detail-page')
@@ -380,10 +380,9 @@ class PhoneValidationRoute extends _i15.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i14.CodeValidationPage]
-class CodeValidationRoute extends _i15.PageRouteInfo<void> {
-  const CodeValidationRoute()
-      : super(CodeValidationRoute.name, path: 'code-validation-page');
+/// [_i14.LoadingPage]
+class LoadingRoute extends _i15.PageRouteInfo<void> {
+  const LoadingRoute() : super(LoadingRoute.name, path: 'loading-page');
 
-  static const String name = 'CodeValidationRoute';
+  static const String name = 'LoadingRoute';
 }

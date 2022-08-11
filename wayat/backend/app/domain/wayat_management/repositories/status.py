@@ -1,7 +1,9 @@
+from datetime import datetime
+
 from fastapi import Depends
 
 from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
-from app.domain.wayat_management.models.status import AppStatusEntity
+from app.domain.wayat_management.models.status import AppStatusEntity, ContactRefInfo
 from google.cloud.firestore import AsyncClient
 
 
@@ -11,3 +13,9 @@ class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
 
     async def initialize(self, uid: str):
         await self.add(model=AppStatusEntity(document_id=uid))
+
+    async def set_contact_refs(self, uid: str, contact_refs: list[ContactRefInfo]):
+        await self.update(document_id=uid, data={
+            "contact_refs": [contact.dict() for contact in contact_refs],
+            "last_updated": datetime.utcnow()
+        })

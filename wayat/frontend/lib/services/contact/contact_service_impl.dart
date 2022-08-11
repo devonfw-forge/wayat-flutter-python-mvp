@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/domain/location/contact_location.dart';
-import 'package:wayat/features/contacts/controller/contact_controller.dart';
 import 'package:wayat/services/contact/contact_service.dart';
-import 'package:wayat/services/contact/mock/contacts_mock.dart';
 
 class ContactServiceImpl extends ContactService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -56,9 +53,9 @@ class ContactServiceImpl extends ContactService {
   void setUpContactsListener(
       Function(List<ContactLocation>) onContactsUpdate) async {
     debugPrint("Setting up contacts listener");
-    print("AAAAAAA" + GetIt.I.get<SessionState>().currentUser.id);
-    final docRef =
-        db.collection("status").doc(GetIt.I.get<SessionState>().currentUser.id);
+    final docRef = db
+        .collection("status")
+        .doc(GetIt.I.get<SessionState>().currentUser!.id);
     onContactsUpdate(
         await _getUsersFromContactRefs((await docRef.get()).data()!));
     docRef.snapshots().listen(
@@ -71,10 +68,8 @@ class ContactServiceImpl extends ContactService {
 
   Future<List<ContactLocation>> _getUsersFromContactRefs(
       Map<String, dynamic> firestoreData) async {
-    print("GET USER FROM CONTACT REFS");
-
     List<Contact> contacts = await getAll();
-    print(firestoreData);
+
     if ((firestoreData["contact_refs"] as List).isNotEmpty) {
       List<ContactLocation> contactLocations =
           (firestoreData["contact_refs"] as List).map((e) {
@@ -94,8 +89,6 @@ class ContactServiceImpl extends ContactService {
             lastUpdated: lastUpdated.toDate());
         return located;
       }).toList();
-
-      print("CONTACT LOCATIONS " + contactLocations.toString());
 
       return contactLocations;
     }
