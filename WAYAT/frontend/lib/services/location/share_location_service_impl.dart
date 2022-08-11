@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
@@ -26,7 +24,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late DateTime lastShared;
   late bool shareLocationEnabled;
   late Function(LatLng) changeLocationStateCallback;
-  
+
 
   /// Creates a ShareLocationService.
   ///
@@ -64,7 +62,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     debugPrint("Creating location service");
     return ShareLocationServiceImpl._create(
-        initialLocation, mode, shareLocation, onLocationChangedCallback);
+      initialLocation, mode, shareLocation, onLocationChangedCallback);
   }
 
   /// Private factory for the location service
@@ -87,7 +85,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
     location.enableBackgroundMode(enable: true);
 
     location.onLocationChanged.listen((LocationData newLocation) {
-      debugPrint("Location changed");
       if (shareLocationEnabled) {
         manageLocationChange(newLocation);
       }
@@ -98,22 +95,24 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// including active and passive mode
   void manageLocationChange(LocationData newLocation) {
     double movedDistance = calculateDistance(newLocation);
+    debugPrint("----------------> MovedDistance: $movedDistance");
     // Passive mode
     if (shareLocationMode == ShareLocationMode.passive) {
       DateTime now = DateTime.now();
-      debugPrint("Lastshared difference: ${lastShared.difference(now)}");
+      debugPrint("------------------> Lastshared difference: ${lastShared.difference(now)}");
 
       if (lastShared.difference(now).abs() < passiveMinTime &&
           movedDistance < passiveMinDistance) {
-        debugPrint("Not sharing (Passive)");
+        debugPrint("--------------------> Not sharing (Passive)");
         return;
       }
     } 
     // Active mode
     else if (movedDistance < activeMinDistance) {
-      debugPrint("Not sharing (Active)");
+      debugPrint("----------------> Not sharing (Active)");
       return;
     }
+    debugPrint("----------------> Sharing");
 
     lastShared = DateTime.now();
     currentLocation = newLocation;

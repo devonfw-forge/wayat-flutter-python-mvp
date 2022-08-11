@@ -2,17 +2,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-import 'package:mobx/mobx.dart';
-import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
-import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 import 'package:wayat/services/location/location_service_impl.dart';
-import 'package:wayat/services/location/mock/contact_location_mock.dart';
 
 part 'map_controller.g.dart';
 

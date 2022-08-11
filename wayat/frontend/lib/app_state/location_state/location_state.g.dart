@@ -25,22 +25,6 @@ mixin _$LocationState on _LocationState, Store {
     });
   }
 
-  late final _$locationModeAtom =
-      Atom(name: '_LocationState.locationMode', context: context);
-
-  @override
-  ShareLocationMode get locationMode {
-    _$locationModeAtom.reportRead();
-    return super.locationMode;
-  }
-
-  @override
-  set locationMode(ShareLocationMode value) {
-    _$locationModeAtom.reportWrite(value, super.locationMode, () {
-      super.locationMode = value;
-    });
-  }
-
   late final _$shareLocationEnabledAtom =
       Atom(name: '_LocationState.shareLocationEnabled', context: context);
 
@@ -62,17 +46,6 @@ mixin _$LocationState on _LocationState, Store {
       ActionController(name: '_LocationState', context: context);
 
   @override
-  void setLocationMode(ShareLocationMode newMode) {
-    final _$actionInfo = _$_LocationStateActionController.startAction(
-        name: '_LocationState.setLocationMode');
-    try {
-      return super.setLocationMode(newMode);
-    } finally {
-      _$_LocationStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void setShareLocationEnabled(bool shareLocation) {
     final _$actionInfo = _$_LocationStateActionController.startAction(
         name: '_LocationState.setShareLocationEnabled');
@@ -84,10 +57,20 @@ mixin _$LocationState on _LocationState, Store {
   }
 
   @override
+  void setCurrentLocation(LatLng newLocation) {
+    final _$actionInfo = _$_LocationStateActionController.startAction(
+        name: '_LocationState.setCurrentLocation');
+    try {
+      return super.setCurrentLocation(newLocation);
+    } finally {
+      _$_LocationStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentLocation: ${currentLocation},
-locationMode: ${locationMode},
 shareLocationEnabled: ${shareLocationEnabled}
     ''';
   }

@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
+import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
@@ -13,8 +13,8 @@ import 'package:wayat/lang/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
   final LocationState locationState = GetIt.I.get<LocationState>();
-  ContactsLocationState contactsLocationState =
-      GetIt.I.get<ContactsLocationState>();
+  UserStatusState userStatusState =
+      GetIt.I.get<UserStatusState>();
   late MapController controller;
   late GoogleMapController gMapController;
 
@@ -33,7 +33,7 @@ class HomeMapPage extends StatelessWidget {
           return Stack(
             children: [
               Observer(builder: (context) {
-                List<ContactLocation> contacts = contactsLocationState.contacts;
+                List<ContactLocation> contacts = userStatusState.contacts;
                 if (contacts != controller.contacts) {
                   controller.setContacts(contacts);
                   controller.getMarkers();
