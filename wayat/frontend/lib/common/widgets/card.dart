@@ -12,7 +12,11 @@ class CustomCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(text),
+        Text(text,
+            style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+                fontSize: 16)),
         InkWell(
             onTap: onTap,
             child: const Icon(Icons.arrow_forward,

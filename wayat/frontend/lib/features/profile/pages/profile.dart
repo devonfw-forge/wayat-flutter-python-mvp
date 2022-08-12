@@ -36,7 +36,11 @@ class ProfilePage extends StatelessWidget {
         CircleAvatar(
             radius: 95.0, backgroundImage: NetworkImage(contact.imageUrl)),
         const SizedBox(height: 16),
-        Text(contact.name),
+        Text(
+          contact.name,
+          style: const TextStyle(
+              fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
+        ),
       ],
     );
   }
@@ -46,7 +50,11 @@ class ProfilePage extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(appLocalizations.sharingLocation),
+        Text(appLocalizations.sharingLocation,
+            style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+                fontSize: 16)),
         _activeSharingLocationButton(),
         _setDoNotDisturbButton(),
         CustomCard(
@@ -90,9 +98,7 @@ class ProfilePage extends StatelessWidget {
         Text(
           appLocalizations.sharingLocation,
           style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: ColorTheme.primaryColorTransparent,
-              fontSize: 16),
+              fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 16),
         ),
         Observer(builder: (context) {
           return CustomSwitch(
@@ -113,9 +119,7 @@ class ProfilePage extends StatelessWidget {
         Text(
           appLocalizations.doNotDisturb,
           style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: ColorTheme.primaryColorTransparent,
-              fontSize: 16),
+              fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 16),
         ),
         Observer(builder: (context) {
           return CustomSwitch(

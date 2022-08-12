@@ -36,7 +36,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildProfileImage() {
     return Stack(alignment: Alignment.center, children: <Widget>[
       CircleAvatar(
-          radius: 95.0, backgroundImage: NetworkImage(contact.imageUrl)),
+          radius: 95.0,
+          backgroundImage:
+              NetworkImage(contact.imageUrl)), //Need to paste picked image
       Positioned(
           top: 10,
           child: InkWell(
