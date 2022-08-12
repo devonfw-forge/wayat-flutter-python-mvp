@@ -3,7 +3,7 @@
 Client side of the Wayat project.
 
 ## State management
-After assessing different [options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options) for state control between widgets, it was decided to use:
+After assessing different [options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options) for state management between widgets, it was decided to use:
 * [MobX](https://mobx.netlify.app/getting-started/): State management library that offers separation of concerns and leaves implementation details outside of the UI
 * [GetIt](https://pub.dev/packages/get_it): Dependency injection library that removes the necessity to pass every state management controller as arguments, reducing the amount of code needed and improving code quality
 
