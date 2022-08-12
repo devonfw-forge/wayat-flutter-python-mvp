@@ -17,11 +17,13 @@ class SearchBar extends StatelessWidget {
       child: TextField(
         onChanged: onChanged,
         controller: controller,
-        cursorColor: ColorTheme.primaryColor,
+        cursorColor: Colors.black,
         decoration: InputDecoration(
-            hintText: appLocalizations.search,
+            labelText: appLocalizations.search,
             contentPadding: EdgeInsets.zero,
-            hintStyle: const TextStyle(
+            floatingLabelStyle:
+                const TextStyle(color: Colors.black, fontSize: 20),
+            labelStyle: const TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.w500,
                 fontSize: 18),
@@ -35,8 +37,7 @@ class SearchBar extends StatelessWidget {
                     BorderSide(width: 2, color: ColorTheme.secondaryColor)),
             focusedBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide:
-                    BorderSide(width: 2, color: ColorTheme.primaryColor))),
+                borderSide: BorderSide(width: 1, color: Colors.black))),
       ),
     );
   }
