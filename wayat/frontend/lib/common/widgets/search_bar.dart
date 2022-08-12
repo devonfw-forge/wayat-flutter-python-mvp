@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/lang/app_localizations.dart';
+
+class SearchBar extends StatelessWidget {
+  final TextEditingController controller;
+  final Function(String) onChanged;
+  const SearchBar({required this.controller, required this.onChanged, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: AlignmentDirectional.center,
+      padding: const EdgeInsets.only(left: 15.0, right: 10.0),
+      height: 60,
+      child: TextField(
+        onChanged: onChanged,
+        controller: controller,
+        cursorColor: ColorTheme.primaryColor,
+        decoration: InputDecoration(
+            hintText: appLocalizations.search,
+            contentPadding: EdgeInsets.zero,
+            hintStyle: const TextStyle(
+                color: Colors.black54,
+                fontWeight: FontWeight.w500,
+                fontSize: 18),
+            prefixIcon: const Icon(
+              Icons.search,
+              color: Colors.black54,
+            ),
+            enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide:
+                    BorderSide(width: 2, color: ColorTheme.secondaryColor)),
+            focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide:
+                    BorderSide(width: 2, color: ColorTheme.primaryColor))),
+      ),
+    );
+  }
+}

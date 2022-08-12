@@ -40,6 +40,23 @@ mixin _$RequestsController on _RequestsController, Store {
     });
   }
 
+  late final _$filteredPendingRequestsAtom = Atom(
+      name: '_RequestsController.filteredPendingRequests', context: context);
+
+  @override
+  ObservableList<Contact> get filteredPendingRequests {
+    _$filteredPendingRequestsAtom.reportRead();
+    return super.filteredPendingRequests;
+  }
+
+  @override
+  set filteredPendingRequests(ObservableList<Contact> value) {
+    _$filteredPendingRequestsAtom
+        .reportWrite(value, super.filteredPendingRequests, () {
+      super.filteredPendingRequests = value;
+    });
+  }
+
   late final _$updateRequestsAsyncAction =
       AsyncAction('_RequestsController.updateRequests', context: context);
 
@@ -96,9 +113,21 @@ mixin _$RequestsController on _RequestsController, Store {
   }
 
   @override
+  void setTextFilter(String text) {
+    final _$actionInfo = _$_RequestsControllerActionController.startAction(
+        name: '_RequestsController.setTextFilter');
+    try {
+      return super.setTextFilter(text);
+    } finally {
+      _$_RequestsControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 requests: ${requests},
+filteredPendingRequests: ${filteredPendingRequests},
 pendingRequests: ${pendingRequests},
 sentRequests: ${sentRequests}
     ''';

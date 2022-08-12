@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/features/contacts/controller/page_controller/contacts_page_controller.dart';
+import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';

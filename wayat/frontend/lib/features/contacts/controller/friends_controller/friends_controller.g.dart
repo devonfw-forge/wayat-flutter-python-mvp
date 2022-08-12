@@ -24,19 +24,19 @@ mixin _$FriendsController on _FriendsController, Store {
               name: '_FriendsController.unavailableContacts'))
       .value;
 
-  late final _$contactsAtom =
-      Atom(name: '_FriendsController.contacts', context: context);
+  late final _$filteredContactsAtom =
+      Atom(name: '_FriendsController.filteredContacts', context: context);
 
   @override
-  ObservableList<Contact> get contacts {
-    _$contactsAtom.reportRead();
-    return super.contacts;
+  ObservableList<Contact> get filteredContacts {
+    _$filteredContactsAtom.reportRead();
+    return super.filteredContacts;
   }
 
   @override
-  set contacts(ObservableList<Contact> value) {
-    _$contactsAtom.reportWrite(value, super.contacts, () {
-      super.contacts = value;
+  set filteredContacts(ObservableList<Contact> value) {
+    _$filteredContactsAtom.reportWrite(value, super.filteredContacts, () {
+      super.filteredContacts = value;
     });
   }
 
@@ -52,6 +52,17 @@ mixin _$FriendsController on _FriendsController, Store {
       ActionController(name: '_FriendsController', context: context);
 
   @override
+  void setTextFilter(String text) {
+    final _$actionInfo = _$_FriendsControllerActionController.startAction(
+        name: '_FriendsController.setTextFilter');
+    try {
+      return super.setTextFilter(text);
+    } finally {
+      _$_FriendsControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void removeContact(Contact contact) {
     final _$actionInfo = _$_FriendsControllerActionController.startAction(
         name: '_FriendsController.removeContact');
@@ -65,7 +76,7 @@ mixin _$FriendsController on _FriendsController, Store {
   @override
   String toString() {
     return '''
-contacts: ${contacts},
+filteredContacts: ${filteredContacts},
 availableContacts: ${availableContacts},
 unavailableContacts: ${unavailableContacts}
     ''';

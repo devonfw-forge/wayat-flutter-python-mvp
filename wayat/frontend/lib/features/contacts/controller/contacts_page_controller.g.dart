@@ -40,6 +40,17 @@ mixin _$ContactsPageController on _ContactsPageController, Store {
   }
 
   @override
+  void setSearchBarText(String text) {
+    final _$actionInfo = _$_ContactsPageControllerActionController.startAction(
+        name: '_ContactsPageController.setSearchBarText');
+    try {
+      return super.setSearchBarText(text);
+    } finally {
+      _$_ContactsPageControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 viewSentRequests: ${viewSentRequests}

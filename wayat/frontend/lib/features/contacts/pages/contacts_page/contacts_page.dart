@@ -1,25 +1,41 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/search_bar.dart';
+import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
 class ContactsPage extends StatelessWidget {
-  const ContactsPage({Key? key}) : super(key: key);
+  final ContactsPageController controller =
+      GetIt.I.get<ContactsPageController>();
+
+  ContactsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(
-            child: AutoTabsRouter.tabBar(
-          routes: [FriendsRoute(), RequestsRoute(), SuggestionsRoute()],
-          builder: ((context, child, tabController) {
-            return Column(
-              children: [_tabBar(tabController), Expanded(child: child)],
-            );
-          }),
-        ))
+        SearchBar(
+          controller: controller.searchBarController,
+          onChanged: (text) => controller.setSearchBarText(text),
+        ),
+        contactsPageContent()
       ],
     );
+  }
+
+  Expanded contactsPageContent() {
+    return Expanded(
+        child: AutoTabsRouter.tabBar(
+      routes: [FriendsRoute(), RequestsRoute(), SuggestionsRoute()],
+      builder: ((context, child, tabController) {
+        return Column(
+          children: [_tabBar(tabController), Expanded(child: child)],
+        );
+      }),
+    ));
   }
 
   Widget _tabBar(TabController tabController) {
@@ -37,10 +53,10 @@ class ContactsPage extends StatelessWidget {
               indicator: _tabIndicator(),
               labelColor: Colors.black87,
               controller: tabController,
-              tabs: const [
-                Tab(text: "Friends"),
-                Tab(text: "Requests"),
-                Tab(text: "Suggestions")
+              tabs: [
+                Tab(text: appLocalizations.friendsTab),
+                Tab(text: appLocalizations.requestsTab),
+                Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],
       ),
@@ -59,9 +75,8 @@ class ContactsPage extends StatelessWidget {
       margin: const EdgeInsets.only(top: 45),
       height: 4,
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        color: Color.fromARGB(255, 222, 228, 255),
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+          color: ColorTheme.secondaryColor),
     );
   }
 }

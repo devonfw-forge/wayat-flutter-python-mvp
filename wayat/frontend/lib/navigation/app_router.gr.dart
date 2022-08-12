@@ -20,12 +20,16 @@ import '../features/authentication/page/login_page.dart' as _i17;
 import '../features/authentication/page/login_wrapper.dart' as _i5;
 import '../features/authentication/page/phone_validation_page.dart' as _i18;
 import '../features/contacts/pages/contact_detail_page.dart' as _i2;
-import '../features/contacts/pages/contacts_page.dart' as _i12;
+import '../features/contacts/pages/contacts_page/contacts_page.dart' as _i12;
+import '../features/contacts/pages/contacts_page/friends_page/friends_page.dart'
+    as _i14;
+import '../features/contacts/pages/contacts_page/requests_page/requests_page.dart'
+    as _i15;
+import '../features/contacts/pages/contacts_page/suggestions_page/suggestions_page.dart'
+    as _i16;
 import '../features/contacts/pages/contacts_wrapper.dart' as _i10;
-import '../features/contacts/pages/friends_page.dart' as _i14;
-import '../features/contacts/pages/requests_page.dart' as _i15;
-import '../features/contacts/pages/sent_requests_page.dart' as _i13;
-import '../features/contacts/pages/suggestions_page.dart' as _i16;
+import '../features/contacts/pages/sent_requests_page/sent_requests_page.dart'
+    as _i13;
 import '../features/create_event/page/create_event_page.dart' as _i9;
 import '../features/home/pages/home_page.dart' as _i4;
 import '../features/map/page/home_map_page.dart' as _i8;
@@ -106,8 +110,10 @@ class AppRouter extends _i20.RootStackRouter {
           routeData: routeData, child: const _i11.NotificationsPage());
     },
     ContactsRoute.name: (routeData) {
+      final args = routeData.argsAs<ContactsRouteArgs>(
+          orElse: () => const ContactsRouteArgs());
       return _i20.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i12.ContactsPage());
+          routeData: routeData, child: _i12.ContactsPage(key: args.key));
     },
     SentRequestsRoute.name: (routeData) {
       final args = routeData.argsAs<SentRequestsRouteArgs>(
@@ -423,12 +429,25 @@ class NotificationsRoute extends _i20.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i12.ContactsPage]
-class ContactsRoute extends _i20.PageRouteInfo<void> {
-  const ContactsRoute({List<_i20.PageRouteInfo>? children})
+class ContactsRoute extends _i20.PageRouteInfo<ContactsRouteArgs> {
+  ContactsRoute({_i21.Key? key, List<_i20.PageRouteInfo>? children})
       : super(ContactsRoute.name,
-            path: 'contacts-page', initialChildren: children);
+            path: 'contacts-page',
+            args: ContactsRouteArgs(key: key),
+            initialChildren: children);
 
   static const String name = 'ContactsRoute';
+}
+
+class ContactsRouteArgs {
+  const ContactsRouteArgs({this.key});
+
+  final _i21.Key? key;
+
+  @override
+  String toString() {
+    return 'ContactsRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

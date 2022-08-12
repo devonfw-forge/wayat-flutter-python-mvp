@@ -36,5 +36,20 @@
     "viewProfile" : "Voir le profil",
     "close" : "Fermer",
     "loadingAddress" : "Adresse de chargement",
-    "noAddress" : "Aucune adresse trouvée"
+    "noAddress" : "Aucune adresse trouvée",
+
+    "friendsTab": "Amis",
+    "requestsTab": "Requêtes",
+    "suggestionsTab": "Suggestions",
+
+    "friendsPageTitle": "MES AMIS",
+    "pendingRequestsTitle": "DEMANDES D'AMITIÉ",
+    "suggestionsPageTitle": "AJOUTER À VOS CONTACTS",
+    "sentRequestsTitle": "DEMANDES ENVOYÉES",
+    "sentButtonNavigation": "ENVOYÉ",
+    "sentButtonTile": "Envoyé",
+    "noPendingRequests": "Vous n'avez aucune demande en attente",
+
+    "accept": "Accepter",
+    "search": "Recherche"
 }

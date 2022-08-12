@@ -13,9 +13,14 @@ abstract class _RequestsController with Store {
   static const String pendingRequestsKey = "pending_requests";
   static const String sentRequestsKey = "sent_requests";
 
+  String textFilter = "";
+
   @observable
   ObservableMap<String, List<Contact>> requests =
       ObservableMap.of({pendingRequestsKey: [], sentRequestsKey: []});
+
+  @observable
+  ObservableList<Contact> filteredPendingRequests = ObservableList.of([]);
 
   @computed
   List<Contact> get pendingRequests => requests[pendingRequestsKey]!;
@@ -26,6 +31,10 @@ abstract class _RequestsController with Store {
   @action
   Future updateRequests() async {
     requests = ObservableMap.of(await _service.getRequests());
+    filteredPendingRequests = ObservableList.of(pendingRequests
+        .where((element) =>
+            element.name.toLowerCase().contains(textFilter.toLowerCase()))
+        .toList());
   }
 
   @action
@@ -54,5 +63,14 @@ abstract class _RequestsController with Store {
     //TODO: UNCOMMENT THIS CODE WHEN REJECT IS IMPLEMENTED
 /*     sentRequests.remove(contact);
     _service.unsendRequest(contact); */
+  }
+
+  @action
+  void setTextFilter(String text) {
+    textFilter = text;
+    filteredPendingRequests = ObservableList.of(pendingRequests
+        .where((element) =>
+            element.name.toLowerCase().contains(textFilter.toLowerCase()))
+        .toList());
   }
 }

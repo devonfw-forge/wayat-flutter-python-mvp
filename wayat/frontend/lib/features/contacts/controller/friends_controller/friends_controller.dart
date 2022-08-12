@@ -10,21 +10,37 @@ class FriendsController = _FriendsController with _$FriendsController;
 
 abstract class _FriendsController with Store {
   final ContactService _service = ContactServiceImpl();
+  String textFilter = "";
+
+  ObservableList<Contact> allContacts = ObservableList.of(List.empty());
 
   @observable
-  ObservableList<Contact> contacts = ObservableList.of(List.empty());
+  ObservableList<Contact> filteredContacts = ObservableList.of(List.empty());
 
   @computed
   List<Contact> get availableContacts =>
-      contacts.where((contact) => contact.available).toList();
+      allContacts.where((contact) => contact.available).toList();
 
   @computed
   List<Contact> get unavailableContacts =>
-      contacts.where((contact) => !contact.available).toList();
+      allContacts.where((contact) => !contact.available).toList();
 
   @action
   Future updateContacts() async {
-    contacts = ObservableList.of(await _service.getAll());
+    allContacts = ObservableList.of(await _service.getAll());
+    filteredContacts = ObservableList.of(allContacts
+        .where((element) =>
+            element.name.toLowerCase().contains(textFilter.toLowerCase()))
+        .toList());
+  }
+
+  @action
+  void setTextFilter(String text) {
+    textFilter = text;
+    filteredContacts = ObservableList.of(allContacts
+        .where((element) =>
+            element.name.toLowerCase().contains(textFilter.toLowerCase()))
+        .toList());
   }
 
   @action
