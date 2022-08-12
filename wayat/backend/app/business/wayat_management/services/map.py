@@ -66,7 +66,6 @@ class MapService:
         uid = user_to_update.document_id
 
         # Implementation
-
         new_contact_refs = await asyncio.gather(
             *[self._create_contact_ref(contact_uid) for contact_uid in user_to_update.contacts],
         )  # type: list[ContactRefInfo]

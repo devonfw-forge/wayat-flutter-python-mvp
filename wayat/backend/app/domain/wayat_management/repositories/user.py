@@ -45,9 +45,22 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         )
         await self.update(data={"location": location.dict()}, document_id=uid)
 
-    async def get_user_location(self, uid: str) -> Location | None:
+    async def get_user_location(self, uid: str, force=False) -> Location | None:
+        """
+        Returns the location of a User. If force=False (default), this Location will be None if the User has the
+        share_location property set to False.
+
+        :param force: whether to ignore share_location or not
+        :param uid: the UID of the User
+        :return: the Location of the User, or None if it's not available
+        """
         user_entity = await self.get(uid)
-        return user_entity.location if user_entity else None
+        if user_entity is None or user_entity.location is None:  # if not available, return None
+            return None
+        elif not force and not user_entity.share_location:  # if not forcing, decide on not(share_location)
+            return None
+        else:
+            return user_entity.location
 
     async def find_contacts_with_map_open(self, uid: str) -> list[UserEntity]:
         result_stream = (
