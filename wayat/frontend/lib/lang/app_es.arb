@@ -51,5 +51,7 @@
     "noPendingRequests": "No tienes peticiones pendientes",
 
     "accept": "Aceptar",
-    "search": "Buscar"
+    "search": "Buscar",
+
+    "viewInformation": "Ver información"
 }

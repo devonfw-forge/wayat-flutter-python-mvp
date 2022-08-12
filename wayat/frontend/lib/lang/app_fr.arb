@@ -51,5 +51,7 @@
     "noPendingRequests": "Vous n'avez aucune demande en attente",
 
     "accept": "Accepter",
-    "search": "Recherche"
+    "search": "Recherche",
+
+    "viewInformation": "Voir les informations"
 }
