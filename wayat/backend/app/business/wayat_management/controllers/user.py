@@ -61,7 +61,7 @@ async def add_contact(request: AddContactsRequest, user_service: UserService = D
 
 
 @router.post("/preferences", description="Update the preferences of a user")
-async def update_preferences(request: UpdatePreferencesRequest):
+async def update_preferences(request: UpdatePreferencesRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
     # TODO
     pass
 
