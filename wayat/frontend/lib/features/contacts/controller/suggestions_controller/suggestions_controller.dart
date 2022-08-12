@@ -3,7 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
-import 'package:wayat/features/contacts/controller/page_controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart';

@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
-import 'package:wayat/features/contacts/controller/page_controller/requests_controller/requests_controller.dart';
+import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/contacts/widgets/contacts_section_title.dart';
 import 'package:wayat/features/contacts/widgets/empty_page_message.dart';

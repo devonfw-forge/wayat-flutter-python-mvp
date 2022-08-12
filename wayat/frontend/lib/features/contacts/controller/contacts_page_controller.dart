@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/features/contacts/controller/page_controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/page_controller/requests_controller/requests_controller.dart';
+import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 
 part 'contacts_page_controller.g.dart';
