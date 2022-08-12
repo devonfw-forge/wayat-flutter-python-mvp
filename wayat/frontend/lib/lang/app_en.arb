@@ -39,5 +39,20 @@
     "viewProfile": "View profile",
     "close": "Close",
     "loadingAddress": "Loading address",
-    "noAddress": "Could not find address"
+    "noAddress": "Could not find address",
+
+    "friendsTab": "Friends",
+    "requestsTab": "Requests",
+    "suggestionsTab": "Suggestions",
+
+    "friendsPageTitle": "MY FRIENDS",
+    "pendingRequestsTitle": "FRIENDS REQUESTS",
+    "suggestionsPageTitle": "ADD YOUR CONTACTS",
+    "sentRequestsTitle": "SENT REQUESTS",
+    "sentButtonNavigation": "SENT",
+    "sentButtonTile": "Sent",
+    "noPendingRequests": "You don't have any pending requests",
+
+    "accept": "Accept",
+    "search": "Search"
 } 

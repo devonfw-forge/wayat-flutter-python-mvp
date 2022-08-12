@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
@@ -13,8 +11,12 @@ import 'dart:math' show cos, sqrt, asin;
 /// when the conditions are met
 class ShareLocationServiceImpl extends ShareLocationService {
   final Duration passiveMinTime = const Duration(minutes: 15);
+
+  /// 1 kilometer of distance
   final int passiveMinDistance = 1000;
   final Duration activeMinTime = const Duration();
+
+  /// 50 meters of distance
   final int activeMinDistance = 50;
 
   late Location location;
@@ -27,40 +29,33 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   /// Creates a ShareLocationService.
   ///
-  /// It can throw a RejectedLocationException if the user
-  /// rejects location permissions
-  ///
-  /// It can throw A NoLocationServiceException if the call
-  /// to Location.requestService() results in an error
+  /// Throw a [RejectedLocationException] if the user
+  /// rejects location permissions. Throws a [NoLocationServiceException]
+  /// if the call to ```Location.requestService()``` results in an error
   static Future<ShareLocationServiceImpl> create(ShareLocationMode mode,
       bool shareLocation, Function(LatLng) onLocationChangedCallback) async {
     Location location = Location();
 
+    // First, enable device location
     bool locationServiceEnabled = await location.serviceEnabled();
     if (!locationServiceEnabled) {
       locationServiceEnabled = await location.requestService();
       if (!locationServiceEnabled) {
-        debugPrint("No location service enabled");
         throw NoLocationServiceException();
       }
     }
 
+    // Then, enable app location permission
     PermissionStatus permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
-      debugPrint("Requesting permission");
       permissionGranted = await location.requestPermission();
-
       if (permissionGranted == PermissionStatus.denied) {
-        debugPrint("No permission");
         throw RejectedLocationException();
       }
     }
 
-    debugPrint("Setting initial Location");
     LocationData initialLocation = await location.getLocation();
-    debugPrint("initial location $initialLocation");
 
-    debugPrint("Creating location service");
     return ShareLocationServiceImpl._create(
         initialLocation, mode, shareLocation, onLocationChangedCallback);
   }
@@ -85,24 +80,26 @@ class ShareLocationServiceImpl extends ShareLocationService {
     location.enableBackgroundMode(enable: true);
 
     location.onLocationChanged.listen((LocationData newLocation) {
-      debugPrint("Location changed");
       if (shareLocationEnabled) {
         manageLocationChange(newLocation);
       }
     });
   }
 
+  /// Checks all the conditions to send location to backend,
+  /// including active and passive mode
   void manageLocationChange(LocationData newLocation) {
-    if (shareLocationMode == ShareLocationMode.Passive) {
+    double movedDistance = calculateDistance(newLocation);
+    // Passive mode
+    if (shareLocationMode == ShareLocationMode.passive) {
       DateTime now = DateTime.now();
-      debugPrint("${lastShared.difference(now)}");
-
       if (lastShared.difference(now).abs() < passiveMinTime &&
-          calculateDistance(newLocation) < passiveMinDistance) {
-        debugPrint("Not sharing");
+          movedDistance < passiveMinDistance) {
         return;
       }
-    } else if (calculateDistance(newLocation) < activeMinDistance) {
+    }
+    // Active mode
+    else if (movedDistance < activeMinDistance) {
       return;
     }
 
@@ -136,8 +133,11 @@ class ShareLocationServiceImpl extends ShareLocationService {
   @override
   void setShareLocationEnabled(bool shareLocation) {
     shareLocationEnabled = shareLocation;
+    super
+        .sendPostRequest('user/preferences', {"share_location": shareLocation});
   }
 
+  /// Distance will returned in ```meters```
   double calculateDistance(LocationData newLocation) {
     var p = 0.017453292519943295;
     var c = cos;
@@ -147,6 +147,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
             c(currentLocation.latitude! * p) *
             (1 - c((newLocation.longitude! - currentLocation.longitude!) * p)) /
             2;
-    return 12742 * asin(sqrt(a));
+    return 12742 * asin(sqrt(a)) * 1000;
   }
 }

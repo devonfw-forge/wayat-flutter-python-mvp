@@ -13,6 +13,7 @@ class UpdateUserRequest(BaseModel):
     name: Optional[str]
     phone: Optional[str]
     onboarding_completed: Optional[bool]
+    share_location: Optional[bool]
 
 
 class AddContactsRequest(BaseModel):
