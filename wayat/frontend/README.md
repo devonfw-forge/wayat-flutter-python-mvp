@@ -1,21 +1,21 @@
 # wayat
 
-Client side of the Wayat project responsible for displaying the graphical user interface and connecting it whit the backend section.
+Client side of the Wayat project.
 
 ## State management
 After assessing different [options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options) for state control between widgets, it was decided to use:
 * [MobX](https://mobx.netlify.app/getting-started/): State management library that offers separation of concerns and leaves implementation details outside of the UI
-* [GetIt](https://pub.dev/packages/get_it): Dependency injection library that removes the necessity to pass every state management controller as arguments, reducing the amount of code needed and improving code quality (or something like that)
+* [GetIt](https://pub.dev/packages/get_it): Dependency injection library that removes the necessity to pass every state management controller as arguments, reducing the amount of code needed and improving code quality
 
 ## Navigation
-Additionally, for navigation and routing it has been studied several [options](https://docs.flutter.dev/development/ui/navigation) but finally it was decided to use [AutoRoute](https://pub.dev/packages/auto_route) due to its potential to set navigation declaratively and avoid extra code. 
+Additionally, for navigation and routing we studied several [options](https://docs.flutter.dev/development/ui/navigation) and decided to use [AutoRoute](https://pub.dev/packages/auto_route) because in our criteria it currently provides the best way to define declarative navigation. 
 
 ## Internationalization
 In the other hand, for translations it has been established [internationalization](https://docs.flutter.dev/development/accessibility-and-localization/internationalization) in English, Spanish and French (the language is updated along with the change of language in the system in which the app is launched).
 
 ## Architecture
 
-It has been chosen a [feature based architecture](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0) with some changes: domains, common functionalities and widgets, internatinalization, global state management and navigation have their own directories isolated from the features as shown in this example:
+The chosen architecture is a [feature based architecture](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0) with some changes: domains, common functionalities and widgets, internatinalization, global state management and navigation have their own directories isolated from the features as shown in this example:
 
 ~~~
 PROJECT
