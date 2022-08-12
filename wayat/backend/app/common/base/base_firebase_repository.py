@@ -3,10 +3,48 @@ from functools import lru_cache
 from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator
 
 from fastapi import Depends
-from google.cloud.firestore import AsyncClient, AsyncCollectionReference, AsyncDocumentReference
+from google.cloud.firestore import (
+    AsyncClient,
+    AsyncCollectionReference,
+    AsyncDocumentReference,
+    GeoPoint as _GeoPoint
+)
 from pydantic import BaseModel, ValidationError
 
 from app.common.infra import get_firebase_settings
+
+
+class GeoPoint(_GeoPoint):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_geopoint
+
+    @classmethod
+    def validate_geopoint(cls, value):
+        if isinstance(value, _GeoPoint):
+            return value
+        if isinstance(value, dict):
+            if 'latitude' not in value or 'longitude' not in value:
+                return ValueError("'location' dictionary must contain both 'latitude' and 'longitude'")
+            return cls(value["latitude"], value["longitude"])
+        if isinstance(value, tuple):
+            if len(value) != 2:
+                return ValueError("'location' tuple must contain (latitude, longitude)")
+            return cls(*value)
+
+    @classmethod
+    def __modify_schema__(cls, field_schema):
+        # __modify_schema__ should mutate the dict it receives in place,
+        # the returned value will be ignored
+        field_schema.update(
+            properties={
+                'latitude': {'title': 'Latitude', 'type': 'float'},
+                'longitude': {'title': 'Longitude', 'type': 'float'},
+            }
+        )
+
+    def __repr__(self):
+        return f"GeoPoint(longitude={self.longitude}, latitude={self.latitude})"
 
 
 class BaseFirebaseModel(BaseModel):
@@ -83,7 +121,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
 
         def find(sublist: list[Any]):
             stream = self._get_collection_reference().where(field, operation, sublist).stream()
-            return stream # .stream() returns AsyncGenerator in the async client
+            return stream  # .stream() returns AsyncGenerator in the async client
 
         if operation == 'in':
             residual = len(value) % 10
@@ -96,7 +134,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
             all_generators = find(value)
 
         for generator in all_generators:
-            async for item in generator:
+            async for item in generator:  # type: ignore
                 yield self._model(document_id=item.id, **item.to_dict())
 
     async def delete(self, *, model: ModelType | None = None, document_id: str | None = None):

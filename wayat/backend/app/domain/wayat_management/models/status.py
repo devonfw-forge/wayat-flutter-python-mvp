@@ -1,9 +1,9 @@
 import datetime
 
-from google.cloud.firestore import GeoPoint
 from pydantic import BaseModel, Field
 
 from app.common.base.base_firebase_repository import BaseFirebaseModel
+from app.domain.wayat_management.models.user import GeoPoint
 
 
 class ContactRefInfo(BaseModel):
@@ -11,12 +11,7 @@ class ContactRefInfo(BaseModel):
     last_updated: datetime.datetime
     location: GeoPoint
 
-    class Config:
-        arbitrary_types_allowed = True
-
 
 class AppStatusEntity(BaseFirebaseModel):
     active: bool = False
-    last_updated: datetime.datetime = datetime.datetime.utcnow()
     contact_refs: list[ContactRefInfo] = Field(default_factory=list)
-
