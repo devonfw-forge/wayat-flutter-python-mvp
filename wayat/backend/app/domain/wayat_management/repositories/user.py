@@ -2,7 +2,8 @@ import asyncio
 from datetime import datetime
 from typing import Optional
 from fastapi import Depends
-from google.cloud.firestore import AsyncClient
+from google.cloud import firestore
+from google.cloud.firestore import AsyncClient, AsyncTransaction
 
 from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.common.utils import get_current_time
@@ -75,6 +76,27 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
 
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})
+
+    async def create_friend_request(self, sender: str, receivers: list[str]):
+        transaction = self._client.transaction()
+        sender_ref = self._get_document_reference(sender)
+        receivers_ref = [self._get_document_reference(u) for u in receivers]
+
+        @firestore.async_transactional
+        async def execute(t: AsyncTransaction):
+            update_sender = {
+                "sent_requests": firestore.ArrayUnion(receivers)
+            }
+            self._validate_update(update_sender)
+            update_receivers = {
+                "pending_requests": firestore.ArrayUnion([sender])
+            }
+            self._validate_update(update_receivers)
+            t.update(sender_ref, update_sender)
+            for r in receivers_ref:
+                t.update(r, update_receivers)
+
+        await execute(transaction)
 
     async def update_map_info(self, uid: str, map_open: bool, map_valid_until: datetime | None = None):
         data = {"map_open": map_open}
