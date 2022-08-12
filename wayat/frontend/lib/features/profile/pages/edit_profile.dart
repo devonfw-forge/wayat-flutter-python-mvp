@@ -14,6 +14,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late final Contact contact;
+  XFile? currentSelectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,8 @@ class _ProfilePageState extends State<ProfilePage> {
           child: InkWell(
               onTap: () {
                 showModalBottomSheet(
-                    context: context, builder: (builder) => _bootomSheet());
+                    context: context,
+                    builder: (builder) => _getImageFromCameraOrGallary());
               },
               child: const Icon(Icons.camera_alt,
                   color: ColorTheme.primaryColorTransparent, size: 45))),
@@ -99,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       );
 
-  Widget _bootomSheet() {
+  Widget _getImageFromCameraOrGallary() {
     return Container(
         height: MediaQuery.of(context).size.height / 4,
         width: MediaQuery.of(context).size.width,
@@ -109,14 +111,22 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(height: 20),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             TextButton.icon(
-                onPressed: () {},
+                onPressed: () => _getFromSource(ImageSource.camera),
                 icon: const Icon(Icons.camera),
                 label: const Text('Camera')),
             TextButton.icon(
-                onPressed: () {},
+                onPressed: () => _getFromSource(ImageSource.gallery),
                 icon: const Icon(Icons.image),
                 label: const Text('Galary')),
           ])
         ]));
+  }
+
+  void _getFromSource(ImageSource source) async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? newImage = await imagePicker.pickImage(source: source);
+    setState(() {
+      currentSelectedImage = newImage;
+    });
   }
 }
