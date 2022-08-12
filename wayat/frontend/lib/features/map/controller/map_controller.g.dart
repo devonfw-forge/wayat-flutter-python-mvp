@@ -41,22 +41,6 @@ mixin _$MapController on _MapController, Store {
     });
   }
 
-  late final _$sharingLocationAtom =
-      Atom(name: '_MapController.sharingLocation', context: context);
-
-  @override
-  bool get sharingLocation {
-    _$sharingLocationAtom.reportRead();
-    return super.sharingLocation;
-  }
-
-  @override
-  set sharingLocation(bool value) {
-    _$sharingLocationAtom.reportWrite(value, super.sharingLocation, () {
-      super.sharingLocation = value;
-    });
-  }
-
   late final _$_MapControllerActionController =
       ActionController(name: '_MapController', context: context);
 
@@ -66,6 +50,17 @@ mixin _$MapController on _MapController, Store {
         name: '_MapController.setMarkers');
     try {
       return super.setMarkers(newMarkers);
+    } finally {
+      _$_MapControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setContacts(List<ContactLocation> newContacts) {
+    final _$actionInfo = _$_MapControllerActionController.startAction(
+        name: '_MapController.setContacts');
+    try {
+      return super.setContacts(newContacts);
     } finally {
       _$_MapControllerActionController.endAction(_$actionInfo);
     }
@@ -86,8 +81,7 @@ mixin _$MapController on _MapController, Store {
   String toString() {
     return '''
 currentLocation: ${currentLocation},
-markers: ${markers},
-sharingLocation: ${sharingLocation}
+markers: ${markers}
     ''';
   }
 }

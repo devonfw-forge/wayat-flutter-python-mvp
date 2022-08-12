@@ -14,4 +14,3 @@ class LocationUpdateRequest(BaseModel):
 
 class UpdateMapRequest(BaseModel):
     open: bool
-    position: Optional[Coordinates]

@@ -3,10 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_state.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
+import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart';
 import 'package:wayat/services/first_launch/first_launch_service.dart';
 
 part 'onboarding_controller.g.dart';
@@ -16,6 +18,18 @@ class OnboardingController = _OnboardingController with _$OnboardingController;
 abstract class _OnboardingController with Store {
   ContactService contactService = ContactServiceImpl();
   FirstLaunchService firstLaunchService = FirstLaunchService();
+
+  _OnboardingController() {
+    importContacts();
+  }
+
+  void importContacts() async {
+    List<ContactAdressBook> importedContacts =
+        await ContactsAddressServiceImpl.getAll();
+    List<Contact> filteredContacts =
+        await contactService.getFilteredContacts(importedContacts);
+    addAll(filteredContacts);
+  }
 
   @observable
   OnBoardingState onBoardingState = OnBoardingState.NotStarted;

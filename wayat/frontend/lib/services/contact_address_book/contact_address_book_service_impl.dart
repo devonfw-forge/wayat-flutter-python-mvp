@@ -1,7 +1,7 @@
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:wayat/domain/contact/contact_address_book.dart';
 
-class ContactServiceImpl {
+class ContactsAddressServiceImpl {
   static Future<List<ContactAdressBook>> getAll() async {
     if (await FlutterContacts.requestPermission()) {
       List<Contact> contacts = await FlutterContacts.getContacts(

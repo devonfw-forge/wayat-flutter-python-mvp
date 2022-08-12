@@ -2,10 +2,15 @@
     "appTitle": "wayat",
 
     "login": "Iniciar sesión",
+    "loginGoogle": "Iniciar sesión con Google",
     "email": "Email",
     "password": "Contraseña",
+    "phoneNumber": "Número de teléfono",
     "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
-
+    "phonePageDescription": "Se requiere un número de teléfono válido",
+    "invalidPhoneNumber": "Número de teléfono inválido",
+    "phoneUpdateError": "Error al configurar el número de teléfono",
+    
     "home": "Inicio",
     "contacts": "Contactos",
     "events": "Eventos",
@@ -15,8 +20,6 @@
     "notifications": "Notificaciones",
 
     "manageContactsTip": "Podrás modificar los\npermisos de tus contactos\ncuando quieras",
-
-
     "allowedContactsTitle": "Establece tus contactos",
     "allowedContactsBody": "Selecciona los contactos que podrán\nver tu posición y eventos. También\npodrás crear grupos de familia, amigos,\ntrabajo o lo que desees.",
 
@@ -25,7 +28,6 @@
 
     "next": "Siguiente",
     "skip": "Saltar",
-
 
     "selectContacts": "Selecciona contactos",
 

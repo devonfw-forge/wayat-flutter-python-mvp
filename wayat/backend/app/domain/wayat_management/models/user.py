@@ -27,6 +27,7 @@ class UserEntity(BaseFirebaseModel):
     location: Optional[Location]
 
     # Privacy settings
+    share_location: bool = True
     do_not_disturb: bool = False
 
     # Internal variables
