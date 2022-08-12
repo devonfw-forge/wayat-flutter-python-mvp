@@ -118,7 +118,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
     def _validate_update(self, update: dict):
         not_defined_values = set(update.keys()).difference(self._model.__fields__.keys())
         if not_defined_values:
-            raise ValidationError(f"Tried to update fields {not_defined_values} which are not present in the model")
+            raise ValueError(f"Tried to update fields {not_defined_values} which are not present in the model")
 
     async def where(self, field: str, operation: str, value: Any) -> AsyncGenerator[ModelType, None]:
         all_generators = []
