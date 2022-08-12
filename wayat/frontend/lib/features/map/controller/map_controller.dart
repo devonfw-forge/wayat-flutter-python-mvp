@@ -8,6 +8,7 @@ import 'package:wayat/services/location/location_service_impl.dart';
 
 part 'map_controller.g.dart';
 
+// ignore: library_private_types_in_public_api
 class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
@@ -52,8 +53,7 @@ abstract class _MapController with Store {
   }
 
   void updateMarkers() async {
-    // ignore: avoid_function_literals_in_foreach_calls
-    contacts.forEach((contact) async {
+    for (var contact in contacts) {
       LatLng currentPosition = LatLng(contact.latitude, contact.longitude);
       LatLng newPosition =
           LocationServiceImpl().changeContactCoordinates(currentPosition);
@@ -71,7 +71,7 @@ abstract class _MapController with Store {
           )
           .toSet();
       setMarkers(newMarkers);
-    });
+    }
   }
 
   @action

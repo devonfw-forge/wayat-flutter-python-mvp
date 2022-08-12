@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
       routes: [
         HomeMapRoute(),
         const CreateEventRoute(),
-        ContactsRoute(),
+        ContactsWrapper(),
         const NotificationsRoute(),
       ],
       builder: (context, child, animation) {

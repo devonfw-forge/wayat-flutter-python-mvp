@@ -11,9 +11,11 @@ import 'dart:math' show cos, sqrt, asin;
 /// when the conditions are met
 class ShareLocationServiceImpl extends ShareLocationService {
   final Duration passiveMinTime = const Duration(minutes: 15);
-  /// 1 kilometer of distance 
+
+  /// 1 kilometer of distance
   final int passiveMinDistance = 1000;
   final Duration activeMinTime = const Duration();
+
   /// 50 meters of distance
   final int activeMinDistance = 50;
 
@@ -25,11 +27,10 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late bool shareLocationEnabled;
   late Function(LatLng) changeLocationStateCallback;
 
-
   /// Creates a ShareLocationService.
   ///
   /// Throw a [RejectedLocationException] if the user
-  /// rejects location permissions. Throws a [NoLocationServiceException] 
+  /// rejects location permissions. Throws a [NoLocationServiceException]
   /// if the call to ```Location.requestService()``` results in an error
   static Future<ShareLocationServiceImpl> create(ShareLocationMode mode,
       bool shareLocation, Function(LatLng) onLocationChangedCallback) async {
@@ -52,11 +53,11 @@ class ShareLocationServiceImpl extends ShareLocationService {
         throw RejectedLocationException();
       }
     }
-    
+
     LocationData initialLocation = await location.getLocation();
-    
+
     return ShareLocationServiceImpl._create(
-      initialLocation, mode, shareLocation, onLocationChangedCallback);
+        initialLocation, mode, shareLocation, onLocationChangedCallback);
   }
 
   /// Private factory for the location service
@@ -96,7 +97,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
           movedDistance < passiveMinDistance) {
         return;
       }
-    } 
+    }
     // Active mode
     else if (movedDistance < activeMinDistance) {
       return;
@@ -132,9 +133,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
   @override
   void setShareLocationEnabled(bool shareLocation) {
     shareLocationEnabled = shareLocation;
-    super.sendPostRequest('user/preferences', {
-      "share_location": shareLocation
-    });
+    super
+        .sendPostRequest('user/preferences', {"share_location": shareLocation});
   }
 
   /// Distance will returned in ```meters```

@@ -5,30 +5,31 @@ import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 
 class ContactServiceImpl extends ContactService {
-
   @override
   Future<List<Contact>> getAll() async {
     Map<String, dynamic> response = await sendGetRequest("users/contacts");
     List<Contact> contacts = (response["users"] as List<dynamic>)
-      .map((e) => Contact.fromMap(e))
-      .toList();
+        .map((e) => Contact.fromMap(e))
+        .toList();
     return contacts;
   }
 
   @override
   Future<void> sendRequests(List<Contact> contacts) async {
     await super.sendPostRequest(
-      "users/add-contact", {"users": contacts.map((e) => e.id).toList()});
+        "users/add-contact", {"users": contacts.map((e) => e.id).toList()});
   }
 
   @override
   Future<List<Contact>> getFilteredContacts(
       List<ContactAdressBook> importedContacts) async {
-    List<String> phoneList =
-        importedContacts.map((e) => e.phoneNumber
-          .replaceAll(' ', '').replaceAll('-', '')
-          .replaceAll('(', '').replaceAll(')', ''))
-          .toList();
+    List<String> phoneList = importedContacts
+        .map((e) => e.phoneNumber
+            .replaceAll(' ', '')
+            .replaceAll('-', '')
+            .replaceAll('(', '')
+            .replaceAll(')', ''))
+        .toList();
 
     Response response = await super
         .sendPostRequest("users/find-by-phone", {"phones": phoneList});
@@ -38,5 +39,10 @@ class ContactServiceImpl extends ContactService {
         .toList();
 
     return contactList;
+  }
+
+  @override
+  void removeContact(Contact contact) {
+    //TODO: CALL API TO REMOVE THE CONTACT
   }
 }

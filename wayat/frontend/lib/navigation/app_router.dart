@@ -4,7 +4,12 @@ import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/login_wrapper.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
 import 'package:wayat/features/contacts/pages/contact_detail_page.dart';
-import 'package:wayat/features/contacts/pages/contacts_page.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
+import 'package:wayat/features/contacts/pages/contacts_wrapper.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/requests_page/requests_page.dart';
+import 'package:wayat/features/contacts/pages/sent_requests_page/sent_requests_page.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/suggestions_page/suggestions_page.dart';
 import 'package:wayat/features/home/pages/home_page.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:wayat/features/notifications/page/notifications_page.dart';
@@ -24,8 +29,17 @@ import 'package:wayat/features/root/root_wrapper.dart';
     ]),
     AutoRoute(page: HomePage, children: [
       AutoRoute(page: HomeMapPage),
-      AutoRoute(page: ContactsPage),
       AutoRoute(page: CreateEventPage),
+      AutoRoute(page: ContactsWrapper, children: [
+        AutoRoute(page: ContactsPage, children: [
+          AutoRoute(page: FriendsPage),
+          AutoRoute(page: RequestsPage),
+          AutoRoute(page: SuggestionsPage)
+        ]),
+        CustomRoute(
+            page: SentRequestsPage,
+            transitionsBuilder: TransitionsBuilders.slideLeft)
+      ]),
       AutoRoute(page: NotificationsPage),
     ]),
     AutoRoute(page: LoginWrapper, children: [
