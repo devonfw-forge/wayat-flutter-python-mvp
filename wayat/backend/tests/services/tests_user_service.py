@@ -102,6 +102,32 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         mock_user_repo.update.assert_called_with(document_id=test_data.uid, data=test_update_valid)
 
+    async def test_add_contacts_shoud_add_only_valid_ones(self):
+        def mocking_get_user(uid: str):
+            if uid == "test" or uid == "test-friend":
+                return test_entity
+            else:
+                return None
+
+        mock_user_repo = MagicMock(UserRepository, side_effect=mocking_get_user)
+        mock_status_repo = MagicMock(StatusRepository)
+        user_service = UserService(mock_user_repo, mock_status_repo)
+
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity = UserEntity(
+            document_id=test_data.uid,
+            name=test_data.name,
+            email=test_data.email,
+            phone=test_data.phone,
+            image_url=test_data.picture
+        )
+
+        # Call to be tested
+        await user_service.add_contacts(uid=test_data.uid, users=["test-friend", "invalid"])
+
+        # Asserts
+        mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity])
+
 
 if __name__ == "__main__":
     unittest.main()
