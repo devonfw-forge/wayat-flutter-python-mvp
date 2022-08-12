@@ -1,7 +1,7 @@
 import asyncio
 import functools
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from functools import lru_cache
 from typing import overload
 
@@ -9,7 +9,7 @@ from fastapi import Depends
 from pydantic import BaseSettings
 
 from app.common.core.configuration import load_env_file_on_settings
-from app.common.utils import haversine_distance
+from app.common.utils import haversine_distance, get_current_time
 from app.domain.wayat_management.models.status import ContactRefInfo
 from app.domain.wayat_management.models.user import UserEntity, Location
 from app.domain.wayat_management.repositories.status import StatusRepository
@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 class MapSettings(BaseSettings):
     update_threshold: int
+    valid_until_threshold: int
     distance_threshold: float
 
     class Config:
@@ -40,8 +41,12 @@ class MapService:
                  ):
         self._user_repository = user_repository
         self._status_repository = status_repository
-        self._update_threshold = map_settings.update_threshold  # minimum seconds between updates
-        self._distance_threshold = map_settings.distance_threshold  # range (km) in which users become active
+        # minimum seconds between updates
+        self._update_threshold = map_settings.update_threshold
+        # range (km) in which users become active
+        self._distance_threshold = map_settings.distance_threshold
+        # max ammount of time for which the map status is valid
+        self._map_valid_until_threshold = map_settings.valid_until_threshold
 
     async def update_location(self,
                               uid: str,
@@ -49,6 +54,33 @@ class MapService:
                               longitude: float):
         await self._user_repository.update_user_location(uid, latitude, longitude)
         await self._update_contacts_status(uid, latitude, longitude)
+
+    async def update_map_status(self, uid: str, next_map_state: bool):
+        if next_map_state is True:
+            # open the map
+            user_entity = await self._user_repository.get(uid)
+            if not user_entity.map_open:
+                # Map is currently closed and we are opening it
+                await self._open_closed_map(user_entity)
+            else:
+                # Map is currently opened, we refresh the "map_valid_until" field
+                await self._user_repository.update_map_info(
+                    uid,
+                    next_map_state,
+                    get_current_time() + timedelta(seconds=self._map_valid_until_threshold)
+                )
+        else:
+            # close the map
+            await self._user_repository.update_map_info(uid, next_map_state)
+
+    async def _open_closed_map(self, user_entity: UserEntity):
+        await self._user_repository.update_map_info(
+            uid=user_entity.document_id,
+            map_open=True,
+            map_valid_until=get_current_time() + timedelta(seconds=self._map_valid_until_threshold)
+        )
+        await self.regenerate_map_status(user=user_entity)
+        await self._status_repository.set_active_batch(uid_list=user_entity.contacts, value=True)
 
     @overload
     async def regenerate_map_status(self, *, uid: str):

@@ -25,6 +25,10 @@ async def update_location(request: LocationUpdateRequest,
 
 
 @router.post("/update-map", description="Communicates a new status for the map")
-async def open_map(request: UpdateMapRequest):
-    # TODO
-    pass
+async def open_map(
+        request: UpdateMapRequest,
+        user: FirebaseAuthenticatedUser = Depends(get_user()),
+        map_service: MapService = Depends()
+):
+    logger.debug(f"Map status update: user={user.uid}, open={request.open}")
+    await map_service.update_map_status(user.uid, request.open)

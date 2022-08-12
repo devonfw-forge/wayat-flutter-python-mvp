@@ -24,3 +24,11 @@ class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
             if current_status is None or current_status.active == value:
                 return
         await self.update(document_id=uid, data={"active": value})
+
+    async def set_active_batch(self, uid_list: list[str], value: bool):
+        batch = self._client.batch()
+        for uid in uid_list:
+            ref = self._get_document_reference(uid)
+            batch.update(ref, {"active": value})
+        await batch.commit()
+

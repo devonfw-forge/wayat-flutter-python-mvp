@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 from typing import Optional
 from fastapi import Depends
 from google.cloud.firestore import AsyncClient
@@ -74,3 +75,9 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
 
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})
+
+    async def update_map_info(self, uid: str, map_open: bool, map_valid_until: datetime | None = None):
+        data = {"map_open": map_open}
+        if map_valid_until is not None:
+            data["map_valid_until"] = map_valid_until
+        await self.update(document_id=uid, data=data)
