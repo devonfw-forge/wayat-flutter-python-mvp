@@ -32,7 +32,7 @@ async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user())
 async def update_user_profile(request: UpdateUserRequest,
                               user: FirebaseAuthenticatedUser = Depends(get_user()),
                               user_service: UserService = Depends()):
-    logger.info(f"Updating {user.uid=} with values {request.dict(exclude_unset=True)}")
+    logger.info(f"Updating user={user.uid} with values {request.dict(exclude_unset=True)}")
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
 
 
@@ -61,9 +61,11 @@ async def add_contact(request: AddContactsRequest, user_service: UserService = D
 
 
 @router.post("/preferences", description="Update the preferences of a user")
-async def update_preferences(request: UpdatePreferencesRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    # TODO
-    pass
+async def update_preferences(request: UpdatePreferencesRequest,
+                             user_service: UserService = Depends(UserService),
+                             user: FirebaseAuthenticatedUser = Depends(get_user())):
+    logger.info(f"Updating preferences for user {user.uid} with values {request.dict(exclude_unset=True)}")
+    await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
 
 
 @router.get("/contacts", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
