@@ -1,1 +1,1 @@
-enum ShareLocationMode { Active, Passive }
+enum ShareLocationMode { active, passive }

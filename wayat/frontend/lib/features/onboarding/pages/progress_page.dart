@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -11,9 +10,6 @@ import 'package:wayat/features/onboarding/widgets/selected_contacts.dart';
 import 'package:wayat/features/onboarding/widgets/import_contacts/import_contacts_list.dart';
 import 'package:wayat/features/onboarding/widgets/initial_manage_tip.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
-import 'package:wayat/services/contact/mock/contacts_mock.dart';
-import 'package:wayat/services/first_launch/first_launch_service.dart';
 
 class ProgressOnboardingPage extends StatelessWidget {
   final OnboardingController controller = GetIt.I.get<OnboardingController>();
