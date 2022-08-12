@@ -15,7 +15,7 @@ In the other hand, for translations it has been established [internationalizatio
 
 ## Architecture
 
-The chosen architecture is a [feature based architecture](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0) with some changes: domains, common functionalities and widgets, internatinalization, global state management and navigation have their own directories isolated from the features as shown in this example:
+The chosen architecture is a [feature based architecture](https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0) with some changes: domains, common functionalities and widgets, internationalization, global state management and navigation have their own directories isolated from the features as shown in this example:
 
 ~~~
 PROJECT
