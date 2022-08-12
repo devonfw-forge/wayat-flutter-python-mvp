@@ -36,7 +36,23 @@ uvicorn main:api --reload
 - **_app_**: the object created inside of main.py with the line app = FastAPI().
 - _**--reload**_: make the server restart after code changes. Only use for development.
 
+## Run Tests with coverage
+You can run all test scenarios using:
+```
+python -m coverage run -m pytest
+```
 
+To display the coverage results:
+
+```
+coverage report
+```
+
+or with a nicer report as html page:
+
+```
+coverage html
+```
 ## Environment Configuration
 
 You can use Pydantic Settings to handle the settings or configurations for your application, with all the power of Pydantic models. The project uses Dependency Injection for managing dependencies across the application and easy mocking for testing.
