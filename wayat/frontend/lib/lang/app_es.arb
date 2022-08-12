@@ -39,7 +39,6 @@
     "activeSharingLocation": "Ubicación activa",
     "doNotDisturb": "Establecer no molestar",
 
-
     "preferences": "Preferencias",
     "faqs": "Preguntas frecuentes",
     "terms": "Términos",
@@ -47,6 +46,11 @@
     "information": "Información",
     "darkTheme": "Habilitar tema oscuro",
     "language": "Idioma",
+
+    "chooseProfileFoto": "Elige foto de perfil",
+    "camera": "Cámara",
+    "gallery": "Galería",
+    "save": "Ahorrar",
 
     "changeEmail": "Cambiar e-mail",
     "changePassword": "Cambiar Contraseña",

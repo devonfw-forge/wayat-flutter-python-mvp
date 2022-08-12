@@ -52,6 +52,11 @@
 
     "changeEmail": "Change email",
     "changePassword": "Change password",
+
+    "chooseProfileFoto": "Choose profile foto",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "save": "Save",
    
     "close": "Close",
     "loadingAddress": "Loading address",

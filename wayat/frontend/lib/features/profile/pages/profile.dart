@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -20,6 +19,12 @@ class ProfilePage extends StatelessWidget {
             preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
         body: ListView(
           children: [
+            Text(appLocalizations.profile,
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                    fontSize: 16)),
             const SizedBox(height: 16),
             _buildProfilePart(),
             const SizedBox(height: 32),

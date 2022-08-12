@@ -47,6 +47,11 @@
     "darkTheme": "Activer le thème sombre",
     "language": "Langue",
 
+    "chooseProfileFoto": "Choisissez la photo de profil",
+    "camera": "Caméra",
+    "gallery": "Galerie",
+    "save": "Enregistrer",
+
     "changeEmail": "Changer l'e-mail",
     "changePassword": "Changer le mot de passe",
 

@@ -25,13 +25,45 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            _profileAppBar(),
+            const SizedBox(height: 32),
             _buildProfileImage(),
-            _nameCard(),
+            const SizedBox(height: 16),
+            _nameTextField(),
             _changeEmail(),
             _changePassword(),
           ],
         ));
   }
+
+  Row _profileAppBar() => Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Positioned(
+              left: 20,
+              child: InkWell(
+                  onTap: () {
+                    //AutoRoute to profile page
+                  },
+                  child: const Icon(Icons.arrow_back,
+                      color: Colors.black87, size: 16))),
+          Text(
+            appLocalizations.profile,
+            style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+                fontSize: 16),
+          ),
+          Positioned(
+              right: 20,
+              child: TextButton(
+                onPressed: () {
+                  //Save data to Firestore
+                },
+                child: Text(appLocalizations.save),
+              ))
+        ],
+      );
 
   Widget _buildProfileImage() {
     return Stack(alignment: Alignment.center, children: <Widget>[
@@ -48,17 +80,19 @@ class _ProfilePageState extends State<ProfilePage> {
                     builder: (builder) => _getImageFromCameraOrGallary());
               },
               child: const Icon(Icons.camera_alt,
-                  color: ColorTheme.primaryColorTransparent, size: 45))),
+                  color: Colors.black87, size: 45))),
     ]);
   }
 
-  Card _nameCard() => Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(appLocalizations.name),
-          Text(contact.name),
-        ]),
+  Padding _nameTextField() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        child: TextField(
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            hintText: appLocalizations.name,
+          ),
+        ),
       );
 
   Row _changeEmail() => Row(
@@ -109,17 +143,18 @@ class _ProfilePageState extends State<ProfilePage> {
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(children: [
-          const Text('Choose profile foto', style: TextStyle(fontSize: 20)),
+          Text(appLocalizations.chooseProfileFoto,
+              style: const TextStyle(fontSize: 20)),
           const SizedBox(height: 20),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             TextButton.icon(
                 onPressed: () => _getFromSource(ImageSource.camera),
                 icon: const Icon(Icons.camera),
-                label: const Text('Camera')),
+                label: Text(appLocalizations.camera)),
             TextButton.icon(
                 onPressed: () => _getFromSource(ImageSource.gallery),
                 icon: const Icon(Icons.image),
-                label: const Text('Galary')),
+                label: Text(appLocalizations.gallery)),
           ])
         ]));
   }

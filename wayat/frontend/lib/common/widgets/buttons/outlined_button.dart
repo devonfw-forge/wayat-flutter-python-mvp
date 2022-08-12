@@ -22,7 +22,9 @@ class CustomOutlinedButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         text,
-        style:  (onPressed == null) ? const TextStyle(color: Colors.grey, fontSize: 15) : const TextStyle(color: Colors.black, fontSize: 15),
+        style: (onPressed == null)
+            ? const TextStyle(color: Colors.grey, fontSize: 15)
+            : const TextStyle(color: Colors.black, fontSize: 15),
       ),
     );
   }
