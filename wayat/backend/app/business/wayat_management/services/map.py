@@ -8,7 +8,6 @@ from typing import overload
 from fastapi import Depends
 from pydantic import BaseSettings
 
-from app.common.base.base_firebase_repository import GeoPoint
 from app.common.core.configuration import load_env_file_on_settings
 from app.common.utils import haversine_distance
 from app.domain.wayat_management.models.status import ContactRefInfo
@@ -69,8 +68,8 @@ class MapService:
         # Implementation
 
         new_contact_refs = await asyncio.gather(
-            *[self._create_contact_ref(contact_uid) for contact_uid in user_to_update.contacts]
-        )
+            *[self._create_contact_ref(contact_uid) for contact_uid in user_to_update.contacts],
+        )  # type: list[ContactRefInfo]
 
         await asyncio.gather(
             self._status_repository.set_contact_refs(uid, [ref for ref in new_contact_refs if ref is not None]),
