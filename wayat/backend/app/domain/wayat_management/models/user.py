@@ -51,6 +51,7 @@ class UserEntity(BaseFirebaseModel):
     phone: Optional[str]
     image_url: Optional[str]
     do_not_disturb: bool = False
+    share_location: bool = True
     onboarding_completed: bool = False
     contacts: list = Field(default_factory=list)
     map_open: bool = False
