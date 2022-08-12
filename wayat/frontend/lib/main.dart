@@ -27,8 +27,8 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-  GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
   GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
+  GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
 }
 
 class MyApp extends StatelessWidget {

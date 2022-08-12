@@ -44,8 +44,6 @@ class ImageService {
       res[url] = descriptor;
     }
 
-    debugPrint(res.toString());
-
     return res;
   }
 }

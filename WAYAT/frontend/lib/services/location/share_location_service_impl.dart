@@ -40,7 +40,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
     if (!locationServiceEnabled) {
       locationServiceEnabled = await location.requestService();
       if (!locationServiceEnabled) {
-        debugPrint("No location service enabled");
         throw NoLocationServiceException();
       }
     }
@@ -48,19 +47,14 @@ class ShareLocationServiceImpl extends ShareLocationService {
     // Then, enable app location permission
     PermissionStatus permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
-      debugPrint("Requesting permission");
       permissionGranted = await location.requestPermission();
       if (permissionGranted == PermissionStatus.denied) {
-        debugPrint("No permission");
         throw RejectedLocationException();
       }
     }
-
-    debugPrint("Setting initial Location");
+    
     LocationData initialLocation = await location.getLocation();
-    debugPrint("initial location $initialLocation");
-
-    debugPrint("Creating location service");
+    
     return ShareLocationServiceImpl._create(
       initialLocation, mode, shareLocation, onLocationChangedCallback);
   }
@@ -95,24 +89,18 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// including active and passive mode
   void manageLocationChange(LocationData newLocation) {
     double movedDistance = calculateDistance(newLocation);
-    debugPrint("----------------> MovedDistance: $movedDistance");
     // Passive mode
     if (shareLocationMode == ShareLocationMode.passive) {
       DateTime now = DateTime.now();
-      debugPrint("------------------> Lastshared difference: ${lastShared.difference(now)}");
-
       if (lastShared.difference(now).abs() < passiveMinTime &&
           movedDistance < passiveMinDistance) {
-        debugPrint("--------------------> Not sharing (Passive)");
         return;
       }
     } 
     // Active mode
     else if (movedDistance < activeMinDistance) {
-      debugPrint("----------------> Not sharing (Active)");
       return;
     }
-    debugPrint("----------------> Sharing");
 
     lastShared = DateTime.now();
     currentLocation = newLocation;
@@ -144,8 +132,12 @@ class ShareLocationServiceImpl extends ShareLocationService {
   @override
   void setShareLocationEnabled(bool shareLocation) {
     shareLocationEnabled = shareLocation;
+    super.sendPostRequest('user/preferences', {
+      "share_location": shareLocation
+    });
   }
 
+  /// Distance will returned in ```meters```
   double calculateDistance(LocationData newLocation) {
     var p = 0.017453292519943295;
     var c = cos;
@@ -155,6 +147,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
             c(currentLocation.latitude! * p) *
             (1 - c((newLocation.longitude! - currentLocation.longitude!) * p)) /
             2;
-    return 12742 * asin(sqrt(a));
+    return 12742 * asin(sqrt(a)) * 1000;
   }
 }

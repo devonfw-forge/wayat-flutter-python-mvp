@@ -13,7 +13,7 @@ class UserStatusState = _UserStatusState
 abstract class _UserStatusState with Store {
   UserStatusService userStatusService = UserStatusService();
 
-  _UserStatusnState() {
+  _UserStatusState() {
     userStatusService
       .setUpListener(
         onContactsRefUpdate: (contacts) => setContactList(contacts),

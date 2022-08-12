@@ -30,16 +30,12 @@ class ContactServiceImpl extends ContactService {
           .replaceAll('(', '').replaceAll(')', ''))
           .toList();
 
-    //super.sendPostRequest("/users/find-by-phone", bod)
-    print("LIST: $phoneList");
     Response response = await super
         .sendPostRequest("users/find-by-phone", {"phones": phoneList});
     Map<String, dynamic> jsonBody = jsonDecode(response.body);
     List<Contact> contactList = (jsonBody["users"] as List<dynamic>)
         .map((e) => Contact.fromMap(e))
         .toList();
-
-    print("FILTERED CONTACTS $contactList");
 
     return contactList;
   }

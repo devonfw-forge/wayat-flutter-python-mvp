@@ -27,7 +27,6 @@ abstract class RequestService extends Service {
   /// using the configured authentication
   Future<http.Response> sendPostRequest(
       String subPath, Map<String, dynamic> body) async {
-    print("POST REQUEST $subPath");
     http.Response response = await http.post(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders(), body: jsonEncode(body));
     return response;

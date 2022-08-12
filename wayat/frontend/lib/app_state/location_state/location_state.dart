@@ -31,7 +31,6 @@ abstract class _LocationState with Store {
       shareLocationService.getCurrentLocation();
     currentLocation =
       LatLng(currentLocationData.latitude!, currentLocationData.longitude!);
-    debugPrint("-------------------------------> Current location in state $currentLocation");
   }
 
   @action
