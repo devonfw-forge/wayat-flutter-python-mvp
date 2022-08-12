@@ -3,12 +3,17 @@ import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import '../../../common/widgets/appbar/appbar.dart';
 import '../../../domain/contact/contact.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfilePage extends StatelessWidget {
-  final Contact contact;
-  const ProfilePage({Key? key, required this.contact}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
-  //late ProfileController controller;
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late final Contact contact;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,10 @@ class ProfilePage extends StatelessWidget {
       Positioned(
           top: 10,
           child: InkWell(
-              onTap: () {},
+              onTap: () {
+                showModalBottomSheet(
+                    context: context, builder: (builder) => _bootomSheet());
+              },
               child: const Icon(Icons.camera_alt,
                   color: ColorTheme.primaryColorTransparent, size: 45))),
     ]);
@@ -90,4 +98,25 @@ class ProfilePage extends StatelessWidget {
                       color: Colors.black87, size: 16)))
         ],
       );
+
+  Widget _bootomSheet() {
+    return Container(
+        height: MediaQuery.of(context).size.height / 4,
+        width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Column(children: [
+          const Text('Choose profile foto', style: TextStyle(fontSize: 20)),
+          const SizedBox(height: 20),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            TextButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.camera),
+                label: const Text('Camera')),
+            TextButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.image),
+                label: const Text('Galary')),
+          ])
+        ]));
+  }
 }

@@ -4,9 +4,7 @@
     "login": "Iniciar sesión",
     "loginGoogle": "Iniciar sesión con Google",
     "email": "Email",
-    "changeEmail": "Cambiar e-mail"
     "password": "Contraseña",
-    "changePassword": "Cambiar Contraseña" 
     "phoneNumber": "Número de teléfono",
     "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
     "phonePageDescription": "Se requiere un número de teléfono válido",
@@ -16,7 +14,7 @@
     "home": "Inicio",
     "contacts": "Contactos",
     "events": "Eventos",
-    "name": "Nombre"
+    "name": "Nombre",
 
     "profile": "Perfil",
     "editProfile": "Editar Perfil",
@@ -44,11 +42,14 @@
 
     "preferences": "Preferencias",
     "faqs": "Preguntas frecuentes",
-    "Terms": "Términos",
+    "terms": "Términos",
 
     "information": "Información",
     "darkTheme": "Habilitar tema oscuro",
-    "Language": "Idioma",
+    "language": "Idioma",
+
+    "changeEmail": "Cambiar e-mail",
+    "changePassword": "Cambiar Contraseña",
 
     "close": "Cerrar",
     "loadingAddress": "Cargando dirección",
