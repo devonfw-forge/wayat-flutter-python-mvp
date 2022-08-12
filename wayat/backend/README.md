@@ -39,7 +39,7 @@ uvicorn main:api --reload
 ## Run Tests with coverage
 You can run all test scenarios using:
 ```
-python -m coverage run -m pytest
+python -m coverage run -m unittest
 ```
 
 To display the coverage results:
