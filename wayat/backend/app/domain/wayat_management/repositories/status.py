@@ -26,9 +26,11 @@ class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
         await self.update(document_id=uid, data={"active": value})
 
     async def set_active_batch(self, uid_list: list[str], value: bool):
-        batch = self._client.batch()
-        for uid in uid_list:
-            ref = self._get_document_reference(uid)
-            batch.update(ref, {"active": value})
-        await batch.commit()
-
+        chunk_max_size = 500
+        chunks = [uid_list[i:i + chunk_max_size] for i in range(0, len(uid_list), chunk_max_size)]
+        for chunk in chunks:
+            batch = self._client.batch()
+            for uid in chunk:
+                ref = self._get_document_reference(uid)
+                batch.update(ref, {"active": value})
+            await batch.commit()
