@@ -70,18 +70,7 @@ class UserService:
 
         new_contacts = found_contacts.difference(existing_contacts)
         if new_contacts:
-            await self._user_repository.update(
-                document_id=uid,
-                data={"contacts": firestore.ArrayUnion(list(new_contacts))}
-            )
-            add_self_to_contact_coroutines = [self.add_contact_to_user(uid=u, contact=uid) for u in new_contacts]
-            await asyncio.gather(*add_self_to_contact_coroutines)
-
-    async def add_contact_to_user(self, *, uid: str, contact: str):
-        await self._user_repository.update(
-            document_id=uid,
-            data={"contacts": firestore.ArrayUnion([contact])}
-        )
+            await self._user_repository.create_friend_request(uid, list(new_contacts))
 
     async def get_contacts(self, uid):
         return list(map(map_to_dto, await self._user_repository.get_contacts(uid)))

@@ -109,12 +109,16 @@ class BaseFirestoreRepository(Generic[ModelType]):
         if model is not None:
             await self._get_document_reference(model.document_id).update(model.dict(exclude={"document_id"}))
         elif data is not None and document_id is not None:
-            not_defined_values = set(data.keys()).difference(self._model.__fields__.keys())
-            if validate and not_defined_values:
-                raise ValidationError(f"Tried to update fields {not_defined_values} which are not present in the model")
+            if validate:
+                self._validate_update(data)
             await self._get_document_reference(document_id).update(data)
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
+
+    def _validate_update(self, update: dict):
+        not_defined_values = set(update.keys()).difference(self._model.__fields__.keys())
+        if not_defined_values:
+            raise ValueError(f"Tried to update fields {not_defined_values} which are not present in the model")
 
     async def where(self, field: str, operation: str, value: Any) -> AsyncGenerator[ModelType, None]:
         all_generators = []

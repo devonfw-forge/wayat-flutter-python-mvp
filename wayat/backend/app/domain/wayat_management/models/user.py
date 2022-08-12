@@ -23,7 +23,9 @@ class UserEntity(BaseFirebaseModel):
     email: str
     phone: Optional[str]
     image_url: Optional[str]
-    contacts: list = Field(default_factory=list)
+    contacts: list[str] = Field(default_factory=list)
+    sent_requests: list[str] = Field(default_factory=list)
+    pending_requests: list[str] = Field(default_factory=list)
     location: Optional[Location]
 
     # Privacy settings
