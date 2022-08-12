@@ -18,6 +18,7 @@ def map_to_dto(entity: UserEntity) -> UserDTO:
         phone=entity.phone,
         image_url=entity.image_url,
         do_not_disturb=entity.do_not_disturb,
+        share_location=entity.share_location,
         onboarding_completed=entity.onboarding_completed,
     )
 
@@ -51,7 +52,7 @@ class UserService:
                           **kwargs
                           ):
         # Filter only valid keys
-        valid_keys = {"name", "phone", "onboarding_completed"} & kwargs.keys()
+        valid_keys = {"name", "phone", "onboarding_completed", "share_location"} & kwargs.keys()
         update_data = {key: kwargs[key] for key in valid_keys}
 
         # Update required fields only
