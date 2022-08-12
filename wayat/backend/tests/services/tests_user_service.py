@@ -44,6 +44,33 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         assert is_new_user
         assert result_dto == map_to_dto(test_entity)
 
+    async def test_get_user_that_exists_should_return_it(self):
+        mock_user_repo = MagicMock(UserRepository)
+        mock_status_repo = MagicMock(StatusRepository)
+        user_service = UserService(mock_user_repo, mock_status_repo)
+
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity = UserEntity(
+            document_id=test_data.uid,
+            name=test_data.name,
+            email=test_data.email,
+            phone=test_data.phone,
+            image_url=test_data.picture
+        )
+
+        mock_user_repo.get.return_value = test_entity
+
+        # Call to be tested
+        result_dto, is_new_user = await user_service.get_or_create(test_data.uid, test_data)
+
+        # Asserts
+        mock_user_repo.get.assert_called_with(test_data.uid)
+        mock_user_repo.create.assert_not_called()
+        mock_status_repo.initialize.assert_not_called()
+
+        assert not is_new_user
+        assert result_dto == map_to_dto(test_entity)
+
 
 if __name__ == "__main__":
     unittest.main()
