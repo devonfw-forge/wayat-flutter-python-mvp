@@ -71,6 +71,37 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         assert not is_new_user
         assert result_dto == map_to_dto(test_entity)
 
+    async def test_update_user_should_only_accept_valid_params(self):
+        mock_user_repo = MagicMock(UserRepository)
+        mock_status_repo = MagicMock(StatusRepository)
+        user_service = UserService(mock_user_repo, mock_status_repo)
+
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity = UserEntity(
+            document_id=test_data.uid,
+            name=test_data.name,
+            email=test_data.email,
+            phone=test_data.phone,
+            image_url=test_data.picture
+        )
+
+        test_update_valid = {
+            "name": test_data.name,
+            "phone": test_data.phone
+        }
+
+        test_update_with_invalid_keys = {
+            "name": test_data.name,
+            "phone": test_data.phone,
+            "invalid": "test"
+        }
+
+        # Call to be tested
+        await user_service.update_user(test_data.uid, **test_update_with_invalid_keys)
+
+        # Asserts
+        mock_user_repo.update.assert_called_with(document_id=test_data.uid, data=test_update_valid)
+
 
 if __name__ == "__main__":
     unittest.main()
