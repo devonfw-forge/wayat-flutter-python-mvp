@@ -1,9 +1,9 @@
 import asyncio
+from datetime import datetime
 from typing import Optional
 from fastapi import Depends
 from google.cloud import firestore
-from google.cloud.firestore import AsyncClient
-from google.cloud.firestore_v1 import AsyncTransaction
+from google.cloud.firestore import AsyncClient, AsyncTransaction
 
 from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.common.utils import get_current_time
@@ -97,3 +97,9 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
                 t.update(r, update_receivers)
 
         await execute(transaction)
+
+    async def update_map_info(self, uid: str, map_open: bool, map_valid_until: datetime | None = None):
+        data = {"map_open": map_open}
+        if map_valid_until is not None:
+            data["map_valid_until"] = map_valid_until
+        await self.update(document_id=uid, data=data)
