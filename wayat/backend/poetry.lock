@@ -876,6 +876,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "unittest"
+version = "0.0"
+description = ""
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "uritemplate"
 version = "4.1.1"
 description = "Implementation of RFC 6570 URI Templates"
@@ -954,7 +962,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "c0558e61491f03e4f8a44eb6e8d44e8f759571a9f5438054a64bbc20ff905f47"
+content-hash = "050568c13017b96a1204d0ea70bb4a7b1342db46448eba5e4ba3dae0dd8020cd"
 
 [metadata.files]
 aiosqlite = [
@@ -1319,6 +1327,7 @@ tomli = [
 ]
 typing-extensions = []
 ujson = []
+unittest = []
 uritemplate = []
 urllib3 = []
 uvicorn = [
