@@ -28,6 +28,8 @@ dependencies:
   # Routing and navigation
   auto_route: ^4.2.0
   path: ^1.8.1
+  # Location services
+  location: ^4.4.0
   # Environment variables
   flutter_dotenv: ^5.0.2
   # Google maps
@@ -48,8 +50,6 @@ dependencies:
   phone_number: ^0.12.0+2
   # Phone textfield with countries
   intl_phone_field: ^3.1.0
-  #Location
-  location: ^4.4.0
   json_serializable: ^6.3.1
   json_annotation: ^4.6.0
   flutter_cache_manager: ^3.3.0

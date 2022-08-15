@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
+import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
+import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
@@ -14,20 +16,24 @@ Future main() async {
   await Firebase.initializeApp();
   await dotenv.load(fileName: ".env");
 
-  registerRepositories();
+  await registerSingletons();
 
   runApp(MyApp());
 }
 
-void registerRepositories() {
+Future registerSingletons() async {
   //Register with GetIt all the singletons for the repos like this
   //GetIt.I.registerLazySingleton<AbstractClass>(() => ImplementationClass())
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-  GetIt.I.registerLazySingleton<ContactsLocationState>(
-      () => ContactsLocationState());
+
+  //This is not instanced as Lazy because it needs to be running from the start
+  GetIt.I.registerLazySingleton<ContactsPageController>(
+      () => ContactsPageController());
+  GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
+  GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
 }
 
 class MyApp extends StatelessWidget {

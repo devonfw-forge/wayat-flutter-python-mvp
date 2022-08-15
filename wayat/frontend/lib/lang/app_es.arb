@@ -57,5 +57,20 @@
 
     "close": "Cerrar",
     "loadingAddress": "Cargando dirección",
-    "noAddress": "No se encontró la dirección"
+    "noAddress": "No se encontró la dirección",
+
+    "friendsTab": "Amis",
+    "requestsTab": "Requêtes",
+    "suggestionsTab": "Suggestions",
+
+    "friendsPageTitle": "MIS AMIGOS",
+    "pendingRequestsTitle": "PETICIONES DE AMISTAD",
+    "suggestionsPageTitle": "AÑADE A TUS CONTACTOS",
+    "sentRequestsTitle": "PETICIONES ENVIADAS",
+    "sentButtonNavigation": "ENVIADAS",
+    "sentButtonTile": "Enviada",
+    "noPendingRequests": "No tienes peticiones pendientes",
+
+    "accept": "Aceptar",
+    "search": "Buscar"
 }

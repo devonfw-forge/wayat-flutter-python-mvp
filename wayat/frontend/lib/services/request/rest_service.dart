@@ -6,7 +6,7 @@ import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:wayat/services/service.dart';
 
-abstract class RequestService extends Service {
+abstract class RESTService extends Service {
   /// Generetes a *dictionary* with the headers for backend connection
   Future<Map<String, String>> _getHeaders() async {
     AuthService authService = GetIt.I.get<SessionState>().authService;

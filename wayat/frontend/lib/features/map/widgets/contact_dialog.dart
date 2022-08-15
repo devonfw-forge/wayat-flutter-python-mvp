@@ -17,7 +17,7 @@ class ContactDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: EdgeInsets.symmetric(horizontal: 15),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 15),
       elevation: 0,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
