@@ -90,8 +90,20 @@ async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depe
 
 @router.get("/friend-requests", description="Returns pending sent and received friendship requests",
             response_model=PendingFriendsRequestsResponse)
-async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user()),
+                              user_service: UserService = Depends(UserService)):
+    pending, sent = await user_service.get_pending_friend_requests(user.uid)
+
+    pending = await user_service.get_contacts(pending)
+    sent = await user_service.get_contacts(sent)
+
+    pending = list(map(dto_to_user_with_phone_response, pending))
+    sent = list(map(dto_to_user_with_phone_response, sent))
+
+    return PendingFriendsRequestsResponse(
+        sent_requests=pending,
+        pending_requests=sent
+    )
 
 
 @router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
