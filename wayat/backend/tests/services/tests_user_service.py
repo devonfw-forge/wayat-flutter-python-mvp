@@ -119,6 +119,23 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         self.mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity.document_id])
 
+    async def test_find_by_phone_should_return_filtered_users_data(self):
+        test_entity = UserEntity(
+            document_id="test",
+            email="test@test.com",
+            image_url="test",
+            name="test",
+            phone="+34-TEST",
+        )
+        self.mock_user_repo.find_by_phone.return_value = [test_entity]
+
+        # Call to be tested
+        user_dtos = await self.user_service.find_by_phone([test_entity.phone])
+
+        # Asserts
+        self.assertCountEqual(user_dtos, [map_to_dto(test_entity)])
+        self.mock_user_repo.find_by_phone.assert_called_with(phones=[test_entity.phone])
+
 
 if __name__ == "__main__":
     unittest.main()
