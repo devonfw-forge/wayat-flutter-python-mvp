@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:wayat/domain/user/user.dart';
 
 class Contact extends User {

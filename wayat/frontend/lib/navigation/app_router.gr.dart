@@ -37,11 +37,11 @@ import '../features/notifications/page/notifications_page.dart' as _i12;
 import '../features/onboarding/pages/onboarding_page.dart' as _i7;
 import '../features/onboarding/pages/onboarding_wrapper.dart' as _i4;
 import '../features/onboarding/pages/progress_page.dart' as _i8;
-import '../features/profile/pages/FAQ/faqs.dart' as _i23;
-import '../features/profile/pages/Preferences/preferences.dart' as _i22;
-import '../features/profile/pages/Profile/edit_profile.dart' as _i21;
-import '../features/profile/pages/Profile/profile.dart' as _i3;
-import '../features/profile/pages/Terms/terms.dart' as _i24;
+import '../features/profile/pages/faq/faqs.dart' as _i23;
+import '../features/profile/pages/preferences/preferences.dart' as _i22;
+import '../features/profile/pages/profile/edit_profile.dart' as _i21;
+import '../features/profile/pages/profile/profile.dart' as _i3;
+import '../features/profile/pages/terms/terms.dart' as _i24;
 import '../features/root/root_wrapper.dart' as _i1;
 
 class AppRouter extends _i25.RootStackRouter {

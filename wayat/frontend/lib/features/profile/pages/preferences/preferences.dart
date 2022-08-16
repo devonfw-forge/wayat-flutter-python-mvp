@@ -3,14 +3,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import '../../../../common/widgets/appbar/appbar.dart';
-import '../../../../domain/contact/contact.dart';
+import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/common/widgets/appbar/appbar.dart';
 
 class PreferencesPage extends StatelessWidget {
   final Contact contact;
-  PreferencesPage({Key? key, required this.contact}) : super(key: key);
-
-  //late ProfileController controller;
+  const PreferencesPage({Key? key, required this.contact}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

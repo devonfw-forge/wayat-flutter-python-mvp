@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
@@ -32,6 +33,7 @@ Future registerSingletons() async {
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
+  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
 }
 
 class MyApp extends StatelessWidget {

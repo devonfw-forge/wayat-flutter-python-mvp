@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import '../../../../common/widgets/appbar/appbar.dart';
-import '../../../../domain/contact/contact.dart';
 
 class ProfilePage extends StatelessWidget {
   final Contact contact;
   ProfilePage({Key? key, required this.contact}) : super(key: key);
 
-  final SessionState controller = GetIt.I.get<SessionState>();
+  final ProfileState controller = GetIt.I.get<ProfileState>();
 
   @override
   Widget build(BuildContext context) {

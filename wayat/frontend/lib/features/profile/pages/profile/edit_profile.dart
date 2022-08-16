@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import '../../../../common/widgets/appbar/appbar.dart';
-import '../../../../domain/contact/contact.dart';
+import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   XFile? currentSelectedImage;
 
   final textController = TextEditingController();
-  final SessionState controller = GetIt.I.get<SessionState>();
+  final ProfileState controller = GetIt.I.get<ProfileState>();
 
   @override
   void initState() {

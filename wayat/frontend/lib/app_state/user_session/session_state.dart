@@ -5,7 +5,6 @@ import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
 part 'session_state.g.dart';
 
-// ignore: library_private_types_in_public_api
 class SessionState = _SessionState with _$SessionState;
 
 abstract class _SessionState with Store {
@@ -20,56 +19,6 @@ abstract class _SessionState with Store {
 
   @observable
   MyUser? currentUser;
-
-  @observable
-  bool isEditProfile = false;
-
-  @observable
-  bool isPreferences = false;
-
-  @observable
-  bool isFaqs = false;
-
-  @observable
-  bool isTerms = false;
-
-  @observable
-  bool isProfile = false;
-
-  @action
-  void goToProfile(bool isProfile) {
-    if (isProfile) {
-      isProfile = !isProfile;
-    }
-  }
-
-  @action
-  void goToEditProfile(bool isEditProfile) {
-    if (isEditProfile) {
-      isEditProfile = !isEditProfile;
-    }
-  }
-
-  @action
-  void goToPreferences(bool isPreferences) {
-    if (isPreferences) {
-      isPreferences = !isPreferences;
-    }
-  }
-
-  @action
-  void goToFaqs(bool isFaqs) {
-    if (isFaqs) {
-      isFaqs = !isFaqs;
-    }
-  }
-
-  @action
-  void goToTerms(bool isTerms) {
-    if (isTerms) {
-      isTerms = !isTerms;
-    }
-  }
 
   final AuthService _authService = GoogleAuthService();
   AuthService get authService => _authService;
