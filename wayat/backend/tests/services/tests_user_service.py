@@ -1,8 +1,10 @@
 import unittest
+from asyncio import run
 from unittest import TestCase, IsolatedAsyncioTestCase
 from unittest.mock import Mock, MagicMock
 
 from app.business.wayat_management.services.user import UserService, map_to_dto
+from app.common.exceptions.http import NotFoundException
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.status import StatusRepository
@@ -119,6 +121,66 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         self.mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity.document_id])
 
+    async def test_get_pending_friend_requests_should_return_ok(self):
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_pending_data = FirebaseAuthenticatedUser(uid="test-pending", email="test@email.es", roles=[],
+                                                      picture="test", name="test-pending")
+        test_sent_data = FirebaseAuthenticatedUser(uid="test-sent", email="test@email.es", roles=[],
+                                                   picture="test", name="test-sent")
+        test_entity = UserEntity(
+            document_id=test_data.uid,
+            name=test_data.name,
+            email=test_data.email,
+            phone=test_data.phone,
+            image_url=test_data.picture,
+            sent_requests=[test_sent_data.uid],
+            pending_requests=[test_pending_data.uid]
+        )
+
+        test_entity_pending = UserEntity(
+            document_id=test_pending_data.uid,
+            name=test_pending_data.name,
+            email=test_pending_data.email,
+            phone=test_pending_data.phone,
+            image_url=test_pending_data.picture,
+        )
+
+        test_entity_sent = UserEntity(
+            document_id=test_sent_data.uid,
+            name=test_sent_data.name,
+            email=test_sent_data.email,
+            phone=test_sent_data.phone,
+            image_url=test_sent_data.picture,
+        )
+
+        def mocking_get_user(uid: str):
+            if uid == test_entity.document_id:
+                return test_entity
+            if uid == test_entity_pending.document_id:
+                return test_entity_pending
+            if uid == test_entity_sent.document_id:
+                return test_entity_sent
+            else:
+                return None
+
+        self.mock_user_repo.get.side_effect = mocking_get_user
+
+        # Call to be tested
+        pending, sent = await self.user_service.get_pending_friend_requests(test_data.uid)
+
+        # Asserts
+        assert pending == [map_to_dto(test_entity_pending)]
+        assert sent == [map_to_dto(test_entity_sent)]
+
+        # Test exception
+        found_exception = False
+        try:
+            await self.user_service.get_pending_friend_requests('bad')
+        except NotFoundException:
+            found_exception = True
+
+        assert found_exception == True
+
     async def test_find_by_phone_should_return_filtered_users_data(self):
         test_entity = UserEntity(
             document_id="test",
@@ -147,12 +209,11 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo.get_contacts.return_value = [test_entity]
 
         # Call to be tested
-        user_dtos = await self.user_service.get_contacts("uid")
+        user_dtos = await self.user_service.get_user_contacts("uid")
 
         # Asserts
         self.assertCountEqual(user_dtos, [map_to_dto(test_entity)])
         self.mock_user_repo.get_contacts.assert_called_with("uid")
-
 
 if __name__ == "__main__":
     unittest.main()
