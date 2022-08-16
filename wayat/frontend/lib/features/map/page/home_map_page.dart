@@ -13,7 +13,6 @@ import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/services/location/mock/contact_location_mock.dart';
 
 class HomeMapPage extends StatelessWidget {
   final LocationState locationState = GetIt.I.get<LocationState>();

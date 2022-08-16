@@ -33,6 +33,7 @@ class ContactLocation extends Contact {
       String? phone,
       double? latitude,
       double? longitude,
+      String? locationString,
       DateTime? lastUpdated}) {
     return ContactLocation(
         available: available ?? this.available,
@@ -67,5 +68,13 @@ class ContactLocation extends Contact {
         latitude: map['latitude'] as double,
         longitude: map['longitude'] as double,
         lastUpdated: map['lastUpdated'] as DateTime);
+  }
+  
+  @override
+  bool operator ==(covariant ContactLocation other) {
+    return latitude == other.latitude 
+      && longitude == other.longitude
+      && lastUpdated == other.lastUpdated
+      && super == other;
   }
 }
