@@ -118,7 +118,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            appLocalizations.changeEmail,
+            appLocalizations.changePhone,
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
@@ -139,7 +139,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            appLocalizations.changeEmail,
+            appLocalizations.changePhone,
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
