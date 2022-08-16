@@ -1,6 +1,7 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -9,9 +10,9 @@ import '../../../../domain/contact/contact.dart';
 
 class ProfilePage extends StatelessWidget {
   final Contact contact;
-  const ProfilePage({Key? key, required this.contact}) : super(key: key);
+  ProfilePage({Key? key, required this.contact}) : super(key: key);
 
-  //late ProfileController controller;
+  final SessionState controller = GetIt.I.get<SessionState>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +66,14 @@ class ProfilePage extends StatelessWidget {
         _setDoNotDisturbButton(),
         CustomCard(
             text: appLocalizations.editProfile,
-            onTap: () {
-              //AutoRoute to edit_profile page
+            onTap: () async {
+              controller.goToEditProfile(true);
             }),
         CustomCard(
             text: appLocalizations.preferences,
-            onTap: (
-                //AutoRoute to preferences page
-                ) {}),
+            onTap: () async {
+              controller.goToPreferences(true);
+            }),
       ],
     );
   }
@@ -85,13 +86,13 @@ class ProfilePage extends StatelessWidget {
         Text(appLocalizations.information),
         CustomCard(
             text: appLocalizations.faqs,
-            onTap: () {
-              //AutoRoute to Faqs page
+            onTap: () async {
+              controller.goToFaqs(true);
             }),
         CustomCard(
             text: appLocalizations.terms,
-            onTap: () {
-              //AutoRoute to Terms page
+            onTap: () async {
+              controller.goToTerms(true);
             }),
       ],
     );
