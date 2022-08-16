@@ -119,6 +119,48 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         self.mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity.document_id])
 
+    async def test_get_pending_friend_requests_should_return_ok(self):
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_pending_data = FirebaseAuthenticatedUser(uid="test-pending", email="test@email.es", roles=[],
+                                                      picture="test", name="test-pending")
+        test_sent_data = FirebaseAuthenticatedUser(uid="test-sent", email="test@email.es", roles=[],
+                                                   picture="test", name="test-sent")
+        test_entity = UserEntity(
+            document_id=test_data.uid,
+            name=test_data.name,
+            email=test_data.email,
+            phone=test_data.phone,
+            image_url=test_data.picture,
+            sent_requests=[test_sent_data.uid],
+            pending_requests=[test_pending_data.uid]
+        )
+
+        test_entity_pending = UserEntity(
+            document_id=test_pending_data.uid,
+            name=test_pending_data.name,
+            email=test_pending_data.email,
+            phone=test_pending_data.phone,
+            image_url=test_pending_data.picture,
+        )
+
+        test_entity_sent = UserEntity(
+            document_id=test_sent_data.uid,
+            name=test_sent_data.name,
+            email=test_sent_data.email,
+            phone=test_sent_data.phone,
+            image_url=test_sent_data.picture,
+        )
+
+        self.mock_user_repo.get.return_value = test_entity
+
+        # Call to be tested
+        received, sent = await self.user_service.get_pending_friend_requests(test_data.uid)
+
+        # Asserts
+        assert received == test_entity.pending_requests
+        assert sent == test_entity.sent_requests
+        self.mock_user_repo.get.assert_called_with(test_data.uid)
+
 
 if __name__ == "__main__":
     unittest.main()
