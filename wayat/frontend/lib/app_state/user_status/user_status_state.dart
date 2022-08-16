@@ -7,18 +7,16 @@ import 'package:wayat/services/status/user_status_service_impl.dart';
 
 part 'user_status_state.g.dart';
 
-class UserStatusState = _UserStatusState
-    with _$UserStatusState;
+// ignore: library_private_types_in_public_api
+class UserStatusState = _UserStatusState with _$UserStatusState;
 
 abstract class _UserStatusState with Store {
   UserStatusService userStatusService = UserStatusService();
 
-  _UserStatusState() {
-    userStatusService
-      .setUpListener(
+  Future initializeListener() async {
+    await userStatusService.setUpListener(
         onContactsRefUpdate: (contacts) => setContactList(contacts),
-        onLocationModeUpdate: (locationMode) => setLocationMode(locationMode)
-      );
+        onLocationModeUpdate: (locationMode) => setLocationMode(locationMode));
   }
 
   @observable
@@ -35,7 +33,10 @@ abstract class _UserStatusState with Store {
   @action
   void setLocationMode(ShareLocationMode newMode) {
     locationMode = newMode;
-    GetIt.I.get<LocationState>().shareLocationService.setShareLocationMode(newMode);
+    GetIt.I
+        .get<LocationState>()
+        .shareLocationService
+        .setShareLocationMode(newMode);
   }
 
   void fetchContacts() {}

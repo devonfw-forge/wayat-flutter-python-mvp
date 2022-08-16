@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
@@ -6,6 +5,7 @@ import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
 import 'package:wayat/services/location/share_location_service.dart';
 import 'dart:math' show cos, sqrt, asin;
+import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
 /// This service will share the user's location with the BackEnd
 /// when the conditions are met
@@ -109,13 +109,15 @@ class ShareLocationServiceImpl extends ShareLocationService {
   }
 
   @override
-  void sendLocationToBack(LocationData locationData) {
-    changeLocationStateCallback(
-        LatLng(locationData.latitude!, locationData.longitude!));
-    super.sendPostRequest("/map/update-location", {
+  Future<void> sendLocationToBack(LocationData locationData) async {
+    LatLng location = LatLng(locationData.latitude!, locationData.longitude!);
+    changeLocationStateCallback(location);
+    String address = await GoogleMapsService.getAddressFromCoordinates(location);
+    await super.sendPostRequest("/map/update-location", {
       "position": {
         "longitude": locationData.longitude,
-        "latitude": locationData.latitude
+        "latitude": locationData.latitude,
+        "address": address
       }
     });
   }
