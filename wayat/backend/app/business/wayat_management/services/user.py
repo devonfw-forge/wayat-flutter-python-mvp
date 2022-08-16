@@ -75,6 +75,21 @@ class UserService:
 
     async def get_contacts(self, uid):
         return list(map(map_to_dto, await self._user_repository.get_contacts(uid)))
+
+    async def get_contact(self, uid):
+        """
+        Returns user DTO
+        """
+        user = await self._user_repository.get(uid)
+        if user is not None:
+            user = map_to_dto(user)
+        return user
+
+    async def get_contacts(self, uids: list[str]):
+        coroutines = [self.get_contact(u) for u in uids]
+        contacts_dtos: list[UserEntity | None] = await asyncio.gather(*coroutines)
+        return contacts_dtos
+
     async def get_pending_friend_requests(self, uid):
         """
         Returns pending friend requests, received and sent
