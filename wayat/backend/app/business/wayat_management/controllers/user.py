@@ -77,7 +77,7 @@ async def update_preferences(request: UpdatePreferencesRequest,
 async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
                        user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts for user {user.uid}")
-    cts = await user_service.get_contacts(user.uid)
+    cts = await user_service.get_user_contacts(user.uid)
     contacts_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in cts]
     return ListUsersWithPhoneResponse(users=contacts_phone)
 

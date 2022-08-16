@@ -209,7 +209,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo.get_contacts.return_value = [test_entity]
 
         # Call to be tested
-        user_dtos = await self.user_service.get_contacts("uid")
+        user_dtos = await self.user_service.get_user_contacts("uid")
 
         # Asserts
         self.assertCountEqual(user_dtos, [map_to_dto(test_entity)])
