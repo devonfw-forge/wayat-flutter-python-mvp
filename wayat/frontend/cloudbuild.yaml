@@ -1,0 +1,33 @@
+# [START Wayat Frontend Build]
+steps:
+  # Dependencies:
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp
+      - 'gs://wayat_secrets/google-services.json'
+      - .
+    dir: wayat/frontend/android/app  
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp
+      - 'gs://wayat_secrets/.env'
+      - .
+    dir: wayat/frontend
+  # Testing:
+  - name: gcr.io/cloud-builders/flutter
+    args:
+      - flutter
+      - test
+    dir: wayat/frontend
+  # Release build:
+  - name: gcr.io/cloud-builders/flutter
+    args:
+      - flutter
+      - build
+    env:
+      - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
+    dir: wayat/frontend
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'wayat/frontend/build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
+timeout: "1500s"
+# [END Wayat Frontend Build]
