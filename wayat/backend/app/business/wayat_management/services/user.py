@@ -4,6 +4,7 @@ from fastapi import Depends
 from google.cloud import firestore
 
 from app.business.wayat_management.models.user import UserDTO, IDType
+from app.common.exceptions.http import NotFoundException
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.status import StatusRepository
@@ -74,3 +75,13 @@ class UserService:
 
     async def get_contacts(self, uid):
         return list(map(map_to_dto, await self._user_repository.get_contacts(uid)))
+    async def get_pending_friend_requests(self, uid):
+        """
+        Returns pending friend requests, received and sent
+        """
+        user = await self._user_repository.get(uid)
+        if user is None:
+            raise NotFoundException(detail=f"User {uid} not found")
+
+        return user.pending_requests, user.sent_requests
+
