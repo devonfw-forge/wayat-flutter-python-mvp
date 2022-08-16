@@ -1,6 +1,6 @@
 import unittest
-from unittest import TestCase, IsolatedAsyncioTestCase
-from unittest.mock import Mock, MagicMock
+from unittest import IsolatedAsyncioTestCase
+from unittest.mock import MagicMock
 
 from app.business.wayat_management.services.user import UserService, map_to_dto
 from app.common.infra.firebase import FirebaseAuthenticatedUser
