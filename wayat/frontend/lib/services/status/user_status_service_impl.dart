@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 
 class UserStatusService {
@@ -12,26 +12,22 @@ class UserStatusService {
 
   late bool _lastActive;
   late List _lastContactRefs;
-  
-  void setUpListener({
-      required Function(List<ContactLocation>) onContactsRefUpdate,
-      required Function(ShareLocationMode) onLocationModeUpdate
-    }) async {
-    
+
+  Future setUpListener(
+      {required Function(List<ContactLocation>) onContactsRefUpdate,
+      required Function(ShareLocationMode) onLocationModeUpdate}) async {
     final docRef = db
         .collection("status")
         .doc(GetIt.I.get<SessionState>().currentUser!.id);
-    
+
     Map<String, dynamic> firestoreData = (await docRef.get()).data()!;
     _lastActive = firestoreData["active"] as bool;
     _lastContactRefs = firestoreData["contact_refs"] as List;
     // Update locationMode before listening
-    onLocationModeUpdate(
-      await _getLocationModeFromStatus(firestoreData));
+    onLocationModeUpdate(await _getLocationModeFromStatus(firestoreData));
     // Update contactRef before listenings
-    onContactsRefUpdate(
-      await _getContactRefsFromStatus(firestoreData));
-    
+    onContactsRefUpdate(await _getContactRefsFromStatus(firestoreData));
+
     // Subscribe to changes in tshe currentUser status document
     docRef.snapshots().listen(
       (event) async {
@@ -48,7 +44,6 @@ class UserStatusService {
     );
   }
 
-
   Future<ShareLocationMode> _getLocationModeFromStatus(
       Map<String, dynamic> firestoreData) async {
     if (firestoreData["active"] as bool) {
@@ -57,29 +52,29 @@ class UserStatusService {
     return ShareLocationMode.passive;
   }
 
-
   Future<List<ContactLocation>> _getContactRefsFromStatus(
       Map<String, dynamic> firestoreData) async {
-    
     List<Contact> contacts = await ContactServiceImpl().getAll();
 
-    List contactRefs = firestoreData["contact_refs"] as List; 
+    List contactRefs = firestoreData["contact_refs"] as List;
     if (contactRefs.isNotEmpty) {
       List<ContactLocation> contactLocations = contactRefs.map((e) {
         Contact contact =
-          contacts.firstWhere((contact) => contact.id == e["uid"]);
+            contacts.firstWhere((contact) => contact.id == e["uid"]);
         GeoPoint loc = e["location"];
+        String address = e["address"] ?? appLocalizations.noAddress;
         Timestamp lastUpdated = e["last_updated"];
         ContactLocation located = ContactLocation(
-          available: true,
-          id: contact.id,
-          name: contact.name,
-          email: contact.name,
-          imageUrl: contact.imageUrl,
-          phone: contact.phone,
-          latitude: loc.latitude,
-          longitude: loc.longitude,
-          lastUpdated: lastUpdated.toDate());
+            available: true,
+            id: contact.id,
+            name: contact.name,
+            email: contact.name,
+            imageUrl: contact.imageUrl,
+            phone: contact.phone,
+            latitude: loc.latitude,
+            longitude: loc.longitude,
+            address: address,
+            lastUpdated: lastUpdated.toDate());
         return located;
       }).toList();
       return contactLocations;

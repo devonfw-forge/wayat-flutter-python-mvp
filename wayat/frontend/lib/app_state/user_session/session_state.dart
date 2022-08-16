@@ -5,6 +5,7 @@ import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
 part 'session_state.g.dart';
 
+// ignore: library_private_types_in_public_api
 class SessionState = _SessionState with _$SessionState;
 
 abstract class _SessionState with Store {

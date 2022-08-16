@@ -58,6 +58,7 @@
     "close" : "Fermer",
     "loadingAddress" : "Adresse de chargement",
     "noAddress" : "Aucune adresse trouvée",
+    "errorAddress": "Impossible d'obtenir l'adresse",
 
     "friendsTab": "Amis",
     "requestsTab": "Requêtes",
@@ -72,5 +73,7 @@
     "noPendingRequests": "Vous n'avez aucune demande en attente",
 
     "accept": "Accepter",
-    "search": "Recherche"
+    "search": "Recherche",
+
+    "viewInformation": "Voir les informations"
 }

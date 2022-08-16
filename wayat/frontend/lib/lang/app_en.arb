@@ -61,6 +61,7 @@
     "close": "Close",
     "loadingAddress": "Loading address",
     "noAddress": "Could not find address",
+    "errorAddress": "Could not get address",
 
     "friendsTab": "Friends",
     "requestsTab": "Requests",
@@ -75,5 +76,7 @@
     "noPendingRequests": "You don't have any pending requests",
 
     "accept": "Accept",
-    "search": "Search"
+    "search": "Search",
+
+    "viewInformation": "View information"
 } 

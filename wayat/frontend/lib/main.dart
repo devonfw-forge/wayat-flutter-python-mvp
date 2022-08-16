@@ -28,8 +28,6 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-
-  //This is not instanced as Lazy because it needs to be running from the start
   GetIt.I.registerLazySingleton<ContactsPageController>(
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());

@@ -65,7 +65,6 @@ class Contact extends User {
   @override
   bool operator ==(covariant Contact other) {
     if (identical(this, other)) return true;
-
     return other.available == available && super == other;
   }
 
