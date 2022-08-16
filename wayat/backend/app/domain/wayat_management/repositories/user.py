@@ -98,6 +98,26 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
 
         await execute(transaction)
 
+    async def cancel_friend_request(self, *, user: str, friend_id: str):
+        transaction = self._client.transaction()
+        sender_ref = self._get_document_reference(user)
+        receiver_ref = self._get_document_reference(friend_id)
+
+        @firestore.async_transactional
+        async def execute(t: AsyncTransaction):
+            update_sender = {
+                "sent_requests": firestore.ArrayRemove([friend_id])
+            }
+            self._validate_update(update_sender)
+            update_receiver = {
+                "pending_requests": firestore.ArrayRemove([user])
+            }
+            self._validate_update(update_receiver)
+            t.update(sender_ref, update_sender)
+            t.update(receiver_ref, update_receiver)
+
+        await execute(transaction)
+
     async def update_map_info(self, uid: str, map_open: bool, map_valid_until: datetime | None = None):
         data = {"map_open": map_open}
         if map_valid_until is not None:

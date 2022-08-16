@@ -99,3 +99,8 @@ class UserService:
 
         return await self.get_contacts(user.pending_requests), await self.get_contacts(user.sent_requests)
 
+    async def cancel_friend_request(self, uid, contact_id):
+        """
+        Cancels a pending sent friend request
+        """
+        await self._user_repository.cancel_friend_request(user=uid, friend_id=contact_id)
