@@ -1,8 +1,10 @@
 import unittest
+from asyncio import run
 from unittest import TestCase, IsolatedAsyncioTestCase
 from unittest.mock import Mock, MagicMock
 
 from app.business.wayat_management.services.user import UserService, map_to_dto
+from app.common.exceptions.http import NotFoundException
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.status import StatusRepository
@@ -151,16 +153,33 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             image_url=test_sent_data.picture,
         )
 
-        self.mock_user_repo.get.return_value = test_entity
+        def mocking_get_user(uid: str):
+            if uid == test_entity.document_id:
+                return test_entity
+            if uid == test_entity_pending.document_id:
+                return test_entity_pending
+            if uid == test_entity_sent.document_id:
+                return test_entity_sent
+            else:
+                return None
+
+        self.mock_user_repo.get.side_effect = mocking_get_user
 
         # Call to be tested
-        received, sent = await self.user_service.get_pending_friend_requests(test_data.uid)
+        pending, sent = await self.user_service.get_pending_friend_requests(test_data.uid)
 
         # Asserts
-        assert received == test_entity.pending_requests
-        assert sent == test_entity.sent_requests
-        self.mock_user_repo.get.assert_called_with(test_data.uid)
+        assert pending == [map_to_dto(test_entity_pending)]
+        assert sent == [map_to_dto(test_entity_sent)]
 
+        # Test exception
+        found_exception = False
+        try:
+            await self.user_service.get_pending_friend_requests('bad')
+        except NotFoundException:
+            found_exception = True
+
+        assert found_exception == True
 
 if __name__ == "__main__":
     unittest.main()
