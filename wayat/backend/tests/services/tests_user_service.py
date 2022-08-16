@@ -97,7 +97,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         self.mock_user_repo.update.assert_called_with(document_id=test_data.uid, data=test_update_valid)
 
-    async def test_add_contacts_shoud_add_only_valid_ones(self):
+    async def test_add_contacts_should_add_only_valid_ones(self):
         def mocking_get_user(uid: str):
             if uid == "test" or uid == "test-friend":
                 return test_entity
@@ -180,6 +180,40 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             found_exception = True
 
         assert found_exception == True
+
+    async def test_find_by_phone_should_return_filtered_users_data(self):
+        test_entity = UserEntity(
+            document_id="test",
+            email="test@test.com",
+            image_url="test",
+            name="test",
+            phone="+34-TEST",
+        )
+        self.mock_user_repo.find_by_phone.return_value = [test_entity]
+
+        # Call to be tested
+        user_dtos = await self.user_service.find_by_phone([test_entity.phone])
+
+        # Asserts
+        self.assertCountEqual(user_dtos, [map_to_dto(test_entity)])
+        self.mock_user_repo.find_by_phone.assert_called_with(phones=[test_entity.phone])
+
+    async def test_get_contacts_should_return_user_data(self):
+        test_entity = UserEntity(
+            document_id="test",
+            email="test@test.com",
+            image_url="test",
+            name="test",
+            phone="+34-TEST",
+        )
+        self.mock_user_repo.get_contacts.return_value = [test_entity]
+
+        # Call to be tested
+        user_dtos = await self.user_service.get_contacts("uid")
+
+        # Asserts
+        self.assertCountEqual(user_dtos, [map_to_dto(test_entity)])
+        self.mock_user_repo.get_contacts.assert_called_with("uid")
 
 if __name__ == "__main__":
     unittest.main()
