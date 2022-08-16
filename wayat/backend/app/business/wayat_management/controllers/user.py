@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, Depends, File
+from fastapi import APIRouter, Depends, UploadFile
 
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
@@ -37,9 +37,14 @@ async def update_user_profile(request: UpdateUserRequest,
 
 
 @router.post("/profile/picture", description="Updates the user profile picture")
-async def update_profile_picture(file: bytes = File(), user: FirebaseAuthenticatedUser = Depends(get_user())):
-    # TODO
-    logger.info(f"File uploaded ({len(file)/1024:.2f} KB)")
+def update_profile_picture(upload_file: UploadFile,
+                           user: FirebaseAuthenticatedUser = Depends(get_user()),
+                           user_service: UserService = Depends()):
+    user_service.update_profile_picture(
+        user.uid,
+        upload_file.content_type,
+        upload_file.file,
+    )
 
 
 @router.post("/find-by-phone",

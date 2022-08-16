@@ -1,11 +1,12 @@
 import asyncio
+from typing import BinaryIO
 
 from fastapi import Depends
-from google.cloud import firestore
 
 from app.business.wayat_management.models.user import UserDTO, IDType
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
+from app.domain.wayat_management.repositories.file_storage import FileStorage
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
@@ -24,9 +25,13 @@ def map_to_dto(entity: UserEntity) -> UserDTO:
 
 
 class UserService:
-    def __init__(self, user_repository: UserRepository = Depends(), status_repository: StatusRepository = Depends()):
+    def __init__(self,
+                 user_repository: UserRepository = Depends(),
+                 status_repository: StatusRepository = Depends(),
+                 file_repository: FileStorage = Depends()):
         self._user_repository = user_repository
         self._status_repository = status_repository
+        self._file_repository = file_repository
 
     async def get_or_create(self, uid: str, default_data: FirebaseAuthenticatedUser) -> tuple[UserDTO, bool]:
         user_entity = await self._user_repository.get(uid)
@@ -74,3 +79,13 @@ class UserService:
 
     async def get_contacts(self, uid):
         return list(map(map_to_dto, await self._user_repository.get_contacts(uid)))
+
+    def update_profile_picture(self, uid: str, content_type: str, data: BinaryIO):
+        if content_type == "image/jpeg":
+            extension = ".jpeg"
+        elif content_type == "image/png":
+            extension = ".png"
+        else:
+            raise ValueError("Invalid content-type. Image must be in either JPEG or PNG format")
+        file_name = uid + extension
+        self._file_repository.upload_image(file_name, data, content_type)
