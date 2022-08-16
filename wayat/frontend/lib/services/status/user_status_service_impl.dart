@@ -4,6 +4,7 @@ import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 
 class UserStatusService {
@@ -61,6 +62,7 @@ class UserStatusService {
         Contact contact =
             contacts.firstWhere((contact) => contact.id == e["uid"]);
         GeoPoint loc = e["location"];
+        String address = e["address"] ?? appLocalizations.noAddress;
         Timestamp lastUpdated = e["last_updated"];
         ContactLocation located = ContactLocation(
             available: true,
@@ -71,6 +73,7 @@ class UserStatusService {
             phone: contact.phone,
             latitude: loc.latitude,
             longitude: loc.longitude,
+            address: address,
             lastUpdated: lastUpdated.toDate());
         return located;
       }).toList();

@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:wayat/lang/app_localizations.dart';
@@ -56,26 +54,11 @@ class ContactMapListTile extends StatelessWidget {
     );
   }
 
-  FutureBuilder<String> addressFuture() {
-    return FutureBuilder(
-        future: GoogleMapsService.getAddressFromCoordinates(
-            LatLng(contact.latitude, contact.longitude)),
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            return SizedBox(
-              width: 250,
-              child: Text(
-                snapshot.data.toString(),
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 17, color: Colors.black54),
-              ),
-            );
-          } else {
-            return Text(
-              appLocalizations.loadingAddress,
-              style: const TextStyle(fontSize: 17, color: Colors.black54),
-            );
-          }
-        }));
+  Text addressFuture() {
+    return  Text(
+      contact.address.toString(),
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(fontSize: 17, color: Colors.black54),
+    );
   }
 }
