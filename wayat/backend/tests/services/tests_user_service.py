@@ -215,5 +215,14 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.assertCountEqual(user_dtos, [map_to_dto(test_entity)])
         self.mock_user_repo.get_contacts.assert_called_with("uid")
 
+    async def test_cancel_sent_request_should_call_repo(self):
+        test_user, test_friend = "user", "friend"
+        # Call to be tested
+        await self.user_service.cancel_friend_request(uid=test_user, contact_id=test_friend)
+
+        # Asserts
+        self.mock_user_repo.cancel_friend_request.assert_called_with(user=test_user, friend_id=test_friend)
+
+
 if __name__ == "__main__":
     unittest.main()
