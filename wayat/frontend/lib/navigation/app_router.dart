@@ -17,6 +17,11 @@ import 'package:wayat/features/create_event/page/create_event_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_wrapper.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
+import 'package:wayat/features/profile/pages/FAQ/faqs.dart';
+import 'package:wayat/features/profile/pages/Profile/edit_profile.dart';
+import 'package:wayat/features/profile/pages/Preferences/preferences.dart';
+import 'package:wayat/features/profile/pages/Profile/profile.dart';
+import 'package:wayat/features/profile/pages/Terms/terms.dart';
 import 'package:wayat/features/root/root_wrapper.dart';
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
@@ -49,5 +54,11 @@ import 'package:wayat/features/root/root_wrapper.dart';
     ]),
   ]),
   AutoRoute(page: ContactDetailPage),
+  AutoRoute(page: ProfilePage, children: [
+    AutoRoute(page: EditProfilePage),
+    AutoRoute(page: PreferencesPage),
+    AutoRoute(page: FaqsPage),
+    AutoRoute(page: TermsPage),
+  ])
 ])
 class $AppRouter {}

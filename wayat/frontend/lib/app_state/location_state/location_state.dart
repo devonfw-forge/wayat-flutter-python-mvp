@@ -18,19 +18,20 @@ abstract class _LocationState with Store {
 
   @observable
   LatLng currentLocation = const LatLng(0, 0);
-  
+
   @observable
   bool shareLocationEnabled = true;
 
   Future initialize() async {
     userStatusState = GetIt.I.get<UserStatusState>();
     shareLocationService = await ShareLocationServiceImpl.create(
-      userStatusState.locationMode,
-      shareLocationEnabled, (newLoc) => setCurrentLocation(newLoc));
+        userStatusState.locationMode,
+        shareLocationEnabled,
+        (newLoc) => setCurrentLocation(newLoc));
     LocationData currentLocationData =
-      shareLocationService.getCurrentLocation();
+        shareLocationService.getCurrentLocation();
     currentLocation =
-      LatLng(currentLocationData.latitude!, currentLocationData.longitude!);
+        LatLng(currentLocationData.latitude!, currentLocationData.longitude!);
   }
 
   @action

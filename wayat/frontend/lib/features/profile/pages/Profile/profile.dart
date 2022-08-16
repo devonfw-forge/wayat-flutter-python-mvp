@@ -1,10 +1,11 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import '../../../common/widgets/appbar/appbar.dart';
-import '../../../domain/contact/contact.dart';
+import '../../../../common/widgets/appbar/appbar.dart';
+import '../../../../domain/contact/contact.dart';
 
 class ProfilePage extends StatelessWidget {
   final Contact contact;

@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import '../../../common/widgets/appbar/appbar.dart';
-import '../../../domain/contact/contact.dart';
+import '../../../../common/widgets/appbar/appbar.dart';
+import '../../../../domain/contact/contact.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _EditProfilePageState extends State<EditProfilePage> {
   late final Contact contact;
   XFile? currentSelectedImage;
+
+  final textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    textController.addListener((() {
+      contact.name = textController.text;
+    }));
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
             _buildProfileImage(),
             const SizedBox(height: 16),
             _nameTextField(),
-            _changeEmail(),
+            _changePhone(),
             _changePassword(),
           ],
         ));
@@ -87,15 +102,16 @@ class _ProfilePageState extends State<ProfilePage> {
   Padding _nameTextField() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         child: TextField(
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            hintText: appLocalizations.name,
-          ),
-        ),
+            controller: textController,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              hintText: appLocalizations.name,
+            ),
+            onChanged: ((text) {})),
       );
 
-  Row _changeEmail() => Row(
+  Row _changePhone() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
@@ -109,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
               right: 20,
               child: InkWell(
                   onTap: () {
-                    //AutoRoute to change email page
+                    //AutoRoute to change phone page
                   },
                   child: const Icon(Icons.arrow_forward,
                       color: Colors.black87, size: 16)))
