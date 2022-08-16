@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import '../../../../common/widgets/appbar/appbar.dart';
 import '../../../../domain/contact/contact.dart';
@@ -16,6 +18,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   XFile? currentSelectedImage;
 
   final textController = TextEditingController();
+  final SessionState controller = GetIt.I.get<SessionState>();
 
   @override
   void initState() {
@@ -57,8 +60,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Positioned(
               left: 20,
               child: InkWell(
-                  onTap: () {
-                    //AutoRoute to profile page
+                  onTap: () async {
+                    controller.goToProfile(true);
                   },
                   child: const Icon(Icons.arrow_back,
                       color: Colors.black87, size: 16))),

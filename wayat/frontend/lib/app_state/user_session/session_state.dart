@@ -32,6 +32,16 @@ abstract class _SessionState with Store {
   @observable
   bool isTerms = false;
 
+  @observable
+  bool isProfile = false;
+
+  @action
+  void goToProfile(bool isProfile) {
+    if (isProfile) {
+      isProfile = !isProfile;
+    }
+  }
+
   @action
   void goToEditProfile(bool isEditProfile) {
     if (isEditProfile) {
