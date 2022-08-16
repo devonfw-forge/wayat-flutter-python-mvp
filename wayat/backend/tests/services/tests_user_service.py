@@ -95,7 +95,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         self.mock_user_repo.update.assert_called_with(document_id=test_data.uid, data=test_update_valid)
 
-    async def test_add_contacts_shoud_add_only_valid_ones(self):
+    async def test_add_contacts_should_add_only_valid_ones(self):
         def mocking_get_user(uid: str):
             if uid == "test" or uid == "test-friend":
                 return test_entity
