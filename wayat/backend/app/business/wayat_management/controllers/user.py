@@ -94,9 +94,6 @@ async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user
                               user_service: UserService = Depends(UserService)):
     pending, sent = await user_service.get_pending_friend_requests(user.uid)
 
-    pending = await user_service.get_contacts(pending)
-    sent = await user_service.get_contacts(sent)
-
     pending = list(map(dto_to_user_with_phone_response, pending))
     sent = list(map(dto_to_user_with_phone_response, sent))
 

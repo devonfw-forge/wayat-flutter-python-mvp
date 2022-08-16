@@ -62,9 +62,8 @@ class UserService:
 
     async def add_contacts(self, *, uid: str, users: list[str]):
         # Check new users existence
-        coroutines = [self._user_repository.get(u) for u in users]
-        contacts_entities: list[UserEntity | None] = await asyncio.gather(*coroutines)
-        found_contacts: set[str] = {e.document_id for e in contacts_entities if e is not None}
+        contacts = await self.get_contacts(users)
+        found_contacts: set[str] = {e.id for e in contacts}
 
         self_user = await self._user_repository.get(uid)
         existing_contacts: set[str] = set(self_user.contacts)
@@ -73,10 +72,10 @@ class UserService:
         if new_contacts:
             await self._user_repository.create_friend_request(uid, list(new_contacts))
 
-    async def get_contacts(self, uid):
+    async def get_user_contacts(self, uid):
         return list(map(map_to_dto, await self._user_repository.get_contacts(uid)))
 
-    async def get_contact(self, uid):
+    async def get_contact(self, uid: str):
         """
         Returns user DTO
         """
@@ -87,8 +86,8 @@ class UserService:
 
     async def get_contacts(self, uids: list[str]):
         coroutines = [self.get_contact(u) for u in uids]
-        contacts_dtos: list[UserEntity | None] = await asyncio.gather(*coroutines)
-        return contacts_dtos
+        contacts_dtos: list[UserDTO | None] = await asyncio.gather(*coroutines)
+        return [e for e in contacts_dtos if e is not None]
 
     async def get_pending_friend_requests(self, uid):
         """
@@ -98,5 +97,5 @@ class UserService:
         if user is None:
             raise NotFoundException(detail=f"User {uid} not found")
 
-        return user.pending_requests, user.sent_requests
+        return await self.get_contacts(user.pending_requests), await self.get_contacts(user.sent_requests)
 
