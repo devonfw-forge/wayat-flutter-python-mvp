@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from datetime import datetime
 from typing import Optional
 from fastapi import Depends
@@ -8,6 +9,8 @@ from google.cloud.firestore import AsyncClient, AsyncTransaction
 from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.common.utils import get_current_time
 from app.domain.wayat_management.models.user import UserEntity, Location
+
+logger = logging.getLogger(__name__)
 
 
 class UserRepository(BaseFirestoreRepository[UserEntity]):
@@ -72,7 +75,8 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             .where("map_valid_until", ">", get_current_time())
             .stream()
         )
-        return [self._model(document_id=result.id, **result.to_dict()) async for result in result_stream] # type: ignore
+        return [self._model(document_id=result.id, **result.to_dict()) async for result in
+                result_stream]  # type: ignore
 
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})
@@ -134,17 +138,20 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
 
             @firestore.async_transactional
             async def execute(t: AsyncTransaction):
-                update_sender = {
-                    "sent_requests": firestore.ArrayRemove([self_uid]),
-                    "contacts": firestore.ArrayUnion([self_uid])
-                }
-                self._validate_update(update_sender)
-                update_receiver = {
-                    "pending_requests": firestore.ArrayRemove([friend_uid]),
-                    "contacts": firestore.ArrayUnion([friend_uid])
-                }
-                self._validate_update(update_receiver)
-                t.update(sender_ref, update_sender)
-                t.update(receiver_ref, update_receiver)
-
+                sender = await self.get(friend_uid, transaction=t)
+                if self_uid in sender.sent_requests:
+                    update_sender = {
+                        "sent_requests": firestore.ArrayRemove([self_uid]),
+                        "contacts": firestore.ArrayUnion([self_uid])
+                    }
+                    self._validate_update(update_sender)
+                    update_receiver = {
+                        "pending_requests": firestore.ArrayRemove([friend_uid]),
+                        "contacts": firestore.ArrayUnion([friend_uid])
+                    }
+                    self._validate_update(update_receiver)
+                    t.update(sender_ref, update_sender)
+                    t.update(receiver_ref, update_receiver)
+                else:
+                    logger.error("Trying to accept a friend request not received")
             await execute(transaction)

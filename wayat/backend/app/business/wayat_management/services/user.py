@@ -109,4 +109,5 @@ class UserService:
         """
         Responds a friend request by either accepting or denying it
         """
-        await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
+        if friend_uid != user_uid:
+            await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
