@@ -10,6 +10,7 @@ class ContactRefInfo(BaseModel):
     uid: str
     last_updated: datetime.datetime
     location: GeoPoint
+    address: str
 
 
 class AppStatusEntity(BaseFirebaseModel):

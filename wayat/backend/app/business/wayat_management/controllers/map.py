@@ -20,7 +20,8 @@ async def update_location(request: LocationUpdateRequest,
     await map_service.update_location(
         user.uid,
         latitude=request.position.latitude,
-        longitude=request.position.longitude
+        longitude=request.position.longitude,
+        address=request.address,
     )
 
 
