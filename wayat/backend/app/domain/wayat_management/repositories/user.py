@@ -40,10 +40,11 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)  # type: ignore
         return contacts_entities
 
-    async def update_user_location(self, uid: str, latitude: float, longitude: float) -> None:
+    async def update_user_location(self, uid: str, latitude: float, longitude: float, address: str) -> None:
         location: Location = Location(
             value=(latitude, longitude),
-            last_updated=get_current_time()
+            last_updated=get_current_time(),
+            address=address
         )
         await self.update(data={"location": location.dict()}, document_id=uid)
 
@@ -95,6 +96,26 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             t.update(sender_ref, update_sender)
             for r in receivers_ref:
                 t.update(r, update_receivers)
+
+        await execute(transaction)
+
+    async def cancel_friend_request(self, *, user: str, friend_id: str):
+        transaction = self._client.transaction()
+        sender_ref = self._get_document_reference(user)
+        receiver_ref = self._get_document_reference(friend_id)
+
+        @firestore.async_transactional
+        async def execute(t: AsyncTransaction):
+            update_sender = {
+                "sent_requests": firestore.ArrayRemove([friend_id])
+            }
+            self._validate_update(update_sender)
+            update_receiver = {
+                "pending_requests": firestore.ArrayRemove([user])
+            }
+            self._validate_update(update_receiver)
+            t.update(sender_ref, update_sender)
+            t.update(receiver_ref, update_receiver)
 
         await execute(transaction)
 
