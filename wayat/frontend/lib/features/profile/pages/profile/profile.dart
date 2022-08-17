@@ -92,13 +92,16 @@ class ProfilePage extends StatelessWidget {
 
   Widget _buildFaqInformationPart() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            appLocalizations.information,
-            textAlign: TextAlign.left,
-          ),
+          child: Text(appLocalizations.information,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                  fontSize: 16)),
         ),
         const SizedBox(height: 24),
         CustomCard(
