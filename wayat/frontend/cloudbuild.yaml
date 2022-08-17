@@ -1,18 +1,13 @@
 # [START Wayat Frontend Build]
 steps:
   # Dependencies:
-  - name: gcr.io/cloud-builders/gsutil
+  - id: "Getting Secrets"
+    name: gcr.io/cloud-builders/gsutil
     args:
-      - cp
-      - 'gs://wayat_secrets/google-services.json'
-      - .
+      - |
+        cp 'gs://wayat_secrets/google-services.json' .
+        cp 'gs://wayat_secrets/.env' .
     dir: wayat/frontend/android/app  
-  - name: gcr.io/cloud-builders/gsutil
-    args:
-      - cp
-      - 'gs://wayat_secrets/.env'
-      - .
-    dir: wayat/frontend
   # Testing:
   - id: "Running Tests"
     name: gcr.io/$PROJECT_ID/flutter:stable
