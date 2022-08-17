@@ -10,6 +10,7 @@ from app.common.utils import get_current_time
 class Location(BaseModel):
     last_updated: datetime
     value: GeoPoint
+    address: str
 
 
 class ContactLocation(BaseModel):
