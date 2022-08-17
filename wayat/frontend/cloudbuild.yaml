@@ -13,25 +13,30 @@ steps:
       - 'gs://wayat_secrets/.env'
       - .
     dir: wayat/frontend
-  # Getting packages:
-  - name: gcr.io/$PROJECT_ID/flutter:stable
-    args:
-      - pub
-      - get
-    dir: wayat/frontend
   # Testing:
-  - name: gcr.io/$PROJECT_ID/flutter:stable
+  - id: "Running Tests"
+    name: gcr.io/$PROJECT_ID/flutter:stable
     args:
       - test
     dir: wayat/frontend
   # Release build:
-  - name: gcr.io/$PROJECT_ID/flutter:stable
+  - id: "Generating APK"
+    name: gcr.io/$PROJECT_ID/flutter:stable
     args:
       - build
+      - apk
     env:
       - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
     dir: wayat/frontend
-  - name: 'gcr.io/cloud-builders/gsutil'
+    volumes:
+    - name: 'build'
+      path: 'wayat/frontend/build'
+  # Upload build:
+  - id: "Uploading APK"
+    name: 'gcr.io/cloud-builders/gsutil'
     args: ['cp', 'build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
+    volumes:
+    - name: 'build'
+      path: 'wayat/frontend/build'
 timeout: "1500s"
 # [END Wayat Frontend Build]
