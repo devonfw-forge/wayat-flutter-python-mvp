@@ -1,12 +1,18 @@
 # [START Wayat Frontend Build]
 steps:
   # Dependencies:
+  - id: "Getting google-services.json"
+    name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp 
+      - 'gs://wayat_secrets/google-services.json'
+      - .
   - id: "Getting Secrets"
     name: gcr.io/cloud-builders/gsutil
     args:
-      - |
-        cp 'gs://wayat_secrets/google-services.json' .
-        cp 'gs://wayat_secrets/.env' .
+      - cp
+      - 'gs://wayat_secrets/.env'
+      - .
     dir: wayat/frontend/android/app  
   # Testing:
   - id: "Running Tests"
