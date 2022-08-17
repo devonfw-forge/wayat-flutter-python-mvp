@@ -13,23 +13,16 @@ steps:
       - 'gs://wayat_secrets/.env'
       - .
     dir: wayat/frontend
-    
-  # IGNORE:
-  - name: gcr.io/$PROJECT_ID/flutter:stable
-    args:
-      - echo
-      - $PATH
-    dir: wayat/frontend
   # Testing:
   - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
-      - /opt/flutter/bin/flutter
+      - flutter
       - test
     dir: wayat/frontend
   # Release build:
   - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
-      - /opt/flutter/bin/flutter
+      - flutter
       - build
     env:
       - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
