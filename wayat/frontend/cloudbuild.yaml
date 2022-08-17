@@ -30,13 +30,13 @@ steps:
     dir: wayat/frontend
     volumes:
     - name: 'build'
-      path: 'wayat/frontend/build'
+      path: '/workspace/wayat/frontend/build'
   # Upload build:
   - id: "Uploading APK"
     name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
+    args: ['cp', '/workspace/wayat/frontend/build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
     volumes:
     - name: 'build'
-      path: 'wayat/frontend/build'
+      path: '/workspace/wayat/frontend/build'
 timeout: "1500s"
 # [END Wayat Frontend Build]
