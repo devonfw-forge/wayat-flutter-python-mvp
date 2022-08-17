@@ -19,14 +19,14 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
                      name: Optional[str],
                      email: Optional[str],
                      phone: Optional[str],
-                     image_url: Optional[str]
+                     image_ref: Optional[str]
                      ):
         entity = UserEntity(
             document_id=uid,
             name=name,
             email=email,
             phone=phone,
-            image_url=image_url,
+            image_ref=image_ref,
         )
         await self.add(model=entity)
         return entity

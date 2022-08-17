@@ -22,7 +22,7 @@ class UserEntity(BaseFirebaseModel):
     name: Optional[str]
     email: str
     phone: Optional[str]
-    image_url: Optional[str]
+    image_ref: Optional[str]
     contacts: list[str] = Field(default_factory=list)
     sent_requests: list[str] = Field(default_factory=list)
     pending_requests: list[str] = Field(default_factory=list)
