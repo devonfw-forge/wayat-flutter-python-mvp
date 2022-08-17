@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io' as io;
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -14,17 +15,17 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  late final Contact contact;
   XFile? currentSelectedImage;
 
   final textController = TextEditingController();
   final ProfileState controller = GetIt.I.get<ProfileState>();
+  final SessionState userSession = GetIt.I.get<SessionState>();
 
   @override
   void initState() {
     super.initState();
     textController.addListener((() {
-      contact.name = textController.text;
+      userSession.currentUser!.name = textController.text;
     }));
   }
 
@@ -87,8 +88,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Stack(alignment: Alignment.center, children: <Widget>[
       CircleAvatar(
           radius: 95.0,
-          backgroundImage:
-              NetworkImage(contact.imageUrl)), //Need to paste picked image
+          backgroundImage: (currentSelectedImage != null)
+              ? FileImage(io.File(currentSelectedImage!.path)) as ImageProvider
+              : NetworkImage(userSession.currentUser!.imageUrl)),
       Positioned(
           top: 10,
           child: InkWell(

@@ -3,7 +3,6 @@ import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/login_wrapper.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
-import 'package:wayat/features/contacts/pages/contact_detail_page.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
 import 'package:wayat/features/contacts/pages/contacts_wrapper.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';
@@ -21,6 +20,7 @@ import 'package:wayat/features/profile/pages/faq/faqs.dart';
 import 'package:wayat/features/profile/pages/preferences/preferences.dart';
 import 'package:wayat/features/profile/pages/profile/edit_profile.dart';
 import 'package:wayat/features/profile/pages/profile/profile.dart';
+import 'package:wayat/features/profile/pages/profile/profile_wraper.dart';
 import 'package:wayat/features/profile/pages/terms/terms.dart';
 import 'package:wayat/features/root/root_wrapper.dart';
 
@@ -46,6 +46,13 @@ import 'package:wayat/features/root/root_wrapper.dart';
             transitionsBuilder: TransitionsBuilders.slideLeft)
       ]),
       AutoRoute(page: NotificationsPage),
+      AutoRoute(page: ProfileWrapper, children: [
+        AutoRoute(page: ProfilePage),
+        AutoRoute(page: EditProfilePage),
+        AutoRoute(page: PreferencesPage),
+        AutoRoute(page: FaqsPage),
+        AutoRoute(page: TermsPage),
+      ]),
     ]),
     AutoRoute(page: LoginWrapper, children: [
       AutoRoute(page: LoginPage),
@@ -53,11 +60,5 @@ import 'package:wayat/features/root/root_wrapper.dart';
       AutoRoute(page: LoadingPage)
     ]),
   ]),
-  AutoRoute(page: ProfilePage, children: [
-    AutoRoute(page: EditProfilePage),
-    AutoRoute(page: PreferencesPage),
-    AutoRoute(page: FaqsPage),
-    AutoRoute(page: TermsPage),
-  ])
 ])
 class $AppRouter {}

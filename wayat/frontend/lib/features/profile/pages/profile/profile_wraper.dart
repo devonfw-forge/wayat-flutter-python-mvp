@@ -3,17 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
 class ProfileWrapper extends StatelessWidget {
   final ProfileState controller = GetIt.I.get<ProfileState>();
-  final Contact contact;
 
-  ProfileWrapper({
-    Key? key,
-    required this.contact,
-  }) : super(key: key);
+  ProfileWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +24,13 @@ class ProfileWrapper extends StatelessWidget {
                   if (isEditProfile)
                     const EditProfileRoute()
                   else if (isPreferences)
-                    PreferencesRoute(contact: contact)
+                    const PreferencesRoute()
                   else if (isFaqs)
                     const FaqsRoute()
                   else if (isTerms)
                     const TermsRoute()
+                  else
+                    ProfileRoute()
                 ]);
       });
     });
