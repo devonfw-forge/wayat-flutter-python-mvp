@@ -13,6 +13,11 @@ steps:
       - 'gs://wayat_secrets/.env'
       - .
     dir: wayat/frontend
+  # Getting packages:
+  - name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - pub
+      - get
   # Testing:
   - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
