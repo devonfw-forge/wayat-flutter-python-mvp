@@ -18,6 +18,7 @@ steps:
     args:
       - pub
       - get
+    dir: wayat/frontend
   # Testing:
   - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
