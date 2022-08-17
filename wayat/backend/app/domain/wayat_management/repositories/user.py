@@ -98,19 +98,19 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
 
         await execute(transaction)
 
-    async def cancel_friend_request(self, *, user: str, friend_id: str):
+    async def cancel_friend_request(self, *, sender_id: str, receiver_id: str):
         transaction = self._client.transaction()
-        sender_ref = self._get_document_reference(user)
-        receiver_ref = self._get_document_reference(friend_id)
+        sender_ref = self._get_document_reference(sender_id)
+        receiver_ref = self._get_document_reference(receiver_id)
 
         @firestore.async_transactional
         async def execute(t: AsyncTransaction):
             update_sender = {
-                "sent_requests": firestore.ArrayRemove([friend_id])
+                "sent_requests": firestore.ArrayRemove([receiver_id])
             }
             self._validate_update(update_sender)
             update_receiver = {
-                "pending_requests": firestore.ArrayRemove([user])
+                "pending_requests": firestore.ArrayRemove([sender_id])
             }
             self._validate_update(update_receiver)
             t.update(sender_ref, update_sender)
@@ -123,3 +123,28 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         if map_valid_until is not None:
             data["map_valid_until"] = map_valid_until
         await self.update(document_id=uid, data=data)
+
+    async def respond_friend_request(self, *, self_uid: str, friend_uid: str, accept: bool):
+        if not accept:
+            await self.cancel_friend_request(sender_id=friend_uid, receiver_id=self_uid)
+        else:
+            transaction = self._client.transaction()
+            sender_ref = self._get_document_reference(friend_uid)
+            receiver_ref = self._get_document_reference(self_uid)
+
+            @firestore.async_transactional
+            async def execute(t: AsyncTransaction):
+                update_sender = {
+                    "sent_requests": firestore.ArrayRemove([self_uid]),
+                    "contacts": firestore.ArrayUnion([self_uid])
+                }
+                self._validate_update(update_sender)
+                update_receiver = {
+                    "pending_requests": firestore.ArrayRemove([friend_uid]),
+                    "contacts": firestore.ArrayUnion([friend_uid])
+                }
+                self._validate_update(update_receiver)
+                t.update(sender_ref, update_sender)
+                t.update(receiver_ref, update_receiver)
+
+            await execute(transaction)

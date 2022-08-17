@@ -104,8 +104,9 @@ async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user
 
 
 @router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
-async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                                user_service: UserService = Depends(UserService)):
+    await user_service.respond_friend_request(user_uid=user.uid, friend_uid=r.uid, accept=r.accept)
 
 
 @router.delete("/friend-requests/sent/{contact_id}", description="Cancel a sent friendship request")

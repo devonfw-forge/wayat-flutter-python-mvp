@@ -103,4 +103,10 @@ class UserService:
         """
         Cancels a pending sent friend request
         """
-        await self._user_repository.cancel_friend_request(user=uid, friend_id=contact_id)
+        await self._user_repository.cancel_friend_request(sender_id=uid, receiver_id=contact_id)
+
+    async def respond_friend_request(self, user_uid: str, friend_uid: str, accept: bool):
+        """
+        Responds a friend request by either accepting or denying it
+        """
+        await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
