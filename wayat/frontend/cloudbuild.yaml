@@ -17,13 +17,8 @@ steps:
   # IGNORE:
   - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
-      - ls
-      - /opt
-      - ;
       - echo
-      - ;
-      - ls
-      - /opt/flutter/
+      - $PATH
     dir: wayat/frontend
   # Testing:
   - name: gcr.io/$PROJECT_ID/flutter:stable
