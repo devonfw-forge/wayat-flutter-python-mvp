@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
 
@@ -37,75 +36,80 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _profileAppBar(),
-            const SizedBox(height: 32),
-            _buildProfileImage(),
-            const SizedBox(height: 16),
-            _nameTextField(),
-            _changePhone(),
-            _changePassword(),
-          ],
-        ));
+    return Column(
+      children: [
+        _profileAppBar(),
+        const SizedBox(height: 18),
+        _buildProfileImage(),
+        const SizedBox(height: 32),
+        _nameTextField(),
+        const SizedBox(height: 34.5),
+        _changePhone(),
+        const SizedBox(height: 29),
+        _changePassword(),
+      ],
+    );
   }
 
   Row _profileAppBar() => Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Positioned(
-              left: 20,
-              child: InkWell(
-                  onTap: () async {
-                    controller.goToProfile(true);
-                  },
-                  child: const Icon(Icons.arrow_back,
-                      color: Colors.black87, size: 16))),
-          Text(
-            appLocalizations.profile,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                InkWell(
+                    onTap: () async {
+                      // Route to Profile main page
+                    },
+                    child: const Icon(Icons.arrow_back,
+                        color: Colors.black87, size: 16)),
+                Padding(
+                  padding: const EdgeInsets.only(left: 14),
+                  child: Text(
+                    appLocalizations.profile,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                        fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
           ),
-          Positioned(
-              right: 20,
-              child: TextButton(
-                onPressed: () {
-                  //Save data to Firestore
-                },
-                child: Text(appLocalizations.save),
-              ))
+          TextButton(
+            onPressed: () {
+              userSession.currentUser!.name = textController.text;
+            },
+            child: Text(
+              appLocalizations.save,
+              textAlign: TextAlign.right,
+            ),
+          )
         ],
       );
 
   Widget _buildProfileImage() {
-    return Stack(alignment: Alignment.center, children: <Widget>[
+    return Stack(alignment: Alignment.bottomRight, children: <Widget>[
       CircleAvatar(
-          radius: 95.0,
+          radius: 50.0,
           backgroundImage: (currentSelectedImage != null)
               ? FileImage(io.File(currentSelectedImage!.path)) as ImageProvider
               : NetworkImage(userSession.currentUser!.imageUrl)),
-      Positioned(
-          top: 10,
-          child: InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (builder) => _getImageFromCameraOrGallary());
-              },
-              child: const Icon(Icons.camera_alt,
-                  color: Colors.black87, size: 45))),
+      InkWell(
+        onTap: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (builder) => _getImageFromCameraOrGallary());
+        },
+        child: const Icon(Icons.camera_alt, color: Colors.black87, size: 30),
+      ),
     ]);
   }
 
   Padding _nameTextField() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: TextField(
             controller: textController,
             decoration: InputDecoration(
@@ -119,62 +123,76 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Row _changePhone() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            appLocalizations.changePhone,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              appLocalizations.changePhone,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                  fontSize: 16),
+            ),
           ),
-          Positioned(
-              right: 20,
-              child: InkWell(
-                  onTap: () {
-                    //AutoRoute to change phone page
-                  },
-                  child: const Icon(Icons.arrow_forward,
-                      color: Colors.black87, size: 16)))
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: InkWell(
+                onTap: () {
+                  //AutoRoute to change phone page
+                },
+                child: const Icon(Icons.arrow_forward,
+                    color: Colors.black87, size: 16)),
+          )
         ],
       );
 
   Row _changePassword() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            appLocalizations.changePhone,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              appLocalizations.changePhone,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                  fontSize: 16),
+            ),
           ),
-          Positioned(
-              right: 20,
-              child: InkWell(
-                  onTap: () {
-                    //AutoRoute to change password page
-                  },
-                  child: const Icon(Icons.arrow_forward,
-                      color: Colors.black87, size: 16)))
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: InkWell(
+                onTap: () {
+                  //AutoRoute to change password page
+                },
+                child: const Icon(Icons.arrow_forward,
+                    color: Colors.black87, size: 16)),
+          )
         ],
       );
 
   Widget _getImageFromCameraOrGallary() {
     return Container(
-        height: MediaQuery.of(context).size.height / 4,
+        height: MediaQuery.of(context).size.height / 6,
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(children: [
           Text(appLocalizations.chooseProfileFoto,
               style: const TextStyle(fontSize: 20)),
           const SizedBox(height: 20),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             TextButton.icon(
                 onPressed: () => _getFromSource(ImageSource.camera),
-                icon: const Icon(Icons.camera),
+                icon: const Icon(
+                  Icons.camera,
+                  size: 50,
+                ),
                 label: Text(appLocalizations.camera)),
             TextButton.icon(
                 onPressed: () => _getFromSource(ImageSource.gallery),
-                icon: const Icon(Icons.image),
+                icon: const Icon(
+                  Icons.image,
+                  size: 50,
+                ),
                 label: Text(appLocalizations.gallery)),
           ])
         ]));

@@ -21,23 +21,17 @@ abstract class _ProfileState with Store {
 
   @action
   void goToProfile(bool isProfile) {
-    if (isProfile) {
-      isProfile = !isProfile;
-    }
+    isProfile = true;
   }
 
   @action
   void goToEditProfile(bool isEditProfile) {
-    if (isEditProfile) {
-      isEditProfile = !isEditProfile;
-    }
+    isEditProfile = !isEditProfile;
   }
 
   @action
   void goToPreferences(bool isPreferences) {
-    if (isPreferences) {
-      isPreferences = !isPreferences;
-    }
+    isPreferences = !isPreferences;
   }
 
   @action
