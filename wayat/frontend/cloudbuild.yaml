@@ -32,6 +32,6 @@ steps:
       - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
     dir: wayat/frontend
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', 'wayat/frontend/build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
+    args: ['cp', 'build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
 timeout: "1500s"
 # [END Wayat Frontend Build]
