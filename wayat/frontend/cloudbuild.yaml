@@ -7,7 +7,7 @@ steps:
       - cp 
       - 'gs://wayat_secrets/google-services.json'
       - .
-  - id: "Getting Secrets"
+  - id: "Getting env file"
     name: gcr.io/cloud-builders/gsutil
     args:
       - cp
