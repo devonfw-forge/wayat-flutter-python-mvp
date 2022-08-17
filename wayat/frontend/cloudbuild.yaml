@@ -13,6 +13,18 @@ steps:
       - 'gs://wayat_secrets/.env'
       - .
     dir: wayat/frontend
+    
+  # IGNORE:
+  - name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - ls
+      - /opt
+      - ;
+      - echo
+      - ;
+      - ls
+      - /opt/flutter/
+    dir: wayat/frontend
   # Testing:
   - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
