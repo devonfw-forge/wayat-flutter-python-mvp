@@ -14,13 +14,13 @@ steps:
       - .
     dir: wayat/frontend
   # Testing:
-  - name: gcr.io/$PROJECT_ID/flutter
+  - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
       - flutter
       - test
     dir: wayat/frontend
   # Release build:
-  - name: gcr.io/$PROJECT_ID/flutter
+  - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
       - flutter
       - build
