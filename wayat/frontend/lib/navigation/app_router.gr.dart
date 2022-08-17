@@ -36,8 +36,8 @@ import '../features/onboarding/pages/onboarding_page.dart' as _i5;
 import '../features/onboarding/pages/onboarding_wrapper.dart' as _i2;
 import '../features/onboarding/pages/progress_page.dart' as _i6;
 import '../features/profile/pages/faq/faqs.dart' as _i19;
-import '../features/profile/pages/preferences/preferences.dart' as _i18;
-import '../features/profile/pages/profile/edit_profile.dart' as _i17;
+import '../features/profile/pages/preferences/preferences.dart' as _i17;
+import '../features/profile/pages/profile/edit_profile.dart' as _i18;
 import '../features/profile/pages/profile/profile_wraper.dart' as _i11;
 import '../features/profile/pages/terms/terms.dart' as _i20;
 import '../features/root/root_wrapper.dart' as _i1;
@@ -146,13 +146,13 @@ class AppRouter extends _i24.RootStackRouter {
       return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i16.SuggestionsPage(key: args.key));
     },
-    EditProfileRoute.name: (routeData) {
-      return _i24.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i17.EditProfilePage());
-    },
     PreferencesRoute.name: (routeData) {
       return _i24.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i18.PreferencesPage());
+          routeData: routeData, child: const _i17.PreferencesPage());
+    },
+    EditProfileRoute.name: (routeData) {
+      return _i24.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i18.EditProfilePage());
     },
     FaqsRoute.name: (routeData) {
       return _i24.MaterialPageX<dynamic>(
@@ -225,22 +225,22 @@ class AppRouter extends _i24.RootStackRouter {
                     path: 'profile-wrapper',
                     parent: HomeRoute.name,
                     children: [
-                      _i24.RouteConfig(EditProfileRoute.name,
-                          path: 'edit-profile-page',
+                      _i24.RouteConfig(PreferencesRoute.name,
+                          path: 'preferences-page',
                           parent: ProfileWrapper.name,
                           children: [
                             _i24.RouteConfig(EditProfileRoute.name,
                                 path: 'edit-profile-page',
-                                parent: EditProfileRoute.name),
+                                parent: PreferencesRoute.name),
                             _i24.RouteConfig(PreferencesRoute.name,
                                 path: 'preferences-page',
-                                parent: EditProfileRoute.name),
+                                parent: PreferencesRoute.name),
                             _i24.RouteConfig(FaqsRoute.name,
                                 path: 'faqs-page',
-                                parent: EditProfileRoute.name),
+                                parent: PreferencesRoute.name),
                             _i24.RouteConfig(TermsRoute.name,
                                 path: 'terms-page',
-                                parent: EditProfileRoute.name)
+                                parent: PreferencesRoute.name)
                           ])
                     ])
               ]),
@@ -574,21 +574,21 @@ class SuggestionsRouteArgs {
 }
 
 /// generated route for
-/// [_i17.EditProfilePage]
-class EditProfileRoute extends _i24.PageRouteInfo<void> {
-  const EditProfileRoute()
-      : super(EditProfileRoute.name, path: 'edit-profile-page');
-
-  static const String name = 'EditProfileRoute';
-}
-
-/// generated route for
-/// [_i18.PreferencesPage]
+/// [_i17.PreferencesPage]
 class PreferencesRoute extends _i24.PageRouteInfo<void> {
   const PreferencesRoute()
       : super(PreferencesRoute.name, path: 'preferences-page');
 
   static const String name = 'PreferencesRoute';
+}
+
+/// generated route for
+/// [_i18.EditProfilePage]
+class EditProfileRoute extends _i24.PageRouteInfo<void> {
+  const EditProfileRoute()
+      : super(EditProfileRoute.name, path: 'edit-profile-page');
+
+  static const String name = 'EditProfileRoute';
 }
 
 /// generated route for

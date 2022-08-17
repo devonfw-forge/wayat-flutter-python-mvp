@@ -30,7 +30,7 @@ class ProfileWrapper extends StatelessWidget {
                   else if (isTerms)
                     const TermsRoute()
                   else
-                    const EditProfileRoute() //ProfileRoute()
+                    const PreferencesRoute() //ProfileRoute()
                 ]);
       });
     });

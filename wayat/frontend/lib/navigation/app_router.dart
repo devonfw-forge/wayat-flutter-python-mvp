@@ -47,7 +47,7 @@ import 'package:wayat/features/root/root_wrapper.dart';
       ]),
       AutoRoute(page: NotificationsPage),
       AutoRoute(page: ProfileWrapper, children: [
-        AutoRoute(page: EditProfilePage, children: [
+        AutoRoute(page: PreferencesPage, children: [
           AutoRoute(page: EditProfilePage),
           AutoRoute(page: PreferencesPage),
           AutoRoute(page: FaqsPage),
