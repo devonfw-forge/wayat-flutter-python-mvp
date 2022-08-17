@@ -16,13 +16,11 @@ steps:
   # Testing:
   - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
-      - flutter
       - test
     dir: wayat/frontend
   # Release build:
   - name: gcr.io/$PROJECT_ID/flutter:stable
     args:
-      - flutter
       - build
     env:
       - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
