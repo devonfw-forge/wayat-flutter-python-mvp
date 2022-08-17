@@ -1,14 +1,19 @@
 import asyncio
+import functools
+import logging
 from typing import BinaryIO
 
+import requests
 from fastapi import Depends
 
-from app.business.wayat_management.models.user import UserDTO, IDType
+from app.business.wayat_management.models.user import UserDTO
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.file_storage import FileStorage
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
+
+log = logging.getLogger(__name__)
 
 
 def map_to_dto(entity: UserEntity) -> UserDTO:
@@ -37,13 +42,14 @@ class UserService:
         user_entity = await self._user_repository.get(uid)
         new_user = False
         if user_entity is None:
+            image_url = await self._extract_picture(uid, default_data.picture)
             new_user = True
             user_entity = await self._user_repository.create(
                 uid=uid,
                 name=default_data.name,
                 email=default_data.email,
                 phone=default_data.phone,
-                image_url=default_data.picture
+                image_url=image_url
             )
             await self._status_repository.initialize(uid)
         return map_to_dto(user_entity), new_user
@@ -80,7 +86,17 @@ class UserService:
     async def get_contacts(self, uid):
         return list(map(map_to_dto, await self._user_repository.get_contacts(uid)))
 
-    def update_profile_picture(self, uid: str, content_type: str, data: BinaryIO):
+    async def update_profile_picture(self, uid: str, content_type: str, data: BinaryIO | bytes):
+        loop = asyncio.get_event_loop()
+
+        image_url = await loop.run_in_executor(
+            executor=None,
+            func=functools.partial(self._upload_profile_picture, uid=uid, content_type=content_type, data=data)
+        )
+
+        await self._user_repository.update(document_id=uid, data={"image_url": image_url})
+
+    def _upload_profile_picture(self, uid: str, content_type: str, data: BinaryIO | bytes) -> str:
         if content_type == "image/jpeg":
             extension = ".jpeg"
         elif content_type == "image/png":
@@ -88,4 +104,22 @@ class UserService:
         else:
             raise ValueError("Invalid content-type. Image must be in either JPEG or PNG format")
         file_name = uid + extension
-        self._file_repository.upload_image(file_name, data, content_type)
+        image_url = self._file_repository.upload_image(file_name, data, content_type)
+        return image_url
+
+    async def _extract_picture(self, url: str, uid: str) -> str:
+        loop = asyncio.get_event_loop()
+
+        def sync_process() -> str:
+            response = requests.get(url)
+            if response.status_code != 200:
+                log.error(f"Couldn't extract profile picture from token. (Status code {response.status_code})")
+                return ""
+            else:
+                return self._upload_profile_picture(
+                    uid=uid,
+                    content_type=response.headers.get("content-type", "undefined"),
+                    data=response.content
+                )
+
+        return await loop.run_in_executor(None, sync_process)

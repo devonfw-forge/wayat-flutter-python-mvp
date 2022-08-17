@@ -45,6 +45,11 @@ class FileStorage:
     def _bucket(self) -> Bucket:
         return self._client.bucket(self._configuration.bucket)
 
-    def upload_image(self, filename: str, data: BinaryIO, content_type: str):
+    def upload_image(self, filename: str, data: BinaryIO | bytes, content_type: str) -> str:
         path = f"{self._configuration.images_path}/{filename}"
-        self._bucket().blob(path).upload_from_file(data, content_type=content_type)
+        blob = self._bucket().blob(path)
+        if isinstance(data, bytes):
+            blob.upload_from_string(data, content_type=content_type)
+        else:
+            blob.upload_from_file(data, content_type=content_type)
+        return blob.public_url

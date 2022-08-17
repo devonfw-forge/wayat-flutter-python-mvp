@@ -37,13 +37,13 @@ async def update_user_profile(request: UpdateUserRequest,
 
 
 @router.post("/profile/picture", description="Updates the user profile picture")
-def update_profile_picture(upload_file: UploadFile,
-                           user: FirebaseAuthenticatedUser = Depends(get_user()),
-                           user_service: UserService = Depends()):
-    user_service.update_profile_picture(
+async def update_profile_picture(upload_file: UploadFile,
+                                 user: FirebaseAuthenticatedUser = Depends(get_user()),
+                                 user_service: UserService = Depends()):
+    await user_service.update_profile_picture(
         user.uid,
         upload_file.content_type,
-        upload_file.file,
+        upload_file.file
     )
 
 
