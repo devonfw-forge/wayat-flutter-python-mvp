@@ -98,8 +98,8 @@ async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user
     sent = list(map(dto_to_user_with_phone_response, sent))
 
     return PendingFriendsRequestsResponse(
-        sent_requests=pending,
-        pending_requests=sent
+        sent_requests=sent,
+        pending_requests=pending
     )
 
 
