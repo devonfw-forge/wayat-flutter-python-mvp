@@ -43,10 +43,9 @@ void main() {
     );
   }
 
-  // testWidgets('Onboarding has a next button', (tester) async {
-  //   await tester.pumpWidget(_createApp(OnBoardingPage()));
-  //   expect(find.widgetWithText(CustomOutlinedButton, appLocalizations.next), findsOneWidget);
-  // });
+  test('Onboarding controller contact list returns a contact list', (){
+    
+  });
 
   // testWidgets('OnBoarding next step', (tester) async {
   //   await tester.pumpWidget(_createApp(OnBoardingPage()));
