@@ -5,6 +5,8 @@ from pydantic import BaseModel
 from sqlmodel import SQLModel, Field
 from datetime import datetime
 
+from app.common.utils import get_current_time
+
 
 def new_uuid() -> uuid_pkg.UUID:
     # Note: Work around UUIDs with leading zeros: https://github.com/tiangolo/sqlmodel/issues/25
@@ -22,8 +24,8 @@ class BaseUUIDModel(SQLModel):
         index=True,
         nullable=False,
     )
-    updated_at: Optional[datetime] = Field(default_factory=datetime.now)
-    created_at: Optional[datetime] = Field(default_factory=datetime.now)
+    updated_at: Optional[datetime] = Field(default_factory=get_current_time)
+    created_at: Optional[datetime] = Field(default_factory=get_current_time)
 
 
 class BaseCamelModel(BaseModel):

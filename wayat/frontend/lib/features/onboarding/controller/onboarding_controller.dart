@@ -9,7 +9,6 @@ import 'package:wayat/features/onboarding/controller/onboarding_state.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart';
-import 'package:wayat/services/first_launch/first_launch_service.dart';
 
 part 'onboarding_controller.g.dart';
 
@@ -17,7 +16,6 @@ class OnboardingController = _OnboardingController with _$OnboardingController;
 
 abstract class _OnboardingController with Store {
   ContactService contactService = ContactServiceImpl();
-  FirstLaunchService firstLaunchService = FirstLaunchService();
 
   _OnboardingController() {
     importContacts();

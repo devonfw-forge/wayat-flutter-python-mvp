@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File
 
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
@@ -8,7 +8,8 @@ from app.business.wayat_management.models.user import (
     ListUsersWithPhoneResponse,
     FindByPhoneRequest,
     AddContactsRequest,
-    UpdatePreferencesRequest, UserWithPhoneResponse,
+    UpdatePreferencesRequest, UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest,
+    UserDTO,
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
@@ -17,6 +18,10 @@ from app.common.infra.firebase import FirebaseAuthenticatedUser
 router = APIRouter(prefix="/users")
 
 logger = logging.getLogger(__name__)
+
+
+def dto_to_user_with_phone_response(u: UserDTO):
+    return UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url)
 
 
 @router.get("/profile", description="Get a user profile", response_model=UserProfileResponse)
@@ -32,8 +37,14 @@ async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user())
 async def update_user_profile(request: UpdateUserRequest,
                               user: FirebaseAuthenticatedUser = Depends(get_user()),
                               user_service: UserService = Depends()):
-    logger.info(f"Updating {user.uid=} with values {request.dict(exclude_unset=True)}")
+    logger.info(f"Updating user={user.uid} with values {request.dict(exclude_unset=True)}")
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
+
+
+@router.post("/profile/picture", description="Updates the user profile picture")
+async def update_profile_picture(file: bytes = File(), user: FirebaseAuthenticatedUser = Depends(get_user())):
+    # TODO
+    logger.info(f"File uploaded ({len(file)/1024:.2f} KB)")
 
 
 @router.post("/find-by-phone",
@@ -43,7 +54,7 @@ async def update_user_profile(request: UpdateUserRequest,
 async def get_users_filtered(request: FindByPhoneRequest, user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts with phones {request.phones}")
     users = await user_service.find_by_phone(request.phones)
-    users_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in users]
+    users_phone = list(map(dto_to_user_with_phone_response, users))
     return ListUsersWithPhoneResponse(users=users_phone)
 
 
@@ -55,15 +66,49 @@ async def add_contact(request: AddContactsRequest, user_service: UserService = D
 
 
 @router.post("/preferences", description="Update the preferences of a user")
-async def update_preferences(request: UpdatePreferencesRequest):
-    # TODO
-    pass
+async def update_preferences(request: UpdatePreferencesRequest,
+                             user_service: UserService = Depends(UserService),
+                             user: FirebaseAuthenticatedUser = Depends(get_user())):
+    logger.info(f"Updating preferences for user {user.uid} with values {request.dict(exclude_unset=True)}")
+    await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
 
 
 @router.get("/contacts", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
 async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
                        user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts for user {user.uid}")
-    cts = await user_service.get_contacts(user.uid)
+    cts = await user_service.get_user_contacts(user.uid)
     contacts_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in cts]
     return ListUsersWithPhoneResponse(users=contacts_phone)
+
+
+@router.delete("/contacts/{contact_id}",
+               description="Deletes a contact from your friend list and removes yourself from their list")
+async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user())):
+    pass
+
+
+@router.get("/friend-requests", description="Returns pending sent and received friendship requests",
+            response_model=PendingFriendsRequestsResponse)
+async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user()),
+                              user_service: UserService = Depends(UserService)):
+    pending, sent = await user_service.get_pending_friend_requests(user.uid)
+
+    pending = list(map(dto_to_user_with_phone_response, pending))
+    sent = list(map(dto_to_user_with_phone_response, sent))
+
+    return PendingFriendsRequestsResponse(
+        sent_requests=pending,
+        pending_requests=sent
+    )
+
+
+@router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
+async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
+    pass
+
+
+@router.delete("/friend-requests/sent/{contact_id}", description="Cancel a sent friendship request")
+async def cancel_friend_request(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                                user_service: UserService = Depends(UserService)):
+    await user_service.cancel_friend_request(user.uid, contact_id)

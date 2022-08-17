@@ -41,22 +41,6 @@ mixin _$SessionState on _SessionState, Store {
     });
   }
 
-  late final _$phoneValidationAtom =
-      Atom(name: '_SessionState.phoneValidation', context: context);
-
-  @override
-  bool get phoneValidation {
-    _$phoneValidationAtom.reportRead();
-    return super.phoneValidation;
-  }
-
-  @override
-  set phoneValidation(bool value) {
-    _$phoneValidationAtom.reportWrite(value, super.phoneValidation, () {
-      super.phoneValidation = value;
-    });
-  }
-
   late final _$hasDoneOnboardingAtom =
       Atom(name: '_SessionState.hasDoneOnboarding', context: context);
 
@@ -77,57 +61,52 @@ mixin _$SessionState on _SessionState, Store {
       Atom(name: '_SessionState.currentUser', context: context);
 
   @override
-  User get currentUser {
+  MyUser? get currentUser {
     _$currentUserAtom.reportRead();
     return super.currentUser;
   }
 
   @override
-  set currentUser(User value) {
+  set currentUser(MyUser? value) {
     _$currentUserAtom.reportWrite(value, super.currentUser, () {
       super.currentUser = value;
     });
   }
 
-  late final _$setFinishLoggedInAsyncAction =
-      AsyncAction('_SessionState.setFinishLoggedIn', context: context);
+  late final _$doneOnBoardingAsyncAction =
+      AsyncAction('_SessionState.doneOnBoarding', context: context);
 
   @override
-  Future setFinishLoggedIn(bool finishedLoggedIn) {
-    return _$setFinishLoggedInAsyncAction
-        .run(() async => super.setFinishLoggedIn(finishedLoggedIn));
+  Future<void> doneOnBoarding() {
+    return _$doneOnBoardingAsyncAction.run(() => super.doneOnBoarding());
   }
 
-  late final _$finishLoginProcessAsyncAction =
-      AsyncAction('_SessionState.finishLoginProcess', context: context);
+  late final _$updateCurrentUserAsyncAction =
+      AsyncAction('_SessionState.updateCurrentUser', context: context);
 
   @override
-  Future<void> finishLoginProcess(GoogleAuthService googleAuth) {
-    return _$finishLoginProcessAsyncAction
-        .run(() => super.finishLoginProcess(googleAuth));
+  Future<dynamic> updateCurrentUser() {
+    return _$updateCurrentUserAsyncAction.run(() => super.updateCurrentUser());
   }
 
-  late final _$googleLoginAsyncAction =
-      AsyncAction('_SessionState.googleLogin', context: context);
+  late final _$updatePhoneAsyncAction =
+      AsyncAction('_SessionState.updatePhone', context: context);
 
   @override
-  Future<void> googleLogin() {
-    return _$googleLoginAsyncAction.run(() => super.googleLogin());
+  Future<bool> updatePhone(String phone) {
+    return _$updatePhoneAsyncAction.run(() => super.updatePhone(phone));
+  }
+
+  late final _$updateOnboardingAsyncAction =
+      AsyncAction('_SessionState.updateOnboarding', context: context);
+
+  @override
+  Future<bool> updateOnboarding() {
+    return _$updateOnboardingAsyncAction.run(() => super.updateOnboarding());
   }
 
   late final _$_SessionStateActionController =
       ActionController(name: '_SessionState', context: context);
-
-  @override
-  void doneOnBoarding() {
-    final _$actionInfo = _$_SessionStateActionController.startAction(
-        name: '_SessionState.doneOnBoarding');
-    try {
-      return super.doneOnBoarding();
-    } finally {
-      _$_SessionStateActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void setGoogleSignIn(bool signedIn) {
@@ -141,11 +120,11 @@ mixin _$SessionState on _SessionState, Store {
   }
 
   @override
-  void setPhoneValidation(bool phoneValidated) {
+  void setFinishLoggedIn(bool finishedLoggedIn) {
     final _$actionInfo = _$_SessionStateActionController.startAction(
-        name: '_SessionState.setPhoneValidation');
+        name: '_SessionState.setFinishLoggedIn');
     try {
-      return super.setPhoneValidation(phoneValidated);
+      return super.setFinishLoggedIn(finishedLoggedIn);
     } finally {
       _$_SessionStateActionController.endAction(_$actionInfo);
     }
@@ -156,7 +135,6 @@ mixin _$SessionState on _SessionState, Store {
     return '''
 finishLoggedIn: ${finishLoggedIn},
 googleSignedIn: ${googleSignedIn},
-phoneValidation: ${phoneValidation},
 hasDoneOnboarding: ${hasDoneOnboarding},
 currentUser: ${currentUser}
     ''';

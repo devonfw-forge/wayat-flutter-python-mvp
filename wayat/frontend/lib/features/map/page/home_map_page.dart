@@ -1,26 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
+import 'package:location/location.dart';
+import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
+import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
-  ContactsLocationState contactsLocationState =
-      GetIt.I.get<ContactsLocationState>();
+  final LocationState locationState = GetIt.I.get<LocationState>();
+  final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
   late MapController controller;
   late GoogleMapController gMapController;
 
   HomeMapPage({Key? key}) : super(key: key);
-
-  static const CameraPosition _valencia = CameraPosition(
-    target: LatLng(39.4702, -0.376805),
-    zoom: 14.4746,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -28,28 +28,45 @@ class HomeMapPage extends StatelessWidget {
         onMarkerPressed: (contact, icon) =>
             showContactDialog(contact, icon, context));
 
-    return Stack(
-      children: [
-        Observer(builder: (context) {
-          List<ContactLocation> contacts = contactsLocationState.contacts;
-          if (contacts != controller.contacts) {
-            controller.setContacts(contacts);
-            controller.getMarkers();
+    return FutureBuilder(
+        future: locationState.initialize(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Stack(
+              children: [
+                Observer(builder: (context) {
+                  List<ContactLocation> contacts = userStatusState.contacts;
+                  if (contacts != controller.contacts) {
+                    controller.setContacts(contacts);
+                    controller.getMarkers();
+                  }
+                  Set<Marker> markers = controller.markers;
+                  return googleMap(markers);
+                }),
+                _bottomSheet()
+              ],
+            );
+          } else {
+            return Container(
+              color: Colors.white,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
-          Set<Marker> markers = controller.markers;
-          return googleMap(markers);
-        }),
-        _bottomSheet()
-      ],
-    );
+        });
   }
 
   GoogleMap googleMap(Set<Marker> markers) {
+    LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
+        locationState.currentLocation.longitude);
+
     return GoogleMap(
-        initialCameraPosition: _valencia,
+        initialCameraPosition:
+            CameraPosition(target: currentLocation, zoom: 14.5),
         zoomControlsEnabled: false,
         tiltGesturesEnabled: false,
-        myLocationEnabled: false,
+        myLocationEnabled: true,
         zoomGesturesEnabled: true,
         buildingsEnabled: true,
         cameraTargetBounds: CameraTargetBounds.unbounded,
@@ -60,13 +77,22 @@ class HomeMapPage extends StatelessWidget {
         onLongPress: (_) => controller.markers,
         onMapCreated: (googleMapController) {
           gMapController = googleMapController;
+          Location location = Location();
+          location.onLocationChanged.listen((l) async {
+            try {
+              await gMapController.moveCamera(
+                  CameraUpdate.newLatLng(LatLng(l.latitude!, l.longitude!)));
+            } catch (e) {
+              log("Exception: Map not created");
+            }
+          });
           controller.markers;
         },
         onCameraMove: (pos) => {
-              if (pos.target != _valencia.target)
+              if (pos.target != currentLocation)
                 {
                   gMapController
-                      .moveCamera(CameraUpdate.newLatLng(_valencia.target))
+                      .moveCamera(CameraUpdate.newLatLng(currentLocation))
                 }
             });
   }
@@ -75,8 +101,6 @@ class HomeMapPage extends StatelessWidget {
     return DraggableScrollableSheet(
         minChildSize: 0.13,
         initialChildSize: 0.13,
-        //TODO: REMOVE THIS PROPERTY WHEN CONTACT LIST IS IMPLEMENTED
-        maxChildSize: 0.13,
         builder: (context, scrollController) => Container(
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -101,11 +125,34 @@ class HomeMapPage extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            _sharingLocationButton()
+            _sharingLocationButton(),
+            const SizedBox(
+              height: 20,
+            ),
+            const Divider(),
+            const SizedBox(
+              height: 10,
+            ),
+            mapListView()
           ],
         ),
       ),
     );
+  }
+
+  Widget mapListView() {
+    return Observer(builder: (context) {
+      List<ContactLocation> contacts = userStatusState.contacts;
+      return ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) =>
+              ContactMapListTile(contact: contacts[index]),
+          separatorBuilder: (_, __) => const Divider(
+                color: Colors.black26,
+              ),
+          itemCount: contacts.length);
+    });
   }
 
   Container _scrollIndicator() {
@@ -129,9 +176,9 @@ class HomeMapPage extends StatelessWidget {
         ),
         Observer(builder: (context) {
           return CustomSwitch(
-            value: controller.sharingLocation,
+            value: locationState.shareLocationEnabled,
             onChanged: (newValue) {
-              controller.setSharingLocation(newValue);
+              locationState.setShareLocationEnabled(newValue);
             },
           );
         })

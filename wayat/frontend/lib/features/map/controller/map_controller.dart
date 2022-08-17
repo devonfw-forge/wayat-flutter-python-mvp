@@ -1,18 +1,14 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/app_state/contacts_location/contacts_location_state.dart';
-import 'package:wayat/domain/contact/contact.dart';
+import 'dart:async';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 import 'package:wayat/services/location/location_service_impl.dart';
-import 'package:wayat/services/location/mock/contact_location_mock.dart';
 
 part 'map_controller.g.dart';
 
+// ignore: library_private_types_in_public_api
 class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
@@ -23,15 +19,15 @@ abstract class _MapController with Store {
   ImageService imageService = ImageService();
 
   @observable
+  bool sharingLocation = true;
+
+  @observable
   Location currentLocation = Location();
 
   @observable
   ObservableSet<Marker> markers = ObservableSet.of({});
 
   List<ContactLocation> contacts = [];
-
-  @observable
-  bool sharingLocation = false;
 
   Future getMarkers() async {
     Set<Marker> newMarkers = await generateMarkers();
@@ -57,8 +53,7 @@ abstract class _MapController with Store {
   }
 
   void updateMarkers() async {
-    // ignore: avoid_function_literals_in_foreach_calls
-    contacts.forEach((contact) async {
+    for (var contact in contacts) {
       LatLng currentPosition = LatLng(contact.latitude, contact.longitude);
       LatLng newPosition =
           LocationServiceImpl().changeContactCoordinates(currentPosition);
@@ -68,16 +63,15 @@ abstract class _MapController with Store {
       Set<Marker> newMarkers = contacts
           .map(
             (e) => Marker(
-                markerId: MarkerId(e.name +
-                    e.longitude.toString() +
-                    e.latitude.toString()),
+                markerId: MarkerId(
+                    e.name + e.longitude.toString() + e.latitude.toString()),
                 position: newPosition,
                 icon: bitmaps[e.imageUrl]!,
                 onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),
           )
           .toSet();
       setMarkers(newMarkers);
-    });
+    }
   }
 
   @action

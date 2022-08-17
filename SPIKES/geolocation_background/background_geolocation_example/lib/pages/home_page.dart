@@ -40,7 +40,6 @@ class HomePage extends StatelessWidget {
 
     bool serviceEnabled;
     PermissionStatus permissionGranted;
-    LocationData locationData;
 
     serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -57,8 +56,6 @@ class HomePage extends StatelessWidget {
         return;
       }
     }
-
-    locationData = await location.getLocation();
 
     location.enableBackgroundMode(enable: true);
 

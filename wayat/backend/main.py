@@ -10,4 +10,4 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     init_db_entities(get_db_settings())
-    uvicorn.run("app:api", host="0.0.0.0", port=get_global_settings().port, log_config=get_log_config())
+    uvicorn.run("app.api:api", host="0.0.0.0", port=get_global_settings().port, log_config=get_log_config())
