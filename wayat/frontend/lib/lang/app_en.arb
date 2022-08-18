@@ -44,7 +44,10 @@
     
     "preferences": "Preferences",
     "faqs": "FAQS",
-    "terms": "Terms",
+    "privacy": "Privacy",
+    "account": "Account",
+    "logOut": "Log Out",
+    "deleteAccount": "Delete Account",
 
     "information": "Information",
     "darkTheme": "Enable dark theme",

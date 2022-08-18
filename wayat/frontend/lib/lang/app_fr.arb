@@ -41,7 +41,10 @@
 
     "preferences": "Préférences",
     "faqs": "FAQS",
-    "terms": "Conditions",
+    "privacy": "Intimité",
+    "account": "Compte",
+    "logOut": "Se Déconnecter",
+    "deleteAccount": "Supprimer le Compte",
 
     "information": "Informations",
     "darkTheme": "Activer le thème sombre",

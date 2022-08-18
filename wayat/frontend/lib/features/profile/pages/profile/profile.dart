@@ -40,12 +40,15 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 32),
         _buildShareLocationPart(),
         const SizedBox(height: 48),
-        _buildFaqInformationPart(),
-        const SizedBox(height: 16),
+        _buildInformationPart(),
+        const SizedBox(height: 48),
+        _buildAccountPart(),
+        const SizedBox(height: 42),
       ],
     );
   }
 
+  //Build UI for Profile Circle Image
   Widget _buildProfileImage() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -57,6 +60,11 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  //Build UI for Share Location part
+  /// - Active location text + Switch button
+  /// - Set do not disturb text + Switch button
+  /// - Edit profile custom button
+  /// - Preferences custom button
   Widget _buildShareLocationPart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +98,10 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildFaqInformationPart() {
+  //Build UI for Information part
+  /// - FAQS custom button
+  /// - Privacy custom button
+  Widget _buildInformationPart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -111,7 +122,39 @@ class ProfilePage extends StatelessWidget {
             }),
         const SizedBox(height: 24),
         CustomCard(
-            text: appLocalizations.terms,
+            text: appLocalizations.privacy,
+            onTap: () async {
+              controller.goToTerms(true);
+            }),
+      ],
+    );
+  }
+
+  //Build UI for Account part
+  /// - Log Out custom button
+  /// - Delete Account custom button
+  Widget _buildAccountPart() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(appLocalizations.account,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                  fontSize: 16)),
+        ),
+        const SizedBox(height: 24),
+        CustomCard(
+            text: appLocalizations.logOut,
+            onTap: () async {
+              controller.goToFaqs(true);
+            }),
+        const SizedBox(height: 24),
+        CustomCard(
+            text: appLocalizations.deleteAccount,
             onTap: () async {
               controller.goToTerms(true);
             }),

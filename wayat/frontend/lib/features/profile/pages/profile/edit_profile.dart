@@ -45,8 +45,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         _nameTextField(),
         const SizedBox(height: 34.5),
         _changePhone(),
-        const SizedBox(height: 29),
-        _changePassword(),
       ],
     );
   }
@@ -139,31 +137,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: InkWell(
                 onTap: () {
                   //AutoRoute to change phone page
-                },
-                child: const Icon(Icons.arrow_forward,
-                    color: Colors.black87, size: 16)),
-          )
-        ],
-      );
-
-  Row _changePassword() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              appLocalizations.changePhone,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: InkWell(
-                onTap: () {
-                  //AutoRoute to change password page
                 },
                 child: const Icon(Icons.arrow_forward,
                     color: Colors.black87, size: 16)),
