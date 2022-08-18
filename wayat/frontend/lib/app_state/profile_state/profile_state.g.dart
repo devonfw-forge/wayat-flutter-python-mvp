@@ -9,6 +9,22 @@ part of 'profile_state.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ProfileState on _ProfileState, Store {
+  late final _$currentUserAtom =
+      Atom(name: '_ProfileState.currentUser', context: context);
+
+  @override
+  MyUser? get currentUser {
+    _$currentUserAtom.reportRead();
+    return super.currentUser;
+  }
+
+  @override
+  set currentUser(MyUser? value) {
+    _$currentUserAtom.reportWrite(value, super.currentUser, () {
+      super.currentUser = value;
+    });
+  }
+
   late final _$isEditProfileAtom =
       Atom(name: '_ProfileState.isEditProfile', context: context);
 
@@ -57,104 +73,56 @@ mixin _$ProfileState on _ProfileState, Store {
     });
   }
 
-  late final _$isTermsAtom =
-      Atom(name: '_ProfileState.isTerms', context: context);
+  late final _$isAccountAtom =
+      Atom(name: '_ProfileState.isAccount', context: context);
 
   @override
-  bool get isTerms {
-    _$isTermsAtom.reportRead();
-    return super.isTerms;
+  bool get isAccount {
+    _$isAccountAtom.reportRead();
+    return super.isAccount;
   }
 
   @override
-  set isTerms(bool value) {
-    _$isTermsAtom.reportWrite(value, super.isTerms, () {
-      super.isTerms = value;
+  set isAccount(bool value) {
+    _$isAccountAtom.reportWrite(value, super.isAccount, () {
+      super.isAccount = value;
     });
   }
 
-  late final _$isProfileAtom =
-      Atom(name: '_ProfileState.isProfile', context: context);
+  late final _$updateCurrentUserAsyncAction =
+      AsyncAction('_ProfileState.updateCurrentUser', context: context);
 
   @override
-  bool get isProfile {
-    _$isProfileAtom.reportRead();
-    return super.isProfile;
+  Future<dynamic> updateCurrentUser() {
+    return _$updateCurrentUserAsyncAction.run(() => super.updateCurrentUser());
   }
 
+  late final _$uploadProfileImageAsyncAction =
+      AsyncAction('_ProfileState.uploadProfileImage', context: context);
+
   @override
-  set isProfile(bool value) {
-    _$isProfileAtom.reportWrite(value, super.isProfile, () {
-      super.isProfile = value;
-    });
+  Future<bool> uploadProfileImage(XFile? selectedImage) {
+    return _$uploadProfileImageAsyncAction
+        .run(() => super.uploadProfileImage(selectedImage));
   }
 
-  late final _$_ProfileStateActionController =
-      ActionController(name: '_ProfileState', context: context);
+  late final _$updateProfileNameAsyncAction =
+      AsyncAction('_ProfileState.updateProfileName', context: context);
 
   @override
-  void goToProfile(bool isProfile) {
-    final _$actionInfo = _$_ProfileStateActionController.startAction(
-        name: '_ProfileState.goToProfile');
-    try {
-      return super.goToProfile(isProfile);
-    } finally {
-      _$_ProfileStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void goToEditProfile(bool isEditProfile) {
-    final _$actionInfo = _$_ProfileStateActionController.startAction(
-        name: '_ProfileState.goToEditProfile');
-    try {
-      return super.goToEditProfile(isEditProfile);
-    } finally {
-      _$_ProfileStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void goToPreferences(bool isPreferences) {
-    final _$actionInfo = _$_ProfileStateActionController.startAction(
-        name: '_ProfileState.goToPreferences');
-    try {
-      return super.goToPreferences(isPreferences);
-    } finally {
-      _$_ProfileStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void goToFaqs(bool isFaqs) {
-    final _$actionInfo = _$_ProfileStateActionController.startAction(
-        name: '_ProfileState.goToFaqs');
-    try {
-      return super.goToFaqs(isFaqs);
-    } finally {
-      _$_ProfileStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void goToTerms(bool isTerms) {
-    final _$actionInfo = _$_ProfileStateActionController.startAction(
-        name: '_ProfileState.goToTerms');
-    try {
-      return super.goToTerms(isTerms);
-    } finally {
-      _$_ProfileStateActionController.endAction(_$actionInfo);
-    }
+  Future<bool> updateProfileName(String name) {
+    return _$updateProfileNameAsyncAction
+        .run(() => super.updateProfileName(name));
   }
 
   @override
   String toString() {
     return '''
+currentUser: ${currentUser},
 isEditProfile: ${isEditProfile},
 isPreferences: ${isPreferences},
 isFaqs: ${isFaqs},
-isTerms: ${isTerms},
-isProfile: ${isProfile}
+isAccount: ${isAccount}
     ''';
   }
 }

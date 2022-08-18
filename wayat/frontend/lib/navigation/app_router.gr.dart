@@ -37,10 +37,10 @@ import '../features/onboarding/pages/onboarding_wrapper.dart' as _i2;
 import '../features/onboarding/pages/progress_page.dart' as _i6;
 import '../features/profile/pages/faq/faqs.dart' as _i20;
 import '../features/profile/pages/preferences/preferences.dart' as _i19;
+import '../features/profile/pages/privacy/privacy.dart' as _i21;
 import '../features/profile/pages/profile/edit_profile.dart' as _i18;
 import '../features/profile/pages/profile/profile.dart' as _i17;
 import '../features/profile/pages/profile/profile_wraper.dart' as _i11;
-import '../features/profile/pages/terms/terms.dart' as _i21;
 import '../features/root/root_wrapper.dart' as _i1;
 
 class AppRouter extends _i25.RootStackRouter {
@@ -148,10 +148,8 @@ class AppRouter extends _i25.RootStackRouter {
           routeData: routeData, child: _i16.SuggestionsPage(key: args.key));
     },
     ProfileRoute.name: (routeData) {
-      final args = routeData.argsAs<ProfileRouteArgs>(
-          orElse: () => const ProfileRouteArgs());
       return _i25.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i17.ProfilePage(key: args.key));
+          routeData: routeData, child: const _i17.ProfilePage());
     },
     EditProfileRoute.name: (routeData) {
       return _i25.MaterialPageX<dynamic>(
@@ -165,9 +163,9 @@ class AppRouter extends _i25.RootStackRouter {
       return _i25.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i20.FaqsPage());
     },
-    TermsRoute.name: (routeData) {
+    PrivacyRoute.name: (routeData) {
       return _i25.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i21.TermsPage());
+          routeData: routeData, child: const _i21.PrivacyPage());
     },
     LoginRoute.name: (routeData) {
       return _i25.MaterialPageX<dynamic>(
@@ -244,8 +242,8 @@ class AppRouter extends _i25.RootStackRouter {
                                 parent: ProfileRoute.name),
                             _i25.RouteConfig(FaqsRoute.name,
                                 path: 'faqs-page', parent: ProfileRoute.name),
-                            _i25.RouteConfig(TermsRoute.name,
-                                path: 'terms-page', parent: ProfileRoute.name)
+                            _i25.RouteConfig(PrivacyRoute.name,
+                                path: 'privacy-page', parent: ProfileRoute.name)
                           ])
                     ])
               ]),
@@ -580,25 +578,12 @@ class SuggestionsRouteArgs {
 
 /// generated route for
 /// [_i17.ProfilePage]
-class ProfileRoute extends _i25.PageRouteInfo<ProfileRouteArgs> {
-  ProfileRoute({_i26.Key? key, List<_i25.PageRouteInfo>? children})
+class ProfileRoute extends _i25.PageRouteInfo<void> {
+  const ProfileRoute({List<_i25.PageRouteInfo>? children})
       : super(ProfileRoute.name,
-            path: 'profile-page',
-            args: ProfileRouteArgs(key: key),
-            initialChildren: children);
+            path: 'profile-page', initialChildren: children);
 
   static const String name = 'ProfileRoute';
-}
-
-class ProfileRouteArgs {
-  const ProfileRouteArgs({this.key});
-
-  final _i26.Key? key;
-
-  @override
-  String toString() {
-    return 'ProfileRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
@@ -628,11 +613,11 @@ class FaqsRoute extends _i25.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i21.TermsPage]
-class TermsRoute extends _i25.PageRouteInfo<void> {
-  const TermsRoute() : super(TermsRoute.name, path: 'terms-page');
+/// [_i21.PrivacyPage]
+class PrivacyRoute extends _i25.PageRouteInfo<void> {
+  const PrivacyRoute() : super(PrivacyRoute.name, path: 'privacy-page');
 
-  static const String name = 'TermsRoute';
+  static const String name = 'PrivacyRoute';
 }
 
 /// generated route for

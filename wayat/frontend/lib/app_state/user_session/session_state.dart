@@ -103,6 +103,10 @@ abstract class _SessionState with Store {
     }
   }
 
+  Future logOut() async {
+    authService.signOut();
+  }
+
   bool isOnboardingCompleted() {
     // Gets backend data of the signed in user if it is null
     return currentUser!.onboardingCompleted;

@@ -6,11 +6,17 @@ import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/features/root/root_wrapper.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
-class ProfilePage extends StatelessWidget {
-  ProfilePage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   final ProfileState controller = GetIt.I.get<ProfileState>();
   final LocationState locationState = GetIt.I.get<LocationState>();
   final SessionState userSession = GetIt.I.get<SessionState>();
@@ -60,11 +66,11 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  //Build UI for Share Location part
-  /// - Active location text + Switch button
-  /// - Set do not disturb text + Switch button
-  /// - Edit profile custom button
-  /// - Preferences custom button
+  //Build UI for "Share Location" part
+  /// - "Active location" text + Switch button
+  /// - "Set do not disturb" text + Switch button
+  /// - "Edit profile" custom button
+  /// - "Preferences" custom button
   Widget _buildShareLocationPart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,21 +92,21 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.editProfile,
             onTap: () async {
-              controller.goToEditProfile(true);
+              // Route to EditProfilePage
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.preferences,
             onTap: () async {
-              controller.goToPreferences(true);
+              // Route to PreferencesPage
             }),
       ],
     );
   }
 
-  //Build UI for Information part
-  /// - FAQS custom button
-  /// - Privacy custom button
+  //Build UI for "Information" part
+  /// - "FAQS" custom button
+  /// - "Privacy" custom button
   Widget _buildInformationPart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,21 +124,21 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.faqs,
             onTap: () async {
-              controller.goToFaqs(true);
+              // Route to FaqsPage
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.privacy,
             onTap: () async {
-              controller.goToTerms(true);
+              // Route to PrivacyPage
             }),
       ],
     );
   }
 
-  //Build UI for Account part
-  /// - Log Out custom button
-  /// - Delete Account custom button
+  //Build UI for "Account" part
+  /// - "Log Out" custom button
+  /// - "Delete Account" custom button
   Widget _buildAccountPart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,18 +156,20 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.logOut,
             onTap: () async {
-              controller.goToFaqs(true);
+              userSession.authService.signOut();
+              // Route to RootWraper
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.deleteAccount,
             onTap: () async {
-              controller.goToTerms(true);
+              // Implement Delete account
             }),
       ],
     );
   }
 
+  // Build "Active sharing location" switch button
   Row _activeSharingLocationButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,6 +199,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // Build "Set do not disturb" switch button
   Row _setDoNotDisturbButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

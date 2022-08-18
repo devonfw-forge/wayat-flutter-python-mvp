@@ -17,7 +17,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   XFile? currentSelectedImage;
 
   final textController = TextEditingController();
-  final ProfileState controller = GetIt.I.get<ProfileState>();
+  final ProfileState profileController = GetIt.I.get<ProfileState>();
   final SessionState userSession = GetIt.I.get<SessionState>();
 
   @override
@@ -78,7 +78,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           TextButton(
             onPressed: () {
-              userSession.currentUser!.name = textController.text;
+              userSession.updateCurrentUser();
+              if (currentSelectedImage != null) {
+                profileController.uploadProfileImage(currentSelectedImage);
+              }
+              profileController
+                  .updateProfileName(userSession.currentUser!.name);
             },
             child: Text(
               appLocalizations.save,
@@ -114,9 +119,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
             decoration: InputDecoration(
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              hintText: appLocalizations.name,
+              hintText:
+                  '${appLocalizations.name}                                               ${userSession.currentUser!.name}',
             ),
-            onChanged: ((text) {})),
+            onChanged: ((text) {
+              if (textController.text != '') {
+                userSession.currentUser!.name = textController.text;
+              }
+            })),
       );
 
   Row _changePhone() => Row(

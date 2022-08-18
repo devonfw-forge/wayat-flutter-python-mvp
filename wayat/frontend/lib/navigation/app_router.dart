@@ -18,10 +18,10 @@ import 'package:wayat/features/onboarding/pages/onboarding_wrapper.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
 import 'package:wayat/features/profile/pages/faq/faqs.dart';
 import 'package:wayat/features/profile/pages/preferences/preferences.dart';
+import 'package:wayat/features/profile/pages/privacy/privacy.dart';
 import 'package:wayat/features/profile/pages/profile/edit_profile.dart';
 import 'package:wayat/features/profile/pages/profile/profile.dart';
 import 'package:wayat/features/profile/pages/profile/profile_wraper.dart';
-import 'package:wayat/features/profile/pages/terms/terms.dart';
 import 'package:wayat/features/root/root_wrapper.dart';
 
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
@@ -51,7 +51,7 @@ import 'package:wayat/features/root/root_wrapper.dart';
           AutoRoute(page: EditProfilePage),
           AutoRoute(page: PreferencesPage),
           AutoRoute(page: FaqsPage),
-          AutoRoute(page: TermsPage),
+          AutoRoute(page: PrivacyPage),
         ]),
       ]),
     ]),
