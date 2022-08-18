@@ -1,5 +1,18 @@
 # [START Wayat Frontend Build]
 steps:
+  # Cleaning:
+  - id: "Cleaning project"
+    name: gcr.io/cloud-builders/gsutil
+    args:
+      - clean
+    dir: wayat/frontend/android
+  # Signing Report:
+  - id: "Signing Report"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - ./gradlew
+      - signingreport
+    dir: wayat/frontend
   # Dependencies:
   - id: "Getting google-services.json"
     name: gcr.io/cloud-builders/gsutil
@@ -15,12 +28,6 @@ steps:
       - 'gs://wayat_secrets/.env'
       - .
     dir: wayat/frontend/
-  # Cleaning:
-  - id: "Cleaning project"
-    name: gcr.io/$PROJECT_ID/flutter:stable
-    args:
-      - clean
-    dir: wayat/frontend
   # Packages:
   - id: "Getting packages"
     name: gcr.io/$PROJECT_ID/flutter:stable
