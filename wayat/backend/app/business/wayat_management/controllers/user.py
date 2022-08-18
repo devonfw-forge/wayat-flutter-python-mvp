@@ -1,6 +1,7 @@
 import logging
+import mimetypes
 
-from fastapi import APIRouter, Depends, File
+from fastapi import APIRouter, Depends, UploadFile, HTTPException
 
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
@@ -42,9 +43,18 @@ async def update_user_profile(request: UpdateUserRequest,
 
 
 @router.post("/profile/picture", description="Updates the user profile picture")
-async def update_profile_picture(file: bytes = File(), user: FirebaseAuthenticatedUser = Depends(get_user())):
-    # TODO
-    logger.info(f"File uploaded ({len(file)/1024:.2f} KB)")
+async def update_profile_picture(upload_file: UploadFile,
+                                 user: FirebaseAuthenticatedUser = Depends(get_user()),
+                                 user_service: UserService = Depends()):
+    extension = mimetypes.guess_extension(upload_file.content_type)
+    if extension not in ('.png', '.jpeg'):
+        raise HTTPException(status_code=400,
+                            detail="Invalid image format")
+    await user_service.update_profile_picture(
+        user.uid,
+        extension,
+        upload_file.file
+    )
 
 
 @router.post("/find-by-phone",
@@ -98,14 +108,15 @@ async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user
     sent = list(map(dto_to_user_with_phone_response, sent))
 
     return PendingFriendsRequestsResponse(
-        sent_requests=pending,
-        pending_requests=sent
+        sent_requests=sent,
+        pending_requests=pending
     )
 
 
 @router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
-async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                                user_service: UserService = Depends(UserService)):
+    await user_service.respond_friend_request(user_uid=user.uid, friend_uid=r.uid, accept=r.accept)
 
 
 @router.delete("/friend-requests/sent/{contact_id}", description="Cancel a sent friendship request")

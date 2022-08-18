@@ -9,6 +9,7 @@ from google.cloud.firestore import (
     AsyncDocumentReference,
     GeoPoint as _GeoPoint
 )
+from google.cloud.firestore_v1 import AsyncTransaction
 from pydantic import BaseModel, ValidationError
 
 from app.common.infra import get_firebase_settings
@@ -86,8 +87,8 @@ class BaseFirestoreRepository(Generic[ModelType]):
     def _get_document_reference(self, document_id: str) -> AsyncDocumentReference:
         return self._client.document(*self._path, document_id)
 
-    async def get(self, document_id: str) -> ModelType | None:
-        snapshot = await self._get_document_reference(document_id).get()
+    async def get(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType | None:
+        snapshot = await self._get_document_reference(document_id).get(transaction=transaction)
         return self._model(document_id=snapshot.id, **snapshot.to_dict()) if snapshot.exists else None
 
     async def add(self, *, model: ModelType):
