@@ -1,6 +1,7 @@
 import logging
+import mimetypes
 
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, UploadFile, HTTPException
 
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
@@ -40,9 +41,13 @@ async def update_user_profile(request: UpdateUserRequest,
 async def update_profile_picture(upload_file: UploadFile,
                                  user: FirebaseAuthenticatedUser = Depends(get_user()),
                                  user_service: UserService = Depends()):
+    extension = mimetypes.guess_extension(upload_file.content_type)
+    if extension not in ('.png', '.jpeg'):
+        raise HTTPException(status_code=400,
+                            detail="Invalid image format")
     await user_service.update_profile_picture(
         user.uid,
-        upload_file.content_type,
+        extension,
         upload_file.file
     )
 

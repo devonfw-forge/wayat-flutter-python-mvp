@@ -6,6 +6,7 @@ from typing import BinaryIO
 from fastapi import Depends
 from google.cloud.storage import Client, Bucket
 from pydantic import BaseSettings
+import mimetypes
 
 from app.common.core.configuration import load_env_file_on_settings
 from app.common.utils import get_current_time
@@ -16,6 +17,7 @@ class StorageSettings(BaseSettings):
     bucket: str
     images_path: str
     expiration_time: int
+    default_picture: str
 
     class Config:
         env_prefix = "STORAGE_"
@@ -48,7 +50,8 @@ class FileStorage:
     def _bucket(self) -> Bucket:
         return self._client.bucket(self._configuration.bucket)
 
-    def upload_image(self, filename: str, data: BinaryIO | bytes, content_type: str) -> str:
+    def upload_image(self, filename: str, data: BinaryIO | bytes) -> str:
+        content_type = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
         path = f"{self._configuration.images_path}/{filename}"
         blob = self._bucket().blob(path)
         if isinstance(data, bytes):
