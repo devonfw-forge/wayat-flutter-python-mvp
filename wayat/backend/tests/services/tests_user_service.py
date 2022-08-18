@@ -221,7 +221,17 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         await self.user_service.cancel_friend_request(uid=test_user, contact_id=test_friend)
 
         # Asserts
-        self.mock_user_repo.cancel_friend_request.assert_called_with(user=test_user, friend_id=test_friend)
+        self.mock_user_repo.cancel_friend_request.assert_called_with(sender_id=test_user, receiver_id=test_friend)
+
+    async def test_handle_friend_request_should_call_repo(self):
+        test_user, test_friend, accept = "user", "friend", True
+        # Call to be tested
+        await self.user_service.respond_friend_request(user_uid=test_user, friend_uid=test_friend, accept=accept)
+
+        # Asserts
+        self.mock_user_repo.respond_friend_request.assert_called_with(
+            self_uid=test_user, friend_uid=test_friend, accept=accept
+        )
 
 
 if __name__ == "__main__":
