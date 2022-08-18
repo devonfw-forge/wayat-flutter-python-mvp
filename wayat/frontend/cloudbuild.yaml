@@ -9,7 +9,7 @@ steps:
   # Signing report:
   - id: "Signing report"
     name: gcr.io/$PROJECT_ID/flutter:stable
-    entrypoint: './gradlew'
+    entrypoint: '/workspace/wayat/frontend/android/gradlew'
     args:
       - signingreport
     dir: wayat/frontend/android
