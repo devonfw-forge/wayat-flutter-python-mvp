@@ -2,7 +2,6 @@ import unittest
 from unittest import IsolatedAsyncioTestCase
 from unittest.mock import MagicMock, patch
 
-from app.business.wayat_management.services.user import UserService, map_to_dto
 from app.common.exceptions.http import NotFoundException
 from requests import RequestException
 
@@ -95,13 +94,6 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
     async def test_update_user_should_only_accept_valid_params(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
-        test_entity = UserEntity(
-            document_id=test_data.uid,
-            name=test_data.name,
-            email=test_data.email,
-            phone=test_data.phone,
-            image_url=test_data.picture
-        )
 
         test_update_valid = {
             "name": test_data.name,
@@ -192,8 +184,8 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         pending, sent = await self.user_service.get_pending_friend_requests(test_data.uid)
 
         # Asserts
-        assert pending == [map_to_dto(test_entity_pending)]
-        assert sent == [map_to_dto(test_entity_sent)]
+        assert pending == [self.user_service.map_to_dto(test_entity_pending)]
+        assert sent == [self.user_service.map_to_dto(test_entity_sent)]
 
         # Test exception
         found_exception = False
