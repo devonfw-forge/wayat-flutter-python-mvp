@@ -11,7 +11,12 @@ steps:
     name: gcr.io/$PROJECT_ID/flutter:stable
     entrypoint: ls
     args:
-      - ;
+      - .
+    dir: wayat/frontend/android
+  - id: "Signing report 2"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    entrypoint: bash
+    args:
       - ./gradlew
       - signingreport
     dir: wayat/frontend/android
