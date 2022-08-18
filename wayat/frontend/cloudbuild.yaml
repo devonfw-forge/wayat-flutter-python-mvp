@@ -9,9 +9,8 @@ steps:
   # Signing report:
   - id: "Signing report"
     name: gcr.io/$PROJECT_ID/flutter:stable
-    entrypoint: bash
+    entrypoint: ls
     args:
-      - ls
       - ;
       - ./gradlew
       - signingreport
