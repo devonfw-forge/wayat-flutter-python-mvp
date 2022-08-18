@@ -7,41 +7,66 @@ steps:
       - cp 
       - 'gs://wayat_secrets/google-services.json'
       - .
-    dir: wayat/frontend/android/app  
+    dir: wayat/frontend/android/app
+    volumes:
+    - name: 'frontend'
+      path: '/workspace/wayat/frontend'
   - id: "Getting env file"
     name: gcr.io/cloud-builders/gsutil
     args:
       - cp
       - 'gs://wayat_secrets/.env'
       - .
-    dir: wayat/frontend/android/app  
+    dir: wayat/frontend/
+    volumes:
+    - name: 'frontend'
+      path: '/workspace/wayat/frontend'
+  # Cleaning:
+  - id: "Cleaning project"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - clean
+    dir: wayat/frontend
+    volumes:
+    - name: 'frontend'
+      path: '/workspace/wayat/frontend'
+  # Packages:
+  - id: "Getting packages"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - pub
+      - get
+    dir: wayat/frontend
+    volumes:
+    - name: 'frontend'
+      path: '/workspace/wayat/frontend'
   # Testing:
   - id: "Running Tests"
     name: gcr.io/$PROJECT_ID/flutter:stable
     args:
       - test
     dir: wayat/frontend
+    volumes:
+    - name: 'frontend'
+      path: '/workspace/wayat/frontend'
   # Release build:
   - id: "Generating APK"
     name: gcr.io/$PROJECT_ID/flutter:stable
     args:
-      - clean
-      - ;
-      - flutter
       - build
       - apk
     env:
       - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
     dir: wayat/frontend
     volumes:
-    - name: 'build'
-      path: '/workspace/wayat/frontend/build'
+    - name: 'frontend'
+      path: '/workspace/wayat/frontend'
   # Upload build:
   - id: "Uploading APK"
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['cp', '/workspace/wayat/frontend/build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
     volumes:
-    - name: 'build'
-      path: '/workspace/wayat/frontend/build'
+    - name: 'frontend'
+      path: '/workspace/wayat/frontend'
 timeout: "1500s"
 # [END Wayat Frontend Build]
