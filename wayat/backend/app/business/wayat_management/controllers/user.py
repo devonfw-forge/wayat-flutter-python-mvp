@@ -10,6 +10,7 @@ from app.business.wayat_management.models.user import (
     FindByPhoneRequest,
     AddContactsRequest,
     UpdatePreferencesRequest, UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest,
+    UserDTO,
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
@@ -18,6 +19,10 @@ from app.common.infra.firebase import FirebaseAuthenticatedUser
 router = APIRouter(prefix="/users")
 
 logger = logging.getLogger(__name__)
+
+
+def dto_to_user_with_phone_response(u: UserDTO):
+    return UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url)
 
 
 @router.get("/profile", description="Get a user profile", response_model=UserProfileResponse)
@@ -59,7 +64,7 @@ async def update_profile_picture(upload_file: UploadFile,
 async def get_users_filtered(request: FindByPhoneRequest, user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts with phones {request.phones}")
     users = await user_service.find_by_phone(request.phones)
-    users_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in users]
+    users_phone = list(map(dto_to_user_with_phone_response, users))
     return ListUsersWithPhoneResponse(users=users_phone)
 
 
@@ -82,7 +87,7 @@ async def update_preferences(request: UpdatePreferencesRequest,
 async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
                        user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts for user {user.uid}")
-    cts = await user_service.get_contacts(user.uid)
+    cts = await user_service.get_user_contacts(user.uid)
     contacts_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in cts]
     return ListUsersWithPhoneResponse(users=contacts_phone)
 
@@ -95,8 +100,17 @@ async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depe
 
 @router.get("/friend-requests", description="Returns pending sent and received friendship requests",
             response_model=PendingFriendsRequestsResponse)
-async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user()),
+                              user_service: UserService = Depends(UserService)):
+    pending, sent = await user_service.get_pending_friend_requests(user.uid)
+
+    pending = list(map(dto_to_user_with_phone_response, pending))
+    sent = list(map(dto_to_user_with_phone_response, sent))
+
+    return PendingFriendsRequestsResponse(
+        sent_requests=pending,
+        pending_requests=sent
+    )
 
 
 @router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
@@ -105,5 +119,6 @@ async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAut
 
 
 @router.delete("/friend-requests/sent/{contact_id}", description="Cancel a sent friendship request")
-async def cancel_friend_request(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def cancel_friend_request(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                                user_service: UserService = Depends(UserService)):
+    await user_service.cancel_friend_request(user.uid, contact_id)

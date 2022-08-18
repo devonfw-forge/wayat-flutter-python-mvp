@@ -9,6 +9,7 @@ from fastapi import Depends
 from requests import RequestException
 
 from app.business.wayat_management.models.user import UserDTO
+from app.common.exceptions.http import NotFoundException
 from app.common.infra.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.file_storage import FileStorage, get_storage_settings, StorageSettings
@@ -75,9 +76,8 @@ class UserService:
 
     async def add_contacts(self, *, uid: str, users: list[str]):
         # Check new users existence
-        coroutines = [self._user_repository.get(u) for u in users]
-        contacts_entities: list[UserEntity | None] = await asyncio.gather(*coroutines)
-        found_contacts: set[str] = {e.document_id for e in contacts_entities if e is not None}
+        contacts = await self.get_contacts(users)
+        found_contacts: set[str] = {e.id for e in contacts}
 
         self_user = await self._user_repository.get(uid)
         existing_contacts: set[str] = set(self_user.contacts)
@@ -86,7 +86,7 @@ class UserService:
         if new_contacts:
             await self._user_repository.create_friend_request(uid, list(new_contacts))
 
-    async def get_contacts(self, uid):
+    async def get_user_contacts(self, uid):
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
@@ -133,3 +133,33 @@ class UserService:
             )
 
         return await loop.run_in_executor(None, sync_process)
+
+    async def get_contact(self, uid: str):
+        """
+        Returns user DTO
+        """
+        user = await self._user_repository.get(uid)
+        if user is not None:
+            user = self.map_to_dto(user)
+        return user
+
+    async def get_contacts(self, uids: list[str]):
+        coroutines = [self.get_contact(u) for u in uids]
+        contacts_dtos: list[UserDTO | None] = await asyncio.gather(*coroutines)
+        return [e for e in contacts_dtos if e is not None]
+
+    async def get_pending_friend_requests(self, uid):
+        """
+        Returns pending friend requests, received and sent
+        """
+        user = await self._user_repository.get(uid)
+        if user is None:
+            raise NotFoundException(detail=f"User {uid} not found")
+
+        return await self.get_contacts(user.pending_requests), await self.get_contacts(user.sent_requests)
+
+    async def cancel_friend_request(self, uid, contact_id):
+        """
+        Cancels a pending sent friend request
+        """
+        await self._user_repository.cancel_friend_request(user=uid, friend_id=contact_id)
