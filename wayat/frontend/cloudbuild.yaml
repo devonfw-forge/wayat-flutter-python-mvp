@@ -55,5 +55,5 @@ steps:
   - id: "Uploading APK"
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['cp', '/workspace/wayat/frontend/build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
-timeout: "1500s"
+timeout: "1800s"
 # [END Wayat Frontend Build]
