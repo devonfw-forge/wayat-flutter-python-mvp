@@ -43,14 +43,6 @@ steps:
     env:
       - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
     dir: wayat/frontend
-  # Signing report:
-  - id: "Signing report"
-    name: gcr.io/$PROJECT_ID/flutter:stable
-    entrypoint: bash
-    args:
-      - ./gradlew
-      - signingreport
-    dir: wayat/frontend/android
   # Upload build:
   - id: "Uploading APK"
     name: 'gcr.io/cloud-builders/gsutil'
