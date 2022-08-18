@@ -14,6 +14,20 @@ steps:
       - 'gs://wayat_secrets/google-services.json'
       - .
     dir: wayat/frontend/android/app
+  - id: "Getting key properties"
+    name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp 
+      - 'gs://wayat_secrets/key.properties'
+      - .
+    dir: wayat/frontend/android
+  - id: "Getting keystore"
+    name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp 
+      - 'gs://wayat_secrets/keystore.jks'
+      - .
+    dir: wayat
   - id: "Getting env file"
     name: gcr.io/cloud-builders/gsutil
     args:
