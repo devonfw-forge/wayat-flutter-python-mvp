@@ -233,6 +233,14 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             self_uid=test_user, friend_uid=test_friend, accept=accept
         )
 
+    async def test_delete_friend_should_call_repo(self):
+        test_user, test_friend = "user", "friend"
+        # Call to be tested
+        await self.user_service.delete_contact(user_id=test_user, contact_id=test_friend)
+
+        # Asserts
+        self.mock_user_repo.delete_contact.assert_called_with(test_user, test_friend)
+
 
 if __name__ == "__main__":
     unittest.main()
