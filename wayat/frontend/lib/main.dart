@@ -19,7 +19,7 @@ Future main() async {
 
   await registerSingletons();
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Future registerSingletons() async {
@@ -33,9 +33,7 @@ Future registerSingletons() async {
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
-  MapState mapState = MapState();
-  mapState.openMap();
-  GetIt.I.registerLazySingleton<MapState>(() => mapState);
+  GetIt.I.registerLazySingleton<MapState>(() => MapState());
 }
 
 class MyApp extends StatefulWidget  {
