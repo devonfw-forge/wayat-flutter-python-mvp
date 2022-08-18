@@ -25,8 +25,9 @@ steps:
   - id: "Generating APK"
     name: gcr.io/$PROJECT_ID/flutter:stable
     args:
-      - build
-      - apk
+      - clean
+      - |
+        flutter build apk
     env:
       - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
     dir: wayat/frontend
