@@ -6,13 +6,6 @@ steps:
     args:
       - clean
     dir: wayat/frontend
-  # Signing Report:
-  - id: "Signing Report"
-    name: gcr.io/cloud-builders/gsutil
-    args:
-      - ./gradlew
-      - signingreport
-    dir: wayat/frontend/android
   # Dependencies:
   - id: "Getting google-services.json"
     name: gcr.io/cloud-builders/gsutil
