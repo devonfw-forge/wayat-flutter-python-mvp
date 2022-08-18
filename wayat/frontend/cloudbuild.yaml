@@ -2,17 +2,17 @@
 steps:
   # Cleaning:
   - id: "Cleaning project"
-    name: gcr.io/cloud-builders/gsutil
+    name: gcr.io/$PROJECT_ID/flutter:stable
     args:
       - clean
-    dir: wayat/frontend/android
+    dir: wayat/frontend
   # Signing Report:
   - id: "Signing Report"
-    name: gcr.io/$PROJECT_ID/flutter:stable
+    name: gcr.io/cloud-builders/gsutil
     args:
       - ./gradlew
       - signingreport
-    dir: wayat/frontend
+    dir: wayat/frontend/android
   # Dependencies:
   - id: "Getting google-services.json"
     name: gcr.io/cloud-builders/gsutil
