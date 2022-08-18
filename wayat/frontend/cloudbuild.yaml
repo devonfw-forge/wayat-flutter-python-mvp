@@ -6,20 +6,6 @@ steps:
     args:
       - clean
     dir: wayat/frontend
-  # Signing report:
-  - id: "Signing report"
-    name: gcr.io/$PROJECT_ID/flutter:stable
-    entrypoint: ls
-    args:
-      - .
-    dir: wayat/frontend/android
-  - id: "Signing report 2"
-    name: gcr.io/$PROJECT_ID/flutter:stable
-    entrypoint: bash
-    args:
-      - ./gradlew
-      - signingreport
-    dir: wayat/frontend/android
   # Dependencies:
   - id: "Getting google-services.json"
     name: gcr.io/cloud-builders/gsutil
@@ -57,6 +43,14 @@ steps:
     env:
       - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
     dir: wayat/frontend
+  # Signing report:
+  - id: "Signing report"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    entrypoint: bash
+    args:
+      - ./gradlew
+      - signingreport
+    dir: wayat/frontend/android
   # Upload build:
   - id: "Uploading APK"
     name: 'gcr.io/cloud-builders/gsutil'
