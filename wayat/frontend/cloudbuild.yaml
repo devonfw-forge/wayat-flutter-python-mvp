@@ -6,6 +6,13 @@ steps:
     args:
       - clean
     dir: wayat/frontend
+  # Signing report:
+  - id: "Signing report"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    entrypoint: './gradlew'
+    args:
+      - signingreport
+    dir: wayat/frontend/android
   # Dependencies:
   - id: "Getting google-services.json"
     name: gcr.io/cloud-builders/gsutil
