@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -24,6 +25,8 @@ class HomeMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GetIt.I.get<MapState>().openMap();
+
     controller = MapController(
         onMarkerPressed: (contact, icon) =>
             showContactDialog(contact, icon, context));
