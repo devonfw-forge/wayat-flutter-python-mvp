@@ -110,3 +110,10 @@ class UserService:
         Responds a friend request by either accepting or denying it
         """
         await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
+
+    async def delete_contact(self, user_id, contact_id):
+        """
+        Deletes a contact
+        """
+        await self._user_repository.delete_contact(user_id, contact_id)
+        # TODO: Regenerate contact refs

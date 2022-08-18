@@ -84,8 +84,9 @@ async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
 
 @router.delete("/contacts/{contact_id}",
                description="Deletes a contact from your friend list and removes yourself from their list")
-async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                         user_service: UserService = Depends(UserService)):
+    await user_service.delete_contact(user_id=user.uid, contact_id=contact_id)
 
 
 @router.get("/friend-requests", description="Returns pending sent and received friendship requests",
