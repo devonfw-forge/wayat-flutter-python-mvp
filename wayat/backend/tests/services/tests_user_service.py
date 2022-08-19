@@ -312,7 +312,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         class MockResponse:
             status_code = 200
             headers = {"Content-Type": "image/png"}
-            content = b'test_data'
+            content = TEST_IMAGE_BYTES
         mock_requests.get.return_value = MockResponse()
 
         # Call under test
