@@ -27,6 +27,16 @@ abstract class _ProfileState with Store {
   @observable
   bool isAccount = false;
 
+  @observable
+  bool isSaved = false;
+
+  @action
+  void setProfileSaved(bool isSaved) {
+    if (!isSaved) {
+      isSaved = true;
+    }
+  }
+
   @action
   Future updateCurrentUser() async {
     currentUser ??= await authService.getUserData();
@@ -35,11 +45,11 @@ abstract class _ProfileState with Store {
   @action
   Future<bool> uploadProfileImage(XFile? selectedImage) async {
     final bytes = await io.File(selectedImage!.path).readAsBytes();
-    bool done =
-        (await authService.sendPostRequest("users/profile", {"body": '$bytes'}))
-                    .statusCode /
-                10 ==
-            20;
+    bool done = (await authService.sendPostMediaRequest(
+                    "users/profile/picture", {"body": '$bytes'}))
+                .statusCode /
+            10 ==
+        20;
     return done;
   }
 

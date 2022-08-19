@@ -78,12 +78,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           TextButton(
             onPressed: () {
-              userSession.updateCurrentUser();
-              if (currentSelectedImage != null) {
-                profileController.uploadProfileImage(currentSelectedImage);
-              }
-              profileController
-                  .updateProfileName(userSession.currentUser!.name);
+              _onPressedSave();
             },
             child: Text(
               appLocalizations.save,
@@ -93,6 +88,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
           )
         ],
       );
+
+  _onPressedSave() {
+    userSession.updateCurrentUser();
+    if (currentSelectedImage != null) {
+      profileController.uploadProfileImage(currentSelectedImage);
+    }
+    profileController.updateProfileName(userSession.currentUser!.name);
+  }
 
   Widget _buildProfileImage() {
     return Stack(alignment: Alignment.bottomRight, children: <Widget>[

@@ -16,6 +16,15 @@ abstract class RESTService extends Service {
     };
   }
 
+  /// Generetes a *dictionary* with the headers for backend connection
+  Future<Map<String, String>> _getMultiPartHeader() async {
+    AuthService authService = GetIt.I.get<SessionState>().authService;
+    return {
+      "Content-Type": "Multipart/form-data",
+      "Authorization": "Bearer ${await authService.getIdToken()}"
+    };
+  }
+
   /// Sends a **GET** request to [baseUrl]/[subPath], using the configured authentication
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
     http.Response resultJson = await http.get(Uri.parse("$baseUrl/$subPath"),
@@ -29,6 +38,15 @@ abstract class RESTService extends Service {
       String subPath, Map<String, dynamic> body) async {
     http.Response response = await http.post(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders(), body: jsonEncode(body));
+    return response;
+  }
+
+  /// Sends a **POST** request to upload ImageFIle [baseUrl]/[subPath] and with [body] as content,
+  /// using the configured authentication
+  Future<http.Response> sendPostMediaRequest(
+      String subPath, Map<String, dynamic> body) async {
+    http.Response response = await http.post(Uri.parse("$baseUrl/$subPath"),
+        headers: await _getMultiPartHeader(), body: jsonEncode(body));
     return response;
   }
 
