@@ -42,7 +42,7 @@ class ContactServiceImpl extends ContactService {
   }
 
   @override
-  void removeContact(Contact contact) {
-    //TODO: CALL API TO REMOVE THE CONTACT
+  Future<bool> removeContact(Contact contact) async {
+    return await super.sendDelRequest("users/contacts/${contact.id}");
   }
 }

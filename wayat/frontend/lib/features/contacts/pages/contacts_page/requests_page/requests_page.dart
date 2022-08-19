@@ -37,7 +37,7 @@ class RequestsPage extends StatelessWidget {
   Widget requestsList() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0, left: 15.0, right: 15.0),
-      child: Observer(builder: (context) {
+      child: Observer(builder: (_) {
         List<Contact> requests = controller.filteredPendingRequests;
         if (requests.isEmpty) {
           return EmptyPageMessage(message: appLocalizations.noPendingRequests);
@@ -54,12 +54,12 @@ class RequestsPage extends StatelessWidget {
                         style: const TextStyle(
                             color: ColorTheme.primaryColor, fontSize: 18),
                       ),
-                      onPressed: () =>
-                          controller.acceptRequest(requests[index]),
+                      onPressed: () async =>
+                          await controller.acceptRequest(requests[index]),
                     ),
                     iconAction: IconButton(
-                      onPressed: () =>
-                          controller.rejectRequest(requests[index]),
+                      onPressed: () async =>
+                          await controller.rejectRequest(requests[index]),
                       icon: const Icon(
                         Icons.close,
                         color: Colors.black87,

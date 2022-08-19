@@ -44,8 +44,16 @@ mixin _$FriendsController on _FriendsController, Store {
       AsyncAction('_FriendsController.updateContacts', context: context);
 
   @override
-  Future<dynamic> updateContacts() {
+  Future<void> updateContacts() {
     return _$updateContactsAsyncAction.run(() => super.updateContacts());
+  }
+
+  late final _$removeContactAsyncAction =
+      AsyncAction('_FriendsController.removeContact', context: context);
+
+  @override
+  Future<void> removeContact(Contact contact) {
+    return _$removeContactAsyncAction.run(() => super.removeContact(contact));
   }
 
   late final _$_FriendsControllerActionController =
@@ -57,17 +65,6 @@ mixin _$FriendsController on _FriendsController, Store {
         name: '_FriendsController.setTextFilter');
     try {
       return super.setTextFilter(text);
-    } finally {
-      _$_FriendsControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void removeContact(Contact contact) {
-    final _$actionInfo = _$_FriendsControllerActionController.startAction(
-        name: '_FriendsController.removeContact');
-    try {
-      return super.removeContact(contact);
     } finally {
       _$_FriendsControllerActionController.endAction(_$actionInfo);
     }

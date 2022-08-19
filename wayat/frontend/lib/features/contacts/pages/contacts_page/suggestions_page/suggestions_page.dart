@@ -10,14 +10,14 @@ import 'package:wayat/features/contacts/widgets/contacts_section_title.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class SuggestionsPage extends StatelessWidget {
-  final SuggestionsController controller =
+  final SuggestionsController suggestionsController =
       GetIt.I.get<ContactsPageController>().suggestionsController;
 
   SuggestionsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    controller.updateSuggestedContacts();
+    suggestionsController.updateSuggestedContacts();
     //The paddings are placed individually on each item instead of on the
     //complete column as to not cut the scrolls indicators
     return SingleChildScrollView(
@@ -38,7 +38,7 @@ class SuggestionsPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0, left: 15.0, right: 15.0),
       child: Observer(builder: (context) {
-        List<Contact> contacts = controller.filteredSuggestions;
+        List<Contact> contacts = suggestionsController.filteredSuggestions;
 
         return ListView.builder(
             shrinkWrap: true,
@@ -47,7 +47,8 @@ class SuggestionsPage extends StatelessWidget {
             itemBuilder: (context, index) => ContactTile(
                   contact: contacts[index],
                   iconAction: IconButton(
-                    onPressed: () => controller.sendRequest(contacts[index]),
+                    onPressed: () async => 
+                      await suggestionsController.sendRequest(contacts[index]),
                     icon: const Icon(
                       Icons.add_circle_outline,
                       color: ColorTheme.primaryColor,
