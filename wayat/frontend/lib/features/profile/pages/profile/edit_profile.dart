@@ -44,7 +44,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
         const SizedBox(height: 32),
         _nameTextField(),
         const SizedBox(height: 34.5),
-        _changePhone(),
+
+        // TODO: Implement the Changing phone page
+        // _changePhone(),
       ],
     );
   }
@@ -58,8 +60,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Row(
               children: [
                 InkWell(
-                    onTap: () async {
-                      // Route to Profile main page
+                    onTap: () {
+                      _onPressedBackButton();
                     },
                     child: const Icon(Icons.arrow_back,
                         color: Colors.black87, size: 16)),
@@ -78,7 +80,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           TextButton(
             onPressed: () {
-              _onPressedSave();
+              _onPressedSaveButton();
             },
             child: Text(
               appLocalizations.save,
@@ -89,12 +91,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ],
       );
 
-  _onPressedSave() {
+  _onPressedBackButton() {
+    profileController.setProfile(true);
+    profileController.setEditProfile(false);
+    profileController.setPreferences(false);
+    profileController.setFaqs(false);
+    profileController.setPrivacy(false);
+  }
+
+  _onPressedSaveButton() {
     userSession.updateCurrentUser();
     if (currentSelectedImage != null) {
       profileController.uploadProfileImage(currentSelectedImage);
     }
-    profileController.updateProfileName(userSession.currentUser!.name);
+    if (userSession.currentUser!.name != null) {
+      profileController.updateProfileName(textController.text);
+    }
   }
 
   Widget _buildProfileImage() {

@@ -16,6 +16,9 @@ abstract class _ProfileState with Store {
   MyUser? currentUser;
 
   @observable
+  bool isProfile = false;
+
+  @observable
   bool isEditProfile = false;
 
   @observable
@@ -25,28 +28,42 @@ abstract class _ProfileState with Store {
   bool isFaqs = false;
 
   @observable
+  bool isPrivacy = false;
+
+  @observable
   bool isAccount = false;
 
   @observable
   bool isSaved = false;
 
   @action
-  void setEditProfile(bool isEditProfile) {
-    isEditProfile = isEditProfile;
+  void setProfile(bool setProfile) {
+    isProfile = setProfile;
   }
 
   @action
-  void setPreferences(bool isPreferences) {
-    if (!isPreferences) {
-      isPreferences = !isPreferences;
-    }
+  void setEditProfile(bool setEditProfile) {
+    isEditProfile = setEditProfile;
+  }
+
+  @action
+  void setPreferences(bool setPreferences) {
+    isPreferences = setPreferences;
+  }
+
+  @action
+  void setFaqs(bool setFaqs) {
+    isFaqs = setFaqs;
+  }
+
+  @action
+  void setPrivacy(bool setPrivacy) {
+    isPrivacy = setPrivacy;
   }
 
   @action
   void setProfileSaved(bool isSaved) {
-    if (!isSaved) {
-      isSaved = true;
-    }
+    isSaved = true;
   }
 
   @action

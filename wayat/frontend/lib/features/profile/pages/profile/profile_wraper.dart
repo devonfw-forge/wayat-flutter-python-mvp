@@ -16,7 +16,8 @@ class ProfileWrapper extends StatelessWidget {
       bool isEditProfile = controller.isEditProfile;
       bool isPreferences = controller.isPreferences;
       bool isFaqs = controller.isFaqs;
-      bool isTerms = controller.isAccount;
+      bool isPrivacy = controller.isAccount;
+      bool isProfile = controller.isProfile;
 
       return Builder(builder: (_) {
         return AutoRouter.declarative(
@@ -27,8 +28,10 @@ class ProfileWrapper extends StatelessWidget {
                     const PreferencesRoute()
                   else if (isFaqs)
                     const FaqsRoute()
-                  else if (isTerms)
+                  else if (isPrivacy)
                     const PrivacyRoute()
+                  else if (isProfile)
+                    const ProfileRoute()
                   else
                     const ProfileRoute()
                 ]);

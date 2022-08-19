@@ -25,6 +25,22 @@ mixin _$ProfileState on _ProfileState, Store {
     });
   }
 
+  late final _$isProfileAtom =
+      Atom(name: '_ProfileState.isProfile', context: context);
+
+  @override
+  bool get isProfile {
+    _$isProfileAtom.reportRead();
+    return super.isProfile;
+  }
+
+  @override
+  set isProfile(bool value) {
+    _$isProfileAtom.reportWrite(value, super.isProfile, () {
+      super.isProfile = value;
+    });
+  }
+
   late final _$isEditProfileAtom =
       Atom(name: '_ProfileState.isEditProfile', context: context);
 
@@ -70,6 +86,22 @@ mixin _$ProfileState on _ProfileState, Store {
   set isFaqs(bool value) {
     _$isFaqsAtom.reportWrite(value, super.isFaqs, () {
       super.isFaqs = value;
+    });
+  }
+
+  late final _$isPrivacyAtom =
+      Atom(name: '_ProfileState.isPrivacy', context: context);
+
+  @override
+  bool get isPrivacy {
+    _$isPrivacyAtom.reportRead();
+    return super.isPrivacy;
+  }
+
+  @override
+  set isPrivacy(bool value) {
+    _$isPrivacyAtom.reportWrite(value, super.isPrivacy, () {
+      super.isPrivacy = value;
     });
   }
 
@@ -135,22 +167,55 @@ mixin _$ProfileState on _ProfileState, Store {
       ActionController(name: '_ProfileState', context: context);
 
   @override
-  void setEditProfile(bool isEditProfile) {
+  void setProfile(bool setProfile) {
     final _$actionInfo = _$_ProfileStateActionController.startAction(
-        name: '_ProfileState.setEditProfile');
+        name: '_ProfileState.setProfile');
     try {
-      return super.setEditProfile(isEditProfile);
+      return super.setProfile(setProfile);
     } finally {
       _$_ProfileStateActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setPreferences(bool isPreferences) {
+  void setEditProfile(bool setEditProfile) {
+    final _$actionInfo = _$_ProfileStateActionController.startAction(
+        name: '_ProfileState.setEditProfile');
+    try {
+      return super.setEditProfile(setEditProfile);
+    } finally {
+      _$_ProfileStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPreferences(bool setPreferences) {
     final _$actionInfo = _$_ProfileStateActionController.startAction(
         name: '_ProfileState.setPreferences');
     try {
-      return super.setPreferences(isPreferences);
+      return super.setPreferences(setPreferences);
+    } finally {
+      _$_ProfileStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setFaqs(bool setFaqs) {
+    final _$actionInfo = _$_ProfileStateActionController.startAction(
+        name: '_ProfileState.setFaqs');
+    try {
+      return super.setFaqs(setFaqs);
+    } finally {
+      _$_ProfileStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPrivacy(bool setPrivacy) {
+    final _$actionInfo = _$_ProfileStateActionController.startAction(
+        name: '_ProfileState.setPrivacy');
+    try {
+      return super.setPrivacy(setPrivacy);
     } finally {
       _$_ProfileStateActionController.endAction(_$actionInfo);
     }
@@ -171,9 +236,11 @@ mixin _$ProfileState on _ProfileState, Store {
   String toString() {
     return '''
 currentUser: ${currentUser},
+isProfile: ${isProfile},
 isEditProfile: ${isEditProfile},
 isPreferences: ${isPreferences},
 isFaqs: ${isFaqs},
+isPrivacy: ${isPrivacy},
 isAccount: ${isAccount},
 isSaved: ${isSaved}
     ''';

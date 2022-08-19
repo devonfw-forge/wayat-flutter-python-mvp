@@ -34,7 +34,7 @@ import 'package:wayat/features/root/root_wrapper.dart';
     ]),
     AutoRoute(page: HomePage, children: [
       AutoRoute(page: HomeMapPage),
-      AutoRoute(page: CreateEventPage),
+      //AutoRoute(page: CreateEventPage),
       AutoRoute(page: ContactsWrapper, children: [
         AutoRoute(page: ContactsPage, children: [
           AutoRoute(page: FriendsPage),

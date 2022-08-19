@@ -6,7 +6,6 @@ import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
-import 'package:wayat/features/root/root_wrapper.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -46,10 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(height: 32),
         _buildShareLocationPart(),
         const SizedBox(height: 48),
-        _buildInformationPart(),
-        const SizedBox(height: 48),
-        _buildAccountPart(),
-        const SizedBox(height: 42),
+
+        //TODO: Implement the Information part
+        // _buildInformationPart(),
+        // const SizedBox(height: 48),
+
+        //TODO: Implement the Account part
+        // _buildAccountPart(),
+        // const SizedBox(height: 42),
       ],
     );
   }
@@ -87,20 +90,28 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(height: 16),
         _activeSharingLocationButton(),
         const SizedBox(height: 24),
-        _setDoNotDisturbButton(),
+
+        //TODO: Implement the "Set do not disturb" switch button functional
+        // _setDoNotDisturbButton(),
+
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.editProfile,
             onTap: () {
+              controller.setProfile(false);
               controller.setEditProfile(true);
-              print('Enters');
+              controller.setPreferences(false);
+              controller.setFaqs(false);
+              controller.setPrivacy(false);
             }),
         const SizedBox(height: 24),
-        CustomCard(
-            text: appLocalizations.preferences,
-            onTap: () {
-              controller.setPreferences(true);
-            }),
+
+        //TODO: Implement the Preferences page
+        // CustomCard(
+        //     text: appLocalizations.preferences,
+        //     onTap: () {
+        //       controller.setPreferences(true);
+        //     }),
       ],
     );
   }
@@ -124,14 +135,22 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.faqs,
-            onTap: () async {
-              // Route to FaqsPage
+            onTap: () {
+              controller.setProfile(false);
+              controller.setEditProfile(false);
+              controller.setPreferences(false);
+              controller.setFaqs(true);
+              controller.setPrivacy(false); //TODO: Implement the FAQS page
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.privacy,
-            onTap: () async {
-              // Route to PrivacyPage
+            onTap: () {
+              controller.setProfile(false);
+              controller.setEditProfile(false);
+              controller.setPreferences(false);
+              controller.setFaqs(false);
+              controller.setPrivacy(true); //TODO: Implement the Privacy page
             }),
       ],
     );
@@ -156,15 +175,14 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.logOut,
-            onTap: () async {
-              userSession.authService.signOut();
-              // Route to RootWraper
+            onTap: () {
+              // TODO: Implement the Log Out functional
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.deleteAccount,
-            onTap: () async {
-              // Implement Delete account
+            onTap: () {
+              // TODO: Implement Delete account
             }),
       ],
     );
