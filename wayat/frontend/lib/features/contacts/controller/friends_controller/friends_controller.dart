@@ -26,7 +26,7 @@ abstract class _FriendsController with Store {
       allContacts.where((contact) => !contact.available).toList();
 
   @action
-  Future updateContacts() async {
+  Future<void> updateContacts() async {
     allContacts = ObservableList.of(await _service.getAll());
     filteredContacts = ObservableList.of(allContacts
         .where((element) =>
@@ -44,9 +44,9 @@ abstract class _FriendsController with Store {
   }
 
   @action
-  void removeContact(Contact contact) {
-    //TODO: UNCOMMENT THIS CODE WHEN THE REMOVE IS IMPLEMENTED IN THE SERVER
-/*     _contacts.remove(contact);
-    _service.removeContact(contact); */
+  Future<void> removeContact(Contact contact) async {
+    if (await _service.removeContact(contact)) {
+      updateContacts();
+    }
   }
 }

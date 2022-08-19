@@ -9,37 +9,6 @@ part of 'requests_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$RequestsController on _RequestsController, Store {
-  Computed<List<Contact>>? _$pendingRequestsComputed;
-
-  @override
-  List<Contact> get pendingRequests => (_$pendingRequestsComputed ??=
-          Computed<List<Contact>>(() => super.pendingRequests,
-              name: '_RequestsController.pendingRequests'))
-      .value;
-  Computed<List<Contact>>? _$sentRequestsComputed;
-
-  @override
-  List<Contact> get sentRequests => (_$sentRequestsComputed ??=
-          Computed<List<Contact>>(() => super.sentRequests,
-              name: '_RequestsController.sentRequests'))
-      .value;
-
-  late final _$requestsAtom =
-      Atom(name: '_RequestsController.requests', context: context);
-
-  @override
-  ObservableMap<String, List<Contact>> get requests {
-    _$requestsAtom.reportRead();
-    return super.requests;
-  }
-
-  @override
-  set requests(ObservableMap<String, List<Contact>> value) {
-    _$requestsAtom.reportWrite(value, super.requests, () {
-      super.requests = value;
-    });
-  }
-
   late final _$filteredPendingRequestsAtom = Atom(
       name: '_RequestsController.filteredPendingRequests', context: context);
 
@@ -57,60 +26,80 @@ mixin _$RequestsController on _RequestsController, Store {
     });
   }
 
+  late final _$pendingRequestsAtom =
+      Atom(name: '_RequestsController.pendingRequests', context: context);
+
+  @override
+  ObservableList<Contact> get pendingRequests {
+    _$pendingRequestsAtom.reportRead();
+    return super.pendingRequests;
+  }
+
+  @override
+  set pendingRequests(ObservableList<Contact> value) {
+    _$pendingRequestsAtom.reportWrite(value, super.pendingRequests, () {
+      super.pendingRequests = value;
+    });
+  }
+
+  late final _$sentRequestsAtom =
+      Atom(name: '_RequestsController.sentRequests', context: context);
+
+  @override
+  ObservableList<Contact> get sentRequests {
+    _$sentRequestsAtom.reportRead();
+    return super.sentRequests;
+  }
+
+  @override
+  set sentRequests(ObservableList<Contact> value) {
+    _$sentRequestsAtom.reportWrite(value, super.sentRequests, () {
+      super.sentRequests = value;
+    });
+  }
+
   late final _$updateRequestsAsyncAction =
       AsyncAction('_RequestsController.updateRequests', context: context);
 
   @override
-  Future<dynamic> updateRequests() {
+  Future<void> updateRequests() {
     return _$updateRequestsAsyncAction.run(() => super.updateRequests());
+  }
+
+  late final _$sendRequestAsyncAction =
+      AsyncAction('_RequestsController.sendRequest', context: context);
+
+  @override
+  Future<void> sendRequest(Contact contact) {
+    return _$sendRequestAsyncAction.run(() => super.sendRequest(contact));
+  }
+
+  late final _$rejectRequestAsyncAction =
+      AsyncAction('_RequestsController.rejectRequest', context: context);
+
+  @override
+  Future<void> rejectRequest(Contact contact) {
+    return _$rejectRequestAsyncAction.run(() => super.rejectRequest(contact));
+  }
+
+  late final _$acceptRequestAsyncAction =
+      AsyncAction('_RequestsController.acceptRequest', context: context);
+
+  @override
+  Future<void> acceptRequest(Contact contact) {
+    return _$acceptRequestAsyncAction.run(() => super.acceptRequest(contact));
+  }
+
+  late final _$unsendRequestAsyncAction =
+      AsyncAction('_RequestsController.unsendRequest', context: context);
+
+  @override
+  Future<void> unsendRequest(Contact contact) {
+    return _$unsendRequestAsyncAction.run(() => super.unsendRequest(contact));
   }
 
   late final _$_RequestsControllerActionController =
       ActionController(name: '_RequestsController', context: context);
-
-  @override
-  void sendRequest(Contact contact) {
-    final _$actionInfo = _$_RequestsControllerActionController.startAction(
-        name: '_RequestsController.sendRequest');
-    try {
-      return super.sendRequest(contact);
-    } finally {
-      _$_RequestsControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void rejectRequest(Contact contact) {
-    final _$actionInfo = _$_RequestsControllerActionController.startAction(
-        name: '_RequestsController.rejectRequest');
-    try {
-      return super.rejectRequest(contact);
-    } finally {
-      _$_RequestsControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void acceptRequest(Contact contact) {
-    final _$actionInfo = _$_RequestsControllerActionController.startAction(
-        name: '_RequestsController.acceptRequest');
-    try {
-      return super.acceptRequest(contact);
-    } finally {
-      _$_RequestsControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void unsendRequest(Contact contact) {
-    final _$actionInfo = _$_RequestsControllerActionController.startAction(
-        name: '_RequestsController.unsendRequest');
-    try {
-      return super.unsendRequest(contact);
-    } finally {
-      _$_RequestsControllerActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void setTextFilter(String text) {
@@ -126,7 +115,6 @@ mixin _$RequestsController on _RequestsController, Store {
   @override
   String toString() {
     return '''
-requests: ${requests},
 filteredPendingRequests: ${filteredPendingRequests},
 pendingRequests: ${pendingRequests},
 sentRequests: ${sentRequests}

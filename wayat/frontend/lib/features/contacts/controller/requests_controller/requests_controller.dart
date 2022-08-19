@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 import 'package:wayat/services/friend_requests/requests_service_impl.dart';
 
@@ -12,25 +13,26 @@ abstract class _RequestsController with Store {
   final RequestsService _service = RequestsServiceImpl();
   static const String pendingRequestsKey = "pending_requests";
   static const String sentRequestsKey = "sent_requests";
+  late FriendsController friendsController;
+
+  _RequestsController(this.friendsController);
 
   String textFilter = "";
 
   @observable
-  ObservableMap<String, List<Contact>> requests =
-      ObservableMap.of({pendingRequestsKey: [], sentRequestsKey: []});
-
-  @observable
   ObservableList<Contact> filteredPendingRequests = ObservableList.of([]);
 
-  @computed
-  List<Contact> get pendingRequests => requests[pendingRequestsKey]!;
+  @observable
+  ObservableList<Contact> pendingRequests = ObservableList.of([]);
 
-  @computed
-  List<Contact> get sentRequests => requests[sentRequestsKey]!;
+  @observable
+  ObservableList<Contact> sentRequests = ObservableList.of([]);
 
   @action
-  Future updateRequests() async {
-    requests = ObservableMap.of(await _service.getRequests());
+  Future<void> updateRequests() async {
+    Map<String, List<Contact>> requests = await _service.getRequests();
+    pendingRequests = ObservableList.of(requests[pendingRequestsKey]!);
+    sentRequests = ObservableList.of(requests[sentRequestsKey]!);
     filteredPendingRequests = ObservableList.of(pendingRequests
         .where((element) =>
             element.name.toLowerCase().contains(textFilter.toLowerCase()))
@@ -38,31 +40,34 @@ abstract class _RequestsController with Store {
   }
 
   @action
-  void sendRequest(Contact contact) {
-    //TODO: UNCOMMENT THIS CODE WHEN REJECT IS IMPLEMENTED
-/*     pendingRequests.remove(contact);
-    _service.rejectRequest(contact); */
+  Future<void> sendRequest(Contact contact) async {
+    if (await _service.sendRequest(contact)) {
+      sentRequests.add(contact);
+    }
   }
 
   @action
-  void rejectRequest(Contact contact) {
-    //TODO: UNCOMMENT THIS CODE WHEN REJECT IS IMPLEMENTED
-/*     pendingRequests.remove(contact);
-    _service.rejectRequest(contact); */
+  Future<void> rejectRequest(Contact contact) async {
+    if (await _service.rejectRequest(contact)) {
+      pendingRequests.remove(contact);
+      filteredPendingRequests.remove(contact);
+    }
   }
 
   @action
-  void acceptRequest(Contact contact) {
-    //TODO: UNCOMMENT THIS CODE WHEN REJECT IS IMPLEMENTED
-/*     pendingRequests.remove(contact);
-    _service.acceptRequest(contact); */
+  Future<void> acceptRequest(Contact contact) async {
+    if (await _service.acceptRequest(contact)) {
+      pendingRequests.remove(contact);
+      filteredPendingRequests.remove(contact);
+      friendsController.updateContacts();
+    }
   }
 
   @action
-  void unsendRequest(Contact contact) {
-    //TODO: UNCOMMENT THIS CODE WHEN REJECT IS IMPLEMENTED
-/*     sentRequests.remove(contact);
-    _service.unsendRequest(contact); */
+  Future<void> unsendRequest(Contact contact) async {
+    if (await _service.unsendRequest(contact)) {
+      sentRequests.remove(contact);
+    }
   }
 
   @action

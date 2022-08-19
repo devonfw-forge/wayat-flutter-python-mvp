@@ -33,9 +33,8 @@ class SentRequestsPage extends StatelessWidget {
   Widget sentRequestsList() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0, left: 15.0, right: 15.0),
-      child: Observer(builder: (context) {
+      child: Observer(builder: (_) {
         List<Contact> requests = controller.sentRequests;
-
         return ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -51,7 +50,7 @@ class SentRequestsPage extends StatelessWidget {
                     ),
                   ),
                   iconAction: IconButton(
-                    onPressed: () => controller.unsendRequest(requests[index]),
+                    onPressed: () async => await controller.unsendRequest(requests[index]),
                     icon: const Icon(
                       Icons.close,
                       color: ColorTheme.primaryColor,
