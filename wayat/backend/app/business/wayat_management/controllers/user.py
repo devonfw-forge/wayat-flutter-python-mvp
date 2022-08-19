@@ -48,8 +48,8 @@ async def update_profile_picture(upload_file: UploadFile,
                                  user: FirebaseAuthenticatedUser = Depends(get_user()),
                                  user_service: UserService = Depends()):
     extension = mimetypes.guess_extension(upload_file.content_type)
-    if extension not in ('.png', '.jpeg'):
-        raise InvalidImageFormatException()
+    if not extension or extension.lower() not in ('.png', '.jpeg', '.jpg'):
+        raise InvalidImageFormatException
     await user_service.update_profile_picture(
         user.uid,
         extension,

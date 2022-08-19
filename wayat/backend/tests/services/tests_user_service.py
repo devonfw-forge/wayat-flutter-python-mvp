@@ -1,4 +1,6 @@
+import io
 import unittest
+from typing import BinaryIO
 from unittest import IsolatedAsyncioTestCase
 from unittest.mock import MagicMock, patch
 
@@ -13,10 +15,19 @@ from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
 
+TEST_IMAGE_BYTES = b'test_data'
+TEST_RESIZED_BYTES = b'resized_data'
+
+
 async def extract_picture_mock(*args, **kwargs):
     return "created_url"
 
 
+def resize_image_mock(data: BinaryIO | bytes, size) -> bytes:
+    return TEST_RESIZED_BYTES
+
+
+@patch("app.business.wayat_management.services.user.resize_image", new=resize_image_mock)
 class UserServiceTests(IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self):
@@ -27,6 +38,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_file_repository.generate_signed_url.return_value = "created_url"
         self.storage_settings = MagicMock(StorageSettings)
         self.storage_settings.default_picture = "images/test_default"
+        self.storage_settings.thumbnail_size = 200
 
         # UserService
         self.user_service = UserService(
@@ -261,10 +273,10 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_file_repository.upload_image.return_value = "test/ref"
 
         # Call under test
-        await self.user_service.update_profile_picture("uid_test", ".jpeg", b'test_image')
+        await self.user_service.update_profile_picture("uid_test", ".jpeg", TEST_IMAGE_BYTES)
 
         # Asserts
-        self.mock_file_repository.upload_image.assert_called_with("uid_test.jpeg", b'test_image')
+        self.mock_file_repository.upload_image.assert_called_with("uid_test.jpeg", TEST_RESIZED_BYTES)
 
     @patch("app.business.wayat_management.services.user.requests")
     async def test_extract_picture_when_invalid_url_should_return_default(self, mock_requests):
@@ -300,14 +312,14 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         class MockResponse:
             status_code = 200
             headers = {"Content-Type": "image/png"}
-            content = b'test_data'
+            content = TEST_IMAGE_BYTES
         mock_requests.get.return_value = MockResponse()
 
         # Call under test
         await self._backup_extract_picture(uid="test_uid", url="test_url")
 
         # Asserts
-        self.mock_file_repository.upload_image.assert_called_with("test_uid.png", b'test_data')
+        self.mock_file_repository.upload_image.assert_called_with("test_uid.png", TEST_RESIZED_BYTES)
 
 
 if __name__ == "__main__":

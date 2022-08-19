@@ -1,7 +1,6 @@
 import asyncio
-import functools
 import logging
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 from functools import lru_cache
 from typing import overload
 
@@ -9,7 +8,7 @@ from fastapi import Depends
 from pydantic import BaseSettings
 
 from app.common.core.configuration import load_env_file_on_settings
-from app.common.utils import haversine_distance, get_current_time
+from app.domain.wayat_management.utils import haversine_distance, get_current_time
 from app.domain.wayat_management.models.status import ContactRefInfo
 from app.domain.wayat_management.models.user import UserEntity, Location
 from app.domain.wayat_management.repositories.status import StatusRepository

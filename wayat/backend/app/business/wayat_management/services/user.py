@@ -10,6 +10,7 @@ from requests import RequestException, Response
 from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
+from app.domain.wayat_management.utils import resize_image
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.files import FileStorage, get_storage_settings, StorageSettings
 from app.domain.wayat_management.repositories.status import StatusRepository
@@ -28,6 +29,7 @@ class UserService:
         self._status_repository = status_repository
         self._file_repository = file_repository
         self.DEFAULT_PICTURE = storage_settings.default_picture
+        self.THUMBNAIL_SIZE = storage_settings.thumbnail_size
 
     def map_to_dto(self, entity: UserEntity) -> UserDTO:
         return None if entity is None else UserDTO(
@@ -89,12 +91,13 @@ class UserService:
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
+        await self._file_repository.delete_user_images(uid)
         image_ref = await self._upload_profile_picture(uid=uid, extension=extension, data=data)
         await self._user_repository.update(document_id=uid, data={"image_ref": image_ref})
 
     async def _upload_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes) -> str:
         file_name = uid + extension
-        image_ref = await self._file_repository.upload_image(file_name, data)
+        image_ref = await self._file_repository.upload_image(file_name, resize_image(data, self.THUMBNAIL_SIZE))
         return image_ref
 
     async def _extract_picture(self, uid: str, url: str | None) -> str | None:
