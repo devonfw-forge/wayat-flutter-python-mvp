@@ -8,7 +8,7 @@ from requests import RequestException
 from app.business.wayat_management.services.user import UserService
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
-from app.domain.wayat_management.repositories.file_storage import FileStorage, StorageSettings
+from app.domain.wayat_management.repositories.files import FileStorage, StorageSettings
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 

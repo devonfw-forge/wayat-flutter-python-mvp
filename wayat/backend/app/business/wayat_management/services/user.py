@@ -11,7 +11,7 @@ from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
-from app.domain.wayat_management.repositories.file_storage import FileStorage, get_storage_settings, StorageSettings
+from app.domain.wayat_management.repositories.files import FileStorage, get_storage_settings, StorageSettings
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
