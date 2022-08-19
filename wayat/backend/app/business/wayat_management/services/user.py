@@ -92,6 +92,7 @@ class UserService:
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
+        await self._file_repository.delete_user_images(uid)
         image_ref = await self._upload_profile_picture(uid=uid, extension=extension, data=data)
         await self._user_repository.update(document_id=uid, data={"image_ref": image_ref})
 

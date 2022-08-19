@@ -32,3 +32,7 @@ class FileStorage(CloudStorage):
                  storage_config: StorageSettings = Depends(get_storage_settings)):
         super().__init__(client, storage_config)
         self._client = client
+        self._storage_config = storage_config
+
+    async def delete_user_images(self, uid: str):
+        await self.delete(prefix=f"{self._storage_config.images_path}/{uid}")
