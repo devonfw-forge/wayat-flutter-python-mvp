@@ -107,6 +107,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
     if (changed) {
       profileState.updateCurrentUser();
+
       _onPressedBackButton();
     }
   }
