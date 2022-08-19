@@ -1,3 +1,5 @@
+import asyncio
+import functools
 import json
 from datetime import timedelta, datetime
 from functools import lru_cache
@@ -50,15 +52,23 @@ class FileStorage:
     def _bucket(self) -> Bucket:
         return self._client.bucket(self._configuration.bucket)
 
-    def upload_image(self, filename: str, data: BinaryIO | bytes) -> str:
-        content_type = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
-        path = f"{self._configuration.images_path}/{filename}"
-        blob = self._bucket().blob(path)
-        if isinstance(data, bytes):
-            blob.upload_from_string(data, content_type=content_type)
-        else:
-            blob.upload_from_file(data, content_type=content_type)
-        return blob.name
+    async def upload_image(self, filename: str, data: BinaryIO | bytes) -> str:
+        def sync_upload():
+            content_type = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
+            path = f"{self._configuration.images_path}/{filename}"
+            blob = self._bucket().blob(path)
+            if isinstance(data, bytes):
+                blob.upload_from_string(data, content_type=content_type)
+            else:
+                blob.upload_from_file(data, content_type=content_type)
+            return blob.name
+
+        loop = asyncio.get_event_loop()
+
+        return await loop.run_in_executor(
+            executor=None,
+            func=sync_upload
+        )
 
     def generate_signed_url(self, reference: str | None):
         if reference:

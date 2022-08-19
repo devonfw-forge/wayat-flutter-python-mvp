@@ -2,11 +2,11 @@ import asyncio
 import functools
 import logging
 import mimetypes
-from typing import BinaryIO
+from typing import BinaryIO, Tuple
 
 import requests
 from fastapi import Depends
-from requests import RequestException
+from requests import RequestException, Response
 
 from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
@@ -90,18 +90,12 @@ class UserService:
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
-        loop = asyncio.get_event_loop()
-
-        image_ref = await loop.run_in_executor(
-            executor=None,
-            func=functools.partial(self._upload_profile_picture, uid=uid, extension=extension, data=data)
-        )
-
+        image_ref = await self._upload_profile_picture(uid=uid, extension=extension, data=data)
         await self._user_repository.update(document_id=uid, data={"image_ref": image_ref})
 
-    def _upload_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes) -> str:
+    async def _upload_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes) -> str:
         file_name = uid + extension
-        image_ref = self._file_repository.upload_image(file_name, data)
+        image_ref = await self._file_repository.upload_image(file_name, data)
         return image_ref
 
     async def _extract_picture(self, uid: str, url: str | None) -> str | None:
@@ -110,29 +104,27 @@ class UserService:
 
         loop = asyncio.get_event_loop()
 
-        def sync_process() -> str:
-            try:
-                response = requests.get(url)
-            except RequestException:
-                log.error(f"Couldn't extract profile picture from token. Reason: RequestException")
-                return self.DEFAULT_PICTURE
+        def sync_process() -> tuple[Response, str]:
+            res = requests.get(url)
+            if res.status_code != 200:
+                raise RequestException
+            ext = mimetypes.guess_extension(res.headers['Content-Type'])
+            if not ext:
+                raise RequestException
+            return res, ext
 
-            if response.status_code != 200:
-                log.error(f"Couldn't extract profile picture from token. (Status code {response.status_code})")
-                return self.DEFAULT_PICTURE
-
-            extension = mimetypes.guess_extension(response.headers['Content-Type'])
-            if not extension:
-                log.error(f"Couldn't extract an extension from a token picture URL. Falling back to default picture")
-                return self.DEFAULT_PICTURE
-
-            return self._upload_profile_picture(
+        try:
+            response, extension = await loop.run_in_executor(None, sync_process)
+            picture = await self._upload_profile_picture(
                 uid=uid,
                 extension=extension,
                 data=response.content
             )
+        except RequestException:
+            log.error(f"Couldn't extract an profile picture from a token picture URL. Falling back to default picture")
+            picture = self.DEFAULT_PICTURE
 
-        return await loop.run_in_executor(None, sync_process)
+        return picture
 
     async def get_contact(self, uid: str) -> UserDTO | None:
         """
