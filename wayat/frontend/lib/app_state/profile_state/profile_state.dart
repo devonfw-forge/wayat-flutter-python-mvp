@@ -31,6 +31,18 @@ abstract class _ProfileState with Store {
   bool isSaved = false;
 
   @action
+  void setEditProfile(bool isEditProfile) {
+    isEditProfile = isEditProfile;
+  }
+
+  @action
+  void setPreferences(bool isPreferences) {
+    if (!isPreferences) {
+      isPreferences = !isPreferences;
+    }
+  }
+
+  @action
   void setProfileSaved(bool isSaved) {
     if (!isSaved) {
       isSaved = true;

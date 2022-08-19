@@ -135,6 +135,28 @@ mixin _$ProfileState on _ProfileState, Store {
       ActionController(name: '_ProfileState', context: context);
 
   @override
+  void setEditProfile(bool isEditProfile) {
+    final _$actionInfo = _$_ProfileStateActionController.startAction(
+        name: '_ProfileState.setEditProfile');
+    try {
+      return super.setEditProfile(isEditProfile);
+    } finally {
+      _$_ProfileStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPreferences(bool isPreferences) {
+    final _$actionInfo = _$_ProfileStateActionController.startAction(
+        name: '_ProfileState.setPreferences');
+    try {
+      return super.setPreferences(isPreferences);
+    } finally {
+      _$_ProfileStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setProfileSaved(bool isSaved) {
     final _$actionInfo = _$_ProfileStateActionController.startAction(
         name: '_ProfileState.setProfileSaved');

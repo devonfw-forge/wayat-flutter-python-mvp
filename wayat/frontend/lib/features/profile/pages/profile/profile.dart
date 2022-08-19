@@ -91,14 +91,15 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.editProfile,
-            onTap: () async {
-              // Route to EditProfilePage
+            onTap: () {
+              controller.setEditProfile(true);
+              print('Enters');
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.preferences,
-            onTap: () async {
-              // Route to PreferencesPage
+            onTap: () {
+              controller.setPreferences(true);
             }),
       ],
     );

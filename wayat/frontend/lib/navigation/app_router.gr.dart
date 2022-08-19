@@ -231,20 +231,17 @@ class AppRouter extends _i25.RootStackRouter {
                     parent: HomeRoute.name,
                     children: [
                       _i25.RouteConfig(ProfileRoute.name,
-                          path: 'profile-page',
-                          parent: ProfileWrapper.name,
-                          children: [
-                            _i25.RouteConfig(EditProfileRoute.name,
-                                path: 'edit-profile-page',
-                                parent: ProfileRoute.name),
-                            _i25.RouteConfig(PreferencesRoute.name,
-                                path: 'preferences-page',
-                                parent: ProfileRoute.name),
-                            _i25.RouteConfig(FaqsRoute.name,
-                                path: 'faqs-page', parent: ProfileRoute.name),
-                            _i25.RouteConfig(PrivacyRoute.name,
-                                path: 'privacy-page', parent: ProfileRoute.name)
-                          ])
+                          path: 'profile-page', parent: ProfileWrapper.name),
+                      _i25.RouteConfig(EditProfileRoute.name,
+                          path: 'edit-profile-page',
+                          parent: ProfileWrapper.name),
+                      _i25.RouteConfig(PreferencesRoute.name,
+                          path: 'preferences-page',
+                          parent: ProfileWrapper.name),
+                      _i25.RouteConfig(FaqsRoute.name,
+                          path: 'faqs-page', parent: ProfileWrapper.name),
+                      _i25.RouteConfig(PrivacyRoute.name,
+                          path: 'privacy-page', parent: ProfileWrapper.name)
                     ])
               ]),
           _i25.RouteConfig(LoginWrapper.name,
@@ -579,9 +576,7 @@ class SuggestionsRouteArgs {
 /// generated route for
 /// [_i17.ProfilePage]
 class ProfileRoute extends _i25.PageRouteInfo<void> {
-  const ProfileRoute({List<_i25.PageRouteInfo>? children})
-      : super(ProfileRoute.name,
-            path: 'profile-page', initialChildren: children);
+  const ProfileRoute() : super(ProfileRoute.name, path: 'profile-page');
 
   static const String name = 'ProfileRoute';
 }
