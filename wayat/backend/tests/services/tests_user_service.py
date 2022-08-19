@@ -23,10 +23,11 @@ async def extract_picture_mock(*args, **kwargs):
     return "created_url"
 
 
-def resize_image_mock(data: BinaryIO | bytes) -> bytes:
+def resize_image_mock(data: BinaryIO | bytes, size) -> bytes:
     return TEST_RESIZED_BYTES
 
 
+@patch("app.business.wayat_management.services.user.resize_image", new=resize_image_mock)
 class UserServiceTests(IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self):
@@ -49,8 +50,6 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         self._backup_extract_picture = self.user_service._extract_picture
         self.user_service._extract_picture = extract_picture_mock
-        self._backup_resize_image = self.user_service._resize_image
-        self.user_service._resize_image = resize_image_mock
 
     async def test_get_user_that_not_exists_should_create_it(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], name="test",
@@ -321,10 +320,6 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         # Asserts
         self.mock_file_repository.upload_image.assert_called_with("test_uid.png", TEST_RESIZED_BYTES)
-
-
-    async def test_resize_file_handler(self):
-
 
 
 if __name__ == "__main__":
