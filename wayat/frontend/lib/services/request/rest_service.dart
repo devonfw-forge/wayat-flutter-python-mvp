@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
-import 'package:http/http.dart' as http;
 import 'package:wayat/services/service.dart';
+import 'package:http_parser/src/media_type.dart';
 
 abstract class RESTService extends Service {
   /// Generetes a *dictionary* with the headers for backend connection
@@ -28,38 +28,38 @@ abstract class RESTService extends Service {
 
   /// Sends a **GET** request to [baseUrl]/[subPath], using the configured authentication
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
-    http.Response resultJson = await http.get(Uri.parse("$baseUrl/$subPath"),
+    Response resultJson = await get(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders());
     return json.decode(resultJson.body) as Map<String, dynamic>;
   }
 
   /// Sends a **POST** request to [baseUrl]/[subPath] and with [body] as content,
   /// using the configured authentication
-  Future<http.Response> sendPostRequest(
+  Future<Response> sendPostRequest(
       String subPath, Map<String, dynamic> body) async {
-    http.Response response = await http.post(Uri.parse("$baseUrl/$subPath"),
+    Response response = await post(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders(), body: jsonEncode(body));
     return response;
   }
 
   /// Sends a **POST** request to upload ImageFIle [baseUrl]/[subPath] and with [body] as content,
   /// using the configured authentication
-  Future<http.Response> sendPostMediaRequest(
-      String subPath, String filePath) async {
+  Future<StreamedResponse> sendPostImageRequest(
+      String subPath, String filePath, String type) async {
     // http.Response response = await http.MultipartRequest('POST', Uri.parse("$baseUrl/$subPath")).files.add(await http.MultipartFile.fromPath(filePath));
     // return response;
 
-    var request = new http.MultipartRequest('POST', uri);
-    final httpImage = http.MultipartFile.fromBytes('files.myimage', bytes,
-        contentType: MediaType.parse(mimeType), filename: 'myImage.png');
+    MultipartRequest request = MultipartRequest('POST', Uri.parse("$baseUrl/$subPath"));
+    List<int> bytes = await File(filePath).readAsBytes(); 
+    MultipartFile httpImage = MultipartFile.fromBytes('file', bytes, contentType: MediaType('image', type), filename: 'file_${filePath.hashCode}.$type');
     request.files.add(httpImage);
-    final response = await request.send();
+    return await request.send();
   }
 
   /// Sends a **PUT** request to [baseUrl]/[subPath] and with [body] as content,
   /// using the configured authentication
   Future<bool> sendPutRequest(String subPath, Map<String, dynamic> body) async {
-    http.Response resultJson = await http.put(Uri.parse("$baseUrl/$subPath"),
+    Response resultJson = await put(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders(), body: body);
     // Checks if a 20X status code is returned
     return resultJson.statusCode / 10 == 20;
@@ -67,7 +67,7 @@ abstract class RESTService extends Service {
 
   /// Sends a **DEL** request to [baseUrl]/[subPath], using the configured authentication
   Future<bool> sendDelRequest(String subPath) async {
-    http.Response resultJson = await http.delete(Uri.parse("$baseUrl/$subPath"),
+    Response resultJson = await delete(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders());
     // Checks if a 20X status code is returned
     return resultJson.statusCode / 10 == 20;
