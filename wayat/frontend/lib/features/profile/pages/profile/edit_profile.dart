@@ -14,10 +14,9 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  XFile? currentSelectedImage;
-
   final ProfileState profileState = GetIt.I.get<ProfileState>();
-  final SessionState userSession = GetIt.I.get<SessionState>();
+
+  XFile? currentSelectedImage;
   String name = '';
 
   @override
@@ -107,7 +106,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
     if (changed) {
       profileState.updateCurrentUser();
-      print('-------------------------- ${userSession.currentUser.toString()}');
       _onPressedBackButton();
     }
   }
@@ -138,7 +136,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               hintText:
-                  '${appLocalizations.name}                                               ${name}',
+                  '${appLocalizations.name}                                               $name',
             ),
             onChanged: ((text) {
               name = text;

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:get_it/get_it.dart';

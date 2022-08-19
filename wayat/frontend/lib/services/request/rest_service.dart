@@ -45,10 +45,15 @@ abstract class RESTService extends Service {
   /// Sends a **POST** request to upload ImageFIle [baseUrl]/[subPath] and with [body] as content,
   /// using the configured authentication
   Future<http.Response> sendPostMediaRequest(
-      String subPath, Uint8List byte) async {
-    http.Response response = await http.post(Uri.parse("$baseUrl/$subPath"),
-        headers: await _getMultiPartHeader(), body: byte);
-    return response;
+      String subPath, String filePath) async {
+    // http.Response response = await http.MultipartRequest('POST', Uri.parse("$baseUrl/$subPath")).files.add(await http.MultipartFile.fromPath(filePath));
+    // return response;
+
+    var request = new http.MultipartRequest('POST', uri);
+    final httpImage = http.MultipartFile.fromBytes('files.myimage', bytes,
+        contentType: MediaType.parse(mimeType), filename: 'myImage.png');
+    request.files.add(httpImage);
+    final response = await request.send();
   }
 
   /// Sends a **PUT** request to [baseUrl]/[subPath] and with [body] as content,
