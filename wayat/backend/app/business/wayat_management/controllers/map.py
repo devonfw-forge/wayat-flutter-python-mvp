@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from app.business.wayat_management.models.map import LocationUpdateRequest, UpdateMapRequest
 from app.business.wayat_management.services.map import MapService
 from app.common import get_user
-from app.common.infra.firebase import FirebaseAuthenticatedUser
+from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 
 router = APIRouter(prefix="/map")
 

@@ -3,8 +3,8 @@ from typing import Optional
 
 from pydantic import Field, BaseModel
 
-from app.common.base.base_firebase_repository import BaseFirebaseModel, GeoPoint
-from app.common.utils import get_current_time
+from app.common.infra.gcp.base_firebase_repository import BaseFirebaseModel, GeoPoint
+from app.domain.wayat_management.utils import get_current_time
 
 
 class Location(BaseModel):

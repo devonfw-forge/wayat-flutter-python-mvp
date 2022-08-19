@@ -1,8 +1,9 @@
 import logging
 import mimetypes
 
-from fastapi import APIRouter, Depends, UploadFile, HTTPException
+from fastapi import APIRouter, Depends, UploadFile
 
+from app.business.wayat_management.exceptions.http import InvalidImageFormatException
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
     UpdateUserRequest,
@@ -14,7 +15,7 @@ from app.business.wayat_management.models.user import (
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
-from app.common.infra.firebase import FirebaseAuthenticatedUser
+from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 
 router = APIRouter(prefix="/users")
 
@@ -47,9 +48,8 @@ async def update_profile_picture(upload_file: UploadFile,
                                  user: FirebaseAuthenticatedUser = Depends(get_user()),
                                  user_service: UserService = Depends()):
     extension = mimetypes.guess_extension(upload_file.content_type)
-    if extension not in ('.png', '.jpeg'):
-        raise HTTPException(status_code=400,
-                            detail="Invalid image format")
+    if not extension or extension.lower() not in ('.png', '.jpeg', '.jpg'):
+        raise InvalidImageFormatException
     await user_service.update_profile_picture(
         user.uid,
         extension,
@@ -94,8 +94,9 @@ async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
 
 @router.delete("/contacts/{contact_id}",
                description="Deletes a contact from your friend list and removes yourself from their list")
-async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                         user_service: UserService = Depends(UserService)):
+    await user_service.delete_contact(user_id=user.uid, contact_id=contact_id)
 
 
 @router.get("/friend-requests", description="Returns pending sent and received friendship requests",
