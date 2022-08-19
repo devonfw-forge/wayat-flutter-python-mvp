@@ -6,7 +6,7 @@ from fastapi import Depends
 from google.cloud import firestore
 from google.cloud.firestore import AsyncClient, AsyncTransaction
 
-from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
+from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.common.utils import get_current_time
 from app.domain.wayat_management.models.user import UserEntity, Location
 
@@ -156,3 +156,23 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
                 else:
                     logger.error("Trying to accept a friend request not received")
             await execute(transaction)
+
+    async def delete_contact(self, a_id, b_id):
+        transaction = self._client.transaction()
+        a_ref = self._get_document_reference(a_id)
+        b_ref = self._get_document_reference(b_id)
+
+        @firestore.async_transactional
+        async def execute(t: AsyncTransaction):
+            update_a = {
+                "contacts": firestore.ArrayRemove([b_id])
+            }
+            self._validate_update(update_a)
+            update_b = {
+                "contacts": firestore.ArrayRemove([a_id])
+            }
+            self._validate_update(update_b)
+            t.update(a_ref, update_a)
+            t.update(b_ref, update_b)
+
+        await execute(transaction)

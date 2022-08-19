@@ -1,4 +1,4 @@
-from app.common.base.base_firebase_repository import BaseFirebaseModel
+from app.common.infra.gcp.base_firebase_repository import BaseFirebaseModel
 
 
 class CounterEntity(BaseFirebaseModel):

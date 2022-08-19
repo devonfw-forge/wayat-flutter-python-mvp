@@ -6,9 +6,9 @@ from app.common.exceptions.http import NotFoundException
 from requests import RequestException
 
 from app.business.wayat_management.services.user import UserService
-from app.common.infra.firebase import FirebaseAuthenticatedUser
+from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
-from app.domain.wayat_management.repositories.file_storage import FileStorage, StorageSettings
+from app.domain.wayat_management.repositories.files import FileStorage, StorageSettings
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
@@ -247,6 +247,14 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo.respond_friend_request.assert_called_with(
             self_uid=test_user, friend_uid=test_friend, accept=accept
         )
+
+    async def test_delete_friend_should_call_repo(self):
+        test_user, test_friend = "user", "friend"
+        # Call to be tested
+        await self.user_service.delete_contact(user_id=test_user, contact_id=test_friend)
+
+        # Asserts
+        self.mock_user_repo.delete_contact.assert_called_with(test_user, test_friend)
 
     async def test_upload_profile_picture_should_call_repo(self):
         # Mocks
