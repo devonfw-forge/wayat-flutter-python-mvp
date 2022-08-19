@@ -17,7 +17,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   XFile? currentSelectedImage;
 
   final ProfileState profileState = GetIt.I.get<ProfileState>();
-
+  final SessionState userSession = GetIt.I.get<SessionState>();
   String name = '';
 
   @override
@@ -107,7 +107,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
     if (changed) {
       profileState.updateCurrentUser();
-
+      print('-------------------------- ${userSession.currentUser.toString()}');
       _onPressedBackButton();
     }
   }
