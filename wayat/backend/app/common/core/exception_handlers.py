@@ -2,9 +2,9 @@ import logging
 
 from fastapi import FastAPI
 from starlette.requests import Request
-from starlette.responses import PlainTextResponse
+from starlette.responses import PlainTextResponse, JSONResponse
 
-from app.common.exceptions.http import DevonHttpException
+from app.common.exceptions.http import DevonHttpException, HTTPError
 from app.common.exceptions.runtime import DevonCustomException
 
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ def init_exception_handlers(api: FastAPI):
                      " - Query Params: " + str(request.query_params))
         # logger.exception(exc.detail)
         logger.error(exc.detail)
-        return PlainTextResponse(str(exc.detail), status_code=exc.status_code)
+        return JSONResponse(content=HTTPError(detail=str(exc.detail)).dict(), status_code=exc.status_code)
 
     # Custom Runtime Exception Handler
     @api.exception_handler(DevonCustomException)

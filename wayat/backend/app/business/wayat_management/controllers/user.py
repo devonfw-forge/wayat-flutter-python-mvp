@@ -2,6 +2,7 @@ import logging
 import mimetypes
 
 from fastapi import APIRouter, Depends, UploadFile
+from starlette.responses import PlainTextResponse
 
 from app.business.wayat_management.exceptions.http import InvalidImageFormatException, PhoneInUseException
 from app.business.wayat_management.models.user import (
@@ -15,6 +16,7 @@ from app.business.wayat_management.models.user import (
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
+from app.common.exceptions.http import HTTPError
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 
 router = APIRouter(prefix="/users")
@@ -35,7 +37,11 @@ async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user())
 
 
 @router.post("/profile",
-             description="Update a user profile, setting those values that were explicitly set, even if set to null")
+             description="Update a user profile, setting those values that were explicitly set, even if set to null",
+             responses={
+                 409: {"model": HTTPError, "description": "If the phone is already in use"}
+             }
+             )
 async def update_user_profile(request: UpdateUserRequest,
                               user: FirebaseAuthenticatedUser = Depends(get_user()),
                               user_service: UserService = Depends()):
