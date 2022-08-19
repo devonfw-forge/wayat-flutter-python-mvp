@@ -1,9 +1,11 @@
 import asyncio
+import io
 import logging
 import mimetypes
 from typing import BinaryIO
 
 import requests
+from PIL import Image
 from fastapi import Depends
 from requests import RequestException, Response
 
@@ -28,6 +30,7 @@ class UserService:
         self._status_repository = status_repository
         self._file_repository = file_repository
         self.DEFAULT_PICTURE = storage_settings.default_picture
+        self.THUMBNAIL_SIZE = storage_settings.thumbnail_size
 
     def map_to_dto(self, entity: UserEntity) -> UserDTO:
         return None if entity is None else UserDTO(
@@ -94,8 +97,21 @@ class UserService:
 
     async def _upload_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes) -> str:
         file_name = uid + extension
-        image_ref = await self._file_repository.upload_image(file_name, data)
+        image_ref = await self._file_repository.upload_image(file_name, self._resize_image(data))
         return image_ref
+
+    def _resize_image(self, data: BinaryIO | bytes) -> bytes:
+        if isinstance(data, bytes):
+            data = io.BytesIO(data)
+
+        # Resize the image
+        image = Image.open(data)
+        image.thumbnail((self.THUMBNAIL_SIZE, self.THUMBNAIL_SIZE))
+
+        # Create the bytes output stream and return it
+        os = io.BytesIO()
+        image.save(os, image.format)
+        return os.getvalue()
 
     async def _extract_picture(self, uid: str, url: str | None) -> str | None:
         if not url:

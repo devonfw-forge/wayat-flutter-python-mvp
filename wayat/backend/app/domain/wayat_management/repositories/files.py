@@ -9,6 +9,7 @@ from app.common.infra.gcp.cloud_storage import BaseStorageSettings, CloudStorage
 
 class StorageSettings(BaseStorageSettings):
     default_picture: str
+    thumbnail_size: int
 
 
 @lru_cache
