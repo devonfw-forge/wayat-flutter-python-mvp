@@ -104,7 +104,7 @@ class UserService:
         image_ref = self._file_repository.upload_image(file_name, data)
         return image_ref
 
-    async def _extract_picture(self, uid: str, url: str) -> str | None:
+    async def _extract_picture(self, uid: str, url: str | None) -> str | None:
         if not url:
             return self.DEFAULT_PICTURE
 
@@ -134,7 +134,7 @@ class UserService:
 
         return await loop.run_in_executor(None, sync_process)
 
-    async def get_contact(self, uid: str):
+    async def get_contact(self, uid: str) -> UserDTO | None:
         """
         Returns user DTO
         """
@@ -143,12 +143,12 @@ class UserService:
             user = self.map_to_dto(user)
         return user
 
-    async def get_contacts(self, uids: list[str]):
+    async def get_contacts(self, uids: list[str]) -> list[UserDTO]:
         coroutines = [self.get_contact(u) for u in uids]
         contacts_dtos: list[UserDTO | None] = await asyncio.gather(*coroutines)
         return [e for e in contacts_dtos if e is not None]
 
-    async def get_pending_friend_requests(self, uid):
+    async def get_pending_friend_requests(self, uid) -> tuple[list[UserDTO], list[UserDTO]]:
         """
         Returns pending friend requests, received and sent
         """
