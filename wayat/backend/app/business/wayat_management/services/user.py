@@ -170,3 +170,7 @@ class UserService:
         """
         await self._user_repository.delete_contact(user_id, contact_id)
         # TODO: Regenerate contact refs
+
+    async def phone_in_use(self, phone: str):
+        users = await self._user_repository.find_by_phone(phones=[phone])
+        return len(users) > 0
