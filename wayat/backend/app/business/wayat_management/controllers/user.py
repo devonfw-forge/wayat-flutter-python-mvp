@@ -1,8 +1,9 @@
 import logging
 import mimetypes
 
-from fastapi import APIRouter, Depends, UploadFile, HTTPException
+from fastapi import APIRouter, Depends, UploadFile
 
+from app.business.wayat_management.exceptions.http import InvalidImageFormatException
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
     UpdateUserRequest,
@@ -48,8 +49,7 @@ async def update_profile_picture(upload_file: UploadFile,
                                  user_service: UserService = Depends()):
     extension = mimetypes.guess_extension(upload_file.content_type)
     if extension not in ('.png', '.jpeg'):
-        raise HTTPException(status_code=400,
-                            detail="Invalid image format")
+        raise InvalidImageFormatException()
     await user_service.update_profile_picture(
         user.uid,
         extension,
