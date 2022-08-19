@@ -10,7 +10,7 @@ from google.cloud.firestore import (
     GeoPoint as _GeoPoint
 )
 from google.cloud.firestore_v1 import AsyncTransaction
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 
 from app.common.infra import get_firebase_settings
 

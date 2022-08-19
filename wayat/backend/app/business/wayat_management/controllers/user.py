@@ -3,7 +3,7 @@ import mimetypes
 
 from fastapi import APIRouter, Depends, UploadFile
 
-from app.business.wayat_management.exceptions.http import InvalidImageFormatException
+from app.business.wayat_management.exceptions.http import InvalidImageFormatException, PhoneInUseException
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
     UpdateUserRequest,
@@ -40,6 +40,9 @@ async def update_user_profile(request: UpdateUserRequest,
                               user: FirebaseAuthenticatedUser = Depends(get_user()),
                               user_service: UserService = Depends()):
     logger.info(f"Updating user={user.uid} with values {request.dict(exclude_unset=True)}")
+    if request.phone and await user_service.phone_in_use(request.phone):
+        raise PhoneInUseException
+
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
 
 
