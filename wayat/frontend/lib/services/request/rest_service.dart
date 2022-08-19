@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
@@ -20,7 +21,7 @@ abstract class RESTService extends Service {
   Future<Map<String, String>> _getMultiPartHeader() async {
     AuthService authService = GetIt.I.get<SessionState>().authService;
     return {
-      "Content-Type": "Multipart/form-data",
+      "Content-Type": "multipart/form-data",
       "Authorization": "Bearer ${await authService.getIdToken()}"
     };
   }
@@ -44,9 +45,9 @@ abstract class RESTService extends Service {
   /// Sends a **POST** request to upload ImageFIle [baseUrl]/[subPath] and with [body] as content,
   /// using the configured authentication
   Future<http.Response> sendPostMediaRequest(
-      String subPath, Map<String, dynamic> body) async {
+      String subPath, Uint8List byte) async {
     http.Response response = await http.post(Uri.parse("$baseUrl/$subPath"),
-        headers: await _getMultiPartHeader(), body: jsonEncode(body));
+        headers: await _getMultiPartHeader(), body: byte);
     return response;
   }
 

@@ -16,26 +16,23 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   XFile? currentSelectedImage;
 
-  final textController = TextEditingController();
-  final ProfileState profileController = GetIt.I.get<ProfileState>();
-  final SessionState userSession = GetIt.I.get<SessionState>();
+  final ProfileState profileState = GetIt.I.get<ProfileState>();
+
+  String name = '';
 
   @override
   void initState() {
     super.initState();
-    textController.addListener((() {
-      userSession.currentUser!.name = textController.text;
-    }));
   }
 
   @override
   void dispose() {
-    textController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    name = GetIt.I.get<SessionState>().currentUser!.name;
     return Column(
       children: [
         _profileAppBar(),
@@ -79,8 +76,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ),
           TextButton(
-            onPressed: () {
-              _onPressedSaveButton();
+            onPressed: () async {
+              await _onPressedSaveButton();
             },
             child: Text(
               appLocalizations.save,
@@ -91,21 +88,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ],
       );
 
-  _onPressedBackButton() {
-    profileController.setProfile(true);
-    profileController.setEditProfile(false);
-    profileController.setPreferences(false);
-    profileController.setFaqs(false);
-    profileController.setPrivacy(false);
+  void _onPressedBackButton() {
+    profileState.setProfile(true);
+    profileState.setEditProfile(false);
+    profileState.setPreferences(false);
+    profileState.setFaqs(false);
+    profileState.setPrivacy(false);
   }
 
-  _onPressedSaveButton() {
-    userSession.updateCurrentUser();
+  Future<void> _onPressedSaveButton() async {
+    bool changed = false;
     if (currentSelectedImage != null) {
-      profileController.uploadProfileImage(currentSelectedImage);
+      changed = await profileState.profileService
+          .uploadProfileImage(currentSelectedImage);
     }
-    if (userSession.currentUser!.name != null) {
-      profileController.updateProfileName(textController.text);
+    if (name != "") {
+      changed = await profileState.profileService.updateProfileName(name);
+    }
+    if (changed) {
+      profileState.updateCurrentUser();
+      _onPressedBackButton();
     }
   }
 
@@ -115,7 +117,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           radius: 50.0,
           backgroundImage: (currentSelectedImage != null)
               ? FileImage(io.File(currentSelectedImage!.path)) as ImageProvider
-              : NetworkImage(userSession.currentUser!.imageUrl)),
+              : NetworkImage(
+                  GetIt.I.get<SessionState>().currentUser!.imageUrl)),
       InkWell(
         onTap: () {
           showModalBottomSheet(
@@ -130,17 +133,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Padding _nameTextField() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: TextField(
-            controller: textController,
             decoration: InputDecoration(
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               hintText:
-                  '${appLocalizations.name}                                               ${userSession.currentUser!.name}',
+                  '${appLocalizations.name}                                               ${name}',
             ),
             onChanged: ((text) {
-              if (textController.text != '') {
-                userSession.currentUser!.name = textController.text;
-              }
+              name = text;
             })),
       );
 

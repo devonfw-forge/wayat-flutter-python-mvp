@@ -143,8 +143,10 @@ class AppRouter extends _i24.RootStackRouter {
           routeData: routeData, child: _i15.SuggestionsPage(key: args.key));
     },
     ProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileRouteArgs>(
+          orElse: () => const ProfileRouteArgs());
       return _i24.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i16.ProfilePage());
+          routeData: routeData, child: _i16.ProfilePage(key: args.key));
     },
     EditProfileRoute.name: (routeData) {
       return _i24.MaterialPageX<dynamic>(
@@ -559,10 +561,23 @@ class SuggestionsRouteArgs {
 
 /// generated route for
 /// [_i16.ProfilePage]
-class ProfileRoute extends _i24.PageRouteInfo<void> {
-  const ProfileRoute() : super(ProfileRoute.name, path: 'profile-page');
+class ProfileRoute extends _i24.PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({_i25.Key? key})
+      : super(ProfileRoute.name,
+            path: 'profile-page', args: ProfileRouteArgs(key: key));
 
   static const String name = 'ProfileRoute';
+}
+
+class ProfileRouteArgs {
+  const ProfileRouteArgs({this.key});
+
+  final _i25.Key? key;
+
+  @override
+  String toString() {
+    return 'ProfileRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

@@ -31,9 +31,9 @@ class ProfileWrapper extends StatelessWidget {
                   else if (isPrivacy)
                     const PrivacyRoute()
                   else if (isProfile)
-                    const ProfileRoute()
+                    ProfileRoute()
                   else
-                    const ProfileRoute()
+                    ProfileRoute()
                 ]);
       });
     });

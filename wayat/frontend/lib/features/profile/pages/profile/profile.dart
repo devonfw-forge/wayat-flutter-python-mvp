@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -8,17 +9,18 @@ import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class ProfilePage extends StatelessWidget {
+  ProfilePage({Key? key}) : super(key: key);
 
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  final ProfileState controller = GetIt.I.get<ProfileState>();
+  final ProfileState profileState = GetIt.I.get<ProfileState>();
   final LocationState locationState = GetIt.I.get<LocationState>();
   final SessionState userSession = GetIt.I.get<SessionState>();
+
+  @observable
+  String name = GetIt.I.get<SessionState>().currentUser!.name;
+
+  @observable
+  String imageUrl = GetIt.I.get<SessionState>().currentUser!.imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +38,16 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(height: 16),
         _buildProfileImage(),
         const SizedBox(height: 16),
-        Text(
-          userSession.currentUser!.name,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-              fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
-        ),
+        Observer(builder: (context) {
+          return Text(
+            name,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+                fontSize: 18),
+          );
+        }),
         const SizedBox(height: 32),
         _buildShareLocationPart(),
         const SizedBox(height: 48),
@@ -62,9 +68,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        CircleAvatar(
-            radius: 50.0,
-            backgroundImage: NetworkImage(userSession.currentUser!.imageUrl)),
+        Observer(builder: (context) {
+          return CircleAvatar(
+              radius: 50.0, backgroundImage: NetworkImage(imageUrl));
+        }),
       ],
     );
   }
@@ -98,11 +105,11 @@ class _ProfilePageState extends State<ProfilePage> {
         CustomCard(
             text: appLocalizations.editProfile,
             onTap: () {
-              controller.setProfile(false);
-              controller.setEditProfile(true);
-              controller.setPreferences(false);
-              controller.setFaqs(false);
-              controller.setPrivacy(false);
+              profileState.setProfile(false);
+              profileState.setEditProfile(true);
+              profileState.setPreferences(false);
+              profileState.setFaqs(false);
+              profileState.setPrivacy(false);
             }),
         const SizedBox(height: 24),
 
@@ -136,21 +143,21 @@ class _ProfilePageState extends State<ProfilePage> {
         CustomCard(
             text: appLocalizations.faqs,
             onTap: () {
-              controller.setProfile(false);
-              controller.setEditProfile(false);
-              controller.setPreferences(false);
-              controller.setFaqs(true);
-              controller.setPrivacy(false); //TODO: Implement the FAQS page
+              profileState.setProfile(false);
+              profileState.setEditProfile(false);
+              profileState.setPreferences(false);
+              profileState.setFaqs(true);
+              profileState.setPrivacy(false); //TODO: Implement the FAQS page
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.privacy,
             onTap: () {
-              controller.setProfile(false);
-              controller.setEditProfile(false);
-              controller.setPreferences(false);
-              controller.setFaqs(false);
-              controller.setPrivacy(true); //TODO: Implement the Privacy page
+              profileState.setProfile(false);
+              profileState.setEditProfile(false);
+              profileState.setPreferences(false);
+              profileState.setFaqs(false);
+              profileState.setPrivacy(true); //TODO: Implement the Privacy page
             }),
       ],
     );
