@@ -15,7 +15,7 @@ from app.business.wayat_management.models.user import (
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
-from app.common.infra.firebase import FirebaseAuthenticatedUser
+from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 
 router = APIRouter(prefix="/users")
 

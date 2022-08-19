@@ -6,7 +6,7 @@ from fastapi import Depends
 from google.cloud import firestore
 from google.cloud.firestore import AsyncClient, AsyncTransaction
 
-from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
+from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.common.utils import get_current_time
 from app.domain.wayat_management.models.user import UserEntity, Location
 

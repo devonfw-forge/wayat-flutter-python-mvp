@@ -1,8 +1,7 @@
 import asyncio
-import functools
 import logging
 import mimetypes
-from typing import BinaryIO, Tuple
+from typing import BinaryIO
 
 import requests
 from fastapi import Depends
@@ -10,7 +9,7 @@ from requests import RequestException, Response
 
 from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
-from app.common.infra.firebase import FirebaseAuthenticatedUser
+from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.file_storage import FileStorage, get_storage_settings, StorageSettings
 from app.domain.wayat_management.repositories.status import StatusRepository
