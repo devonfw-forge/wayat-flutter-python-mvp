@@ -77,6 +77,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
     shareLocationEnabled = shareLocation;
     changeLocationStateCallback = onLocationChangedCallback;
 
+    sendLocationToBack(initialLocation);
+
     location.enableBackgroundMode(enable: true);
 
     location.onLocationChanged.listen((LocationData newLocation) {
