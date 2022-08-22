@@ -77,6 +77,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
     shareLocationEnabled = shareLocation;
     changeLocationStateCallback = onLocationChangedCallback;
 
+    sendLocationToBack(initialLocation);
+
     location.enableBackgroundMode(enable: true);
 
     location.onLocationChanged.listen((LocationData newLocation) {
@@ -112,7 +114,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
   Future<void> sendLocationToBack(LocationData locationData) async {
     LatLng location = LatLng(locationData.latitude!, locationData.longitude!);
     changeLocationStateCallback(location);
-    String address = await GoogleMapsService.getAddressFromCoordinates(location);
+    String address =
+        await GoogleMapsService.getAddressFromCoordinates(location);
     await super.sendPostRequest("/map/update-location", {
       "position": {
         "longitude": locationData.longitude,
@@ -135,8 +138,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
   @override
   void setShareLocationEnabled(bool shareLocation) {
     shareLocationEnabled = shareLocation;
-    super
-        .sendPostRequest('user/preferences', {"share_location": shareLocation});
+    super.sendPostRequest(
+        'users/preferences', {"share_location": shareLocation});
   }
 
   /// Distance will returned in ```meters```
