@@ -28,8 +28,8 @@ abstract class RESTService extends Service {
 
   /// Sends a **GET** request to [baseUrl]/[subPath], using the configured authentication
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
-    Response resultJson = await get(Uri.parse("$baseUrl/$subPath"),
-        headers: await _getHeaders());
+    Response resultJson =
+        await get(Uri.parse("$baseUrl/$subPath"), headers: await _getHeaders());
     return json.decode(resultJson.body) as Map<String, dynamic>;
   }
 
@@ -46,12 +46,18 @@ abstract class RESTService extends Service {
   /// using the configured authentication
   Future<StreamedResponse> sendPostImageRequest(
       String subPath, String filePath, String type) async {
-    // http.Response response = await http.MultipartRequest('POST', Uri.parse("$baseUrl/$subPath")).files.add(await http.MultipartFile.fromPath(filePath));
-    // return response;
-
-    MultipartRequest request = MultipartRequest('POST', Uri.parse("$baseUrl/$subPath"));
-    List<int> bytes = await File(filePath).readAsBytes(); 
-    MultipartFile httpImage = MultipartFile.fromBytes('file', bytes, contentType: MediaType('image', type), filename: 'file_${filePath.hashCode}.$type');
+    MultipartRequest request =
+        MultipartRequest('POST', Uri.parse("$baseUrl/$subPath"));
+    List<int> bytes = await File(filePath).readAsBytes();
+    MultipartFile httpImage = MultipartFile.fromBytes('file', bytes,
+        contentType: MediaType(
+          'image',
+          type,
+        ),
+        filename: 'file_${filePath.hashCode}.$type');
+    request.headers["Authorization"] =
+        "Bearer ${await GetIt.I.get<SessionState>().authService.getIdToken()}";
+    request.headers["Content-Type"] = "multipart/form-data";
     request.files.add(httpImage);
     return await request.send();
   }

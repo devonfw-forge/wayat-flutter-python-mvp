@@ -1,18 +1,18 @@
-import 'dart:typed_data';
-
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/request/rest_service.dart';
-import "dart:io" as io;
+import 'package:mime/mime.dart';
 
 class ProfileService extends RESTService {
   Future<bool> uploadProfileImage(XFile? selectedImage) async {
-    Uint8List bytes = await io.File(selectedImage!.path).readAsBytes();
-    Response res =
-        await super.sendPostMediaRequest("users/profile/picture", bytes);
-    print('-------------------------------Current image ${res.body}');
+    //Uint8List bytes = await io.File(selectedImage!.path).readAsBytes();
+    String filePath = selectedImage!.path;
+    String? fileType = lookupMimeType(filePath);
+
+    StreamedResponse res = await super
+        .sendPostImageRequest("users/profile/picture", filePath, fileType!);
     bool done = res.statusCode / 10 == 20;
     return done;
   }
