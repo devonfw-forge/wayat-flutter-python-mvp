@@ -39,9 +39,9 @@
     "noAddress": "No se encontró la dirección",
     "errorAddress": "No se pudo obtener la dirección",
 
-    "friendsTab": "Amis",
-    "requestsTab": "Requêtes",
-    "suggestionsTab": "Suggestions",
+    "friendsTab": "Amigos",
+    "requestsTab": "Peticiones",
+    "suggestionsTab": "Sugerencias",
 
     "friendsPageTitle": "MIS AMIGOS",
     "pendingRequestsTitle": "PETICIONES DE AMISTAD",
