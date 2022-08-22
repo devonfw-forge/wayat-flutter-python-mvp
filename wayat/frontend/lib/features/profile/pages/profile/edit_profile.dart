@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
@@ -36,7 +37,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       children: [
         _profileAppBar(),
         const SizedBox(height: 18),
-        _buildProfileImage(),
+        _buildEditProfileImage(),
         const SizedBox(height: 32),
         _nameTextField(),
         const SizedBox(height: 34.5),
@@ -60,7 +61,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       _onPressedBackButton();
                     },
                     child: const Icon(Icons.arrow_back,
-                        color: Colors.black87, size: 16)),
+                        color: Colors.black87, size: 20)),
                 Padding(
                   padding: const EdgeInsets.only(left: 14),
                   child: Text(
@@ -80,7 +81,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
             },
             child: Text(
               appLocalizations.save,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              style: const TextStyle(
+                  color: ColorTheme.primaryColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16),
               textAlign: TextAlign.right,
             ),
           )
@@ -110,37 +114,86 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Widget _buildProfileImage() {
+  Widget _buildEditProfileImage() {
     return Stack(alignment: Alignment.bottomRight, children: <Widget>[
-      CircleAvatar(
-          radius: 50.0,
-          backgroundImage: (currentSelectedImage != null)
-              ? FileImage(io.File(currentSelectedImage!.path)) as ImageProvider
-              : NetworkImage(
-                  GetIt.I.get<SessionState>().currentUser!.imageUrl)),
+      Container(
+        width: 120.0,
+        height: 120.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: (currentSelectedImage != null)
+                ? FileImage(io.File(currentSelectedImage!.path))
+                    as ImageProvider
+                : NetworkImage(
+                    GetIt.I.get<SessionState>().currentUser!.imageUrl),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(100.0)),
+          border: Border.all(
+            color: Colors.black87,
+            width: 5.0,
+          ),
+        ),
+      ),
       InkWell(
         onTap: () {
           showModalBottomSheet(
               context: context,
               builder: (builder) => _getImageFromCameraOrGallary());
         },
-        child: const Icon(Icons.camera_alt, color: Colors.black87, size: 30),
+        child: Image.asset('assets/images/edit_round.png', height: 40),
       ),
     ]);
   }
 
-  Padding _nameTextField() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: TextField(
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              hintText:
-                  '${appLocalizations.name}                                               $name',
-            ),
-            onChanged: ((text) {
-              name = text;
-            })),
+  // Padding _nameTextField() => Padding(
+  //       padding: const EdgeInsets.symmetric(horizontal: 16),
+  //       child: TextField(
+  //           decoration: InputDecoration(
+  //             border: const OutlineInputBorder(
+  //                 borderRadius: BorderRadius.all(Radius.circular(10)),
+  //                 gapPadding: 5.0),
+  //             hintText:
+  //                 '${appLocalizations.name}                                               $name',
+  //           ),
+  //           onChanged: ((text) {
+  //             name = text;
+  //           })),
+  //     );
+
+  Container _nameTextField() => Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        height: 56,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.black,
+            width: 1,
+          ),
+        ),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(appLocalizations.name,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                    fontSize: 18)),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  hintText: name,
+                ),
+                onChanged: ((text) {
+                  name = text;
+                })),
+          )
+        ]),
       );
 
   Row _changePhone() => Row(
@@ -163,7 +216,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   //AutoRoute to change phone page
                 },
                 child: const Icon(Icons.arrow_forward,
-                    color: Colors.black87, size: 16)),
+                    color: Colors.black87, size: 24)),
           )
         ],
       );

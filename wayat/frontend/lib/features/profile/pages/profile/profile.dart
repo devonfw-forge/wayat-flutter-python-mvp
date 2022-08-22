@@ -45,7 +45,7 @@ class ProfilePage extends StatelessWidget {
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
-                fontSize: 18),
+                fontSize: 22),
           );
         }),
         const SizedBox(height: 32),
@@ -69,8 +69,21 @@ class ProfilePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Observer(builder: (context) {
-          return CircleAvatar(
-              radius: 50.0, backgroundImage: NetworkImage(imageUrl));
+          return Container(
+            width: 120.0,
+            height: 120.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(100.0)),
+              border: Border.all(
+                color: Colors.black87,
+                width: 5.0,
+              ),
+            ),
+          );
         }),
       ],
     );

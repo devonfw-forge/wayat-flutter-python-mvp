@@ -33,7 +33,7 @@ class CustomCard extends StatelessWidget {
           child: InkWell(
               onTap: onTap,
               child: const Icon(Icons.arrow_forward,
-                  color: Colors.black87, size: 16)),
+                  color: Colors.black87, size: 20)),
         )
       ]),
     );
