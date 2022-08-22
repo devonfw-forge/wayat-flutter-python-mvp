@@ -19,6 +19,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   XFile? currentSelectedImage;
   String name = '';
+  bool isVisible = false;
 
   @override
   void initState() {
@@ -29,6 +30,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void dispose() {
     super.dispose();
   }
+
+  TextStyle _textStyle(Color color, double size) =>
+      TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +68,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         color: Colors.black87, size: 20)),
                 Padding(
                   padding: const EdgeInsets.only(left: 14),
-                  child: Text(
-                    appLocalizations.profile,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                        fontSize: 16),
-                  ),
+                  child: Text(appLocalizations.profile,
+                      style: _textStyle(Colors.black87, 16)),
                 ),
               ],
             ),
@@ -81,10 +80,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             },
             child: Text(
               appLocalizations.save,
-              style: const TextStyle(
-                  color: ColorTheme.primaryColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16),
+              style: _textStyle(ColorTheme.primaryColor, 16),
               textAlign: TextAlign.right,
             ),
           )
@@ -128,7 +124,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     GetIt.I.get<SessionState>().currentUser!.imageUrl),
             fit: BoxFit.cover,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(100.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(100.0)),
           border: Border.all(
             color: Colors.black87,
             width: 5.0,
@@ -146,21 +142,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     ]);
   }
 
-  // Padding _nameTextField() => Padding(
-  //       padding: const EdgeInsets.symmetric(horizontal: 16),
-  //       child: TextField(
-  //           decoration: InputDecoration(
-  //             border: const OutlineInputBorder(
-  //                 borderRadius: BorderRadius.all(Radius.circular(10)),
-  //                 gapPadding: 5.0),
-  //             hintText:
-  //                 '${appLocalizations.name}                                               $name',
-  //           ),
-  //           onChanged: ((text) {
-  //             name = text;
-  //           })),
-  //     );
-
   Container _nameTextField() => Container(
         margin: const EdgeInsets.symmetric(horizontal: 16),
         height: 56,
@@ -171,28 +152,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
             width: 1,
           ),
         ),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(appLocalizations.name,
+                style: _textStyle(Colors.black87, 18)),
+          ),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+                textAlign: TextAlign.end,
                 style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black87,
-                    fontSize: 18)),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
+                    fontSize: 18),
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  hintText: name,
-                ),
+                    hintText: name, hintStyle: _textStyle(Colors.black38, 18)),
                 onChanged: ((text) {
                   name = text;
                 })),
-          )
+          )),
         ]),
       );
 
@@ -203,10 +183,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               appLocalizations.changePhone,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16),
+              style: _textStyle(Colors.black87, 16),
             ),
           ),
           Padding(
