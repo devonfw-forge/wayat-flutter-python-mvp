@@ -47,7 +47,7 @@ class FriendsPage extends StatelessWidget {
             itemBuilder: (context, index) => ContactTile(
                   contact: contacts[index],
                   iconAction: IconButton(
-                    onPressed: () => controller.removeContact(contacts[index]),
+                    onPressed: () async => await controller.removeContact(contacts[index]),
                     icon: const Icon(
                       Icons.close,
                       color: ColorTheme.primaryColor,

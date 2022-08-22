@@ -1,7 +1,10 @@
 import logging
+import mimetypes
 
-from fastapi import APIRouter, Depends, File
+from fastapi import APIRouter, Depends, UploadFile
+from starlette.responses import PlainTextResponse
 
+from app.business.wayat_management.exceptions.http import InvalidImageFormatException, PhoneInUseException
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
     UpdateUserRequest,
@@ -13,7 +16,8 @@ from app.business.wayat_management.models.user import (
 )
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
-from app.common.infra.firebase import FirebaseAuthenticatedUser
+from app.common.exceptions.http import HTTPError
+from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 
 router = APIRouter(prefix="/users")
 
@@ -33,18 +37,33 @@ async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user())
 
 
 @router.post("/profile",
-             description="Update a user profile, setting those values that were explicitly set, even if set to null")
+             description="Update a user profile, setting those values that were explicitly set, even if set to null",
+             responses={
+                 409: {"model": HTTPError, "description": "If the phone is already in use"}
+             }
+             )
 async def update_user_profile(request: UpdateUserRequest,
                               user: FirebaseAuthenticatedUser = Depends(get_user()),
                               user_service: UserService = Depends()):
     logger.info(f"Updating user={user.uid} with values {request.dict(exclude_unset=True)}")
+    if request.phone and await user_service.phone_in_use(request.phone):
+        raise PhoneInUseException
+
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
 
 
 @router.post("/profile/picture", description="Updates the user profile picture")
-async def update_profile_picture(file: bytes = File(), user: FirebaseAuthenticatedUser = Depends(get_user())):
-    # TODO
-    logger.info(f"File uploaded ({len(file)/1024:.2f} KB)")
+async def update_profile_picture(upload_file: UploadFile,
+                                 user: FirebaseAuthenticatedUser = Depends(get_user()),
+                                 user_service: UserService = Depends()):
+    extension = mimetypes.guess_extension(upload_file.content_type)
+    if not extension or extension.lower() not in ('.png', '.jpeg', '.jpg'):
+        raise InvalidImageFormatException
+    await user_service.update_profile_picture(
+        user.uid,
+        extension,
+        upload_file.file
+    )
 
 
 @router.post("/find-by-phone",
@@ -84,8 +103,9 @@ async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
 
 @router.delete("/contacts/{contact_id}",
                description="Deletes a contact from your friend list and removes yourself from their list")
-async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                         user_service: UserService = Depends(UserService)):
+    await user_service.delete_contact(user_id=user.uid, contact_id=contact_id)
 
 
 @router.get("/friend-requests", description="Returns pending sent and received friendship requests",
@@ -98,14 +118,15 @@ async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user
     sent = list(map(dto_to_user_with_phone_response, sent))
 
     return PendingFriendsRequestsResponse(
-        sent_requests=pending,
-        pending_requests=sent
+        sent_requests=sent,
+        pending_requests=pending
     )
 
 
 @router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
-async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    pass
+async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                                user_service: UserService = Depends(UserService)):
+    await user_service.respond_friend_request(user_uid=user.uid, friend_uid=r.uid, accept=r.accept)
 
 
 @router.delete("/friend-requests/sent/{contact_id}", description="Cancel a sent friendship request")

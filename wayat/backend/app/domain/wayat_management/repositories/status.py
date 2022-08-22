@@ -1,6 +1,6 @@
 from fastapi import Depends
 
-from app.common.base.base_firebase_repository import BaseFirestoreRepository, get_async_client
+from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.wayat_management.models.status import AppStatusEntity, ContactRefInfo
 from google.cloud.firestore import AsyncClient
 

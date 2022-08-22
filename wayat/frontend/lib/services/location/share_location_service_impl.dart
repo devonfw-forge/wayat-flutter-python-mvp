@@ -117,8 +117,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
       "position": {
         "longitude": locationData.longitude,
         "latitude": locationData.latitude,
-        "address": address
-      }
+      },
+      "address": address
     });
   }
 

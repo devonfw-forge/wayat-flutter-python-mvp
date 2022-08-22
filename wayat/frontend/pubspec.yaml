@@ -58,11 +58,13 @@ dependencies:
   timeago: ^3.2.2
   # To launch google maps app
   url_launcher: ^6.1.5
-  #Firebase dependencies
+  # Firebase dependencies
   firebase_core: ^1.20.0
   cloud_firestore: ^3.4.3
   firebase_auth: ^3.6.1
   image_picker: ^0.8.5+3
+  # Testing mocks
+  mockito: ^5.3.0
 
 dev_dependencies:
   flutter_test:

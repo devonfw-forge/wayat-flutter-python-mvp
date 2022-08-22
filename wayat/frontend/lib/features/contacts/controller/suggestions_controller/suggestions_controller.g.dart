@@ -25,6 +25,14 @@ mixin _$SuggestionsController on _SuggestionsController, Store {
     });
   }
 
+  late final _$sendRequestAsyncAction =
+      AsyncAction('_SuggestionsController.sendRequest', context: context);
+
+  @override
+  Future<void> sendRequest(Contact contact) {
+    return _$sendRequestAsyncAction.run(() => super.sendRequest(contact));
+  }
+
   late final _$updateSuggestedContactsAsyncAction = AsyncAction(
       '_SuggestionsController.updateSuggestedContacts',
       context: context);
@@ -37,17 +45,6 @@ mixin _$SuggestionsController on _SuggestionsController, Store {
 
   late final _$_SuggestionsControllerActionController =
       ActionController(name: '_SuggestionsController', context: context);
-
-  @override
-  void sendRequest(Contact contact) {
-    final _$actionInfo = _$_SuggestionsControllerActionController.startAction(
-        name: '_SuggestionsController.sendRequest');
-    try {
-      return super.sendRequest(contact);
-    } finally {
-      _$_SuggestionsControllerActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void setTextFilter(String text) {

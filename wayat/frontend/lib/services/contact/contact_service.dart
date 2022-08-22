@@ -9,5 +9,6 @@ abstract class ContactService extends RESTService {
 
   Future<List<Contact>> getFilteredContacts(
       List<ContactAdressBook> importedContacts);
-  void removeContact(Contact contact);
+
+  Future<bool> removeContact(Contact contact);
 }

@@ -3,13 +3,14 @@ from typing import Optional
 
 from pydantic import Field, BaseModel
 
-from app.common.base.base_firebase_repository import BaseFirebaseModel, GeoPoint
-from app.common.utils import get_current_time
+from app.common.infra.gcp.base_firebase_repository import BaseFirebaseModel, GeoPoint
+from app.domain.wayat_management.utils import get_current_time
 
 
 class Location(BaseModel):
     last_updated: datetime
     value: GeoPoint
+    address: str
 
 
 class ContactLocation(BaseModel):
@@ -22,7 +23,7 @@ class UserEntity(BaseFirebaseModel):
     name: Optional[str]
     email: str
     phone: Optional[str]
-    image_url: Optional[str]
+    image_ref: Optional[str]
     contacts: list[str] = Field(default_factory=list)
     sent_requests: list[str] = Field(default_factory=list)
     pending_requests: list[str] = Field(default_factory=list)
