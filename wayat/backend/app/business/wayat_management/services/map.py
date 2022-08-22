@@ -1,7 +1,6 @@
 import asyncio
-import functools
 import logging
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 from functools import lru_cache
 from typing import overload
 
@@ -9,7 +8,7 @@ from fastapi import Depends
 from pydantic import BaseSettings
 
 from app.common.core.configuration import load_env_file_on_settings
-from app.common.utils import haversine_distance, get_current_time
+from app.domain.wayat_management.utils import haversine_distance, get_current_time
 from app.domain.wayat_management.models.status import ContactRefInfo
 from app.domain.wayat_management.models.user import UserEntity, Location
 from app.domain.wayat_management.repositories.status import StatusRepository
@@ -51,8 +50,10 @@ class MapService:
     async def update_location(self,
                               uid: str,
                               latitude: float,
-                              longitude: float):
-        await self._user_repository.update_user_location(uid, latitude, longitude)
+                              longitude: float,
+                              address: str,
+                              ):
+        await self._user_repository.update_user_location(uid, latitude, longitude, address)
         await self._update_contacts_status(uid, latitude, longitude)
 
     async def update_map_status(self, uid: str, next_map_state: bool):
@@ -111,7 +112,7 @@ class MapService:
         contact_location = await self._user_repository.get_user_location(contact_uid)
         if contact_location is not None:
             return ContactRefInfo(uid=contact_uid, last_updated=contact_location.last_updated,
-                                  location=contact_location.value)
+                                  location=contact_location.value, address=contact_location.address)
         else:
             return None
 
@@ -130,7 +131,7 @@ class MapService:
 
     async def _update_contact_status(self, contact: UserEntity):
         if self._needs_update(contact.last_status_update):
-            await self.regenerate_map_status(uid=contact.document_id)
+            await self.regenerate_map_status(user=contact)
 
     def _needs_update(self, last_updated: datetime):
         return (datetime.now(last_updated.tzinfo) - last_updated).seconds > self._update_threshold

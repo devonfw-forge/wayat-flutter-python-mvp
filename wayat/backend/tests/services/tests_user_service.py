@@ -1,29 +1,65 @@
+import io
 import unittest
+from typing import BinaryIO
 from unittest import IsolatedAsyncioTestCase
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
-from app.business.wayat_management.services.user import UserService, map_to_dto
-from app.common.infra.firebase import FirebaseAuthenticatedUser
+from app.common.exceptions.http import NotFoundException
+from requests import RequestException
+
+from app.business.wayat_management.services.user import UserService
+from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
+from app.domain.wayat_management.repositories.files import FileStorage, StorageSettings
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
 
+TEST_IMAGE_BYTES = b'test_data'
+TEST_RESIZED_BYTES = b'resized_data'
+
+
+async def extract_picture_mock(*args, **kwargs):
+    return "created_url"
+
+
+def resize_image_mock(data: BinaryIO | bytes, size) -> bytes:
+    return TEST_RESIZED_BYTES
+
+
+@patch("app.business.wayat_management.services.user.resize_image", new=resize_image_mock)
 class UserServiceTests(IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self):
+        # Mocks
         self.mock_user_repo = MagicMock(UserRepository)
         self.mock_status_repo = MagicMock(StatusRepository)
-        self.user_service = UserService(self.mock_user_repo, self.mock_status_repo)
+        self.mock_file_repository = MagicMock(FileStorage)
+        self.mock_file_repository.generate_signed_url.return_value = "created_url"
+        self.storage_settings = MagicMock(StorageSettings)
+        self.storage_settings.default_picture = "images/test_default"
+        self.storage_settings.thumbnail_size = 200
+
+        # UserService
+        self.user_service = UserService(
+            self.mock_user_repo,
+            self.mock_status_repo,
+            self.mock_file_repository,
+            self.storage_settings
+        )
+
+        self._backup_extract_picture = self.user_service._extract_picture
+        self.user_service._extract_picture = extract_picture_mock
 
     async def test_get_user_that_not_exists_should_create_it(self):
-        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], name="test",
+                                              picture="test_picture")
         test_entity = UserEntity(
             document_id=test_data.uid,
             name=test_data.name,
             email=test_data.email,
             phone=test_data.phone,
-            image_url=test_data.picture
+            image_ref=test_data.picture
         )
 
         self.mock_user_repo.get.return_value = None
@@ -38,12 +74,12 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             name=test_data.name,
             email=test_data.email,
             phone=test_data.phone,
-            image_url=test_data.picture
+            image_ref="created_url",
         )
         self.mock_status_repo.initialize.assert_called_with(test_data.uid)
 
         assert is_new_user
-        assert result_dto == map_to_dto(test_entity)
+        assert result_dto == self.user_service.map_to_dto(test_entity)
 
     async def test_get_user_that_exists_should_return_it(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
@@ -66,17 +102,10 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_status_repo.initialize.assert_not_called()
 
         assert not is_new_user
-        assert result_dto == map_to_dto(test_entity)
+        assert result_dto == self.user_service.map_to_dto(test_entity)
 
     async def test_update_user_should_only_accept_valid_params(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
-        test_entity = UserEntity(
-            document_id=test_data.uid,
-            name=test_data.name,
-            email=test_data.email,
-            phone=test_data.phone,
-            image_url=test_data.picture
-        )
 
         test_update_valid = {
             "name": test_data.name,
@@ -119,6 +148,66 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         self.mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity.document_id])
 
+    async def test_get_pending_friend_requests_should_return_ok(self):
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_pending_data = FirebaseAuthenticatedUser(uid="test-pending", email="test@email.es", roles=[],
+                                                      picture="test", name="test-pending")
+        test_sent_data = FirebaseAuthenticatedUser(uid="test-sent", email="test@email.es", roles=[],
+                                                   picture="test", name="test-sent")
+        test_entity = UserEntity(
+            document_id=test_data.uid,
+            name=test_data.name,
+            email=test_data.email,
+            phone=test_data.phone,
+            image_url=test_data.picture,
+            sent_requests=[test_sent_data.uid],
+            pending_requests=[test_pending_data.uid]
+        )
+
+        test_entity_pending = UserEntity(
+            document_id=test_pending_data.uid,
+            name=test_pending_data.name,
+            email=test_pending_data.email,
+            phone=test_pending_data.phone,
+            image_url=test_pending_data.picture,
+        )
+
+        test_entity_sent = UserEntity(
+            document_id=test_sent_data.uid,
+            name=test_sent_data.name,
+            email=test_sent_data.email,
+            phone=test_sent_data.phone,
+            image_url=test_sent_data.picture,
+        )
+
+        def mocking_get_user(uid: str):
+            if uid == test_entity.document_id:
+                return test_entity
+            if uid == test_entity_pending.document_id:
+                return test_entity_pending
+            if uid == test_entity_sent.document_id:
+                return test_entity_sent
+            else:
+                return None
+
+        self.mock_user_repo.get.side_effect = mocking_get_user
+
+        # Call to be tested
+        pending, sent = await self.user_service.get_pending_friend_requests(test_data.uid)
+
+        # Asserts
+        assert pending == [self.user_service.map_to_dto(test_entity_pending)]
+        assert sent == [self.user_service.map_to_dto(test_entity_sent)]
+
+        # Test exception
+        found_exception = False
+        try:
+            await self.user_service.get_pending_friend_requests('bad')
+        except NotFoundException:
+            found_exception = True
+
+        assert found_exception == True
+
     async def test_find_by_phone_should_return_filtered_users_data(self):
         test_entity = UserEntity(
             document_id="test",
@@ -133,7 +222,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         user_dtos = await self.user_service.find_by_phone([test_entity.phone])
 
         # Asserts
-        self.assertCountEqual(user_dtos, [map_to_dto(test_entity)])
+        self.assertCountEqual(user_dtos, [self.user_service.map_to_dto(test_entity)])
         self.mock_user_repo.find_by_phone.assert_called_with(phones=[test_entity.phone])
 
     async def test_get_contacts_should_return_user_data(self):
@@ -147,11 +236,90 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo.get_contacts.return_value = [test_entity]
 
         # Call to be tested
-        user_dtos = await self.user_service.get_contacts("uid")
+        user_dtos = await self.user_service.get_user_contacts("uid")
 
         # Asserts
-        self.assertCountEqual(user_dtos, [map_to_dto(test_entity)])
+        self.assertCountEqual(user_dtos, [self.user_service.map_to_dto(test_entity)])
         self.mock_user_repo.get_contacts.assert_called_with("uid")
+
+    async def test_cancel_sent_request_should_call_repo(self):
+        test_user, test_friend = "user", "friend"
+        # Call to be tested
+        await self.user_service.cancel_friend_request(uid=test_user, contact_id=test_friend)
+
+        # Asserts
+        self.mock_user_repo.cancel_friend_request.assert_called_with(sender_id=test_user, receiver_id=test_friend)
+
+    async def test_handle_friend_request_should_call_repo(self):
+        test_user, test_friend, accept = "user", "friend", True
+        # Call to be tested
+        await self.user_service.respond_friend_request(user_uid=test_user, friend_uid=test_friend, accept=accept)
+
+        # Asserts
+        self.mock_user_repo.respond_friend_request.assert_called_with(
+            self_uid=test_user, friend_uid=test_friend, accept=accept
+        )
+
+    async def test_delete_friend_should_call_repo(self):
+        test_user, test_friend = "user", "friend"
+        # Call to be tested
+        await self.user_service.delete_contact(user_id=test_user, contact_id=test_friend)
+
+        # Asserts
+        self.mock_user_repo.delete_contact.assert_called_with(test_user, test_friend)
+
+    async def test_upload_profile_picture_should_call_repo(self):
+        # Mocks
+        self.mock_file_repository.upload_image.return_value = "test/ref"
+
+        # Call under test
+        await self.user_service.update_profile_picture("uid_test", ".jpeg", TEST_IMAGE_BYTES)
+
+        # Asserts
+        self.mock_file_repository.upload_image.assert_called_with("uid_test.jpeg", TEST_RESIZED_BYTES)
+
+    @patch("app.business.wayat_management.services.user.requests")
+    async def test_extract_picture_when_invalid_url_should_return_default(self, mock_requests):
+        # Mocks
+        def mocked_get(url):
+            class MockResponse:
+                pass
+
+            if url == "RAISE":
+                raise RequestException
+            elif url == "FAIL":
+                response = MockResponse()
+                response.status_code = 400
+                return response
+            elif url == "INVALID":
+                response = MockResponse()
+                response.status_code = 200
+                headers = {"Content-Type": "image/invalid"}
+                response.headers = headers
+                return response
+        mock_requests.get = mocked_get
+
+        # Calls under test and asserts
+        assert await self._backup_extract_picture(uid="test_uid", url="") == self.storage_settings.default_picture
+        assert await self._backup_extract_picture(uid="test_uid", url="RAISE") == self.storage_settings.default_picture
+        assert await self._backup_extract_picture(uid="test_uid", url="FAIL") == self.storage_settings.default_picture
+        assert await self._backup_extract_picture(uid="test_uid",
+                                                  url="INVALID") == self.storage_settings.default_picture
+
+    @patch("app.business.wayat_management.services.user.requests")
+    async def test_extract_picture_when_valid_url_should_return_upload(self, mock_requests):
+        # Mocks
+        class MockResponse:
+            status_code = 200
+            headers = {"Content-Type": "image/png"}
+            content = TEST_IMAGE_BYTES
+        mock_requests.get.return_value = MockResponse()
+
+        # Call under test
+        await self._backup_extract_picture(uid="test_uid", url="test_url")
+
+        # Asserts
+        self.mock_file_repository.upload_image.assert_called_with("test_uid.png", TEST_RESIZED_BYTES)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import BaseModel
 
 
@@ -10,6 +8,7 @@ class Coordinates(BaseModel):
 
 class LocationUpdateRequest(BaseModel):
     position: Coordinates
+    address: str
 
 
 class UpdateMapRequest(BaseModel):

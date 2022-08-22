@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Optional, Any
+from typing import Optional
 
 from fastapi import Depends, FastAPI
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer

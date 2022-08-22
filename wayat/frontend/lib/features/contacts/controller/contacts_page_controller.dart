@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
@@ -11,15 +12,19 @@ class ContactsPageController = _ContactsPageController
     with _$ContactsPageController;
 
 abstract class _ContactsPageController with Store {
-  RequestsController requestsController = RequestsController();
-  FriendsController friendsController = FriendsController();
+  late RequestsController requestsController;
+  late FriendsController friendsController;
   late SuggestionsController suggestionsController;
 
   _ContactsPageController() {
-    //Suggestions controller needs access to the friends controller to
-    //be able to filter the imported address book contacts from the
-    //alreaady added wayat contacts without making extra REST calls
-    suggestionsController = SuggestionsController(friendsController);
+    friendsController = FriendsController();
+    // Requests controller needs access to the friends controller to
+    // be able to update the contacts if a request is accepted
+    requestsController = RequestsController(friendsController);
+    // Suggestions controller needs access to the friends and friendscontroller to
+    // be able to filter the imported address book contacts from the
+    // alreaady added wayat contacts without making extra REST calls
+    suggestionsController = SuggestionsController(friendsController, requestsController);
   }
 
   TextEditingController searchBarController = TextEditingController();

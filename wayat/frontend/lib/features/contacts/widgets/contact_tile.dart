@@ -36,7 +36,8 @@ class ContactTile extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                contact.name,
+                contact.name.substring(0, 
+                  contact.name.length > 15 ? 15 : contact.name.length),
                 style:
                     const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
               ),

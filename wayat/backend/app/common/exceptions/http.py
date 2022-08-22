@@ -6,7 +6,11 @@ from fastapi import HTTPException
 ##################################
 # Base HTTP Exception
 ##################################
+from pydantic import BaseModel
 
+
+class HTTPError(BaseModel):
+    detail: str
 
 class DevonHttpException(HTTPException):
     def __init__(self, status_code: int, detail: str = None, headers: Optional[Dict[str, Any]] = None):

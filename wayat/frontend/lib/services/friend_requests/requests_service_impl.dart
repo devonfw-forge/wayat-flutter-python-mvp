@@ -1,40 +1,58 @@
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/services/contact/mock/contacts_mock.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 
 class RequestsServiceImpl extends RequestsService {
+  
+  @override
   Future<Map<String, List<Contact>>> getRequests() async {
-    // TODO: IMPLEMENT GET REQUESTS
+    Map<String, dynamic> friendRequests = await super.sendGetRequest("users/friend-requests");
+    
+    List<Contact> pendingRequests = (friendRequests["pending_requests"] as List).map((e) {
+      return Contact.fromMap(e);
+    }).toList();
+
+    List<Contact> sentRequests = (friendRequests["sent_requests"] as List).map((e) {
+      return Contact.fromMap(e);
+    }).toList();
 
     return {
-      "pending_requests": ContactsMock.availableContacts(),
-      "sent_requests": ContactsMock.unavailableContacts()
+      "pending_requests": pendingRequests,
+      "sent_requests": sentRequests
     };
   }
 
   @override
-  Future sendRequests(List<Contact> contacts) async {
-    await super.sendPostRequest(
-        "users/add-contact", {"users": contacts.map((e) => e.id).toList()});
+  Future<bool> sendRequests(List<Contact> contacts) async {
+    return (await super.sendPostRequest(
+      "users/add-contact", {"users": contacts.map((e) => e.id).toList()}))
+        .statusCode / 10 == 20;
   }
 
   @override
-  Future acceptRequest(Contact contact) async {
-    // TODO: implement acceptRequest
+  Future<bool> acceptRequest(Contact contact) async {
+    return (await super.sendPostRequest("users/friend-requests", {
+      "uid": contact.id,
+      "accept": true
+    })).statusCode / 10 == 20;
   }
 
   @override
-  Future rejectRequest(Contact contact) async {
-    // TODO: implement rejectRequest
+  Future<bool> rejectRequest(Contact contact) async {
+    return (await super.sendPostRequest("users/friend-requests", {
+      "uid": contact.id,
+      "accept": false
+    })).statusCode / 10 == 20;
   }
 
   @override
-  Future sendRequest(Contact contact) async {
-    // TODO: implement sendRequest
+  Future<bool> sendRequest(Contact contact) async {
+    return (await super.sendPostRequest(
+      "users/add-contact", {"users": [contact.id]}))
+        .statusCode / 10 == 20;
   }
 
   @override
-  Future unsendRequest(Contact contact) async {
-    // TODO: implement sendRequest
+  Future<bool> unsendRequest(Contact contact) async {
+    return await super.sendDelRequest("users/friend-requests/sent/${contact.id}");
   }
 }

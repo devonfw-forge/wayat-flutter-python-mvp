@@ -20,7 +20,8 @@ abstract class RESTService extends Service {
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
     http.Response resultJson = await http.get(Uri.parse("$baseUrl/$subPath"),
         headers: await _getHeaders());
-    return json.decode(resultJson.body) as Map<String, dynamic>;
+    return json.decode(const Utf8Decoder().convert(resultJson.bodyBytes))
+        as Map<String, dynamic>;
   }
 
   /// Sends a **POST** request to [baseUrl]/[subPath] and with [body] as content,
