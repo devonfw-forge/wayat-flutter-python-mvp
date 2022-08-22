@@ -3,7 +3,7 @@ from unittest import IsolatedAsyncioTestCase, skip
 from unittest.mock import MagicMock, patch
 
 from app.business.wayat_management.services.map import MapService, MapSettings
-from app.common.base.base_firebase_repository import GeoPoint
+from app.common.infra.gcp.base_firebase_repository import GeoPoint
 from app.domain.wayat_management.models.user import UserEntity, Location
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
@@ -59,6 +59,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
             uid=uid,
             latitude=0.0,
             longitude=0.0,
+            address="Gulf of Guinea",
         )
 
         # Asserts
@@ -69,7 +70,8 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         # User2 is aprox 3 km away from (0,0)
         self.mock_entities["user_2"].location = Location(
             last_updated=datetime.now(),
-            value=GeoPoint.validate_geopoint((0, 0.03))
+            value=GeoPoint.validate_geopoint((0, 0.03)),
+            address="Gulf of Guinea",
         )
         self.mock_user_repo.find_contacts_with_map_open.return_value = [self.mock_entities["user_2"]]
         uid = self.mock_entities["user_1"].document_id
@@ -79,6 +81,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
             uid=uid,
             latitude=0.0,
             longitude=0.0,
+            address="Gulf of Guinea",
         )
 
         # Asserts
@@ -89,7 +92,8 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         # User2 is aprox 1 km away from (0,0)
         self.mock_entities["user_2"].location = Location(
             last_updated=datetime.now(),
-            value=GeoPoint.validate_geopoint((0, 0.01))
+            value=GeoPoint.validate_geopoint((0, 0.01)),
+            address="Gulf of Guinea",
         )
         self.mock_user_repo.find_contacts_with_map_open.return_value = [self.mock_entities["user_2"]]
         uid = self.mock_entities["user_1"].document_id
@@ -99,6 +103,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
             uid=uid,
             latitude=0.0,
             longitude=0.0,
+            address="Gulf of Guinea",
         )
 
         # Asserts
@@ -106,10 +111,10 @@ class MapServiceTests(IsolatedAsyncioTestCase):
 
     async def test_update_location_should_update_location_in_repository(self):
         # Call to test
-        await self.map_service.update_location("uid_1", 0.1, 0.2)
+        await self.map_service.update_location("uid_1", 0.1, 0.2, "Gulf of Guinea")
 
         # Asserts
-        self.mock_user_repo.update_user_location.assert_called_with("uid_1", 0.1, 0.2)
+        self.mock_user_repo.update_user_location.assert_called_with("uid_1", 0.1, 0.2, "Gulf of Guinea")
 
     @skip("Needs fixing")
     @patch("app.business.wayat_management.services.map.datetime")
