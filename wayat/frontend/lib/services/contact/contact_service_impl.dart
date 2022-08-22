@@ -33,7 +33,8 @@ class ContactServiceImpl extends ContactService {
 
     Response response = await super
         .sendPostRequest("users/find-by-phone", {"phones": phoneList});
-    Map<String, dynamic> jsonBody = jsonDecode(response.body);
+    Map<String, dynamic> jsonBody =
+        jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
     List<Contact> contactList = (jsonBody["users"] as List<dynamic>)
         .map((e) => Contact.fromMap(e))
         .toList();
