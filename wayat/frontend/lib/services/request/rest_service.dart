@@ -17,15 +17,6 @@ abstract class RESTService extends Service {
     };
   }
 
-  /// Generetes a *dictionary* with the headers for backend connection
-  Future<Map<String, String>> _getMultiPartHeader() async {
-    AuthService authService = GetIt.I.get<SessionState>().authService;
-    return {
-      "Content-Type": "multipart/form-data",
-      "Authorization": "Bearer ${await authService.getIdToken()}"
-    };
-  }
-
   /// Sends a **GET** request to [baseUrl]/[subPath], using the configured authentication
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
     Response resultJson =
