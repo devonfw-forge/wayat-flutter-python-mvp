@@ -25,8 +25,8 @@ class FindByPhoneRequest(BaseModel):
 
 
 class UpdatePreferencesRequest(BaseModel):
-    do_not_disturb: bool
-    share_location: bool
+    do_not_disturb: Optional[bool]
+    share_location: Optional[bool]
 
 
 class UserDTO(UpdateUserRequest):
