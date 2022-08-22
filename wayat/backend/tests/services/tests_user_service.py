@@ -14,7 +14,6 @@ from app.domain.wayat_management.repositories.files import FileStorage, StorageS
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
 
-
 TEST_IMAGE_BYTES = b'test_data'
 TEST_RESIZED_BYTES = b'resized_data'
 
@@ -25,6 +24,19 @@ async def extract_picture_mock(*args, **kwargs):
 
 def resize_image_mock(data: BinaryIO | bytes, size) -> bytes:
     return TEST_RESIZED_BYTES
+
+
+async def mock_find_by_phone(phones: list[str]):
+    data = {
+        "+34-TEST": UserEntity(
+            document_id="test",
+            email="test@test.com",
+            image_url="test",
+            name="test",
+            phone="+34-TEST",
+        )
+    }
+    return [data[key] for key in phones if key in data]
 
 
 @patch("app.business.wayat_management.services.user.resize_image", new=resize_image_mock)
@@ -297,6 +309,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
                 headers = {"Content-Type": "image/invalid"}
                 response.headers = headers
                 return response
+
         mock_requests.get = mocked_get
 
         # Calls under test and asserts
@@ -313,6 +326,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             status_code = 200
             headers = {"Content-Type": "image/png"}
             content = TEST_IMAGE_BYTES
+
         mock_requests.get.return_value = MockResponse()
 
         # Call under test
@@ -320,6 +334,20 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         # Asserts
         self.mock_file_repository.upload_image.assert_called_with("test_uid.png", TEST_RESIZED_BYTES)
+
+    async def test_phone_in_use_when_phone_in_use_should_return_true(self):
+        # Mocks
+        self.mock_user_repo.find_by_phone.side_effect = mock_find_by_phone
+
+        # Call under test and asserts
+        assert await self.user_service.phone_in_use("+34-TEST") is True
+
+    async def test_phone_in_use_when_phone_not_in_use_should_return_false(self):
+        # Mocks
+        self.mock_user_repo.find_by_phone.side_effect = mock_find_by_phone
+
+        # Call under test and asserts
+        assert await self.user_service.phone_in_use("+34-NO_TEST") is False
 
 
 if __name__ == "__main__":
