@@ -49,15 +49,11 @@ abstract class RESTService extends Service {
     MultipartRequest request =
         MultipartRequest('POST', Uri.parse("$baseUrl/$subPath"));
     List<int> bytes = await File(filePath).readAsBytes();
-    MultipartFile httpImage = MultipartFile.fromBytes('file', bytes,
-        contentType: MediaType(
-          'image',
-          type,
-        ),
-        filename: 'file_${filePath.hashCode}.$type');
+    MultipartFile httpImage = MultipartFile.fromBytes('upload_file', bytes,
+        contentType: MediaType.parse(type),
+        filename: 'upload_file_${filePath.hashCode}.$type');
     request.headers["Authorization"] =
         "Bearer ${await GetIt.I.get<SessionState>().authService.getIdToken()}";
-    request.headers["Content-Type"] = "multipart/form-data";
     request.files.add(httpImage);
     return await request.send();
   }
