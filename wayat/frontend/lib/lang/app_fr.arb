@@ -78,5 +78,8 @@
     "accept": "Accepter",
     "search": "Recherche",
 
-    "viewInformation": "Voir les informations"
+    "viewInformation": "Voir les informations",
+
+    "profileShareLocation": "Paramètres de localisation",
+    "profileActiveLocation": "Partage d'emplacement"
 }
