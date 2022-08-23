@@ -5,7 +5,8 @@ formatters:
   simple:
     format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   cloud_run:
-    format: "{\"severity\": \"%(levelname)s\", \"component\": \"%(name)s\", \"message\": \"%(message)s\", \"timestamp\": \"%(asctime)-s\"}"
+    format: "%(name)-30s: %(message)s"
+    class: app.common.infra.gcp.cloud_logging.CloudRunJSONFormatter
 
 handlers:
   console:
