@@ -14,9 +14,10 @@ class HomePage extends StatelessWidget {
     return AutoTabsRouter(
       routes: [
         HomeMapRoute(),
-        const CreateEventRoute(),
+        //const CreateEventRoute(),
         ContactsWrapper(),
-        const NotificationsRoute(),
+        //const NotificationsRoute(),
+        ProfileWrapper(),
       ],
       builder: (context, child, animation) {
         final tabsRouter = AutoTabsRouter.of(context);

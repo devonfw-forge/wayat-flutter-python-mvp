@@ -14,7 +14,11 @@
     "home": "Home",
     "contacts": "Contacts",
     "events": "Evénements",
+    "name": "Nom",
+
     "profile": "Profil",
+    "editProfile": "Editer le Profil",
+    "viewProfile" : "Voir le profil",
 
     "addEvents": "Ajouter un événement",
     "notifications": "Notifications",
@@ -32,8 +36,28 @@
     "selectContacts": "Sélectionner les contacts",
 
     "sharingLocation": "Lieu de partage",
+    "activeSharingLocation": "Emplacement actif",
+    "doNotDisturb": "Ne pas déranger",
 
-    "viewProfile" : "Voir le profil",
+    "preferences": "Préférences",
+    "faqs": "FAQS",
+    "privacy": "Intimité",
+    "account": "Compte",
+    "logOut": "Se Déconnecter",
+    "deleteAccount": "Supprimer le Compte",
+
+    "information": "Informations",
+    "darkTheme": "Activer le thème sombre",
+    "language": "Langue",
+
+    "chooseProfileFoto": "Choisissez la photo de profil",
+    "camera": "Caméra",
+    "gallery": "Galerie",
+    "save": "Enregistrer",
+
+    "changePhone": "Changer de téléphone",
+    "changePassword": "Changer le mot de passe",
+
     "close" : "Fermer",
     "loadingAddress" : "Adresse de chargement",
     "noAddress" : "Aucune adresse trouvée",
@@ -54,5 +78,8 @@
     "accept": "Accepter",
     "search": "Recherche",
 
-    "viewInformation": "Voir les informations"
+    "viewInformation": "Voir les informations",
+
+    "profileShareLocation": "Paramètres de localisation",
+    "profileActiveLocation": "Partage d'emplacement"
 }

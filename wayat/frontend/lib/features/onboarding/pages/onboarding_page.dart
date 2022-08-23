@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -6,7 +5,6 @@ import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_state.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
 
 class OnBoardingPage extends StatelessWidget {
   final OnboardingController controller = GetIt.I.get<OnboardingController>();
