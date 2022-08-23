@@ -129,11 +129,7 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(appLocalizations.information,
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16)),
+              textAlign: TextAlign.left, style: _textStyle(Colors.black87, 16)),
         ),
         const SizedBox(height: 24),
         CustomCard(
@@ -161,11 +157,7 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(appLocalizations.account,
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16)),
+              textAlign: TextAlign.left, style: _textStyle(Colors.black87, 16)),
         ),
         const SizedBox(height: 24),
         CustomCard(
@@ -193,10 +185,7 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             appLocalizations.profileActiveLocation,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 16),
+            style: _textStyle(Colors.black87, 16),
           ),
         ),
         Observer(builder: (context) {
@@ -223,10 +212,7 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             appLocalizations.doNotDisturb,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 16),
+            style: _textStyle(Colors.black87, 16),
           ),
         ),
         Observer(builder: (context) {
