@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -15,12 +16,6 @@ class ProfilePage extends StatelessWidget {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final LocationState locationState = GetIt.I.get<LocationState>();
   final SessionState userSession = GetIt.I.get<SessionState>();
-
-  @observable
-  String name = GetIt.I.get<SessionState>().currentUser!.name;
-
-  @observable
-  String imageUrl = GetIt.I.get<SessionState>().currentUser!.imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +34,7 @@ class ProfilePage extends StatelessWidget {
         _buildProfileImage(),
         const SizedBox(height: 16),
         Observer(builder: (context) {
+          String name = userSession.currentUser!.name;
           return Text(
             name,
             textAlign: TextAlign.center,
@@ -69,18 +65,19 @@ class ProfilePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Observer(builder: (context) {
+          MyUser myUser = userSession.currentUser!;
           return Container(
             width: 120.0,
             height: 120.0,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(imageUrl),
+                image: NetworkImage(myUser.imageUrl),
                 fit: BoxFit.cover,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(100.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(100.0)),
               border: Border.all(
                 color: Colors.black87,
-                width: 5.0,
+                width: 7.0,
               ),
             ),
           );
@@ -100,7 +97,7 @@ class ProfilePage extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(appLocalizations.sharingLocation,
+          child: Text(appLocalizations.profileShareLocation,
               textAlign: TextAlign.left,
               style: const TextStyle(
                   fontWeight: FontWeight.w500,
@@ -118,11 +115,7 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.editProfile,
             onTap: () {
-              profileState.setProfile(false);
-              profileState.setEditProfile(true);
-              profileState.setPreferences(false);
-              profileState.setFaqs(false);
-              profileState.setPrivacy(false);
+              profileState.setCurrentPage(ProfilePages.editProfile);
             }),
         const SizedBox(height: 24),
 
@@ -156,21 +149,13 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.faqs,
             onTap: () {
-              profileState.setProfile(false);
-              profileState.setEditProfile(false);
-              profileState.setPreferences(false);
-              profileState.setFaqs(true);
-              profileState.setPrivacy(false); //TODO: Implement the FAQS page
+              profileState.setCurrentPage(ProfilePages.faqs);
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.privacy,
             onTap: () {
-              profileState.setProfile(false);
-              profileState.setEditProfile(false);
-              profileState.setPreferences(false);
-              profileState.setFaqs(false);
-              profileState.setPrivacy(true); //TODO: Implement the Privacy page
+              profileState.setCurrentPage(ProfilePages.privacy);
             }),
       ],
     );
@@ -216,7 +201,7 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            appLocalizations.activeSharingLocation,
+            appLocalizations.profileActiveLocation,
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,

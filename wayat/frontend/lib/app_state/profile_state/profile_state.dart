@@ -1,28 +1,19 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:get_it/get_it.dart';
+import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/services/profile/profile_service_impl.dart';
 part 'profile_state.g.dart';
 
+// ignore: library_private_types_in_public_api
 class ProfileState = _ProfileState with _$ProfileState;
 
 abstract class _ProfileState with Store {
-  ProfileService profileService = ProfileService();
+  ProfileService _profileService = ProfileService();
 
   @observable
-  bool isProfile = false;
-
-  @observable
-  bool isEditProfile = false;
-
-  @observable
-  bool isPreferences = false;
-
-  @observable
-  bool isFaqs = false;
-
-  @observable
-  bool isPrivacy = false;
+  ProfilePages currentPage = ProfilePages.profile;
 
   @observable
   bool isAccount = false;
@@ -31,28 +22,8 @@ abstract class _ProfileState with Store {
   bool isSaved = false;
 
   @action
-  void setProfile(bool setProfile) {
-    isProfile = setProfile;
-  }
-
-  @action
-  void setEditProfile(bool setEditProfile) {
-    isEditProfile = setEditProfile;
-  }
-
-  @action
-  void setPreferences(bool setPreferences) {
-    isPreferences = setPreferences;
-  }
-
-  @action
-  void setFaqs(bool setFaqs) {
-    isFaqs = setFaqs;
-  }
-
-  @action
-  void setPrivacy(bool setPrivacy) {
-    isPrivacy = setPrivacy;
+  void setCurrentPage(ProfilePages newPage) {
+    currentPage = newPage;
   }
 
   @action
@@ -60,7 +31,19 @@ abstract class _ProfileState with Store {
     isSaved = true;
   }
 
+  @action
   Future updateCurrentUser() async {
     GetIt.I.get<SessionState>().updateCurrentUser();
+  }
+
+  Future updateUserImage(XFile newImage) async {
+    _profileService.uploadProfileImage(newImage);
+    await updateCurrentUser();
+  }
+
+  @action
+  Future updateCurrentUserName(String newName) async {
+    _profileService.updateProfileName(newName);
+    GetIt.I.get<SessionState>().currentUser!.name = newName;
   }
 }

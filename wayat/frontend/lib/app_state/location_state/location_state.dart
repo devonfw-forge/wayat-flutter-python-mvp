@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/services/location/share_location_service.dart';
 import 'package:wayat/services/location/share_location_service_impl.dart';
@@ -20,7 +21,8 @@ abstract class _LocationState with Store {
   LatLng currentLocation = const LatLng(0, 0);
 
   @observable
-  bool shareLocationEnabled = true;
+  bool shareLocationEnabled =
+      GetIt.I.get<SessionState>().currentUser!.shareLocationEnabled;
 
   Future initialize() async {
     userStatusState = GetIt.I.get<UserStatusState>();

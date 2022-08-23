@@ -3,6 +3,7 @@ import 'package:wayat/domain/user/user.dart';
 
 class MyUser extends User {
   bool onboardingCompleted;
+  bool shareLocationEnabled;
 
   MyUser({
     required super.id,
@@ -11,6 +12,7 @@ class MyUser extends User {
     required super.imageUrl,
     required super.phone,
     required this.onboardingCompleted,
+    required this.shareLocationEnabled,
   });
 
   @override
@@ -20,7 +22,8 @@ class MyUser extends User {
       String? email,
       String? imageUrl,
       String? phone,
-      bool? onboardingCompleted}) {
+      bool? onboardingCompleted,
+      bool? shareLocationEnabled}) {
     return MyUser(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -28,6 +31,7 @@ class MyUser extends User {
       imageUrl: imageUrl ?? this.imageUrl,
       phone: phone ?? this.phone,
       onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
+      shareLocationEnabled: shareLocationEnabled ?? this.shareLocationEnabled,
     );
   }
 
@@ -39,7 +43,8 @@ class MyUser extends User {
       'email': email,
       'image_url': imageUrl,
       'phone': phone,
-      'onboardingCompleted': onboardingCompleted
+      'onboardingCompleted': onboardingCompleted,
+      'share_location': shareLocationEnabled
     };
   }
 
@@ -50,7 +55,8 @@ class MyUser extends User {
         email: map['email'] as String,
         imageUrl: map['image_url'] as String,
         phone: map['phone'] ?? "",
-        onboardingCompleted: map['onboarding_completed'] as bool);
+        onboardingCompleted: map['onboarding_completed'] as bool,
+        shareLocationEnabled: map['share_location'] as bool);
   }
 
   factory MyUser.fromJson(String source) =>

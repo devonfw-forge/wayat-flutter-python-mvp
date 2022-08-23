@@ -81,6 +81,14 @@ mixin _$SessionState on _SessionState, Store {
     return _$doneOnBoardingAsyncAction.run(() => super.doneOnBoarding());
   }
 
+  late final _$initializeUserAsyncAction =
+      AsyncAction('_SessionState.initializeUser', context: context);
+
+  @override
+  Future<dynamic> initializeUser() {
+    return _$initializeUserAsyncAction.run(() => super.initializeUser());
+  }
+
   late final _$updateCurrentUserAsyncAction =
       AsyncAction('_SessionState.updateCurrentUser', context: context);
 

@@ -12,15 +12,14 @@ import 'package:wayat/features/contacts/pages/contacts_page/suggestions_page/sug
 import 'package:wayat/features/home/pages/home_page.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:wayat/features/notifications/page/notifications_page.dart';
-import 'package:wayat/features/create_event/page/create_event_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_wrapper.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
 import 'package:wayat/features/profile/pages/faq/faqs.dart';
 import 'package:wayat/features/profile/pages/preferences/preferences.dart';
 import 'package:wayat/features/profile/pages/privacy/privacy.dart';
-import 'package:wayat/features/profile/pages/profile/edit_profile.dart';
-import 'package:wayat/features/profile/pages/profile/profile.dart';
+import 'package:wayat/features/profile/pages/profile/edit_profile_page.dart';
+import 'package:wayat/features/profile/pages/profile/profile_page.dart';
 import 'package:wayat/features/profile/pages/profile/profile_wraper.dart';
 import 'package:wayat/features/root/root_wrapper.dart';
 
@@ -43,7 +42,7 @@ import 'package:wayat/features/root/root_wrapper.dart';
         ]),
         CustomRoute(
             page: SentRequestsPage,
-            transitionsBuilder: TransitionsBuilders.slideLeft)
+            transitionsBuilder: TransitionsBuilders.slideLeftWithFade)
       ]),
       AutoRoute(page: NotificationsPage),
       AutoRoute(page: ProfileWrapper, children: [
