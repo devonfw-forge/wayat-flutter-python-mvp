@@ -18,7 +18,10 @@ class CloudRunJSONFormatter(logging.Formatter):
             # Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z"
             # https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
             "timestamp": datetime.fromtimestamp(record.created).isoformat() + "Z",
-            "severity": record.levelname
+            "severity": record.levelname,
+            "labels": {
+                "logger_name": record.name
+            }
         }
 
         return json.dumps(log)
