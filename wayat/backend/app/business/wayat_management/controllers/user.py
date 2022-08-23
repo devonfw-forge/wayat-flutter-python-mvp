@@ -14,6 +14,7 @@ from app.business.wayat_management.models.user import (
     UpdatePreferencesRequest, UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest,
     UserDTO,
 )
+from app.business.wayat_management.services.map import MapService
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
 from app.common.exceptions.http import HTTPError
@@ -87,9 +88,14 @@ async def add_contact(request: AddContactsRequest, user_service: UserService = D
 @router.post("/preferences", description="Update the preferences of a user")
 async def update_preferences(request: UpdatePreferencesRequest,
                              user_service: UserService = Depends(UserService),
+                             map_service: MapService = Depends(MapService),
                              user: FirebaseAuthenticatedUser = Depends(get_user())):
     logger.info(f"Updating preferences for user {user.uid} with values {request.dict(exclude_unset=True)}")
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
+    if request.share_location is False:
+        # share_location was set to false in this request, so we must delete the user
+        # from all the maps in which he's present
+        await map_service.vanish_user(user.uid)
 
 
 @router.get("/contacts", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
