@@ -1,6 +1,9 @@
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/contact/contact_address_book.dart';
+import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/services/contact/contact_service.dart';
@@ -38,12 +41,14 @@ abstract class _SuggestionsController with Store {
   Future updateSuggestedContacts() async {
     List<ContactAdressBook> adBookContacts =
         await ContactsAddressServiceImpl.getAll();
+    MyUser me = GetIt.I.get<SessionState>().currentUser!;
     await requestsController.updateRequests();
     allSuggestions = (await contactsService.getFilteredContacts(adBookContacts))
-        .where((element) => 
-          !friendsController.allContacts.contains(element)
-          && !requestsController.sentRequests.contains(element)
-        ).toList();
+        .where((element) =>
+            !friendsController.allContacts.contains(element) &&
+            !requestsController.sentRequests.contains(element) &&
+            me.id != element.id)
+        .toList();
     filteredSuggestions = ObservableList.of(allSuggestions
         .where((element) =>
             element.name.toLowerCase().contains(textFilter.toLowerCase()))
