@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/service.dart';
+import 'package:http/http.dart' as http;
 import 'package:http_parser/src/media_type.dart';
 
 abstract class RESTService extends Service {
