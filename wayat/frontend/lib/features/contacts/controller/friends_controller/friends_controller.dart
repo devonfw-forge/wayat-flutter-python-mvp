@@ -45,8 +45,7 @@ abstract class _FriendsController with Store {
 
   @action
   Future<void> removeContact(Contact contact) async {
-    if (await _service.removeContact(contact)) {
-      updateContacts();
-    }
+    allContacts.remove(contact);
+    _service.removeContact(contact);
   }
 }
