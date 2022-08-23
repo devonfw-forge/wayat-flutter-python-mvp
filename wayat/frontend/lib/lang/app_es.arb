@@ -50,10 +50,10 @@
     "darkTheme": "Habilitar tema oscuro",
     "language": "Idioma",
 
-    "chooseProfileFoto": "Elige foto de perfil",
+    "chooseProfileFoto": "Escoger imagen desde",
     "camera": "Cámara",
     "gallery": "Galería",
-    "save": "Ahorrar",
+    "save": "Guardar",
 
     "changePhone": "Cambiar de teléfono",
     "changePassword": "Cambiar Contraseña",
@@ -78,5 +78,8 @@
     "accept": "Aceptar",
     "search": "Buscar",
 
-    "viewInformation": "Ver información"
+    "viewInformation": "Ver información",
+
+    "profileShareLocation": "Ajustes de ubicación",
+    "profileActiveLocation": "Compartir ubicación"
 }

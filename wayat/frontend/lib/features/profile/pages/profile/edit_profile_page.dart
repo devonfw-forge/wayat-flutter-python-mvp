@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
@@ -18,8 +19,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
 
   XFile? currentSelectedImage;
-  String name = '';
   TextAlign _align = TextAlign.end;
+  String name = GetIt.I.get<SessionState>().currentUser!.name;
+  bool isVisible = false;
 
   @override
   void initState() {
@@ -36,43 +38,48 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    name = GetIt.I.get<SessionState>().currentUser!.name;
-    return Column(
-      children: [
-        _profileAppBar(),
-        const SizedBox(height: 18),
-        _buildEditProfileImage(),
-        const SizedBox(height: 32),
-        _nameTextField(),
-        const SizedBox(height: 34.5),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          _profileAppBar(),
+          _buildEditProfileImage(),
+          const SizedBox(height: 32),
+          _nameTextField(),
+          const SizedBox(height: 34.5),
 
-        // TODO: Implement the Changing phone page
-        // _changePhone(),
-      ],
+          // TODO: Implement the Changing phone page
+          // _changePhone(),
+        ],
+      ),
     );
   }
 
-  Row _profileAppBar() => Row(
+  Widget _profileAppBar() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 10),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                InkWell(
-                    onTap: () {
-                      _onPressedBackButton();
-                    },
-                    child: const Icon(Icons.arrow_back,
-                        color: Colors.black87, size: 20)),
-                Padding(
-                  padding: const EdgeInsets.only(left: 14),
-                  child: Text(appLocalizations.profile,
-                      style: _textStyle(Colors.black87, 16)),
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              IconButton(
+                  splashRadius: 25,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  iconSize: 25,
+                  onPressed: () {
+                    _onPressedBackButton();
+                  },
+                  icon: const Icon(Icons.arrow_back, color: Colors.black87)),
+              Padding(
+                padding: const EdgeInsets.only(left: 14),
+                child: Text(appLocalizations.profile,
+                    style: _textStyle(Colors.black87, 16)),
+              ),
+            ],
           ),
           TextButton(
             onPressed: () async {
@@ -85,28 +92,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           )
         ],
-      );
+      ),
+    );
+  }
 
   void _onPressedBackButton() {
-    profileState.setProfile(true);
-    profileState.setEditProfile(false);
-    profileState.setPreferences(false);
-    profileState.setFaqs(false);
-    profileState.setPrivacy(false);
+    profileState.setCurrentPage(ProfilePages.profile);
   }
 
   Future<void> _onPressedSaveButton() async {
-    bool changed = false;
-    if (currentSelectedImage != null) {
-      changed = await profileState.profileService
-          .uploadProfileImage(currentSelectedImage);
-    }
+    _onPressedBackButton();
+
     if (name != "") {
-      changed = await profileState.profileService.updateProfileName(name);
+      await profileState.updateCurrentUserName(name);
     }
-    if (changed) {
-      profileState.updateCurrentUser();
-      _onPressedBackButton();
+
+    if (currentSelectedImage != null) {
+      await profileState.updateUserImage(currentSelectedImage!);
     }
   }
 
@@ -127,7 +129,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           borderRadius: const BorderRadius.all(Radius.circular(100.0)),
           border: Border.all(
             color: Colors.black87,
-            width: 5.0,
+            width: 7.0,
           ),
         ),
       ),
@@ -137,7 +139,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
               context: context,
               builder: (builder) => _getImageFromCameraOrGallary());
         },
-        child: Image.asset('assets/images/edit_round.png', height: 40),
+        child: const CircleAvatar(
+            backgroundColor: Colors.black,
+            radius: 28,
+            child: Icon(
+              Icons.edit_outlined,
+              color: Colors.white,
+            )),
       ),
     ]);
   }
@@ -148,7 +156,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: Colors.black,
+            color: Colors.black87,
             width: 1,
           ),
         ),
@@ -162,10 +170,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
-                textAlign: _align,
-                style: _textStyle(Colors.black87, 18),
                 decoration: InputDecoration(
-                    hintText: name, hintStyle: _textStyle(Colors.black38, 18)),
+                    border: InputBorder.none,
+                    hintText: name,
+                    hintStyle: _textStyle(Colors.black38, 18)),
                 onChanged: ((text) {
                   setState(() {
                     _align = TextAlign.start;
@@ -200,28 +208,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget _getImageFromCameraOrGallary() {
     return Container(
-        height: MediaQuery.of(context).size.height / 6,
-        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 8,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(children: [
           Text(appLocalizations.chooseProfileFoto,
-              style: const TextStyle(fontSize: 20)),
+              style: const TextStyle(fontSize: 18)),
           const SizedBox(height: 20),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             TextButton.icon(
                 onPressed: () => _getFromSource(ImageSource.camera),
                 icon: const Icon(
-                  Icons.camera,
-                  size: 50,
+                  Icons.camera_alt,
+                  size: 30,
+                  color: Colors.black87,
                 ),
-                label: Text(appLocalizations.camera)),
+                label: Text(
+                  appLocalizations.camera,
+                  style: const TextStyle(color: Colors.black87),
+                )),
             TextButton.icon(
                 onPressed: () => _getFromSource(ImageSource.gallery),
                 icon: const Icon(
                   Icons.image,
-                  size: 50,
+                  size: 30,
+                  color: Colors.black87,
                 ),
-                label: Text(appLocalizations.gallery)),
+                label: Text(
+                  appLocalizations.gallery,
+                  style: const TextStyle(color: Colors.black87),
+                )),
           ])
         ]));
   }
@@ -232,5 +247,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     setState(() {
       currentSelectedImage = newImage;
     });
+    Navigator.pop(context);
   }
 }

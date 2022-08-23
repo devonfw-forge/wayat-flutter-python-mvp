@@ -20,8 +20,8 @@ abstract class RESTService extends Service {
 
   /// Sends a **GET** request to [baseUrl]/[subPath], using the configured authentication
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
-    http.Response resultJson = await http.get(Uri.parse("$baseUrl/$subPath"),
-        headers: await _getHeaders());
+    Response resultJson =
+        await get(Uri.parse("$baseUrl/$subPath"), headers: await _getHeaders());
     return json.decode(const Utf8Decoder().convert(resultJson.bodyBytes))
         as Map<String, dynamic>;
   }

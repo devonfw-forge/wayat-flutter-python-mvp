@@ -143,3 +143,8 @@ class MapService:
         distance = haversine_distance(latitude, longitude, location.latitude, location.longitude)
         logger.debug(f"Distance of {distance} calculated")
         return distance < self._distance_threshold
+
+    async def vanish_user(self, uid: str):
+        coroutines = [self.regenerate_map_status(uid=contact_uid)
+                      for contact_uid in await self._status_repository.find_maps_containing_user(uid)]
+        await asyncio.gather(*coroutines)

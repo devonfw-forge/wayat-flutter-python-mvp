@@ -37,8 +37,8 @@ import '../features/onboarding/pages/progress_page.dart' as _i6;
 import '../features/profile/pages/faq/faqs.dart' as _i19;
 import '../features/profile/pages/preferences/preferences.dart' as _i18;
 import '../features/profile/pages/privacy/privacy.dart' as _i20;
-import '../features/profile/pages/profile/edit_profile.dart' as _i17;
-import '../features/profile/pages/profile/profile.dart' as _i16;
+import '../features/profile/pages/profile/edit_profile_page.dart' as _i17;
+import '../features/profile/pages/profile/profile_page.dart' as _i16;
 import '../features/profile/pages/profile/profile_wraper.dart' as _i10;
 import '../features/root/root_wrapper.dart' as _i1;
 
@@ -120,7 +120,7 @@ class AppRouter extends _i24.RootStackRouter {
       return _i24.CustomPage<dynamic>(
           routeData: routeData,
           child: _i12.SentRequestsPage(key: args.key),
-          transitionsBuilder: _i24.TransitionsBuilders.slideLeft,
+          transitionsBuilder: _i24.TransitionsBuilders.slideLeftWithFade,
           opaque: true,
           barrierDismissible: false);
     },

@@ -56,7 +56,7 @@
     "changePhone": "Change phone",
     "changePassword": "Change password",
 
-    "chooseProfileFoto": "Choose profile foto",
+    "chooseProfileFoto": "Choose picture from",
     "camera": "Camera",
     "gallery": "Gallery",
     "save": "Save",
@@ -81,5 +81,8 @@
     "accept": "Accept",
     "search": "Search",
 
-    "viewInformation": "View information"
+    "viewInformation": "View information",
+
+    "profileShareLocation": "Share Location",
+    "profileActiveLocation": "Active Location"
 } 
