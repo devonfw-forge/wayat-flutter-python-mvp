@@ -10,7 +10,7 @@ part 'profile_state.g.dart';
 class ProfileState = _ProfileState with _$ProfileState;
 
 abstract class _ProfileState with Store {
-  ProfileService _profileService = ProfileService();
+  final ProfileService _profileService = ProfileService();
 
   @observable
   ProfilePages currentPage = ProfilePages.profile;
@@ -37,7 +37,7 @@ abstract class _ProfileState with Store {
   }
 
   Future updateUserImage(XFile newImage) async {
-    _profileService.uploadProfileImage(newImage);
+    await _profileService.uploadProfileImage(newImage);
     await updateCurrentUser();
   }
 
