@@ -22,6 +22,9 @@ class ProfilePage extends StatelessWidget {
   @observable
   String imageUrl = GetIt.I.get<SessionState>().currentUser!.imageUrl;
 
+  TextStyle _textStyle(Color color, double size) =>
+      TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -29,11 +32,7 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(appLocalizations.profile,
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16)),
+              textAlign: TextAlign.left, style: _textStyle(Colors.black87, 16)),
         ),
         const SizedBox(height: 16),
         _buildProfileImage(),
@@ -42,10 +41,7 @@ class ProfilePage extends StatelessWidget {
           return Text(
             name,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 22),
+            style: _textStyle(Colors.black87, 22),
           );
         }),
         const SizedBox(height: 32),
@@ -101,11 +97,7 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(appLocalizations.sharingLocation,
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16)),
+              textAlign: TextAlign.left, style: _textStyle(Colors.black87, 16)),
         ),
         const SizedBox(height: 16),
         _activeSharingLocationButton(),
@@ -197,6 +189,7 @@ class ProfilePage extends StatelessWidget {
             text: appLocalizations.logOut,
             onTap: () {
               // TODO: Implement the Log Out functional
+              userSession.logOut();
             }),
         const SizedBox(height: 24),
         CustomCard(

@@ -19,7 +19,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   XFile? currentSelectedImage;
   String name = '';
-  bool isVisible = false;
+  TextAlign _align = TextAlign.end;
 
   @override
   void initState() {
@@ -162,14 +162,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
-                textAlign: TextAlign.end,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                    fontSize: 18),
+                textAlign: _align,
+                style: _textStyle(Colors.black87, 18),
                 decoration: InputDecoration(
                     hintText: name, hintStyle: _textStyle(Colors.black38, 18)),
                 onChanged: ((text) {
+                  setState(() {
+                    _align = TextAlign.start;
+                  });
                   name = text;
                 })),
           )),
