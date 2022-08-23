@@ -16,3 +16,4 @@ class ContactRefInfo(BaseModel):
 class AppStatusEntity(BaseFirebaseModel):
     active: bool = False
     contact_refs: list[ContactRefInfo] = Field(default_factory=list)
+    contact_refs_members: list[str] = Field(default_factory=list)
