@@ -18,5 +18,5 @@ class UnexpectedStatusException(DevonCustomException):
 
 
 class ResourceNotFoundException(DevonCustomException):
-    def __init__(self):
-        super().__init__("Document not found")
+    def __init__(self, detail="Resource not found"):
+        super().__init__(detail)
