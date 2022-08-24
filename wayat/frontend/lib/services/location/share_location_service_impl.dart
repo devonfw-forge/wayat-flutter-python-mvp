@@ -133,14 +133,13 @@ class ShareLocationServiceImpl extends ShareLocationService {
   @override
   void setShareLocationMode(ShareLocationMode shareLocationMode) {
     if (shareLocationMode == ShareLocationMode.active) {
-      sendActiveUpdate();
+      sendForcedLocationUpdate();
     }
     this.shareLocationMode = shareLocationMode;
   }
 
-  /// We send an update as soon as we become active to update the maps
-  /// without needing to move when someone is looking
-  Future sendActiveUpdate() async {
+  /// Sends the current location to back without needing the conditions
+  Future sendForcedLocationUpdate() async {
     currentLocation = await location.getLocation();
     sendLocationToBack(currentLocation);
   }
@@ -148,8 +147,19 @@ class ShareLocationServiceImpl extends ShareLocationService {
   @override
   void setShareLocationEnabled(bool shareLocation) {
     shareLocationEnabled = shareLocation;
-    super.sendPostRequest(
-        'users/preferences', {"share_location": shareLocation});
+    if (shareLocation) {
+      shareLocationActivated();
+    } else {
+      super.sendPostRequest(
+          'users/preferences', {"share_location": shareLocation});
+    }
+  }
+
+  /// This method is necessary because we need to make sure that the POST to true
+  /// is received BEFORE the location update. Otherwise it would be ignored
+  Future shareLocationActivated() async {
+    await super.sendPostRequest('users/preferences', {"share_location": true});
+    sendForcedLocationUpdate();
   }
 
   /// Distance will returned in ```meters```
