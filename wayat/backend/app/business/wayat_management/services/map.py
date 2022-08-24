@@ -80,8 +80,17 @@ class MapService:
             map_open=True,
             map_valid_until=get_current_time() + timedelta(seconds=self._map_valid_until_threshold)
         )
-        await self.regenerate_map_status(user=user_entity)
-        await self._status_repository.set_active_batch(uid_list=user_entity.contacts, value=True)
+        await self.force_status_update(user_entity=user_entity)
+
+    async def force_status_update(self, *, uid: str | None = None, user_entity: UserEntity | None = None):
+        if user_entity is not None:
+            user_to_update = user_entity
+        elif uid is not None:
+            user_to_update = await self._user_repository.get_or_throw(uid)
+        else:
+            raise ValueError("Either uid or user_entity should not be None. Invalid parameters")
+        await self.regenerate_map_status(user=user_to_update)
+        await self._status_repository.set_active_batch(uid_list=user_to_update.contacts, value=True)
 
     @overload
     async def regenerate_map_status(self, *, uid: str):
