@@ -12,6 +12,7 @@ from google.cloud.firestore import (
 from google.cloud.firestore_v1 import AsyncTransaction
 from pydantic import BaseModel
 
+from app.common.exceptions.http import NotFoundException
 from app.common.infra import get_firebase_settings
 
 
@@ -86,6 +87,12 @@ class BaseFirestoreRepository(Generic[ModelType]):
 
     def _get_document_reference(self, document_id: str) -> AsyncDocumentReference:
         return self._client.document(*self._path, document_id)
+
+    async def get_or_throw(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType:
+        entity = await self.get(document_id, transaction)
+        if not entity:
+            raise NotFoundException
+        return entity
 
     async def get(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType | None:
         snapshot = await self._get_document_reference(document_id).get(transaction=transaction)
