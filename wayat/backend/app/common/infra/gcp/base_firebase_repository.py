@@ -12,7 +12,7 @@ from google.cloud.firestore import (
 from google.cloud.firestore_v1 import AsyncTransaction
 from pydantic import BaseModel
 
-from app.common.exceptions.http import NotFoundException
+from app.common.exceptions.runtime import ResourceNotFoundException
 from app.common.infra import get_firebase_settings
 
 
@@ -91,7 +91,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
     async def get_or_throw(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType:
         entity = await self.get(document_id, transaction)
         if not entity:
-            raise NotFoundException
+            raise ResourceNotFoundException
         return entity
 
     async def get(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType | None:

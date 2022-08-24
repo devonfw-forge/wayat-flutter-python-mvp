@@ -15,3 +15,8 @@ class DevonCustomException(RuntimeError):
 class UnexpectedStatusException(DevonCustomException):
     def __init__(self):
         super().__init__("Unexpected status found")
+
+
+class ResourceNotFoundException(DevonCustomException):
+    def __init__(self):
+        super().__init__("Document not found")
