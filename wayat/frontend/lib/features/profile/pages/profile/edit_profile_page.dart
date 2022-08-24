@@ -23,16 +23,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String name = GetIt.I.get<SessionState>().currentUser!.name;
   bool isVisible = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   TextStyle _textStyle(Color color, double size) =>
       TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
 
