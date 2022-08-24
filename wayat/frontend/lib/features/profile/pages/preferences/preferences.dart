@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/common/theme/text_style.dart';
 import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class PreferencesPage extends StatelessWidget {
-  const PreferencesPage({Key? key}) : super(key: key);
+  PreferencesPage({Key? key}) : super(key: key);
+
+  final ProfileState profileState = GetIt.I.get<ProfileState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +33,7 @@ class PreferencesPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             appLocalizations.darkTheme,
-            style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Colors.black87,
-                fontSize: 16),
+            style: TextStyleTheme.primaryTextStyle_16,
           ),
         ),
         Observer(builder: (context) {
@@ -58,18 +61,15 @@ class PreferencesPage extends StatelessWidget {
               children: [
                 InkWell(
                     onTap: () async {
-                      // Route to Profile main page
+                      profileState.setCurrentPage(ProfilePages.profile);
                     },
                     child: const Icon(Icons.arrow_back,
-                        color: Colors.black87, size: 16)),
+                        color: Colors.black87, size: 25)),
                 Padding(
                   padding: const EdgeInsets.only(left: 14),
                   child: Text(
                     appLocalizations.profile,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                        fontSize: 16),
+                    style: TextStyleTheme.primaryTextStyle_16,
                   ),
                 ),
               ],
@@ -81,7 +81,7 @@ class PreferencesPage extends StatelessWidget {
             },
             child: Text(
               appLocalizations.save,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              style: TextStyleTheme.saveButtonTextStyle_16,
               textAlign: TextAlign.right,
             ),
           )
@@ -96,27 +96,21 @@ class PreferencesPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             appLocalizations.darkTheme,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 16),
+            style: TextStyleTheme.primaryTextStyle_16,
           ),
         ),
         Row(
           children: [
             Text(
               appLocalizations.language,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16),
+              style: TextStyleTheme.primaryTextStyle_16,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: InkWell(
                   onTap: () {},
                   child: const Icon(Icons.arrow_forward,
-                      color: Colors.black87, size: 16)),
+                      color: Colors.black87, size: 25)),
             )
           ],
         ),

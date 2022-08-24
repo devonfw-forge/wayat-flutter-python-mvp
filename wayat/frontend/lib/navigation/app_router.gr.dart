@@ -154,7 +154,7 @@ class AppRouter extends _i24.RootStackRouter {
     },
     PreferencesRoute.name: (routeData) {
       return _i24.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i18.PreferencesPage());
+          routeData: routeData, child: _i18.PreferencesPage());
     },
     FaqsRoute.name: (routeData) {
       return _i24.MaterialPageX<dynamic>(

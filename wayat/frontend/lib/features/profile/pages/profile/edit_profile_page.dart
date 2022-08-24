@@ -3,10 +3,10 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/text_style.dart';
+import 'package:wayat/common/widgets/profile_avatar.dart';
 import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io' as io;
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -30,7 +30,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           _profileAppBar(),
-          _buildEditProfileImage(),
+          ProfileAvatar(
+            isEdit: true,
+            onPress: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (builder) => _getImageFromCameraOrGallary());
+            },
+          ),
+          //_buildEditProfileImage(),
           const SizedBox(height: 32),
           _nameTextField(),
           const SizedBox(height: 34.5),
@@ -98,44 +106,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Widget _buildEditProfileImage() {
-    return Stack(alignment: Alignment.bottomRight, children: <Widget>[
-      Container(
-        width: 120.0,
-        height: 120.0,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: (currentSelectedImage != null)
-                ? FileImage(io.File(currentSelectedImage!.path))
-                    as ImageProvider
-                : NetworkImage(
-                    GetIt.I.get<SessionState>().currentUser!.imageUrl),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(100.0)),
-          border: Border.all(
-            color: Colors.black87,
-            width: 7.0,
-          ),
-        ),
-      ),
-      InkWell(
-        onTap: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (builder) => _getImageFromCameraOrGallary());
-        },
-        child: const CircleAvatar(
-            backgroundColor: Colors.black,
-            radius: 28,
-            child: Icon(
-              Icons.edit_outlined,
-              color: Colors.white,
-            )),
-      ),
-    ]);
-  }
-
   Container _nameTextField() => Container(
         margin: const EdgeInsets.symmetric(horizontal: 16),
         height: 56,
@@ -168,27 +138,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ]),
       );
 
-  Row _changePhone() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              appLocalizations.changePhone,
-              style: TextStyleTheme.primaryTextStyle_16,
-            ),
+  Widget _changePhone() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            appLocalizations.changePhone,
+            style: TextStyleTheme.primaryTextStyle_16,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: InkWell(
-                onTap: () {
-                  //AutoRoute to change phone page
-                },
-                child: const Icon(Icons.arrow_forward,
-                    color: Colors.black87, size: 24)),
-          )
-        ],
-      );
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: InkWell(
+              onTap: () {
+                //AutoRoute to change phone page
+              },
+              child: const Icon(Icons.arrow_forward,
+                  color: Colors.black87, size: 24)),
+        )
+      ],
+    );
+  }
 
   Widget _getImageFromCameraOrGallary() {
     return Container(

@@ -6,6 +6,7 @@ import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/text_style.dart';
 import 'package:wayat/common/widgets/card.dart';
+import 'package:wayat/common/widgets/profile_avatar.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/selector/profile_pages.dart';
@@ -29,7 +30,11 @@ class ProfilePage extends StatelessWidget {
               style: TextStyleTheme.primaryTextStyle_16),
         ),
         const SizedBox(height: 16),
-        _buildProfileImage(),
+        ProfileAvatar(
+          isEdit: false,
+          onPress: () {},
+        ),
+        //_buildProfileImage(),
         const SizedBox(height: 16),
         Observer(builder: (context) {
           String name = userSession.currentUser!.name;
@@ -43,13 +48,12 @@ class ProfilePage extends StatelessWidget {
         _buildShareLocationPart(),
         const SizedBox(height: 48),
 
-        //TODO: Implement the Information part
+        //TODO: Uncomment information part
         // _buildInformationPart(),
         // const SizedBox(height: 48),
 
-        //TODO: Implement the Account part
-        // _buildAccountPart(),
-        // const SizedBox(height: 42),
+        _buildAccountPart(),
+        const SizedBox(height: 42),
       ],
     );
   }
@@ -90,15 +94,15 @@ class ProfilePage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
         ),
         const SizedBox(height: 16),
         _activeSharingLocationButton(),
         const SizedBox(height: 24),
 
         //TODO: Implement the "Set do not disturb" switch button functional
-        // _setDoNotDisturbButton(),
+        _setDoNotDisturbButton(),
 
         const SizedBox(height: 24),
         CustomCard(
@@ -109,11 +113,11 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 24),
 
         //TODO: Implement the Preferences page
-        // CustomCard(
-        //     text: appLocalizations.preferences,
-        //     onTap: () {
-        //       controller.setPreferences(true);
-        //     }),
+        CustomCard(
+            text: appLocalizations.preferences,
+            onTap: () {
+              profileState.setCurrentPage(ProfilePages.preference);
+            }),
       ],
     );
   }
@@ -164,8 +168,9 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.logOut,
             onTap: () {
-              // TODO: Implement the Log Out functional
+              //TODO: Implement Logout
               userSession.logOut();
+              //profileState.setCurrentPage(ProfilePages.profile);
             }),
         const SizedBox(height: 24),
         CustomCard(
@@ -178,7 +183,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   // Build "Active sharing location" switch button
-  Row _activeSharingLocationButton() {
+  Widget _activeSharingLocationButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -205,7 +210,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   // Build "Set do not disturb" switch button
-  Row _setDoNotDisturbButton() {
+  Widget _setDoNotDisturbButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
