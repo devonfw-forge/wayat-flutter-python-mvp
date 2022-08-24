@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/common/theme/text_style.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -17,9 +18,6 @@ class ProfilePage extends StatelessWidget {
   final LocationState locationState = GetIt.I.get<LocationState>();
   final SessionState userSession = GetIt.I.get<SessionState>();
 
-  TextStyle _textStyle(Color color, double size) =>
-      TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
-
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -27,7 +25,8 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(appLocalizations.profile,
-              textAlign: TextAlign.left, style: _textStyle(Colors.black87, 16)),
+              textAlign: TextAlign.left,
+              style: TextStyleTheme.primaryTextStyle_16),
         ),
         const SizedBox(height: 16),
         _buildProfileImage(),
@@ -37,7 +36,7 @@ class ProfilePage extends StatelessWidget {
           return Text(
             name,
             textAlign: TextAlign.center,
-            style: _textStyle(Colors.black87, 22),
+            style: TextStyleTheme.primaryTextStyle_22,
           );
         }),
         const SizedBox(height: 32),
@@ -129,7 +128,8 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(appLocalizations.information,
-              textAlign: TextAlign.left, style: _textStyle(Colors.black87, 16)),
+              textAlign: TextAlign.left,
+              style: TextStyleTheme.primaryTextStyle_16),
         ),
         const SizedBox(height: 24),
         CustomCard(
@@ -157,7 +157,8 @@ class ProfilePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(appLocalizations.account,
-              textAlign: TextAlign.left, style: _textStyle(Colors.black87, 16)),
+              textAlign: TextAlign.left,
+              style: TextStyleTheme.primaryTextStyle_16),
         ),
         const SizedBox(height: 24),
         CustomCard(
@@ -185,7 +186,7 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             appLocalizations.profileActiveLocation,
-            style: _textStyle(Colors.black87, 16),
+            style: TextStyleTheme.primaryTextStyle_16,
           ),
         ),
         Observer(builder: (context) {
@@ -212,7 +213,7 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             appLocalizations.doNotDisturb,
-            style: _textStyle(Colors.black87, 16),
+            style: TextStyleTheme.primaryTextStyle_16,
           ),
         ),
         Observer(builder: (context) {

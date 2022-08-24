@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/theme/text_style.dart';
 import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,12 +19,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
 
   XFile? currentSelectedImage;
-  TextAlign _align = TextAlign.end;
   String name = GetIt.I.get<SessionState>().currentUser!.name;
   bool isVisible = false;
-
-  TextStyle _textStyle(Color color, double size) =>
-      TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +63,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 14),
                 child: Text(appLocalizations.profile,
-                    style: _textStyle(Colors.black87, 16)),
+                    style: TextStyleTheme.primaryTextStyle_16),
               ),
             ],
           ),
@@ -77,7 +73,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             },
             child: Text(
               appLocalizations.save,
-              style: _textStyle(ColorTheme.primaryColor, 16),
+              style: TextStyleTheme.saveButtonTextStyle_16,
               textAlign: TextAlign.right,
             ),
           )
@@ -154,7 +150,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(appLocalizations.name,
-                style: _textStyle(Colors.black87, 18)),
+                style: TextStyleTheme.primaryTextStyle_18),
           ),
           Expanded(
               child: Padding(
@@ -163,11 +159,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: name,
-                    hintStyle: _textStyle(Colors.black38, 18)),
+                    hintStyle: TextStyleTheme.primaryTextStyle_18),
                 onChanged: ((text) {
-                  setState(() {
-                    _align = TextAlign.start;
-                  });
+                  setState(() {});
                   name = text;
                 })),
           )),
@@ -181,7 +175,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               appLocalizations.changePhone,
-              style: _textStyle(Colors.black87, 16),
+              style: TextStyleTheme.primaryTextStyle_16,
             ),
           ),
           Padding(
