@@ -132,7 +132,17 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   @override
   void setShareLocationMode(ShareLocationMode shareLocationMode) {
+    if (shareLocationMode == ShareLocationMode.active) {
+      sendActiveUpdate();
+    }
     this.shareLocationMode = shareLocationMode;
+  }
+
+  /// We send an update as soon as we become active to update the maps
+  /// without needing to move when someone is looking
+  Future sendActiveUpdate() async {
+    currentLocation = await location.getLocation();
+    sendLocationToBack(currentLocation);
   }
 
   @override
