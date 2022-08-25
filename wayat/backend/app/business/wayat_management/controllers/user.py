@@ -31,6 +31,13 @@ async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user())
     return UserProfileResponse(**user_dto.dict(), new_user=new_user)
 
 
+@router.delete("/profile", description="Delete the account of a user")
+async def delete_account(user: FirebaseAuthenticatedUser = Depends(get_user())):
+    logger.info(f"Deleting the account of the user with uid={user.uid}")
+    # TODO: Implement this method
+    raise NotImplementedError
+
+
 @router.post("/profile",
              description="Update a user profile, setting those values that were explicitly set, even if set to null",
              responses={
