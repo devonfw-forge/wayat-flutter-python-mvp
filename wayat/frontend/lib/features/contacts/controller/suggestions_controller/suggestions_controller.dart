@@ -9,6 +9,7 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart';
+import 'package:wayat/services/utils/list_utils_service.dart';
 
 part 'suggestions_controller.g.dart';
 
@@ -43,16 +44,21 @@ abstract class _SuggestionsController with Store {
         await ContactsAddressServiceImpl.getAllPhones();
     MyUser me = GetIt.I.get<SessionState>().currentUser!;
     await requestsController.updateRequests();
-    allSuggestions = (await contactsService.getFilteredContacts(adBookContacts))
-        .where((element) =>
-            !friendsController.allContacts.contains(element) &&
-            !requestsController.sentRequests.contains(element) &&
-            me.id != element.id)
-        .toList();
-    filteredSuggestions = ObservableList.of(allSuggestions
-        .where((element) =>
-            element.name.toLowerCase().contains(textFilter.toLowerCase()))
-        .toList());
+    List<Contact> newSuggestions =
+        (await contactsService.getFilteredContacts(adBookContacts))
+            .where((element) =>
+                !friendsController.allContacts.contains(element) &&
+                !requestsController.sentRequests.contains(element) &&
+                me.id != element.id)
+            .toList();
+    if (ListUtilsService.haveDifferentElements(
+        newSuggestions, allSuggestions)) {
+      allSuggestions = newSuggestions;
+      filteredSuggestions = ObservableList.of(allSuggestions
+          .where((element) =>
+              element.name.toLowerCase().contains(textFilter.toLowerCase()))
+          .toList());
+    }
   }
 
   @action
