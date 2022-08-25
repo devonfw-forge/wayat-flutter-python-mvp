@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 
 class ContactServiceImpl extends ContactService {
