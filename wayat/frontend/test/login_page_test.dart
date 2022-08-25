@@ -13,10 +13,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'login_page_test.mocks.dart';
 
-
-@GenerateMocks([SessionState], customMocks: [MockSpec<SessionState>(as: #MockSessionStateRelaxed, onMissingStub: OnMissingStub.returnDefault)])
+@GenerateMocks([
+  SessionState
+], customMocks: [
+  MockSpec<SessionState>(
+      as: #MockSessionStateRelaxed, onMissingStub: OnMissingStub.returnDefault)
+])
 void main() async {
-
   late SessionState userSession;
 
   setUpAll(() {
@@ -25,7 +28,7 @@ void main() async {
     userSession = GetIt.I.get<SessionState>();
   });
 
-  Widget _createApp (Widget body) {
+  Widget _createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -39,16 +42,16 @@ void main() async {
     );
   }
 
-
   testWidgets('Login page has a app title', (tester) async {
     await tester.pumpWidget(_createApp(const LoginPage()));
-    expect(find.widgetWithText(CustomWayatTitle, appLocalizations.appTitle), findsOneWidget);
+    expect(find.widgetWithText(CustomWayatTitle, appLocalizations.appTitle),
+        findsOneWidget);
   });
-
 
   testWidgets('Login page has a login title', (tester) async {
     await tester.pumpWidget(_createApp(const LoginPage()));
-    expect(find.widgetWithText(CustomLoginTitle,appLocalizations.login), findsOneWidget);
+    expect(find.widgetWithText(CustomLoginTitle, appLocalizations.login),
+        findsOneWidget);
   });
 
   testWidgets('Login page has a sign in button', (tester) async {
@@ -62,5 +65,4 @@ void main() async {
   //   await tester.pumpAndSettle();
   //   verify(await userSession.login()).called(1);
   // });
-
 }
