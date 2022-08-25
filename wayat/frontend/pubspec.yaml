@@ -60,7 +60,7 @@ dependencies:
   url_launcher: ^6.1.5
   # Firebase dependencies
   firebase_core: ^1.20.0
-  cloud_firestore: ^3.4.3
+  cloud_firestore: ^3.4.5
   firebase_auth: ^3.6.1
   image_picker: ^0.8.5+3
   # Testing mocks
