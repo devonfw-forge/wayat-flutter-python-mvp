@@ -2,13 +2,12 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
-import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart';
+import 'package:wayat/services/contact/import_phones_service_impl.dart';
 import 'package:wayat/services/utils/list_utils_service.dart';
 
 part 'suggestions_controller.g.dart';
@@ -40,8 +39,8 @@ abstract class _SuggestionsController with Store {
 
   @action
   Future updateSuggestedContacts() async {
-    List<ContactAdressBook> adBookContacts =
-        await ContactsAddressServiceImpl.getAll();
+    List<String> adBookContacts =
+        await ContactsAddressServiceImpl.getAllPhones();
     MyUser me = GetIt.I.get<SessionState>().currentUser!;
     await requestsController.updateRequests();
     List<Contact> newSuggestions =

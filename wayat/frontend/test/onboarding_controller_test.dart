@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart';
+import 'package:wayat/services/contact/import_phones_service_impl.dart';
 
 import 'onboarding_controller_test.mocks.dart';
 
@@ -17,10 +17,10 @@ import 'onboarding_controller_test.mocks.dart';
   MockSpec<OnboardingController>(
       as: #MockOnboardingRelaxed, onMissingStub: OnMissingStub.returnDefault),
   MockSpec<ContactsAddressServiceImpl>(
-      as: #MockContactsAddressServiceImplRelaxed, onMissingStub: OnMissingStub.returnDefault),
+      as: #MockContactsAddressServiceImplRelaxed,
+      onMissingStub: OnMissingStub.returnDefault),
 ])
 void main() {
-
   late OnboardingController controller;
 
   setUpAll(() {
@@ -43,9 +43,7 @@ void main() {
     );
   }
 
-  test('Onboarding controller contact list returns a contact list', (){
-    
-  });
+  test('Onboarding controller contact list returns a contact list', () {});
 
   // testWidgets('OnBoarding next step', (tester) async {
   //   await tester.pumpWidget(_createApp(OnBoardingPage()));

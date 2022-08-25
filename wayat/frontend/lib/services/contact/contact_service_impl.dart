@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 
 class ContactServiceImpl extends ContactService {
@@ -22,9 +21,9 @@ class ContactServiceImpl extends ContactService {
 
   @override
   Future<List<Contact>> getFilteredContacts(
-      List<ContactAdressBook> importedContacts) async {
+      List<String> importedContacts) async {
     List<String> phoneList = importedContacts
-        .map((e) => e.phoneNumber
+        .map((e) => e
             .replaceAll(' ', '')
             .replaceAll('-', '')
             .replaceAll('(', '')
