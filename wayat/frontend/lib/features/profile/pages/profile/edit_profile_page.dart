@@ -20,7 +20,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   XFile? currentSelectedImage;
   String name = GetIt.I.get<SessionState>().currentUser!.name;
-  bool isVisible = false;
+  String phone = GetIt.I.get<SessionState>().currentUser!.phone;
+  bool isVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +41,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           //_buildEditProfileImage(),
           const SizedBox(height: 32),
-          _nameTextField(),
+          _changeTextField(appLocalizations.name, name),
           const SizedBox(height: 34.5),
 
           // TODO: Implement the Changing phone page
-          // _changePhone(),
+          _changeTextField(appLocalizations.changePhone, phone),
         ],
       ),
     );
@@ -106,59 +107,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Container _nameTextField() => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        height: 56,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.black87,
-            width: 1,
-          ),
+  Widget _changeTextField(String title, String hintText) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      height: 56,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.black87,
+          width: 1,
         ),
-        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(appLocalizations.name,
-                style: TextStyleTheme.primaryTextStyle_18),
-          ),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: name,
-                    hintStyle: TextStyleTheme.primaryTextStyle_18),
-                onChanged: ((text) {
-                  setState(() {});
-                  name = text;
-                })),
-          )),
-        ]),
-      );
-
-  Widget _changePhone() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
+      ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            appLocalizations.changePhone,
-            style: TextStyleTheme.primaryTextStyle_16,
-          ),
+          child: Text(title, style: TextStyleTheme.primaryTextStyle_18),
         ),
-        Padding(
+        Expanded(
+            child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: InkWell(
-              onTap: () {
-                //AutoRoute to change phone page
-              },
-              child: const Icon(Icons.arrow_forward,
-                  color: Colors.black87, size: 24)),
-        )
-      ],
+          child: TextField(
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: hintText,
+                  hintStyle: TextStyleTheme.primaryTextStyle_18),
+              onChanged: ((text) {
+                setState(() {});
+                hintText = text;
+              })),
+        )),
+      ]),
     );
   }
 
