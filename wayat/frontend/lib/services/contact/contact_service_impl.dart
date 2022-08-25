@@ -22,9 +22,9 @@ class ContactServiceImpl extends ContactService {
 
   @override
   Future<List<Contact>> getFilteredContacts(
-      List<ContactAdressBook> importedContacts) async {
+      List<String> importedContacts) async {
     List<String> phoneList = importedContacts
-        .map((e) => e.phoneNumber
+        .map((e) => e
             .replaceAll(' ', '')
             .replaceAll('-', '')
             .replaceAll('(', '')
