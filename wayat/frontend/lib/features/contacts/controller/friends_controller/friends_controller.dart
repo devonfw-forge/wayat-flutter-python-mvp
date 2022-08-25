@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
+import 'package:wayat/services/utils/list_utils_service.dart';
 
 part 'friends_controller.g.dart';
 
@@ -27,11 +28,15 @@ abstract class _FriendsController with Store {
 
   @action
   Future<void> updateContacts() async {
-    allContacts = ObservableList.of(await _service.getAll());
-    filteredContacts = ObservableList.of(allContacts
-        .where((element) =>
-            element.name.toLowerCase().contains(textFilter.toLowerCase()))
-        .toList());
+    List<Contact> newContacts = await _service.getAll();
+    if (ListUtilsService.haveDifferentElements(allContacts, newContacts)) {
+      allContacts = ObservableList.of(newContacts);
+      filteredContacts = ObservableList.of(allContacts
+          .where((element) =>
+              element.name.toLowerCase().contains(textFilter.toLowerCase()))
+          .toList());
+      return;
+    }
   }
 
   @action
