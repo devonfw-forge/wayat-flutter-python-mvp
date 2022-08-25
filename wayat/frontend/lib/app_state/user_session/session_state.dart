@@ -100,7 +100,7 @@ abstract class _SessionState with Store {
     hasDoneOnboarding = currentUser!.onboardingCompleted;
   }
 
-  Future login() async {
+  Future<void> login() async {
     GoogleSignInAccount? gaccount = await authService.signIn();
     if (gaccount != null) {
       await doLoginProcess();

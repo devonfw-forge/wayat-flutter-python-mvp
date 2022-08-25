@@ -144,9 +144,9 @@ class MockSessionState extends _i1.Mock implements _i5.SessionState {
       (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
           returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i7.Future<dynamic> login() =>
-      (super.noSuchMethod(Invocation.method(#login, []),
-          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
+  _i7.Future<void> login() => (super.noSuchMethod(Invocation.method(#login, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
   _i7.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
@@ -359,11 +359,9 @@ class MockSessionStateRelaxed extends _i1.Mock implements _i5.SessionState {
               returnValueForMissingStub: _i7.Future<dynamic>.value())
           as _i7.Future<dynamic>);
   @override
-  _i7.Future<dynamic> login() =>
-      (super.noSuchMethod(Invocation.method(#login, []),
-              returnValue: _i7.Future<dynamic>.value(),
-              returnValueForMissingStub: _i7.Future<dynamic>.value())
-          as _i7.Future<dynamic>);
+  _i7.Future<void> login() => (super.noSuchMethod(Invocation.method(#login, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
   _i7.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
