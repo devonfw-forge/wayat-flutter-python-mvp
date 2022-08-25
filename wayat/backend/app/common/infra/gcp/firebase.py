@@ -1,3 +1,4 @@
+import json
 from functools import lru_cache
 from typing import Optional
 
@@ -22,6 +23,12 @@ class FirebaseSettings(BaseSettings):
     class Config:
         env_prefix = "FIREBASE_"
         env_file = "TEST.env"
+
+
+@lru_cache
+def get_account_info():
+    with open(get_firebase_settings().credentials_file) as f:
+        return json.load(f)
 
 
 @lru_cache
