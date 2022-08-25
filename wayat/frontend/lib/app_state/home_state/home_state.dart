@@ -1,0 +1,17 @@
+import 'package:mobx/mobx.dart';
+import 'package:wayat/domain/contact/contact.dart';
+
+part 'home_state.g.dart';
+
+// ignore: library_private_types_in_public_api
+class HomeState = _HomeState with _$HomeState;
+
+abstract class _HomeState with Store {
+  @observable
+  Contact? selectedContact;
+
+  @action
+  void setSelectedContact(Contact? newContact) {
+    selectedContact = newContact;
+  }
+}

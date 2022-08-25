@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:wayat/contact_profile/page/contact_profile_page.dart';
 import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/login_wrapper.dart';
@@ -10,6 +11,7 @@ import 'package:wayat/features/contacts/pages/contacts_page/requests_page/reques
 import 'package:wayat/features/contacts/pages/sent_requests_page/sent_requests_page.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/suggestions_page/suggestions_page.dart';
 import 'package:wayat/features/home/pages/home_page.dart';
+import 'package:wayat/features/home/pages/home_wrapper.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:wayat/features/notifications/page/notifications_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
@@ -31,27 +33,30 @@ import 'package:wayat/features/root/root_wrapper.dart';
           page: ProgressOnboardingPage,
           transitionsBuilder: TransitionsBuilders.slideLeft)
     ]),
-    AutoRoute(page: HomePage, children: [
-      AutoRoute(page: HomeMapPage),
-      //AutoRoute(page: CreateEventPage),
-      AutoRoute(page: ContactsWrapper, children: [
-        AutoRoute(page: ContactsPage, children: [
-          AutoRoute(page: FriendsPage),
-          AutoRoute(page: RequestsPage),
-          AutoRoute(page: SuggestionsPage)
+    AutoRoute(page: HomeWrapper, children: [
+      AutoRoute(page: HomePage, children: [
+        AutoRoute(page: HomeMapPage),
+        //AutoRoute(page: CreateEventPage),
+        AutoRoute(page: ContactsWrapper, children: [
+          AutoRoute(page: ContactsPage, children: [
+            AutoRoute(page: FriendsPage),
+            AutoRoute(page: RequestsPage),
+            AutoRoute(page: SuggestionsPage)
+          ]),
+          CustomRoute(
+              page: SentRequestsPage,
+              transitionsBuilder: TransitionsBuilders.slideLeftWithFade)
         ]),
-        CustomRoute(
-            page: SentRequestsPage,
-            transitionsBuilder: TransitionsBuilders.slideLeftWithFade)
+        AutoRoute(page: NotificationsPage),
+        AutoRoute(page: ProfileWrapper, children: [
+          AutoRoute(page: ProfilePage),
+          AutoRoute(page: EditProfilePage),
+          AutoRoute(page: PreferencesPage),
+          AutoRoute(page: FaqsPage),
+          AutoRoute(page: PrivacyPage),
+        ]),
       ]),
-      AutoRoute(page: NotificationsPage),
-      AutoRoute(page: ProfileWrapper, children: [
-        AutoRoute(page: ProfilePage),
-        AutoRoute(page: EditProfilePage),
-        AutoRoute(page: PreferencesPage),
-        AutoRoute(page: FaqsPage),
-        AutoRoute(page: PrivacyPage),
-      ]),
+      AutoRoute(page: ContactProfilePage)
     ]),
     AutoRoute(page: LoginWrapper, children: [
       AutoRoute(page: LoginPage),
