@@ -31,6 +31,7 @@ class ContactsPage extends StatelessWidget {
         child: AutoTabsRouter.tabBar(
       routes: [FriendsRoute(), RequestsRoute(), SuggestionsRoute()],
       builder: ((context, child, tabController) {
+        controller.updateTabData(tabController.index);
         return Column(
           children: [_tabBar(tabController), Expanded(child: child)],
         );

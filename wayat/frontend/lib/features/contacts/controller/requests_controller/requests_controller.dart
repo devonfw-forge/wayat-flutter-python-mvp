@@ -3,6 +3,7 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 import 'package:wayat/services/friend_requests/requests_service_impl.dart';
+import 'package:wayat/services/utils/list_utils_service.dart';
 
 part 'requests_controller.g.dart';
 
@@ -31,12 +32,19 @@ abstract class _RequestsController with Store {
   @action
   Future<void> updateRequests() async {
     Map<String, List<Contact>> requests = await _service.getRequests();
-    pendingRequests = ObservableList.of(requests[pendingRequestsKey]!);
-    sentRequests = ObservableList.of(requests[sentRequestsKey]!);
-    filteredPendingRequests = ObservableList.of(pendingRequests
-        .where((element) =>
-            element.name.toLowerCase().contains(textFilter.toLowerCase()))
-        .toList());
+
+    if (ListUtilsService.haveDifferentElements(
+        pendingRequests, requests[pendingRequestsKey]!)) {
+      pendingRequests = ObservableList.of(requests[pendingRequestsKey]!);
+      filteredPendingRequests = ObservableList.of(pendingRequests
+          .where((element) =>
+              element.name.toLowerCase().contains(textFilter.toLowerCase()))
+          .toList());
+    }
+    if (ListUtilsService.haveDifferentElements(
+        sentRequests, requests[sentRequestsKey]!)) {
+      sentRequests = ObservableList.of(requests[sentRequestsKey]!);
+    }
   }
 
   @action

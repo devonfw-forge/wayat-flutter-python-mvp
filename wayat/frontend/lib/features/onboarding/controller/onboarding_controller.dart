@@ -8,7 +8,7 @@ import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_state.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
-import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart';
+import 'package:wayat/services/contact/import_phones_service_impl.dart';
 
 part 'onboarding_controller.g.dart';
 
@@ -22,8 +22,8 @@ abstract class _OnboardingController with Store {
   }
 
   void importContacts() async {
-    List<ContactAdressBook> importedContacts =
-        await ContactsAddressServiceImpl.getAll();
+    List<String> importedContacts =
+        await ContactsAddressServiceImpl.getAllPhones();
     List<Contact> filteredContacts =
         await contactService.getFilteredContacts(importedContacts);
     addAll(filteredContacts);
