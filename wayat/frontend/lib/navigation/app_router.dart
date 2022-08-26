@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:wayat/contact_profile/page/contact_profile_page.dart';
 import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/login_wrapper.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
+import 'package:wayat/features/contact_profile/page/contact_profile_page.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
 import 'package:wayat/features/contacts/pages/contacts_wrapper.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';

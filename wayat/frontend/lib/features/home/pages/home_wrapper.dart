@@ -19,7 +19,10 @@ class HomeWrapper extends StatelessWidget {
           routes: (_) => [
                 const HomeRoute(),
                 if (selectedContact != null)
-                  ContactProfileRoute(contact: selectedContact)
+                  ContactProfileRoute(
+                      contact: selectedContact,
+                      navigationSource:
+                          homeState.navigationSourceContactProfile)
               ]);
     });
   }

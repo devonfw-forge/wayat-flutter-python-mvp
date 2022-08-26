@@ -14,12 +14,14 @@
 import 'package:auto_route/auto_route.dart' as _i26;
 import 'package:flutter/material.dart' as _i27;
 
-import '../contact_profile/page/contact_profile_page.dart' as _i8;
 import '../domain/contact/contact.dart' as _i28;
 import '../features/authentication/page/loading_page.dart' as _i25;
 import '../features/authentication/page/login_page.dart' as _i23;
 import '../features/authentication/page/login_wrapper.dart' as _i4;
 import '../features/authentication/page/phone_validation_page.dart' as _i24;
+import '../features/contact_profile/controller/contact_profile_controller.dart'
+    as _i29;
+import '../features/contact_profile/page/contact_profile_page.dart' as _i8;
 import '../features/contacts/pages/contacts_page/contacts_page.dart' as _i13;
 import '../features/contacts/pages/contacts_page/friends_page/friends_page.dart'
     as _i15;
@@ -99,7 +101,11 @@ class AppRouter extends _i26.RootStackRouter {
       final args = routeData.argsAs<ContactProfileRouteArgs>();
       return _i26.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i8.ContactProfilePage(contact: args.contact, key: args.key));
+          child: _i8.ContactProfilePage(
+              contact: args.contact,
+              navigationSource: args.navigationSource,
+              controller: args.controller,
+              key: args.key));
     },
     HomeMapRoute.name: (routeData) {
       final args = routeData.argsAs<HomeMapRouteArgs>(
@@ -426,24 +432,40 @@ class HomeRoute extends _i26.PageRouteInfo<void> {
 /// generated route for
 /// [_i8.ContactProfilePage]
 class ContactProfileRoute extends _i26.PageRouteInfo<ContactProfileRouteArgs> {
-  ContactProfileRoute({required _i28.Contact contact, _i27.Key? key})
+  ContactProfileRoute(
+      {required _i28.Contact contact,
+      required String navigationSource,
+      _i29.ContactProfileController? controller,
+      _i27.Key? key})
       : super(ContactProfileRoute.name,
             path: 'contact-profile-page',
-            args: ContactProfileRouteArgs(contact: contact, key: key));
+            args: ContactProfileRouteArgs(
+                contact: contact,
+                navigationSource: navigationSource,
+                controller: controller,
+                key: key));
 
   static const String name = 'ContactProfileRoute';
 }
 
 class ContactProfileRouteArgs {
-  const ContactProfileRouteArgs({required this.contact, this.key});
+  const ContactProfileRouteArgs(
+      {required this.contact,
+      required this.navigationSource,
+      this.controller,
+      this.key});
 
   final _i28.Contact contact;
+
+  final String navigationSource;
+
+  final _i29.ContactProfileController? controller;
 
   final _i27.Key? key;
 
   @override
   String toString() {
-    return 'ContactProfileRouteArgs{contact: $contact, key: $key}';
+    return 'ContactProfileRouteArgs{contact: $contact, navigationSource: $navigationSource, controller: $controller, key: $key}';
   }
 }
 

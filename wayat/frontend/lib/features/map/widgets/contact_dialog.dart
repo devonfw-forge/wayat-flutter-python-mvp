@@ -45,7 +45,7 @@ class ContactDialog extends StatelessWidget {
                 onPressed: () {
                   //This imperative pop is to close the contact dialog
                   Navigator.pop(context);
-                  GetIt.I.get<HomeState>().setSelectedContact(contact);
+                  GetIt.I.get<HomeState>().setSelectedContact(contact, "wayat");
                 },
                 enabled: true),
             const SizedBox(
@@ -73,9 +73,8 @@ class ContactDialog extends StatelessWidget {
               backgroundColor: Colors.black,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 3.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.network(contact.imageUrl),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(contact.imageUrl),
                 ),
               )),
           const SizedBox(
@@ -90,7 +89,10 @@ class ContactDialog extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                addressFuture(),
+                Text(
+                  contact.address.toString(),
+                  style: const TextStyle(fontSize: 17, color: Colors.black54),
+                ),
                 Text(
                   timeago.format(contact.lastUpdated),
                   style: const TextStyle(fontSize: 17, color: Colors.black54),
@@ -110,25 +112,6 @@ class ContactDialog extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  FutureBuilder<String> addressFuture() {
-    return FutureBuilder(
-        future: GoogleMapsService.getAddressFromCoordinates(
-            LatLng(contact.latitude, contact.longitude)),
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            return Text(
-              snapshot.data.toString(),
-              style: const TextStyle(fontSize: 17, color: Colors.black54),
-            );
-          } else {
-            return Text(
-              appLocalizations.loadingAddress,
-              style: const TextStyle(fontSize: 17, color: Colors.black54),
-            );
-          }
-        }));
   }
 
   Widget mapSection(BuildContext context) {

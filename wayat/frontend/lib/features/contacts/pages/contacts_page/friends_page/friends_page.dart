@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
@@ -44,6 +45,10 @@ class FriendsPage extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: contacts.length,
             itemBuilder: (context, index) => ContactTile(
+                  onTilePressed: () => GetIt.I
+                      .get<HomeState>()
+                      .setSelectedContact(
+                          contacts[index], appLocalizations.contacts),
                   contact: contacts[index],
                   iconAction: IconButton(
                     onPressed: () async =>

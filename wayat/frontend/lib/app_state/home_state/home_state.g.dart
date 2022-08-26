@@ -29,11 +29,11 @@ mixin _$HomeState on _HomeState, Store {
       ActionController(name: '_HomeState', context: context);
 
   @override
-  void setSelectedContact(Contact? newContact) {
+  void setSelectedContact(Contact? newContact, String navigationSource) {
     final _$actionInfo = _$_HomeStateActionController.startAction(
         name: '_HomeState.setSelectedContact');
     try {
-      return super.setSelectedContact(newContact);
+      return super.setSelectedContact(newContact, navigationSource);
     } finally {
       _$_HomeStateActionController.endAction(_$actionInfo);
     }

@@ -58,7 +58,7 @@ class Contact extends User {
 
   @override
   String toString() {
-    return 'Contact(available: $available, name: $name, email: $email, imageUrl: $imageUrl)';
+    return 'Contact(id: $id, available: $available, name: $name, email: $email, imageUrl: $imageUrl)';
   }
 
   @override

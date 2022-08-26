@@ -10,8 +10,11 @@ abstract class _HomeState with Store {
   @observable
   Contact? selectedContact;
 
+  String navigationSourceContactProfile = "";
+
   @action
-  void setSelectedContact(Contact? newContact) {
+  void setSelectedContact(Contact? newContact, String navigationSource) {
     selectedContact = newContact;
+    navigationSourceContactProfile = navigationSource;
   }
 }

@@ -16,8 +16,14 @@ class ContactMapListTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
-          backgroundImage: NetworkImage(contact.imageUrl),
-        ),
+            radius: (22),
+            backgroundColor: Colors.black,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 3.0),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(contact.imageUrl),
+              ),
+            )),
         const SizedBox(
           width: 15,
         ),
