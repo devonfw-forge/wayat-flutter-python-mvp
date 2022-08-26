@@ -11,7 +11,6 @@ import 'package:wayat/domain/location/contact_location.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:wayat/features/contact_profile/controller/contact_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
