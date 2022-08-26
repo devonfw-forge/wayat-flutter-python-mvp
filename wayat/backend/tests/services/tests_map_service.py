@@ -167,3 +167,54 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo.update_last_status.assert_has_calls([call("user_2"), call("user_3")], any_order=True)
         self.mock_status_repo.set_contact_refs.assert_has_calls([call("user_2", contact_refs_1),
                                                                  call("user_3", contact_refs_1)], any_order=True)
+
+    async def test_update_map_status_when_close_map_should_update_map_info(self):
+        uid = "Test"
+
+        # Call to be tested
+        await self.map_service.update_map_status(uid, False)
+
+        # Asserts
+        self.mock_user_repo.update_map_info.assert_called_with(uid, False)
+
+    @patch("app.business.wayat_management.services.map.get_current_time")
+    async def test_update_map_status_when_open_map_that_was_open_should_update_map_info(self, datetime_mock):
+        uid = "user_1"
+
+        now_timestamp = datetime(2022, 8, 16, 12, 0, 0, tzinfo=timezone.utc)
+        datetime_mock.return_value = now_timestamp
+
+        # Mocks
+        self.mock_entities[uid].map_open = True
+        self.mock_user_repo.get_or_throw.return_value = self.mock_entities[uid]
+
+        # Call to be tested
+        await self.map_service.update_map_status(uid, True)
+
+        # Asserts
+        self.mock_user_repo.update_map_info \
+            .assert_called_with(uid, True, now_timestamp + timedelta(seconds=self.map_settings.valid_until_threshold))
+
+    @patch("app.business.wayat_management.services.map.get_current_time")
+    async def test_update_map_status_when_open_map_closed_should_update_map_info_and_regenerate(self, datetime_mock):
+        uid = "user_1"
+
+        now_timestamp = datetime(2022, 8, 16, 12, 0, 0, tzinfo=timezone.utc)
+        datetime_mock.return_value = now_timestamp
+
+        # Mocks
+        mock_map_service = MagicMock(MapService)
+        self.mock_entities[uid].map_open = False
+        self.mock_user_repo.get_or_throw.return_value = self.mock_entities[uid]
+        self.map_service.regenerate_map_status = mock_map_service.regenerate_map_status
+
+        # Call to be tested
+        await self.map_service.update_map_status(uid, True)
+
+        # Asserts
+        self.mock_user_repo.update_map_info \
+            .assert_called_with(uid=uid, map_open=True, map_valid_until=now_timestamp +
+                                                                        timedelta(
+                                                                            seconds=self.map_settings
+                                                                            .valid_until_threshold))
+        mock_map_service.regenerate_map_status.assert_called_with(user=self.mock_entities[uid])
