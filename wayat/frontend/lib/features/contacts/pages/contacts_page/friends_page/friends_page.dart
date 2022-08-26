@@ -17,7 +17,6 @@ class FriendsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.updateContacts();
     //The paddings are placed individually on each item instead of on the
     //complete column as to not cut the scrolls indicators
     return SingleChildScrollView(
@@ -47,7 +46,8 @@ class FriendsPage extends StatelessWidget {
             itemBuilder: (context, index) => ContactTile(
                   contact: contacts[index],
                   iconAction: IconButton(
-                    onPressed: () async => await controller.removeContact(contacts[index]),
+                    onPressed: () async =>
+                        await controller.removeContact(contacts[index]),
                     icon: const Icon(
                       Icons.close,
                       color: ColorTheme.primaryColor,
