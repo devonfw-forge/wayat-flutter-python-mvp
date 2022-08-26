@@ -178,8 +178,9 @@ class HomeMapPage extends StatelessWidget {
               fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
         ),
         Observer(builder: (context) {
+          bool enabled = locationState.shareLocationEnabled;
           return CustomSwitch(
-            value: locationState.shareLocationEnabled,
+            value: enabled,
             onChanged: (newValue) {
               locationState.setShareLocationEnabled(newValue);
             },

@@ -24,13 +24,13 @@ class LoginWrapper extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               return AutoRouter.declarative(
                   routes: (_) => [
-                    if (!signedIn)
-                      const LoginRoute()
-                    else if (currentUser != null)
-                      const PhoneValidationRoute()
-                    else
-                      const LoadingRoute()
-                  ]);
+                        if (!signedIn)
+                          const LoginRoute()
+                        else if (currentUser != null)
+                          const PhoneValidationRoute()
+                        else
+                          const LoadingRoute()
+                      ]);
             } else {
               return const LoadingWidget();
             }

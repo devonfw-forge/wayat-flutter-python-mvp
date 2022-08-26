@@ -21,41 +21,44 @@ class ContactMapListTile extends StatelessWidget {
         const SizedBox(
           width: 15,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              contact.name,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            addressFuture(),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              timeago.format(contact.lastUpdated),
-              style: const TextStyle(fontSize: 17, color: Colors.black54),
-            ),
-            TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(padding: EdgeInsets.zero),
-              child: Text(
-                appLocalizations.viewInformation,
-                style: const TextStyle(
-                    color: ColorTheme.primaryColor, fontSize: 16),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                contact.name,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            )
-          ],
+              const SizedBox(
+                height: 5,
+              ),
+              addressFuture(),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                timeago.format(contact.lastUpdated),
+                style: const TextStyle(fontSize: 17, color: Colors.black54),
+              ),
+              TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                child: Text(
+                  appLocalizations.viewInformation,
+                  style: const TextStyle(
+                      color: ColorTheme.primaryColor, fontSize: 16),
+                ),
+              )
+            ],
+          ),
         )
       ],
     );
   }
 
   Text addressFuture() {
-    return  Text(
+    return Text(
       contact.address.toString(),
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(fontSize: 17, color: Colors.black54),

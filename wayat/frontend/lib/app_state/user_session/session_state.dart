@@ -3,7 +3,6 @@ import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
-
 part 'session_state.g.dart';
 
 // ignore: library_private_types_in_public_api
@@ -53,8 +52,13 @@ abstract class _SessionState with Store {
   }
 
   @action
-  Future updateCurrentUser() async {
+  Future initializeUser() async {
     currentUser ??= await authService.getUserData();
+  }
+
+  @action
+  Future updateCurrentUser() async {
+    currentUser = await authService.getUserData();
   }
 
   @action
@@ -92,7 +96,7 @@ abstract class _SessionState with Store {
   /// from the server
   Future initializeUserSession() async {
     setGoogleSignIn(true);
-    await updateCurrentUser();
+    await initializeUser();
     hasDoneOnboarding = currentUser!.onboardingCompleted;
   }
 
@@ -103,6 +107,10 @@ abstract class _SessionState with Store {
 
       return;
     }
+  }
+
+  Future logOut() async {
+    authService.signOut();
   }
 
   bool isOnboardingCompleted() {

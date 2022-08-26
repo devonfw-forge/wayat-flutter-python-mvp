@@ -59,7 +59,7 @@ class MapService:
     async def update_map_status(self, uid: str, next_map_state: bool):
         if next_map_state is True:
             # open the map
-            user_entity = await self._user_repository.get(uid)
+            user_entity = await self._user_repository.get_or_throw(uid)
             if not user_entity.map_open:
                 # Map is currently closed and we are opening it
                 await self._open_closed_map(user_entity)
@@ -80,8 +80,29 @@ class MapService:
             map_open=True,
             map_valid_until=get_current_time() + timedelta(seconds=self._map_valid_until_threshold)
         )
-        await self.regenerate_map_status(user=user_entity)
-        await self._status_repository.set_active_batch(uid_list=user_entity.contacts, value=True)
+        await self.force_status_update(user_entity=user_entity)
+
+    async def force_status_update(self, *,
+                                  uid: str | None = None,
+                                  user_entity: UserEntity | None = None,
+                                  force_contacts_update: bool = True):
+        """
+        Regenerates the User map. If force_contacts_update=True (default) all its contacts will become active,
+        sending a location update as soon as possible.
+        Either one of uid or user_entity must be provided. If both are passed, user_entity has precedence.
+        :param uid: The uid of the User
+        :param user_entity: The User entity
+        :param force_contacts_update: Whether to set all of User's contacts to active mode.
+        """
+        if user_entity is not None:
+            user_to_update = user_entity
+        elif uid is not None:
+            user_to_update = await self._user_repository.get_or_throw(uid)
+        else:
+            raise ValueError("Either uid or user_entity should not be None. Invalid parameters")
+        await self.regenerate_map_status(user=user_to_update)
+        if force_contacts_update:
+            await self._status_repository.set_active_batch(uid_list=user_to_update.contacts, value=True)
 
     @overload
     async def regenerate_map_status(self, *, uid: str):
@@ -93,9 +114,13 @@ class MapService:
 
     async def regenerate_map_status(self, *, uid: str | None = None, user: UserEntity | None = None):
         # Overload handling
-        user_to_update = await self._user_repository.get(uid) if uid else user
-        if not user_to_update:
-            return
+        if user is not None:
+            user_to_update = user
+        elif uid is not None:
+            user_to_update = await self._user_repository.get_or_throw(uid)
+        else:
+            raise ValueError("Either uid or user_entity should not be None. Invalid parameters")
+
         uid = user_to_update.document_id
 
         # Implementation
@@ -143,3 +168,8 @@ class MapService:
         distance = haversine_distance(latitude, longitude, location.latitude, location.longitude)
         logger.debug(f"Distance of {distance} calculated")
         return distance < self._distance_threshold
+
+    async def vanish_user(self, uid: str):
+        coroutines = [self.regenerate_map_status(uid=contact_uid)
+                      for contact_uid in await self._status_repository.find_maps_containing_user(uid)]
+        await asyncio.gather(*coroutines)

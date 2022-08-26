@@ -4,10 +4,10 @@ from typing import BinaryIO
 from unittest import IsolatedAsyncioTestCase
 from unittest.mock import MagicMock, patch
 
-from app.common.exceptions.http import NotFoundException
 from requests import RequestException
 
 from app.business.wayat_management.services.user import UserService
+from app.common.exceptions.runtime import ResourceNotFoundException
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity
 from app.domain.wayat_management.repositories.files import FileStorage, StorageSettings
@@ -141,7 +141,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             if uid == "test" or uid == "test-friend":
                 return test_entity
             else:
-                return None
+                raise ResourceNotFoundException
 
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
         test_entity = UserEntity(
@@ -152,13 +152,26 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             image_url=test_data.picture
         )
 
-        self.mock_user_repo.get.side_effect = mocking_get_user
+        self.mock_user_repo.get_or_throw.side_effect = mocking_get_user
 
         # Call to be tested
-        await self.user_service.add_contacts(uid=test_data.uid, users=["test-friend", "invalid"])
+        ex = False
+        try:
+            await self.user_service.add_contacts(uid=test_data.uid, users=["test-friend"])
+        except ResourceNotFoundException:
+            ex = True
+
+        self.mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity.document_id])
+        assert ex == False
+
+        ex = False
+        try:
+            await self.user_service.add_contacts(uid=test_data.uid, users=["invalid"])
+        except ResourceNotFoundException:
+            ex = True
 
         # Asserts
-        self.mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity.document_id])
+        assert ex == True
 
     async def test_get_pending_friend_requests_should_return_ok(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
@@ -200,9 +213,9 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             if uid == test_entity_sent.document_id:
                 return test_entity_sent
             else:
-                return None
+                raise ResourceNotFoundException
 
-        self.mock_user_repo.get.side_effect = mocking_get_user
+        self.mock_user_repo.get_or_throw.side_effect = mocking_get_user
 
         # Call to be tested
         pending, sent = await self.user_service.get_pending_friend_requests(test_data.uid)
@@ -215,7 +228,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         found_exception = False
         try:
             await self.user_service.get_pending_friend_requests('bad')
-        except NotFoundException:
+        except ResourceNotFoundException:
             found_exception = True
 
         assert found_exception == True

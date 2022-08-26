@@ -16,9 +16,8 @@ class ContactsWrapper extends StatelessWidget {
     return Observer(builder: (context) {
       bool viewSentRequests = controller.viewSentRequests;
       return AutoRouter.declarative(
-          routes: (_) => [
-                if (!viewSentRequests) ContactsRoute() else SentRequestsRoute()
-              ]);
+          routes: (_) =>
+              [ContactsRoute(), if (viewSentRequests) SentRequestsRoute()]);
     });
   }
 }

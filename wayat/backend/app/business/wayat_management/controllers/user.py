@@ -14,6 +14,7 @@ from app.business.wayat_management.models.user import (
     UpdatePreferencesRequest, UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest,
     UserDTO,
 )
+from app.business.wayat_management.services.map import MapService
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
 from app.common.exceptions.http import HTTPError
@@ -87,9 +88,14 @@ async def add_contact(request: AddContactsRequest, user_service: UserService = D
 @router.post("/preferences", description="Update the preferences of a user")
 async def update_preferences(request: UpdatePreferencesRequest,
                              user_service: UserService = Depends(UserService),
+                             map_service: MapService = Depends(MapService),
                              user: FirebaseAuthenticatedUser = Depends(get_user())):
     logger.info(f"Updating preferences for user {user.uid} with values {request.dict(exclude_unset=True)}")
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
+    if request.share_location is False:
+        # share_location was set to false in this request, so we must delete the user
+        # from all the maps in which he's present
+        await map_service.vanish_user(user.uid)
 
 
 @router.get("/contacts", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
@@ -104,8 +110,10 @@ async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
 @router.delete("/contacts/{contact_id}",
                description="Deletes a contact from your friend list and removes yourself from their list")
 async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                         map_service: MapService = Depends(MapService),
                          user_service: UserService = Depends(UserService)):
     await user_service.delete_contact(user_id=user.uid, contact_id=contact_id)
+    await map_service.force_status_update(uid=user.uid, force_contacts_update=False)
 
 
 @router.get("/friend-requests", description="Returns pending sent and received friendship requests",
@@ -125,8 +133,12 @@ async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user
 
 @router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
 async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user()),
-                                user_service: UserService = Depends(UserService)):
+                                user_service: UserService = Depends(UserService),
+                                map_service: MapService = Depends(MapService)):
     await user_service.respond_friend_request(user_uid=user.uid, friend_uid=r.uid, accept=r.accept)
+    if r.accept is True:  # If accepted a friend request refresh maps
+        await map_service.force_status_update(uid=user.uid)
+        await map_service.force_status_update(uid=r.uid)
 
 
 @router.delete("/friend-requests/sent/{contact_id}", description="Cancel a sent friendship request")

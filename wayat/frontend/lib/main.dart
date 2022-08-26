@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
@@ -33,12 +34,13 @@ Future registerSingletons() async {
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
+  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<MapState>(() => MapState());
 }
 
-class MyApp extends StatefulWidget  {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
-  
+
   @override
   State<MyApp> createState() => _MyApp();
 }
@@ -46,7 +48,7 @@ class MyApp extends StatefulWidget  {
 class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   final _appRouter = AppRouter();
   final MapState mapState = GetIt.I.get<MapState>();
-  
+
   @override
   void initState() {
     super.initState();
@@ -62,23 +64,24 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-    // It will be executed if the app is opened from background, but not when it is 
+    // It will be executed if the app is opened from background, but not when it is
     // opened for first time
     if (state == AppLifecycleState.resumed) {
-      if(!mapState.mapOpened) {
+      if (!mapState.mapOpened) {
         await mapState.openMap();
       }
     }
     // Other states must execute a close map event, but detach is not included,
     // when the app is closed it can not send a request
-    else if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused){ 
-      if(mapState.mapOpened) {
+    else if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      if (mapState.mapOpened) {
         await mapState.closeMap();
       }
     }
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
 

@@ -14,8 +14,7 @@ import 'package:wayat/features/onboarding/controller/onboarding_progress.dart'
 import 'package:wayat/features/onboarding/controller/onboarding_state.dart'
     as _i5;
 import 'package:wayat/services/contact/contact_service.dart' as _i2;
-import 'package:wayat/services/contact_address_book/contact_address_book_service_impl.dart'
-    as _i9;
+import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values

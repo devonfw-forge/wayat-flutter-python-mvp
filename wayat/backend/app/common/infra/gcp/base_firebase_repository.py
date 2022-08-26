@@ -12,7 +12,9 @@ from google.cloud.firestore import (
 from google.cloud.firestore_v1 import AsyncTransaction
 from pydantic import BaseModel
 
+from app.common.exceptions.runtime import ResourceNotFoundException
 from app.common.infra import get_firebase_settings
+from app.common.infra.gcp.firebase import get_account_info
 
 
 class GeoPoint(_GeoPoint):
@@ -60,13 +62,7 @@ ModelType = TypeVar("ModelType", bound=BaseFirebaseModel)
 
 
 def get_async_client():
-    return AsyncClient.from_service_account_info(_get_account_info())
-
-
-@lru_cache
-def _get_account_info():
-    with open(get_firebase_settings().credentials_file) as f:
-        return json.load(f)
+    return AsyncClient.from_service_account_info(get_account_info())
 
 
 class BaseFirestoreRepository(Generic[ModelType]):
@@ -86,6 +82,12 @@ class BaseFirestoreRepository(Generic[ModelType]):
 
     def _get_document_reference(self, document_id: str) -> AsyncDocumentReference:
         return self._client.document(*self._path, document_id)
+
+    async def get_or_throw(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType:
+        entity = await self.get(document_id, transaction)
+        if not entity:
+            raise ResourceNotFoundException(detail=f"Document not found: {'/'.join(self._path + (document_id,))}")
+        return entity
 
     async def get(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType | None:
         snapshot = await self._get_document_reference(document_id).get(transaction=transaction)
