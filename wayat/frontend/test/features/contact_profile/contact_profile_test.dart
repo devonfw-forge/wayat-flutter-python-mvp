@@ -1,8 +1,5 @@
-import 'dart:ffi';
 import 'dart:io';
 
-import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -20,7 +17,6 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
 import 'contact_profile_test.mocks.dart';
 
