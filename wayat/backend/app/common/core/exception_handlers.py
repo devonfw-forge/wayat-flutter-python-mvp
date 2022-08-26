@@ -32,4 +32,5 @@ def init_exception_handlers(api: FastAPI):
     async def resource_not_found_handler(request: Request, exc: ResourceNotFoundException):
         logger.error("Tried to access a resource not available")
         logger.exception(exc.detail)
-        return PlainTextResponse(f"Tried to access a resource not available ({exc.detail})", status_code=404)
+        return JSONResponse(content=HTTPError(detail=f"Tried to access a resource not available ({exc.detail})").dict(),
+                            status_code=404)
