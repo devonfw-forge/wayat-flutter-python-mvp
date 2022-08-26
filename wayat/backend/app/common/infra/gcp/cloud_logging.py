@@ -46,8 +46,8 @@ class CloudRunJSONFormatter(logging.Formatter):
             # https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
             "timestamp": datetime.fromtimestamp(record.created).isoformat() + "Z",
             "severity": record.levelname,
-            "labels": {
-                "logger_name": record.name
+            "sourceLocation": {
+                "file": record.name
             }
         }
         self._add_trace_info(log)
