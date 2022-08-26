@@ -14,6 +14,7 @@ from pydantic import BaseModel
 
 from app.common.exceptions.runtime import ResourceNotFoundException
 from app.common.infra import get_firebase_settings
+from app.common.infra.gcp.firebase import get_account_info
 
 
 class GeoPoint(_GeoPoint):
@@ -61,13 +62,7 @@ ModelType = TypeVar("ModelType", bound=BaseFirebaseModel)
 
 
 def get_async_client():
-    return AsyncClient.from_service_account_info(_get_account_info())
-
-
-@lru_cache
-def _get_account_info():
-    with open(get_firebase_settings().credentials_file) as f:
-        return json.load(f)
+    return AsyncClient.from_service_account_info(get_account_info())
 
 
 class BaseFirestoreRepository(Generic[ModelType]):

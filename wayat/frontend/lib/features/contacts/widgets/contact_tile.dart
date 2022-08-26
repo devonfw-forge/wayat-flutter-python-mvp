@@ -12,6 +12,8 @@ class ContactTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double nameSpace = (textAction != null) ? 0.4 : 0.65;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
@@ -35,11 +37,14 @@ class ContactTile extends StatelessWidget {
               const SizedBox(
                 width: 5,
               ),
-              Text(
-                contact.name.substring(0, 
-                  contact.name.length > 15 ? 15 : contact.name.length),
-                style:
-                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * nameSpace,
+                child: Text(
+                  contact.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 18),
+                ),
               ),
             ],
           ),
@@ -48,7 +53,7 @@ class ContactTile extends StatelessWidget {
               (textAction != null) ? textAction! : Container(),
               (iconAction != null) ? iconAction! : Container()
             ],
-          )
+          ),
         ],
       ),
     );
