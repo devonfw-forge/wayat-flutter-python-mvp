@@ -84,5 +84,10 @@
     "viewInformation": "View information",
 
     "profileShareLocation": "Share Location",
-    "profileActiveLocation": "Active Location"
+    "profileActiveLocation": "Active Location",
+
+    "contactProfileSharingLocationWithYou": "Sharing location with you",
+    "contactProfileLocationNotAvailable": "Location not available",
+    "contactProfileNotSharingLocation": "Not sharing location",
+    "contactProfileLastUpdated": "Last updated"
 } 

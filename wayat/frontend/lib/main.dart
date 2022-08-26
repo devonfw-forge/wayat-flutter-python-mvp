@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
@@ -37,6 +38,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
   GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<MapState>(() => MapState());
+  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
 }
 
 class MyApp extends StatefulWidget {

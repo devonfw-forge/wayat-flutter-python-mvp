@@ -18,10 +18,7 @@ class RootWrapper extends StatelessWidget {
       return AutoRouter.declarative(
           routes: (_) => [
                 if (loggedIn)
-                  if (!doneOnBoarding)
-                    OnBoardingWrapper()
-                  else
-                    const HomeRoute()
+                  if (!doneOnBoarding) OnBoardingWrapper() else HomeWrapper()
                 else
                   LoginWrapper()
               ]);
