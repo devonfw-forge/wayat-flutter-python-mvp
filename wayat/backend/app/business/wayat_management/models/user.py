@@ -61,3 +61,7 @@ class PendingFriendsRequestsResponse(BaseModel):
 class HandleFriendRequestRequest(BaseModel):
     uid: str
     accept: bool
+
+
+def dto_to_user_with_phone_response(u: UserDTO):
+    return UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url)
