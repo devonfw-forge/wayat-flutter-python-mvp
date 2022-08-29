@@ -15,7 +15,7 @@ class GoogleAuthService extends AuthService {
   }
 
   /// Google *sign in* process. Returns ```null``` if no account is retrieved
-  /// or something when wrong during the sign in process
+  // / or something when wrong during the sign in process
   @override
   Future<GoogleSignInAccount?> signIn() async {
     try {
