@@ -89,4 +89,4 @@ async def update_preferences(request: UpdatePreferencesRequest,
     if request.share_location is False:
         # share_location was set to false in this request, so we must delete the user
         # from all the maps in which he's present
-        await map_service.vanish_user(user.uid)
+        await map_service.regenerate_maps_containing_user(user.uid)
