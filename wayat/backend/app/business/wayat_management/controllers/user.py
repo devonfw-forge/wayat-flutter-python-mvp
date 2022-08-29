@@ -39,6 +39,7 @@ async def delete_account(user: FirebaseAuthenticatedUser = Depends(get_user()),
     await user_service.delete_account(user.uid)
     await maps_service.regenerate_maps_containing_user(user.uid)
 
+
 @router.post("/profile",
              description="Update a user profile, setting those values that were explicitly set, even if set to null",
              responses={
