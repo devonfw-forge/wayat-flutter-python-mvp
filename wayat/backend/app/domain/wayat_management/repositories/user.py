@@ -126,7 +126,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def update_map_info(self, uid: str, map_open: bool, map_valid_until: datetime | None = None):
         data = {"map_open": map_open}
         if map_valid_until is not None:
-            data["map_valid_until"] = map_valid_until
+            data["map_valid_until"] = map_valid_until  # type: ignore
         await self.update(document_id=uid, data=data)
 
     async def respond_friend_request(self, *, self_uid: str, friend_uid: str, accept: bool):
