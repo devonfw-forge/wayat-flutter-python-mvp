@@ -24,8 +24,8 @@ class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
     async def set_active(self, uid: str, value: bool, read_first=True):
         # TODO: Validate if read_first=True
         if read_first:
-            current_status = await self.get(uid)
-            if current_status is None or current_status.active == value:
+            current_status = await self.get_or_throw(uid)
+            if current_status.active == value:
                 return
         await self.update(document_id=uid, data={"active": value})
 

@@ -81,6 +81,7 @@ dev_dependencies:
   speech_balloon: ^0.0.4
 
 
+
 flutter:
   # Flag to generate internationalization files
   generate: true

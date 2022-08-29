@@ -38,8 +38,8 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         return [item async for item in self.where("phone", 'in', phones)]
 
     async def get_contacts(self, uid: str):
-        self_user = await self.get(uid)
-        coroutines = [self.get(u) for u in self_user.contacts]
+        self_user = await self.get_or_throw(uid)
+        coroutines = [self.get_or_throw(u) for u in self_user.contacts]
         contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)  # type: ignore
         return contacts_entities
 
@@ -60,8 +60,8 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         :param uid: the UID of the User
         :return: the Location of the User, or None if it's not available
         """
-        user_entity = await self.get(uid)
-        if user_entity is None or user_entity.location is None:  # if not available, return None
+        user_entity = await self.get_or_throw(uid)
+        if user_entity.location is None:  # if not available, return None
             return None
         elif not force and not user_entity.share_location:  # if not forcing, decide on not(share_location)
             return None
@@ -126,7 +126,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def update_map_info(self, uid: str, map_open: bool, map_valid_until: datetime | None = None):
         data = {"map_open": map_open}
         if map_valid_until is not None:
-            data["map_valid_until"] = map_valid_until
+            data["map_valid_until"] = map_valid_until  # type: ignore
         await self.update(document_id=uid, data=data)
 
     async def respond_friend_request(self, *, self_uid: str, friend_uid: str, accept: bool):
@@ -139,7 +139,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
 
             @firestore.async_transactional
             async def execute(t: AsyncTransaction):
-                sender = await self.get(friend_uid, transaction=t)
+                sender = await self.get_or_throw(friend_uid, transaction=t)
                 if self_uid in sender.sent_requests:
                     update_sender = {
                         "sent_requests": firestore.ArrayRemove([self_uid]),
