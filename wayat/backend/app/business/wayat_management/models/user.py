@@ -1,11 +1,9 @@
 from typing import Optional, NewType
 from pydantic import BaseModel
 
-IDType = NewType("IDType", str)
-
 
 class UserID(BaseModel):
-    id: IDType
+    id: str
 
 
 # Requests
@@ -17,7 +15,7 @@ class UpdateUserRequest(BaseModel):
 
 
 class AddContactsRequest(BaseModel):
-    users: list[IDType]
+    users: list[str]
 
 
 class FindByPhoneRequest(BaseModel):

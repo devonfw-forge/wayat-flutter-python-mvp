@@ -32,10 +32,12 @@ async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user())
 
 
 @router.delete("/profile", description="Delete the account of a user")
-async def delete_account(user: FirebaseAuthenticatedUser = Depends(get_user())):
+async def delete_account(user: FirebaseAuthenticatedUser = Depends(get_user()),
+                         user_service: UserService = Depends(),
+                         maps_service: MapService = Depends()):
     logger.info(f"Deleting the account of the user with uid={user.uid}")
-    # TODO: Implement this method
-    raise NotImplementedError
+    await user_service.delete_account(user.uid)
+    await maps_service.regenerate_maps_containing_user(user.uid)
 
 
 @router.post("/profile",
@@ -89,4 +91,4 @@ async def update_preferences(request: UpdatePreferencesRequest,
     if request.share_location is False:
         # share_location was set to false in this request, so we must delete the user
         # from all the maps in which he's present
-        await map_service.vanish_user(user.uid)
+        await map_service.regenerate_maps_containing_user(user.uid)

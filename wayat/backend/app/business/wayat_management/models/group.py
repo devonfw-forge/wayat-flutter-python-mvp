@@ -2,10 +2,9 @@ from typing import NewType, Optional
 
 from pydantic import BaseModel
 
-from app.business.wayat_management.models.user import IDType as UserIDType
 
 GroupIDType = NewType("GroupIDType", str)
-UsersListType = NewType("UsersListType", list[UserIDType])
+UsersListType = NewType("UsersListType", list[str])
 
 
 class GroupID(BaseModel):
