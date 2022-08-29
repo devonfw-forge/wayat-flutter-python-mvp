@@ -21,7 +21,7 @@ async def add_contact(request: AddContactsRequest, user_service: UserService = D
     await user_service.add_contacts(uid=user.uid, users=request.users)
 
 
-@router.get("/", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
+@router.get("", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
 async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
                        user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts for user {user.uid}")
