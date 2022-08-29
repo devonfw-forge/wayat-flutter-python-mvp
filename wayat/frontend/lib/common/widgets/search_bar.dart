@@ -4,8 +4,10 @@ import 'package:wayat/lang/app_localizations.dart';
 
 class SearchBar extends StatelessWidget {
   final TextEditingController controller;
-  final Function(String) onChanged;
-  const SearchBar({required this.controller, required this.onChanged, Key? key})
+  final Function(String)? onChanged;
+  final FocusNode? focusNode;
+  const SearchBar(
+      {required this.controller, this.onChanged, this.focusNode, Key? key})
       : super(key: key);
 
   @override
@@ -15,6 +17,7 @@ class SearchBar extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, right: 10.0),
       height: 60,
       child: TextField(
+        focusNode: focusNode,
         onChanged: onChanged,
         controller: controller,
         cursorColor: Colors.black,
