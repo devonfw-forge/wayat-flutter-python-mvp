@@ -1,6 +1,7 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/services/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
 part 'session_state.g.dart';
@@ -63,11 +64,11 @@ abstract class _SessionState with Store {
 
   @action
   Future<bool> updatePhone(String phone) async {
-    bool done =
-        (await authService.sendPostRequest("users/profile", {"phone": phone}))
-                    .statusCode /
-                10 ==
-            20;
+    bool done = (await authService
+                    .sendPostRequest(APIContract.userProfile, {"phone": phone}))
+                .statusCode /
+            10 ==
+        20;
     if (done) currentUser!.phone = phone;
     return done;
   }
@@ -75,7 +76,7 @@ abstract class _SessionState with Store {
   @action
   Future<bool> updateOnboarding() async {
     bool done = (await authService.sendPostRequest(
-                    "users/profile", {"onboarding_completed": true}))
+                    APIContract.userProfile, {"onboarding_completed": true}))
                 .statusCode /
             10 ==
         20;
