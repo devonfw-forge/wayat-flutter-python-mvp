@@ -1,6 +1,7 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
+import 'package:wayat/services/api_contract/api_contract.dart';
 import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
 import 'package:wayat/services/location/share_location_service.dart';
@@ -116,7 +117,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
     changeLocationStateCallback(location);
     String address =
         await GoogleMapsService.getAddressFromCoordinates(location);
-    await super.sendPostRequest("/map/update-location", {
+    await super.sendPostRequest(APIContract.updateLocation, {
       "position": {
         "longitude": locationData.longitude,
         "latitude": locationData.latitude,
@@ -151,14 +152,15 @@ class ShareLocationServiceImpl extends ShareLocationService {
       shareLocationActivated();
     } else {
       super.sendPostRequest(
-          'users/preferences', {"share_location": shareLocation});
+          APIContract.preferences, {"share_location": shareLocation});
     }
   }
 
   /// This method is necessary because we need to make sure that the POST to true
   /// is received BEFORE the location update. Otherwise it would be ignored
   Future shareLocationActivated() async {
-    await super.sendPostRequest('users/preferences', {"share_location": true});
+    await super
+        .sendPostRequest(APIContract.preferences, {"share_location": true});
     sendForcedLocationUpdate();
   }
 
