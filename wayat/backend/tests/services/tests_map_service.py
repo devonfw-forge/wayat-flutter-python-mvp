@@ -218,3 +218,57 @@ class MapServiceTests(IsolatedAsyncioTestCase):
                                                                             seconds=self.map_settings
                                                                             .valid_until_threshold))
         mock_map_service.regenerate_map_status.assert_called_with(user=self.mock_entities[uid])
+
+    async def test_overload_force_status_update(self):
+        uid = "user_1"
+        # Mocks
+        mock_map_service = MagicMock(MapService)
+        # self.mock_entities[uid].map_open = False
+        self.mock_user_repo.get_or_throw.return_value = self.mock_entities[uid]
+        self.map_service.regenerate_map_status = mock_map_service.regenerate_map_status
+
+        # Call to be tested
+        await self.map_service.force_status_update(uid=uid, force_contacts_update=False)
+
+        mock_map_service.regenerate_map_status.assert_called_with(user=self.mock_entities[uid])
+
+        exception = None
+        try:
+            await self.map_service.force_status_update(force_contacts_update=False)
+        except ValueError as e:
+            exception = e
+
+        assert exception is not None
+
+    async def test_overload_regenerate_map_status(self):
+        uid = "user_1"
+        # Mocks
+        mock_map_service = MagicMock(MapService)
+        self.mock_entities[uid].contacts = []
+        self.mock_user_repo.get_or_throw.return_value = self.mock_entities[uid]
+        self.map_service._create_contact_ref = mock_map_service._create_contact_ref
+
+        # Call to be tested
+        await self.map_service.regenerate_map_status(uid=uid)
+
+        self.mock_user_repo.update_last_status.assert_called_with(uid)
+
+        exception = None
+        try:
+            await self.map_service.regenerate_map_status()
+        except ValueError as e:
+            exception = e
+
+        assert exception is not None
+
+    async def test_none_values(self):
+        uid = "user_1"
+        # Mocks
+        self.mock_user_repo.get_user_location.return_value = None
+
+        # Call to be tested
+        res = await self.map_service._create_contact_ref(contact_uid=uid)
+        assert res is None
+
+        res = self.map_service._in_range(latitude=0, longitude=0, contact_location=None)
+        assert res is False
