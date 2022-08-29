@@ -1,6 +1,7 @@
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/services/api_contract/api_contract.dart';
+import 'package:wayat/services/profile/profile_service.dart';
 import 'package:wayat/services/request/rest_service.dart';
 import 'package:mime/mime.dart';
 
