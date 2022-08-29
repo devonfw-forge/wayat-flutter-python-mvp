@@ -42,29 +42,37 @@ void main() async {
     );
   }
 
-  testWidgets('Login page has a app title', (tester) async {
-    await tester.pumpWidget(_createApp(const LoginPage()));
-    expect(find.widgetWithText(CustomWayatTitle, appLocalizations.appTitle),
-        findsOneWidget);
+  group('Login page has the correct widgets', (){
+
+    testWidgets('Login page has a app title', (tester) async {
+      await tester.pumpWidget(_createApp(const LoginPage()));
+      expect(find.widgetWithText(CustomWayatTitle, appLocalizations.appTitle),
+          findsOneWidget);
+    });
+
+    testWidgets('Login page has a login title', (tester) async {
+      await tester.pumpWidget(_createApp(const LoginPage()));
+      expect(find.widgetWithText(CustomLoginTitle, appLocalizations.login),
+          findsOneWidget);
+    });
+
+    testWidgets('Login page has a sign in button', (tester) async {
+      await tester.pumpWidget(_createApp(const LoginPage()));
+      expect(find.byType(InkWell), findsOneWidget);
+    });
   });
 
-  testWidgets('Login page has a login title', (tester) async {
-    await tester.pumpWidget(_createApp(const LoginPage()));
-    expect(find.widgetWithText(CustomLoginTitle, appLocalizations.login),
-        findsOneWidget);
+  group('Login page changes the session state', (){
+
+    testWidgets('Login submit button changes session state', (tester) async {
+      when(userSession.login()).thenAnswer((_) => Future<void>.value());
+
+      await tester.pumpWidget(_createApp(const LoginPage()));
+      await tester.tap(find.byType(InkWell));
+      await tester.pumpAndSettle();
+      verify(await userSession.login()).called(1);
+    });
+
   });
 
-  testWidgets('Login page has a sign in button', (tester) async {
-    await tester.pumpWidget(_createApp(const LoginPage()));
-    expect(find.byType(InkWell), findsOneWidget);
-  });
-
-  testWidgets('Login submit button changes session state', (tester) async {
-    when(userSession.login()).thenAnswer((_) => Future<void>.value());
-
-    await tester.pumpWidget(_createApp(const LoginPage()));
-    await tester.tap(find.byType(InkWell));
-    await tester.pumpAndSettle();
-    verify(await userSession.login()).called(1);
-  });
 }
