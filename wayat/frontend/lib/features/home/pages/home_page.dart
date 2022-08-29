@@ -23,6 +23,7 @@ class HomePage extends StatelessWidget {
         final tabsRouter = AutoTabsRouter.of(context);
 
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: PreferredSize(
               preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
           body: child,

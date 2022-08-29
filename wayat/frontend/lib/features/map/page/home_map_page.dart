@@ -7,19 +7,18 @@ import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/common/widgets/switch.dart';
-import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
+import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
-// ignore: must_be_immutable
 class HomeMapPage extends StatelessWidget {
   final LocationState locationState = GetIt.I.get<LocationState>();
   final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
-  late MapController controller;
-  late GoogleMapController gMapController;
+  final MapController controller = MapController();
 
   HomeMapPage({Key? key}) : super(key: key);
 
@@ -27,70 +26,69 @@ class HomeMapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     GetIt.I.get<MapState>().openMap();
 
-    controller = MapController(
-        onMarkerPressed: (contact, icon) =>
-            showContactDialog(contact, icon, context));
-
     return FutureBuilder(
         future: locationState.initialize(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Stack(
-              children: [
-                Observer(builder: (context) {
-                  List<ContactLocation> contacts = userStatusState.contacts;
-                  if (contacts != controller.contacts) {
-                    controller.setContacts(contacts);
-                    controller.getMarkers();
-                  }
-                  Set<Marker> markers = controller.markers;
-                  return Column(
-                    children: [
-                      searchBar(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(child: googleMap(markers)),
-                    ],
-                  );
-                }),
-                _bottomSheet()
-              ],
+              children: [_mapLayer(), _draggableSheetLayer()],
             );
           } else {
-            return Container(
-              color: Colors.white,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return const LoadingWidget();
           }
         });
   }
 
-  Widget searchBar() {
-    return Autocomplete<Contact>(
-      displayStringForOption: displayStringForContact,
-      optionsBuilder: (textEditingValue) {
-        if (textEditingValue.text.isEmpty) {
-          return const Iterable.empty();
-        }
-        return controller.contacts.where((contact) => contact.name
-            .toLowerCase()
-            .contains(textEditingValue.text.toLowerCase()));
-      },
-      onSelected: (contact) => debugPrint("DEBUG $contact"),
-      fieldViewBuilder:
-          (context, textEditingController, focusNode, onFieldSubmitted) =>
-              SearchBar(
-        controller: textEditingController,
-        focusNode: focusNode,
-      ),
-    );
+  Observer _mapLayer() {
+    return Observer(builder: (context) {
+      prepareMapData(context);
+      Set<Marker> markers = controller.markers;
+      return Column(
+        children: [
+          searchBar(),
+          const SizedBox(
+            height: 10,
+          ),
+          Expanded(child: googleMap(markers)),
+        ],
+      );
+    });
   }
 
-  String displayStringForContact(Contact contact) {
-    return contact.name;
+  void prepareMapData(BuildContext context) {
+    List<ContactLocation> contacts = userStatusState.contacts;
+    if (contacts != controller.contacts) {
+      controller.setContacts(contacts);
+      controller.getMarkers(
+          onMarkerPressed: (contact, icon) =>
+              showContactDialog(contact, icon, context));
+    }
+  }
+
+  Widget searchBar() {
+    return Autocomplete<ContactLocation>(
+        displayStringForOption: (contact) => contact.name,
+        optionsBuilder: (textEditingValue) {
+          if (textEditingValue.text.isEmpty) {
+            return const Iterable.empty();
+          }
+          return controller.contacts.where((contact) => contact.name
+              .toLowerCase()
+              .contains(textEditingValue.text.toLowerCase()));
+        },
+        onSelected: (contact) => controller.gMapController.moveCamera(
+            CameraUpdate.newLatLng(
+                LatLng(contact.latitude, contact.longitude))),
+        fieldViewBuilder:
+            (context, textEditingController, focusNode, onFieldSubmitted) {
+          return SearchBar(
+            controller: textEditingController,
+            focusNode: focusNode,
+            onChanged: (newText) => controller.setSearchBarText(newText),
+          );
+        },
+        optionsViewBuilder: (context, onSelected, options) =>
+            SuggestionsDialog(options: options, onSelected: onSelected));
   }
 
   GoogleMap googleMap(Set<Marker> markers) {
@@ -104,12 +102,12 @@ class HomeMapPage extends StatelessWidget {
       zoomControlsEnabled: false,
       markers: markers,
       onMapCreated: (googleMapController) {
-        gMapController = googleMapController;
+        controller.gMapController = googleMapController;
       },
     );
   }
 
-  DraggableScrollableSheet _bottomSheet() {
+  DraggableScrollableSheet _draggableSheetLayer() {
     return DraggableScrollableSheet(
         minChildSize: 0.13,
         initialChildSize: 0.13,

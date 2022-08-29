@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wayat/features/authentication/common/loading_widget.dart';
+import 'package:wayat/common/widgets/loading_widget.dart';
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({Key? key}) : super(key: key);
