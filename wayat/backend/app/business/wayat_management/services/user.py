@@ -32,7 +32,7 @@ class UserService:
         self.THUMBNAIL_SIZE = storage_settings.thumbnail_size
 
     def map_to_dto(self, entity: UserEntity) -> UserDTO:
-        return None if entity is None else UserDTO(
+        return UserDTO(
             id=entity.document_id,
             name=entity.name,
             email=entity.email,
@@ -80,7 +80,7 @@ class UserService:
         contacts = await self.get_contacts(users)
         found_contacts: set[str] = {e.id for e in contacts}
 
-        self_user = await self._user_repository.get(uid)
+        self_user = await self._user_repository.get_or_throw(uid)
         existing_contacts: set[str] = set(self_user.contacts)
 
         new_contacts = found_contacts.difference(existing_contacts)
@@ -128,28 +128,23 @@ class UserService:
 
         return picture
 
-    async def get_contact(self, uid: str) -> UserDTO | None:
+    async def get_contact(self, uid: str) -> UserDTO:
         """
         Returns user DTO
         """
-        user = await self._user_repository.get(uid)
-        if user is not None:
-            user = self.map_to_dto(user)
-        return user
+        user = await self._user_repository.get_or_throw(uid)
+        return self.map_to_dto(user)
 
     async def get_contacts(self, uids: list[str]) -> list[UserDTO]:
         coroutines = [self.get_contact(u) for u in uids]
-        contacts_dtos: list[UserDTO | None] = await asyncio.gather(*coroutines)
-        return [e for e in contacts_dtos if e is not None]
+        contacts_dtos: list[UserDTO] = await asyncio.gather(*coroutines)
+        return contacts_dtos
 
     async def get_pending_friend_requests(self, uid) -> tuple[list[UserDTO], list[UserDTO]]:
         """
         Returns pending friend requests, received and sent
         """
-        user = await self._user_repository.get(uid)
-        if user is None:
-            raise NotFoundException(detail=f"User {uid} not found")
-
+        user = await self._user_repository.get_or_throw(uid)
         return await self.get_contacts(user.pending_requests), await self.get_contacts(user.sent_requests)
 
     async def cancel_friend_request(self, uid, contact_id):

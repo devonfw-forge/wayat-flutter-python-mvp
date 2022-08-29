@@ -2,6 +2,7 @@ import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wayat/services/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 
 class GoogleAuthService extends AuthService {
@@ -38,7 +39,7 @@ class GoogleAuthService extends AuthService {
   @override
   Future<MyUser> getUserData() async {
     final Map<String, dynamic> user =
-        await super.sendGetRequest("users/profile");
+        await super.sendGetRequest(APIContract.userProfile);
     return MyUser.fromMap(user);
   }
 

@@ -59,7 +59,7 @@ class MapService:
     async def update_map_status(self, uid: str, next_map_state: bool):
         if next_map_state is True:
             # open the map
-            user_entity = await self._user_repository.get(uid)
+            user_entity = await self._user_repository.get_or_throw(uid)
             if not user_entity.map_open:
                 # Map is currently closed and we are opening it
                 await self._open_closed_map(user_entity)
@@ -114,9 +114,13 @@ class MapService:
 
     async def regenerate_map_status(self, *, uid: str | None = None, user: UserEntity | None = None):
         # Overload handling
-        user_to_update = await self._user_repository.get(uid) if uid else user
-        if not user_to_update:
-            return
+        if user is not None:
+            user_to_update = user
+        elif uid is not None:
+            user_to_update = await self._user_repository.get_or_throw(uid)
+        else:
+            raise ValueError("Either uid or user_entity should not be None. Invalid parameters")
+
         uid = user_to_update.document_id
 
         # Implementation

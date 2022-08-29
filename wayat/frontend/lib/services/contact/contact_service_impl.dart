@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/services/api_contract/api_contract.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 
 class ContactServiceImpl extends ContactService {
   @override
   Future<List<Contact>> getAll() async {
-    Map<String, dynamic> response = await sendGetRequest("users/contacts");
+    Map<String, dynamic> response = await sendGetRequest(APIContract.contacts);
     List<Contact> contacts = (response["users"] as List<dynamic>)
         .map((e) => Contact.fromMap(e))
         .toList();
@@ -16,7 +17,7 @@ class ContactServiceImpl extends ContactService {
   @override
   Future<void> sendRequests(List<Contact> contacts) async {
     await super.sendPostRequest(
-        "users/add-contact", {"users": contacts.map((e) => e.id).toList()});
+        APIContract.addContact, {"users": contacts.map((e) => e.id).toList()});
   }
 
   @override
@@ -31,7 +32,7 @@ class ContactServiceImpl extends ContactService {
         .toList();
 
     Response response = await super
-        .sendPostRequest("users/find-by-phone", {"phones": phoneList});
+        .sendPostRequest(APIContract.findByPhone, {"phones": phoneList});
     Map<String, dynamic> jsonBody =
         jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
     List<Contact> contactList = (jsonBody["users"] as List<dynamic>)
@@ -43,6 +44,6 @@ class ContactServiceImpl extends ContactService {
 
   @override
   Future<bool> removeContact(Contact contact) async {
-    return await super.sendDelRequest("users/contacts/${contact.id}");
+    return await super.sendDelRequest("${APIContract.contacts}/${contact.id}");
   }
 }

@@ -15,7 +15,8 @@ class ImageService {
   }
 
   Future<Uint8List> _resizeImage(Uint8List bytes) async {
-    ui.Codec codec = await ui.instantiateImageCodec(bytes, targetWidth: 100);
+    ui.Codec codec = await ui.instantiateImageCodec(bytes,
+        targetWidth: 100, targetHeight: 100);
     ui.FrameInfo fi = await codec.getNextFrame();
     ui.Image image = fi.image;
 
