@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/features/profile/selector/profile_pages.dart';
+import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
 class ProfileWrapper extends StatelessWidget {
@@ -14,30 +14,30 @@ class ProfileWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      ProfilePages currentPage = controller.currentPage;
+      ProfileCurrentPages currentPage = controller.currentPage;
 
       return Builder(builder: (_) {
         return AutoRouter.declarative(
             routes: (_) => [
                   ProfileRoute(),
-                  if (currentPage != ProfilePages.profile)
+                  if (currentPage != ProfileCurrentPages.profile)
                     getCurrentPage(currentPage)
                 ]);
       });
     });
   }
 
-  PageRouteInfo getCurrentPage(ProfilePages currentPage) {
+  PageRouteInfo getCurrentPage(ProfileCurrentPages currentPage) {
     switch (currentPage) {
-      case ProfilePages.editProfile:
+      case ProfileCurrentPages.editProfile:
         return const EditProfileRoute();
-      case ProfilePages.preference:
+      case ProfileCurrentPages.preference:
         return const PreferencesRoute();
-      case ProfilePages.faqs:
+      case ProfileCurrentPages.faqs:
         return const FaqsRoute();
-      case ProfilePages.privacy:
+      case ProfileCurrentPages.privacy:
         return const PrivacyRoute();
-      case ProfilePages.profile:
+      case ProfileCurrentPages.profile:
         return ProfileRoute();
     }
   }

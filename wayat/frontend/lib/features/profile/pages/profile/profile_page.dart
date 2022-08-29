@@ -7,7 +7,7 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/features/profile/selector/profile_pages.dart';
+import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -115,7 +115,7 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.editProfile,
             onTap: () {
-              profileState.setCurrentPage(ProfilePages.editProfile);
+              profileState.setCurrentPage(ProfileCurrentPages.editProfile);
             }),
         const SizedBox(height: 24),
 
@@ -149,13 +149,13 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.faqs,
             onTap: () {
-              profileState.setCurrentPage(ProfilePages.faqs);
+              profileState.setCurrentPage(ProfileCurrentPages.faqs);
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.privacy,
             onTap: () {
-              profileState.setCurrentPage(ProfilePages.privacy);
+              profileState.setCurrentPage(ProfileCurrentPages.privacy);
             }),
       ],
     );

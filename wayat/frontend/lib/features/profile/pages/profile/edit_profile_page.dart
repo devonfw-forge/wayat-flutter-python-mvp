@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/features/profile/selector/profile_pages.dart';
+import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
@@ -86,7 +86,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void _onPressedBackButton() {
-    profileState.setCurrentPage(ProfilePages.profile);
+    profileState.setCurrentPage(ProfileCurrentPages.profile);
   }
 
   Future<void> _onPressedSaveButton() async {

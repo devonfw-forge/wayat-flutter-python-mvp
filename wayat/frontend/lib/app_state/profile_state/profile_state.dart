@@ -2,7 +2,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/features/profile/selector/profile_pages.dart';
+import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
+import 'package:wayat/services/profile/profile_service.dart';
 import 'package:wayat/services/profile/profile_service_impl.dart';
 part 'profile_state.g.dart';
 
@@ -10,10 +11,10 @@ part 'profile_state.g.dart';
 class ProfileState = _ProfileState with _$ProfileState;
 
 abstract class _ProfileState with Store {
-  final ProfileService _profileService = ProfileService();
+  final ProfileService _profileService = ProfileServiceImpl();
 
   @observable
-  ProfilePages currentPage = ProfilePages.profile;
+  ProfileCurrentPages currentPage = ProfileCurrentPages.profile;
 
   @observable
   bool isAccount = false;
@@ -22,7 +23,7 @@ abstract class _ProfileState with Store {
   bool isSaved = false;
 
   @action
-  void setCurrentPage(ProfilePages newPage) {
+  void setCurrentPage(ProfileCurrentPages newPage) {
     currentPage = newPage;
   }
 
