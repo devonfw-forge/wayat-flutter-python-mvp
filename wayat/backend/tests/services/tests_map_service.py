@@ -272,3 +272,14 @@ class MapServiceTests(IsolatedAsyncioTestCase):
 
         res = self.map_service._in_range(latitude=0, longitude=0, contact_location=None)
         assert res is False
+
+    async def test_vanish_user_should_regenerate_maps_containing_user(self):
+        uid = "user_1"
+        # Mocks
+        mock_map_service = MagicMock(MapService)
+        self.map_service.regenerate_map_status = mock_map_service.regenerate_map_status
+        self.mock_status_repo.find_maps_containing_user.return_value = ["test"]
+
+        # Call to be tested
+        res = await self.map_service.vanish_user(uid=uid)
+        mock_map_service.regenerate_map_status.assert_called_with(uid="test")
