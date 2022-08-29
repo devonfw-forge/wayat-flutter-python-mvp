@@ -40,7 +40,7 @@ async def delete_group(group_id: str, user: FirebaseAuthenticatedUser = Depends(
     raise NotImplementedError
 
 
-@router.post("/{group_id}/picture", description="Update the profile picture of a group")
+@router.post("/picture/{group_id}", description="Update the profile picture of a group")
 async def upload_group_picture(group_id: str, upload_file: UploadFile,
                                user: FirebaseAuthenticatedUser = Depends(get_user())):
     # TODO: Implement this method
