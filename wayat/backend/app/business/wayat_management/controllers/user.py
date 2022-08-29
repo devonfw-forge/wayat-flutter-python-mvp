@@ -32,11 +32,12 @@ async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user())
 
 
 @router.delete("/profile", description="Delete the account of a user")
-async def delete_account(user: FirebaseAuthenticatedUser = Depends(get_user())):
+async def delete_account(user: FirebaseAuthenticatedUser = Depends(get_user()),
+                         user_service: UserService = Depends(),
+                         maps_service: MapService = Depends()):
     logger.info(f"Deleting the account of the user with uid={user.uid}")
-    # TODO: Implement this method
-    raise NotImplementedError
-
+    await user_service.delete_account(user.uid)
+    await maps_service.regenerate_maps_containing_user(user.uid)
 
 @router.post("/profile",
              description="Update a user profile, setting those values that were explicitly set, even if set to null",
