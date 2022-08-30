@@ -85,14 +85,14 @@ class MapService:
     async def force_status_update(self, *,
                                   uid: str | None = None,
                                   user_entity: UserEntity | None = None,
-                                  force_contacts_update: bool = True):
+                                  force_contacts_active: bool = True):
         """
         Regenerates the User map. If force_contacts_update=True (default) all its contacts will become active,
         sending a location update as soon as possible.
         Either one of uid or user_entity must be provided. If both are passed, user_entity has precedence.
         :param uid: The uid of the User
         :param user_entity: The User entity
-        :param force_contacts_update: Whether to set all of User's contacts to active mode.
+        :param force_contacts_active: Whether to set all of User's contacts to active mode.
         """
         if user_entity is not None:
             user_to_update = user_entity
@@ -101,7 +101,7 @@ class MapService:
         else:
             raise ValueError("Either uid or user_entity should not be None. Invalid parameters")
         await self.regenerate_map_status(user=user_to_update)
-        if force_contacts_update:
+        if force_contacts_active:
             await self._status_repository.set_active_batch(uid_list=user_to_update.contacts, value=True)
 
     @overload
@@ -169,7 +169,7 @@ class MapService:
         logger.debug(f"Distance of {distance} calculated")
         return distance < self._distance_threshold
 
-    async def vanish_user(self, uid: str):
+    async def regenerate_maps_containing_user(self, uid: str):
         coroutines = [self.regenerate_map_status(uid=contact_uid)
                       for contact_uid in await self._status_repository.find_maps_containing_user(uid)]
         await asyncio.gather(*coroutines)

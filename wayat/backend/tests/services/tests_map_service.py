@@ -228,13 +228,13 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         self.map_service.regenerate_map_status = mock_map_service.regenerate_map_status
 
         # Call to be tested
-        await self.map_service.force_status_update(uid=uid, force_contacts_update=False)
+        await self.map_service.force_status_update(uid=uid, force_contacts_active=False)
 
         mock_map_service.regenerate_map_status.assert_called_with(user=self.mock_entities[uid])
 
         exception = None
         try:
-            await self.map_service.force_status_update(force_contacts_update=False)
+            await self.map_service.force_status_update(force_contacts_active=False)
         except ValueError as e:
             exception = e
 
@@ -281,5 +281,5 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         self.mock_status_repo.find_maps_containing_user.return_value = ["test"]
 
         # Call to be tested
-        res = await self.map_service.vanish_user(uid=uid)
+        res = await self.map_service.regenerate_maps_containing_user(uid=uid)
         mock_map_service.regenerate_map_status.assert_called_with(uid="test")
