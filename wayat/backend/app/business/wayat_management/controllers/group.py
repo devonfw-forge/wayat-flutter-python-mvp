@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, UploadFile
 
 from app.business.wayat_management.models.group import CreateGroupRequest, UpdateGroupRequest, ListGroupsResponse, \
     CreateGroupResponse
+from app.business.wayat_management.services.user import UserService
 from app.common import get_user
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 
@@ -16,9 +17,16 @@ logger = logging.getLogger(__name__)
 @router.get("", description="Get the list of groups of a user. "
                              "An optional 'group_id' query parameter allows retrieving the selected group",
             response_model=ListGroupsResponse)
-async def list_groups(group_id: Optional[str] = None, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    # TODO: Implement this method
-    raise NotImplementedError
+async def list_groups(group_id: Optional[str] = None, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                      users: UserService = Depends(UserService)):
+    groups = []
+    if group_id is None:
+        groups += await users.get_user_groups(user.uid)
+    else:
+        groups = [await users.get_user_group(user.uid, group_id)]
+    return ListGroupsResponse(
+        groups=groups
+    )
 
 
 @router.post("", description="Create a group", response_model=CreateGroupResponse)
