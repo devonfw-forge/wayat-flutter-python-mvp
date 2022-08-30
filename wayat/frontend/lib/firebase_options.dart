@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -44,46 +47,33 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD3T5gpP1hu9FeV9E4g9ZNglqlov-iee9g',
-    appId: '1:753369751483:web:e8fed53bfff2c3909fae9e',
-    messagingSenderId: '753369751483',
-    projectId: 'wayat-poc',
-    authDomain: 'wayat-poc.firebaseapp.com',
-    databaseURL: 'https://wayat-poc-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'wayat-poc.appspot.com',
-    measurementId: 'G-FSQVTPW4JT',
+    apiKey: 'AIzaSyCEILvlgyqTS4Kwv5Ed3lKf6ZFHX_1HgTg',
+    appId: '1:822297444101:web:62b6a3c4605c526737416c',
+    messagingSenderId: '822297444101',
+    projectId: 'poc-cloudnative-capgemini',
+    authDomain: 'poc-cloudnative-capgemini.firebaseapp.com',
+    storageBucket: 'poc-cloudnative-capgemini.appspot.com',
+    measurementId: 'G-225V353S4J',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBhe4dqpm16u-mkhR9mg_2g_nQakrhQeps',
-    appId: '1:753369751483:android:adabde3173d468309fae9e',
-    messagingSenderId: '753369751483',
-    projectId: 'wayat-poc',
-    databaseURL: 'https://wayat-poc-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'wayat-poc.appspot.com',
+    apiKey: 'AIzaSyCAsthzXmjfuiGhxRPJq3HEDMwydP4rFIQ',
+    appId: '1:822297444101:android:cad962391d75053f37416c',
+    messagingSenderId: '822297444101',
+    projectId: 'poc-cloudnative-capgemini',
+    storageBucket: 'poc-cloudnative-capgemini.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDP-AYlpck8Q6U4nDXtoKgL_aDmSeI1SrA',
-    appId: '1:753369751483:ios:b8e00148fb8929749fae9e',
-    messagingSenderId: '753369751483',
-    projectId: 'wayat-poc',
-    databaseURL: 'https://wayat-poc-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'wayat-poc.appspot.com',
-    androidClientId: '753369751483-ejg3fjkjibbcfkdpbadnn2tar4qi1ohr.apps.googleusercontent.com',
-    iosClientId: '753369751483-u5hcd12tbffdvbhpsdslouqu7m5du96h.apps.googleusercontent.com',
-    iosBundleId: 'com.example.wayat',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDP-AYlpck8Q6U4nDXtoKgL_aDmSeI1SrA',
-    appId: '1:753369751483:ios:3f8780e745f7e1a19fae9e',
-    messagingSenderId: '753369751483',
-    projectId: 'wayat-poc',
-    databaseURL: 'https://wayat-poc-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'wayat-poc.appspot.com',
-    androidClientId: '753369751483-ejg3fjkjibbcfkdpbadnn2tar4qi1ohr.apps.googleusercontent.com',
-    iosClientId: '753369751483-ljtplr1lrs631vnr32ka26oel6s7vqb3.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDhdgsTf9EcMBs4RBLwRDJAQ4JKyct_hTs',
+    appId: '1:822297444101:ios:235d3c2a4c6c8fba37416c',
+    messagingSenderId: '822297444101',
+    projectId: 'poc-cloudnative-capgemini',
+    storageBucket: 'poc-cloudnative-capgemini.appspot.com',
+    androidClientId:
+        '822297444101-3e5gnikt7kl7q2ejh8dm9ishg44u6f3v.apps.googleusercontent.com',
+    iosClientId:
+        '822297444101-kgur059h6p8hgut76skq0pj8kvj2leh7.apps.googleusercontent.com',
     iosBundleId: 'com.capgemini.wayat',
   );
 }
