@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wayat/domain/contact/contact.dart';
 
 class ContactImage extends StatelessWidget {
   final String imageUrl;
