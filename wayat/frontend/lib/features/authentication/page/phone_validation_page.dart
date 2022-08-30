@@ -90,10 +90,10 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
           labelText: appLocalizations.phoneNumber,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
-      onChanged: (phone) {
+      onSaved: (phone) {
         setState(() {
           _validPhone = _formKey.currentState!.validate();
-          if (_validPhone) _phoneNumber = phone.completeNumber;
+          if (_validPhone) _phoneNumber = phone!.completeNumber;
         });
       },
     );
@@ -110,8 +110,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
   }
 
   _submit() async {
-    bool updated =
-        await userSession.updatePhone(_phoneNumber);
+    bool updated = await userSession.updatePhone(_phoneNumber);
     if (updated) {
       userSession.setFinishLoggedIn(true);
     } else {

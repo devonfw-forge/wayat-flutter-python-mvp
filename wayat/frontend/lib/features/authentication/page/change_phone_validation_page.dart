@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
+import 'package:wayat/lang/app_localizations.dart';
 
 class ChangePhoneValidationPage extends StatelessWidget {
-  const ChangePhoneValidationPage({Key? key}) : super(key: key);
+  ChangePhoneValidationPage({Key? key}) : super(key: key);
+
+  final SessionState userSession = GetIt.I.get<SessionState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildValidationAlertDialog(context));
+    return _buildValidationAlertDialog(context);
   }
 
   AlertDialog _buildValidationAlertDialog(BuildContext context) {
     return AlertDialog(
       //backgroundColor: Theme.of(context).primaryColor,
-      title: const Text('Verify phone'),
+      title: Text(appLocalizations.verifyPhoneTitle),
       titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 18),
       titlePadding: const EdgeInsets.all(32),
@@ -24,21 +29,21 @@ class ChangePhoneValidationPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _getVerifyPhoneText(
-                  'Please verify your new mobile phone. Code is sent to ',
-                  '+34600947886'),
+              _getVerifyPhoneText(appLocalizations.verifyPhoneText,
+                  userSession.currentUser!.phone),
               const SizedBox(height: 32),
               _getVirifyTextfields(context),
               const SizedBox(height: 32),
-              _getVerifyResendCode("Didn't receive code?"),
+              _getVerifyResendCode(appLocalizations.didnotReceiveCode),
             ]),
       ),
       actionsPadding: const EdgeInsets.only(left: 32, right: 32),
       actions: [
         Column(
           children: [
-            CustomFilledButton(text: 'Verify', enabled: true, onPressed: () {}),
-            CustomTextButton(text: 'Cancel', onPressed: () {}),
+            CustomFilledButton(
+                text: appLocalizations.verify, enabled: true, onPressed: () {}),
+            CustomTextButton(text: appLocalizations.cancel, onPressed: () {}),
           ],
         ),
       ],
@@ -68,9 +73,9 @@ class ChangePhoneValidationPage extends StatelessWidget {
               color: Colors.black87,
               fontSize: 16)),
       TextButton(
-          child: const Text(
-            'Resend code',
-            style: TextStyle(
+          child: Text(
+            appLocalizations.resendCode,
+            style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
                 fontSize: 16),

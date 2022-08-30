@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/text_style.dart';
 import 'package:wayat/common/widgets/profile_avatar.dart';
+import 'package:wayat/features/authentication/page/change_phone_validation_page.dart';
 import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +20,11 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
+  final SessionState userSession = GetIt.I.get<SessionState>();
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  bool _validPhone = false;
+  String _phoneNumber = "";
+  String _errorPhoneMsg = "";
 
   XFile? currentSelectedImage;
   String name = GetIt.I.get<SessionState>().currentUser!.name;
@@ -41,11 +49,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           //_buildEditProfileImage(),
           const SizedBox(height: 32),
-          _changeTextField(appLocalizations.name, name),
+          _nameInput(appLocalizations.name, name),
           const SizedBox(height: 34.5),
 
           // TODO: Implement the Changing phone page
-          _changeTextField(appLocalizations.changePhone, phone),
+          //_changeTextField(appLocalizations.changePhone, phone),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _phoneInput(),
+          )
         ],
       ),
     );
@@ -107,7 +119,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Widget _changeTextField(String title, String hintText) {
+  Widget _nameInput(String title, String hintText) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       height: 56,
@@ -127,6 +139,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
+              keyboardType: TextInputType.name,
               decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hintText,
@@ -134,10 +147,41 @@ class _EditProfilePageState extends State<EditProfilePage> {
               onChanged: ((text) {
                 setState(() {});
                 hintText = text;
-              })),
+              }),
+              onSubmitted: (value) {
+                if (title == appLocalizations.changePhone) {
+                  _showAlertDialog();
+                }
+              }),
         )),
       ]),
     );
+  }
+
+  IntlPhoneField _phoneInput() {
+    return IntlPhoneField(
+      // Only numbers are allowed as input
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      ],
+      decoration: InputDecoration(
+          errorText: _errorPhoneMsg != "" ? _errorPhoneMsg : null,
+          labelText: userSession.currentUser!.phone.substring(3),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+      initialCountryCode: 'ES',
+      onSubmitted: (phone) {
+        _showAlertDialog();
+      },
+    );
+  }
+
+  void _showAlertDialog() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return ChangePhoneValidationPage();
+        });
   }
 
   Widget _getImageFromCameraOrGallary() {
