@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/contact_image.dart';
+import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,6 +18,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final MyUser user = GetIt.I.get<SessionState>().currentUser!;
   final ProfileState profileState = GetIt.I.get<ProfileState>();
 
   XFile? currentSelectedImage;
@@ -33,7 +36,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           _profileAppBar(),
-          _buildEditProfileImage(),
+          ContactImage(
+            imageUrl: user.imageUrl,
+            radius: 50,
+            lineWidth: 6,
+          ),
           const SizedBox(height: 32),
           _nameTextField(),
           const SizedBox(height: 34.5),

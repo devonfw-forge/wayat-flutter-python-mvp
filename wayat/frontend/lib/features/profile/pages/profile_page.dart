@@ -5,6 +5,7 @@ import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/card.dart';
+import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
@@ -15,7 +16,7 @@ class ProfilePage extends StatelessWidget {
 
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final LocationState locationState = GetIt.I.get<LocationState>();
-  final SessionState userSession = GetIt.I.get<SessionState>();
+  final MyUser user = GetIt.I.get<SessionState>().currentUser!;
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +32,14 @@ class ProfilePage extends StatelessWidget {
                   fontSize: 16)),
         ),
         const SizedBox(height: 16),
-        _buildProfileImage(),
+        ContactImage(
+          imageUrl: user.imageUrl,
+          radius: 50,
+          lineWidth: 6,
+        ),
         const SizedBox(height: 16),
-        Observer(builder: (context) {
-          String name = userSession.currentUser!.name;
+        Observer(builder: (_) {
+          String name = user.name;
           return Text(
             name,
             textAlign: TextAlign.center,
@@ -55,33 +60,6 @@ class ProfilePage extends StatelessWidget {
         //TODO: Implement the Account part
         // _buildAccountPart(),
         // const SizedBox(height: 42),
-      ],
-    );
-  }
-
-  //Build UI for Profile Circle Image
-  Widget _buildProfileImage() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Observer(builder: (context) {
-          MyUser myUser = userSession.currentUser!;
-          return Container(
-            width: 120.0,
-            height: 120.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(myUser.imageUrl),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: const BorderRadius.all(Radius.circular(100.0)),
-              border: Border.all(
-                color: Colors.black87,
-                width: 7.0,
-              ),
-            ),
-          );
-        }),
       ],
     );
   }
@@ -208,7 +186,7 @@ class ProfilePage extends StatelessWidget {
                 fontSize: 16),
           ),
         ),
-        Observer(builder: (context) {
+        Observer(builder: (_) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomSwitch(
@@ -238,7 +216,7 @@ class ProfilePage extends StatelessWidget {
                 fontSize: 16),
           ),
         ),
-        Observer(builder: (context) {
+        Observer(builder: (_) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomSwitch(
