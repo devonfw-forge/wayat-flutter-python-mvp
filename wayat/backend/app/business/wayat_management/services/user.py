@@ -7,11 +7,12 @@ import requests
 from fastapi import Depends
 from requests import RequestException, Response
 
+from app.business.wayat_management.models.group import GroupDTO
 from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.utils import resize_image
-from app.domain.wayat_management.models.user import UserEntity
+from app.domain.wayat_management.models.user import UserEntity, GroupInfo
 from app.domain.wayat_management.repositories.files import FileStorage, get_storage_settings, StorageSettings
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
@@ -41,6 +42,14 @@ class UserService:
             do_not_disturb=entity.do_not_disturb,
             share_location=entity.share_location,
             onboarding_completed=entity.onboarding_completed,
+        )
+
+    def map_group_to_dto(self, entity: GroupInfo) -> GroupDTO:
+        return GroupDTO(
+            id=entity.uid,
+            name=entity.name,
+            members=entity.contacts,
+            image_url=self._file_repository.generate_signed_url(entity.image_ref),
         )
 
     async def get_or_create(self, uid: str, default_data: FirebaseAuthenticatedUser) -> tuple[UserDTO, bool]:
@@ -89,6 +98,22 @@ class UserService:
 
     async def get_user_contacts(self, uid):
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
+
+    async def get_user_groups(self, uid) -> list[GroupDTO]:
+        groups = await self._user_repository.get_user_groups(uid)
+        return list(map(self.map_group_to_dto, groups))
+
+    async def get_user_group(self, uid, group_id) -> GroupDTO:
+        user_groups = await self._user_repository.get_user_groups(uid)
+        found_group = None
+        for g in user_groups:
+            if g.uid == group_id:
+                found_group = g
+                break
+        if found_group is None:
+            raise NotFoundException("Group Not Found")
+        else:
+            return self.map_group_to_dto(found_group)
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
         await self._file_repository.delete_user_images(uid)

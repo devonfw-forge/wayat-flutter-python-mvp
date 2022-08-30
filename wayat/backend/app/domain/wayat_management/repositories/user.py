@@ -1,14 +1,14 @@
 import asyncio
 import logging
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from fastapi import Depends
 from google.cloud import firestore
 from google.cloud.firestore import AsyncClient, AsyncTransaction
 
 from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.wayat_management.utils import get_current_time
-from app.domain.wayat_management.models.user import UserEntity, Location
+from app.domain.wayat_management.models.user import UserEntity, Location, GroupInfo
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +50,10 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             address=address
         )
         await self.update(data={"location": location.dict()}, document_id=uid)
+
+    async def get_user_groups(self, uid: str) -> List[GroupInfo]:
+        user = await self.get_or_throw(uid)
+        return user.groups
 
     async def get_user_location(self, uid: str, force=False) -> Location | None:
         """

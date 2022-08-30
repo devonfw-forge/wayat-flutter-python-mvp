@@ -18,6 +18,13 @@ class ContactLocation(BaseModel):
     location: Location
 
 
+class GroupInfo(BaseModel):
+    uid: str
+    name: str
+    image_ref: str
+    contacts: list[str] = Field(default_factory=list)
+
+
 class UserEntity(BaseFirebaseModel):
     # User info
     name: Optional[str]
@@ -28,6 +35,7 @@ class UserEntity(BaseFirebaseModel):
     sent_requests: list[str] = Field(default_factory=list)
     pending_requests: list[str] = Field(default_factory=list)
     location: Optional[Location]
+    groups: list[GroupInfo] = Field(default_factory=list)
 
     # Privacy settings
     share_location: bool = True
