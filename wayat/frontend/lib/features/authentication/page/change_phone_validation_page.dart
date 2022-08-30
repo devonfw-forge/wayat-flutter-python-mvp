@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -15,6 +16,38 @@ class ChangePhoneValidationPage extends StatelessWidget {
     return _buildValidationAlertDialog(context);
   }
 
+  //TODO: iOS AlertDialog of verify phone
+  CupertinoAlertDialog _buildValidationiOSAlertDialog(BuildContext context) {
+    return CupertinoAlertDialog(
+      title: Text(appLocalizations.verifyPhoneTitle),
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.32,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _getVerifyPhoneText(appLocalizations.verifyPhoneText,
+                  userSession.currentUser!.phone),
+              const SizedBox(height: 32),
+              _getVirifyTextfields(context),
+              const SizedBox(height: 32),
+              _getVerifyResendCode(appLocalizations.didnotReceiveCode),
+            ]),
+      ),
+      actions: [
+        Column(
+          children: [
+            CustomFilledButton(
+                text: appLocalizations.verify, enabled: true, onPressed: () {}),
+            CustomTextButton(text: appLocalizations.cancel, onPressed: () {}),
+          ],
+        ),
+      ],
+    );
+  }
+
+  //TODO: Android AlertDialog of verify phone
   AlertDialog _buildValidationAlertDialog(BuildContext context) {
     return AlertDialog(
       //backgroundColor: Theme.of(context).primaryColor,

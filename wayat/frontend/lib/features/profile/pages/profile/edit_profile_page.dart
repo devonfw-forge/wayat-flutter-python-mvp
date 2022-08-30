@@ -21,10 +21,7 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final SessionState userSession = GetIt.I.get<SessionState>();
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  bool _validPhone = false;
-  String _phoneNumber = "";
-  String _errorPhoneMsg = "";
+  final String _errorPhoneMsg = "";
 
   XFile? currentSelectedImage;
   String name = GetIt.I.get<SessionState>().currentUser!.name;
