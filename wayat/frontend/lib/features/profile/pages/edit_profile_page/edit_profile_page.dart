@@ -22,7 +22,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
 
   XFile? currentSelectedImage;
-  String name = GetIt.I.get<SessionState>().currentUser!.name;
   bool isVisible = false;
 
   TextStyle _textStyle(Color color, double size) =>
@@ -36,11 +35,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           _profileAppBar(),
-          ContactImage(
-            imageUrl: user.imageUrl,
-            radius: 50,
-            lineWidth: 6,
-          ),
+          _buildEditProfileImage(),
           const SizedBox(height: 32),
           _nameTextField(),
           const SizedBox(height: 34.5),
@@ -99,8 +94,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<void> _onPressedSaveButton() async {
     _onPressedBackButton();
 
-    if (name != "") {
-      await profileState.updateCurrentUserName(name);
+    if (user.name != "") {
+      await profileState.updateCurrentUserName(user.name);
     }
 
     if (currentSelectedImage != null) {
@@ -110,24 +105,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget _buildEditProfileImage() {
     return Stack(alignment: Alignment.bottomRight, children: <Widget>[
-      Container(
-        width: 120.0,
-        height: 120.0,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: (currentSelectedImage != null)
-                ? FileImage(io.File(currentSelectedImage!.path))
-                    as ImageProvider
-                : NetworkImage(
-                    GetIt.I.get<SessionState>().currentUser!.imageUrl),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(100.0)),
-          border: Border.all(
-            color: Colors.black87,
-            width: 7.0,
-          ),
-        ),
+      ContactImage(
+        imageUrl: user.imageUrl,
+        radius: 50,
+        lineWidth: 6,
       ),
       InkWell(
         onTap: () {
@@ -174,10 +155,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     fontSize: 18),
                 decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: name,
+                    hintText: user.name,
                     hintStyle: _textStyle(Colors.black38, 18)),
                 onChanged: ((text) {
-                  name = text;
+                  user.name = text;
                 })),
           )),
         ]),
