@@ -2,7 +2,7 @@ import asyncio
 import logging
 from datetime import datetime, timedelta
 from functools import lru_cache
-from typing import overload
+from typing import overload, Optional
 
 from fastapi import Depends
 from pydantic import BaseSettings
@@ -138,7 +138,7 @@ class MapService:
 
     async def _create_contact_ref(self, contact_uid: str) -> ContactRefInfo | None:
         contact_location = await self._user_repository.get_user_location(contact_uid)
-        if contact_location is not None:
+        if contact_location is not None and self._should_show(contact_location):
             return ContactRefInfo(uid=contact_uid, last_updated=contact_location.last_updated,
                                   location=contact_location.value, address=contact_location.address)
         else:
@@ -164,7 +164,14 @@ class MapService:
     def _needs_update(self, last_updated: datetime):
         return (datetime.now(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
 
-    def _in_range(self, latitude: float, longitude: float, contact_location: Location):
+    def _should_show(self, location: Optional[Location]):
+        if location is not None:
+            return (datetime.now(location.last_updated.tzinfo) - location.last_updated).seconds \
+                   < self._max_time_since_last_update
+        else:
+            return False
+
+    def _in_range(self, latitude: float, longitude: float, contact_location: Optional[Location]):
         if contact_location is None or contact_location.value is None:
             return False
         location = contact_location.value
