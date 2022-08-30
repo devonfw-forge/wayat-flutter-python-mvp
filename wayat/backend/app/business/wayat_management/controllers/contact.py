@@ -21,7 +21,7 @@ async def add_contact(request: AddContactsRequest, user_service: UserService = D
     await user_service.add_contacts(uid=user.uid, users=request.users)
 
 
-@router.get("/", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
+@router.get("", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
 async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
                        user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts for user {user.uid}")
@@ -36,7 +36,8 @@ async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depe
                          map_service: MapService = Depends(MapService),
                          user_service: UserService = Depends(UserService)):
     await user_service.delete_contact(user_id=user.uid, contact_id=contact_id)
-    await map_service.force_status_update(uid=user.uid, force_contacts_update=False)
+    await map_service.force_status_update(uid=user.uid, force_contacts_active=False)
+    await map_service.force_status_update(uid=contact_id, force_contacts_active=False)
 
 
 @router.get("/requests", description="Returns pending sent and received friendship requests",

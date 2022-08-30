@@ -164,7 +164,19 @@ class UserService:
         Deletes a contact
         """
         await self._user_repository.delete_contact(user_id, contact_id)
-        # TODO: Regenerate contact refs
+
+    async def delete_account(self, user_id):
+        await self._delete_all_contacts(user_id)
+        await self._user_repository.delete(document_id=user_id)
+        await self._status_repository.delete(document_id=user_id)
+
+    async def _delete_all_contacts(self, user_id):
+        """
+        Deletes all contacts of a user
+        """
+        user = await self._user_repository.get_or_throw(user_id)
+        coroutines = [self._user_repository.delete_contact(user_id, u) for u in user.contacts]
+        await asyncio.gather(*coroutines)
 
     async def phone_in_use(self, phone: str):
         users = await self._user_repository.find_by_phone(phones=[phone])

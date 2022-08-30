@@ -13,7 +13,7 @@ router = APIRouter(prefix="/groups")
 logger = logging.getLogger(__name__)
 
 
-@router.get("/", description="Get the list of groups of a user. "
+@router.get("", description="Get the list of groups of a user. "
                              "An optional 'group_id' query parameter allows retrieving the selected group",
             response_model=ListGroupsResponse)
 async def list_groups(group_id: Optional[str] = None, user: FirebaseAuthenticatedUser = Depends(get_user())):
@@ -21,7 +21,7 @@ async def list_groups(group_id: Optional[str] = None, user: FirebaseAuthenticate
     raise NotImplementedError
 
 
-@router.post("/", description="Create a group", response_model=CreateGroupResponse)
+@router.post("", description="Create a group", response_model=CreateGroupResponse)
 async def create_group(request: CreateGroupRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
     # TODO: Implement this method
     raise NotImplementedError

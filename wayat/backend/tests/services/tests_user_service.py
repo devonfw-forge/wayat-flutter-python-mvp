@@ -362,6 +362,30 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Call under test and asserts
         assert await self.user_service.phone_in_use("+34-NO_TEST") is False
 
+    async def test_delete_account_should_delete_all_contacts_status_and_profile(self):
+        test_entity = UserEntity(
+            document_id="uid",
+            name="name",
+            email="email",
+            phone="phone",
+            image_ref="image"
+        )
+
+        test_entity.contacts = ["test"]
+
+        # Mocks
+        self.mock_user_repo.get_or_throw.return_value = test_entity
+
+        # Call under test and asserts
+        await self.user_service.delete_account(test_entity.document_id)
+
+        # Deleted user contacts
+        self.mock_user_repo.delete_contact.assert_called_with(test_entity.document_id, test_entity.contacts[0])
+        # Delete user document
+        self.mock_user_repo.delete.assert_called_with(document_id=test_entity.document_id)
+        # Delete user status
+        self.mock_status_repo.delete.assert_called_with(document_id=test_entity.document_id)
+
 
 if __name__ == "__main__":
     unittest.main()
