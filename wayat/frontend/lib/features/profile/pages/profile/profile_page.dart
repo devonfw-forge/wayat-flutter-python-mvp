@@ -177,6 +177,7 @@ class ProfilePage extends StatelessWidget {
             text: appLocalizations.deleteAccount,
             onTap: () {
               // TODO: Implement Delete account
+              profileState.deleteCurrentUser(userSession.currentUser!.id);
             }),
       ],
     );

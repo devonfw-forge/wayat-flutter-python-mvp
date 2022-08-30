@@ -10,6 +10,12 @@
     "phonePageDescription": "Se requiere un número de teléfono válido",
     "invalidPhoneNumber": "Número de teléfono inválido",
     "phoneUpdateError": "Error al configurar el número de teléfono",
+    "verifyPhoneTitle": "Verificar teléfono",
+    "verifyPhoneText": "Verifique su nuevo teléfono móvil. El código se envía a",
+    "didnotReceiveCode": "¿No recibiste el código",
+    "resendCode": "Reenviar codigo",
+    "verify": "Verificar",
+    "cancel": "Cancelar",
     
     "home": "Inicio",
     "contacts": "Contactos",

@@ -10,6 +10,12 @@
     "phonePageDescription": "A valid phone number is required",
     "invalidPhoneNumber": "Invalid phone number",
     "phoneUpdateError": "Error setting phone number",
+    "verifyPhoneTitle": "Verify phone",
+    "verifyPhoneText": "Please verify your new mobile phone. Code is sent to",
+    "didnotReceiveCode": "Didn't receive code?",
+    "resendCode": "Resend code",
+    "verify": "Verify",
+    "cancel": "Cancel",
     
     "home": "Home",
     "contacts": "Contacts",

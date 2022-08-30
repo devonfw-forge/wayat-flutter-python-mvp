@@ -24,4 +24,9 @@ class ProfileService extends RESTService {
             20;
     return done;
   }
+
+  Future<bool> deleteCurrentUser(String id) async {
+    bool done = (await super.sendDelRequest(APIContract.userProfile));
+    return done;
+  }
 }
