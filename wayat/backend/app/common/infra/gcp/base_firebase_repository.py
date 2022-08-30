@@ -88,18 +88,28 @@ class BaseFirestoreRepository(Generic[ModelType]):
     def _get_document_reference(self, document_id: str) -> AsyncDocumentReference:
         return self._client.document(*self._path, document_id)
 
-    async def get_or_throw(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType:
-        entity = await self.get(document_id, transaction)
+    async def get_or_throw(self, document_id: str | None = None, path: AsyncDocumentReference | None = None,
+                           transaction: AsyncTransaction | None = None) -> ModelType:
+        entity = await self.get(document_id=document_id, path=path, transaction=transaction)
         if not entity:
             raise ResourceNotFoundException(detail=f"Document not found: {'/'.join(self._path + (document_id,))}")
         return entity
 
-    async def get(self, document_id: str, transaction: AsyncTransaction | None = None) -> ModelType | None:
-        snapshot = await self._get_document_reference(document_id).get(transaction=transaction)
+    async def get(self, *, document_id: str | None = None, path: AsyncDocumentReference | None = None,
+                  transaction: AsyncTransaction | None = None) -> ModelType | None:
+        doc_ref = path
+        if doc_ref is None and document_id is not None:
+            doc_ref = self._get_document_reference(document_id)
+        else:
+            raise ValueError("Either document_id or path must be passed as argument")
+        snapshot = await doc_ref.get(transaction=transaction)
         return self._model(document_id=snapshot.id, **snapshot.to_dict()) if snapshot.exists else None
 
-    async def add(self, *, model: ModelType):
-        await self._get_document_reference(model.document_id).create(model.dict(exclude={"document_id"}))
+    async def add(self, *, model: ModelType, path: AsyncDocumentReference | None = None):
+        doc_ref = path
+        if doc_ref is None:
+            doc_ref = self._get_document_reference(model.document_id)
+        await doc_ref.create(model.dict(exclude={"document_id"}))
 
     @overload
     async def update(self, *, model: ModelType):
@@ -154,3 +164,32 @@ class BaseFirestoreRepository(Generic[ModelType]):
         if not id_to_delete:
             raise ValueError("Either model or document_id must be passed as argument")
         await self._get_document_reference(id_to_delete).delete()
+
+
+class BaseSubcollectionFirestoreRepository(BaseFirestoreRepository):
+    def __init__(self, *, collection_path: str, subcollection_path: str, model: Type[ModelType],
+                 client: AsyncClient = Depends(get_async_client)):
+        """
+        Object with default methods to Create, Read, Update and Delete (CRUD) from a Firestore Collection.
+        """
+        super().__init__(collection_path=collection_path, model=model, client=client)
+        self._client = client
+        self._model = model
+        self._path = collection_path if isinstance(collection_path, tuple) else tuple(collection_path.split("/"))
+        self._subpath = subcollection_path if isinstance(collection_path, tuple) else tuple(collection_path.split("/"))
+
+    def _get_subcollection_document_reference(self, document_id: str, subdocument_id: str) -> AsyncDocumentReference:
+        return self._client.document(*self._path, document_id, *self._subpath, subdocument_id)
+
+    async def get_or_throw_from_subcol(self, document_id: str, subdocument_id: str,
+                                       t: AsyncTransaction | None = None) -> ModelType:
+        return await self.get_or_throw(path=self._get_subcollection_document_reference(document_id, subdocument_id),
+                                       transaction=t)
+
+    async def get_from_subcol(self, document_id: str, subdocument_id: str,
+                              transaction: AsyncTransaction | None = None) -> ModelType | None:
+        return await self.get(path=self._get_subcollection_document_reference(document_id, subdocument_id),
+                              transaction=transaction)
+
+    async def add_to_subcol(self, *, parent_doc_id: str, model: ModelType):
+        await self.add(model=model, path=self._get_subcollection_document_reference(parent_doc_id, model.document_id))
