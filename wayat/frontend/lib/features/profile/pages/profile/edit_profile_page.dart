@@ -21,6 +21,8 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final SessionState userSession = GetIt.I.get<SessionState>();
+
+  bool _validPhone = false;
   final String _errorPhoneMsg = "";
 
   XFile? currentSelectedImage;
@@ -48,9 +50,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const SizedBox(height: 32),
           _nameInput(appLocalizations.name, name),
           const SizedBox(height: 34.5),
-
-          // TODO: Implement the Changing phone page
-          //_changeTextField(appLocalizations.changePhone, phone),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: _phoneInput(),
@@ -100,22 +99,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  void _onPressedBackButton() {
-    profileState.setCurrentPage(ProfilePages.profile);
-  }
-
-  Future<void> _onPressedSaveButton() async {
-    _onPressedBackButton();
-
-    if (name != "") {
-      await profileState.updateCurrentUserName(name);
-    }
-
-    if (currentSelectedImage != null) {
-      await profileState.updateUserImage(currentSelectedImage!);
-    }
-  }
-
   Widget _nameInput(String title, String hintText) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -136,20 +119,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: hintText,
-                  hintStyle: TextStyleTheme.primaryTextStyle_18),
-              onChanged: ((text) {
-                setState(() {});
-                hintText = text;
-              }),
-              onSubmitted: (value) {
-                if (title == appLocalizations.changePhone) {
-                  _showAlertDialog();
-                }
-              }),
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: hintText,
+                hintStyle: TextStyleTheme.primaryTextStyle_18),
+            onChanged: ((text) {
+              setState(() {});
+              hintText = text;
+            }),
+          ),
         )),
       ]),
     );
@@ -165,20 +144,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
       decoration: InputDecoration(
           errorText: _errorPhoneMsg != "" ? _errorPhoneMsg : null,
           labelText: userSession.currentUser!.phone.substring(3),
+          labelStyle: TextStyleTheme.primaryTextStyle_16,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
       onSubmitted: (phone) {
-        _showAlertDialog();
+        //TODO: Have an error here on validation... fix later
+        //_validPhone = _formKey.currentState!.validate();
+        _validPhone = true;
+        if (_validPhone) _showAlertDialog();
       },
     );
-  }
-
-  void _showAlertDialog() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return ChangePhoneValidationPage();
-        });
   }
 
   Widget _getImageFromCameraOrGallary() {
@@ -223,5 +198,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
       currentSelectedImage = newImage;
     });
     Navigator.pop(context);
+  }
+
+  void _onPressedBackButton() {
+    profileState.setCurrentPage(ProfilePages.profile);
+  }
+
+  Future<void> _onPressedSaveButton() async {
+    _onPressedBackButton();
+
+    if (name != "") {
+      await profileState.updateCurrentUserName(name);
+    }
+
+    if (currentSelectedImage != null) {
+      await profileState.updateUserImage(currentSelectedImage!);
+    }
+  }
+
+  void _showAlertDialog() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return ChangePhoneValidationPage();
+        });
   }
 }

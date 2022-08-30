@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
@@ -155,6 +156,9 @@ class ChangePhoneValidationPage extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: TextField(
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          ],
           autofocus: autoFocus,
           decoration: const InputDecoration(
             border: InputBorder.none,
