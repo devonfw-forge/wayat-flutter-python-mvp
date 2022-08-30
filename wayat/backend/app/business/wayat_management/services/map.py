@@ -21,6 +21,7 @@ class MapSettings(BaseSettings):
     update_threshold: int
     valid_until_threshold: int
     distance_threshold: float
+    max_time_without_update: int
 
     class Config:
         env_prefix = "MAP_"
@@ -46,6 +47,8 @@ class MapService:
         self._distance_threshold = map_settings.distance_threshold
         # max ammount of time for which the map status is valid
         self._map_valid_until_threshold = map_settings.valid_until_threshold
+        # max time since last location update
+        self._max_time_since_last_update = map_settings.max_time_without_update
 
     async def update_location(self,
                               uid: str,
