@@ -131,3 +131,4 @@ app.*.symbols
 
 wayat/.env
 SPIKES/firestore/firestore_example/android/app/google-services.json
+.DS_Store
