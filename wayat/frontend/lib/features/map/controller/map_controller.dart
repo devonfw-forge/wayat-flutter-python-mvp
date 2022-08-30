@@ -15,6 +15,9 @@ class MapController = _MapController with _$MapController;
 abstract class _MapController with Store {
   ImageService imageService = ImageService();
 
+  _MapController({ImageService? imageService})
+      : imageService = imageService ?? ImageService();
+
   @observable
   bool sharingLocation = true;
 
@@ -24,7 +27,7 @@ abstract class _MapController with Store {
   Set<Marker> allMarkers = Set.of({});
 
   @observable
-  ObservableSet<Marker> markers = ObservableSet.of({});
+  ObservableSet<Marker> filteredMarkers = ObservableSet.of({});
 
   List<ContactLocation> contacts = [];
 
@@ -34,10 +37,13 @@ abstract class _MapController with Store {
 
   late Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
 
-  Future getMarkers(
-      {required Function(ContactLocation contact, BitmapDescriptor icon)
-          onMarkerPressed}) async {
+  void setOnMarkerPressed(
+      Function(ContactLocation contact, BitmapDescriptor icon)
+          onMarkerPressed) {
     this.onMarkerPressed = onMarkerPressed;
+  }
+
+  Future getMarkers() async {
     Set<Marker> newMarkers = await generateMarkers();
 
     setMarkers(newMarkers);
@@ -105,10 +111,15 @@ abstract class _MapController with Store {
 
   @action
   void filterMarkers() {
-    markers = ObservableSet.of(allMarkers
+    filteredMarkers = ObservableSet.of(allMarkers
         .where((element) => element.markerId.value
             .toLowerCase()
             .contains(searchBarText.toLowerCase()))
         .toSet());
+  }
+
+  void onSuggestionsTap(contact) {
+    gMapController.moveCamera(
+        CameraUpdate.newLatLng(LatLng(contact.latitude, contact.longitude)));
   }
 }

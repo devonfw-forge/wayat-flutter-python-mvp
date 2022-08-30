@@ -18,13 +18,17 @@ import 'package:wayat/lang/app_localizations.dart';
 class HomeMapPage extends StatelessWidget {
   final LocationState locationState = GetIt.I.get<LocationState>();
   final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
-  final MapController controller = MapController();
+  final MapController controller;
 
-  HomeMapPage({Key? key}) : super(key: key);
+  HomeMapPage({MapController? controller, Key? key})
+      : controller = controller ?? MapController(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     GetIt.I.get<MapState>().openMap();
+    controller.setOnMarkerPressed(
+        (contact, icon) => showContactDialog(contact, icon, context));
 
     return FutureBuilder(
         future: locationState.initialize(),
@@ -42,7 +46,7 @@ class HomeMapPage extends StatelessWidget {
   Observer _mapLayer() {
     return Observer(builder: (context) {
       prepareMapData(context);
-      Set<Marker> markers = controller.markers;
+      Set<Marker> markers = controller.filteredMarkers;
       return Column(
         children: [
           searchBar(),
@@ -59,15 +63,12 @@ class HomeMapPage extends StatelessWidget {
     List<ContactLocation> contacts = userStatusState.contacts;
     if (contacts != controller.contacts) {
       controller.setContacts(contacts);
-      controller.getMarkers(
-          onMarkerPressed: (contact, icon) =>
-              showContactDialog(contact, icon, context));
+      controller.getMarkers();
     }
   }
 
   Widget searchBar() {
     return Autocomplete<ContactLocation>(
-        displayStringForOption: (contact) => contact.name,
         optionsBuilder: (textEditingValue) {
           if (textEditingValue.text.isEmpty) {
             return const Iterable.empty();
@@ -76,9 +77,7 @@ class HomeMapPage extends StatelessWidget {
               .toLowerCase()
               .contains(textEditingValue.text.toLowerCase()));
         },
-        onSelected: (contact) => controller.gMapController.moveCamera(
-            CameraUpdate.newLatLng(
-                LatLng(contact.latitude, contact.longitude))),
+        onSelected: (contact) => controller.onSuggestionsTap(contact),
         fieldViewBuilder:
             (context, textEditingController, focusNode, onFieldSubmitted) {
           return SearchBar(
