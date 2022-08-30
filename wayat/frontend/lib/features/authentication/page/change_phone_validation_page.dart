@@ -14,9 +14,9 @@ class ChangePhoneValidationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return _buildValidationiOSAlertDialog(context);
-    }
+    // if (defaultTargetPlatform == TargetPlatform.iOS) {
+    //   return _buildValidationiOSAlertDialog(context);
+    // }
     return _buildValidationAlertDialog(context);
   }
 
@@ -44,7 +44,11 @@ class ChangePhoneValidationPage extends StatelessWidget {
           children: [
             CustomFilledButton(
                 text: appLocalizations.verify, enabled: true, onPressed: () {}),
-            CustomTextButton(text: appLocalizations.cancel, onPressed: () {}),
+            CustomTextButton(
+                text: appLocalizations.cancel,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
           ],
         ),
       ],
@@ -80,7 +84,11 @@ class ChangePhoneValidationPage extends StatelessWidget {
           children: [
             CustomFilledButton(
                 text: appLocalizations.verify, enabled: true, onPressed: () {}),
-            CustomTextButton(text: appLocalizations.cancel, onPressed: () {}),
+            CustomTextButton(
+                text: appLocalizations.cancel,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
           ],
         ),
       ],
