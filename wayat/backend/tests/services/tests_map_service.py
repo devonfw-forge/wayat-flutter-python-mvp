@@ -289,6 +289,9 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         res = self.map_service._in_range(latitude=0, longitude=0, contact_location=None)
         assert res is False
 
+        res = self.map_service._should_show(None)
+        assert res is False
+
     async def test_vanish_user_should_regenerate_maps_containing_user(self):
         uid = "user_1"
         # Mocks
