@@ -69,6 +69,7 @@ class HomeMapPage extends StatelessWidget {
 
   Widget searchBar() {
     return Autocomplete<ContactLocation>(
+        displayStringForOption: (option) => option.name,
         optionsBuilder: (textEditingValue) {
           if (textEditingValue.text.isEmpty) {
             return const Iterable.empty();
