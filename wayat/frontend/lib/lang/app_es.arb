@@ -74,6 +74,9 @@
     "sentButtonNavigation": "ENVIADAS",
     "sentButtonTile": "Enviada",
     "noPendingRequests": "No tienes peticiones pendientes",
+    "inviteContacts": "Invita a tus contactos a Wayat",
+    "invitationText": "Invitación texto",
+    "invitationCopied": "Copiado en el portapapeles",
 
     "accept": "Aceptar",
     "search": "Buscar",
