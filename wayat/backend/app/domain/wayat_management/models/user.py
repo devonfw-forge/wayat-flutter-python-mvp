@@ -19,7 +19,7 @@ class ContactLocation(BaseModel):
 
 
 class GroupInfo(BaseModel):
-    uid: str
+    id: str
     name: str
     image_ref: str
     contacts: list[str] = Field(default_factory=list)

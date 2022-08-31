@@ -30,6 +30,7 @@ class UserService:
         self._status_repository = status_repository
         self._file_repository = file_repository
         self.DEFAULT_PICTURE = storage_settings.default_picture
+        self.DEFAULT_GROUP_PICTURE = storage_settings.default_picture
         self.THUMBNAIL_SIZE = storage_settings.thumbnail_size
 
     def map_to_dto(self, entity: UserEntity) -> UserDTO:
@@ -46,7 +47,7 @@ class UserService:
 
     def map_group_to_dto(self, entity: GroupInfo) -> GroupDTO:
         return GroupDTO(
-            id=entity.uid,
+            id=entity.id,
             name=entity.name,
             members=entity.contacts,
             image_url=self._file_repository.generate_signed_url(entity.image_ref),
@@ -107,7 +108,7 @@ class UserService:
         user_groups = await self._user_repository.get_user_groups(uid)
         found_group = None
         for g in user_groups:
-            if g.uid == group_id:
+            if g.id == group_id:
                 found_group = g
                 break
         if found_group is None:
@@ -206,3 +207,10 @@ class UserService:
     async def phone_in_use(self, phone: str):
         users = await self._user_repository.find_by_phone(phones=[phone])
         return len(users) > 0
+
+    async def create_group(self, user: str, name: str, members: list[str]) -> str:
+        """
+        Creates a group and returns the assigned id
+        """
+        group: GroupInfo = await self._user_repository.create_group(user, name, members, self.DEFAULT_GROUP_PICTURE)
+        return group.id

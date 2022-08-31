@@ -6,6 +6,7 @@ from fastapi import Depends
 from google.cloud import firestore
 from google.cloud.firestore import AsyncClient, AsyncTransaction
 
+from app.common.base.base_entity import new_uuid
 from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.wayat_management.utils import get_current_time
 from app.domain.wayat_management.models.user import UserEntity, Location, GroupInfo
@@ -180,3 +181,16 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             t.update(b_ref, update_b)
 
         await execute(transaction)
+
+    async def create_group(self, user_id: str, group_name: str, members: list[str], image: str) -> GroupInfo:
+        new_group = GroupInfo(
+            id=new_uuid().hex,
+            name=group_name,
+            contacts=members,
+            image_ref=image
+        )
+        update = {
+            "groups": firestore.ArrayUnion([new_group.dict()])
+        }
+        await self.update(document_id=user_id, data=update)
+        return new_group

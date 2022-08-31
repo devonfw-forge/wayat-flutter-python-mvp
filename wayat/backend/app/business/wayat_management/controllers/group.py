@@ -30,9 +30,10 @@ async def list_groups(group_id: Optional[str] = None, user: FirebaseAuthenticate
 
 
 @router.post("", description="Create a group", response_model=CreateGroupResponse)
-async def create_group(request: CreateGroupRequest, user: FirebaseAuthenticatedUser = Depends(get_user())):
-    # TODO: Implement this method
-    raise NotImplementedError
+async def create_group(request: CreateGroupRequest, user: FirebaseAuthenticatedUser = Depends(get_user()),
+                       users: UserService = Depends(UserService)):
+    group_id = await users.create_group(user.uid, request.name, request.members)
+    return CreateGroupResponse(id=group_id)
 
 
 @router.put("/{group_id}", description="Update the information of a group")
