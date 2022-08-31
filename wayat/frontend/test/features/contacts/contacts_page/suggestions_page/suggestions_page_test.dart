@@ -15,7 +15,7 @@ import 'package:mockito/annotations.dart';
 
 import 'suggestions_page_test.mocks.dart';
 
-@GenerateMocks([ContactsPageController, SuggestionsController ])
+@GenerateMocks([ContactsPageController, SuggestionsController])
 void main() async {
   final SuggestionsController suggestionsController =
       MockSuggestionsController();
@@ -57,9 +57,10 @@ void main() async {
   });
 
   testWidgets('Invitation button copies a text', (tester) async {
-    when(suggestionsController.copyInvitation()).thenAnswer((_) => Future.value(null));
+    when(suggestionsController.copyInvitation())
+        .thenAnswer((_) => Future.value(null));
     await tester.pumpWidget(_createApp(SuggestionsPage()));
-    
+
     await tester.tap(find.byType(TextButton));
     verify(suggestionsController.copyInvitation()).called(1);
   });
