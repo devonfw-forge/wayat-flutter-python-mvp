@@ -176,8 +176,8 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.deleteAccount,
             onTap: () {
-              // TODO: Implement Delete account
-              profileState.deleteCurrentUser(userSession.currentUser!.id);
+              // TODO: Need to redirect to SignUp page
+              profileState.deleteCurrentUser();
             }),
       ],
     );

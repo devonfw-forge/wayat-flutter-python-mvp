@@ -78,9 +78,8 @@ mixin _$ProfileState on _ProfileState, Store {
       AsyncAction('_ProfileState.deleteCurrentUser', context: context);
 
   @override
-  Future<dynamic> deleteCurrentUser(String id) {
-    return _$deleteCurrentUserAsyncAction
-        .run(() => super.deleteCurrentUser(id));
+  Future<dynamic> deleteCurrentUser() {
+    return _$deleteCurrentUserAsyncAction.run(() => super.deleteCurrentUser());
   }
 
   late final _$_ProfileStateActionController =

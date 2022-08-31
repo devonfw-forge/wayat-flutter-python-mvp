@@ -21,6 +21,7 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final SessionState userSession = GetIt.I.get<SessionState>();
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   bool _validPhone = false;
   final String _errorPhoneMsg = "";
@@ -149,7 +150,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       initialCountryCode: 'ES',
       onSubmitted: (phone) {
         //TODO: Have an error here on validation... fix later
-        //_validPhone = _formKey.currentState!.validate();
+        // _validPhone = _formKey.currentState!.validate();
         _validPhone = true;
         if (_validPhone) _showAlertDialog();
       },

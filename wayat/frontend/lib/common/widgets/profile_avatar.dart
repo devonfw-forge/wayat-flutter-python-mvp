@@ -3,18 +3,19 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 
 class ProfileAvatar extends StatelessWidget {
-  ProfileAvatar({
-    Key? key,
-    required this.onPress,
-    required isEdit,
-  }) : super(key: key);
-
   final Function() onPress;
   ImageProvider<Object>? uploadedImage;
-  bool isEdit = true;
+  bool isEdit;
+
+  ProfileAvatar({
+    super.key,
+    required this.onPress,
+    this.isEdit = true,
+  });
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(isEdit.toString());
     return Stack(children: <Widget>[
       Center(
         child: Container(
