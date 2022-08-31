@@ -9,7 +9,7 @@ from requests import RequestException
 from app.business.wayat_management.services.user import UserService
 from app.common.exceptions.runtime import ResourceNotFoundException
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
-from app.domain.wayat_management.models.user import UserEntity
+from app.domain.wayat_management.models.user import UserEntity, GroupInfo
 from app.domain.wayat_management.repositories.files import FileStorage, StorageSettings
 from app.domain.wayat_management.repositories.status import StatusRepository
 from app.domain.wayat_management.repositories.user import UserRepository
@@ -385,6 +385,23 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo.delete.assert_called_with(document_id=test_entity.document_id)
         # Delete user status
         self.mock_status_repo.delete.assert_called_with(document_id=test_entity.document_id)
+
+    async def test_create_group_should_update_user_document(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
+        group_info = GroupInfo(
+            id=1,
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+
+        self.mock_user_repo.create_group.return_value = group_info
+
+        # Call under test and asserts
+        res_id = await self.user_service.create_group(user, group_name, members)
+
+        self.mock_user_repo.create_group.assert_called_with(user, group_name, members, picture)
+        assert res_id == group_info.id
 
 
 if __name__ == "__main__":
