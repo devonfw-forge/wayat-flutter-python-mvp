@@ -22,10 +22,13 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
+import 'package:wayat/services/profile/profile_service.dart';
+import 'package:wayat/services/profile/profile_service_impl.dart';
 
 import 'profile_integration_test.mocks.dart';
 
 @GenerateMocks([
+  ProfileService,
   ContactsPageController,
   SessionState,
   HomeState,
@@ -38,7 +41,6 @@ import 'profile_integration_test.mocks.dart';
 ])
 void main() async {
   late MyUser user;
-  HttpOverrides.global = null;
 
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
@@ -46,22 +48,28 @@ void main() async {
   final HomeState mockHomeState = MockHomeState();
   final LocationState mockLocationState = MockLocationState();
   final UserStatusState mockUserStatusState = MockUserStatusState();
-  final ProfileState profileState = ProfileState();
   final MapState mockMapState = MockMapState();
   final FriendsController mockFriendsController = MockFriendsController();
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
       MockSuggestionsController();
+  final ProfileService mockProfileService = MockProfileService();
+  final ProfileState profileState =
+      ProfileState(profileService: mockProfileService);
 
   setUpAll(() {
+    HttpOverrides.global = null;
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
     when(mockSessionState.finishLoggedIn).thenReturn(true);
     when(mockSessionState.hasDoneOnboarding).thenReturn(true);
     when(mockSessionState.currentUser).thenAnswer((_) => user);
+    when(mockSessionState.updateCurrentUser())
+        .thenAnswer((_) => Future.value(null));
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
-    when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
+    when(mockProfileService.updateProfileName("newUsername"))
+        .thenAnswer((_) => Future.value(true));
     when(mockLocationState.shareLocationEnabled).thenReturn(false);
     when(mockContactsPageController.viewSentRequests).thenReturn(false);
     when(mockContactsPageController.friendsController)
@@ -73,6 +81,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
     when(mockUserStatusState.contacts).thenReturn([]);
+    when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
 
     user = MyUser(
         id: "2",
@@ -116,44 +125,61 @@ void main() async {
     await tester.pumpAndSettle();
   }
 
-  // group('end-to-end test', () {
   testWidgets('tap on the floating action button, verify counter',
       (tester) async {
-    await tester.pumpWidget(_createApp());
+    await navigateToProfilePage(tester);
 
-    expect(1, 1);
-    // await navigateToProfilePage(tester);
+    // Check the profile page is displayed
+    expect(
+        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
 
-    // // Check the profile page is displayed
-    // // expect(find.widgetWithText(Padding, appLocalizations.profile),
-    // //     findsOneWidget);
+    // Emulate a tap on the edit profile button
+    await tester.tap(find.descendant(
+        of: find.widgetWithText(CustomCard, appLocalizations.editProfile),
+        matching: find.byType(InkWell)));
 
-    // // Emulate a tap on the edit profile button
-    // await tester
-    //     .tap(find.widgetWithText(CustomCard, appLocalizations.editProfile));
+    // Trigger a frame.
+    await tester.pumpAndSettle();
 
-    // // Trigger a frame.
-    // await tester.pumpAndSettle();
+    // Emulate a tap on the back button
+    await tester.tap(find.widgetWithIcon(IconButton, Icons.arrow_back));
 
-    // // Check that edit profile page is displayed
-    // // expect(find.widgetWithText(TextField, user.name), findsOneWidget);
+    // Trigger a frame.
+    await tester.pumpAndSettle();
 
-    // // Change username
-    // await tester.enterText(
-    //     find.widgetWithText(TextField, user.name), "newUsername");
+    // Check the profile page is displayed
+    expect(
+        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
 
-    // expect(user.name, "newUsername");
+    // Emulate a tap on the edit profile button
+    await tester.tap(find.descendant(
+        of: find.widgetWithText(CustomCard, appLocalizations.editProfile),
+        matching: find.byType(InkWell)));
 
-    // // Emulate a tap on the save button
-    // await tester.tap(find.widgetWithText(TextButton, appLocalizations.save));
+    // Trigger a frame.
+    await tester.pumpAndSettle();
 
-    // // Trigger a frame.
-    // await tester.pumpAndSettle();
+    // Check that edit profile page is displayed
+    expect(find.widgetWithText(TextField, user.name), findsWidgets);
 
-    // // Check the profile page is displayed again with new username
-    // // expect(find.widgetWithText(Padding, appLocalizations.profile),
-    // //     findsOneWidget);
-    // expect(find.widgetWithText(Text, "newUsername"), findsOneWidget);
+    // Change username
+    await tester.enterText(
+        find.widgetWithText(TextField, user.name), "newUsername");
+
+    expect(user.name, "newUsername");
+
+    // Emulate a tap on
+    await tester.tap(find.widgetWithText(TextButton, appLocalizations.save));
+
+    // Emulate a tap on the save button
+    await tester.tap(find.widgetWithText(TextButton, appLocalizations.save));
+
+    // Trigger a frame.
+    await tester.pumpAndSettle();
+
+    // Check the profile page is displayed again with new username
+    expect(
+        find.widgetWithText(Padding, appLocalizations.profile), findsWidgets);
+    expect(find.text("newUsername"), findsWidgets);
   });
-  // });
 }

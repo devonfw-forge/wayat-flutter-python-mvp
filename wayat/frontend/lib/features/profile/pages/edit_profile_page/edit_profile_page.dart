@@ -5,10 +5,9 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
+import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io' as io;
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -20,6 +19,7 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
   final ProfileState profileState = GetIt.I.get<ProfileState>();
+  final EditProfileController controller = EditProfileController();
 
   XFile? currentSelectedImage;
   bool isVisible = false;
@@ -62,7 +62,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   constraints: const BoxConstraints(),
                   iconSize: 25,
                   onPressed: () {
-                    _onPressedBackButton();
+                    controller.onPressedBackButton();
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
@@ -74,7 +74,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           TextButton(
             onPressed: () async {
-              await _onPressedSaveButton();
+              await controller.onPressedSaveButton(currentSelectedImage);
             },
             child: Text(
               appLocalizations.save,
@@ -85,22 +85,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ],
       ),
     );
-  }
-
-  void _onPressedBackButton() {
-    profileState.setCurrentPage(ProfileCurrentPages.profile);
-  }
-
-  Future<void> _onPressedSaveButton() async {
-    _onPressedBackButton();
-
-    if (user.name != "") {
-      await profileState.updateCurrentUserName(user.name);
-    }
-
-    if (currentSelectedImage != null) {
-      await profileState.updateUserImage(currentSelectedImage!);
-    }
   }
 
   Widget _buildEditProfileImage() {
@@ -164,27 +148,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ]),
       );
 
-  Row _changePhone() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              appLocalizations.changePhone,
-              style: _textStyle(Colors.black87, 16),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: InkWell(
-                onTap: () {
-                  //AutoRoute to change phone page
-                },
-                child: const Icon(Icons.arrow_forward,
-                    color: Colors.black87, size: 24)),
-          )
-        ],
-      );
+  // Row _changePhone() => Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 16),
+  //           child: Text(
+  //             appLocalizations.changePhone,
+  //             style: _textStyle(Colors.black87, 16),
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 16),
+  //           child: InkWell(
+  //               onTap: () {
+  //                 //AutoRoute to change phone page
+  //               },
+  //               child: const Icon(Icons.arrow_forward,
+  //                   color: Colors.black87, size: 24)),
+  //         )
+  //       ],
+  //     );
 
   Widget _getImageFromCameraOrGallary() {
     return Container(
@@ -225,7 +209,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
     setState(() {
+      debugPrint("DEBUG Setting state");
+      debugPrint("DEBUG set state ${currentSelectedImage != newImage}");
       currentSelectedImage = newImage;
+      debugPrint("DEBUG set state ${currentSelectedImage != newImage}");
     });
     Navigator.pop(context);
   }

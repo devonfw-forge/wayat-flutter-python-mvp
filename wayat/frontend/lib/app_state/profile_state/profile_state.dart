@@ -11,7 +11,7 @@ part 'profile_state.g.dart';
 class ProfileState = _ProfileState with _$ProfileState;
 
 abstract class _ProfileState with Store {
-  final ProfileService _profileService = ProfileServiceImpl();
+  final ProfileService _profileService;
 
   @observable
   ProfileCurrentPages currentPage = ProfileCurrentPages.profile;
@@ -21,6 +21,9 @@ abstract class _ProfileState with Store {
 
   @observable
   bool isSaved = false;
+
+  _ProfileState({ProfileService? profileService})
+      : _profileService = profileService ?? ProfileServiceImpl();
 
   @action
   void setCurrentPage(ProfileCurrentPages newPage) {

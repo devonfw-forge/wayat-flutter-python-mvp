@@ -60,8 +60,8 @@ void main() async {
 
   testWidgets('Profile page has Profile label', (tester) async {
     await tester.pumpWidget(_createApp(ProfilePage()));
-    expect(
-        find.widgetWithText(Padding, appLocalizations.profile), findsOneWidget);
+    expect(find.widgetWithText(ListView, appLocalizations.profile),
+        findsOneWidget);
   });
 
   group("Profile page has user profile data", () {
