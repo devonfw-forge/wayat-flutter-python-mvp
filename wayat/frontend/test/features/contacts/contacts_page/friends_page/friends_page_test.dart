@@ -5,8 +5,11 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobx/mobx.dart' as mobx;
 
 import 'friends_page_test.mocks.dart';
 
@@ -37,4 +40,18 @@ void main() async {
       ),
     );
   }
+
+  testWidgets("Friends page title is correct", (tester) async {
+    when(mockFriendsController.filteredContacts)
+        .thenReturn(mobx.ObservableList.of([]));
+
+    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpAndSettle();
+
+    expect(
+        find.text("${appLocalizations.friendsPageTitle} (0)"), findsOneWidget);
+
+    when(mockFriendsController.filteredContacts)
+        .thenReturn(mobx.ObservableList.of([]));
+  });
 }
