@@ -52,7 +52,7 @@ class ContactDialog extends StatelessWidget {
               height: 10,
             ),
             TextButton(
-                onPressed: () => AutoRouter.of(context).pop(),
+                onPressed: () => closeDialog(context),
                 child: Text(
                   appLocalizations.close,
                   style: const TextStyle(color: Colors.black, fontSize: 17),
@@ -131,10 +131,16 @@ class ContactDialog extends StatelessWidget {
         alignment: AlignmentDirectional.topEnd,
         padding: const EdgeInsets.all(15),
         child: CircleIconButton(
-          onPressed: () => {AutoRouter.of(context).pop()},
+          onPressed: () => closeDialog(context),
           icon: Icons.close,
           backgroundColor: Colors.white,
         ));
+  }
+
+  void closeDialog(BuildContext context) {
+    AutoRouter.of(context).pop();
+    // Unfocuses search bar
+    FocusScope.of(context).unfocus();
   }
 
   Widget googleMap() {

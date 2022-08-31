@@ -1,63 +1,94 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
+import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
   final LocationState locationState = GetIt.I.get<LocationState>();
   final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
-  late MapController controller;
-  late GoogleMapController gMapController;
+  final MapController controller;
 
-  HomeMapPage({Key? key}) : super(key: key);
+  HomeMapPage({MapController? controller, Key? key})
+      : controller = controller ?? MapController(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     GetIt.I.get<MapState>().openMap();
-
-    controller = MapController(
-        onMarkerPressed: (contact, icon) =>
-            showContactDialog(contact, icon, context));
+    controller.setOnMarkerPressed(
+        (contact, icon) => showContactDialog(contact, icon, context));
 
     return FutureBuilder(
         future: locationState.initialize(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Stack(
-              children: [
-                Observer(builder: (context) {
-                  List<ContactLocation> contacts = userStatusState.contacts;
-                  if (contacts != controller.contacts) {
-                    controller.setContacts(contacts);
-                    controller.getMarkers();
-                  }
-                  Set<Marker> markers = controller.markers;
-                  return googleMap(markers);
-                }),
-                _bottomSheet()
-              ],
+              children: [_mapLayer(), _draggableSheetLayer()],
             );
           } else {
-            return Container(
-              color: Colors.white,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return const LoadingWidget();
           }
         });
+  }
+
+  Observer _mapLayer() {
+    return Observer(builder: (context) {
+      prepareMapData(context);
+      Set<Marker> markers = controller.filteredMarkers;
+      return Column(
+        children: [
+          searchBar(),
+          const SizedBox(
+            height: 10,
+          ),
+          Expanded(child: googleMap(markers)),
+        ],
+      );
+    });
+  }
+
+  void prepareMapData(BuildContext context) {
+    List<ContactLocation> contacts = userStatusState.contacts;
+    if (contacts != controller.contacts) {
+      controller.setContacts(contacts);
+      controller.getMarkers();
+    }
+  }
+
+  Widget searchBar() {
+    return Autocomplete<ContactLocation>(
+        displayStringForOption: (option) => option.name,
+        optionsBuilder: (textEditingValue) {
+          if (textEditingValue.text.isEmpty) {
+            return const Iterable.empty();
+          }
+          return controller.contacts.where((contact) => contact.name
+              .toLowerCase()
+              .contains(textEditingValue.text.toLowerCase()));
+        },
+        onSelected: (contact) => controller.onSuggestionsTap(contact),
+        fieldViewBuilder:
+            (context, textEditingController, focusNode, onFieldSubmitted) {
+          return SearchBar(
+            controller: textEditingController,
+            focusNode: focusNode,
+            onChanged: (newText) => controller.setSearchBarText(newText),
+          );
+        },
+        optionsViewBuilder: (context, onSelected, options) =>
+            SuggestionsDialog(options: options, onSelected: onSelected));
   }
 
   GoogleMap googleMap(Set<Marker> markers) {
@@ -65,42 +96,18 @@ class HomeMapPage extends StatelessWidget {
         locationState.currentLocation.longitude);
 
     return GoogleMap(
-        initialCameraPosition:
-            CameraPosition(target: currentLocation, zoom: 14.5),
-        zoomControlsEnabled: false,
-        tiltGesturesEnabled: false,
-        myLocationEnabled: true,
-        zoomGesturesEnabled: true,
-        buildingsEnabled: true,
-        cameraTargetBounds: CameraTargetBounds.unbounded,
-        scrollGesturesEnabled: false,
-        rotateGesturesEnabled: false,
-        mapType: MapType.normal,
-        markers: markers,
-        onLongPress: (_) => controller.markers,
-        onMapCreated: (googleMapController) {
-          gMapController = googleMapController;
-          Location location = Location();
-          location.onLocationChanged.listen((l) async {
-            try {
-              await gMapController.moveCamera(
-                  CameraUpdate.newLatLng(LatLng(l.latitude!, l.longitude!)));
-            } catch (e) {
-              log("Exception: Map not created");
-            }
-          });
-          controller.markers;
-        },
-        onCameraMove: (pos) => {
-              if (pos.target != currentLocation)
-                {
-                  gMapController
-                      .moveCamera(CameraUpdate.newLatLng(currentLocation))
-                }
-            });
+      initialCameraPosition:
+          CameraPosition(target: currentLocation, zoom: 14.5),
+      myLocationEnabled: true,
+      zoomControlsEnabled: false,
+      markers: markers,
+      onMapCreated: (googleMapController) {
+        controller.gMapController = googleMapController;
+      },
+    );
   }
 
-  DraggableScrollableSheet _bottomSheet() {
+  DraggableScrollableSheet _draggableSheetLayer() {
     return DraggableScrollableSheet(
         minChildSize: 0.13,
         initialChildSize: 0.13,
