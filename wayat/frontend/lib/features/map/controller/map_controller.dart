@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
@@ -12,11 +13,10 @@ part 'map_controller.g.dart';
 class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
-  Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
-
-  _MapController({required this.onMarkerPressed});
-
   ImageService imageService = ImageService();
+
+  _MapController({ImageService? imageService})
+      : imageService = imageService ?? ImageService();
 
   @observable
   bool sharingLocation = true;
@@ -24,10 +24,24 @@ abstract class _MapController with Store {
   @observable
   Location currentLocation = Location();
 
+  Set<Marker> allMarkers = Set.of({});
+
   @observable
-  ObservableSet<Marker> markers = ObservableSet.of({});
+  ObservableSet<Marker> filteredMarkers = ObservableSet.of({});
 
   List<ContactLocation> contacts = [];
+
+  late GoogleMapController gMapController;
+
+  String searchBarText = "";
+
+  late Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
+
+  void setOnMarkerPressed(
+      Function(ContactLocation contact, BitmapDescriptor icon)
+          onMarkerPressed) {
+    this.onMarkerPressed = onMarkerPressed;
+  }
 
   Future getMarkers() async {
     Set<Marker> newMarkers = await generateMarkers();
@@ -45,7 +59,7 @@ abstract class _MapController with Store {
               markerId: MarkerId(
                   e.name + e.longitude.toString() + e.latitude.toString()),
               position: LatLng(e.latitude, e.longitude),
-              icon: bitmaps[e.imageUrl]!,
+              icon: bitmaps[e.imageUrl] ?? BitmapDescriptor.defaultMarker,
               onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),
         )
         .toSet();
@@ -63,8 +77,7 @@ abstract class _MapController with Store {
       Set<Marker> newMarkers = contacts
           .map(
             (e) => Marker(
-                markerId: MarkerId(
-                    e.name + e.longitude.toString() + e.latitude.toString()),
+                markerId: MarkerId(e.name),
                 position: newPosition,
                 icon: bitmaps[e.imageUrl]!,
                 onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),
@@ -76,7 +89,8 @@ abstract class _MapController with Store {
 
   @action
   void setMarkers(Set<Marker> newMarkers) {
-    markers = ObservableSet.of(newMarkers);
+    allMarkers = ObservableSet.of(newMarkers);
+    filterMarkers();
   }
 
   @action
@@ -87,5 +101,25 @@ abstract class _MapController with Store {
   @action
   void setSharingLocation(bool newValue) {
     sharingLocation = newValue;
+  }
+
+  @action
+  void setSearchBarText(String newText) {
+    searchBarText = newText;
+    filterMarkers();
+  }
+
+  @action
+  void filterMarkers() {
+    filteredMarkers = ObservableSet.of(allMarkers
+        .where((element) => element.markerId.value
+            .toLowerCase()
+            .contains(searchBarText.toLowerCase()))
+        .toSet());
+  }
+
+  void onSuggestionsTap(contact) {
+    gMapController.moveCamera(
+        CameraUpdate.newLatLng(LatLng(contact.latitude, contact.longitude)));
   }
 }

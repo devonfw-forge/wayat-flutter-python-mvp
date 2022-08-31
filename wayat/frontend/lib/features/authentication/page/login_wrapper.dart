@@ -4,7 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/features/authentication/common/loading_widget.dart';
+import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
 class LoginWrapper extends StatelessWidget {
