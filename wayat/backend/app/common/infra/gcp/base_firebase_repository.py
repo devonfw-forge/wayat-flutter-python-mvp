@@ -60,9 +60,14 @@ class BaseFirebaseModel(BaseModel):
 
 ModelType = TypeVar("ModelType", bound=BaseFirebaseModel)
 
+_async_client: AsyncClient | None = None
+
 
 def get_async_client():
-    return AsyncClient.from_service_account_info(get_account_info())
+    global _async_client
+    if _async_client is None:
+        _async_client = AsyncClient.from_service_account_info(get_account_info())
+    return _async_client
 
 
 class BaseFirestoreRepository(Generic[ModelType]):

@@ -2,7 +2,6 @@ import logging
 import mimetypes
 
 from fastapi import APIRouter, Depends, UploadFile
-from starlette.responses import PlainTextResponse
 
 from app.business.wayat_management.exceptions.http import InvalidImageFormatException, PhoneInUseException
 from app.business.wayat_management.models.user import (
@@ -10,9 +9,8 @@ from app.business.wayat_management.models.user import (
     UpdateUserRequest,
     ListUsersWithPhoneResponse,
     FindByPhoneRequest,
-    AddContactsRequest,
-    UpdatePreferencesRequest, UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest,
-    UserDTO,
+    UpdatePreferencesRequest,
+    dto_to_user_with_phone_response,
 )
 from app.business.wayat_management.services.map import MapService
 from app.business.wayat_management.services.user import UserService
@@ -25,16 +23,21 @@ router = APIRouter(prefix="/users")
 logger = logging.getLogger(__name__)
 
 
-def dto_to_user_with_phone_response(u: UserDTO):
-    return UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url)
-
-
 @router.get("/profile", description="Get a user profile", response_model=UserProfileResponse)
 async def get_user_profile(user: FirebaseAuthenticatedUser = Depends(get_user()),
                            user_service: UserService = Depends()):
     logger.debug(f"Getting user profile with id {user.uid}")
     user_dto, new_user = await user_service.get_or_create(user.uid, user)
     return UserProfileResponse(**user_dto.dict(), new_user=new_user)
+
+
+@router.delete("/profile", description="Delete the account of a user")
+async def delete_account(user: FirebaseAuthenticatedUser = Depends(get_user()),
+                         user_service: UserService = Depends(),
+                         maps_service: MapService = Depends()):
+    logger.info(f"Deleting the account of the user with uid={user.uid}")
+    await user_service.delete_account(user.uid)
+    await maps_service.regenerate_maps_containing_user(user.uid)
 
 
 @router.post("/profile",
@@ -78,13 +81,6 @@ async def get_users_filtered(request: FindByPhoneRequest, user_service: UserServ
     return ListUsersWithPhoneResponse(users=users_phone)
 
 
-@router.post("/add-contact", description="Add a list of users to the contact list")
-async def add_contact(request: AddContactsRequest, user_service: UserService = Depends(UserService),
-                      user: FirebaseAuthenticatedUser = Depends(get_user())):
-    logger.debug(f"Adding contacts {request.users}")
-    await user_service.add_contacts(uid=user.uid, users=request.users)
-
-
 @router.post("/preferences", description="Update the preferences of a user")
 async def update_preferences(request: UpdatePreferencesRequest,
                              user_service: UserService = Depends(UserService),
@@ -95,53 +91,4 @@ async def update_preferences(request: UpdatePreferencesRequest,
     if request.share_location is False:
         # share_location was set to false in this request, so we must delete the user
         # from all the maps in which he's present
-        await map_service.vanish_user(user.uid)
-
-
-@router.get("/contacts", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
-async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
-                       user_service: UserService = Depends(UserService)):
-    logger.debug(f"Getting contacts for user {user.uid}")
-    cts = await user_service.get_user_contacts(user.uid)
-    contacts_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in cts]
-    return ListUsersWithPhoneResponse(users=contacts_phone)
-
-
-@router.delete("/contacts/{contact_id}",
-               description="Deletes a contact from your friend list and removes yourself from their list")
-async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user()),
-                         map_service: MapService = Depends(MapService),
-                         user_service: UserService = Depends(UserService)):
-    await user_service.delete_contact(user_id=user.uid, contact_id=contact_id)
-    await map_service.force_status_update(uid=user.uid, force_contacts_update=False)
-
-
-@router.get("/friend-requests", description="Returns pending sent and received friendship requests",
-            response_model=PendingFriendsRequestsResponse)
-async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user()),
-                              user_service: UserService = Depends(UserService)):
-    pending, sent = await user_service.get_pending_friend_requests(user.uid)
-
-    pending = list(map(dto_to_user_with_phone_response, pending))
-    sent = list(map(dto_to_user_with_phone_response, sent))
-
-    return PendingFriendsRequestsResponse(
-        sent_requests=sent,
-        pending_requests=pending
-    )
-
-
-@router.post("/friend-requests", description="Responds to a friend request, by accepting or denying it")
-async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user()),
-                                user_service: UserService = Depends(UserService),
-                                map_service: MapService = Depends(MapService)):
-    await user_service.respond_friend_request(user_uid=user.uid, friend_uid=r.uid, accept=r.accept)
-    if r.accept is True:  # If accepted a friend request refresh maps
-        await map_service.force_status_update(uid=user.uid)
-        await map_service.force_status_update(uid=r.uid)
-
-
-@router.delete("/friend-requests/sent/{contact_id}", description="Cancel a sent friendship request")
-async def cancel_friend_request(contact_id: str, user: FirebaseAuthenticatedUser = Depends(get_user()),
-                                user_service: UserService = Depends(UserService)):
-    await user_service.cancel_friend_request(user.uid, contact_id)
+        await map_service.regenerate_maps_containing_user(user.uid)

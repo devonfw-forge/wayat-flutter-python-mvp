@@ -2,7 +2,7 @@ import asyncio
 import logging
 from datetime import datetime, timedelta
 from functools import lru_cache
-from typing import overload
+from typing import overload, Optional
 
 from fastapi import Depends
 from pydantic import BaseSettings
@@ -21,6 +21,7 @@ class MapSettings(BaseSettings):
     update_threshold: int
     valid_until_threshold: int
     distance_threshold: float
+    max_time_without_update: int
 
     class Config:
         env_prefix = "MAP_"
@@ -46,6 +47,8 @@ class MapService:
         self._distance_threshold = map_settings.distance_threshold
         # max ammount of time for which the map status is valid
         self._map_valid_until_threshold = map_settings.valid_until_threshold
+        # max time since last location update
+        self._max_time_since_last_update = map_settings.max_time_without_update
 
     async def update_location(self,
                               uid: str,
@@ -85,14 +88,14 @@ class MapService:
     async def force_status_update(self, *,
                                   uid: str | None = None,
                                   user_entity: UserEntity | None = None,
-                                  force_contacts_update: bool = True):
+                                  force_contacts_active: bool = True):
         """
         Regenerates the User map. If force_contacts_update=True (default) all its contacts will become active,
         sending a location update as soon as possible.
         Either one of uid or user_entity must be provided. If both are passed, user_entity has precedence.
         :param uid: The uid of the User
         :param user_entity: The User entity
-        :param force_contacts_update: Whether to set all of User's contacts to active mode.
+        :param force_contacts_active: Whether to set all of User's contacts to active mode.
         """
         if user_entity is not None:
             user_to_update = user_entity
@@ -101,7 +104,7 @@ class MapService:
         else:
             raise ValueError("Either uid or user_entity should not be None. Invalid parameters")
         await self.regenerate_map_status(user=user_to_update)
-        if force_contacts_update:
+        if force_contacts_active:
             await self._status_repository.set_active_batch(uid_list=user_to_update.contacts, value=True)
 
     @overload
@@ -135,7 +138,7 @@ class MapService:
 
     async def _create_contact_ref(self, contact_uid: str) -> ContactRefInfo | None:
         contact_location = await self._user_repository.get_user_location(contact_uid)
-        if contact_location is not None:
+        if contact_location is not None and self._should_show(contact_location):
             return ContactRefInfo(uid=contact_uid, last_updated=contact_location.last_updated,
                                   location=contact_location.value, address=contact_location.address)
         else:
@@ -161,7 +164,14 @@ class MapService:
     def _needs_update(self, last_updated: datetime):
         return (datetime.now(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
 
-    def _in_range(self, latitude: float, longitude: float, contact_location: Location):
+    def _should_show(self, location: Optional[Location]):
+        if location is not None:
+            return (datetime.now(location.last_updated.tzinfo) - location.last_updated).seconds \
+                   < self._max_time_since_last_update
+        else:
+            return False
+
+    def _in_range(self, latitude: float, longitude: float, contact_location: Optional[Location]):
         if contact_location is None or contact_location.value is None:
             return False
         location = contact_location.value
@@ -169,7 +179,7 @@ class MapService:
         logger.debug(f"Distance of {distance} calculated")
         return distance < self._distance_threshold
 
-    async def vanish_user(self, uid: str):
+    async def regenerate_maps_containing_user(self, uid: str):
         coroutines = [self.regenerate_map_status(uid=contact_uid)
                       for contact_uid in await self._status_repository.find_maps_containing_user(uid)]
         await asyncio.gather(*coroutines)

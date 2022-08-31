@@ -30,8 +30,14 @@ def get_storage_settings() -> BaseStorageSettings:
     return load_env_file_on_settings(BaseStorageSettings)
 
 
+_storage_client: Client | None = None
+
+
 def _get_storage_client():
-    return Client.from_service_account_info(get_account_info())
+    global _storage_client
+    if _storage_client is None:
+        _storage_client = Client.from_service_account_info(get_account_info())
+    return _storage_client
 
 
 P = ParamSpec("P")
@@ -39,7 +45,6 @@ R = TypeVar("R")
 
 
 def run_in_executor(f: Callable[P, R]) -> Callable[P, Awaitable[R]]:
-
     async def async_f(*args: P.args, **kwargs: P.kwargs):
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(
