@@ -10,12 +10,6 @@ import 'gauth_service_impl_test.mocks.dart';
 @GenerateMocks([
   SessionState,
   GoogleAuthService
-], customMocks: [
-  MockSpec<SessionState>(
-      as: #MockSessionStateRelaxed, onMissingStub: OnMissingStub.returnDefault),
-  MockSpec<GoogleAuthService>(
-      as: #MockGoogleAuthServiceRelaxed,
-      onMissingStub: OnMissingStub.returnDefault)
 ])
 void main() async {
   late GoogleAuthService gauth;

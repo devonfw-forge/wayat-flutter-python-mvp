@@ -16,9 +16,6 @@ import 'phone_validation_page_test.mocks.dart';
 
 @GenerateMocks([
   SessionState
-], customMocks: [
-  MockSpec<SessionState>(
-      as: #MockSessionStateRelaxed, onMissingStub: OnMissingStub.returnDefault)
 ])
 void main() async {
   setUpAll(() {
