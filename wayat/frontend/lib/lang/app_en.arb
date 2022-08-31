@@ -83,6 +83,9 @@
     "sentButtonNavigation": "SENT",
     "sentButtonTile": "Sent",
     "noPendingRequests": "You don't have any pending requests",
+    "inviteContacts": "Invite contacts to Wayat",
+    "invitationText": "Invitation text",
+    "invitationCopied": "Copied to your clipboard",
 
     "accept": "Accept",
     "search": "Search",
