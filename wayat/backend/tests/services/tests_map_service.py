@@ -13,7 +13,8 @@ from app.domain.wayat_management.repositories.user import UserRepository
 class MapServiceTests(IsolatedAsyncioTestCase):
     async def asyncSetUp(self) -> None:
         # Mocks
-        self.map_settings = MapSettings(update_threshold=30, distance_threshold=2.0, valid_until_threshold=30)
+        self.map_settings = MapSettings(update_threshold=30, distance_threshold=2.0, valid_until_threshold=30,
+                                        max_time_without_update=1200)
         self.mock_user_repo = MagicMock(UserRepository)
         self.mock_status_repo = MagicMock(StatusRepository)
         self.map_service = MapService(
@@ -142,6 +143,9 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         old_enough_timestamp = now_timestamp - timedelta(seconds=(self.map_settings.update_threshold + 1))
         self.mock_entities["user_2"].last_status_update = old_enough_timestamp
         self.mock_entities["user_3"].last_status_update = old_enough_timestamp
+        self.mock_entities["user_1"].location.last_updated = now_timestamp
+        self.mock_entities["user_2"].location.last_updated = now_timestamp
+        self.mock_entities["user_3"].location.last_updated = now_timestamp
         datetime_mock.now.return_value = now_timestamp
 
         def mocking_get_user_location(user_id: str):
@@ -167,6 +171,18 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo.update_last_status.assert_has_calls([call("user_2"), call("user_3")], any_order=True)
         self.mock_status_repo.set_contact_refs.assert_has_calls([call("user_2", contact_refs_1),
                                                                  call("user_3", contact_refs_1)], any_order=True)
+
+        # Mock for old updated location test case
+        very_old_timestamp = now_timestamp - timedelta(hours=2)
+        self.mock_entities["user_1"].location.last_updated = very_old_timestamp
+
+        # Call under test
+        await self.map_service.update_location(uid, 0.0, 0.0, "Test")
+
+        # Asserts
+        self.mock_user_repo.update_last_status.assert_has_calls([call("user_2"), call("user_3")], any_order=True)
+        self.mock_status_repo.set_contact_refs.assert_has_calls([call("user_2", []),
+                                                                 call("user_3", [])], any_order=True)
 
     async def test_update_map_status_when_close_map_should_update_map_info(self):
         uid = "Test"
@@ -228,13 +244,13 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         self.map_service.regenerate_map_status = mock_map_service.regenerate_map_status
 
         # Call to be tested
-        await self.map_service.force_status_update(uid=uid, force_contacts_update=False)
+        await self.map_service.force_status_update(uid=uid, force_contacts_active=False)
 
         mock_map_service.regenerate_map_status.assert_called_with(user=self.mock_entities[uid])
 
         exception = None
         try:
-            await self.map_service.force_status_update(force_contacts_update=False)
+            await self.map_service.force_status_update(force_contacts_active=False)
         except ValueError as e:
             exception = e
 
@@ -273,6 +289,9 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         res = self.map_service._in_range(latitude=0, longitude=0, contact_location=None)
         assert res is False
 
+        res = self.map_service._should_show(None)
+        assert res is False
+
     async def test_vanish_user_should_regenerate_maps_containing_user(self):
         uid = "user_1"
         # Mocks
@@ -281,5 +300,5 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         self.mock_status_repo.find_maps_containing_user.return_value = ["test"]
 
         # Call to be tested
-        res = await self.map_service.vanish_user(uid=uid)
+        res = await self.map_service.regenerate_maps_containing_user(uid=uid)
         mock_map_service.regenerate_map_status.assert_called_with(uid="test")

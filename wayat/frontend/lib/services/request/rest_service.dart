@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/service.dart';
-import 'package:http/http.dart' as http;
 import 'package:http_parser/src/media_type.dart';
 
 abstract class RESTService extends Service {
@@ -20,8 +19,9 @@ abstract class RESTService extends Service {
 
   /// Sends a **GET** request to [baseUrl]/[subPath], using the configured authentication
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
+    final headers = await _getHeaders();
     Response resultJson =
-        await get(Uri.parse("$baseUrl/$subPath"), headers: await _getHeaders());
+        await get(Uri.parse("$baseUrl/$subPath"), headers: headers);
     return json.decode(const Utf8Decoder().convert(resultJson.bodyBytes))
         as Map<String, dynamic>;
   }

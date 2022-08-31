@@ -74,6 +74,9 @@
     "sentButtonNavigation": "ENVOYÉ",
     "sentButtonTile": "Envoyé",
     "noPendingRequests": "Vous n'avez aucune demande en attente",
+    "inviteContacts": "Invitez vos contacts sur Wayat",
+    "invitationText": "Invitation texte",
+    "invitationCopied": "Copié dans votre presse-papiers",
 
     "accept": "Accepter",
     "search": "Recherche",
