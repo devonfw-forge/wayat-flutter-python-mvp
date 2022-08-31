@@ -170,7 +170,6 @@ class ProfilePage extends StatelessWidget {
             onTap: () {
               //TODO: Implement Logout
               userSession.logOut();
-              //profileState.setCurrentPage(ProfilePages.profile);
             }),
         const SizedBox(height: 24),
         CustomCard(

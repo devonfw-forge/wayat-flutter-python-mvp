@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -9,17 +7,15 @@ import 'package:wayat/common/widgets/buttons/text_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ChangePhoneValidationPage extends StatelessWidget {
-  ChangePhoneValidationPage({Key? key}) : super(key: key);
-
   final SessionState userSession = GetIt.I.get<SessionState>();
-  String _errorPhoneMsg = "";
+
+  ChangePhoneValidationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _buildValidationAlertDialog(context);
   }
 
-  //TODO: Android AlertDialog of verify phone
   AlertDialog _buildValidationAlertDialog(BuildContext context) {
     return AlertDialog(
       //backgroundColor: Theme.of(context).primaryColor,
@@ -66,84 +62,80 @@ class ChangePhoneValidationPage extends StatelessWidget {
     );
   }
 
-  // _submit() async {
-  //   bool updated = await userSession.updatePhone();
-  //   if (updated) {
-  //     userSession.updatePhone();
-  //   } else {
-  //     _errorPhoneMsg = appLocalizations.phoneUpdateError;
-  //   }
-}
-
-Widget _getVerifyPhoneText(String text, String userPhone) {
-  return Text('$text $userPhone',
-      textAlign: TextAlign.center,
-      maxLines: 3,
-      style: const TextStyle(
-          fontWeight: FontWeight.w400,
-          height: 1.5,
-          color: Colors.black87,
-          fontSize: 18));
-}
-
-Widget _getVerifyResendCode(String text) {
-  return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-    Text(text,
-        textAlign: TextAlign.start,
-        style: const TextStyle(
-            fontWeight: FontWeight.w400, color: Colors.black87, fontSize: 16)),
-    TextButton(
-        child: Text(
-          appLocalizations.resendCode,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 16),
-        ),
-        onPressed: () {})
-  ]);
-}
-
-Widget _getVirifyTextfields(BuildContext context) {
-  return Row(
-    mainAxisSize: MainAxisSize.max,
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      _validationTextField(context, true),
-      _validationTextField(context, false),
-      _validationTextField(context, false),
-      _validationTextField(context, false),
-      _validationTextField(context, false),
-    ],
-  );
-}
-
-Widget _validationTextField(BuildContext context, bool autoFocus) {
-  return Container(
-    height: MediaQuery.of(context).size.shortestSide * 0.13,
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.grey),
-      borderRadius: BorderRadius.circular(8),
-      color: Colors.white,
-      shape: BoxShape.rectangle,
-    ),
-    child: AspectRatio(
-      aspectRatio: 1,
-      child: TextField(
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-        ],
-        autofocus: autoFocus,
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-        ),
+  Widget _getVerifyPhoneText(String text, String userPhone) {
+    return Text('$text $userPhone',
         textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        maxLines: 1,
-        onChanged: (value) {
-          if (value.length == 1) {
-            FocusScope.of(context).nextFocus();
-          }
-        },
+        maxLines: 3,
+        style: const TextStyle(
+            fontWeight: FontWeight.w400,
+            height: 1.5,
+            color: Colors.black87,
+            fontSize: 18));
+  }
+
+  Widget _getVerifyResendCode(String text) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      Text(text,
+          textAlign: TextAlign.start,
+          style: const TextStyle(
+              fontWeight: FontWeight.w400,
+              color: Colors.black87,
+              fontSize: 16)),
+      TextButton(
+          child: Text(
+            appLocalizations.resendCode,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+                fontSize: 16),
+          ),
+          onPressed: () {})
+    ]);
+  }
+
+  Widget _getVirifyTextfields(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _validationTextField(context, true),
+        _validationTextField(context, false),
+        _validationTextField(context, false),
+        _validationTextField(context, false),
+        _validationTextField(context, false),
+      ],
+    );
+  }
+
+  Widget _validationTextField(BuildContext context, bool autoFocus) {
+    return Container(
+      height: MediaQuery.of(context).size.shortestSide * 0.13,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
+        shape: BoxShape.rectangle,
       ),
-    ),
-  );
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: TextField(
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          ],
+          autofocus: autoFocus,
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+          ),
+          textAlign: TextAlign.center,
+          keyboardType: TextInputType.number,
+          maxLines: 1,
+          onChanged: (value) {
+            if (value.length == 1) {
+              FocusScope.of(context).nextFocus();
+            }
+          },
+        ),
+      ),
+    );
+  }
 }
