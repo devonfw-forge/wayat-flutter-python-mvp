@@ -12,10 +12,10 @@ class CustomInviteWayat extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
         width: double.infinity,
-        height: 80,
+        height: 75,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: ColorTheme.secondaryColor),
+            color: ColorTheme.secondaryColorDimmed),
         child: TextButton(
           onPressed: onCopyInvitation,
           child: Row(

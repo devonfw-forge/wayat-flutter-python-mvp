@@ -22,7 +22,6 @@ abstract class _SuggestionsController with Store {
   ContactService contactsService = ContactServiceImpl();
   late FriendsController friendsController;
   late RequestsController requestsController;
-  bool dataCopied = false;
 
   _SuggestionsController(this.friendsController, this.requestsController);
 

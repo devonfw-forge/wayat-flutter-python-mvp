@@ -244,14 +244,6 @@ class MockSuggestionsController extends _i1.Mock
       .noSuchMethod(Invocation.setter(#requestsController, _requestsController),
           returnValueForMissingStub: null);
   @override
-  bool get dataCopied =>
-      (super.noSuchMethod(Invocation.getter(#dataCopied), returnValue: false)
-          as bool);
-  @override
-  set dataCopied(bool? _dataCopied) =>
-      super.noSuchMethod(Invocation.setter(#dataCopied, _dataCopied),
-          returnValueForMissingStub: null);
-  @override
   String get textFilter =>
       (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')
           as String);
