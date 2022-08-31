@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
@@ -21,7 +22,8 @@ void main() async {
   final MockProfileState mockProfileState = MockProfileState();
   late MyUser user;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await dotenv.load(fileName: ".env");
     HttpOverrides.global = null;
     user = MyUser(
         id: "2",

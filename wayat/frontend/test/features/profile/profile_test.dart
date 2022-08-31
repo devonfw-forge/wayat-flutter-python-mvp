@@ -67,7 +67,7 @@ void main() async {
   group("Profile page has user profile data", () {
     testWidgets('Profile image', (tester) async {
       await tester.pumpWidget(_createApp(ProfilePage()));
-      expect(find.byType(ContactImage), findsOneWidget);
+      expect(find.byKey(const Key("profile_image")), findsOneWidget);
     });
 
     testWidgets('Username', (tester) async {

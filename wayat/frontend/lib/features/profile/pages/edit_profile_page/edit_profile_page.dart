@@ -223,10 +223,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
     setState(() {
-      debugPrint("DEBUG Setting state");
-      debugPrint("DEBUG set state ${currentSelectedImage != newImage}");
       currentSelectedImage = newImage;
-      debugPrint("DEBUG set state ${currentSelectedImage != newImage}");
     });
     Navigator.pop(context);
   }

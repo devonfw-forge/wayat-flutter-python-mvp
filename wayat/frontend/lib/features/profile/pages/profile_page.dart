@@ -5,7 +5,6 @@ import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/card.dart';
-import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
@@ -67,6 +66,7 @@ class ProfilePage extends StatelessWidget {
         Observer(builder: (context) {
           MyUser myUser = userSession.currentUser!;
           return Container(
+            key: const Key("profile_image"),
             width: 120.0,
             height: 120.0,
             decoration: BoxDecoration(

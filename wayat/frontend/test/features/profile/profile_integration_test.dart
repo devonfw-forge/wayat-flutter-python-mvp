@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -23,7 +24,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/services/profile/profile_service.dart';
-import 'package:wayat/services/profile/profile_service_impl.dart';
 
 import 'profile_integration_test.mocks.dart';
 
@@ -57,8 +57,9 @@ void main() async {
   final ProfileState profileState =
       ProfileState(profileService: mockProfileService);
 
-  setUpAll(() {
+  setUpAll(() async {
     HttpOverrides.global = null;
+    await dotenv.load(fileName: ".env");
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
     when(mockSessionState.finishLoggedIn).thenReturn(true);
@@ -166,9 +167,6 @@ void main() async {
         find.widgetWithText(TextField, user.name), "newUsername");
 
     expect(user.name, "newUsername");
-
-    // Emulate a tap on
-    await tester.tap(find.widgetWithText(TextButton, appLocalizations.save));
 
     // Emulate a tap on the save button
     await tester.tap(find.widgetWithText(TextButton, appLocalizations.save));
