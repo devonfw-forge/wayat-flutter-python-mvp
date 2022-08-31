@@ -34,6 +34,7 @@ import '../features/contacts/pages/sent_requests_page/sent_requests_page.dart'
     as _i14;
 import '../features/home/pages/home_page.dart' as _i7;
 import '../features/home/pages/home_wrapper.dart' as _i3;
+import '../features/map/controller/map_controller.dart' as _i30;
 import '../features/map/page/home_map_page.dart' as _i9;
 import '../features/notifications/page/notifications_page.dart' as _i11;
 import '../features/onboarding/pages/onboarding_page.dart' as _i5;
@@ -111,7 +112,8 @@ class AppRouter extends _i26.RootStackRouter {
       final args = routeData.argsAs<HomeMapRouteArgs>(
           orElse: () => const HomeMapRouteArgs());
       return _i26.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i9.HomeMapPage(key: args.key));
+          routeData: routeData,
+          child: _i9.HomeMapPage(controller: args.controller, key: args.key));
     },
     ContactsWrapper.name: (routeData) {
       final args = routeData.argsAs<ContactsWrapperArgs>(
@@ -474,21 +476,24 @@ class ContactProfileRouteArgs {
 /// generated route for
 /// [_i9.HomeMapPage]
 class HomeMapRoute extends _i26.PageRouteInfo<HomeMapRouteArgs> {
-  HomeMapRoute({_i27.Key? key})
+  HomeMapRoute({_i30.MapController? controller, _i27.Key? key})
       : super(HomeMapRoute.name,
-            path: 'home-map-page', args: HomeMapRouteArgs(key: key));
+            path: 'home-map-page',
+            args: HomeMapRouteArgs(controller: controller, key: key));
 
   static const String name = 'HomeMapRoute';
 }
 
 class HomeMapRouteArgs {
-  const HomeMapRouteArgs({this.key});
+  const HomeMapRouteArgs({this.controller, this.key});
+
+  final _i30.MapController? controller;
 
   final _i27.Key? key;
 
   @override
   String toString() {
-    return 'HomeMapRouteArgs{key: $key}';
+    return 'HomeMapRouteArgs{controller: $controller, key: $key}';
   }
 }
 

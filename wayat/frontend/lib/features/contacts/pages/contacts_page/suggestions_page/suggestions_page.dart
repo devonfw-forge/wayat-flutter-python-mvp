@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/buttons/invite_wayat.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
@@ -24,6 +25,12 @@ class SuggestionsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          CustomInviteWayat(onCopyInvitation: () { suggestionsController.copyInvitation().then((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(appLocalizations.invitationCopied)));
+          });
+          
+           }),
           header(),
           const SizedBox(
             height: 10,
@@ -47,8 +54,8 @@ class SuggestionsPage extends StatelessWidget {
             itemBuilder: (context, index) => ContactTile(
                   contact: contacts[index],
                   iconAction: IconButton(
-                    onPressed: () async => 
-                      await suggestionsController.sendRequest(contacts[index]),
+                    onPressed: () async => await suggestionsController
+                        .sendRequest(contacts[index]),
                     icon: const Icon(
                       Icons.add_circle_outline,
                       color: ColorTheme.primaryColor,

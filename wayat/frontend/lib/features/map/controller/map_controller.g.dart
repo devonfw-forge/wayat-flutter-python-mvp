@@ -41,19 +41,19 @@ mixin _$MapController on _MapController, Store {
     });
   }
 
-  late final _$markersAtom =
-      Atom(name: '_MapController.markers', context: context);
+  late final _$filteredMarkersAtom =
+      Atom(name: '_MapController.filteredMarkers', context: context);
 
   @override
-  ObservableSet<Marker> get markers {
-    _$markersAtom.reportRead();
-    return super.markers;
+  ObservableSet<Marker> get filteredMarkers {
+    _$filteredMarkersAtom.reportRead();
+    return super.filteredMarkers;
   }
 
   @override
-  set markers(ObservableSet<Marker> value) {
-    _$markersAtom.reportWrite(value, super.markers, () {
-      super.markers = value;
+  set filteredMarkers(ObservableSet<Marker> value) {
+    _$filteredMarkersAtom.reportWrite(value, super.filteredMarkers, () {
+      super.filteredMarkers = value;
     });
   }
 
@@ -94,11 +94,33 @@ mixin _$MapController on _MapController, Store {
   }
 
   @override
+  void setSearchBarText(String newText) {
+    final _$actionInfo = _$_MapControllerActionController.startAction(
+        name: '_MapController.setSearchBarText');
+    try {
+      return super.setSearchBarText(newText);
+    } finally {
+      _$_MapControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void filterMarkers() {
+    final _$actionInfo = _$_MapControllerActionController.startAction(
+        name: '_MapController.filterMarkers');
+    try {
+      return super.filterMarkers();
+    } finally {
+      _$_MapControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 sharingLocation: ${sharingLocation},
 currentLocation: ${currentLocation},
-markers: ${markers}
+filteredMarkers: ${filteredMarkers}
     ''';
   }
 }

@@ -20,14 +20,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import 'contact_profile_test.mocks.dart';
 
-@GenerateMocks([
-  UserStatusState,
-  ContactProfileController,
-  HomeState
-], customMocks: [
-  MockSpec<UserStatusState>(
-      as: #MockSessionStateRelaxed, onMissingStub: OnMissingStub.returnDefault)
-])
+@GenerateMocks([UserStatusState, ContactProfileController, HomeState])
 void main() async {
   // Constants for the test contacts creation
   const String contactName = "Contact Name";
