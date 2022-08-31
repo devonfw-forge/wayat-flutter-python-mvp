@@ -3,11 +3,11 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io' as io;
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -89,10 +89,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget _buildEditProfileImage() {
     return Stack(alignment: Alignment.bottomRight, children: <Widget>[
-      ContactImage(
-        imageUrl: user.imageUrl,
-        radius: 50,
-        lineWidth: 6,
+      Container(
+        width: 120.0,
+        height: 120.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: (currentSelectedImage != null)
+                ? FileImage(io.File(currentSelectedImage!.path))
+                    as ImageProvider
+                : NetworkImage(
+                    GetIt.I.get<SessionState>().currentUser!.imageUrl),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(100.0)),
+          border: Border.all(
+            color: Colors.black87,
+            width: 7.0,
+          ),
+        ),
       ),
       InkWell(
         onTap: () {

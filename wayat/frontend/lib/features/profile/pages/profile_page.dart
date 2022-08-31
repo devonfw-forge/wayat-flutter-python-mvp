@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
 
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final LocationState locationState = GetIt.I.get<LocationState>();
-  final MyUser user = GetIt.I.get<SessionState>().currentUser!;
+  final SessionState userSession = GetIt.I.get<SessionState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +32,10 @@ class ProfilePage extends StatelessWidget {
                   fontSize: 16)),
         ),
         const SizedBox(height: 16),
-        ContactImage(
-          imageUrl: user.imageUrl,
-          radius: 50,
-          lineWidth: 6,
-        ),
+        _buildProfileImage(),
         const SizedBox(height: 16),
         Observer(builder: (_) {
-          String name = user.name;
+          String name = userSession.currentUser!.name;
           return Text(
             name,
             textAlign: TextAlign.center,
@@ -60,6 +56,32 @@ class ProfilePage extends StatelessWidget {
         //TODO: Implement the Account part
         // _buildAccountPart(),
         // const SizedBox(height: 42),
+      ],
+    );
+  }
+
+  Widget _buildProfileImage() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Observer(builder: (context) {
+          MyUser myUser = userSession.currentUser!;
+          return Container(
+            width: 120.0,
+            height: 120.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(myUser.imageUrl),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(100.0)),
+              border: Border.all(
+                color: Colors.black87,
+                width: 7.0,
+              ),
+            ),
+          );
+        }),
       ],
     );
   }
