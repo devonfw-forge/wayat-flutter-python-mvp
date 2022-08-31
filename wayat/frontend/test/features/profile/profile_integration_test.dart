@@ -125,8 +125,7 @@ void main() async {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('tap on the floating action button, verify counter',
-      (tester) async {
+  testWidgets('Integration test for change username', (tester) async {
     await navigateToProfilePage(tester);
 
     // Check the profile page is displayed
