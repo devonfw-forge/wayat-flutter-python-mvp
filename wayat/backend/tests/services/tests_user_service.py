@@ -7,6 +7,7 @@ from unittest.mock import MagicMock, patch
 from requests import RequestException
 
 from app.business.wayat_management.services.user import UserService
+from app.common.exceptions.http import NotFoundException
 from app.common.exceptions.runtime import ResourceNotFoundException
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity, GroupInfo
@@ -402,6 +403,48 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         self.mock_user_repo.create_group.assert_called_with(user, group_name, members, picture)
         assert res_id == group_info.id
+
+    async def test_get_user_groups_should_return_ok(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
+        group_info = GroupInfo(
+            id=1,
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+        self.mock_user_repo.get_user_groups.return_value = [group_info]
+
+        # Call under test and asserts
+        groups = await self.user_service.get_user_groups(user)
+
+        self.mock_user_repo.get_user_groups.assert_called_with(user)
+        assert groups == [self.user_service.map_group_to_dto(group_info)]
+
+    async def test_get_user_group_should_return_ok_or_not_found(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
+        group_info = GroupInfo(
+            id="1",
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+        self.mock_user_repo.get_user_groups.return_value = [group_info]
+
+        # Call under test and asserts
+        group = await self.user_service.get_user_group(user, group_id="1")
+
+        self.mock_user_repo.get_user_groups.assert_called_with(user)
+        assert group == self.user_service.map_group_to_dto(group_info)
+
+        # Call Exception under test and asserts
+        exception = None
+        try:
+            await self.user_service.get_user_group(user, group_id="Invalid")
+        except NotFoundException as e:
+            exception = e
+
+        self.mock_user_repo.get_user_groups.assert_called_with(user)
+        assert exception is not None
 
 
 if __name__ == "__main__":

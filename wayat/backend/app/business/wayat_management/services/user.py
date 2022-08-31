@@ -97,14 +97,14 @@ class UserService:
         if new_contacts:
             await self._user_repository.create_friend_request(uid, list(new_contacts))
 
-    async def get_user_contacts(self, uid):
+    async def get_user_contacts(self, uid: str):
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
 
-    async def get_user_groups(self, uid) -> list[GroupDTO]:
+    async def get_user_groups(self, uid: str) -> list[GroupDTO]:
         groups = await self._user_repository.get_user_groups(uid)
         return list(map(self.map_group_to_dto, groups))
 
-    async def get_user_group(self, uid, group_id) -> GroupDTO:
+    async def get_user_group(self, uid: str, group_id: str) -> GroupDTO:
         user_groups = await self._user_repository.get_user_groups(uid)
         found_group = None
         for g in user_groups:
