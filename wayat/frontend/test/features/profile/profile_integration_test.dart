@@ -166,10 +166,10 @@ void main() async {
     await tester.enterText(
         find.widgetWithText(TextField, user.name), "newUsername");
 
-    expect(user.name, "newUsername");
-
     // Emulate a tap on the save button
     await tester.tap(find.widgetWithText(TextButton, appLocalizations.save));
+
+    expect(user.name, "newUsername");
 
     // Trigger a frame.
     await tester.pumpAndSettle();
