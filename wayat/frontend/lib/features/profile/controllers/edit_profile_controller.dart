@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/services/profile/profile_service_impl.dart';
 
@@ -10,18 +9,15 @@ class EditProfileController {
 
   ProfileServiceImpl profileService = ProfileServiceImpl();
 
-  EditProfileController();
-
   void onPressedBackButton() {
     profileState.setCurrentPage(ProfileCurrentPages.profile);
   }
 
-  Future<void> onPressedSaveButton(XFile? currentSelectedImage) async {
+  Future<void> onPressedSaveButton(
+      String? name, XFile? currentSelectedImage) async {
     onPressedBackButton();
 
-    String name = GetIt.I.get<SessionState>().currentUser!.name;
-
-    if (name != "") {
+    if (name != null ? name.replaceAll(" ", "").isNotEmpty : false) {
       await profileState.updateCurrentUserName(name);
     }
 

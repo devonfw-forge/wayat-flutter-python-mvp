@@ -22,6 +22,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final EditProfileController controller = EditProfileController();
 
   XFile? currentSelectedImage;
+  String? name;
   bool isVisible = false;
 
   TextStyle _textStyle(Color color, double size) =>
@@ -74,7 +75,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           TextButton(
             onPressed: () async {
-              await controller.onPressedSaveButton(currentSelectedImage);
+              await controller.onPressedSaveButton(name, currentSelectedImage);
             },
             child: Text(
               appLocalizations.save,
@@ -156,7 +157,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     hintText: user.name,
                     hintStyle: _textStyle(Colors.black38, 18)),
                 onChanged: ((text) {
-                  user.name = text;
+                  name = text;
                 })),
           )),
         ]),
