@@ -194,3 +194,9 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         }
         await self.update(document_id=user_id, data=update)
         return new_group
+
+    async def update_user_groups(self, user_id: str, user_groups: list[GroupInfo]):
+        update = {
+            "groups": [g.dict() for g in user_groups]
+        }
+        await self.update(document_id=user_id, data=update)

@@ -1,13 +1,13 @@
 import asyncio
 import logging
 import mimetypes
-from typing import BinaryIO
+from typing import BinaryIO, Optional
 
 import requests
 from fastapi import Depends
 from requests import RequestException, Response
 
-from app.business.wayat_management.models.group import GroupDTO
+from app.business.wayat_management.models.group import GroupDTO, UsersListType
 from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
@@ -113,8 +113,7 @@ class UserService:
                 break
         if found_group is None:
             raise NotFoundException("Group Not Found")
-        else:
-            return self.map_group_to_dto(found_group)
+        return self.map_group_to_dto(found_group)
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
         await self._file_repository.delete_user_images(uid)
@@ -214,3 +213,20 @@ class UserService:
         """
         group: GroupInfo = await self._user_repository.create_group(user, name, members, self.DEFAULT_GROUP_PICTURE)
         return group.id
+
+    async def update_group(self, user: str, id_group: str, name: Optional[str], members: Optional[UsersListType]):
+        """
+        Updates a group info
+        """
+        user_groups = await self._user_repository.get_user_groups(user)
+        try:
+            group = next(g for g in user_groups if g.id == id_group)
+        except StopIteration:
+            raise NotFoundException("Group Not Found")
+
+        if name is not None:
+            group.name = name
+        if members is not None:
+            group.contacts = members
+
+        await self._user_repository.update_user_groups(user, user_groups)
