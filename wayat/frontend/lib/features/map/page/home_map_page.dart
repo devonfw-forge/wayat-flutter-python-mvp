@@ -82,6 +82,7 @@ class HomeMapPage extends StatelessWidget {
         fieldViewBuilder:
             (context, textEditingController, focusNode, onFieldSubmitted) {
           return SearchBar(
+            key: const Key("MapSearchBar"),
             controller: textEditingController,
             focusNode: focusNode,
             onChanged: (newText) => controller.setSearchBarText(newText),
