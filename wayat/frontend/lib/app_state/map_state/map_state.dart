@@ -10,14 +10,17 @@ part 'map_state.g.dart';
 class MapState = _MapState with _$MapState;
 
 abstract class _MapState with Store {
-  MapStatusService mapStatusService = MapStatusService();
+  final MapStatusService mapStatusService;
 
   Timer? timer;
 
-  final Duration durationInterval = const Duration(seconds: 60);
-  
+  Duration durationInterval = const Duration(seconds: 60);
+
   @observable
   bool mapOpened = true;
+
+  _MapState({MapStatusService? mapStatusService})
+      : mapStatusService = mapStatusService ?? MapStatusService();
 
   @action
   Future<void> openMap() async {
