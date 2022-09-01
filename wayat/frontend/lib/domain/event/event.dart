@@ -95,7 +95,7 @@ class Event {
 
   @override
   String toString() {
-    return 'EventModel(idEvent: $eventID, photoUrl: $eventPhotoUrl, description: $eventDescription, eventName: $eventName, eventLocation: $eventLocation, eventStartDate: $eventStartDate, eventEndDate: $eventEndDate, eventStartHour: $eventStartHour, eventEndHour: $eventEndHour, createdBy: $eventCreatedBy, idUser: $eventUserID)';
+    return 'Event(idEvent: $eventID, photoUrl: $eventPhotoUrl, description: $eventDescription, eventName: $eventName, eventLocation: $eventLocation, eventStartDate: $eventStartDate, eventEndDate: $eventEndDate, eventStartHour: $eventStartHour, eventEndHour: $eventEndHour, createdBy: $eventCreatedBy, idUser: $eventUserID)';
   }
 
   @override
