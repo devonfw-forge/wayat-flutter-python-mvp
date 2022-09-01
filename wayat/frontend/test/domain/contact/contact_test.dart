@@ -51,7 +51,7 @@ void main() {
 
   test("Checking string conversion", () {
     expect(contact.toString(),
-        "Contact(id: 1, available: true, name: test_name, email: test@mail.com, imageUrl: url://image)");
+        "Contact(id: 1, available: true, name: test_name, email: test@mail.com, imageUrl: url://image, phone: 600600600)");
   });
 
   test("Checking toMap conversion", () {
