@@ -74,11 +74,16 @@ abstract class _SuggestionsController with Store {
   }
 
   Future copyInvitation() async {
-   await Clipboard.setData(ClipboardData(
-    text: Platform.isAndroid ? appLocalizations.invitationTextAndroid : appLocalizations.invitationTextIOS
-  ));
-      //appLocalizations.invitationTextAndroid
-      
-   
+    await Clipboard.setData(ClipboardData(text: _platformText()));
+  }
+
+  String _platformText() {
+    if (Platform.isAndroid) {
+      return appLocalizations.invitationTextAndroid;
+    }
+    if (Platform.isIOS) {
+      return appLocalizations.invitationTextIOS;
+    }
+    return '';
   }
 }
