@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/common/theme/text_style.dart';
 import 'package:wayat/common/widgets/switch.dart';
-import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class PreferencesPage extends StatelessWidget {
@@ -60,9 +59,7 @@ class PreferencesPage extends StatelessWidget {
             child: Row(
               children: [
                 InkWell(
-                    onTap: () async {
-                      profileState.setCurrentPage(ProfilePages.profile);
-                    },
+                    onTap: () async {},
                     child: const Icon(Icons.arrow_back,
                         color: Colors.black87, size: 25)),
                 Padding(

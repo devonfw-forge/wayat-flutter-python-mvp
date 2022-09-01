@@ -1,5 +1,7 @@
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/api_contract/api_contract.dart';
 import 'package:wayat/services/profile/profile_service.dart';
 import 'package:wayat/services/request/rest_service.dart';
@@ -28,8 +30,21 @@ class ProfileServiceImpl extends RESTService implements ProfileService {
     return done;
   }
 
-  Future<bool> deleteCurrentUser(String id) async {
+  @override
+  Future<bool> deleteCurrentUser() async {
     bool done = (await super.sendDelRequest(APIContract.userProfile));
+    return done;
+  }
+
+  @override
+  Future<dynamic> logOut() async {
+    final SessionState userSession = GetIt.I.get<SessionState>();
+
+    Future done = userSession.logOut();
+    userSession.currentUser = null;
+    userSession.finishLoggedIn = false;
+    userSession.googleSignedIn = false;
+    userSession.hasDoneOnboarding = false;
     return done;
   }
 }

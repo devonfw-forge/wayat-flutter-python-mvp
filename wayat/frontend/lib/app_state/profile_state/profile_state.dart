@@ -52,7 +52,12 @@ abstract class _ProfileState with Store {
   }
 
   @action
-  Future deleteCurrentUser(String id) async {
-    _profileService.deleteCurrentUser(id);
+  Future deleteCurrentUser() async {
+    _profileService.deleteCurrentUser();
+  }
+
+  @action
+  Future<dynamic> logOut() async {
+    _profileService.logOut();
   }
 }

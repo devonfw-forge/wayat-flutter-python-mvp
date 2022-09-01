@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -9,54 +7,15 @@ import 'package:wayat/common/widgets/buttons/text_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ChangePhoneValidationPage extends StatelessWidget {
-  ChangePhoneValidationPage({Key? key}) : super(key: key);
-
   final SessionState userSession = GetIt.I.get<SessionState>();
+
+  ChangePhoneValidationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // if (defaultTargetPlatform == TargetPlatform.iOS) {
-    //   return _buildValidationiOSAlertDialog(context);
-    // }
     return _buildValidationAlertDialog(context);
   }
 
-  //TODO: iOS AlertDialog of verify phone
-  CupertinoAlertDialog _buildValidationiOSAlertDialog(BuildContext context) {
-    return CupertinoAlertDialog(
-      title: Text(appLocalizations.verifyPhoneTitle),
-      content: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.32,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getVerifyPhoneText(appLocalizations.verifyPhoneText,
-                  userSession.currentUser!.phone),
-              const SizedBox(height: 32),
-              _getVirifyTextfields(context),
-              const SizedBox(height: 32),
-              _getVerifyResendCode(appLocalizations.didnotReceiveCode),
-            ]),
-      ),
-      actions: [
-        Column(
-          children: [
-            CustomFilledButton(
-                text: appLocalizations.verify, enabled: true, onPressed: () {}),
-            CustomTextButton(
-                text: appLocalizations.cancel,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-          ],
-        ),
-      ],
-    );
-  }
-
-  //TODO: Android AlertDialog of verify phone
   AlertDialog _buildValidationAlertDialog(BuildContext context) {
     return AlertDialog(
       //backgroundColor: Theme.of(context).primaryColor,
@@ -84,7 +43,11 @@ class ChangePhoneValidationPage extends StatelessWidget {
         Column(
           children: [
             CustomFilledButton(
-                text: appLocalizations.verify, enabled: true, onPressed: () {}),
+                text: appLocalizations.verify,
+                enabled: true,
+                onPressed: () {
+                  // _submit();
+                }),
             CustomTextButton(
                 text: appLocalizations.cancel,
                 onPressed: () {
