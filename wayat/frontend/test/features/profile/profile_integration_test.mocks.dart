@@ -147,6 +147,14 @@ class MockProfileService extends _i1.Mock implements _i14.ProfileService {
   _i15.Future<bool> updateProfileName(String? name) =>
       (super.noSuchMethod(Invocation.method(#updateProfileName, [name]),
           returnValue: _i15.Future<bool>.value(false)) as _i15.Future<bool>);
+  @override
+  _i15.Future<bool> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i15.Future<bool>.value(false)) as _i15.Future<bool>);
+  @override
+  _i15.Future<dynamic> logOut() =>
+      (super.noSuchMethod(Invocation.method(#logOut, []),
+          returnValue: _i15.Future<dynamic>.value()) as _i15.Future<dynamic>);
 }
 
 /// A class which mocks [ContactsPageController].
@@ -662,6 +670,10 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i15.Future<void>.value(),
               returnValueForMissingStub: _i15.Future<void>.value())
           as _i15.Future<void>);
+  @override
+  void addContact(_i21.Contact? contact) =>
+      super.noSuchMethod(Invocation.method(#addContact, [contact]),
+          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [RequestsController].

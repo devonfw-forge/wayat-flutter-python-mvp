@@ -82,6 +82,14 @@ mixin _$ProfileState on _ProfileState, Store {
     return _$deleteCurrentUserAsyncAction.run(() => super.deleteCurrentUser());
   }
 
+  late final _$logOutAsyncAction =
+      AsyncAction('_ProfileState.logOut', context: context);
+
+  @override
+  Future<dynamic> logOut() {
+    return _$logOutAsyncAction.run(() => super.logOut());
+  }
+
   late final _$_ProfileStateActionController =
       ActionController(name: '_ProfileState', context: context);
 

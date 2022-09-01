@@ -585,6 +585,14 @@ class MockProfileState extends _i1.Mock implements _i23.ProfileState {
   _i17.Future<dynamic> updateCurrentUserName(String? newName) =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUserName, [newName]),
           returnValue: _i17.Future<dynamic>.value()) as _i17.Future<dynamic>);
+  @override
+  _i17.Future<dynamic> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i17.Future<dynamic>.value()) as _i17.Future<dynamic>);
+  @override
+  _i17.Future<dynamic> logOut() =>
+      (super.noSuchMethod(Invocation.method(#logOut, []),
+          returnValue: _i17.Future<dynamic>.value()) as _i17.Future<dynamic>);
 }
 
 /// A class which mocks [MapState].
@@ -707,6 +715,10 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i17.Future<void>.value(),
               returnValueForMissingStub: _i17.Future<void>.value())
           as _i17.Future<void>);
+  @override
+  void addContact(_i19.Contact? contact) =>
+      super.noSuchMethod(Invocation.method(#addContact, [contact]),
+          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [RequestsController].

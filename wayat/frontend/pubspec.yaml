@@ -26,7 +26,7 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   # Routing and navigation
-  auto_route: ^4.2.0
+  auto_route: ^5.0.1
   path: ^1.8.1
   # Location services
   location: ^4.4.0
@@ -47,7 +47,7 @@ dependencies:
   # Decoding Token ID
   jwt_decode: ^0.3.1
   # Phone validation
-  phone_number: ^0.12.0+2
+  phone_number: ^1.0.0
   # Phone textfield with countries
   intl_phone_field: ^3.1.0
   json_serializable: ^6.3.1
@@ -72,7 +72,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   # AutoRoute dependencies for code generation
   analyzer: ^4.2.0 
-  auto_route_generator: ^4.2.0
+  auto_route_generator: ^5.0.2
   # Process that generates code for AutoRoute and MobX
   build_runner: ^2.1.5
   # MobX code generator
