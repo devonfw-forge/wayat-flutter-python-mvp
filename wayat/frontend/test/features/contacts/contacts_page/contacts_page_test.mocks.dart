@@ -656,13 +656,11 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
       super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
           returnValueForMissingStub: null);
   @override
-  _i6.ObservableList<_i19.Contact> get allContacts =>
+  List<_i19.Contact> get allContacts =>
       (super.noSuchMethod(Invocation.getter(#allContacts),
-              returnValue: _FakeObservableList_13<_i19.Contact>(
-                  this, Invocation.getter(#allContacts)))
-          as _i6.ObservableList<_i19.Contact>);
+          returnValue: <_i19.Contact>[]) as List<_i19.Contact>);
   @override
-  set allContacts(_i6.ObservableList<_i19.Contact>? _allContacts) =>
+  set allContacts(List<_i19.Contact>? _allContacts) =>
       super.noSuchMethod(Invocation.setter(#allContacts, _allContacts),
           returnValueForMissingStub: null);
   @override

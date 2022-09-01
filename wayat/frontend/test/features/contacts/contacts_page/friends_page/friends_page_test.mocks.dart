@@ -3,20 +3,23 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i9;
+import 'dart:async' as _i10;
 
 import 'package:flutter/cupertino.dart' as _i5;
+import 'package:http/http.dart' as _i7;
 import 'package:mobx/mobx.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/domain/contact/contact.dart' as _i8;
+import 'package:wayat/app_state/home_state/home_state.dart' as _i11;
+import 'package:wayat/domain/contact/contact.dart' as _i9;
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart'
-    as _i7;
+    as _i8;
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart'
     as _i3;
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart'
     as _i2;
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
     as _i4;
+import 'package:wayat/services/contact/contact_service.dart' as _i12;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -75,11 +78,22 @@ class _FakeObservableList_7<T> extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
+class _FakeResponse_8 extends _i1.SmartFake implements _i7.Response {
+  _FakeResponse_8(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_9 extends _i1.SmartFake
+    implements _i7.StreamedResponse {
+  _FakeStreamedResponse_9(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [ContactsPageController].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockContactsPageController extends _i1.Mock
-    implements _i7.ContactsPageController {
+    implements _i8.ContactsPageController {
   MockContactsPageController() {
     _i1.throwOnMissingStub(this);
   }
@@ -214,33 +228,31 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
       super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
           returnValueForMissingStub: null);
   @override
-  _i6.ObservableList<_i8.Contact> get allContacts =>
+  List<_i9.Contact> get allContacts =>
       (super.noSuchMethod(Invocation.getter(#allContacts),
-              returnValue: _FakeObservableList_7<_i8.Contact>(
-                  this, Invocation.getter(#allContacts)))
-          as _i6.ObservableList<_i8.Contact>);
+          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
   @override
-  set allContacts(_i6.ObservableList<_i8.Contact>? _allContacts) =>
+  set allContacts(List<_i9.Contact>? _allContacts) =>
       super.noSuchMethod(Invocation.setter(#allContacts, _allContacts),
           returnValueForMissingStub: null);
   @override
-  _i6.ObservableList<_i8.Contact> get filteredContacts =>
+  _i6.ObservableList<_i9.Contact> get filteredContacts =>
       (super.noSuchMethod(Invocation.getter(#filteredContacts),
-              returnValue: _FakeObservableList_7<_i8.Contact>(
+              returnValue: _FakeObservableList_7<_i9.Contact>(
                   this, Invocation.getter(#filteredContacts)))
-          as _i6.ObservableList<_i8.Contact>);
+          as _i6.ObservableList<_i9.Contact>);
   @override
-  set filteredContacts(_i6.ObservableList<_i8.Contact>? value) =>
+  set filteredContacts(_i6.ObservableList<_i9.Contact>? value) =>
       super.noSuchMethod(Invocation.setter(#filteredContacts, value),
           returnValueForMissingStub: null);
   @override
-  List<_i8.Contact> get availableContacts =>
+  List<_i9.Contact> get availableContacts =>
       (super.noSuchMethod(Invocation.getter(#availableContacts),
-          returnValue: <_i8.Contact>[]) as List<_i8.Contact>);
+          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
   @override
-  List<_i8.Contact> get unavailableContacts =>
+  List<_i9.Contact> get unavailableContacts =>
       (super.noSuchMethod(Invocation.getter(#unavailableContacts),
-          returnValue: <_i8.Contact>[]) as List<_i8.Contact>);
+          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
   @override
   _i6.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
@@ -248,17 +260,127 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
-  _i9.Future<void> updateContacts() => (super.noSuchMethod(
-      Invocation.method(#updateContacts, []),
-      returnValue: _i9.Future<void>.value(),
-      returnValueForMissingStub: _i9.Future<void>.value()) as _i9.Future<void>);
+  _i10.Future<void> updateContacts() =>
+      (super.noSuchMethod(Invocation.method(#updateContacts, []),
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
   @override
   void setTextFilter(String? text) =>
       super.noSuchMethod(Invocation.method(#setTextFilter, [text]),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<void> removeContact(_i8.Contact? contact) => (super.noSuchMethod(
-      Invocation.method(#removeContact, [contact]),
-      returnValue: _i9.Future<void>.value(),
-      returnValueForMissingStub: _i9.Future<void>.value()) as _i9.Future<void>);
+  _i10.Future<void> removeContact(_i9.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
+}
+
+/// A class which mocks [HomeState].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockHomeState extends _i1.Mock implements _i11.HomeState {
+  MockHomeState() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  set selectedContact(_i9.Contact? value) =>
+      super.noSuchMethod(Invocation.setter(#selectedContact, value),
+          returnValueForMissingStub: null);
+  @override
+  String get navigationSourceContactProfile =>
+      (super.noSuchMethod(Invocation.getter(#navigationSourceContactProfile),
+          returnValue: '') as String);
+  @override
+  set navigationSourceContactProfile(String? _navigationSourceContactProfile) =>
+      super.noSuchMethod(
+          Invocation.setter(
+              #navigationSourceContactProfile, _navigationSourceContactProfile),
+          returnValueForMissingStub: null);
+  @override
+  _i6.ReactiveContext get context =>
+      (super.noSuchMethod(Invocation.getter(#context),
+              returnValue:
+                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
+          as _i6.ReactiveContext);
+  @override
+  void setSelectedContact(_i9.Contact? newContact, String? navigationSource) =>
+      super.noSuchMethod(
+          Invocation.method(
+              #setSelectedContact, [newContact, navigationSource]),
+          returnValueForMissingStub: null);
+}
+
+/// A class which mocks [ContactService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockContactService extends _i1.Mock implements _i12.ContactService {
+  MockContactService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get baseUrl =>
+      (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
+          as String);
+  @override
+  set baseUrl(String? _baseUrl) =>
+      super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
+          returnValueForMissingStub: null);
+  @override
+  _i10.Future<List<_i9.Contact>> getAll() => (super.noSuchMethod(
+          Invocation.method(#getAll, []),
+          returnValue: _i10.Future<List<_i9.Contact>>.value(<_i9.Contact>[]))
+      as _i10.Future<List<_i9.Contact>>);
+  @override
+  void sendRequests(List<_i9.Contact>? contacts) =>
+      super.noSuchMethod(Invocation.method(#sendRequests, [contacts]),
+          returnValueForMissingStub: null);
+  @override
+  _i10.Future<List<_i9.Contact>> getFilteredContacts(
+          List<String>? importedContacts) =>
+      (super.noSuchMethod(
+              Invocation.method(#getFilteredContacts, [importedContacts]),
+              returnValue:
+                  _i10.Future<List<_i9.Contact>>.value(<_i9.Contact>[]))
+          as _i10.Future<List<_i9.Contact>>);
+  @override
+  _i10.Future<bool> removeContact(_i9.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
+  @override
+  _i10.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
+      (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
+              returnValue:
+                  _i10.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
+          as _i10.Future<Map<String, dynamic>>);
+  @override
+  _i10.Future<_i7.Response> sendPostRequest(
+          String? subPath, Map<String, dynamic>? body) =>
+      (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
+              returnValue: _i10.Future<_i7.Response>.value(_FakeResponse_8(
+                  this, Invocation.method(#sendPostRequest, [subPath, body]))))
+          as _i10.Future<_i7.Response>);
+  @override
+  _i10.Future<_i7.StreamedResponse> sendPostImageRequest(
+          String? subPath, String? filePath, String? type) =>
+      (super.noSuchMethod(
+              Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
+              returnValue: _i10.Future<_i7.StreamedResponse>.value(
+                  _FakeStreamedResponse_9(
+                      this,
+                      Invocation.method(
+                          #sendPostImageRequest, [subPath, filePath, type]))))
+          as _i10.Future<_i7.StreamedResponse>);
+  @override
+  _i10.Future<bool> sendPutRequest(
+          String? subPath, Map<String, dynamic>? body) =>
+      (super.noSuchMethod(Invocation.method(#sendPutRequest, [subPath, body]),
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
+  @override
+  _i10.Future<bool> sendDelRequest(String? subPath) =>
+      (super.noSuchMethod(Invocation.method(#sendDelRequest, [subPath]),
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
 }

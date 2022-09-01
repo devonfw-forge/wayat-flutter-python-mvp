@@ -108,16 +108,17 @@ void main() async {
 
   testWidgets("The search bar appears correctly", (tester) async {
     await navigateToContactsPage(tester);
+    const Key searchBarKey = Key("ContactsSearchBar");
 
-    expect(find.byType(SearchBar), findsOneWidget);
+    expect(find.byKey(searchBarKey), findsOneWidget);
     expect(
         find.descendant(
-            of: find.byType(SearchBar),
+            of: find.byKey(searchBarKey),
             matching: find.text(appLocalizations.search)),
         findsOneWidget);
     expect(
         find.descendant(
-            of: find.byType(SearchBar), matching: find.byIcon(Icons.search)),
+            of: find.byKey(searchBarKey), matching: find.byIcon(Icons.search)),
         findsOneWidget);
   });
 
@@ -145,9 +146,10 @@ void main() async {
 
   testWidgets("The search bar text changes the controller text",
       (tester) async {
+    const Key searchBarKey = Key("ContactsSearchBar");
     when(mockContactsPageController.setSearchBarText("Input")).thenReturn(null);
     await navigateToContactsPage(tester);
-    await tester.enterText(find.byType(SearchBar), "Input");
+    await tester.enterText(find.byKey(searchBarKey), "Input");
     verify(mockContactsPageController.setSearchBarText("Input")).called(1);
   });
 }
