@@ -3,7 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/features/profile/selector/profile_pages.dart';
+import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
@@ -16,10 +17,12 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final MyUser user = GetIt.I.get<SessionState>().currentUser!;
   final ProfileState profileState = GetIt.I.get<ProfileState>();
+  final EditProfileController controller = EditProfileController();
 
   XFile? currentSelectedImage;
-  String name = GetIt.I.get<SessionState>().currentUser!.name;
+  String? name;
   bool isVisible = false;
 
   TextStyle _textStyle(Color color, double size) =>
@@ -60,7 +63,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   constraints: const BoxConstraints(),
                   iconSize: 25,
                   onPressed: () {
-                    _onPressedBackButton();
+                    controller.onPressedBackButton();
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
@@ -72,7 +75,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           TextButton(
             onPressed: () async {
-              await _onPressedSaveButton();
+              await controller.onPressedSaveButton(name, currentSelectedImage);
             },
             child: Text(
               appLocalizations.save,
@@ -83,22 +86,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ],
       ),
     );
-  }
-
-  void _onPressedBackButton() {
-    profileState.setCurrentPage(ProfilePages.profile);
-  }
-
-  Future<void> _onPressedSaveButton() async {
-    _onPressedBackButton();
-
-    if (name != "") {
-      await profileState.updateCurrentUserName(name);
-    }
-
-    if (currentSelectedImage != null) {
-      await profileState.updateUserImage(currentSelectedImage!);
-    }
   }
 
   Widget _buildEditProfileImage() {
@@ -167,7 +154,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     fontSize: 18),
                 decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: name,
+                    hintText: user.name,
                     hintStyle: _textStyle(Colors.black38, 18)),
                 onChanged: ((text) {
                   name = text;
@@ -176,27 +163,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ]),
       );
 
-  Row _changePhone() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              appLocalizations.changePhone,
-              style: _textStyle(Colors.black87, 16),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: InkWell(
-                onTap: () {
-                  //AutoRoute to change phone page
-                },
-                child: const Icon(Icons.arrow_forward,
-                    color: Colors.black87, size: 24)),
-          )
-        ],
-      );
+  // Row _changePhone() => Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 16),
+  //           child: Text(
+  //             appLocalizations.changePhone,
+  //             style: _textStyle(Colors.black87, 16),
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 16),
+  //           child: InkWell(
+  //               onTap: () {
+  //                 //AutoRoute to change phone page
+  //               },
+  //               child: const Icon(Icons.arrow_forward,
+  //                   color: Colors.black87, size: 24)),
+  //         )
+  //       ],
+  //     );
 
   Widget _getImageFromCameraOrGallary() {
     return Container(

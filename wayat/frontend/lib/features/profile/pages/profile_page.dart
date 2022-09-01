@@ -7,7 +7,7 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/features/profile/selector/profile_pages.dart';
+import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 16),
         _buildProfileImage(),
         const SizedBox(height: 16),
-        Observer(builder: (context) {
+        Observer(builder: (_) {
           String name = userSession.currentUser!.name;
           return Text(
             name,
@@ -59,7 +59,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  //Build UI for Profile Circle Image
   Widget _buildProfileImage() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -67,6 +66,7 @@ class ProfilePage extends StatelessWidget {
         Observer(builder: (context) {
           MyUser myUser = userSession.currentUser!;
           return Container(
+            key: const Key("profile_image"),
             width: 120.0,
             height: 120.0,
             decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.editProfile,
             onTap: () {
-              profileState.setCurrentPage(ProfilePages.editProfile);
+              profileState.setCurrentPage(ProfileCurrentPages.editProfile);
             }),
         const SizedBox(height: 24),
 
@@ -132,66 +132,66 @@ class ProfilePage extends StatelessWidget {
   //Build UI for "Information" part
   /// - "FAQS" custom button
   /// - "Privacy" custom button
-  Widget _buildInformationPart() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(appLocalizations.information,
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16)),
-        ),
-        const SizedBox(height: 24),
-        CustomCard(
-            text: appLocalizations.faqs,
-            onTap: () {
-              profileState.setCurrentPage(ProfilePages.faqs);
-            }),
-        const SizedBox(height: 24),
-        CustomCard(
-            text: appLocalizations.privacy,
-            onTap: () {
-              profileState.setCurrentPage(ProfilePages.privacy);
-            }),
-      ],
-    );
-  }
+  // Widget _buildInformationPart() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 16),
+  //         child: Text(appLocalizations.information,
+  //             textAlign: TextAlign.left,
+  //             style: const TextStyle(
+  //                 fontWeight: FontWeight.w500,
+  //                 color: Colors.black87,
+  //                 fontSize: 16)),
+  //       ),
+  //       const SizedBox(height: 24),
+  //       CustomCard(
+  //           text: appLocalizations.faqs,
+  //           onTap: () {
+  //             profileState.setCurrentPage(ProfileCurrentPages.faqs);
+  //           }),
+  //       const SizedBox(height: 24),
+  //       CustomCard(
+  //           text: appLocalizations.privacy,
+  //           onTap: () {
+  //             profileState.setCurrentPage(ProfileCurrentPages.privacy);
+  //           }),
+  //     ],
+  //   );
+  // }
 
   //Build UI for "Account" part
   /// - "Log Out" custom button
   /// - "Delete Account" custom button
-  Widget _buildAccountPart() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(appLocalizations.account,
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16)),
-        ),
-        const SizedBox(height: 24),
-        CustomCard(
-            text: appLocalizations.logOut,
-            onTap: () {
-              // TODO: Implement the Log Out functional
-            }),
-        const SizedBox(height: 24),
-        CustomCard(
-            text: appLocalizations.deleteAccount,
-            onTap: () {
-              // TODO: Implement Delete account
-            }),
-      ],
-    );
-  }
+  // Widget _buildAccountPart() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 16),
+  //         child: Text(appLocalizations.account,
+  //             textAlign: TextAlign.left,
+  //             style: const TextStyle(
+  //                 fontWeight: FontWeight.w500,
+  //                 color: Colors.black87,
+  //                 fontSize: 16)),
+  //       ),
+  //       const SizedBox(height: 24),
+  //       CustomCard(
+  //           text: appLocalizations.logOut,
+  //           onTap: () {
+  //             // TODO: Implement the Log Out functional
+  //           }),
+  //       const SizedBox(height: 24),
+  //       CustomCard(
+  //           text: appLocalizations.deleteAccount,
+  //           onTap: () {
+  //             // TODO: Implement Delete account
+  //           }),
+  //     ],
+  //   );
+  // }
 
   // Build "Active sharing location" switch button
   Row _activeSharingLocationButton() {
@@ -208,7 +208,7 @@ class ProfilePage extends StatelessWidget {
                 fontSize: 16),
           ),
         ),
-        Observer(builder: (context) {
+        Observer(builder: (_) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomSwitch(
@@ -224,32 +224,32 @@ class ProfilePage extends StatelessWidget {
   }
 
   // Build "Set do not disturb" switch button
-  Row _setDoNotDisturbButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            appLocalizations.doNotDisturb,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 16),
-          ),
-        ),
-        Observer(builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CustomSwitch(
-              value: false, // change to controller.doNotDisturb,
-              onChanged: (newValue) {
-                //controller.setdoNotDisturb(newValue);
-              },
-            ),
-          );
-        })
-      ],
-    );
-  }
+  // Row _setDoNotDisturbButton() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.symmetric(horizontal: 16),
+  //         child: Text(
+  //           appLocalizations.doNotDisturb,
+  //           style: const TextStyle(
+  //               fontWeight: FontWeight.w500,
+  //               color: Colors.black87,
+  //               fontSize: 16),
+  //         ),
+  //       ),
+  //       Observer(builder: (_) {
+  //         return Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 16),
+  //           child: CustomSwitch(
+  //             value: false, // change to controller.doNotDisturb,
+  //             onChanged: (newValue) {
+  //               //controller.setdoNotDisturb(newValue);
+  //             },
+  //           ),
+  //         );
+  //       })
+  //     ],
+  //   );
+  // }
 }
