@@ -13,13 +13,13 @@ mixin _$ProfileState on _ProfileState, Store {
       Atom(name: '_ProfileState.currentPage', context: context);
 
   @override
-  ProfilePages get currentPage {
+  ProfileCurrentPages get currentPage {
     _$currentPageAtom.reportRead();
     return super.currentPage;
   }
 
   @override
-  set currentPage(ProfilePages value) {
+  set currentPage(ProfileCurrentPages value) {
     _$currentPageAtom.reportWrite(value, super.currentPage, () {
       super.currentPage = value;
     });
@@ -86,7 +86,7 @@ mixin _$ProfileState on _ProfileState, Store {
       ActionController(name: '_ProfileState', context: context);
 
   @override
-  void setCurrentPage(ProfilePages newPage) {
+  void setCurrentPage(ProfileCurrentPages newPage) {
     final _$actionInfo = _$_ProfileStateActionController.startAction(
         name: '_ProfileState.setCurrentPage');
     try {

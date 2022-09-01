@@ -1,4 +1,4 @@
-enum ProfilePages {
+enum ProfileCurrentPages {
   editProfile,
   preference,
   faqs,

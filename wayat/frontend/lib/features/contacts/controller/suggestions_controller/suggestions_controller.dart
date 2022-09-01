@@ -19,11 +19,15 @@ class SuggestionsController = _SuggestionsController
     with _$SuggestionsController;
 
 abstract class _SuggestionsController with Store {
-  ContactService contactsService = ContactServiceImpl();
-  late FriendsController friendsController;
-  late RequestsController requestsController;
+  final ContactService contactsService;
+  final FriendsController friendsController;
+  final RequestsController requestsController;
 
-  _SuggestionsController(this.friendsController, this.requestsController);
+  _SuggestionsController(
+      {required this.friendsController,
+      required this.requestsController,
+      ContactService? contactsService})
+      : contactsService = contactsService ?? ContactServiceImpl();
 
   String textFilter = "";
 
@@ -34,9 +38,9 @@ abstract class _SuggestionsController with Store {
 
   @action
   Future<void> sendRequest(Contact contact) async {
-    await requestsController.sendRequest(contact);
     allSuggestions.remove(contact);
     filteredSuggestions.remove(contact);
+    requestsController.sendRequest(contact);
   }
 
   @action
@@ -72,9 +76,7 @@ abstract class _SuggestionsController with Store {
   }
 
   Future copyInvitation() async {
-   await Clipboard.setData(ClipboardData(text: appLocalizations.invitationText));
-      
-      
-   
+    await Clipboard.setData(
+        ClipboardData(text: appLocalizations.invitationText));
   }
 }
