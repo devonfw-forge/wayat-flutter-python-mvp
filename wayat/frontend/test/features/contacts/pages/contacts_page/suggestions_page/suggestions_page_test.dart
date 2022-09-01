@@ -158,7 +158,7 @@ void main() async {
 Contact _contactFactory(String contactName) {
   return Contact(
     available: true,
-    id: "id1",
+    id: "id $contactName",
     name: contactName,
     email: "Contact email",
     imageUrl: "https://example.com/image",

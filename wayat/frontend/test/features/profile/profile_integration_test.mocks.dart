@@ -362,9 +362,11 @@ class MockSessionState extends _i1.Mock implements _i18.SessionState {
       (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
           returnValue: _i15.Future<dynamic>.value()) as _i15.Future<dynamic>);
   @override
-  _i15.Future<dynamic> login() =>
+  _i15.Future<void> login() =>
       (super.noSuchMethod(Invocation.method(#login, []),
-          returnValue: _i15.Future<dynamic>.value()) as _i15.Future<dynamic>);
+              returnValue: _i15.Future<void>.value(),
+              returnValueForMissingStub: _i15.Future<void>.value())
+          as _i15.Future<void>);
   @override
   _i15.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
@@ -613,13 +615,11 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
       super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
           returnValueForMissingStub: null);
   @override
-  _i6.ObservableList<_i21.Contact> get allContacts =>
+  List<_i21.Contact> get allContacts =>
       (super.noSuchMethod(Invocation.getter(#allContacts),
-              returnValue: _FakeObservableList_13<_i21.Contact>(
-                  this, Invocation.getter(#allContacts)))
-          as _i6.ObservableList<_i21.Contact>);
+          returnValue: <_i21.Contact>[]) as List<_i21.Contact>);
   @override
-  set allContacts(_i6.ObservableList<_i21.Contact>? _allContacts) =>
+  set allContacts(List<_i21.Contact>? _allContacts) =>
       super.noSuchMethod(Invocation.setter(#allContacts, _allContacts),
           returnValueForMissingStub: null);
   @override
@@ -779,29 +779,17 @@ class MockSuggestionsController extends _i1.Mock
               _FakeContactService_14(this, Invocation.getter(#contactsService)))
       as _i13.ContactService);
   @override
-  set contactsService(_i13.ContactService? _contactsService) =>
-      super.noSuchMethod(Invocation.setter(#contactsService, _contactsService),
-          returnValueForMissingStub: null);
-  @override
   _i3.FriendsController get friendsController =>
       (super.noSuchMethod(Invocation.getter(#friendsController),
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
   @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
-  @override
   _i2.RequestsController get requestsController =>
       (super.noSuchMethod(Invocation.getter(#requestsController),
               returnValue: _FakeRequestsController_0(
                   this, Invocation.getter(#requestsController)))
           as _i2.RequestsController);
-  @override
-  set requestsController(_i2.RequestsController? _requestsController) => super
-      .noSuchMethod(Invocation.setter(#requestsController, _requestsController),
-          returnValueForMissingStub: null);
   @override
   String get textFilter =>
       (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')

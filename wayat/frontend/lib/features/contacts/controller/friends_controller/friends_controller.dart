@@ -57,4 +57,13 @@ abstract class _FriendsController with Store {
     filteredContacts.remove(contact);
     _service.removeContact(contact);
   }
+
+  @action
+  void addContact(Contact contact) {
+    allContacts.add(contact);
+    filteredContacts = ObservableList.of(allContacts
+        .where((element) =>
+            element.name.toLowerCase().contains(textFilter.toLowerCase()))
+        .toList());
+  }
 }
