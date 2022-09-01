@@ -345,9 +345,11 @@ class MockSessionState extends _i1.Mock implements _i15.SessionState {
       (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
           returnValue: _i17.Future<dynamic>.value()) as _i17.Future<dynamic>);
   @override
-  _i17.Future<dynamic> login() =>
+  _i17.Future<void> login() =>
       (super.noSuchMethod(Invocation.method(#login, []),
-          returnValue: _i17.Future<dynamic>.value()) as _i17.Future<dynamic>);
+              returnValue: _i17.Future<void>.value(),
+              returnValueForMissingStub: _i17.Future<void>.value())
+          as _i17.Future<void>);
   @override
   _i17.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
@@ -820,29 +822,17 @@ class MockSuggestionsController extends _i1.Mock
               _FakeContactService_14(this, Invocation.getter(#contactsService)))
       as _i13.ContactService);
   @override
-  set contactsService(_i13.ContactService? _contactsService) =>
-      super.noSuchMethod(Invocation.setter(#contactsService, _contactsService),
-          returnValueForMissingStub: null);
-  @override
   _i3.FriendsController get friendsController =>
       (super.noSuchMethod(Invocation.getter(#friendsController),
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
   @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
-  @override
   _i2.RequestsController get requestsController =>
       (super.noSuchMethod(Invocation.getter(#requestsController),
               returnValue: _FakeRequestsController_0(
                   this, Invocation.getter(#requestsController)))
           as _i2.RequestsController);
-  @override
-  set requestsController(_i2.RequestsController? _requestsController) => super
-      .noSuchMethod(Invocation.setter(#requestsController, _requestsController),
-          returnValueForMissingStub: null);
   @override
   String get textFilter =>
       (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')
