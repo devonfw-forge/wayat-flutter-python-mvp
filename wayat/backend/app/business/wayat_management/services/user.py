@@ -101,7 +101,7 @@ class UserService:
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
 
     async def get_user_groups(self, uid: str) -> list[GroupDTO]:
-        groups = await self._user_repository.get_user_groups(uid)
+        groups, _ = await self._user_repository.get_user_groups(uid)
         return list(map(self.map_group_to_dto, groups))
 
     async def _get_user_group(self, uid: str, group_id: str) -> Tuple[GroupInfo, list[GroupInfo], UserEntity]:
