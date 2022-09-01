@@ -1,4 +1,5 @@
 import 'package:wayat/domain/contact/contact.dart';
+import 'dart:convert';
 
 class ContactLocation extends Contact {
   double latitude;
@@ -75,12 +76,12 @@ class ContactLocation extends Contact {
         address: (map['address'] ?? "") as String,
         lastUpdated: map['lastUpdated'] as DateTime);
   }
-  
+
   @override
   bool operator ==(covariant ContactLocation other) {
-    return latitude == other.latitude 
-      && longitude == other.longitude
-      && lastUpdated == other.lastUpdated
-      && super == other;
+    return latitude == other.latitude &&
+        longitude == other.longitude &&
+        lastUpdated == other.lastUpdated &&
+        super == other;
   }
 }

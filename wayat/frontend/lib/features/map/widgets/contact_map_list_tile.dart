@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:wayat/features/map/widgets/contact_image.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
 class ContactMapListTile extends StatelessWidget {
   final ContactLocation contact;
@@ -15,15 +16,10 @@ class ContactMapListTile extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(
-            radius: (22),
-            backgroundColor: Colors.black,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3.0),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(contact.imageUrl),
-              ),
-            )),
+        ContactImage(
+          imageUrl: contact.imageUrl,
+          radius: 22,
+        ),
         const SizedBox(
           width: 15,
         ),
@@ -48,7 +44,9 @@ class ContactMapListTile extends StatelessWidget {
                 style: const TextStyle(fontSize: 17, color: Colors.black54),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () => GetIt.I
+                    .get<HomeState>()
+                    .setSelectedContact(contact, "wayat"),
                 style: TextButton.styleFrom(padding: EdgeInsets.zero),
                 child: Text(
                   appLocalizations.viewInformation,
