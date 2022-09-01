@@ -16,6 +16,8 @@
     "resendCode": "Renvoyer le code",
     "verify": "Vérifier",
     "cancel": "Annuler",
+    "delete": "Effacer",
+    "deleteAccountText": "Êtes-vous sûr de vouloir supprimer votre compte Wayat? Veuillez noter qu'il n'y a pas d'option pour restaurer le compte ou ses données une fois qu'il est supprimé.",
     
     "home": "Home",
     "contacts": "Contacts",

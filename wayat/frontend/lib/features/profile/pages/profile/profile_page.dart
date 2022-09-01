@@ -9,6 +9,7 @@ import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/profile_avatar.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/features/profile/pages/profile/delete_account_page.dart';
 import 'package:wayat/features/profile/selector/profile_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
@@ -34,7 +35,6 @@ class ProfilePage extends StatelessWidget {
           isEdit: false,
           onPress: () {},
         ),
-        //_buildProfileImage(),
         const SizedBox(height: 16),
         Observer(builder: (context) {
           String name = userSession.currentUser!.name;
@@ -52,7 +52,7 @@ class ProfilePage extends StatelessWidget {
         // _buildInformationPart(),
         // const SizedBox(height: 48),
 
-        _buildAccountPart(),
+        _buildAccountPart(context),
         const SizedBox(height: 42),
       ],
     );
@@ -154,7 +154,7 @@ class ProfilePage extends StatelessWidget {
   //Build UI for "Account" part
   /// - "Log Out" custom button
   /// - "Delete Account" custom button
-  Widget _buildAccountPart() {
+  Widget _buildAccountPart(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -170,13 +170,21 @@ class ProfilePage extends StatelessWidget {
             onTap: () {
               //TODO: Implement Logout
               userSession.logOut();
+              userSession.currentUser = null;
+              userSession.finishLoggedIn = false;
+              userSession.googleSignedIn = false;
+              userSession.hasDoneOnboarding = false;
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.deleteAccount,
             onTap: () {
               // TODO: Need to redirect to SignUp page
-              profileState.deleteCurrentUser();
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return DeleteAccountPage();
+                  });
             }),
       ],
     );

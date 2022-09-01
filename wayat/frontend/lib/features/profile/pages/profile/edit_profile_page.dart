@@ -152,7 +152,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         //TODO: Have an error here on validation... fix later
         // _validPhone = _formKey.currentState!.validate();
         _validPhone = true;
-        if (_validPhone) _showAlertDialog();
+        if (_validPhone) _showVerificationAlertDialog();
       },
     );
   }
@@ -217,7 +217,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  void _showAlertDialog() async {
+  void _showVerificationAlertDialog() async {
     showDialog(
         context: context,
         builder: (context) {
