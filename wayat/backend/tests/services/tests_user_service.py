@@ -412,13 +412,68 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             image_ref=picture,
             contacts=members
         )
-        self.mock_user_repo.get_user_groups.return_value = [group_info]
+        self.mock_user_repo.get_user_groups.return_value = ([group_info], {})
 
         # Call under test and asserts
         groups = await self.user_service.get_user_groups(user)
 
         self.mock_user_repo.get_user_groups.assert_called_with(user)
         assert groups == [self.user_service.map_group_to_dto(group_info)]
+
+    async def test_update_user_group_name_should_return_ok(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
+        group_info = GroupInfo(
+            id=1,
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+        self.mock_user_repo.get_user_groups.return_value = ([group_info], {})
+
+        new_name = "TestName"
+
+        # Call under test and asserts
+        await self.user_service.update_group(user, group_info.id, new_name, None)
+
+        group_info.name = new_name
+
+        self.mock_user_repo.update_user_groups.assert_called_with(user, [group_info])
+
+    async def test_update_user_group_members_should_validate_if_user_is_contact(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
+        test_user = UserEntity(
+            document_id="uid",
+            name="name",
+            email="email",
+            phone="phone",
+            image_ref="image"
+        )
+        test_contact = "TestName"
+        test_user.contacts = [test_contact]
+        group_info = GroupInfo(
+            id=1,
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+        self.mock_user_repo.get_user_groups.return_value = ([group_info], test_user)
+
+
+        # Call under test and asserts
+        await self.user_service.update_group(user, group_info.id, None, [test_contact])
+
+        group_info.contacts = [test_contact]
+
+        self.mock_user_repo.update_user_groups.assert_called_with(user, [group_info])
+
+        exception = None
+
+        try:
+            await self.user_service.update_group(user, group_info.id, None, ["no_friend"])
+        except NotFoundException as e:
+            exception = e
+
+        assert exception is not None
 
     async def test_get_user_group_should_return_ok_or_not_found(self):
         user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
@@ -428,7 +483,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             image_ref=picture,
             contacts=members
         )
-        self.mock_user_repo.get_user_groups.return_value = [group_info]
+        self.mock_user_repo.get_user_groups.return_value = ([group_info], {})
 
         # Call under test and asserts
         group = await self.user_service.get_user_group(user, group_id="1")
