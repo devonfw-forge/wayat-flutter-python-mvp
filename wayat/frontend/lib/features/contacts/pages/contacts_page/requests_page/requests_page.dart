@@ -18,7 +18,6 @@ class RequestsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //complete column as to not cut the scrolls indicators
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -18,6 +18,7 @@ class ContactsPage extends StatelessWidget {
     return Column(
       children: [
         SearchBar(
+          key: const Key("ContactsSearchBar"),
           controller: controller.searchBarController,
           onChanged: (text) => controller.setSearchBarText(text),
         ),

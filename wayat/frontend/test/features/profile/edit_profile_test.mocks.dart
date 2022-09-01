@@ -127,9 +127,9 @@ class MockSessionState extends _i1.Mock implements _i4.SessionState {
       (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
           returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
   @override
-  _i6.Future<dynamic> login() =>
-      (super.noSuchMethod(Invocation.method(#login, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<void> login() => (super.noSuchMethod(Invocation.method(#login, []),
+      returnValue: _i6.Future<void>.value(),
+      returnValueForMissingStub: _i6.Future<void>.value()) as _i6.Future<void>);
   @override
   _i6.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
