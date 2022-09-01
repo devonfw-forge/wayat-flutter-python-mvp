@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import mimetypes
-from typing import BinaryIO, Optional
+from typing import BinaryIO, Optional, Tuple
 
 import requests
 from fastapi import Depends
@@ -104,16 +104,17 @@ class UserService:
         groups = await self._user_repository.get_user_groups(uid)
         return list(map(self.map_group_to_dto, groups))
 
-    async def get_user_group(self, uid: str, group_id: str) -> GroupDTO:
-        user_groups = await self._user_repository.get_user_groups(uid)
-        found_group = None
-        for g in user_groups:
-            if g.id == group_id:
-                found_group = g
-                break
-        if found_group is None:
+    async def _get_user_group(self, uid: str, group_id: str) -> Tuple[GroupInfo, list[GroupInfo], UserEntity]:
+        user_groups, user_entity = await self._user_repository.get_user_groups(uid)
+        try:
+            group = next(g for g in user_groups if g.id == group_id)
+        except StopIteration:
             raise NotFoundException("Group Not Found")
-        return self.map_group_to_dto(found_group)
+        return group, user_groups, user_entity
+
+    async def get_user_group(self, uid: str, group_id: str) -> GroupDTO:
+        group, _, _ = await self._get_user_group(uid, group_id)
+        return self.map_group_to_dto(group)
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
         await self._file_repository.delete_user_images(uid)
@@ -218,15 +219,15 @@ class UserService:
         """
         Updates a group info
         """
-        user_groups = await self._user_repository.get_user_groups(user)
-        try:
-            group = next(g for g in user_groups if g.id == id_group)
-        except StopIteration:
-            raise NotFoundException("Group Not Found")
+        group, user_groups, user_entity = await self._get_user_group(user, id_group)
 
         if name is not None:
             group.name = name
-        if members is not None:
+        # Validate all members exist
+        if members is not None and set(members).issubset(set(user_entity.contacts)):
             group.contacts = members
+        elif members is not None:
+            raise NotFoundException(f"Trying to add a user that is not in your contacts list"
+                                    f" {list(set(members).difference(set(user_entity.contacts)))}")
 
         await self._user_repository.update_user_groups(user, user_groups)
