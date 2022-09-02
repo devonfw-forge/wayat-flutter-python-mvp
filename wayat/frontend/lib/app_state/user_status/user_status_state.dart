@@ -11,19 +11,28 @@ part 'user_status_state.g.dart';
 class UserStatusState = _UserStatusState with _$UserStatusState;
 
 abstract class _UserStatusState with Store {
-  UserStatusService userStatusService = UserStatusService();
-
-  Future initializeListener() async {
-    await userStatusService.setUpListener(
-        onContactsRefUpdate: (contacts) => setContactList(contacts),
-        onLocationModeUpdate: (locationMode) => setLocationMode(locationMode));
-  }
+  final UserStatusService userStatusService;
 
   @observable
   List<ContactLocation> contacts = [];
 
   @observable
   ShareLocationMode locationMode = ShareLocationMode.passive;
+
+  late Function(List<ContactLocation>) onContactsRefUpdateCallback =
+      (contacts) => setContactList(contacts);
+
+  late Function(ShareLocationMode) onLocationModeUpdateCallback =
+      (locationMode) => setLocationMode(locationMode);
+
+  _UserStatusState({UserStatusService? userStatusService})
+      : userStatusService = userStatusService ?? UserStatusService();
+
+  Future initializeListener() async {
+    await userStatusService.setUpListener(
+        onContactsRefUpdate: onContactsRefUpdateCallback,
+        onLocationModeUpdate: onLocationModeUpdateCallback);
+  }
 
   @action
   void setContactList(List<ContactLocation> newContacts) {
@@ -38,6 +47,4 @@ abstract class _UserStatusState with Store {
         .shareLocationService
         .setShareLocationMode(newMode);
   }
-
-  void fetchContacts() {}
 }

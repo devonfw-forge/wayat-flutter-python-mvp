@@ -61,10 +61,6 @@ class MockUserStatusState extends _i1.Mock implements _i5.UserStatusState {
                   this, Invocation.getter(#userStatusService)))
           as _i2.UserStatusService);
   @override
-  set userStatusService(_i2.UserStatusService? _userStatusService) => super
-      .noSuchMethod(Invocation.setter(#userStatusService, _userStatusService),
-          returnValueForMissingStub: null);
-  @override
   List<_i6.ContactLocation> get contacts =>
       (super.noSuchMethod(Invocation.getter(#contacts),
           returnValue: <_i6.ContactLocation>[]) as List<_i6.ContactLocation>);
@@ -79,6 +75,32 @@ class MockUserStatusState extends _i1.Mock implements _i5.UserStatusState {
   @override
   set locationMode(_i7.ShareLocationMode? value) =>
       super.noSuchMethod(Invocation.setter(#locationMode, value),
+          returnValueForMissingStub: null);
+  @override
+  dynamic Function(List<_i6.ContactLocation>) get onContactsRefUpdateCallback =>
+      (super.noSuchMethod(Invocation.getter(#onContactsRefUpdateCallback),
+              returnValue: (List<_i6.ContactLocation> __p0) => null)
+          as dynamic Function(List<_i6.ContactLocation>));
+  @override
+  set onContactsRefUpdateCallback(
+          dynamic Function(List<_i6.ContactLocation>)?
+              _onContactsRefUpdateCallback) =>
+      super.noSuchMethod(
+          Invocation.setter(
+              #onContactsRefUpdateCallback, _onContactsRefUpdateCallback),
+          returnValueForMissingStub: null);
+  @override
+  dynamic Function(_i7.ShareLocationMode) get onLocationModeUpdateCallback =>
+      (super.noSuchMethod(Invocation.getter(#onLocationModeUpdateCallback),
+              returnValue: (_i7.ShareLocationMode __p0) => null)
+          as dynamic Function(_i7.ShareLocationMode));
+  @override
+  set onLocationModeUpdateCallback(
+          dynamic Function(_i7.ShareLocationMode)?
+              _onLocationModeUpdateCallback) =>
+      super.noSuchMethod(
+          Invocation.setter(
+              #onLocationModeUpdateCallback, _onLocationModeUpdateCallback),
           returnValueForMissingStub: null);
   @override
   _i3.ReactiveContext get context =>
@@ -97,10 +119,6 @@ class MockUserStatusState extends _i1.Mock implements _i5.UserStatusState {
   @override
   void setLocationMode(_i7.ShareLocationMode? newMode) =>
       super.noSuchMethod(Invocation.method(#setLocationMode, [newMode]),
-          returnValueForMissingStub: null);
-  @override
-  void fetchContacts() =>
-      super.noSuchMethod(Invocation.method(#fetchContacts, []),
           returnValueForMissingStub: null);
 }
 

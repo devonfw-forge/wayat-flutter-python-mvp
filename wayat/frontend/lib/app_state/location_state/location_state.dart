@@ -5,7 +5,7 @@ import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/services/location/share_location_service.dart';
-import 'package:wayat/services/location/share_location_service_impl.dart';
+import 'package:wayat/services/location/share_location_service_factory.dart';
 
 part 'location_state.g.dart';
 
@@ -24,13 +24,22 @@ abstract class _LocationState with Store {
   bool shareLocationEnabled =
       GetIt.I.get<SessionState>().currentUser!.shareLocationEnabled;
 
+  final ShareLocationServiceFactory shareLocationServiceFactory;
+
+  late Function(LatLng) onLocationChanged =
+      (newLoc) => setCurrentLocation(newLoc);
+
+  _LocationState({ShareLocationServiceFactory? shareLocationServiceFactory})
+      : shareLocationServiceFactory =
+            shareLocationServiceFactory ?? ShareLocationServiceFactory();
+
   Future initialize() async {
     userStatusState = GetIt.I.get<UserStatusState>();
 
-    shareLocationService = await ShareLocationServiceImpl.create(
-        userStatusState.locationMode,
-        shareLocationEnabled,
-        (newLoc) => setCurrentLocation(newLoc));
+    shareLocationService = await shareLocationServiceFactory.create(
+        shareLocationMode: userStatusState.locationMode,
+        shareLocationEnabled: shareLocationEnabled,
+        onLocationChanged: onLocationChanged);
 
     await userStatusState.initializeListener();
 

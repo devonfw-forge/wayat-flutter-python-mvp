@@ -3,21 +3,23 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i9;
+import 'dart:async' as _i10;
 
 import 'package:google_maps_flutter/google_maps_flutter.dart' as _i6;
-import 'package:image_picker/image_picker.dart' as _i12;
+import 'package:image_picker/image_picker.dart' as _i13;
 import 'package:mobx/mobx.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/app_state/location_state/location_state.dart' as _i13;
-import 'package:wayat/app_state/profile_state/profile_state.dart' as _i10;
-import 'package:wayat/app_state/user_session/session_state.dart' as _i7;
+import 'package:wayat/app_state/location_state/location_state.dart' as _i14;
+import 'package:wayat/app_state/profile_state/profile_state.dart' as _i11;
+import 'package:wayat/app_state/user_session/session_state.dart' as _i8;
 import 'package:wayat/app_state/user_status/user_status_state.dart' as _i5;
-import 'package:wayat/domain/user/my_user.dart' as _i8;
+import 'package:wayat/domain/user/my_user.dart' as _i9;
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart'
-    as _i11;
+    as _i12;
 import 'package:wayat/services/authentication/auth_service.dart' as _i2;
 import 'package:wayat/services/location/share_location_service.dart' as _i4;
+import 'package:wayat/services/location/share_location_service_factory.dart'
+    as _i7;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -58,10 +60,16 @@ class _FakeLatLng_4 extends _i1.SmartFake implements _i6.LatLng {
       : super(parent, parentInvocation);
 }
 
+class _FakeShareLocationServiceFactory_5 extends _i1.SmartFake
+    implements _i7.ShareLocationServiceFactory {
+  _FakeShareLocationServiceFactory_5(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [SessionState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSessionState extends _i1.Mock implements _i7.SessionState {
+class MockSessionState extends _i1.Mock implements _i8.SessionState {
   MockSessionState() {
     _i1.throwOnMissingStub(this);
   }
@@ -91,7 +99,7 @@ class MockSessionState extends _i1.Mock implements _i7.SessionState {
       super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
           returnValueForMissingStub: null);
   @override
-  set currentUser(_i8.MyUser? value) =>
+  set currentUser(_i9.MyUser? value) =>
       super.noSuchMethod(Invocation.setter(#currentUser, value),
           returnValueForMissingStub: null);
   @override
@@ -107,14 +115,15 @@ class MockSessionState extends _i1.Mock implements _i7.SessionState {
                   _FakeReactiveContext_1(this, Invocation.getter(#context)))
           as _i3.ReactiveContext);
   @override
-  _i9.Future<void> doneOnBoarding() => (super.noSuchMethod(
-      Invocation.method(#doneOnBoarding, []),
-      returnValue: _i9.Future<void>.value(),
-      returnValueForMissingStub: _i9.Future<void>.value()) as _i9.Future<void>);
+  _i10.Future<void> doneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#doneOnBoarding, []),
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
   @override
-  _i9.Future<dynamic> isLogged() =>
+  _i10.Future<dynamic> isLogged() =>
       (super.noSuchMethod(Invocation.method(#isLogged, []),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
@@ -124,37 +133,39 @@ class MockSessionState extends _i1.Mock implements _i7.SessionState {
       Invocation.method(#setFinishLoggedIn, [finishedLoggedIn]),
       returnValueForMissingStub: null);
   @override
-  _i9.Future<dynamic> initializeUser() =>
+  _i10.Future<dynamic> initializeUser() =>
       (super.noSuchMethod(Invocation.method(#initializeUser, []),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<dynamic> updateCurrentUser() =>
+  _i10.Future<dynamic> updateCurrentUser() =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<bool> updatePhone(String? phone) =>
+  _i10.Future<bool> updatePhone(String? phone) =>
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
-          returnValue: _i9.Future<bool>.value(false)) as _i9.Future<bool>);
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
   @override
-  _i9.Future<bool> updateOnboarding() =>
+  _i10.Future<bool> updateOnboarding() =>
       (super.noSuchMethod(Invocation.method(#updateOnboarding, []),
-          returnValue: _i9.Future<bool>.value(false)) as _i9.Future<bool>);
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
   @override
-  _i9.Future<dynamic> doLoginProcess() =>
+  _i10.Future<dynamic> doLoginProcess() =>
       (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<dynamic> initializeUserSession() =>
+  _i10.Future<dynamic> initializeUserSession() =>
       (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<void> login() => (super.noSuchMethod(Invocation.method(#login, []),
-      returnValue: _i9.Future<void>.value(),
-      returnValueForMissingStub: _i9.Future<void>.value()) as _i9.Future<void>);
+  _i10.Future<void> login() =>
+      (super.noSuchMethod(Invocation.method(#login, []),
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
   @override
-  _i9.Future<dynamic> logOut() =>
+  _i10.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
   bool isOnboardingCompleted() =>
       (super.noSuchMethod(Invocation.method(#isOnboardingCompleted, []),
@@ -168,18 +179,18 @@ class MockSessionState extends _i1.Mock implements _i7.SessionState {
 /// A class which mocks [ProfileState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProfileState extends _i1.Mock implements _i10.ProfileState {
+class MockProfileState extends _i1.Mock implements _i11.ProfileState {
   MockProfileState() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i11.ProfileCurrentPages get currentPage =>
+  _i12.ProfileCurrentPages get currentPage =>
       (super.noSuchMethod(Invocation.getter(#currentPage),
-              returnValue: _i11.ProfileCurrentPages.editProfile)
-          as _i11.ProfileCurrentPages);
+              returnValue: _i12.ProfileCurrentPages.editProfile)
+          as _i12.ProfileCurrentPages);
   @override
-  set currentPage(_i11.ProfileCurrentPages? value) =>
+  set currentPage(_i12.ProfileCurrentPages? value) =>
       super.noSuchMethod(Invocation.setter(#currentPage, value),
           returnValueForMissingStub: null);
   @override
@@ -205,7 +216,7 @@ class MockProfileState extends _i1.Mock implements _i10.ProfileState {
                   _FakeReactiveContext_1(this, Invocation.getter(#context)))
           as _i3.ReactiveContext);
   @override
-  void setCurrentPage(_i11.ProfileCurrentPages? newPage) =>
+  void setCurrentPage(_i12.ProfileCurrentPages? newPage) =>
       super.noSuchMethod(Invocation.method(#setCurrentPage, [newPage]),
           returnValueForMissingStub: null);
   @override
@@ -213,23 +224,23 @@ class MockProfileState extends _i1.Mock implements _i10.ProfileState {
       super.noSuchMethod(Invocation.method(#setProfileSaved, [isSaved]),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<dynamic> updateCurrentUser() =>
+  _i10.Future<dynamic> updateCurrentUser() =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<dynamic> updateUserImage(_i12.XFile? newImage) =>
+  _i10.Future<dynamic> updateUserImage(_i13.XFile? newImage) =>
       (super.noSuchMethod(Invocation.method(#updateUserImage, [newImage]),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<dynamic> updateCurrentUserName(String? newName) =>
+  _i10.Future<dynamic> updateCurrentUserName(String? newName) =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUserName, [newName]),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
 }
 
 /// A class which mocks [LocationState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocationState extends _i1.Mock implements _i13.LocationState {
+class MockLocationState extends _i1.Mock implements _i14.LocationState {
   MockLocationState() {
     _i1.throwOnMissingStub(this);
   }
@@ -273,15 +284,30 @@ class MockLocationState extends _i1.Mock implements _i13.LocationState {
       super.noSuchMethod(Invocation.setter(#shareLocationEnabled, value),
           returnValueForMissingStub: null);
   @override
+  _i7.ShareLocationServiceFactory get shareLocationServiceFactory =>
+      (super.noSuchMethod(Invocation.getter(#shareLocationServiceFactory),
+              returnValue: _FakeShareLocationServiceFactory_5(
+                  this, Invocation.getter(#shareLocationServiceFactory)))
+          as _i7.ShareLocationServiceFactory);
+  @override
+  dynamic Function(_i6.LatLng) get onLocationChanged => (super.noSuchMethod(
+      Invocation.getter(#onLocationChanged),
+      returnValue: (_i6.LatLng __p0) => null) as dynamic Function(_i6.LatLng));
+  @override
+  set onLocationChanged(dynamic Function(_i6.LatLng)? _onLocationChanged) =>
+      super.noSuchMethod(
+          Invocation.setter(#onLocationChanged, _onLocationChanged),
+          returnValueForMissingStub: null);
+  @override
   _i3.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
                   _FakeReactiveContext_1(this, Invocation.getter(#context)))
           as _i3.ReactiveContext);
   @override
-  _i9.Future<dynamic> initialize() =>
+  _i10.Future<dynamic> initialize() =>
       (super.noSuchMethod(Invocation.method(#initialize, []),
-          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
   void setShareLocationEnabled(bool? shareLocation) => super.noSuchMethod(
       Invocation.method(#setShareLocationEnabled, [shareLocation]),
