@@ -43,7 +43,7 @@ class MyUser extends User {
       'email': email,
       'image_url': imageUrl,
       'phone': phone,
-      'onboardingCompleted': onboardingCompleted,
+      'onboarding_completed': onboardingCompleted,
       'share_location': shareLocationEnabled
     };
   }

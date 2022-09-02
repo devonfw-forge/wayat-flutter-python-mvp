@@ -54,13 +54,15 @@ class ContactLocation extends Contact {
 
   @override
   Map<String, dynamic> toMap() {
-    super.toMap();
-    return <String, dynamic>{
+    Map<String, dynamic> contactLocation = {};
+    contactLocation.addAll(super.toMap());
+    contactLocation.addAll(<String, dynamic>{
       'latitude': latitude,
       'longitude': longitude,
       'address': address,
       'lastUpdated': lastUpdated
-    };
+    });
+    return contactLocation;
   }
 
   factory ContactLocation.fromMap(Map<String, dynamic> map) {
