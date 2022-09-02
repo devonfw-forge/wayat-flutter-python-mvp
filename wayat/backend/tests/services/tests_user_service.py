@@ -296,13 +296,13 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
     async def test_upload_profile_picture_should_call_repo(self):
         # Mocks
-        self.mock_file_repository.upload_image.return_value = "test/ref"
+        self.mock_file_repository.upload_profile_image.return_value = "test/ref"
 
         # Call under test
         await self.user_service.update_profile_picture("uid_test", ".jpeg", TEST_IMAGE_BYTES)
 
         # Asserts
-        self.mock_file_repository.upload_image.assert_called_with("uid_test.jpeg", TEST_RESIZED_BYTES)
+        self.mock_file_repository.upload_profile_image.assert_called_with("uid_test.jpeg", TEST_RESIZED_BYTES)
 
     @patch("app.business.wayat_management.services.user.requests")
     async def test_extract_picture_when_invalid_url_should_return_default(self, mock_requests):
@@ -347,7 +347,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         await self._backup_extract_picture(uid="test_uid", url="test_url")
 
         # Asserts
-        self.mock_file_repository.upload_image.assert_called_with("test_uid.png", TEST_RESIZED_BYTES)
+        self.mock_file_repository.upload_profile_image.assert_called_with("test_uid.png", TEST_RESIZED_BYTES)
 
     async def test_phone_in_use_when_phone_in_use_should_return_true(self):
         # Mocks
