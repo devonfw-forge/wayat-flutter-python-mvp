@@ -458,7 +458,6 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         )
         self.mock_user_repo.get_user_groups.return_value = ([group_info], test_user)
 
-
         # Call under test and asserts
         await self.user_service.update_group(user, group_info.id, None, [test_contact], "image_2")
 
@@ -501,6 +500,26 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         self.mock_user_repo.get_user_groups.assert_called_with(user)
         assert exception is not None
+
+    async def test_update_user_group_should_upload_new_file_and_delete_old(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture + "old"
+        group_info = GroupInfo(
+            id="1",
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+        self.mock_user_repo.get_user_groups.return_value = ([group_info], {})
+        self.mock_file_repository.upload_group_image.return_value = "test/ref"
+
+        # Call under test and asserts
+        group = await self.user_service.update_group_picture(user=user, group=group_info.id,
+                                                             extension=".jpeg", picture=TEST_IMAGE_BYTES)
+
+        # Asserts
+        self.mock_file_repository.upload_group_image.assert_called_with(filename=f'{user}_{group_info.id}.jpeg',
+                                                                        data=TEST_RESIZED_BYTES)
+        self.mock_file_repository.delete.assert_called_with(reference=picture)
 
 
 if __name__ == "__main__":
