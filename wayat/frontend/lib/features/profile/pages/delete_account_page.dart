@@ -46,10 +46,7 @@ class DeleteAccountPage extends StatelessWidget {
                 onPressed: () {
                   AutoRouter.of(context).pop();
                   profileState.deleteCurrentUser();
-                  userSession.currentUser = null;
-                  userSession.finishLoggedIn = false;
-                  userSession.googleSignedIn = false;
-                  userSession.hasDoneOnboarding = false;
+                  profileState.logOut();
                 }),
             CustomTextButton(
                 text: appLocalizations.cancel,
