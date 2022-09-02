@@ -252,9 +252,10 @@ class UserService:
         return f"{user}_{group_id}{extension}"
 
     async def update_group_picture(self, *, user: str, group: str, picture: BinaryIO | bytes, extension: str):
-        group_info = await self.get_user_group(uid=user, group_id=group)
-        if group_info.image_url != self.DEFAULT_GROUP_PICTURE:
-            await self._file_repository.delete(reference=group_info.image_url)
+        group_info, _, _ = await self._get_user_group(uid=user, group_id=group)
+        if group_info.image_ref != self.DEFAULT_GROUP_PICTURE:
+            await self._file_repository.delete(reference=group_info.image_ref)
         image_name = self._get_group_image_ref(user, group, extension)
-        new_image = await self._file_repository.upload_group_image(filename=image_name, data=picture)
+        new_image = await self._file_repository.upload_group_image(filename=image_name,
+                                                                   data=resize_image(picture, self.THUMBNAIL_SIZE))
         await self.update_group(user, group, image_ref=new_image)
