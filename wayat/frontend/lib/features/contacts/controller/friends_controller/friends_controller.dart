@@ -10,13 +10,16 @@ part 'friends_controller.g.dart';
 class FriendsController = _FriendsController with _$FriendsController;
 
 abstract class _FriendsController with Store {
-  final ContactService _service = ContactServiceImpl();
+  final ContactService _service;
   String textFilter = "";
 
-  ObservableList<Contact> allContacts = ObservableList.of(List.empty());
+  List<Contact> allContacts = List.empty();
 
   @observable
   ObservableList<Contact> filteredContacts = ObservableList.of(List.empty());
+
+  _FriendsController({ContactService? contactService})
+      : _service = contactService ?? ContactServiceImpl();
 
   @computed
   List<Contact> get availableContacts =>
@@ -53,5 +56,14 @@ abstract class _FriendsController with Store {
     allContacts.remove(contact);
     filteredContacts.remove(contact);
     _service.removeContact(contact);
+  }
+
+  @action
+  void addContact(Contact contact) {
+    allContacts.add(contact);
+    filteredContacts = ObservableList.of(allContacts
+        .where((element) =>
+            element.name.toLowerCase().contains(textFilter.toLowerCase()))
+        .toList());
   }
 }

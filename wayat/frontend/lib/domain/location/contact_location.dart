@@ -1,4 +1,5 @@
 import 'package:wayat/domain/contact/contact.dart';
+import 'dart:convert';
 
 class ContactLocation extends Contact {
   double latitude;
@@ -53,13 +54,15 @@ class ContactLocation extends Contact {
 
   @override
   Map<String, dynamic> toMap() {
-    super.toMap();
-    return <String, dynamic>{
+    Map<String, dynamic> contactLocation = {};
+    contactLocation.addAll(super.toMap());
+    contactLocation.addAll(<String, dynamic>{
       'latitude': latitude,
       'longitude': longitude,
       'address': address,
       'lastUpdated': lastUpdated
-    };
+    });
+    return contactLocation;
   }
 
   factory ContactLocation.fromMap(Map<String, dynamic> map) {
@@ -75,12 +78,12 @@ class ContactLocation extends Contact {
         address: (map['address'] ?? "") as String,
         lastUpdated: map['lastUpdated'] as DateTime);
   }
-  
+
   @override
   bool operator ==(covariant ContactLocation other) {
-    return latitude == other.latitude 
-      && longitude == other.longitude
-      && lastUpdated == other.lastUpdated
-      && super == other;
+    return latitude == other.latitude &&
+        longitude == other.longitude &&
+        lastUpdated == other.lastUpdated &&
+        super == other;
   }
 }

@@ -50,7 +50,8 @@ class SentRequestsPage extends StatelessWidget {
                     ),
                   ),
                   iconAction: IconButton(
-                    onPressed: () async => await controller.unsendRequest(requests[index]),
+                    onPressed: () async =>
+                        await controller.unsendRequest(requests[index]),
                     icon: const Icon(
                       Icons.close,
                       color: ColorTheme.primaryColor,
@@ -68,7 +69,7 @@ class SentRequestsPage extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-              icon: const Icon(Icons.chevron_left),
+              icon: const Icon(Icons.keyboard_arrow_down),
               splashRadius: 20,
               padding: EdgeInsets.zero,
               onPressed: () => GetIt.I
@@ -77,7 +78,8 @@ class SentRequestsPage extends StatelessWidget {
           Observer(builder: (context) {
             int numRequests = controller.sentRequests.length;
             return Text(
-              "${appLocalizations.sentRequestsTitle} ($numRequests)",
+              //"${appLocalizations.sentRequestsTitle} ($numRequests)",
+              appLocalizations.sentRequestsTitle,
               style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black87,

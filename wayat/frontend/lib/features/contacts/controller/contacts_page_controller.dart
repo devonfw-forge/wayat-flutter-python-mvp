@@ -30,12 +30,14 @@ abstract class _ContactsPageController with Store {
     friendsController = FriendsController();
     // Requests controller needs access to the friends controller to
     // be able to update the contacts if a request is accepted
-    requestsController = RequestsController(friendsController);
+    requestsController =
+        RequestsController(friendsController: friendsController);
     // Suggestions controller needs access to the friends and friendscontroller to
     // be able to filter the imported address book contacts from the
     // alreaady added wayat contacts without making extra REST calls
-    suggestionsController =
-        SuggestionsController(friendsController, requestsController);
+    suggestionsController = SuggestionsController(
+        friendsController: friendsController,
+        requestsController: requestsController);
   }
 
   TextEditingController searchBarController = TextEditingController();
