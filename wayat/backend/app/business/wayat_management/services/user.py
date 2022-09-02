@@ -117,13 +117,14 @@ class UserService:
         return self.map_group_to_dto(group)
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
-        await self._file_repository.delete_user_images(uid)
+        user = await self._user_repository.get_or_throw(uid)
+        await self._file_repository.delete(reference=user.image_ref)
         image_ref = await self._upload_profile_picture(uid=uid, extension=extension, data=data)
         await self._user_repository.update(document_id=uid, data={"image_ref": image_ref})
 
     async def _upload_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes) -> str:
         file_name = uid + extension
-        image_ref = await self._file_repository.upload_image(file_name, resize_image(data, self.THUMBNAIL_SIZE))
+        image_ref = await self._file_repository.upload_profile_image(file_name, resize_image(data, self.THUMBNAIL_SIZE))
         return image_ref
 
     async def _extract_picture(self, uid: str, url: str | None) -> str | None:

@@ -32,8 +32,8 @@ class FileStorage(CloudStorage):
         self._client = client
         self._storage_config = storage_config
 
-    async def delete_user_images(self, uid: str):
-        await self.delete(prefix=f"{self._storage_config.profile_images_path}/{uid}")
+    # async def delete_user_images(self, uid: str):
+    #     await self.delete(prefix=f"{self._storage_config.profile_images_path}/{uid}")
 
     async def upload_profile_image(self, filename: str, data: BinaryIO | bytes) -> str:
         return await self.upload_file(path=self._storage_config.profile_images_path, filename=filename, data=data)
