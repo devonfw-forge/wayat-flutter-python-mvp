@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/domain/contact/contact_address_book.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_state.dart';
 import 'package:wayat/services/contact/contact_service.dart';
