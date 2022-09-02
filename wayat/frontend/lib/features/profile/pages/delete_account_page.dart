@@ -29,12 +29,14 @@ class DeleteAccountPage extends StatelessWidget {
       content: SizedBox(
         height: MediaQuery.of(context).size.height * 0.15,
         width: MediaQuery.of(context).size.width,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getDeleteAccountText(appLocalizations.deleteAccountText),
-            ]),
+        child: SingleChildScrollView(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _getDeleteAccountText(appLocalizations.deleteAccountText),
+              ]),
+        ),
       ),
       actionsPadding: const EdgeInsets.only(left: 32, right: 32),
       actions: [
