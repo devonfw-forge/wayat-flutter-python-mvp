@@ -601,10 +601,6 @@ class MockMapState extends _i1.Mock implements _i26.MapState {
                   this, Invocation.getter(#mapStatusService)))
           as _i13.MapStatusService);
   @override
-  set mapStatusService(_i13.MapStatusService? _mapStatusService) => super
-      .noSuchMethod(Invocation.setter(#mapStatusService, _mapStatusService),
-          returnValueForMissingStub: null);
-  @override
   set timer(_i16.Timer? _timer) =>
       super.noSuchMethod(Invocation.setter(#timer, _timer),
           returnValueForMissingStub: null);
@@ -614,6 +610,10 @@ class MockMapState extends _i1.Mock implements _i26.MapState {
               returnValue:
                   _FakeDuration_4(this, Invocation.getter(#durationInterval)))
           as Duration);
+  @override
+  set durationInterval(Duration? _durationInterval) => super.noSuchMethod(
+      Invocation.setter(#durationInterval, _durationInterval),
+      returnValueForMissingStub: null);
   @override
   bool get mapOpened =>
       (super.noSuchMethod(Invocation.getter(#mapOpened), returnValue: false)
