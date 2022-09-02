@@ -460,9 +460,10 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
 
         # Call under test and asserts
-        await self.user_service.update_group(user, group_info.id, None, [test_contact])
+        await self.user_service.update_group(user, group_info.id, None, [test_contact], "image_2")
 
         group_info.contacts = [test_contact]
+        group_info.image_ref = "image_2"
 
         self.mock_user_repo.update_user_groups.assert_called_with(user, [group_info])
 

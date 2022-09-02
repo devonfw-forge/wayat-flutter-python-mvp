@@ -215,7 +215,8 @@ class UserService:
         group: GroupInfo = await self._user_repository.create_group(user, name, members, self.DEFAULT_GROUP_PICTURE)
         return group.id
 
-    async def update_group(self, user: str, id_group: str, name: Optional[str], members: Optional[UsersListType]):
+    async def update_group(self, user: str, id_group: str, name: Optional[str] = None,
+                           members: Optional[UsersListType] = None, image_ref: Optional[str] = None):
         """
         Updates a group info
         """
@@ -229,5 +230,8 @@ class UserService:
         elif members is not None:
             raise NotFoundException(f"Trying to add a user that is not in your contacts list"
                                     f" {list(set(members).difference(set(user_entity.contacts)))}")
+
+        if image_ref is not None:
+            group.image_ref = image_ref
 
         await self._user_repository.update_user_groups(user, user_groups)
