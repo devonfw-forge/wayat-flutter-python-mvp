@@ -1,15 +1,20 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
+import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ChangePhoneValidationPage extends StatelessWidget {
   final SessionState userSession = GetIt.I.get<SessionState>();
+  final EditProfileController controller = EditProfileController();
+  String newPhoneNumber;
 
-  ChangePhoneValidationPage({Key? key}) : super(key: key);
+  ChangePhoneValidationPage({Key? key, required this.newPhoneNumber})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +51,13 @@ class ChangePhoneValidationPage extends StatelessWidget {
                 text: appLocalizations.verify,
                 enabled: true,
                 onPressed: () {
-                  // _submit();
+                  controller.submitNewPhone(newPhoneNumber);
+                  AutoRouter.of(context).pop();
                 }),
             CustomTextButton(
                 text: appLocalizations.cancel,
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  AutoRouter.of(context).pop();
                 }),
           ],
         ),

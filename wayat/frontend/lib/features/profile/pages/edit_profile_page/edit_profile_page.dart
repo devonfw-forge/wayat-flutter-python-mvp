@@ -7,7 +7,7 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/theme/text_style.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/features/authentication/page/change_phone_validation_page.dart';
+import 'package:wayat/features/profile/pages/change_phone_page/change_phone_validation_page.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,7 +28,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   XFile? currentSelectedImage;
   String? name;
   bool isVisible = false;
-  bool _validPhone = false;
   final String _errorPhoneMsg = "";
 
   TextStyle _textStyle(Color color, double size) =>
@@ -178,21 +177,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ],
       decoration: InputDecoration(
           errorText: _errorPhoneMsg != "" ? _errorPhoneMsg : null,
-          labelText: user.phone.substring(3),
+          labelText: user.phone,
           labelStyle: TextStyleTheme.primaryTextStyle_16,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
       onSubmitted: (phone) {
-        //TODO: Have an error here on validation... fix later
-        // _validPhone = _formKey.currentState!.validate();
-        _validPhone = true;
-        if (_validPhone) {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return ChangePhoneValidationPage();
-              });
-        }
+        showDialog(
+            context: context,
+            builder: (context) {
+              return ChangePhoneValidationPage(newPhoneNumber: phone);
+            });
       },
     );
   }
