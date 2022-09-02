@@ -1,8 +1,10 @@
 import logging
+import mimetypes
 from typing import Optional
 
 from fastapi import APIRouter, Depends, UploadFile
 
+from app.business.wayat_management.exceptions.http import InvalidImageFormatException
 from app.business.wayat_management.models.group import CreateGroupRequest, UpdateGroupRequest, ListGroupsResponse, \
     CreateGroupResponse
 from app.business.wayat_management.services.user import UserService
@@ -50,7 +52,9 @@ async def delete_group(group_id: str, user: FirebaseAuthenticatedUser = Depends(
 
 
 @router.post("/picture/{group_id}", description="Update the profile picture of a group")
-async def upload_group_picture(group_id: str, upload_file: UploadFile,
+async def upload_group_picture(group_id: str, upload_file: UploadFile, users: UserService = Depends(UserService),
                                user: FirebaseAuthenticatedUser = Depends(get_user())):
-    # TODO: Implement this method
-    raise NotImplementedError
+    extension = mimetypes.guess_extension(upload_file.content_type)
+    if not extension or extension.lower() not in ('.png', '.jpeg', '.jpg'):
+        raise InvalidImageFormatException
+    await users.update_group_picture(user=user.uid, group=group_id, picture=upload_file.file, extension=extension)
