@@ -450,4 +450,8 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i10.Future<void>.value(),
               returnValueForMissingStub: _i10.Future<void>.value())
           as _i10.Future<void>);
+  @override
+  void addContact(_i9.Contact? contact) =>
+      super.noSuchMethod(Invocation.method(#addContact, [contact]),
+          returnValueForMissingStub: null);
 }
