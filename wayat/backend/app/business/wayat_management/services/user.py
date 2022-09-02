@@ -1,13 +1,13 @@
 import asyncio
 import logging
 import mimetypes
-from typing import BinaryIO
+from typing import BinaryIO, Optional, Tuple
 
 import requests
 from fastapi import Depends
 from requests import RequestException, Response
 
-from app.business.wayat_management.models.group import GroupDTO
+from app.business.wayat_management.models.group import GroupDTO, UsersListType
 from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
@@ -101,20 +101,20 @@ class UserService:
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
 
     async def get_user_groups(self, uid: str) -> list[GroupDTO]:
-        groups = await self._user_repository.get_user_groups(uid)
+        groups, _ = await self._user_repository.get_user_groups(uid)
         return list(map(self.map_group_to_dto, groups))
 
-    async def get_user_group(self, uid: str, group_id: str) -> GroupDTO:
-        user_groups = await self._user_repository.get_user_groups(uid)
-        found_group = None
-        for g in user_groups:
-            if g.id == group_id:
-                found_group = g
-                break
-        if found_group is None:
+    async def _get_user_group(self, uid: str, group_id: str) -> Tuple[GroupInfo, list[GroupInfo], UserEntity]:
+        user_groups, user_entity = await self._user_repository.get_user_groups(uid)
+        try:
+            group = next(g for g in user_groups if g.id == group_id)
+        except StopIteration:
             raise NotFoundException("Group Not Found")
-        else:
-            return self.map_group_to_dto(found_group)
+        return group, user_groups, user_entity
+
+    async def get_user_group(self, uid: str, group_id: str) -> GroupDTO:
+        group, _, _ = await self._get_user_group(uid, group_id)
+        return self.map_group_to_dto(group)
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
         await self._file_repository.delete_user_images(uid)
@@ -214,3 +214,20 @@ class UserService:
         """
         group: GroupInfo = await self._user_repository.create_group(user, name, members, self.DEFAULT_GROUP_PICTURE)
         return group.id
+
+    async def update_group(self, user: str, id_group: str, name: Optional[str], members: Optional[UsersListType]):
+        """
+        Updates a group info
+        """
+        group, user_groups, user_entity = await self._get_user_group(user, id_group)
+
+        if name is not None:
+            group.name = name
+        # Validate all members exist
+        if members is not None and set(members).issubset(set(user_entity.contacts)):
+            group.contacts = members
+        elif members is not None:
+            raise NotFoundException(f"Trying to add a user that is not in your contacts list"
+                                    f" {list(set(members).difference(set(user_entity.contacts)))}")
+
+        await self._user_repository.update_user_groups(user, user_groups)

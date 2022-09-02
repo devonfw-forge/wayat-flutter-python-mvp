@@ -11,12 +11,14 @@ part 'requests_controller.g.dart';
 class RequestsController = _RequestsController with _$RequestsController;
 
 abstract class _RequestsController with Store {
-  final RequestsService _service = RequestsServiceImpl();
+  final RequestsService _service;
   static const String pendingRequestsKey = "pending_requests";
   static const String sentRequestsKey = "sent_requests";
   late FriendsController friendsController;
 
-  _RequestsController(this.friendsController);
+  _RequestsController(
+      {required this.friendsController, RequestsService? requestsService})
+      : _service = requestsService ?? RequestsServiceImpl();
 
   String textFilter = "";
 
@@ -49,33 +51,30 @@ abstract class _RequestsController with Store {
 
   @action
   Future<void> sendRequest(Contact contact) async {
-    if (await _service.sendRequest(contact)) {
-      sentRequests.add(contact);
-    }
+    sentRequests.add(contact);
+    _service.sendRequest(contact);
   }
 
   @action
   Future<void> rejectRequest(Contact contact) async {
-    if (await _service.rejectRequest(contact)) {
-      pendingRequests.remove(contact);
-      filteredPendingRequests.remove(contact);
-    }
+    pendingRequests.remove(contact);
+    filteredPendingRequests.remove(contact);
+    _service.rejectRequest(contact);
   }
 
   @action
   Future<void> acceptRequest(Contact contact) async {
+    pendingRequests.remove(contact);
+    filteredPendingRequests.remove(contact);
     if (await _service.acceptRequest(contact)) {
-      pendingRequests.remove(contact);
-      filteredPendingRequests.remove(contact);
       friendsController.updateContacts();
     }
   }
 
   @action
   Future<void> unsendRequest(Contact contact) async {
-    if (await _service.unsendRequest(contact)) {
-      sentRequests.remove(contact);
-    }
+    sentRequests.remove(contact);
+    _service.unsendRequest(contact);
   }
 
   @action

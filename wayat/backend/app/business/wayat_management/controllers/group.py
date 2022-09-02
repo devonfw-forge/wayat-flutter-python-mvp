@@ -38,9 +38,9 @@ async def create_group(request: CreateGroupRequest, user: FirebaseAuthenticatedU
 
 @router.put("/{group_id}", description="Update the information of a group")
 async def update_group(group_id: str, request: UpdateGroupRequest,
+                       user_service: UserService = Depends(UserService),
                        user: FirebaseAuthenticatedUser = Depends(get_user())):
-    # TODO: Implement this method
-    raise NotImplementedError
+    await user_service.update_group(user.uid, group_id, request.name, request.members)
 
 
 @router.delete("/{group_id}", description="Delete a group")
