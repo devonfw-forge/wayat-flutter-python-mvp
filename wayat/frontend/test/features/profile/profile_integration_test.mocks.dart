@@ -557,10 +557,6 @@ class MockMapState extends _i1.Mock implements _i25.MapState {
                   this, Invocation.getter(#mapStatusService)))
           as _i12.MapStatusService);
   @override
-  set mapStatusService(_i12.MapStatusService? _mapStatusService) => super
-      .noSuchMethod(Invocation.setter(#mapStatusService, _mapStatusService),
-          returnValueForMissingStub: null);
-  @override
   set timer(_i15.Timer? _timer) =>
       super.noSuchMethod(Invocation.setter(#timer, _timer),
           returnValueForMissingStub: null);
@@ -570,6 +566,10 @@ class MockMapState extends _i1.Mock implements _i25.MapState {
               returnValue:
                   _FakeDuration_4(this, Invocation.getter(#durationInterval)))
           as Duration);
+  @override
+  set durationInterval(Duration? _durationInterval) => super.noSuchMethod(
+      Invocation.setter(#durationInterval, _durationInterval),
+      returnValueForMissingStub: null);
   @override
   bool get mapOpened =>
       (super.noSuchMethod(Invocation.getter(#mapOpened), returnValue: false)
@@ -662,6 +662,10 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i15.Future<void>.value(),
               returnValueForMissingStub: _i15.Future<void>.value())
           as _i15.Future<void>);
+  @override
+  void addContact(_i21.Contact? contact) =>
+      super.noSuchMethod(Invocation.method(#addContact, [contact]),
+          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [RequestsController].
