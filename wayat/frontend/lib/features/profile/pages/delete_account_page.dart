@@ -1,3 +1,5 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -42,6 +44,7 @@ class DeleteAccountPage extends StatelessWidget {
                 text: appLocalizations.delete,
                 enabled: true,
                 onPressed: () {
+                  AutoRouter.of(context).pop();
                   profileState.deleteCurrentUser();
                   userSession.currentUser = null;
                   userSession.finishLoggedIn = false;
@@ -51,7 +54,7 @@ class DeleteAccountPage extends StatelessWidget {
             CustomTextButton(
                 text: appLocalizations.cancel,
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  AutoRouter.of(context).pop();
                 }),
           ],
         ),

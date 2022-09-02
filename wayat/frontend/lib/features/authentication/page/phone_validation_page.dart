@@ -90,10 +90,10 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
           labelText: appLocalizations.phoneNumber,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
-      onSaved: (phone) {
+      onChanged: (phone) {
         setState(() {
           _validPhone = _formKey.currentState!.validate();
-          if (_validPhone) _phoneNumber = phone!.completeNumber;
+          if (_validPhone) _phoneNumber = phone.completeNumber;
         });
       },
     );

@@ -224,6 +224,14 @@ class MockProfileState extends _i1.Mock implements _i10.ProfileState {
   _i9.Future<dynamic> updateCurrentUserName(String? newName) =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUserName, [newName]),
           returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  _i9.Future<dynamic> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
+  @override
+  _i9.Future<dynamic> logOut() =>
+      (super.noSuchMethod(Invocation.method(#logOut, []),
+          returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
 }
 
 /// A class which mocks [LocationState].
