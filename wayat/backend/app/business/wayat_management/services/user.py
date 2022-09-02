@@ -118,12 +118,17 @@ class UserService:
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
         user = await self._user_repository.get_or_throw(uid)
-        await self._file_repository.delete(reference=user.image_ref)
+        if user.image_ref != self.DEFAULT_PICTURE:
+            await self._file_repository.delete(reference=user.image_ref)
         image_ref = await self._upload_profile_picture(uid=uid, extension=extension, data=data)
         await self._user_repository.update(document_id=uid, data={"image_ref": image_ref})
 
+    @staticmethod
+    def _get_profile_picture_ref(uid: str, extension: str):
+        return uid + extension
+
     async def _upload_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes) -> str:
-        file_name = uid + extension
+        file_name = self._get_profile_picture_ref(uid, extension)
         image_ref = await self._file_repository.upload_profile_image(file_name, resize_image(data, self.THUMBNAIL_SIZE))
         return image_ref
 
@@ -193,19 +198,22 @@ class UserService:
         await self._user_repository.delete_contact(user_id, contact_id)
 
     async def delete_account(self, user_id):
+        """
+            Removes all contacts + User Document + User Status Document
+        """
         await self._delete_all_contacts(user_id)
         await self._user_repository.delete(document_id=user_id)
         await self._status_repository.delete(document_id=user_id)
 
     async def _delete_all_contacts(self, user_id):
         """
-        Deletes all contacts of a user
+            Deletes all contacts of a user
         """
         user = await self._user_repository.get_or_throw(user_id)
         coroutines = [self._user_repository.delete_contact(user_id, u) for u in user.contacts]
         await asyncio.gather(*coroutines)
 
-    async def phone_in_use(self, phone: str):
+    async def phone_in_use(self, phone: str) -> bool:
         users = await self._user_repository.find_by_phone(phones=[phone])
         return len(users) > 0
 
@@ -223,15 +231,17 @@ class UserService:
         """
         group, user_groups, user_entity = await self._get_user_group(user, id_group)
 
+        # Update Name of Group
         if name is not None:
             group.name = name
-        # Validate all members exist
+
+        # Update Members of Group (Validates are friends of user)
         if members is not None and set(members).issubset(set(user_entity.contacts)):
             group.contacts = members
         elif members is not None:
             raise NotFoundException(f"Trying to add a user that is not in your contacts list"
                                     f" {list(set(members).difference(set(user_entity.contacts)))}")
-
+        # Update Image of Group
         if image_ref is not None:
             group.image_ref = image_ref
 
