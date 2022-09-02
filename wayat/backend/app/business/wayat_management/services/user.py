@@ -33,6 +33,8 @@ class UserService:
         self.DEFAULT_GROUP_PICTURE = storage_settings.default_picture
         self.THUMBNAIL_SIZE = storage_settings.thumbnail_size
 
+    # Mappers Entity -> DTO
+
     def map_to_dto(self, entity: UserEntity) -> UserDTO:
         return UserDTO(
             id=entity.document_id,
@@ -52,6 +54,8 @@ class UserService:
             members=entity.contacts,
             image_url=self._file_repository.generate_signed_url(entity.image_ref),
         )
+
+    # User Info
 
     async def get_or_create(self, uid: str, default_data: FirebaseAuthenticatedUser) -> tuple[UserDTO, bool]:
         user_entity = await self._user_repository.get(uid)
@@ -85,6 +89,16 @@ class UserService:
         if update_data:
             await self._user_repository.update(document_id=uid, data=update_data)
 
+    async def delete_account(self, user_id):
+        """
+            Removes all contacts + User Document + User Status Document
+        """
+        await self._delete_all_contacts(user_id)
+        await self._user_repository.delete(document_id=user_id)
+        await self._status_repository.delete(document_id=user_id)
+
+    # User Contacts
+
     async def add_contacts(self, *, uid: str, users: list[str]):
         # Check new users existence
         contacts = await self.get_contacts(users)
@@ -99,6 +113,57 @@ class UserService:
 
     async def get_user_contacts(self, uid: str):
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
+
+    async def get_contact(self, uid: str) -> UserDTO:
+        """
+        Returns user DTO
+        """
+        user = await self._user_repository.get_or_throw(uid)
+        return self.map_to_dto(user)
+
+    async def get_contacts(self, uids: list[str]) -> list[UserDTO]:
+        coroutines = [self.get_contact(u) for u in uids]
+        contacts_dtos: list[UserDTO] = await asyncio.gather(*coroutines)
+        return contacts_dtos
+
+    async def get_pending_friend_requests(self, uid) -> tuple[list[UserDTO], list[UserDTO]]:
+        """
+        Returns pending friend requests, received and sent
+        """
+        user = await self._user_repository.get_or_throw(uid)
+        return await self.get_contacts(user.pending_requests), await self.get_contacts(user.sent_requests)
+
+    async def cancel_friend_request(self, uid, contact_id):
+        """
+        Cancels a pending sent friend request
+        """
+        await self._user_repository.cancel_friend_request(sender_id=uid, receiver_id=contact_id)
+
+    async def respond_friend_request(self, user_uid: str, friend_uid: str, accept: bool):
+        """
+        Responds a friend request by either accepting or denying it
+        """
+        await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
+
+    async def delete_contact(self, user_id, contact_id):
+        """
+        Deletes a contact
+        """
+        await self._user_repository.delete_contact(user_id, contact_id)
+
+    async def _delete_all_contacts(self, user_id):
+        """
+            Deletes all contacts of a user
+        """
+        user = await self._user_repository.get_or_throw(user_id)
+        coroutines = [self._user_repository.delete_contact(user_id, u) for u in user.contacts]
+        await asyncio.gather(*coroutines)
+
+    async def phone_in_use(self, phone: str) -> bool:
+        users = await self._user_repository.find_by_phone(phones=[phone])
+        return len(users) > 0
+
+    # User Groups
 
     async def get_user_groups(self, uid: str) -> list[GroupDTO]:
         groups, _ = await self._user_repository.get_user_groups(uid)
@@ -115,6 +180,38 @@ class UserService:
     async def get_user_group(self, uid: str, group_id: str) -> GroupDTO:
         group, _, _ = await self._get_user_group(uid, group_id)
         return self.map_group_to_dto(group)
+
+    async def create_group(self, user: str, name: str, members: list[str]) -> str:
+        """
+        Creates a group and returns the assigned id
+        """
+        group: GroupInfo = await self._user_repository.create_group(user, name, members, self.DEFAULT_GROUP_PICTURE)
+        return group.id
+
+    async def update_group(self, user: str, id_group: str, name: Optional[str] = None,
+                           members: Optional[UsersListType] = None, image_ref: Optional[str] = None):
+        """
+        Updates a group info
+        """
+        group, user_groups, user_entity = await self._get_user_group(user, id_group)
+
+        # Update Name of Group
+        if name is not None:
+            group.name = name
+
+        # Update Members of Group (Validates are friends of user)
+        if members is not None and set(members).issubset(set(user_entity.contacts)):
+            group.contacts = members
+        elif members is not None:
+            raise NotFoundException(f"Trying to add a user that is not in your contacts list"
+                                    f" {list(set(members).difference(set(user_entity.contacts)))}")
+        # Update Image of Group
+        if image_ref is not None:
+            group.image_ref = image_ref
+
+        await self._user_repository.update_user_groups(user, user_groups)
+
+    # User & Group picture handling
 
     async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
         user = await self._user_repository.get_or_throw(uid)
@@ -159,93 +256,6 @@ class UserService:
             picture = self.DEFAULT_PICTURE
 
         return picture
-
-    async def get_contact(self, uid: str) -> UserDTO:
-        """
-        Returns user DTO
-        """
-        user = await self._user_repository.get_or_throw(uid)
-        return self.map_to_dto(user)
-
-    async def get_contacts(self, uids: list[str]) -> list[UserDTO]:
-        coroutines = [self.get_contact(u) for u in uids]
-        contacts_dtos: list[UserDTO] = await asyncio.gather(*coroutines)
-        return contacts_dtos
-
-    async def get_pending_friend_requests(self, uid) -> tuple[list[UserDTO], list[UserDTO]]:
-        """
-        Returns pending friend requests, received and sent
-        """
-        user = await self._user_repository.get_or_throw(uid)
-        return await self.get_contacts(user.pending_requests), await self.get_contacts(user.sent_requests)
-
-    async def cancel_friend_request(self, uid, contact_id):
-        """
-        Cancels a pending sent friend request
-        """
-        await self._user_repository.cancel_friend_request(sender_id=uid, receiver_id=contact_id)
-
-    async def respond_friend_request(self, user_uid: str, friend_uid: str, accept: bool):
-        """
-        Responds a friend request by either accepting or denying it
-        """
-        await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
-
-    async def delete_contact(self, user_id, contact_id):
-        """
-        Deletes a contact
-        """
-        await self._user_repository.delete_contact(user_id, contact_id)
-
-    async def delete_account(self, user_id):
-        """
-            Removes all contacts + User Document + User Status Document
-        """
-        await self._delete_all_contacts(user_id)
-        await self._user_repository.delete(document_id=user_id)
-        await self._status_repository.delete(document_id=user_id)
-
-    async def _delete_all_contacts(self, user_id):
-        """
-            Deletes all contacts of a user
-        """
-        user = await self._user_repository.get_or_throw(user_id)
-        coroutines = [self._user_repository.delete_contact(user_id, u) for u in user.contacts]
-        await asyncio.gather(*coroutines)
-
-    async def phone_in_use(self, phone: str) -> bool:
-        users = await self._user_repository.find_by_phone(phones=[phone])
-        return len(users) > 0
-
-    async def create_group(self, user: str, name: str, members: list[str]) -> str:
-        """
-        Creates a group and returns the assigned id
-        """
-        group: GroupInfo = await self._user_repository.create_group(user, name, members, self.DEFAULT_GROUP_PICTURE)
-        return group.id
-
-    async def update_group(self, user: str, id_group: str, name: Optional[str] = None,
-                           members: Optional[UsersListType] = None, image_ref: Optional[str] = None):
-        """
-        Updates a group info
-        """
-        group, user_groups, user_entity = await self._get_user_group(user, id_group)
-
-        # Update Name of Group
-        if name is not None:
-            group.name = name
-
-        # Update Members of Group (Validates are friends of user)
-        if members is not None and set(members).issubset(set(user_entity.contacts)):
-            group.contacts = members
-        elif members is not None:
-            raise NotFoundException(f"Trying to add a user that is not in your contacts list"
-                                    f" {list(set(members).difference(set(user_entity.contacts)))}")
-        # Update Image of Group
-        if image_ref is not None:
-            group.image_ref = image_ref
-
-        await self._user_repository.update_user_groups(user, user_groups)
 
     @staticmethod
     def _get_group_image_ref(user: str, group_id: str, extension: str):
