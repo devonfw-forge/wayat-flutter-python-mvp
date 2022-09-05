@@ -188,6 +188,11 @@ class UserService:
         group: GroupInfo = await self._user_repository.create_group(user, name, members, self.DEFAULT_GROUP_PICTURE)
         return group.id
 
+    async def delete_group(self, *, uid: str, group_id: str):
+        _, groups, _ = await self._get_user_group(uid, group_id)
+        groups = [g for g in groups if g.id != group_id]
+        await self._user_repository.update_user_groups(user_id=uid, user_groups=groups)
+
     async def update_group(self, user: str, id_group: str, name: Optional[str] = None,
                            members: Optional[UsersListType] = None, image_ref: Optional[str] = None):
         """
