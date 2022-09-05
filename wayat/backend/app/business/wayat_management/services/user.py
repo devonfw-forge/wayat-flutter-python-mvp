@@ -33,6 +33,8 @@ class UserService:
         self.DEFAULT_GROUP_PICTURE = storage_settings.default_picture
         self.THUMBNAIL_SIZE = storage_settings.thumbnail_size
 
+    # Mappers Entity -> DTO
+
     def map_to_dto(self, entity: UserEntity) -> UserDTO:
         return UserDTO(
             id=entity.document_id,
@@ -52,6 +54,8 @@ class UserService:
             members=entity.contacts,
             image_url=self._file_repository.generate_signed_url(entity.image_ref),
         )
+
+    # User Info
 
     async def get_or_create(self, uid: str, default_data: FirebaseAuthenticatedUser) -> tuple[UserDTO, bool]:
         user_entity = await self._user_repository.get(uid)
@@ -85,6 +89,16 @@ class UserService:
         if update_data:
             await self._user_repository.update(document_id=uid, data=update_data)
 
+    async def delete_account(self, user_id):
+        """
+            Removes all contacts + User Document + User Status Document
+        """
+        await self._delete_all_contacts(user_id)
+        await self._user_repository.delete(document_id=user_id)
+        await self._status_repository.delete(document_id=user_id)
+
+    # User Contacts
+
     async def add_contacts(self, *, uid: str, users: list[str]):
         # Check new users existence
         contacts = await self.get_contacts(users)
@@ -99,60 +113,6 @@ class UserService:
 
     async def get_user_contacts(self, uid: str):
         return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
-
-    async def get_user_groups(self, uid: str) -> list[GroupDTO]:
-        groups, _ = await self._user_repository.get_user_groups(uid)
-        return list(map(self.map_group_to_dto, groups))
-
-    async def _get_user_group(self, uid: str, group_id: str) -> Tuple[GroupInfo, list[GroupInfo], UserEntity]:
-        user_groups, user_entity = await self._user_repository.get_user_groups(uid)
-        try:
-            group = next(g for g in user_groups if g.id == group_id)
-        except StopIteration:
-            raise NotFoundException("Group Not Found")
-        return group, user_groups, user_entity
-
-    async def get_user_group(self, uid: str, group_id: str) -> GroupDTO:
-        group, _, _ = await self._get_user_group(uid, group_id)
-        return self.map_group_to_dto(group)
-
-    async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
-        await self._file_repository.delete_user_images(uid)
-        image_ref = await self._upload_profile_picture(uid=uid, extension=extension, data=data)
-        await self._user_repository.update(document_id=uid, data={"image_ref": image_ref})
-
-    async def _upload_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes) -> str:
-        file_name = uid + extension
-        image_ref = await self._file_repository.upload_image(file_name, resize_image(data, self.THUMBNAIL_SIZE))
-        return image_ref
-
-    async def _extract_picture(self, uid: str, url: str | None) -> str | None:
-        if not url:
-            return self.DEFAULT_PICTURE
-
-        loop = asyncio.get_event_loop()
-
-        def sync_process() -> tuple[Response, str]:
-            res = requests.get(url)
-            if res.status_code != 200:
-                raise RequestException
-            ext = mimetypes.guess_extension(res.headers['Content-Type'])
-            if not ext:
-                raise RequestException
-            return res, ext
-
-        try:
-            response, extension = await loop.run_in_executor(None, sync_process)
-            picture = await self._upload_profile_picture(
-                uid=uid,
-                extension=extension,
-                data=response.content
-            )
-        except RequestException:
-            log.error(f"Couldn't extract an profile picture from a token picture URL. Falling back to default picture")
-            picture = self.DEFAULT_PICTURE
-
-        return picture
 
     async def get_contact(self, uid: str) -> UserDTO:
         """
@@ -191,22 +151,35 @@ class UserService:
         """
         await self._user_repository.delete_contact(user_id, contact_id)
 
-    async def delete_account(self, user_id):
-        await self._delete_all_contacts(user_id)
-        await self._user_repository.delete(document_id=user_id)
-        await self._status_repository.delete(document_id=user_id)
-
     async def _delete_all_contacts(self, user_id):
         """
-        Deletes all contacts of a user
+            Deletes all contacts of a user
         """
         user = await self._user_repository.get_or_throw(user_id)
         coroutines = [self._user_repository.delete_contact(user_id, u) for u in user.contacts]
         await asyncio.gather(*coroutines)
 
-    async def phone_in_use(self, phone: str):
+    async def phone_in_use(self, phone: str) -> bool:
         users = await self._user_repository.find_by_phone(phones=[phone])
         return len(users) > 0
+
+    # User Groups
+
+    async def get_user_groups(self, uid: str) -> list[GroupDTO]:
+        groups, _ = await self._user_repository.get_user_groups(uid)
+        return list(map(self.map_group_to_dto, groups))
+
+    async def _get_user_group(self, uid: str, group_id: str) -> Tuple[GroupInfo, list[GroupInfo], UserEntity]:
+        user_groups, user_entity = await self._user_repository.get_user_groups(uid)
+        try:
+            group = next(g for g in user_groups if g.id == group_id)
+        except StopIteration:
+            raise NotFoundException("Group Not Found")
+        return group, user_groups, user_entity
+
+    async def get_user_group(self, uid: str, group_id: str) -> GroupDTO:
+        group, _, _ = await self._get_user_group(uid, group_id)
+        return self.map_group_to_dto(group)
 
     async def create_group(self, user: str, name: str, members: list[str]) -> str:
         """
@@ -215,19 +188,84 @@ class UserService:
         group: GroupInfo = await self._user_repository.create_group(user, name, members, self.DEFAULT_GROUP_PICTURE)
         return group.id
 
-    async def update_group(self, user: str, id_group: str, name: Optional[str], members: Optional[UsersListType]):
+    async def update_group(self, user: str, id_group: str, name: Optional[str] = None,
+                           members: Optional[UsersListType] = None, image_ref: Optional[str] = None):
         """
         Updates a group info
         """
         group, user_groups, user_entity = await self._get_user_group(user, id_group)
 
+        # Update Name of Group
         if name is not None:
             group.name = name
-        # Validate all members exist
+
+        # Update Members of Group (Validates are friends of user)
         if members is not None and set(members).issubset(set(user_entity.contacts)):
             group.contacts = members
         elif members is not None:
             raise NotFoundException(f"Trying to add a user that is not in your contacts list"
                                     f" {list(set(members).difference(set(user_entity.contacts)))}")
+        # Update Image of Group
+        if image_ref is not None:
+            group.image_ref = image_ref
 
         await self._user_repository.update_user_groups(user, user_groups)
+
+    # User & Group picture handling
+
+    async def update_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes):
+        user = await self._user_repository.get_or_throw(uid)
+        if user.image_ref != self.DEFAULT_PICTURE:
+            await self._file_repository.delete(reference=user.image_ref)
+        image_ref = await self._upload_profile_picture(uid=uid, extension=extension, data=data)
+        await self._user_repository.update(document_id=uid, data={"image_ref": image_ref})
+
+    @staticmethod
+    def _get_profile_picture_ref(uid: str, extension: str):
+        return uid + extension
+
+    async def _upload_profile_picture(self, uid: str, extension: str, data: BinaryIO | bytes) -> str:
+        file_name = self._get_profile_picture_ref(uid, extension)
+        image_ref = await self._file_repository.upload_profile_image(file_name, resize_image(data, self.THUMBNAIL_SIZE))
+        return image_ref
+
+    async def _extract_picture(self, uid: str, url: str | None) -> str | None:
+        if not url:
+            return self.DEFAULT_PICTURE
+
+        loop = asyncio.get_event_loop()
+
+        def sync_process() -> tuple[Response, str]:
+            res = requests.get(url)
+            if res.status_code != 200:
+                raise RequestException
+            ext = mimetypes.guess_extension(res.headers['Content-Type'])
+            if not ext:
+                raise RequestException
+            return res, ext
+
+        try:
+            response, extension = await loop.run_in_executor(None, sync_process)
+            picture = await self._upload_profile_picture(
+                uid=uid,
+                extension=extension,
+                data=response.content
+            )
+        except RequestException:
+            log.error(f"Couldn't extract an profile picture from a token picture URL. Falling back to default picture")
+            picture = self.DEFAULT_PICTURE
+
+        return picture
+
+    @staticmethod
+    def _get_group_image_ref(user: str, group_id: str, extension: str):
+        return f"{user}_{group_id}{extension}"
+
+    async def update_group_picture(self, *, user: str, group: str, picture: BinaryIO | bytes, extension: str):
+        group_info, _, _ = await self._get_user_group(uid=user, group_id=group)
+        if group_info.image_ref != self.DEFAULT_GROUP_PICTURE:
+            await self._file_repository.delete(reference=group_info.image_ref)
+        image_name = self._get_group_image_ref(user, group, extension)
+        new_image = await self._file_repository.upload_group_image(filename=image_name,
+                                                                   data=resize_image(picture, self.THUMBNAIL_SIZE))
+        await self.update_group(user, group, image_ref=new_image)
