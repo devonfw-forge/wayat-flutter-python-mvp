@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -11,6 +12,7 @@ import 'package:wayat/lang/app_localizations.dart';
 class ChangePhoneValidationDialog extends StatelessWidget {
   final SessionState userSession = GetIt.I.get<SessionState>();
   final EditProfileController controller = EditProfileController();
+  FirebaseAuth auth = FirebaseAuth.instance;
   String newPhoneNumber;
 
   ChangePhoneValidationDialog({Key? key, required this.newPhoneNumber})
@@ -51,7 +53,7 @@ class ChangePhoneValidationDialog extends StatelessWidget {
                 text: appLocalizations.verify,
                 enabled: true,
                 onPressed: () {
-                  controller.submitNewPhone(newPhoneNumber);
+                  //controller.submitNewPhone(newPhoneNumber);
                   AutoRouter.of(context).pop();
                 }),
             CustomTextButton(
