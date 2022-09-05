@@ -10,6 +10,14 @@
     "phonePageDescription": "Un numéro de téléphone valide est requis",
     "invalidPhoneNumber": "Numéro de téléphone invalide",
     "phoneUpdateError": "Erreur lors de la définition du numéro de téléphone",
+    "verifyPhoneTitle": "Vérifier le téléphone",
+    "verifyPhoneText": "Veuillez vérifier votre nouveau téléphone portable. Le code est envoyé à",
+    "didnotReceiveCode": "Code non reçu",
+    "resendCode": "Renvoyer le code",
+    "verify": "Vérifier",
+    "cancel": "Annuler",
+    "delete": "Effacer",
+    "deleteAccountText": "Êtes-vous sûr de vouloir supprimer votre compte Wayat? Veuillez noter qu'il n'y a pas d'option pour restaurer le compte ou ses données une fois qu'il est supprimé.",
     
     "home": "Home",
     "contacts": "Contacts",
@@ -77,6 +85,7 @@
     "inviteContacts": "Invitez vos contacts sur Wayat",
     "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
     "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
+    "invitationText": "Invitation texte",
     "invitationCopied": "Copié dans votre presse-papiers",
 
     "accept": "Accepter",

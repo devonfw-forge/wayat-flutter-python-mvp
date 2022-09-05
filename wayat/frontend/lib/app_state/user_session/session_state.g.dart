@@ -105,12 +105,12 @@ mixin _$SessionState on _SessionState, Store {
     return _$updatePhoneAsyncAction.run(() => super.updatePhone(phone));
   }
 
-  late final _$_updateOnboardingAsyncAction =
-      AsyncAction('_SessionState._updateOnboarding', context: context);
+  late final _$setDoneOnBoardingAsyncAction =
+      AsyncAction('_SessionState.setDoneOnBoarding', context: context);
 
   @override
   Future<bool> setDoneOnBoarding() {
-    return _$_updateOnboardingAsyncAction.run(() => super.setDoneOnBoarding());
+    return _$setDoneOnBoardingAsyncAction.run(() => super.setDoneOnBoarding());
   }
 
   late final _$_SessionStateActionController =
