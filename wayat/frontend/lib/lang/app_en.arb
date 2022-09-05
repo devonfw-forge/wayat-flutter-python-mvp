@@ -61,7 +61,7 @@
     "darkTheme": "Enable dark theme",
     "language": "English",
 
-    "changePhone": "Change phone",
+    "changePhone": "Phone",
     "changePassword": "Change password",
 
     "chooseProfileFoto": "Choose picture from",
@@ -71,7 +71,6 @@
    
     "close": "Close",
     "loadingAddress": "Loading address",
-    "noAddress": "Could not find address",
     "errorAddress": "Could not get address",
 
     "friendsTab": "Friends",

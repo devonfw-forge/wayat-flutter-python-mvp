@@ -27,7 +27,7 @@ class AddressResponse {
       }
       return "$street, $number, $city";
     } else {
-      return appLocalizations.noAddress;
+      return "ERROR_ADDRESS";
     }
   }
 }

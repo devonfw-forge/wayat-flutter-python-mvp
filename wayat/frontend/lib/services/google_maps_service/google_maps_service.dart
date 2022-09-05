@@ -31,7 +31,7 @@ class GoogleMapsService {
       return addressResponse.firstValidAddress();
     } on HandshakeException {
       log("Exception: Bad handshake to googleapis.com");
-      return appLocalizations.errorAddress;
+      return "ERROR_ADDRESS";
     }
   }
 }

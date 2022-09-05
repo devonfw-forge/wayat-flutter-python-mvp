@@ -8,6 +8,7 @@ import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
+import 'package:wayat/features/profile/widgets/delete_account_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -47,7 +48,7 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 32),
         _buildShareLocationPart(),
         const SizedBox(height: 48),
-        _buildAccountPart(),
+        _buildAccountPart(context),
         const SizedBox(height: 42),
       ],
     );
@@ -98,8 +99,6 @@ class ProfilePage extends StatelessWidget {
                   color: Colors.black87,
                   fontSize: 16)),
         ),
-        const SizedBox(height: 16),
-        _activeSharingLocationButton(),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.editProfile,
@@ -114,7 +113,7 @@ class ProfilePage extends StatelessWidget {
   //Build UI for "Account" part
   /// - "Log Out" custom button
   /// - "Delete Account" custom button
-  Widget _buildAccountPart() {
+  Widget _buildAccountPart(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,13 +130,17 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.logOut,
             onTap: () {
-              // TODO: Implement the Log Out functional
+              profileState.logOut();
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.deleteAccount,
             onTap: () {
-              // TODO: Implement Delete account
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return DeleteAccountPage();
+                  });
             }),
       ],
     );

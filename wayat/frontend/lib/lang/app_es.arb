@@ -63,12 +63,11 @@
     "gallery": "Galería",
     "save": "Guardar",
 
-    "changePhone": "Cambiar de teléfono",
+    "changePhone": "Teléfono",
     "changePassword": "Cambiar Contraseña",
 
     "close": "Cerrar",
     "loadingAddress": "Cargando dirección",
-    "noAddress": "No se encontró la dirección",
     "errorAddress": "No se pudo obtener la dirección",
 
     "friendsTab": "Amigos",
