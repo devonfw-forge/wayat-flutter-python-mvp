@@ -63,7 +63,6 @@
    
     "close": "Close",
     "loadingAddress": "Loading address",
-    "noAddress": "Could not find address",
     "errorAddress": "Could not get address",
 
     "friendsTab": "Friends",
