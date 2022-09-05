@@ -1,0 +1,96 @@
+{
+    "appTitle": "wayat",
+
+    "login": "Log in",
+    "loginGoogle": "Log in with Google",
+    "email": "Email",
+    "password": "Password",
+    "phoneNumber": "Phone number",
+    "forgotPasswQuestion": "Did you forgot your password?",
+    "phonePageDescription": "A valid phone number is required",
+    "invalidPhoneNumber": "Invalid phone number",
+    "phoneUpdateError": "Error setting phone number",
+    
+    "home": "Home",
+    "contacts": "Contacts",
+    "events": "Events",
+
+    "profile": "Profile",
+    "editProfile": "Edit Profile",
+    "viewProfile": "View profile",
+    "name": "Name",
+
+    "notifications": "Notifications",
+    "addEvents": "Add Event",
+
+    "manageContactsTip": "You'll be able to modify the\npermission of your contacts\nwhenever you want",
+    "allowedContactsTitle": "Set your allowed contacts",
+    "@allowedContactsTitle": {
+        "description": "This is the title of the OnBoarding 1 page"
+    },
+    "allowedContactsBody": "Select the contacts you will allow to\nsee your location.",
+
+    "importContactsTip": "First of all, select the contacts that\nwill be allowed to see your location.",
+    "manageContacts": "Manage contacts",
+
+    "next": "Next",
+    "skip": "Skip",
+
+    "selectContacts": "Select contacts",
+
+    "sharingLocation": "Sharing Location",
+    "activeSharingLocation": "Active sharing Location",
+    "doNotDisturb": "Set do not disturb",
+    
+    "preferences": "Preferences",
+    "faqs": "FAQS",
+    "privacy": "Privacy",
+    "account": "Account",
+    "logOut": "Log Out",
+    "deleteAccount": "Delete Account",
+
+    "information": "Information",
+    "darkTheme": "Enable dark theme",
+    "language": "English",
+
+    "changePhone": "Change phone",
+    "changePassword": "Change password",
+
+    "chooseProfileFoto": "Choose picture from",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "save": "Save",
+   
+    "close": "Close",
+    "loadingAddress": "Loading address",
+    "errorAddress": "Could not get address",
+
+    "friendsTab": "Friends",
+    "requestsTab": "Requests",
+    "suggestionsTab": "Suggestions",
+
+    "friendsPageTitle": "MY FRIENDS",
+    "pendingRequestsTitle": "FRIENDS REQUESTS",
+    "suggestionsPageTitle": "ADD YOUR CONTACTS",
+    "sentRequestsTitle": "SENT REQUESTS",
+    "sentButtonNavigation": "SENT",
+    "sentButtonTile": "Sent",
+    "noPendingRequests": "You don't have any pending requests",
+    "inviteContacts": "Invite contacts to Wayat",
+    "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
+    "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
+    "invitationCopied": "Copied to your clipboard",
+
+    "accept": "Accept",
+    "search": "Search",
+
+    "viewInformation": "View information",
+
+    "profileShareLocation": "Share Location",
+    "profileActiveLocation": "Active Location",
+
+    "contactProfileSharingLocationWithYou": "Sharing location with you",
+    "contactProfileLocationNotAvailable": "Location not available",
+    "contactProfileNotSharingLocation": "Not sharing location",
+    "contactProfileLastUpdated": "Last updated"
+} 
