@@ -1,10 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
+import 'package:wayat/features/profile/widgets/change_phone_validation_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
@@ -24,6 +28,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   XFile? currentSelectedImage;
   String? name;
   bool isVisible = false;
+  final String _errorPhoneMsg = "";
 
   TextStyle _textStyle(Color color, double size) =>
       TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
@@ -40,9 +45,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const SizedBox(height: 32),
           _nameTextField(),
           const SizedBox(height: 34.5),
-
-          // TODO: Implement the Changing phone page
-          // _changePhone(),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _phoneTextField(),
+          )
         ],
       ),
     );
@@ -163,27 +169,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ]),
       );
 
-  // Row _changePhone() => Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 16),
-  //           child: Text(
-  //             appLocalizations.changePhone,
-  //             style: _textStyle(Colors.black87, 16),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 16),
-  //           child: InkWell(
-  //               onTap: () {
-  //                 //AutoRoute to change phone page
-  //               },
-  //               child: const Icon(Icons.arrow_forward,
-  //                   color: Colors.black87, size: 24)),
-  //         )
-  //       ],
-  //     );
+  IntlPhoneField _phoneTextField() {
+    return IntlPhoneField(
+      // Only numbers are allowed as input
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      ],
+      decoration: InputDecoration(
+          errorText: _errorPhoneMsg != "" ? _errorPhoneMsg : null,
+          labelText: user.phone,
+          labelStyle: _textStyle(Colors.black87, 16),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+      initialCountryCode: 'ES',
+      onSubmitted: (phone) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return ChangePhoneValidationDialog(newPhoneNumber: phone);
+            });
+      },
+    );
+  }
 
   Widget _getImageFromCameraOrGallary() {
     return Container(
@@ -226,6 +233,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     setState(() {
       currentSelectedImage = newImage;
     });
-    Navigator.pop(context);
+    AutoRouter.of(context).pop();
   }
 }
