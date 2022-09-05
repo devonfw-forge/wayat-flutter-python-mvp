@@ -1,7 +1,6 @@
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/services/request/rest_service.dart';
 
-abstract class RequestsService extends RESTService {
+abstract class RequestsService {
   Future<Map<String, List<Contact>>> getRequests();
   Future<bool> acceptRequest(Contact contact);
   Future<bool> rejectRequest(Contact contact);

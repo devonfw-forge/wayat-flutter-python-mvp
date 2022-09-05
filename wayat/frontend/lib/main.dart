@@ -13,6 +13,7 @@ import 'package:wayat/features/onboarding/controller/onboarding_controller.dart'
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<MapState>(() => MapState());
   GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
+  GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
 }
 
 class MyApp extends StatefulWidget {
