@@ -158,15 +158,13 @@ class UserService:
         # Remove contact from all user groups
         user_groups, _ = await self._user_repository.get_user_groups(user_id)
         self._remove_contact_from_all_groups(contact_id, user_groups)
+        await self._user_repository.update_user_groups(user_id=user_id, user_groups=user_groups)
         # Remove user from all contact groups
         contact_groups, _ = await self._user_repository.get_user_groups(contact_id)
         self._remove_contact_from_all_groups(user_id, contact_groups)
+        await self._user_repository.update_user_groups(user_id=contact_id, user_groups=contact_groups)
         # Delete friend from user & contact
         await self._user_repository.delete_contact(user_id, contact_id)
-        # Update user groups
-        await self._user_repository.update_user_groups(user_id=user_id, user_groups=user_groups)
-        # Update contact groups
-        await self._user_repository.update_user_groups(user_id=contact_id, user_groups=contact_groups)
 
     async def _delete_all_contacts(self, user_id):
         """
