@@ -50,4 +50,14 @@ abstract class _ProfileState with Store {
     _profileService.updateProfileName(newName);
     GetIt.I.get<SessionState>().currentUser!.name = newName;
   }
+
+  @action
+  Future deleteCurrentUser() async {
+    _profileService.deleteCurrentUser();
+  }
+
+  @action
+  Future<dynamic> logOut() async {
+    _profileService.logOut();
+  }
 }

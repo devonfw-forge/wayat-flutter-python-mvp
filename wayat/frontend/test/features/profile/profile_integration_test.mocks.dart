@@ -156,6 +156,14 @@ class MockProfileService extends _i1.Mock implements _i15.ProfileService {
   _i16.Future<bool> updateProfileName(String? name) =>
       (super.noSuchMethod(Invocation.method(#updateProfileName, [name]),
           returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  @override
+  _i16.Future<bool> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  @override
+  _i16.Future<dynamic> logOut() =>
+      (super.noSuchMethod(Invocation.method(#logOut, []),
+          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
 }
 
 /// A class which mocks [ContactsPageController].
