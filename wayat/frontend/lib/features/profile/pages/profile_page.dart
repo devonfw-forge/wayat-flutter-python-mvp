@@ -141,7 +141,7 @@ class ProfilePage extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return DeleteAccountPage();
+                    return DeleteAccountDialog();
                   });
             }),
       ],

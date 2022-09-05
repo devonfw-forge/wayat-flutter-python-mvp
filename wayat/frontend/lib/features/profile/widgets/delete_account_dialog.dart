@@ -7,11 +7,11 @@ import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
-class DeleteAccountPage extends StatelessWidget {
+class DeleteAccountDialog extends StatelessWidget {
   final SessionState userSession = GetIt.I.get<SessionState>();
   final ProfileState profileState = GetIt.I.get<ProfileState>();
 
-  DeleteAccountPage({Key? key}) : super(key: key);
+  DeleteAccountDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
