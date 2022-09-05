@@ -34,10 +34,10 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 16),
         _buildProfileImage(),
         const SizedBox(height: 16),
-        Observer(builder: (_) {
-          String name = userSession.currentUser!.name;
+        Observer(builder: (context) {
+          MyUser myUser = userSession.currentUser!;
           return Text(
-            name,
+            myUser.name,
             textAlign: TextAlign.center,
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
