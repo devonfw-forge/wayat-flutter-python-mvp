@@ -161,9 +161,9 @@ class MockProfileService extends _i1.Mock implements _i15.ProfileService {
       (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
           returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
   @override
-  _i16.Future<bool> logOut() =>
+  _i16.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
 }
 
 /// A class which mocks [ContactsPageController].
@@ -365,6 +365,10 @@ class MockSessionState extends _i1.Mock implements _i19.SessionState {
   @override
   _i16.Future<bool> updatePhone(String? phone) =>
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
+          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  @override
+  _i16.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
           returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
   @override
   _i16.Future<dynamic> doLoginProcess() =>

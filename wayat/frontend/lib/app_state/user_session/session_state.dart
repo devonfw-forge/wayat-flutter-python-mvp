@@ -105,12 +105,13 @@ abstract class _SessionState with Store {
     }
   }
 
+  @action
   Future logOut() async {
-    currentUser = null;
+    await authService.signOut();
     finishLoggedIn = false;
     googleSignedIn = false;
     hasDoneOnboarding = false;
-    authService.signOut();
+    currentUser = null;
   }
 
   bool isOnboardingCompleted() {

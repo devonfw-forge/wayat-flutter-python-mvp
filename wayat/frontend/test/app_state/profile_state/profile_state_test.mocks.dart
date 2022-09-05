@@ -51,6 +51,14 @@ class MockProfileService extends _i1.Mock implements _i4.ProfileService {
   _i5.Future<bool> updateProfileName(String? name) =>
       (super.noSuchMethod(Invocation.method(#updateProfileName, [name]),
           returnValue: _i5.Future<bool>.value(false)) as _i5.Future<bool>);
+  @override
+  _i5.Future<bool> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i5.Future<bool>.value(false)) as _i5.Future<bool>);
+  @override
+  _i5.Future<dynamic> logOut() =>
+      (super.noSuchMethod(Invocation.method(#logOut, []),
+          returnValue: _i5.Future<dynamic>.value()) as _i5.Future<dynamic>);
 }
 
 /// A class which mocks [SessionState].
@@ -129,6 +137,10 @@ class MockSessionState extends _i1.Mock implements _i7.SessionState {
   @override
   _i5.Future<bool> updatePhone(String? phone) =>
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
+          returnValue: _i5.Future<bool>.value(false)) as _i5.Future<bool>);
+  @override
+  _i5.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
           returnValue: _i5.Future<bool>.value(false)) as _i5.Future<bool>);
   @override
   _i5.Future<dynamic> doLoginProcess() =>
