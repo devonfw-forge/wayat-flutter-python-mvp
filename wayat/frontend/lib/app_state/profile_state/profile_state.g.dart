@@ -58,22 +58,6 @@ mixin _$ProfileState on _ProfileState, Store {
         .run(() => super.updateCurrentUserName(newName));
   }
 
-  late final _$deleteCurrentUserAsyncAction =
-      AsyncAction('_ProfileState.deleteCurrentUser', context: context);
-
-  @override
-  Future<dynamic> deleteCurrentUser() {
-    return _$deleteCurrentUserAsyncAction.run(() => super.deleteCurrentUser());
-  }
-
-  late final _$logOutAsyncAction =
-      AsyncAction('_ProfileState.logOut', context: context);
-
-  @override
-  Future<dynamic> logOut() {
-    return _$logOutAsyncAction.run(() => super.logOut());
-  }
-
   late final _$_ProfileStateActionController =
       ActionController(name: '_ProfileState', context: context);
 
