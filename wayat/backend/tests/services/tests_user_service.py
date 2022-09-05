@@ -296,13 +296,13 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
     async def test_upload_profile_picture_should_call_repo(self):
         # Mocks
-        self.mock_file_repository.upload_image.return_value = "test/ref"
+        self.mock_file_repository.upload_profile_image.return_value = "test/ref"
 
         # Call under test
         await self.user_service.update_profile_picture("uid_test", ".jpeg", TEST_IMAGE_BYTES)
 
         # Asserts
-        self.mock_file_repository.upload_image.assert_called_with("uid_test.jpeg", TEST_RESIZED_BYTES)
+        self.mock_file_repository.upload_profile_image.assert_called_with("uid_test.jpeg", TEST_RESIZED_BYTES)
 
     @patch("app.business.wayat_management.services.user.requests")
     async def test_extract_picture_when_invalid_url_should_return_default(self, mock_requests):
@@ -347,7 +347,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         await self._backup_extract_picture(uid="test_uid", url="test_url")
 
         # Asserts
-        self.mock_file_repository.upload_image.assert_called_with("test_uid.png", TEST_RESIZED_BYTES)
+        self.mock_file_repository.upload_profile_image.assert_called_with("test_uid.png", TEST_RESIZED_BYTES)
 
     async def test_phone_in_use_when_phone_in_use_should_return_true(self):
         # Mocks
@@ -439,6 +439,21 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         self.mock_user_repo.update_user_groups.assert_called_with(user, [group_info])
 
+    async def test_delete_user_group_should_return_ok(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
+        group_info = GroupInfo(
+            id="testgroup",
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+        self.mock_user_repo.get_user_groups.return_value = ([group_info], {})
+
+        # Call under test and asserts
+        await self.user_service.delete_group(uid=user, group_id=group_info.id)
+
+        self.mock_user_repo.update_user_groups.assert_called_with(user_id=user, user_groups=[])
+
     async def test_update_user_group_members_should_validate_if_user_is_contact(self):
         user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
         test_user = UserEntity(
@@ -458,11 +473,11 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         )
         self.mock_user_repo.get_user_groups.return_value = ([group_info], test_user)
 
-
         # Call under test and asserts
-        await self.user_service.update_group(user, group_info.id, None, [test_contact])
+        await self.user_service.update_group(user, group_info.id, None, [test_contact], "image_2")
 
         group_info.contacts = [test_contact]
+        group_info.image_ref = "image_2"
 
         self.mock_user_repo.update_user_groups.assert_called_with(user, [group_info])
 
@@ -500,6 +515,26 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         self.mock_user_repo.get_user_groups.assert_called_with(user)
         assert exception is not None
+
+    async def test_update_user_group_should_upload_new_file_and_delete_old(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture + "old"
+        group_info = GroupInfo(
+            id="1",
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+        self.mock_user_repo.get_user_groups.return_value = ([group_info], {})
+        self.mock_file_repository.upload_group_image.return_value = "test/ref"
+
+        # Call under test and asserts
+        group = await self.user_service.update_group_picture(user=user, group=group_info.id,
+                                                             extension=".jpeg", picture=TEST_IMAGE_BYTES)
+
+        # Asserts
+        self.mock_file_repository.upload_group_image.assert_called_with(filename=f'{user}_{group_info.id}.jpeg',
+                                                                        data=TEST_RESIZED_BYTES)
+        self.mock_file_repository.delete.assert_called_with(reference=picture)
 
 
 if __name__ == "__main__":
