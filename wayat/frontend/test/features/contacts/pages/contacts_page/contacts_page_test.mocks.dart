@@ -343,10 +343,6 @@ class MockSessionState extends _i1.Mock implements _i16.SessionState {
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
           returnValue: _i18.Future<bool>.value(false)) as _i18.Future<bool>);
   @override
-  _i18.Future<bool> updateOnboarding() =>
-      (super.noSuchMethod(Invocation.method(#updateOnboarding, []),
-          returnValue: _i18.Future<bool>.value(false)) as _i18.Future<bool>);
-  @override
   _i18.Future<dynamic> doLoginProcess() =>
       (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
           returnValue: _i18.Future<dynamic>.value()) as _i18.Future<dynamic>);
@@ -596,14 +592,6 @@ class MockProfileState extends _i1.Mock implements _i24.ProfileState {
       super.noSuchMethod(Invocation.setter(#isAccount, value),
           returnValueForMissingStub: null);
   @override
-  bool get isSaved =>
-      (super.noSuchMethod(Invocation.getter(#isSaved), returnValue: false)
-          as bool);
-  @override
-  set isSaved(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#isSaved, value),
-          returnValueForMissingStub: null);
-  @override
   _i6.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
@@ -612,10 +600,6 @@ class MockProfileState extends _i1.Mock implements _i24.ProfileState {
   @override
   void setCurrentPage(_i25.ProfileCurrentPages? newPage) =>
       super.noSuchMethod(Invocation.method(#setCurrentPage, [newPage]),
-          returnValueForMissingStub: null);
-  @override
-  void setProfileSaved(bool? isSaved) =>
-      super.noSuchMethod(Invocation.method(#setProfileSaved, [isSaved]),
           returnValueForMissingStub: null);
   @override
   _i18.Future<dynamic> updateCurrentUser() =>

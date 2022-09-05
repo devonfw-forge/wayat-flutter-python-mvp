@@ -41,22 +41,6 @@ mixin _$ProfileState on _ProfileState, Store {
     });
   }
 
-  late final _$isSavedAtom =
-      Atom(name: '_ProfileState.isSaved', context: context);
-
-  @override
-  bool get isSaved {
-    _$isSavedAtom.reportRead();
-    return super.isSaved;
-  }
-
-  @override
-  set isSaved(bool value) {
-    _$isSavedAtom.reportWrite(value, super.isSaved, () {
-      super.isSaved = value;
-    });
-  }
-
   late final _$updateCurrentUserAsyncAction =
       AsyncAction('_ProfileState.updateCurrentUser', context: context);
 
@@ -89,22 +73,10 @@ mixin _$ProfileState on _ProfileState, Store {
   }
 
   @override
-  void setProfileSaved(bool isSaved) {
-    final _$actionInfo = _$_ProfileStateActionController.startAction(
-        name: '_ProfileState.setProfileSaved');
-    try {
-      return super.setProfileSaved(isSaved);
-    } finally {
-      _$_ProfileStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 currentPage: ${currentPage},
-isAccount: ${isAccount},
-isSaved: ${isSaved}
+isAccount: ${isAccount}
     ''';
   }
 }
