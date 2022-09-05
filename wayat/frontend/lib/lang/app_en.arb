@@ -10,14 +10,6 @@
     "phonePageDescription": "A valid phone number is required",
     "invalidPhoneNumber": "Invalid phone number",
     "phoneUpdateError": "Error setting phone number",
-    "verifyPhoneTitle": "Verify phone",
-    "verifyPhoneText": "Please verify your new mobile phone. Code is sent to",
-    "didnotReceiveCode": "Didn't receive code?",
-    "resendCode": "Resend code",
-    "verify": "Verify",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "deleteAccountText": "Are you sure that you want to delete your Wayat account? Please note that there is no option to restore the account or its data once it's deleted.",
     
     "home": "Home",
     "contacts": "Contacts",
@@ -61,7 +53,7 @@
     "darkTheme": "Enable dark theme",
     "language": "English",
 
-    "changePhone": "Phone",
+    "changePhone": "Change phone",
     "changePassword": "Change password",
 
     "chooseProfileFoto": "Choose picture from",
