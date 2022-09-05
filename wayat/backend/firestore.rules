@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+
+	//function allow_status_read(user_request, status_resource) {
+  //	let request_uid = user_request.auth.uid;
+  //	let location_owner = get(location_resource.data.user).data;
+  //	return request_uid in location_owner.trusted_users && !location_owner.do_not_disturb;
+  //}
+
+  function valid_uid(user_request) {
+  	return user_request.auth != null && user_request.auth.uid != null;
+  }
+
+  match /databases/{database}/documents {
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /status/{user_status} {
+    	allow read: if valid_uid(request) && user_status == request.auth.uid
+    }
+
+  }
+}

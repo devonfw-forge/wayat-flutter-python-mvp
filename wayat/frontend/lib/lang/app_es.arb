@@ -83,7 +83,8 @@
     "sentButtonTile": "Enviada",
     "noPendingRequests": "No tienes peticiones pendientes",
     "inviteContacts": "Invita a tus contactos a Wayat",
-    "invitationText": "Invitación texto",
+    "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
+    "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
     "invitationCopied": "Copiado en el portapapeles",
 
     "accept": "Aceptar",

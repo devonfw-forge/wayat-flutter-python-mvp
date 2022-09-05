@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
@@ -76,7 +78,16 @@ abstract class _SuggestionsController with Store {
   }
 
   Future copyInvitation() async {
-    await Clipboard.setData(
-        ClipboardData(text: appLocalizations.invitationText));
+    await Clipboard.setData(ClipboardData(text: _platformText()));
+  }
+
+  String _platformText() {
+    if (Platform.isAndroid) {
+      return appLocalizations.invitationTextAndroid;
+    }
+    if (Platform.isIOS) {
+      return appLocalizations.invitationTextIOS;
+    }
+    return '';
   }
 }
