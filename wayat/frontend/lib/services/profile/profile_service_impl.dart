@@ -40,11 +40,11 @@ class ProfileServiceImpl extends RESTService implements ProfileService {
   Future<bool> logOut() async {
     final SessionState userSession = GetIt.I.get<SessionState>();
 
-    userSession.logOut();
+    bool done = await userSession.logOut();
     userSession.currentUser = null;
     userSession.finishLoggedIn = false;
     userSession.googleSignedIn = false;
     userSession.hasDoneOnboarding = false;
-    return true;
+    return done;
   }
 }
