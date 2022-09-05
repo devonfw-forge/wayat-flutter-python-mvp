@@ -1,7 +1,6 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/services/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
 part 'session_state.g.dart';
@@ -22,12 +21,14 @@ abstract class _SessionState with Store {
   @observable
   MyUser? currentUser;
 
-  final AuthService _authService = GoogleAuthService();
-  AuthService get authService => _authService;
+  final AuthService authService;
+
+  _SessionState({AuthService? authService})
+      : authService = authService ?? GoogleAuthService();
 
   @action
   Future<void> doneOnBoarding() async {
-    await updateOnboarding();
+    await setDoneOnBoarding();
     hasDoneOnboarding = true;
   }
 
@@ -62,24 +63,18 @@ abstract class _SessionState with Store {
     currentUser = await authService.getUserData();
   }
 
+  ///TODO: Evaluate doing optimistic update
   @action
   Future<bool> updatePhone(String phone) async {
-    bool done = (await authService
-                    .sendPostRequest(APIContract.userProfile, {"phone": phone}))
-                .statusCode /
-            10 ==
-        20;
+    bool done = await authService.sendPhoneNumber(phone);
     if (done) currentUser!.phone = phone;
     return done;
   }
 
+  ///TODO: Evaluate doing optimistic update
   @action
-  Future<bool> updateOnboarding() async {
-    bool done = (await authService.sendPostRequest(
-                    APIContract.userProfile, {"onboarding_completed": true}))
-                .statusCode /
-            10 ==
-        20;
+  Future<bool> setDoneOnBoarding() async {
+    bool done = await authService.sendDoneOnboarding(true);
     if (done) currentUser!.onboardingCompleted = true;
     return done;
   }
@@ -115,7 +110,6 @@ abstract class _SessionState with Store {
   }
 
   bool isOnboardingCompleted() {
-    // Gets backend data of the signed in user if it is null
     return currentUser!.onboardingCompleted;
   }
 

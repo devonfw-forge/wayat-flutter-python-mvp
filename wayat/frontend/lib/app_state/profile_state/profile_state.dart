@@ -19,20 +19,12 @@ abstract class _ProfileState with Store {
   @observable
   bool isAccount = false;
 
-  @observable
-  bool isSaved = false;
-
   _ProfileState({ProfileService? profileService})
       : _profileService = profileService ?? ProfileServiceImpl();
 
   @action
   void setCurrentPage(ProfileCurrentPages newPage) {
     currentPage = newPage;
-  }
-
-  @action
-  void setProfileSaved(bool isSaved) {
-    isSaved = true;
   }
 
   @action

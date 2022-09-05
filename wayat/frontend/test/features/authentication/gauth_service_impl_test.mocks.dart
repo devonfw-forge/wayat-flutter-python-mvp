@@ -130,10 +130,6 @@ class MockSessionState extends _i1.Mock implements _i6.SessionState {
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
           returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
   @override
-  _i7.Future<bool> updateOnboarding() =>
-      (super.noSuchMethod(Invocation.method(#updateOnboarding, []),
-          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
-  @override
   _i7.Future<dynamic> doLoginProcess() =>
       (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
           returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
@@ -200,6 +196,14 @@ class MockGoogleAuthService extends _i1.Mock implements _i8.GoogleAuthService {
       Invocation.method(#signOut, []),
       returnValue: _i7.Future<void>.value(),
       returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  @override
+  _i7.Future<bool> sendPhoneNumber(String? phone) =>
+      (super.noSuchMethod(Invocation.method(#sendPhoneNumber, [phone]),
+          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
+  @override
+  _i7.Future<bool> sendDoneOnboarding(bool? doneOnboarding) => (super
+      .noSuchMethod(Invocation.method(#sendDoneOnboarding, [doneOnboarding]),
+          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
   @override
   _i7.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
       (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
