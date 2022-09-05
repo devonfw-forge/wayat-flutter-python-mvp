@@ -62,7 +62,8 @@ class UserStatusService {
         Contact contact =
             contacts.firstWhere((contact) => contact.id == e["uid"]);
         GeoPoint loc = e["location"];
-        String address = e["address"] ?? appLocalizations.noAddress;
+        String address = e["address"] ?? "ERROR_ADDRESS";
+        if (address == "ERROR_ADDRESS") { address = appLocalizations.errorAddress; }
         Timestamp lastUpdated = e["last_updated"];
         ContactLocation located = ContactLocation(
             available: true,

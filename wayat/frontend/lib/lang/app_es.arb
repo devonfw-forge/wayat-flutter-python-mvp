@@ -60,7 +60,6 @@
 
     "close": "Cerrar",
     "loadingAddress": "Cargando dirección",
-    "noAddress": "No se encontró la dirección",
     "errorAddress": "No se pudo obtener la dirección",
 
     "friendsTab": "Amigos",
