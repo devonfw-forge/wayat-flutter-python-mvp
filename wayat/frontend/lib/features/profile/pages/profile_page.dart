@@ -8,7 +8,7 @@ import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
-import 'package:wayat/features/profile/pages/delete_account_page.dart';
+import 'package:wayat/features/profile/widgets/delete_account_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {

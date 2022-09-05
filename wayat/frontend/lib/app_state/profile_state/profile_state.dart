@@ -57,7 +57,7 @@ abstract class _ProfileState with Store {
   }
 
   @action
-  Future<dynamic> logOut() async {
+  Future logOut() async {
     _profileService.logOut();
   }
 }

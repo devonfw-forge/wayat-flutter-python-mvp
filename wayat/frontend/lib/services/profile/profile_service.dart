@@ -4,5 +4,5 @@ abstract class ProfileService {
   Future<bool> uploadProfileImage(XFile? selectedImage);
   Future<bool> updateProfileName(String name);
   Future<bool> deleteCurrentUser();
-  Future<dynamic> logOut();
+  Future<bool> logOut();
 }
