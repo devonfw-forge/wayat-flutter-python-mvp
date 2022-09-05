@@ -4,7 +4,6 @@ import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
-import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/location/share_location_service.dart';
 import 'package:wayat/services/location/share_location_service_factory.dart';
 
