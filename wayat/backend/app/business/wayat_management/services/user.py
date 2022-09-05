@@ -145,19 +145,36 @@ class UserService:
         """
         await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
 
+    @staticmethod
+    def _remove_contact_from_all_groups(contact_id: str, groups: list[GroupInfo]):
+        for g in groups:
+            if contact_id in g.contacts:
+                g.contacts.remove(contact_id)
+
     async def delete_contact(self, user_id, contact_id):
         """
         Deletes a contact
         """
+        # Remove contact from all user groups
+        user_groups, _ = await self._user_repository.get_user_groups(user_id)
+        self._remove_contact_from_all_groups(contact_id, user_groups)
+        # Remove user from all contact groups
+        contact_groups, _ = await self._user_repository.get_user_groups(contact_id)
+        self._remove_contact_from_all_groups(user_id, contact_groups)
+        # Delete friend from user & contact
         await self._user_repository.delete_contact(user_id, contact_id)
+        # Update user groups
+        await self._user_repository.update_user_groups(user_id=user_id, user_groups=user_groups)
+        # Update contact groups
+        await self._user_repository.update_user_groups(user_id=contact_id, user_groups=contact_groups)
 
     async def _delete_all_contacts(self, user_id):
         """
             Deletes all contacts of a user
         """
         user = await self._user_repository.get_or_throw(user_id)
-        coroutines = [self._user_repository.delete_contact(user_id, u) for u in user.contacts]
-        await asyncio.gather(*coroutines)
+        for c in user.contacts:  # Classic loop to avoid concurrency problems
+            await self.delete_contact(user_id, c)
 
     async def phone_in_use(self, phone: str) -> bool:
         users = await self._user_repository.find_by_phone(phones=[phone])
