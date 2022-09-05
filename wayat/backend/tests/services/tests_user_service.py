@@ -439,6 +439,21 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         self.mock_user_repo.update_user_groups.assert_called_with(user, [group_info])
 
+    async def test_delete_user_group_should_return_ok(self):
+        user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
+        group_info = GroupInfo(
+            id="testgroup",
+            name=group_name,
+            image_ref=picture,
+            contacts=members
+        )
+        self.mock_user_repo.get_user_groups.return_value = ([group_info], {})
+
+        # Call under test and asserts
+        await self.user_service.delete_group(uid=user, group_id=group_info.id)
+
+        self.mock_user_repo.update_user_groups.assert_called_with(user_id=user, user_groups=[])
+
     async def test_update_user_group_members_should_validate_if_user_is_contact(self):
         user, group_name, members, picture = "testuser", "groupname", [], self.storage_settings.default_picture
         test_user = UserEntity(
