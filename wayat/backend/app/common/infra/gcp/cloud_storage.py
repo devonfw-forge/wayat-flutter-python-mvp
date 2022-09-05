@@ -17,7 +17,6 @@ from app.domain.wayat_management.utils import get_current_time
 class BaseStorageSettings(BaseSettings):
     credentials_file: str
     bucket: str
-    images_path: str
     expiration_time: int
 
     class Config:
@@ -66,9 +65,9 @@ class CloudStorage:
         return self._client.bucket(self._configuration.bucket)
 
     @run_in_executor
-    def _upload_image(self, filename: str, data: BinaryIO | bytes) -> str:
+    def _upload_file(self, *, path: str, filename: str, data: BinaryIO | bytes) -> str:
         content_type = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
-        path = f"{self._configuration.images_path}/{filename}"
+        path = f"{path}/{filename}"
         blob = self._bucket().blob(path)
         if isinstance(data, bytes):
             blob.upload_from_string(data, content_type=content_type)
@@ -76,8 +75,8 @@ class CloudStorage:
             blob.upload_from_file(data, content_type=content_type)
         return blob.name
 
-    async def upload_image(self, filename: str, data: BinaryIO | bytes) -> str:
-        return await self._upload_image(filename, data)
+    async def upload_file(self, *, path: str, filename: str, data: BinaryIO | bytes) -> str:
+        return await self._upload_file(path=path, filename=filename, data=data)
 
     def generate_signed_url(self, reference: str | None):
         if reference:

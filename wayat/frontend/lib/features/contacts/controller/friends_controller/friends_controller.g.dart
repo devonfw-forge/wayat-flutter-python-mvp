@@ -71,6 +71,17 @@ mixin _$FriendsController on _FriendsController, Store {
   }
 
   @override
+  void addContact(Contact contact) {
+    final _$actionInfo = _$_FriendsControllerActionController.startAction(
+        name: '_FriendsController.addContact');
+    try {
+      return super.addContact(contact);
+    } finally {
+      _$_FriendsControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 filteredContacts: ${filteredContacts},
