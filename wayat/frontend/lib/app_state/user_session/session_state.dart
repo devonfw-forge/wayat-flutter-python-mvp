@@ -106,6 +106,10 @@ abstract class _SessionState with Store {
   }
 
   Future logOut() async {
+    currentUser = null;
+    finishLoggedIn = false;
+    googleSignedIn = false;
+    hasDoneOnboarding = false;
     authService.signOut();
   }
 
