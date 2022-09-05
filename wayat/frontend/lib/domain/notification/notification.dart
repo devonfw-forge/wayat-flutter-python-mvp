@@ -111,7 +111,7 @@ class Notification {
 
   @override
   String toString() {
-    return 'NotificationsModel(notificationID: $notificationID, notificationType: $notificationType, eventID: $eventID, eventName: $eventName, eventLocation: $eventLocation, eventStartDate: $eventStartDate, eventEndDate: $eventEndDate, eventStartHour: $eventStartHour, eventEndHour: $eventEndHour, invitedBy: $invitedBy, invitedByID: $invitedByID, invitedUser: $invitedUser, invitedUserID: $invitedUserID)';
+    return 'Notification(notificationID: $notificationID, notificationType: $notificationType, eventID: $eventID, eventName: $eventName, eventLocation: $eventLocation, eventStartDate: $eventStartDate, eventEndDate: $eventEndDate, eventStartHour: $eventStartHour, eventEndHour: $eventEndHour, invitedBy: $invitedBy, invitedByID: $invitedByID, invitedUser: $invitedUser, invitedUserID: $invitedUserID)';
   }
 
   @override
