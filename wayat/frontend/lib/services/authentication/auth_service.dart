@@ -15,4 +15,8 @@ abstract class AuthService extends RESTService {
   Future<MyUser> getUserData();
 
   Future<GoogleSignInAccount?> signInSilently();
+
+  Future<bool> sendPhoneNumber(String phone);
+
+  Future<bool> sendDoneOnboarding(bool doneOnboarding);
 }

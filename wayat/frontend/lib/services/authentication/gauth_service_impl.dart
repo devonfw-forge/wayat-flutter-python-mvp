@@ -71,4 +71,21 @@ class GoogleAuthService extends AuthService {
     await _auth.signOut();
     await _googleSignIn.signOut();
   }
+
+  @override
+  Future<bool> sendPhoneNumber(String phone) async {
+    return (await super
+                    .sendPostRequest(APIContract.userProfile, {"phone": phone}))
+                .statusCode /
+            10 ==
+        20;
+  }
+
+  Future<bool> sendDoneOnboarding(bool doneOnboarding) async {
+    return (await super.sendPostRequest(
+                    APIContract.userProfile, {"onboarding_completed": true}))
+                .statusCode /
+            10 ==
+        20;
+  }
 }
