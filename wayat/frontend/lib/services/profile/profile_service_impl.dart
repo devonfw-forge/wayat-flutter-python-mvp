@@ -37,7 +37,9 @@ class ProfileServiceImpl extends RESTService implements ProfileService {
   }
 
   @override
-  Future logOut() async {
-    await GetIt.I.get<SessionState>().logOut();
+  Future<bool> logOut() async {
+    final SessionState userSession = GetIt.I.get<SessionState>();
+    bool done = await userSession.logOut();
+    return done;
   }
 }
