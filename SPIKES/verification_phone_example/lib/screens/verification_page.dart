@@ -1,17 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/common/widgets/buttons/filled_button.dart';
-import 'package:wayat/common/widgets/buttons/text_button.dart';
-import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
-import 'package:wayat/lang/app_localizations.dart';
+import 'package:phone_auth_handler_demo/screens/custombutton.dart';
+import 'package:phone_auth_handler_demo/screens/customtextbutton.dart';
 
 class ChangePhoneValidationDialog extends StatelessWidget {
-  final SessionState userSession = GetIt.I.get<SessionState>();
-  final EditProfileController controller = EditProfileController();
+  static const id = 'ChangePhoneValidationDialog';
+
   FirebaseAuth auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   String newPhoneNumber;
@@ -27,41 +22,31 @@ class ChangePhoneValidationDialog extends StatelessWidget {
   AlertDialog _buildValidationAlertDialog(BuildContext context) {
     return AlertDialog(
       //backgroundColor: Theme.of(context).primaryColor,
-      title: Text(appLocalizations.verifyPhoneTitle),
+      title: Text('Verify phone number'),
       titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 18),
+          fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 16),
       titlePadding: const EdgeInsets.all(32),
       content: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.32,
+        height: MediaQuery.of(context).size.height * 0.30,
         width: MediaQuery.of(context).size.width,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _getVerifyPhoneText(appLocalizations.verifyPhoneText,
-                  userSession.currentUser!.phone),
+              _getVerifyPhoneText(
+                  'Enter verification phone text', '+34600947886'),
               const SizedBox(height: 32),
               _getVirifyTextfields(context),
               const SizedBox(height: 32),
-              _getVerifyResendCode(appLocalizations.didnotReceiveCode),
+              _getVerifyResendCode('Did not receive code?'),
             ]),
       ),
-      actionsPadding: const EdgeInsets.only(left: 32, right: 32),
+      actionsPadding: const EdgeInsets.only(left: 15, right: 15),
       actions: [
         Column(
           children: [
-            CustomFilledButton(
-                text: appLocalizations.verify,
-                enabled: true,
-                onPressed: () {
-                  //controller.submitNewPhone(newPhoneNumber);
-                  AutoRouter.of(context).pop();
-                }),
-            CustomTextButton(
-                text: appLocalizations.cancel,
-                onPressed: () {
-                  AutoRouter.of(context).pop();
-                }),
+            CustomFilledButton(text: 'Verify', enabled: true, onPressed: () {}),
+            CustomTextButton(text: 'Cancel', onPressed: () {}),
           ],
         ),
       ],
@@ -79,7 +64,7 @@ class ChangePhoneValidationDialog extends StatelessWidget {
             fontWeight: FontWeight.w400,
             height: 1.5,
             color: Colors.black87,
-            fontSize: 18));
+            fontSize: 16));
   }
 
   Widget _getVerifyResendCode(String text) {
@@ -89,14 +74,14 @@ class ChangePhoneValidationDialog extends StatelessWidget {
           style: const TextStyle(
               fontWeight: FontWeight.w400,
               color: Colors.black87,
-              fontSize: 16)),
+              fontSize: 15)),
       TextButton(
-          child: Text(
-            appLocalizations.resendCode,
-            style: const TextStyle(
+          child: const Text(
+            'Recend code?',
+            style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
-                fontSize: 16),
+                fontSize: 15),
           ),
           onPressed: () {})
     ]);
@@ -112,6 +97,7 @@ class ChangePhoneValidationDialog extends StatelessWidget {
         _validationTextField(context, false),
         _validationTextField(context, false),
         _validationTextField(context, false),
+        _validationTextField(context, false),
       ],
     );
   }
@@ -119,6 +105,7 @@ class ChangePhoneValidationDialog extends StatelessWidget {
   Widget _validationTextField(BuildContext context, bool autoFocus) {
     return Container(
       height: MediaQuery.of(context).size.shortestSide * 0.13,
+      width: 35,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(8),
