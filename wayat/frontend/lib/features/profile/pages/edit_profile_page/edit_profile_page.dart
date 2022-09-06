@@ -186,7 +186,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
       onChanged: (phone) async {
-        if (phone.completeNumber.length >= 12) {
+        if (phone.completeNumber.length == 12) {
           await auth.verifyPhoneNumber(
             phoneNumber: phone.completeNumber,
             verificationCompleted: (PhoneAuthCredential credential) async {
@@ -199,7 +199,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 debugPrint(e.toString());
               }
             },
-            codeSent: (String verificationId, int? resendToken) async {
+            codeSent: (String verificationId, int? resendToken) {
               String smsCode = '';
               showDialog(
                   context: context,
@@ -212,10 +212,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               final PhoneAuthCredential credential =
                   PhoneAuthProvider.credential(
                       verificationId: verificationId, smsCode: smsCode);
-              await auth.currentUser!.updatePhoneNumber(credential);
+              auth.currentUser!.updatePhoneNumber(credential);
             },
             timeout: const Duration(seconds: 60),
             codeAutoRetrievalTimeout: (String verificationId) async {},
+            autoRetrievedSmsCodeForTesting: '12345',
           );
         }
       },
