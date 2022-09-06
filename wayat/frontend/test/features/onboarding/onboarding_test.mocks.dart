@@ -132,6 +132,10 @@ class MockSessionState extends _i1.Mock implements _i5.SessionState {
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
           returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
   @override
+  _i7.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
+          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
+  @override
   _i7.Future<dynamic> doLoginProcess() =>
       (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
           returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
@@ -333,6 +337,12 @@ class MockSessionStateRelaxed extends _i1.Mock implements _i5.SessionState {
   @override
   _i7.Future<bool> updatePhone(String? phone) =>
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
+              returnValue: _i7.Future<bool>.value(false),
+              returnValueForMissingStub: _i7.Future<bool>.value(false))
+          as _i7.Future<bool>);
+  @override
+  _i7.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
               returnValue: _i7.Future<bool>.value(false),
               returnValueForMissingStub: _i7.Future<bool>.value(false))
           as _i7.Future<bool>);

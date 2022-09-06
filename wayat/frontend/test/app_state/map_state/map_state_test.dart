@@ -8,17 +8,19 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/status/map_status_service.dart';
 
 import 'map_state_test.mocks.dart';
 
-@GenerateMocks([MapStatusService, SessionState])
+@GenerateMocks([MapStatusService, SessionState, HttpProvider])
 void main() async {
   final MockSessionState mockSessionState = MockSessionState();
 
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
   });
 
   test("Map State initial state is correct", () {

@@ -145,6 +145,10 @@ class MockSessionState extends _i1.Mock implements _i8.SessionState {
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
           returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
   @override
+  _i10.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
+  @override
   _i10.Future<dynamic> doLoginProcess() =>
       (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
           returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
