@@ -1,11 +1,15 @@
+import 'package:get_it/get_it.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:wayat/services/api_contract/api_contract.dart';
+import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 
-class GoogleAuthService extends AuthService {
+class GoogleAuthService implements AuthService {
+  final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
+
   late GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email'],
   );
@@ -39,7 +43,7 @@ class GoogleAuthService extends AuthService {
   @override
   Future<MyUser> getUserData() async {
     final Map<String, dynamic> user =
-        await super.sendGetRequest(APIContract.userProfile);
+        await httpProvider.sendGetRequest(APIContract.userProfile);
     return MyUser.fromMap(user);
   }
 
@@ -74,7 +78,7 @@ class GoogleAuthService extends AuthService {
 
   @override
   Future<bool> sendPhoneNumber(String phone) async {
-    return (await super
+    return (await httpProvider
                     .sendPostRequest(APIContract.userProfile, {"phone": phone}))
                 .statusCode /
             10 ==
@@ -82,7 +86,7 @@ class GoogleAuthService extends AuthService {
   }
 
   Future<bool> sendDoneOnboarding(bool doneOnboarding) async {
-    return (await super.sendPostRequest(
+    return (await httpProvider.sendPostRequest(
                     APIContract.userProfile, {"onboarding_completed": true}))
                 .statusCode /
             10 ==

@@ -10,16 +10,18 @@ import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/profile/profile_service.dart';
 
 import 'profile_state_test.mocks.dart';
 
-@GenerateMocks([ProfileService, SessionState])
+@GenerateMocks([ProfileService, SessionState, HttpProvider])
 void main() async {
   ProfileService mockProfileService = MockProfileService();
   SessionState mockSessionState = MockSessionState();
   setUpAll(() {
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
   });
   test("Initial State is correct", () {
     ProfileState profileState =

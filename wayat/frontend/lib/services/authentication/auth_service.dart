@@ -1,8 +1,7 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/services/request/rest_service.dart';
 
-abstract class AuthService extends RESTService {
+abstract class AuthService {
   /// *Sign in* process
   Future<GoogleSignInAccount?> signIn();
 

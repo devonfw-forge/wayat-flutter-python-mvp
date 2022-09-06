@@ -6,7 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
 
 class GoogleMapsService {
@@ -24,7 +23,7 @@ class GoogleMapsService {
 
     Uri url = Uri.parse(
         "https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.latitude},${coords.longitude}&key=$mapsKey");
-    try{
+    try {
       Response response = await get(url);
       Map<String, dynamic> json = jsonDecode(response.body);
       AddressResponse addressResponse = AddressResponse.fromJson(json);
