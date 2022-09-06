@@ -3,6 +3,7 @@ import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:phone_verification/phone_handler.dart';
 
 class PhoneVerificationPage extends StatefulWidget {
   const PhoneVerificationPage({Key? key}) : super(key: key);
@@ -50,7 +51,13 @@ class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
     return Container(
       padding: const EdgeInsets.only(top: 30),
       child: OutlinedButton(
-        onPressed: (() async {}),
+        onPressed: (() {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const PhoneHandlerPage(),
+            ),
+          );
+        }),
         style: OutlinedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
           backgroundColor: Colors.white,
