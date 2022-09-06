@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -104,7 +106,7 @@ class ContactProfilePage extends StatelessWidget {
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 (contact is ContactLocation)
-                    ? locationInfo()
+                    ? locationInfo(context)
                     : Padding(
                         padding: const EdgeInsets.only(top: 5.0),
                         child: Text(
@@ -132,7 +134,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
-  Column locationInfo() {
+  Column locationInfo(BuildContext context) {
     ContactLocation locatedContact = contact as ContactLocation;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +160,7 @@ class ContactProfilePage extends StatelessWidget {
           height: 5,
         ),
         Text(
-          "${appLocalizations.contactProfileLastUpdated} ${timeago.format(locatedContact.lastUpdated)}",
+          "${appLocalizations.contactProfileLastUpdated} ${timeago.format(locatedContact.lastUpdated, locale: Localizations.localeOf(context).languageCode)}",
           style: const TextStyle(fontSize: 17, color: Colors.black54),
         ),
       ],

@@ -193,7 +193,7 @@ void main() async {
           contact: locatedContact, navigationSource: "Contacts")));
       expect(
           find.text(
-              "${appLocalizations.contactProfileLastUpdated} ${timeago.format(locatedContact.lastUpdated)}"),
+              "${appLocalizations.contactProfileLastUpdated} ${timeago.format(locatedContact.lastUpdated, locale: Platform.localeName)}"),
           findsOneWidget);
     });
 
