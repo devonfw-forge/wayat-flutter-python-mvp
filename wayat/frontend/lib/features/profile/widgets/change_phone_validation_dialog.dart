@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -10,10 +12,11 @@ import 'package:wayat/features/profile/controllers/edit_profile_controller.dart'
 import 'package:wayat/lang/app_localizations.dart';
 
 class ChangePhoneValidationDialog extends StatelessWidget {
+  static const id = 'ChangePhoneValidationDialog';
+
   final SessionState userSession = GetIt.I.get<SessionState>();
   final EditProfileController controller = EditProfileController();
   FirebaseAuth auth = FirebaseAuth.instance;
-  final _formKey = GlobalKey<FormState>();
   String newPhoneNumber;
 
   ChangePhoneValidationDialog({Key? key, required this.newPhoneNumber})
@@ -21,7 +24,22 @@ class ChangePhoneValidationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildValidationAlertDialog(context);
+    return SafeArea(
+        child: FirebasePhoneAuthHandler(
+      phoneNumber: newPhoneNumber,
+      signOutOnSuccessfulVerification: false,
+      linkWithExistingUser: false,
+      autoRetrievalTimeOutDuration: const Duration(seconds: 60),
+      otpExpirationDuration: const Duration(seconds: 60),
+      onCodeSent: () {},
+      onLoginSuccess: (userCredential, autoVerified) async {},
+      onLoginFailed: (authException, stackTrace) {},
+      onError: (error, stackTrace) {},
+      builder: (context, controller) {
+        return _buildValidationAlertDialog(context);
+      },
+    ));
+    //_buildValidationAlertDialog(context);
   }
 
   AlertDialog _buildValidationAlertDialog(BuildContext context) {
@@ -148,3 +166,20 @@ class ChangePhoneValidationDialog extends StatelessWidget {
     );
   }
 }
+
+
+// SafeArea(
+//         child: FirebasePhoneAuthHandler(
+//       phoneNumber: newPhoneNumber,
+//       signOutOnSuccessfulVerification: false,
+//       linkWithExistingUser: false,
+//       autoRetrievalTimeOutDuration: const Duration(seconds: 60),
+//       otpExpirationDuration: const Duration(seconds: 60),
+//       onCodeSent: () {},
+//       onLoginSuccess: (userCredential, autoVerified) async {},
+//       onLoginFailed: (authException, stackTrace) {},
+//       onError: (error, stackTrace) {},
+//       builder: (context, controller) {
+//         return _buildValidationAlertDialog(context);
+//       },
+//     ));
