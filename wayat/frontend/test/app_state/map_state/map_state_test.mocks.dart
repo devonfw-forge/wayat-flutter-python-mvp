@@ -3,15 +3,16 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i7;
 
-import 'package:http/http.dart' as _i2;
+import 'package:http/http.dart' as _i5;
 import 'package:mobx/mobx.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/app_state/user_session/session_state.dart' as _i7;
-import 'package:wayat/domain/user/my_user.dart' as _i8;
+import 'package:wayat/app_state/user_session/session_state.dart' as _i8;
+import 'package:wayat/domain/user/my_user.dart' as _i9;
 import 'package:wayat/services/authentication/auth_service.dart' as _i3;
-import 'package:wayat/services/status/map_status_service.dart' as _i5;
+import 'package:wayat/services/common/http_provider/http_provider.dart' as _i2;
+import 'package:wayat/services/status/map_status_service.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -24,91 +25,61 @@ import 'package:wayat/services/status/map_status_service.dart' as _i5;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeResponse_0 extends _i1.SmartFake implements _i2.Response {
-  _FakeResponse_0(Object parent, Invocation parentInvocation)
+class _FakeHttpProvider_0 extends _i1.SmartFake implements _i2.HttpProvider {
+  _FakeHttpProvider_0(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeStreamedResponse_1 extends _i1.SmartFake
-    implements _i2.StreamedResponse {
-  _FakeStreamedResponse_1(Object parent, Invocation parentInvocation)
+class _FakeAuthService_1 extends _i1.SmartFake implements _i3.AuthService {
+  _FakeAuthService_1(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeAuthService_2 extends _i1.SmartFake implements _i3.AuthService {
-  _FakeAuthService_2(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-class _FakeReactiveContext_3 extends _i1.SmartFake
+class _FakeReactiveContext_2 extends _i1.SmartFake
     implements _i4.ReactiveContext {
-  _FakeReactiveContext_3(Object parent, Invocation parentInvocation)
+  _FakeReactiveContext_2(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeResponse_3 extends _i1.SmartFake implements _i5.Response {
+  _FakeResponse_3(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_4 extends _i1.SmartFake
+    implements _i5.StreamedResponse {
+  _FakeStreamedResponse_4(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
 /// A class which mocks [MapStatusService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMapStatusService extends _i1.Mock implements _i5.MapStatusService {
+class MockMapStatusService extends _i1.Mock implements _i6.MapStatusService {
   MockMapStatusService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  String get baseUrl =>
-      (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
-          as String);
-  @override
-  set baseUrl(String? _baseUrl) =>
-      super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
-          returnValueForMissingStub: null);
-  @override
-  _i6.Future<dynamic> sendMapOpened() =>
-      (super.noSuchMethod(Invocation.method(#sendMapOpened, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
-  @override
-  _i6.Future<dynamic> sendMapClosed() =>
-      (super.noSuchMethod(Invocation.method(#sendMapClosed, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
-  @override
-  _i6.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
-      (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
+  _i2.HttpProvider get httpProvider =>
+      (super.noSuchMethod(Invocation.getter(#httpProvider),
               returnValue:
-                  _i6.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
-          as _i6.Future<Map<String, dynamic>>);
+                  _FakeHttpProvider_0(this, Invocation.getter(#httpProvider)))
+          as _i2.HttpProvider);
   @override
-  _i6.Future<_i2.Response> sendPostRequest(
-          String? subPath, Map<String, dynamic>? body) =>
-      (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i6.Future<_i2.Response>.value(_FakeResponse_0(
-                  this, Invocation.method(#sendPostRequest, [subPath, body]))))
-          as _i6.Future<_i2.Response>);
+  _i7.Future<dynamic> sendMapOpened() =>
+      (super.noSuchMethod(Invocation.method(#sendMapOpened, []),
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<_i2.StreamedResponse> sendPostImageRequest(
-          String? subPath, String? filePath, String? type) =>
-      (super.noSuchMethod(
-          Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
-          returnValue: _i6.Future<_i2.StreamedResponse>.value(
-              _FakeStreamedResponse_1(
-                  this,
-                  Invocation.method(
-                      #sendPostImageRequest, [subPath, filePath, type])))) as _i6
-          .Future<_i2.StreamedResponse>);
-  @override
-  _i6.Future<bool> sendPutRequest(
-          String? subPath, Map<String, dynamic>? body) =>
-      (super.noSuchMethod(Invocation.method(#sendPutRequest, [subPath, body]),
-          returnValue: _i6.Future<bool>.value(false)) as _i6.Future<bool>);
-  @override
-  _i6.Future<bool> sendDelRequest(String? subPath) =>
-      (super.noSuchMethod(Invocation.method(#sendDelRequest, [subPath]),
-          returnValue: _i6.Future<bool>.value(false)) as _i6.Future<bool>);
+  _i7.Future<dynamic> sendMapClosed() =>
+      (super.noSuchMethod(Invocation.method(#sendMapClosed, []),
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
 }
 
 /// A class which mocks [SessionState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSessionState extends _i1.Mock implements _i7.SessionState {
+class MockSessionState extends _i1.Mock implements _i8.SessionState {
   MockSessionState() {
     _i1.throwOnMissingStub(this);
   }
@@ -138,30 +109,30 @@ class MockSessionState extends _i1.Mock implements _i7.SessionState {
       super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
           returnValueForMissingStub: null);
   @override
-  set currentUser(_i8.MyUser? value) =>
+  set currentUser(_i9.MyUser? value) =>
       super.noSuchMethod(Invocation.setter(#currentUser, value),
           returnValueForMissingStub: null);
   @override
   _i3.AuthService get authService =>
       (super.noSuchMethod(Invocation.getter(#authService),
               returnValue:
-                  _FakeAuthService_2(this, Invocation.getter(#authService)))
+                  _FakeAuthService_1(this, Invocation.getter(#authService)))
           as _i3.AuthService);
   @override
   _i4.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
-                  _FakeReactiveContext_3(this, Invocation.getter(#context)))
+                  _FakeReactiveContext_2(this, Invocation.getter(#context)))
           as _i4.ReactiveContext);
   @override
-  _i6.Future<void> doneOnBoarding() => (super.noSuchMethod(
+  _i7.Future<void> doneOnBoarding() => (super.noSuchMethod(
       Invocation.method(#doneOnBoarding, []),
-      returnValue: _i6.Future<void>.value(),
-      returnValueForMissingStub: _i6.Future<void>.value()) as _i6.Future<void>);
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
-  _i6.Future<dynamic> isLogged() =>
+  _i7.Future<dynamic> isLogged() =>
       (super.noSuchMethod(Invocation.method(#isLogged, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
@@ -171,33 +142,37 @@ class MockSessionState extends _i1.Mock implements _i7.SessionState {
       Invocation.method(#setFinishLoggedIn, [finishedLoggedIn]),
       returnValueForMissingStub: null);
   @override
-  _i6.Future<dynamic> initializeUser() =>
+  _i7.Future<dynamic> initializeUser() =>
       (super.noSuchMethod(Invocation.method(#initializeUser, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<dynamic> updateCurrentUser() =>
+  _i7.Future<dynamic> updateCurrentUser() =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<bool> updatePhone(String? phone) =>
+  _i7.Future<bool> updatePhone(String? phone) =>
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
-          returnValue: _i6.Future<bool>.value(false)) as _i6.Future<bool>);
+          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
   @override
-  _i6.Future<dynamic> doLoginProcess() =>
+  _i7.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
+          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
+  @override
+  _i7.Future<dynamic> doLoginProcess() =>
       (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<dynamic> initializeUserSession() =>
+  _i7.Future<dynamic> initializeUserSession() =>
       (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<void> login() => (super.noSuchMethod(Invocation.method(#login, []),
-      returnValue: _i6.Future<void>.value(),
-      returnValueForMissingStub: _i6.Future<void>.value()) as _i6.Future<void>);
+  _i7.Future<void> login() => (super.noSuchMethod(Invocation.method(#login, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
-  _i6.Future<dynamic> logOut() =>
+  _i7.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
   bool isOnboardingCompleted() =>
       (super.noSuchMethod(Invocation.method(#isOnboardingCompleted, []),
@@ -206,4 +181,55 @@ class MockSessionState extends _i1.Mock implements _i7.SessionState {
   bool hasPhone() =>
       (super.noSuchMethod(Invocation.method(#hasPhone, []), returnValue: false)
           as bool);
+}
+
+/// A class which mocks [HttpProvider].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockHttpProvider extends _i1.Mock implements _i2.HttpProvider {
+  MockHttpProvider() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get baseUrl =>
+      (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
+          as String);
+  @override
+  set baseUrl(String? _baseUrl) =>
+      super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
+          returnValueForMissingStub: null);
+  @override
+  _i7.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
+      (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
+              returnValue:
+                  _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
+          as _i7.Future<Map<String, dynamic>>);
+  @override
+  _i7.Future<_i5.Response> sendPostRequest(
+          String? subPath, Map<String, dynamic>? body) =>
+      (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
+              returnValue: _i7.Future<_i5.Response>.value(_FakeResponse_3(
+                  this, Invocation.method(#sendPostRequest, [subPath, body]))))
+          as _i7.Future<_i5.Response>);
+  @override
+  _i7.Future<_i5.StreamedResponse> sendPostImageRequest(
+          String? subPath, String? filePath, String? type) =>
+      (super.noSuchMethod(
+          Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
+          returnValue: _i7.Future<_i5.StreamedResponse>.value(
+              _FakeStreamedResponse_4(
+                  this,
+                  Invocation.method(
+                      #sendPostImageRequest, [subPath, filePath, type])))) as _i7
+          .Future<_i5.StreamedResponse>);
+  @override
+  _i7.Future<bool> sendPutRequest(
+          String? subPath, Map<String, dynamic>? body) =>
+      (super.noSuchMethod(Invocation.method(#sendPutRequest, [subPath, body]),
+          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
+  @override
+  _i7.Future<bool> sendDelRequest(String? subPath) =>
+      (super.noSuchMethod(Invocation.method(#sendDelRequest, [subPath]),
+          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
 }

@@ -6,13 +6,13 @@
 import 'dart:async' as _i7;
 
 import 'package:google_sign_in/google_sign_in.dart' as _i9;
-import 'package:http/http.dart' as _i5;
 import 'package:mobx/mobx.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:wayat/app_state/user_session/session_state.dart' as _i6;
-import 'package:wayat/domain/user/my_user.dart' as _i4;
+import 'package:wayat/domain/user/my_user.dart' as _i5;
 import 'package:wayat/services/authentication/auth_service.dart' as _i2;
 import 'package:wayat/services/authentication/gauth_service_impl.dart' as _i8;
+import 'package:wayat/services/common/http_provider/http_provider.dart' as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -36,19 +36,13 @@ class _FakeReactiveContext_1 extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
-class _FakeMyUser_2 extends _i1.SmartFake implements _i4.MyUser {
-  _FakeMyUser_2(Object parent, Invocation parentInvocation)
+class _FakeHttpProvider_2 extends _i1.SmartFake implements _i4.HttpProvider {
+  _FakeHttpProvider_2(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeResponse_3 extends _i1.SmartFake implements _i5.Response {
-  _FakeResponse_3(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-class _FakeStreamedResponse_4 extends _i1.SmartFake
-    implements _i5.StreamedResponse {
-  _FakeStreamedResponse_4(Object parent, Invocation parentInvocation)
+class _FakeMyUser_3 extends _i1.SmartFake implements _i5.MyUser {
+  _FakeMyUser_3(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -85,7 +79,7 @@ class MockSessionState extends _i1.Mock implements _i6.SessionState {
       super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
           returnValueForMissingStub: null);
   @override
-  set currentUser(_i4.MyUser? value) =>
+  set currentUser(_i5.MyUser? value) =>
       super.noSuchMethod(Invocation.setter(#currentUser, value),
           returnValueForMissingStub: null);
   @override
@@ -130,6 +124,10 @@ class MockSessionState extends _i1.Mock implements _i6.SessionState {
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
           returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
   @override
+  _i7.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
+          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
+  @override
   _i7.Future<dynamic> doLoginProcess() =>
       (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
           returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
@@ -164,24 +162,22 @@ class MockGoogleAuthService extends _i1.Mock implements _i8.GoogleAuthService {
   }
 
   @override
-  String get baseUrl =>
-      (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
-          as String);
-  @override
-  set baseUrl(String? _baseUrl) =>
-      super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
-          returnValueForMissingStub: null);
+  _i4.HttpProvider get httpProvider =>
+      (super.noSuchMethod(Invocation.getter(#httpProvider),
+              returnValue:
+                  _FakeHttpProvider_2(this, Invocation.getter(#httpProvider)))
+          as _i4.HttpProvider);
   @override
   _i7.Future<_i9.GoogleSignInAccount?> signIn() =>
       (super.noSuchMethod(Invocation.method(#signIn, []),
               returnValue: _i7.Future<_i9.GoogleSignInAccount?>.value())
           as _i7.Future<_i9.GoogleSignInAccount?>);
   @override
-  _i7.Future<_i4.MyUser> getUserData() =>
+  _i7.Future<_i5.MyUser> getUserData() =>
       (super.noSuchMethod(Invocation.method(#getUserData, []),
-              returnValue: _i7.Future<_i4.MyUser>.value(
-                  _FakeMyUser_2(this, Invocation.method(#getUserData, []))))
-          as _i7.Future<_i4.MyUser>);
+              returnValue: _i7.Future<_i5.MyUser>.value(
+                  _FakeMyUser_3(this, Invocation.method(#getUserData, []))))
+          as _i7.Future<_i5.MyUser>);
   @override
   _i7.Future<String> getIdToken() =>
       (super.noSuchMethod(Invocation.method(#getIdToken, []),
@@ -203,38 +199,5 @@ class MockGoogleAuthService extends _i1.Mock implements _i8.GoogleAuthService {
   @override
   _i7.Future<bool> sendDoneOnboarding(bool? doneOnboarding) => (super
       .noSuchMethod(Invocation.method(#sendDoneOnboarding, [doneOnboarding]),
-          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
-  @override
-  _i7.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
-      (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
-              returnValue:
-                  _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
-          as _i7.Future<Map<String, dynamic>>);
-  @override
-  _i7.Future<_i5.Response> sendPostRequest(
-          String? subPath, Map<String, dynamic>? body) =>
-      (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i7.Future<_i5.Response>.value(_FakeResponse_3(
-                  this, Invocation.method(#sendPostRequest, [subPath, body]))))
-          as _i7.Future<_i5.Response>);
-  @override
-  _i7.Future<_i5.StreamedResponse> sendPostImageRequest(
-          String? subPath, String? filePath, String? type) =>
-      (super.noSuchMethod(
-          Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
-          returnValue: _i7.Future<_i5.StreamedResponse>.value(
-              _FakeStreamedResponse_4(
-                  this,
-                  Invocation.method(
-                      #sendPostImageRequest, [subPath, filePath, type])))) as _i7
-          .Future<_i5.StreamedResponse>);
-  @override
-  _i7.Future<bool> sendPutRequest(
-          String? subPath, Map<String, dynamic>? body) =>
-      (super.noSuchMethod(Invocation.method(#sendPutRequest, [subPath, body]),
-          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
-  @override
-  _i7.Future<bool> sendDelRequest(String? subPath) =>
-      (super.noSuchMethod(Invocation.method(#sendDelRequest, [subPath]),
           returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
 }

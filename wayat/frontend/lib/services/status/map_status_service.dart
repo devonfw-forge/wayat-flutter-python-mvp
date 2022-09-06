@@ -1,12 +1,15 @@
-import 'package:wayat/services/api_contract/api_contract.dart';
-import 'package:wayat/services/request/rest_service.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/services/common/api_contract/api_contract.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 
-class MapStatusService extends RESTService {
+class MapStatusService {
+  final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
+
   Future sendMapOpened() async {
-    await super.sendPostRequest(APIContract.updateMap, {"open": true});
+    await httpProvider.sendPostRequest(APIContract.updateMap, {"open": true});
   }
 
   Future sendMapClosed() async {
-    await super.sendPostRequest(APIContract.updateMap, {"open": false});
+    await httpProvider.sendPostRequest(APIContract.updateMap, {"open": false});
   }
 }

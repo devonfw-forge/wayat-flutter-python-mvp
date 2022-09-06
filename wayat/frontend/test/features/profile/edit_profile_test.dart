@@ -13,10 +13,11 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:mockito/annotations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 
-import 'profile_test.mocks.dart';
+import 'edit_profile_test.mocks.dart';
 
-@GenerateMocks([SessionState, ProfileState])
+@GenerateMocks([SessionState, ProfileState, HttpProvider])
 void main() async {
   final MockSessionState mockSessionState = MockSessionState();
   final MockProfileState mockProfileState = MockProfileState();
@@ -37,6 +38,7 @@ void main() async {
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
     when(mockSessionState.currentUser).thenAnswer((_) => user);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
   });
 
   Widget _createApp(Widget body) {
