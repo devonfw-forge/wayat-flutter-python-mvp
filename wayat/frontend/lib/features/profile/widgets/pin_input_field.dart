@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
 
 class PinInputField extends StatefulWidget {
@@ -98,6 +99,10 @@ class _PinInputFieldState extends State<PinInputField> {
           ),
         ),
         focusNode: _pinPutFocusNode,
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        ],
         controller: _pinPutController,
         onCompleted: widget.onSubmit,
         pinAnimationType: PinAnimationType.scale,
@@ -105,14 +110,6 @@ class _PinInputFieldState extends State<PinInputField> {
         autofocus: true,
         closeKeyboardWhenCompleted: true,
         pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-        // submittedFieldDecoration: _pinPutDecoration,
-        // selectedFieldDecoration: _pinPutDecoration,
-        // followingFieldDecoration: _pinPutDecoration,
-        // textStyle: const TextStyle(
-        //   color: Colors.black,
-        //   fontSize: 20.0,
-        //   fontWeight: FontWeight.w600,
-        // ),
       ),
     );
   }

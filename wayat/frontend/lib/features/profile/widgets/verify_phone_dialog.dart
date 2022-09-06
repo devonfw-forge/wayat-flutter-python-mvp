@@ -1,29 +1,28 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
-import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/features/profile/widgets/pin_input_field.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
-class VerifyPhoneNumberScreen extends StatefulWidget {
+class VerifyPhoneNumberDialog extends StatefulWidget {
   static const id = 'VerifyPhoneNumberScreen';
-
   final String phoneNumber;
-  final EditProfileController editController = EditProfileController();
 
-  VerifyPhoneNumberScreen({
+  const VerifyPhoneNumberDialog({
     Key? key,
     required this.phoneNumber,
   }) : super(key: key);
 
   @override
-  State<VerifyPhoneNumberScreen> createState() =>
-      _VerifyPhoneNumberScreenState();
+  State<VerifyPhoneNumberDialog> createState() =>
+      _VerifyPhoneNumberDialogState();
 }
 
-class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
+class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
     with WidgetsBindingObserver {
   bool isKeyboardVisible = false;
   bool isVerified = false;
@@ -142,7 +141,8 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
         final verified = await controller.verifyOtp(enteredOtp);
         if (verified) {
           isVerified = true;
-          controller.submitNewPhone(widget.phoneNumber);
+          GetIt.I.get<SessionState>().updatePhone(widget.phoneNumber);
+          debugPrint('Phone verification is successful!');
           AutoRouter.of(context).pop();
         } else {
           debugPrint('Phone verification error! Invalid code!');
