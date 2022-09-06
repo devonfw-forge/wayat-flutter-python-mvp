@@ -65,6 +65,7 @@ class VerificationCodeDialog extends StatelessWidget {
         _validationTextField(context, false),
         _validationTextField(context, false),
         _validationTextField(context, false),
+        _validationTextField(context, false),
       ],
     );
   }
