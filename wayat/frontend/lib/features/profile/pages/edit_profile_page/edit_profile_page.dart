@@ -185,7 +185,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
           labelStyle: _textStyle(Colors.black87, 16),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
-      onChanged: (phone) async {},
+      onChanged: (phone) async {
+        if (phone.completeNumber.length == 12) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return ChangePhoneValidationDialog(
+                    newPhoneNumber: phone.completeNumber);
+              });
+        }
+      },
     );
   }
 
