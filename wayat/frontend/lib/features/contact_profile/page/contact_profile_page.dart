@@ -42,16 +42,22 @@ class ContactProfilePage extends StatelessWidget {
       contact = contactLocated;
     }
 
-    return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          appBar(),
-          mapSection(context, canBeLocated),
-          dataSection(context, canBeLocated)
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        GetIt.I.get<HomeState>().setSelectedContact(null, "");
+        return true;
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            appBar(),
+            mapSection(context, canBeLocated),
+            dataSection(context, canBeLocated)
+          ],
+        ),
       ),
     );
   }
