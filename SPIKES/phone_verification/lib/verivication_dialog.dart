@@ -18,9 +18,9 @@ class VerificationCodeDialog extends StatelessWidget {
       title: const Text('Verify your phone'),
       titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 18),
-      titlePadding: const EdgeInsets.all(32),
+      titlePadding: const EdgeInsets.all(20),
       content: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: MediaQuery.of(context).size.height * 0.33,
         width: MediaQuery.of(context).size.width,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +30,7 @@ class VerificationCodeDialog extends StatelessWidget {
               _getVirifyTextfields(context),
             ]),
       ),
-      actionsPadding: const EdgeInsets.only(left: 32, right: 32),
+      actionsPadding: const EdgeInsets.only(left: 15, right: 15),
       actions: [
         Column(children: [
           TextButton(
@@ -73,6 +73,7 @@ class VerificationCodeDialog extends StatelessWidget {
   Widget _validationTextField(BuildContext context, bool autoFocus) {
     return Container(
       height: MediaQuery.of(context).size.shortestSide * 0.13,
+      width: 30,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(8),
