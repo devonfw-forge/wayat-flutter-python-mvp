@@ -23,6 +23,7 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/profile/profile_service.dart';
 
 import 'profile_integration_test.mocks.dart';
@@ -38,6 +39,7 @@ import 'profile_integration_test.mocks.dart';
   FriendsController,
   RequestsController,
   SuggestionsController,
+  HttpProvider
 ])
 void main() async {
   late MyUser user;
@@ -102,6 +104,7 @@ void main() async {
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
     GetIt.I.registerSingleton<ProfileState>(profileState);
     GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
   });
 
   Widget _createApp() {

@@ -1,12 +1,16 @@
+import 'package:get_it/get_it.dart';
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/services/api_contract/api_contract.dart';
+import 'package:wayat/services/common/api_contract/api_contract.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 
-class RequestsServiceImpl extends RequestsService {
+class RequestsServiceImpl implements RequestsService {
+  final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
+
   @override
   Future<Map<String, List<Contact>>> getRequests() async {
     Map<String, dynamic> friendRequests =
-        await super.sendGetRequest(APIContract.friendRequests);
+        await httpProvider.sendGetRequest(APIContract.friendRequests);
 
     List<Contact> pendingRequests =
         (friendRequests["pending_requests"] as List).map((e) {
@@ -23,7 +27,7 @@ class RequestsServiceImpl extends RequestsService {
 
   @override
   Future<bool> sendRequests(List<Contact> contacts) async {
-    return (await super.sendPostRequest(APIContract.addContact,
+    return (await httpProvider.sendPostRequest(APIContract.addContact,
                     {"users": contacts.map((e) => e.id).toList()}))
                 .statusCode /
             10 ==
@@ -32,7 +36,7 @@ class RequestsServiceImpl extends RequestsService {
 
   @override
   Future<bool> acceptRequest(Contact contact) async {
-    return (await super.sendPostRequest(APIContract.friendRequests,
+    return (await httpProvider.sendPostRequest(APIContract.friendRequests,
                     {"uid": contact.id, "accept": true}))
                 .statusCode /
             10 ==
@@ -41,7 +45,7 @@ class RequestsServiceImpl extends RequestsService {
 
   @override
   Future<bool> rejectRequest(Contact contact) async {
-    return (await super.sendPostRequest(APIContract.friendRequests,
+    return (await httpProvider.sendPostRequest(APIContract.friendRequests,
                     {"uid": contact.id, "accept": false}))
                 .statusCode /
             10 ==
@@ -50,7 +54,7 @@ class RequestsServiceImpl extends RequestsService {
 
   @override
   Future<bool> sendRequest(Contact contact) async {
-    return (await super.sendPostRequest(APIContract.addContact, {
+    return (await httpProvider.sendPostRequest(APIContract.addContact, {
               "users": [contact.id]
             }))
                 .statusCode /
@@ -60,7 +64,7 @@ class RequestsServiceImpl extends RequestsService {
 
   @override
   Future<bool> unsendRequest(Contact contact) async {
-    return await super
+    return await httpProvider
         .sendDelRequest("${APIContract.sentFriendRequests}/${contact.id}");
   }
 }
