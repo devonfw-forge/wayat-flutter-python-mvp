@@ -185,41 +185,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           labelStyle: _textStyle(Colors.black87, 16),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
-      onChanged: (phone) async {
-        if (phone.completeNumber.length == 12) {
-          await auth.verifyPhoneNumber(
-            phoneNumber: phone.completeNumber,
-            verificationCompleted: (PhoneAuthCredential credential) async {
-              await auth.currentUser!.updatePhoneNumber(credential);
-              debugPrint(credential.toString());
-              debugPrint(phone.completeNumber.toString());
-            },
-            verificationFailed: (FirebaseAuthException e) async {
-              if (e.code == 'invalid-phone-number') {
-                debugPrint(e.toString());
-              }
-            },
-            codeSent: (String verificationId, int? resendToken) {
-              String smsCode = '';
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return ChangePhoneValidationDialog(
-                        newPhoneNumber: phone.completeNumber);
-                  }).then((value) {
-                smsCode = value;
-              });
-              final PhoneAuthCredential credential =
-                  PhoneAuthProvider.credential(
-                      verificationId: verificationId, smsCode: smsCode);
-              auth.currentUser!.updatePhoneNumber(credential);
-            },
-            timeout: const Duration(seconds: 60),
-            codeAutoRetrievalTimeout: (String verificationId) async {},
-            autoRetrievedSmsCodeForTesting: '12345',
-          );
-        }
-      },
+      onChanged: (phone) async {},
     );
   }
 
