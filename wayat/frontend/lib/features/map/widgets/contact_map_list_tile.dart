@@ -42,10 +42,8 @@ class ContactMapListTile extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                timeago.format(
-                  contact.lastUpdated,
-                  locale: Localizations.localeOf(context).languageCode,
-                ),
+                timeago.format(contact.lastUpdated,
+                    locale: Localizations.localeOf(context).languageCode),
                 style: const TextStyle(fontSize: 17, color: Colors.black54),
               ),
               TextButton(
