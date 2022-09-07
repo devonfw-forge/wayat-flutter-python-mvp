@@ -141,7 +141,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
         final verified = await controller.verifyOtp(enteredOtp);
         if (verified) {
           isVerified = true;
-          GetIt.I.get<SessionState>().updatePhone(widget.phoneNumber);
+          await GetIt.I.get<SessionState>().updatePhone(widget.phoneNumber);
           debugPrint('Phone verification is successful!');
           AutoRouter.of(context).pop();
         } else {
