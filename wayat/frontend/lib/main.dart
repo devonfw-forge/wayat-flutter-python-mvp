@@ -11,7 +11,7 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
-import 'package:wayat/firebase_options.dart';
+import 'package:wayat/options.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -19,8 +19,10 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatformOptions);
+ 
 
   await registerSingletons();
 
