@@ -62,7 +62,7 @@ class FirebaseService(IdentityProvider):
                         raise UnauthorizedException(required_roles)
             user: FirebaseAuthenticatedUser = FirebaseAuthenticatedUser(
                 uid=decoded_token["uid"],
-                email=decoded_token.get("email", ""),
+                email=decoded_token["email"],
                 roles=roles,
                 phone=decoded_token.get("phone", None),
                 name=decoded_token.get("name", None),
