@@ -88,7 +88,7 @@ async def update_preferences(request: UpdatePreferencesRequest,
                              user: FirebaseAuthenticatedUser = Depends(get_user())):
     logger.info(f"Updating preferences for user {user.uid} with values {request.dict(exclude_unset=True)}")
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
-    if request.share_location is False:
-        # share_location was set to false in this request, so we must delete the user
-        # from all the maps in which he's present
+    if request.share_location is not None:
+        # share_location was changed in this request, so we must refresh the user status
+        # on all the maps in which he's present
         await map_service.regenerate_maps_containing_user(user.uid)
