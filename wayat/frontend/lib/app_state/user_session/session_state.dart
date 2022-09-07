@@ -106,7 +106,18 @@ abstract class _SessionState with Store {
   }
 
   Future logOut() async {
-    authService.signOut();
+    finishLoggedIn = false;
+    googleSignedIn = false;
+    hasDoneOnboarding = false;
+    await authService.signOut();
+    currentUser = MyUser(
+        id: "idle",
+        name: "idle",
+        email: "idle",
+        imageUrl: "idle",
+        phone: "idle",
+        onboardingCompleted: true,
+        shareLocationEnabled: false);
   }
 
   bool isOnboardingCompleted() {

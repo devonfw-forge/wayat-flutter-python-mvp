@@ -46,15 +46,9 @@ class ProfilePage extends StatelessWidget {
         }),
         const SizedBox(height: 32),
         _buildShareLocationPart(),
-        const SizedBox(height: 48),
-
-        //TODO: Implement the Information part
-        // _buildInformationPart(),
-        // const SizedBox(height: 48),
-
-        //TODO: Implement the Account part
-        // _buildAccountPart(),
-        // const SizedBox(height: 42),
+        Divider(),
+        const SizedBox(height: 20),
+        _buildAccountPart(),
       ],
     );
   }
@@ -107,91 +101,43 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 16),
         _activeSharingLocationButton(),
         const SizedBox(height: 24),
-
-        //TODO: Implement the "Set do not disturb" switch button functional
-        // _setDoNotDisturbButton(),
-
-        const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.editProfile,
             onTap: () {
               profileState.setCurrentPage(ProfileCurrentPages.editProfile);
             }),
         const SizedBox(height: 24),
-
-        //TODO: Implement the Preferences page
-        // CustomCard(
-        //     text: appLocalizations.preferences,
-        //     onTap: () {
-        //       controller.setPreferences(true);
-        //     }),
       ],
     );
   }
 
-  //Build UI for "Information" part
-  /// - "FAQS" custom button
-  /// - "Privacy" custom button
-  // Widget _buildInformationPart() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 16),
-  //         child: Text(appLocalizations.information,
-  //             textAlign: TextAlign.left,
-  //             style: const TextStyle(
-  //                 fontWeight: FontWeight.w500,
-  //                 color: Colors.black87,
-  //                 fontSize: 16)),
-  //       ),
-  //       const SizedBox(height: 24),
-  //       CustomCard(
-  //           text: appLocalizations.faqs,
-  //           onTap: () {
-  //             profileState.setCurrentPage(ProfileCurrentPages.faqs);
-  //           }),
-  //       const SizedBox(height: 24),
-  //       CustomCard(
-  //           text: appLocalizations.privacy,
-  //           onTap: () {
-  //             profileState.setCurrentPage(ProfileCurrentPages.privacy);
-  //           }),
-  //     ],
-  //   );
-  // }
-
   //Build UI for "Account" part
   /// - "Log Out" custom button
   /// - "Delete Account" custom button
-  // Widget _buildAccountPart() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 16),
-  //         child: Text(appLocalizations.account,
-  //             textAlign: TextAlign.left,
-  //             style: const TextStyle(
-  //                 fontWeight: FontWeight.w500,
-  //                 color: Colors.black87,
-  //                 fontSize: 16)),
-  //       ),
-  //       const SizedBox(height: 24),
-  //       CustomCard(
-  //           text: appLocalizations.logOut,
-  //           onTap: () {
-  //             // TODO: Implement the Log Out functional
-  //           }),
-  //       const SizedBox(height: 24),
-  //       CustomCard(
-  //           text: appLocalizations.deleteAccount,
-  //           onTap: () {
-  //             // TODO: Implement Delete account
-  //           }),
-  //     ],
-  //   );
-  // }
+  Widget _buildAccountPart() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(appLocalizations.account,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                  fontSize: 16)),
+        ),
+        const SizedBox(height: 24),
+        CustomCard(
+            text: appLocalizations.logOut,
+            onTap: () {
+              debugPrint("Closing the session");
+              userSession.logOut();
+            }),
+        const SizedBox(height: 24),
+      ],
+    );
+  }
 
   // Build "Active sharing location" switch button
   Row _activeSharingLocationButton() {
@@ -222,34 +168,4 @@ class ProfilePage extends StatelessWidget {
       ],
     );
   }
-
-  // Build "Set do not disturb" switch button
-  // Row _setDoNotDisturbButton() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: [
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 16),
-  //         child: Text(
-  //           appLocalizations.doNotDisturb,
-  //           style: const TextStyle(
-  //               fontWeight: FontWeight.w500,
-  //               color: Colors.black87,
-  //               fontSize: 16),
-  //         ),
-  //       ),
-  //       Observer(builder: (_) {
-  //         return Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 16),
-  //           child: CustomSwitch(
-  //             value: false, // change to controller.doNotDisturb,
-  //             onChanged: (newValue) {
-  //               //controller.setdoNotDisturb(newValue);
-  //             },
-  //           ),
-  //         );
-  //       })
-  //     ],
-  //   );
-  // }
 }
