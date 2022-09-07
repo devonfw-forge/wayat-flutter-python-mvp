@@ -173,6 +173,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   IntlPhoneField _phoneTextField() {
     FirebaseAuth auth = FirebaseAuth.instance;
+    auth.setSettings(appVerificationDisabledForTesting: true);
     return IntlPhoneField(
       // Only numbers are allowed as input
       keyboardType: TextInputType.number,
