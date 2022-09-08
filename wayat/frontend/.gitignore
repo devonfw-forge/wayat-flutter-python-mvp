@@ -71,6 +71,8 @@ build/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 **/ios/Runner/GoogleService-Info.*
+**/ios/firebase_app_id_file.json
+
 
 ### https://raw.github.com/github/gitignore//Android.gitignore
 
