@@ -70,6 +70,8 @@ build/
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner/GoogleService-Info.plist
+
 
 
 ### https://raw.github.com/github/gitignore//Android.gitignore
