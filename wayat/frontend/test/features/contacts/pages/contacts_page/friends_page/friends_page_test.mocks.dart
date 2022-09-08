@@ -317,11 +317,9 @@ class MockContactService extends _i1.Mock implements _i11.ContactService {
               returnValue: _i9.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
           as _i9.Future<List<_i8.Contact>>);
   @override
-  _i9.Future<void> sendRequests(List<_i8.Contact>? contacts) =>
-      (super.noSuchMethod(Invocation.method(#sendRequests, [contacts]),
-              returnValue: _i9.Future<void>.value(),
-              returnValueForMissingStub: _i9.Future<void>.value())
-          as _i9.Future<void>);
+  void sendRequests(List<_i8.Contact>? contacts) =>
+      super.noSuchMethod(Invocation.method(#sendRequests, [contacts]),
+          returnValueForMissingStub: null);
   @override
   _i9.Future<List<_i8.Contact>> getFilteredContacts(
           List<String>? importedContacts) =>

@@ -104,8 +104,6 @@ class ProfilePage extends StatelessWidget {
                   color: Colors.black87,
                   fontSize: 16)),
         ),
-        const SizedBox(height: 16),
-        _activeSharingLocationButton(),
         const SizedBox(height: 24),
 
         //TODO: Implement the "Set do not disturb" switch button functional
