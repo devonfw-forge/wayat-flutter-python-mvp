@@ -13,13 +13,18 @@ import 'package:wayat/features/onboarding/controller/onboarding_controller.dart'
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 Future main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // Env file should be loaded before Firebase initialization
+  await dotenv.load(fileName: ".env");
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatformOptions);
+
   await registerSingletons();
   setTimeAgoLocales();
 
