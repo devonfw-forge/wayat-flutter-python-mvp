@@ -18,7 +18,6 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 Future main() async {
-  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");

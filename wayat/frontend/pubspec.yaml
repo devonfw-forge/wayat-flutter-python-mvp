@@ -32,6 +32,7 @@ dependencies:
   location: ^4.4.0
   # Environment variables
   flutter_dotenv: ^5.0.2
+  flutter_config: ^2.0.0
   # Google maps
   google_maps_flutter: ^2.2.0
   # AZ ListView for imported contacts
