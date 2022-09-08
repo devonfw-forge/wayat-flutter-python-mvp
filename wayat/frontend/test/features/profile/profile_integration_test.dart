@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,6 +28,7 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/profile/profile_service.dart';
 
 import 'profile_integration_test.mocks.dart';
+import 'widgets/firebase_mock.dart';
 
 @GenerateMocks([
   ProfileService,
@@ -59,9 +61,13 @@ void main() async {
   final ProfileState profileState =
       ProfileState(profileService: mockProfileService);
 
+  setupFirebaseAuthMocks();
+
   setUpAll(() async {
     HttpOverrides.global = null;
     await dotenv.load(fileName: ".env");
+    await Firebase.initializeApp();
+
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
     when(mockSessionState.finishLoggedIn).thenReturn(true);

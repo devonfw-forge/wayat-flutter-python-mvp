@@ -24,14 +24,10 @@ class VerifyPhoneNumberDialog extends StatefulWidget {
 
 class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
     with WidgetsBindingObserver {
-  bool isKeyboardVisible = false;
   bool isVerified = false;
-
-  late final ScrollController scrollController;
 
   @override
   void initState() {
-    scrollController = ScrollController();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -39,38 +35,17 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    scrollController.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeMetrics() {
-    final bottomViewInsets = WidgetsBinding.instance.window.viewInsets.bottom;
-    isKeyboardVisible = bottomViewInsets > 0;
-  }
-
-  // scroll to bottom of screen, when pin input field is in focus.
-  Future<void> _scrollToBottomOnKeyboardOpen() async {
-    while (!isKeyboardVisible) {
-      await Future.delayed(const Duration(milliseconds: 50));
-    }
-    await Future.delayed(const Duration(milliseconds: 250));
-    await scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 250),
-      curve: Curves.easeIn,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+        child: FirebasePhoneAuthProvider(
       child: FirebasePhoneAuthHandler(
         phoneNumber: widget.phoneNumber,
         signOutOnSuccessfulVerification: false,
         linkWithExistingUser: false,
-        autoRetrievalTimeOutDuration: const Duration(seconds: 60),
-        otpExpirationDuration: const Duration(seconds: 60),
         onCodeSent: () {},
         onLoginSuccess: (userCredential, autoVerified) async {},
         onLoginFailed: (authException, stackTrace) {},
@@ -79,7 +54,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           return _buildValidationAlertDialog(context, controller);
         },
       ),
-    );
+    ));
   }
 
   Widget _buildValidationAlertDialog(context, controller) {
@@ -88,11 +63,13 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
       title: Text(appLocalizations.verifyPhoneTitle),
       titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 18),
-      titlePadding: const EdgeInsets.all(32),
-      content: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.30,
-        width: MediaQuery.of(context).size.width,
+      titlePadding: const EdgeInsets.only(top: 32, left: 32, right: 32),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 220.0),
+        //height: MediaQuery.of(context).size.height * 0.27,
+        //width: MediaQuery.of(context).size.width,
         child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -100,12 +77,11 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
                   appLocalizations.verifyPhoneText, widget.phoneNumber),
               const SizedBox(height: 32),
               _getVirifyTextfields(controller),
-              const SizedBox(height: 32),
               _getVerifyResendCode(
                   appLocalizations.didnotReceiveCode, controller),
             ]),
       ),
-      actionsPadding: const EdgeInsets.only(left: 32, right: 32),
+      actionsPadding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
       actions: [
         Column(
           children: [
@@ -134,9 +110,6 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
   Widget _getVirifyTextfields(controller) {
     return PinInputField(
       length: 6,
-      onFocusChange: (hasFocus) async {
-        if (hasFocus) await _scrollToBottomOnKeyboardOpen();
-      },
       onSubmit: (enteredOtp) async {
         final verified = await controller.verifyOtp(enteredOtp);
         if (verified) {

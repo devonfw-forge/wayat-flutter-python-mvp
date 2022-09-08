@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -18,6 +17,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'edit_profile_test.mocks.dart';
+import 'widgets/firebase_mock.dart';
 
 @GenerateMocks([SessionState, ProfileState, HttpProvider])
 void main() async {
@@ -25,8 +25,11 @@ void main() async {
   final MockProfileState mockProfileState = MockProfileState();
   late MyUser user;
 
+  setupFirebaseAuthMocks();
+
   setUpAll(() async {
     await dotenv.load(fileName: ".env");
+    await Firebase.initializeApp();
     HttpOverrides.global = null;
     user = MyUser(
         id: "2",

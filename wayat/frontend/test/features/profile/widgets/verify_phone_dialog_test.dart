@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -8,11 +9,15 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:mockito/annotations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'firebase_mock.dart';
 import 'verify_phone_dialog_test.mocks.dart';
 
-@GenerateMocks([SessionState])
+@GenerateMocks([SessionState, Firebase])
 void main() async {
-  setUpAll(() {
+  setupFirebaseAuthMocks();
+
+  setUpAll(() async {
+    await Firebase.initializeApp();
     GetIt.I.registerSingleton<SessionState>(MockSessionState());
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   });
@@ -36,6 +41,7 @@ void main() async {
     await tester.pumpWidget(_createApp(const VerifyPhoneNumberDialog(
       phoneNumber: '+34600947886',
     )));
+    await tester.pump();
     expect(find.byType(PinInputField), findsOneWidget);
   });
 }
