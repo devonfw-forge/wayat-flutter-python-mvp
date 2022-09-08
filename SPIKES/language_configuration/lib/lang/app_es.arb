@@ -1,0 +1,93 @@
+{
+    "appTitle": "wayat",
+
+    "login": "Iniciar sesión",
+    "loginGoogle": "Iniciar sesión con Google",
+    "email": "Email",
+    "password": "Contraseña",
+    "phoneNumber": "Número de teléfono",
+    "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
+    "phonePageDescription": "Se requiere un número de teléfono válido",
+    "invalidPhoneNumber": "Número de teléfono inválido",
+    "phoneUpdateError": "Error al configurar el número de teléfono",
+    
+    "home": "Inicio",
+    "contacts": "Contactos",
+    "events": "Eventos",
+    "name": "Nombre",
+
+    "profile": "Perfil",
+    "editProfile": "Editar Perfil",
+    "viewProfile": "Ver perfil",
+
+    "addEvents": "Añadir Eventos",
+    "notifications": "Notificaciones",
+
+    "manageContactsTip": "Podrás modificar los\npermisos de tus contactos\ncuando quieras",
+    "allowedContactsTitle": "Establece tus contactos",
+    "allowedContactsBody": "Selecciona los contactos que podrán\nver tu posición y eventos. También\npodrás crear grupos de familia, amigos,\ntrabajo o lo que desees.",
+
+    "importContactsTip": "En primer lugar, selecciona los\ncontactosque podrán ver tu posición.",
+    "manageContacts": "Gestionar contactos",
+
+    "next": "Siguiente",
+    "skip": "Saltar",
+
+    "selectContacts": "Selecciona contactos",
+
+    "sharingLocation": "Compartir ubicación",
+    "activeSharingLocation": "Ubicación activa",
+    "doNotDisturb": "Establecer no molestar",
+
+    "preferences": "Preferencias",
+    "faqs": "Preguntas frecuentes",
+    "privacy": "Privacidad",
+    "account": "Cuenta",
+    "logOut": "Cerrar Sesión",
+    "deleteAccount": "Borrar Cuenta",
+
+    "information": "Información",
+    "darkTheme": "Habilitar tema oscuro",
+    "language": "Idioma",
+
+    "chooseProfileFoto": "Escoger imagen desde",
+    "camera": "Cámara",
+    "gallery": "Galería",
+    "save": "Guardar",
+
+    "changePhone": "Cambiar de teléfono",
+    "changePassword": "Cambiar Contraseña",
+
+    "close": "Cerrar",
+    "loadingAddress": "Cargando dirección",
+    "errorAddress": "No se pudo obtener la dirección",
+
+    "friendsTab": "Amigos",
+    "requestsTab": "Peticiones",
+    "suggestionsTab": "Sugerencias",
+
+    "friendsPageTitle": "MIS AMIGOS",
+    "pendingRequestsTitle": "PETICIONES DE AMISTAD",
+    "suggestionsPageTitle": "AÑADE A TUS CONTACTOS",
+    "sentRequestsTitle": "PETICIONES ENVIADAS",
+    "sentButtonNavigation": "ENVIADAS",
+    "sentButtonTile": "Enviada",
+    "noPendingRequests": "No tienes peticiones pendientes",
+    "inviteContacts": "Invita a tus contactos a Wayat",
+    "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
+    "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
+    "invitationCopied": "Copiado en el portapapeles",
+
+    "accept": "Aceptar",
+    "search": "Buscar",
+
+    "viewInformation": "Ver información",
+
+    "profileShareLocation": "Ajustes de ubicación",
+    "profileActiveLocation": "Compartir ubicación",
+
+    "contactProfileSharingLocationWithYou": "Compartiendo ubicación contigo",
+    "contactProfileLocationNotAvailable": "Posición no disponible",
+    "contactProfileNotSharingLocation": "Sin compartir ubicación",
+    "contactProfileLastUpdated": "Última actualización"
+}
