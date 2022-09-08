@@ -90,7 +90,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 18),
       titlePadding: const EdgeInsets.all(32),
       content: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.32,
+        height: MediaQuery.of(context).size.height * 0.30,
         width: MediaQuery.of(context).size.width,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -140,9 +140,8 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
       onSubmit: (enteredOtp) async {
         final verified = await controller.verifyOtp(enteredOtp);
         if (verified) {
-          isVerified = true;
-          await GetIt.I.get<SessionState>().updatePhone(widget.phoneNumber);
-          debugPrint('Phone verification is successful!');
+          isVerified =
+              await GetIt.I.get<SessionState>().updatePhone(widget.phoneNumber);
           AutoRouter.of(context).pop();
         } else {
           debugPrint('Phone verification error! Invalid code!');
@@ -163,24 +162,26 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
   }
 
   Widget _getVerifyResendCode(String text, controller) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-      Text(text,
-          textAlign: TextAlign.start,
-          style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: Colors.black87,
-              fontSize: 16)),
-      TextButton(
-          child: Text(
-            appLocalizations.resendCode,
+    return Expanded(
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Text(text,
+            textAlign: TextAlign.start,
             style: const TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
                 color: Colors.black87,
-                fontSize: 16),
-          ),
-          onPressed: () async {
-            await controller.sendOTP();
-          })
-    ]);
+                fontSize: 14)),
+        TextButton(
+            child: Text(
+              appLocalizations.resendCode,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                  fontSize: 15),
+            ),
+            onPressed: () async {
+              await controller.sendOTP();
+            })
+      ]),
+    );
   }
 }

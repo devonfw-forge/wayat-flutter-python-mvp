@@ -21,8 +21,8 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatformOptions);
- 
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatformOptions);
 
   await registerSingletons();
 
