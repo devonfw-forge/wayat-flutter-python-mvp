@@ -1,1 +1,0 @@
-enum OnBoardingState { NotStarted, Current }
