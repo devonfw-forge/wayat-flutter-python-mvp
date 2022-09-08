@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:path/path.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/main.dart';
 
 class PreferencesPage extends StatelessWidget {
   const PreferencesPage({Key? key}) : super(key: key);
@@ -12,7 +14,8 @@ class PreferencesPage extends StatelessWidget {
       children: [
         _profileAppBar(),
         const SizedBox(height: 34.5),
-        _buildEnableDarkThemeSwitchButton(),
+        // TODO: implement the dark mode
+        // _buildEnableDarkThemeSwitchButton(),
         const SizedBox(height: 34.5),
         _buildLanguageButton(),
       ],
