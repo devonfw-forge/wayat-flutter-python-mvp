@@ -71,7 +71,8 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     // It will be executed if the app is opened from background, but not when it is
     // opened for first time
     if (state == AppLifecycleState.resumed) {
-      if (!mapState.mapOpened) {
+      if (!mapState.mapOpened &&
+          GetIt.I.get<SessionState>().currentUser != null) {
         await mapState.openMap();
       }
     }

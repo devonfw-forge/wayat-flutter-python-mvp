@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,6 +53,7 @@ class GoogleAuthService implements AuthService {
   /// Throws on [Exception] if there is no authenticated user
   @override
   Future<String> getIdToken() async {
+    if (_auth.currentUser == null) return "";
     return await _auth.currentUser!.getIdToken();
   }
 
@@ -72,6 +74,7 @@ class GoogleAuthService implements AuthService {
   /// *Sign out* the current user.
   @override
   Future<void> signOut() async {
+    await FirebaseFirestore.instance.terminate();
     await _auth.signOut();
     await _googleSignIn.signOut();
   }

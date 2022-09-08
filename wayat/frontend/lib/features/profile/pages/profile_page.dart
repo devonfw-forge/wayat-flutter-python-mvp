@@ -34,6 +34,7 @@ class ProfilePage extends StatelessWidget {
         _buildProfileImage(),
         const SizedBox(height: 16),
         Observer(builder: (_) {
+          if (userSession.currentUser == null) return const Text("");
           String name = userSession.currentUser!.name;
           return Text(
             name,
@@ -58,6 +59,7 @@ class ProfilePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Observer(builder: (context) {
+          if (userSession.currentUser == null) return Container();
           MyUser myUser = userSession.currentUser!;
           return Container(
             key: const Key("profile_image"),

@@ -16,7 +16,7 @@ class UserStatusService {
   Future setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(ShareLocationMode) onLocationModeUpdate}) async {
-    if (GetIt.I.get<SessionState>().currentUser!.id == "idle") {
+    if (GetIt.I.get<SessionState>().currentUser == null) {
       return;
     }
     final docRef = db
