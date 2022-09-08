@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -31,7 +33,7 @@ void main() async {
         name: "test",
         email: "test@capg.com",
         imageUrl: "http://example.com",
-        phone: "123456789",
+        phone: "+34600947886",
         onboardingCompleted: true,
         shareLocationEnabled: true);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
