@@ -14,8 +14,10 @@ class GoogleMapsService {
     if (Platform.isAndroid) {
       uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
     } else if (Platform.isIOS) {
-      uri = Uri.parse(
-          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
+      //apple maps
+      uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
+      //google maps
+      //uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
     }
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);

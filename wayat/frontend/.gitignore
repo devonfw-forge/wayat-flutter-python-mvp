@@ -70,7 +70,7 @@ build/
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
-**/ios/Runner/GoogleService-Info.plist
+**/ios/Runner/GoogleService-Info.*
 **/ios/firebase_app_id_file.json
 
 
