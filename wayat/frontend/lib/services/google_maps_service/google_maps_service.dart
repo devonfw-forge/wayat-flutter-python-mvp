@@ -10,7 +10,9 @@ import 'package:wayat/services/google_maps_service/address_response/address_resp
 
 class GoogleMapsService {
   static void openMaps(double lat, double lng) async {
-    var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    //var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    var uri = Uri.parse(
+        "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
