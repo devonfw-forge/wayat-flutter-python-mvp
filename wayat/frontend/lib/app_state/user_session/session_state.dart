@@ -110,7 +110,7 @@ abstract class _SessionState with Store {
 
   Future logOut() async {
     final MapState mapState = GetIt.I.get<MapState>();
-    mapState.closeMap();
+    await mapState.closeMap();
     finishLoggedIn = false;
     googleSignedIn = false;
     hasDoneOnboarding = false;
