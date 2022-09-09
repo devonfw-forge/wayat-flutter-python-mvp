@@ -24,9 +24,12 @@ class ContactDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           side: const BorderSide(color: Colors.black, width: 1)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [mapSection(context), dataSection(context)],
+      child: 
+      SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [mapSection(context), dataSection(context)],
+        ),
       ),
     );
   }

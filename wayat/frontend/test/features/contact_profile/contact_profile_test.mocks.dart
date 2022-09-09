@@ -132,6 +132,14 @@ class MockContactProfileController extends _i1.Mock
   }
 
   @override
+  bool get shareLocationToContact =>
+      (super.noSuchMethod(Invocation.getter(#shareLocationToContact),
+          returnValue: false) as bool);
+  @override
+  set shareLocationToContact(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#shareLocationToContact, value),
+          returnValueForMissingStub: null);
+  @override
   _i3.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
@@ -148,6 +156,15 @@ class MockContactProfileController extends _i1.Mock
   void openMaps(_i6.ContactLocation? contact) =>
       super.noSuchMethod(Invocation.method(#openMaps, [contact]),
           returnValueForMissingStub: null);
+  @override
+  _i8.Future<void> setShareLocationToContact(
+          bool? shareLocationToContact, _i10.Contact? contact) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #setShareLocationToContact, [shareLocationToContact, contact]),
+          returnValue: _i8.Future<void>.value(),
+          returnValueForMissingStub:
+              _i8.Future<void>.value()) as _i8.Future<void>);
 }
 
 /// A class which mocks [HomeState].

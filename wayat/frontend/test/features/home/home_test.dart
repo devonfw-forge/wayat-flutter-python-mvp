@@ -120,6 +120,7 @@ void main() async {
   Contact _contactFactory() {
     return Contact(
       available: true,
+      shareLocation: true,
       id: "2",
       name: "test",
       email: "Contact email",

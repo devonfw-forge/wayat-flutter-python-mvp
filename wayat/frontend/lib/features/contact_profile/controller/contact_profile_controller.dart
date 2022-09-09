@@ -2,6 +2,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 
@@ -14,6 +15,9 @@ class ContactProfileController = _ContactProfileController
 abstract class _ContactProfileController with Store {
   final ImageService _imageService = ImageService();
 
+  @observable
+  bool shareLocationToContact = true;
+
   Future<BitmapDescriptor> getMarkerImage(Contact contact) async {
     return (await _imageService.getBitmapsFromUrl([contact.imageUrl]))
         .values
@@ -22,5 +26,17 @@ abstract class _ContactProfileController with Store {
 
   void openMaps(ContactLocation contact) {
     GoogleMapsService.openMaps(contact.latitude, contact.longitude);
+  }
+
+  @action
+  Future<void> setShareLocationToContact(bool shareLocationToContact, Contact contact) async {
+    if (shareLocationToContact != contact.shareLocation) {
+      await HttpProvider().sendPostRequest('contacts/${contact.id}', 
+        {
+          'share_location': shareLocationToContact
+        }
+      );
+    }
+    this.shareLocationToContact = shareLocationToContact;
   }
 }

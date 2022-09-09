@@ -28,7 +28,11 @@ class GoogleMapsService {
       Map<String, dynamic> json = jsonDecode(response.body);
       AddressResponse addressResponse = AddressResponse.fromJson(json);
       return addressResponse.firstValidAddress();
-    } on HandshakeException {
+    } on SocketException {
+      log("Exception: Failed host lookup to googleapis.com");
+      return "ERROR_ADDRESS";
+    }
+    on HandshakeException {
       log("Exception: Bad handshake to googleapis.com");
       return "ERROR_ADDRESS";
     }

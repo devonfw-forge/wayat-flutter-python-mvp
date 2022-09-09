@@ -3,8 +3,10 @@ import 'package:wayat/domain/user/user.dart';
 
 class Contact extends User {
   bool available;
+  bool shareLocation;
 
   Contact({
+    required this.shareLocation,
     required this.available,
     required super.id,
     required super.name,
@@ -15,6 +17,7 @@ class Contact extends User {
 
   @override
   Contact copyWith({
+    bool? shareLocation,
     bool? available,
     String? id,
     String? name,
@@ -23,6 +26,7 @@ class Contact extends User {
     String? phone,
   }) {
     return Contact(
+      shareLocation: shareLocation ?? this.shareLocation,
       available: available ?? this.available,
       id: id ?? this.id,
       name: name ?? this.name,
@@ -36,6 +40,7 @@ class Contact extends User {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = super.toMap();
     map['available'] = available;
+    map['share_location'] = available;
     return map;
   }
 
@@ -47,6 +52,7 @@ class Contact extends User {
       email: map['email'] ?? "",
       imageUrl: map['image_url'] as String,
       phone: map['phone'] as String,
+      shareLocation: (map['share_location'] ?? true) as bool
     );
   }
 

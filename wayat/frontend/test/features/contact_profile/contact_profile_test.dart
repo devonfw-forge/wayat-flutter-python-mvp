@@ -37,6 +37,7 @@ void main() async {
   ContactLocation locatedContactFactory() {
     return ContactLocation(
         available: true,
+        shareLocation: true,
         id: "id1",
         name: contactName,
         email: "Contact email",
@@ -51,6 +52,7 @@ void main() async {
   Contact nonLocatedContactFactory() {
     return Contact(
         available: false,
+        shareLocation: true,
         id: "id2",
         name: contactName,
         email: "Contact email",

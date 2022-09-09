@@ -7,6 +7,7 @@ void main() {
   late Contact contact;
   setUp(() {
     contact = Contact(
+        shareLocation: true,
         available: true,
         id: "1",
         name: "test_name",
