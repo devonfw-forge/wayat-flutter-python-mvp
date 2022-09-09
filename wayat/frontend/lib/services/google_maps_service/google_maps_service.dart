@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
 
 class GoogleMapsService {
@@ -17,6 +18,11 @@ class GoogleMapsService {
       uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
       //google maps
       //uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
+    }
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch ${uri.toString()}';
     }
   }
 
