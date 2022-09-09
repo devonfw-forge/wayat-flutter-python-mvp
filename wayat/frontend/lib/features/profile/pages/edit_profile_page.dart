@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -40,9 +41,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const SizedBox(height: 32),
           _nameTextField(),
           const SizedBox(height: 34.5),
-
-          // TODO: Implement the Changing phone page
-          // _changePhone(),
         ],
       ),
     );
@@ -163,28 +161,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ]),
       );
 
-  // Row _changePhone() => Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 16),
-  //           child: Text(
-  //             appLocalizations.changePhone,
-  //             style: _textStyle(Colors.black87, 16),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 16),
-  //           child: InkWell(
-  //               onTap: () {
-  //                 //AutoRoute to change phone page
-  //               },
-  //               child: const Icon(Icons.arrow_forward,
-  //                   color: Colors.black87, size: 24)),
-  //         )
-  //       ],
-  //     );
-
   Widget _getImageFromCameraOrGallary() {
     return Container(
         height: MediaQuery.of(context).size.height / 8,
@@ -226,6 +202,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     setState(() {
       currentSelectedImage = newImage;
     });
-    Navigator.pop(context);
+    AutoRouter.of(context).pop();
   }
 }
