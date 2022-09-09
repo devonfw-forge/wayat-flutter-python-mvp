@@ -133,7 +133,6 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.logOut,
             onTap: () {
-              debugPrint("Closing the session");
               userSession.logOut();
             }),
         const SizedBox(height: 24),
@@ -160,6 +159,7 @@ class ProfilePage extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomSwitch(
+              key: const Key("sw_en_prof"),
               value: locationState.shareLocationEnabled,
               onChanged: (newValue) {
                 locationState.setShareLocationEnabled(newValue);
