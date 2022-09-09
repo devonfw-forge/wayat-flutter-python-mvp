@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -36,7 +38,7 @@ class ContactDialog extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
         child: Column(
           children: [
-            userInformation(),
+            userInformation(context),
             const SizedBox(
               height: 35,
             ),
@@ -61,7 +63,7 @@ class ContactDialog extends StatelessWidget {
         ));
   }
 
-  Widget userInformation() {
+  Widget userInformation(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: Row(
@@ -94,7 +96,8 @@ class ContactDialog extends StatelessWidget {
                   style: const TextStyle(fontSize: 17, color: Colors.black54),
                 ),
                 Text(
-                  timeago.format(contact.lastUpdated),
+                  timeago.format(contact.lastUpdated,
+                      locale: Localizations.localeOf(context).languageCode),
                   style: const TextStyle(fontSize: 17, color: Colors.black54),
                 )
               ],
