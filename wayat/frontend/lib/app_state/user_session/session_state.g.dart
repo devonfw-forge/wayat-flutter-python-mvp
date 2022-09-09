@@ -113,14 +113,6 @@ mixin _$SessionState on _SessionState, Store {
     return _$setDoneOnBoardingAsyncAction.run(() => super.setDoneOnBoarding());
   }
 
-  late final _$logOutAsyncAction =
-      AsyncAction('_SessionState.logOut', context: context);
-
-  @override
-  Future<dynamic> logOut() {
-    return _$logOutAsyncAction.run(() => super.logOut());
-  }
-
   late final _$_SessionStateActionController =
       ActionController(name: '_SessionState', context: context);
 

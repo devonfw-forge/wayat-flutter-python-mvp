@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
-import 'package:wayat/services/service.dart';
+// ignore: depend_on_referenced_packages, implementation_imports
 import 'package:http_parser/src/media_type.dart';
 
-abstract class RESTService extends Service {
+class HttpProvider {
+  String baseUrl = dotenv.get('BASE_URL');
+
   /// Generetes a *dictionary* with the headers for backend connection
   Future<Map<String, String>> _getHeaders() async {
     AuthService authService = GetIt.I.get<SessionState>().authService;

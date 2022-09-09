@@ -89,6 +89,12 @@ async def update_preferences(request: UpdatePreferencesRequest,
     logger.info(f"Updating preferences for user {user.uid} with values {request.dict(exclude_unset=True)}")
     await user_service.update_user(user.uid, **request.dict(exclude_unset=True))
     if request.share_location is False:
-        # share_location was set to false in this request, so we must delete the user
-        # from all the maps in which he's present
+        # share_location was changed to false in this request, so we must refresh the user status
+        # on all the maps in which he's present
+        logger.debug(f"Updating maps containing user {user.uid}")
         await map_service.regenerate_maps_containing_user(user.uid)
+    elif request.share_location is True:
+        # share_location was changed to true in this request, so we must refresh the user status
+        # on all the maps of the user friend which "should be updated"
+        logger.debug(f"Updating maps of {user.uid} friends")
+        await map_service.regenerate_map_status(uid=user.uid, force=True)
