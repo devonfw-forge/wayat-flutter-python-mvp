@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
@@ -40,7 +42,8 @@ class ContactMapListTile extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                timeago.format(contact.lastUpdated),
+                timeago.format(contact.lastUpdated,
+                    locale: Localizations.localeOf(context).languageCode),
                 style: const TextStyle(fontSize: 17, color: Colors.black54),
               ),
               TextButton(

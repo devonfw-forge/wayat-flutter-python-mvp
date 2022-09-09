@@ -14,15 +14,24 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future main() async {
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await dotenv.load(fileName: ".env");
-
   await registerSingletons();
+  setTimeAgoLocales();
 
   runApp(const MyApp());
+}
+
+void setTimeAgoLocales() {
+  timeago.setLocaleMessages('en', timeago.EnMessages());
+  timeago.setLocaleMessages('es', timeago.EsMessages());
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
 Future registerSingletons() async {
