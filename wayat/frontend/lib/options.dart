@@ -15,7 +15,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
-class DefaultFirebaseOptions {
+class CustomFirebaseOptions {
   static FirebaseOptions get currentPlatformOptions {
     if (kIsWeb) {
       return web;
