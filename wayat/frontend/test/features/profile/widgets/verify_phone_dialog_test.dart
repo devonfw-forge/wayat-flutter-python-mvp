@@ -41,7 +41,7 @@ void main() async {
     await tester.pumpWidget(_createApp(const VerifyPhoneNumberDialog(
       phoneNumber: '+34600947886',
     )));
-    await tester.pump(const Duration(seconds: 5));
+    await tester.pump(const Duration(seconds: 1));
     expect(find.byType(PinInputField), findsOneWidget);
   });
 }
