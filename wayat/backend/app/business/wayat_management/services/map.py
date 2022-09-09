@@ -108,14 +108,14 @@ class MapService:
             await self._status_repository.set_active_batch(uid_list=user_to_update.contacts, value=True)
 
     @overload
-    async def regenerate_map_status(self, *, uid: str, force=False):
+    async def regenerate_map_status(self, *, uid: str):
         ...
 
     @overload
-    async def regenerate_map_status(self, *, user: UserEntity, force=False):
+    async def regenerate_map_status(self, *, user: UserEntity):
         ...
 
-    async def regenerate_map_status(self, *, uid: str | None = None, user: UserEntity | None = None, force=False):
+    async def regenerate_map_status(self, *, uid: str | None = None, user: UserEntity | None = None):
         # Overload handling
         if user is not None:
             user_to_update = user
@@ -128,7 +128,7 @@ class MapService:
 
         # Implementation
         new_contact_refs = await asyncio.gather(
-            *[self._create_contact_ref(contact_uid, force) for contact_uid in user_to_update.contacts],
+            *[self._create_contact_ref(contact_uid) for contact_uid in user_to_update.contacts],
         )  # type: list[ContactRefInfo]
 
         await asyncio.gather(
@@ -136,10 +136,9 @@ class MapService:
             self._user_repository.update_last_status(uid),
         )
 
-    async def _create_contact_ref(self, contact_uid: str, force: bool = False) -> ContactRefInfo | None:
+    async def _create_contact_ref(self, contact_uid: str) -> ContactRefInfo | None:
         contact_location = await self._user_repository.get_user_location(contact_uid)
-        if contact_location is not None and (force or not force and self._should_show(contact_location)):
-            logger.info(f"Regenerating Contact Ref for {contact_uid} - Force: {force}")
+        if contact_location is not None and self._should_show(contact_location):
             return ContactRefInfo(uid=contact_uid, last_updated=contact_location.last_updated,
                                   location=contact_location.value, address=contact_location.address)
         else:
