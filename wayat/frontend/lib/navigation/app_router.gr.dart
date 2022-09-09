@@ -40,12 +40,12 @@ import '../features/notifications/page/notifications_page.dart' as _i11;
 import '../features/onboarding/pages/onboarding_page.dart' as _i5;
 import '../features/onboarding/pages/onboarding_wrapper.dart' as _i2;
 import '../features/onboarding/pages/progress_page.dart' as _i6;
-import '../features/profile/pages/edit_profile_page/edit_profile_page.dart'
+import '../features/profile/pages/edit_profile_page.dart'
     as _i19;
-import '../features/profile/pages/faqs_page/faqs_page.dart' as _i21;
-import '../features/profile/pages/preferences_page/preferences_page.dart'
+import '../features/profile/pages/faqs_page.dart' as _i21;
+import '../features/profile/pages/preferences_page.dart'
     as _i20;
-import '../features/profile/pages/privacy_page/privacy_page.dart' as _i22;
+import '../features/profile/pages/privacy_page.dart' as _i22;
 import '../features/profile/pages/profile_page.dart' as _i18;
 import '../features/profile/pages/profile_wraper.dart' as _i12;
 import '../features/root/root_wrapper.dart' as _i1;
