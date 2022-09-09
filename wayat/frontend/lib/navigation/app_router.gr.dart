@@ -11,16 +11,16 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i26;
-import 'package:flutter/material.dart' as _i27;
+import 'package:auto_route/auto_route.dart' as _i24;
+import 'package:flutter/material.dart' as _i25;
 
-import '../domain/contact/contact.dart' as _i28;
-import '../features/authentication/page/loading_page.dart' as _i25;
-import '../features/authentication/page/login_page.dart' as _i23;
+import '../domain/contact/contact.dart' as _i26;
+import '../features/authentication/page/loading_page.dart' as _i23;
+import '../features/authentication/page/login_page.dart' as _i21;
 import '../features/authentication/page/login_wrapper.dart' as _i4;
-import '../features/authentication/page/phone_validation_page.dart' as _i24;
+import '../features/authentication/page/phone_validation_page.dart' as _i22;
 import '../features/contact_profile/controller/contact_profile_controller.dart'
-    as _i29;
+    as _i27;
 import '../features/contact_profile/page/contact_profile_page.dart' as _i8;
 import '../features/contacts/pages/contacts_page/contacts_page.dart' as _i13;
 import '../features/contacts/pages/contacts_page/friends_page/friends_page.dart'
@@ -34,75 +34,71 @@ import '../features/contacts/pages/sent_requests_page/sent_requests_page.dart'
     as _i14;
 import '../features/home/pages/home_page.dart' as _i7;
 import '../features/home/pages/home_wrapper.dart' as _i3;
-import '../features/map/controller/map_controller.dart' as _i30;
+import '../features/map/controller/map_controller.dart' as _i28;
 import '../features/map/page/home_map_page.dart' as _i9;
 import '../features/notifications/page/notifications_page.dart' as _i11;
 import '../features/onboarding/pages/onboarding_page.dart' as _i5;
 import '../features/onboarding/pages/onboarding_wrapper.dart' as _i2;
 import '../features/onboarding/pages/progress_page.dart' as _i6;
-import '../features/profile/pages/edit_profile_page/edit_profile_page.dart'
-    as _i19;
-import '../features/profile/pages/faqs_page/faqs_page.dart' as _i21;
-import '../features/profile/pages/preferences_page/preferences_page.dart'
-    as _i20;
-import '../features/profile/pages/privacy_page/privacy_page.dart' as _i22;
+import '../features/profile/pages/edit_profile_page.dart' as _i19;
+import '../features/profile/pages/preferences_page.dart' as _i20;
 import '../features/profile/pages/profile_page.dart' as _i18;
 import '../features/profile/pages/profile_wraper.dart' as _i12;
 import '../features/root/root_wrapper.dart' as _i1;
 
-class AppRouter extends _i26.RootStackRouter {
-  AppRouter([_i27.GlobalKey<_i27.NavigatorState>? navigatorKey])
+class AppRouter extends _i24.RootStackRouter {
+  AppRouter([_i25.GlobalKey<_i25.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i26.PageFactory> pagesMap = {
+  final Map<String, _i24.PageFactory> pagesMap = {
     RootWrapper.name: (routeData) {
       final args = routeData.argsAs<RootWrapperArgs>(
           orElse: () => const RootWrapperArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i1.RootWrapper(key: args.key));
     },
     OnBoardingWrapper.name: (routeData) {
       final args = routeData.argsAs<OnBoardingWrapperArgs>(
           orElse: () => const OnBoardingWrapperArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i2.OnBoardingWrapper(key: args.key));
     },
     HomeWrapper.name: (routeData) {
       final args = routeData.argsAs<HomeWrapperArgs>(
           orElse: () => const HomeWrapperArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i3.HomeWrapper(key: args.key));
     },
     LoginWrapper.name: (routeData) {
       final args = routeData.argsAs<LoginWrapperArgs>(
           orElse: () => const LoginWrapperArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i4.LoginWrapper(key: args.key));
     },
     OnBoardingRoute.name: (routeData) {
       final args = routeData.argsAs<OnBoardingRouteArgs>(
           orElse: () => const OnBoardingRouteArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i5.OnBoardingPage(key: args.key));
     },
     ProgressOnboardingRoute.name: (routeData) {
       final args = routeData.argsAs<ProgressOnboardingRouteArgs>(
           orElse: () => const ProgressOnboardingRouteArgs());
-      return _i26.CustomPage<dynamic>(
+      return _i24.CustomPage<dynamic>(
           routeData: routeData,
           child: _i6.ProgressOnboardingPage(key: args.key),
-          transitionsBuilder: _i26.TransitionsBuilders.slideLeft,
+          transitionsBuilder: _i24.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
     },
     HomeRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i7.HomePage());
     },
     ContactProfileRoute.name: (routeData) {
       final args = routeData.argsAs<ContactProfileRouteArgs>();
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i8.ContactProfilePage(
               contact: args.contact,
@@ -113,175 +109,162 @@ class AppRouter extends _i26.RootStackRouter {
     HomeMapRoute.name: (routeData) {
       final args = routeData.argsAs<HomeMapRouteArgs>(
           orElse: () => const HomeMapRouteArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i9.HomeMapPage(controller: args.controller, key: args.key));
     },
     ContactsWrapper.name: (routeData) {
       final args = routeData.argsAs<ContactsWrapperArgs>(
           orElse: () => const ContactsWrapperArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i10.ContactsWrapper(key: args.key));
     },
     NotificationsRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i11.NotificationsPage());
     },
     ProfileWrapper.name: (routeData) {
       final args = routeData.argsAs<ProfileWrapperArgs>(
           orElse: () => const ProfileWrapperArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i12.ProfileWrapper(key: args.key));
     },
     ContactsRoute.name: (routeData) {
       final args = routeData.argsAs<ContactsRouteArgs>(
           orElse: () => const ContactsRouteArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i13.ContactsPage(key: args.key));
     },
     SentRequestsRoute.name: (routeData) {
       final args = routeData.argsAs<SentRequestsRouteArgs>(
           orElse: () => const SentRequestsRouteArgs());
-      return _i26.CustomPage<dynamic>(
+      return _i24.CustomPage<dynamic>(
           routeData: routeData,
           child: _i14.SentRequestsPage(key: args.key),
-          transitionsBuilder: _i26.TransitionsBuilders.slideLeftWithFade,
+          transitionsBuilder: _i24.TransitionsBuilders.slideLeftWithFade,
           opaque: true,
           barrierDismissible: false);
     },
     FriendsRoute.name: (routeData) {
       final args = routeData.argsAs<FriendsRouteArgs>(
           orElse: () => const FriendsRouteArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i15.FriendsPage(key: args.key));
     },
     RequestsRoute.name: (routeData) {
       final args = routeData.argsAs<RequestsRouteArgs>(
           orElse: () => const RequestsRouteArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i16.RequestsPage(key: args.key));
     },
     SuggestionsRoute.name: (routeData) {
       final args = routeData.argsAs<SuggestionsRouteArgs>(
           orElse: () => const SuggestionsRouteArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i17.SuggestionsPage(key: args.key));
     },
     ProfileRoute.name: (routeData) {
       final args = routeData.argsAs<ProfileRouteArgs>(
           orElse: () => const ProfileRouteArgs());
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: _i18.ProfilePage(key: args.key));
     },
     EditProfileRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i19.EditProfilePage());
     },
     PreferencesRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
+      return _i24.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i20.PreferencesPage());
     },
-    FaqsRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i21.FaqsPage());
-    },
-    PrivacyRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i22.PrivacyPage());
-    },
     LoginRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i23.LoginPage());
+      return _i24.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i21.LoginPage());
     },
     PhoneValidationRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i24.PhoneValidationPage());
+      return _i24.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i22.PhoneValidationPage());
     },
     LoadingRoute.name: (routeData) {
-      return _i26.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i25.LoadingPage());
+      return _i24.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i23.LoadingPage());
     }
   };
 
   @override
-  List<_i26.RouteConfig> get routes => [
-        _i26.RouteConfig(RootWrapper.name, path: '/', children: [
-          _i26.RouteConfig(OnBoardingWrapper.name,
+  List<_i24.RouteConfig> get routes => [
+        _i24.RouteConfig(RootWrapper.name, path: '/', children: [
+          _i24.RouteConfig(OnBoardingWrapper.name,
               path: 'on-boarding-wrapper',
               parent: RootWrapper.name,
               children: [
-                _i26.RouteConfig(OnBoardingRoute.name,
+                _i24.RouteConfig(OnBoardingRoute.name,
                     path: 'on-boarding-page', parent: OnBoardingWrapper.name),
-                _i26.RouteConfig(ProgressOnboardingRoute.name,
+                _i24.RouteConfig(ProgressOnboardingRoute.name,
                     path: 'progress-onboarding-page',
                     parent: OnBoardingWrapper.name)
               ]),
-          _i26.RouteConfig(HomeWrapper.name,
+          _i24.RouteConfig(HomeWrapper.name,
               path: 'home-wrapper',
               parent: RootWrapper.name,
               children: [
-                _i26.RouteConfig(HomeRoute.name,
+                _i24.RouteConfig(HomeRoute.name,
                     path: 'home-page',
                     parent: HomeWrapper.name,
                     children: [
-                      _i26.RouteConfig(HomeMapRoute.name,
+                      _i24.RouteConfig(HomeMapRoute.name,
                           path: 'home-map-page', parent: HomeRoute.name),
-                      _i26.RouteConfig(ContactsWrapper.name,
+                      _i24.RouteConfig(ContactsWrapper.name,
                           path: 'contacts-wrapper',
                           parent: HomeRoute.name,
                           children: [
-                            _i26.RouteConfig(ContactsRoute.name,
+                            _i24.RouteConfig(ContactsRoute.name,
                                 path: 'contacts-page',
                                 parent: ContactsWrapper.name,
                                 children: [
-                                  _i26.RouteConfig(FriendsRoute.name,
+                                  _i24.RouteConfig(FriendsRoute.name,
                                       path: 'friends-page',
                                       parent: ContactsRoute.name),
-                                  _i26.RouteConfig(RequestsRoute.name,
+                                  _i24.RouteConfig(RequestsRoute.name,
                                       path: 'requests-page',
                                       parent: ContactsRoute.name),
-                                  _i26.RouteConfig(SuggestionsRoute.name,
+                                  _i24.RouteConfig(SuggestionsRoute.name,
                                       path: 'suggestions-page',
                                       parent: ContactsRoute.name)
                                 ]),
-                            _i26.RouteConfig(SentRequestsRoute.name,
+                            _i24.RouteConfig(SentRequestsRoute.name,
                                 path: 'sent-requests-page',
                                 parent: ContactsWrapper.name)
                           ]),
-                      _i26.RouteConfig(NotificationsRoute.name,
+                      _i24.RouteConfig(NotificationsRoute.name,
                           path: 'notifications-page', parent: HomeRoute.name),
-                      _i26.RouteConfig(ProfileWrapper.name,
+                      _i24.RouteConfig(ProfileWrapper.name,
                           path: 'profile-wrapper',
                           parent: HomeRoute.name,
                           children: [
-                            _i26.RouteConfig(ProfileRoute.name,
+                            _i24.RouteConfig(ProfileRoute.name,
                                 path: 'profile-page',
                                 parent: ProfileWrapper.name),
-                            _i26.RouteConfig(EditProfileRoute.name,
+                            _i24.RouteConfig(EditProfileRoute.name,
                                 path: 'edit-profile-page',
                                 parent: ProfileWrapper.name),
-                            _i26.RouteConfig(PreferencesRoute.name,
+                            _i24.RouteConfig(PreferencesRoute.name,
                                 path: 'preferences-page',
-                                parent: ProfileWrapper.name),
-                            _i26.RouteConfig(FaqsRoute.name,
-                                path: 'faqs-page', parent: ProfileWrapper.name),
-                            _i26.RouteConfig(PrivacyRoute.name,
-                                path: 'privacy-page',
                                 parent: ProfileWrapper.name)
                           ])
                     ]),
-                _i26.RouteConfig(ContactProfileRoute.name,
+                _i24.RouteConfig(ContactProfileRoute.name,
                     path: 'contact-profile-page', parent: HomeWrapper.name)
               ]),
-          _i26.RouteConfig(LoginWrapper.name,
+          _i24.RouteConfig(LoginWrapper.name,
               path: 'login-wrapper',
               parent: RootWrapper.name,
               children: [
-                _i26.RouteConfig(LoginRoute.name,
+                _i24.RouteConfig(LoginRoute.name,
                     path: 'login-page', parent: LoginWrapper.name),
-                _i26.RouteConfig(PhoneValidationRoute.name,
+                _i24.RouteConfig(PhoneValidationRoute.name,
                     path: 'phone-validation-page', parent: LoginWrapper.name),
-                _i26.RouteConfig(LoadingRoute.name,
+                _i24.RouteConfig(LoadingRoute.name,
                     path: 'loading-page', parent: LoginWrapper.name)
               ])
         ])
@@ -290,8 +273,8 @@ class AppRouter extends _i26.RootStackRouter {
 
 /// generated route for
 /// [_i1.RootWrapper]
-class RootWrapper extends _i26.PageRouteInfo<RootWrapperArgs> {
-  RootWrapper({_i27.Key? key, List<_i26.PageRouteInfo>? children})
+class RootWrapper extends _i24.PageRouteInfo<RootWrapperArgs> {
+  RootWrapper({_i25.Key? key, List<_i24.PageRouteInfo>? children})
       : super(RootWrapper.name,
             path: '/',
             args: RootWrapperArgs(key: key),
@@ -303,7 +286,7 @@ class RootWrapper extends _i26.PageRouteInfo<RootWrapperArgs> {
 class RootWrapperArgs {
   const RootWrapperArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -313,8 +296,8 @@ class RootWrapperArgs {
 
 /// generated route for
 /// [_i2.OnBoardingWrapper]
-class OnBoardingWrapper extends _i26.PageRouteInfo<OnBoardingWrapperArgs> {
-  OnBoardingWrapper({_i27.Key? key, List<_i26.PageRouteInfo>? children})
+class OnBoardingWrapper extends _i24.PageRouteInfo<OnBoardingWrapperArgs> {
+  OnBoardingWrapper({_i25.Key? key, List<_i24.PageRouteInfo>? children})
       : super(OnBoardingWrapper.name,
             path: 'on-boarding-wrapper',
             args: OnBoardingWrapperArgs(key: key),
@@ -326,7 +309,7 @@ class OnBoardingWrapper extends _i26.PageRouteInfo<OnBoardingWrapperArgs> {
 class OnBoardingWrapperArgs {
   const OnBoardingWrapperArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -336,8 +319,8 @@ class OnBoardingWrapperArgs {
 
 /// generated route for
 /// [_i3.HomeWrapper]
-class HomeWrapper extends _i26.PageRouteInfo<HomeWrapperArgs> {
-  HomeWrapper({_i27.Key? key, List<_i26.PageRouteInfo>? children})
+class HomeWrapper extends _i24.PageRouteInfo<HomeWrapperArgs> {
+  HomeWrapper({_i25.Key? key, List<_i24.PageRouteInfo>? children})
       : super(HomeWrapper.name,
             path: 'home-wrapper',
             args: HomeWrapperArgs(key: key),
@@ -349,7 +332,7 @@ class HomeWrapper extends _i26.PageRouteInfo<HomeWrapperArgs> {
 class HomeWrapperArgs {
   const HomeWrapperArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -359,8 +342,8 @@ class HomeWrapperArgs {
 
 /// generated route for
 /// [_i4.LoginWrapper]
-class LoginWrapper extends _i26.PageRouteInfo<LoginWrapperArgs> {
-  LoginWrapper({_i27.Key? key, List<_i26.PageRouteInfo>? children})
+class LoginWrapper extends _i24.PageRouteInfo<LoginWrapperArgs> {
+  LoginWrapper({_i25.Key? key, List<_i24.PageRouteInfo>? children})
       : super(LoginWrapper.name,
             path: 'login-wrapper',
             args: LoginWrapperArgs(key: key),
@@ -372,7 +355,7 @@ class LoginWrapper extends _i26.PageRouteInfo<LoginWrapperArgs> {
 class LoginWrapperArgs {
   const LoginWrapperArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -382,8 +365,8 @@ class LoginWrapperArgs {
 
 /// generated route for
 /// [_i5.OnBoardingPage]
-class OnBoardingRoute extends _i26.PageRouteInfo<OnBoardingRouteArgs> {
-  OnBoardingRoute({_i27.Key? key})
+class OnBoardingRoute extends _i24.PageRouteInfo<OnBoardingRouteArgs> {
+  OnBoardingRoute({_i25.Key? key})
       : super(OnBoardingRoute.name,
             path: 'on-boarding-page', args: OnBoardingRouteArgs(key: key));
 
@@ -393,7 +376,7 @@ class OnBoardingRoute extends _i26.PageRouteInfo<OnBoardingRouteArgs> {
 class OnBoardingRouteArgs {
   const OnBoardingRouteArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -404,8 +387,8 @@ class OnBoardingRouteArgs {
 /// generated route for
 /// [_i6.ProgressOnboardingPage]
 class ProgressOnboardingRoute
-    extends _i26.PageRouteInfo<ProgressOnboardingRouteArgs> {
-  ProgressOnboardingRoute({_i27.Key? key})
+    extends _i24.PageRouteInfo<ProgressOnboardingRouteArgs> {
+  ProgressOnboardingRoute({_i25.Key? key})
       : super(ProgressOnboardingRoute.name,
             path: 'progress-onboarding-page',
             args: ProgressOnboardingRouteArgs(key: key));
@@ -416,7 +399,7 @@ class ProgressOnboardingRoute
 class ProgressOnboardingRouteArgs {
   const ProgressOnboardingRouteArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -426,8 +409,8 @@ class ProgressOnboardingRouteArgs {
 
 /// generated route for
 /// [_i7.HomePage]
-class HomeRoute extends _i26.PageRouteInfo<void> {
-  const HomeRoute({List<_i26.PageRouteInfo>? children})
+class HomeRoute extends _i24.PageRouteInfo<void> {
+  const HomeRoute({List<_i24.PageRouteInfo>? children})
       : super(HomeRoute.name, path: 'home-page', initialChildren: children);
 
   static const String name = 'HomeRoute';
@@ -435,12 +418,12 @@ class HomeRoute extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.ContactProfilePage]
-class ContactProfileRoute extends _i26.PageRouteInfo<ContactProfileRouteArgs> {
+class ContactProfileRoute extends _i24.PageRouteInfo<ContactProfileRouteArgs> {
   ContactProfileRoute(
-      {required _i28.Contact contact,
+      {required _i26.Contact contact,
       required String navigationSource,
-      _i29.ContactProfileController? controller,
-      _i27.Key? key})
+      _i27.ContactProfileController? controller,
+      _i25.Key? key})
       : super(ContactProfileRoute.name,
             path: 'contact-profile-page',
             args: ContactProfileRouteArgs(
@@ -459,13 +442,13 @@ class ContactProfileRouteArgs {
       this.controller,
       this.key});
 
-  final _i28.Contact contact;
+  final _i26.Contact contact;
 
   final String navigationSource;
 
-  final _i29.ContactProfileController? controller;
+  final _i27.ContactProfileController? controller;
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -475,8 +458,8 @@ class ContactProfileRouteArgs {
 
 /// generated route for
 /// [_i9.HomeMapPage]
-class HomeMapRoute extends _i26.PageRouteInfo<HomeMapRouteArgs> {
-  HomeMapRoute({_i30.MapController? controller, _i27.Key? key})
+class HomeMapRoute extends _i24.PageRouteInfo<HomeMapRouteArgs> {
+  HomeMapRoute({_i28.MapController? controller, _i25.Key? key})
       : super(HomeMapRoute.name,
             path: 'home-map-page',
             args: HomeMapRouteArgs(controller: controller, key: key));
@@ -487,9 +470,9 @@ class HomeMapRoute extends _i26.PageRouteInfo<HomeMapRouteArgs> {
 class HomeMapRouteArgs {
   const HomeMapRouteArgs({this.controller, this.key});
 
-  final _i30.MapController? controller;
+  final _i28.MapController? controller;
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -499,8 +482,8 @@ class HomeMapRouteArgs {
 
 /// generated route for
 /// [_i10.ContactsWrapper]
-class ContactsWrapper extends _i26.PageRouteInfo<ContactsWrapperArgs> {
-  ContactsWrapper({_i27.Key? key, List<_i26.PageRouteInfo>? children})
+class ContactsWrapper extends _i24.PageRouteInfo<ContactsWrapperArgs> {
+  ContactsWrapper({_i25.Key? key, List<_i24.PageRouteInfo>? children})
       : super(ContactsWrapper.name,
             path: 'contacts-wrapper',
             args: ContactsWrapperArgs(key: key),
@@ -512,7 +495,7 @@ class ContactsWrapper extends _i26.PageRouteInfo<ContactsWrapperArgs> {
 class ContactsWrapperArgs {
   const ContactsWrapperArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -522,7 +505,7 @@ class ContactsWrapperArgs {
 
 /// generated route for
 /// [_i11.NotificationsPage]
-class NotificationsRoute extends _i26.PageRouteInfo<void> {
+class NotificationsRoute extends _i24.PageRouteInfo<void> {
   const NotificationsRoute()
       : super(NotificationsRoute.name, path: 'notifications-page');
 
@@ -531,8 +514,8 @@ class NotificationsRoute extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i12.ProfileWrapper]
-class ProfileWrapper extends _i26.PageRouteInfo<ProfileWrapperArgs> {
-  ProfileWrapper({_i27.Key? key, List<_i26.PageRouteInfo>? children})
+class ProfileWrapper extends _i24.PageRouteInfo<ProfileWrapperArgs> {
+  ProfileWrapper({_i25.Key? key, List<_i24.PageRouteInfo>? children})
       : super(ProfileWrapper.name,
             path: 'profile-wrapper',
             args: ProfileWrapperArgs(key: key),
@@ -544,7 +527,7 @@ class ProfileWrapper extends _i26.PageRouteInfo<ProfileWrapperArgs> {
 class ProfileWrapperArgs {
   const ProfileWrapperArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -554,8 +537,8 @@ class ProfileWrapperArgs {
 
 /// generated route for
 /// [_i13.ContactsPage]
-class ContactsRoute extends _i26.PageRouteInfo<ContactsRouteArgs> {
-  ContactsRoute({_i27.Key? key, List<_i26.PageRouteInfo>? children})
+class ContactsRoute extends _i24.PageRouteInfo<ContactsRouteArgs> {
+  ContactsRoute({_i25.Key? key, List<_i24.PageRouteInfo>? children})
       : super(ContactsRoute.name,
             path: 'contacts-page',
             args: ContactsRouteArgs(key: key),
@@ -567,7 +550,7 @@ class ContactsRoute extends _i26.PageRouteInfo<ContactsRouteArgs> {
 class ContactsRouteArgs {
   const ContactsRouteArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -577,8 +560,8 @@ class ContactsRouteArgs {
 
 /// generated route for
 /// [_i14.SentRequestsPage]
-class SentRequestsRoute extends _i26.PageRouteInfo<SentRequestsRouteArgs> {
-  SentRequestsRoute({_i27.Key? key})
+class SentRequestsRoute extends _i24.PageRouteInfo<SentRequestsRouteArgs> {
+  SentRequestsRoute({_i25.Key? key})
       : super(SentRequestsRoute.name,
             path: 'sent-requests-page', args: SentRequestsRouteArgs(key: key));
 
@@ -588,7 +571,7 @@ class SentRequestsRoute extends _i26.PageRouteInfo<SentRequestsRouteArgs> {
 class SentRequestsRouteArgs {
   const SentRequestsRouteArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -598,8 +581,8 @@ class SentRequestsRouteArgs {
 
 /// generated route for
 /// [_i15.FriendsPage]
-class FriendsRoute extends _i26.PageRouteInfo<FriendsRouteArgs> {
-  FriendsRoute({_i27.Key? key})
+class FriendsRoute extends _i24.PageRouteInfo<FriendsRouteArgs> {
+  FriendsRoute({_i25.Key? key})
       : super(FriendsRoute.name,
             path: 'friends-page', args: FriendsRouteArgs(key: key));
 
@@ -609,7 +592,7 @@ class FriendsRoute extends _i26.PageRouteInfo<FriendsRouteArgs> {
 class FriendsRouteArgs {
   const FriendsRouteArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -619,8 +602,8 @@ class FriendsRouteArgs {
 
 /// generated route for
 /// [_i16.RequestsPage]
-class RequestsRoute extends _i26.PageRouteInfo<RequestsRouteArgs> {
-  RequestsRoute({_i27.Key? key})
+class RequestsRoute extends _i24.PageRouteInfo<RequestsRouteArgs> {
+  RequestsRoute({_i25.Key? key})
       : super(RequestsRoute.name,
             path: 'requests-page', args: RequestsRouteArgs(key: key));
 
@@ -630,7 +613,7 @@ class RequestsRoute extends _i26.PageRouteInfo<RequestsRouteArgs> {
 class RequestsRouteArgs {
   const RequestsRouteArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -640,8 +623,8 @@ class RequestsRouteArgs {
 
 /// generated route for
 /// [_i17.SuggestionsPage]
-class SuggestionsRoute extends _i26.PageRouteInfo<SuggestionsRouteArgs> {
-  SuggestionsRoute({_i27.Key? key})
+class SuggestionsRoute extends _i24.PageRouteInfo<SuggestionsRouteArgs> {
+  SuggestionsRoute({_i25.Key? key})
       : super(SuggestionsRoute.name,
             path: 'suggestions-page', args: SuggestionsRouteArgs(key: key));
 
@@ -651,7 +634,7 @@ class SuggestionsRoute extends _i26.PageRouteInfo<SuggestionsRouteArgs> {
 class SuggestionsRouteArgs {
   const SuggestionsRouteArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -661,8 +644,8 @@ class SuggestionsRouteArgs {
 
 /// generated route for
 /// [_i18.ProfilePage]
-class ProfileRoute extends _i26.PageRouteInfo<ProfileRouteArgs> {
-  ProfileRoute({_i27.Key? key})
+class ProfileRoute extends _i24.PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({_i25.Key? key})
       : super(ProfileRoute.name,
             path: 'profile-page', args: ProfileRouteArgs(key: key));
 
@@ -672,7 +655,7 @@ class ProfileRoute extends _i26.PageRouteInfo<ProfileRouteArgs> {
 class ProfileRouteArgs {
   const ProfileRouteArgs({this.key});
 
-  final _i27.Key? key;
+  final _i25.Key? key;
 
   @override
   String toString() {
@@ -682,7 +665,7 @@ class ProfileRouteArgs {
 
 /// generated route for
 /// [_i19.EditProfilePage]
-class EditProfileRoute extends _i26.PageRouteInfo<void> {
+class EditProfileRoute extends _i24.PageRouteInfo<void> {
   const EditProfileRoute()
       : super(EditProfileRoute.name, path: 'edit-profile-page');
 
@@ -691,7 +674,7 @@ class EditProfileRoute extends _i26.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i20.PreferencesPage]
-class PreferencesRoute extends _i26.PageRouteInfo<void> {
+class PreferencesRoute extends _i24.PageRouteInfo<void> {
   const PreferencesRoute()
       : super(PreferencesRoute.name, path: 'preferences-page');
 
@@ -699,32 +682,16 @@ class PreferencesRoute extends _i26.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i21.FaqsPage]
-class FaqsRoute extends _i26.PageRouteInfo<void> {
-  const FaqsRoute() : super(FaqsRoute.name, path: 'faqs-page');
-
-  static const String name = 'FaqsRoute';
-}
-
-/// generated route for
-/// [_i22.PrivacyPage]
-class PrivacyRoute extends _i26.PageRouteInfo<void> {
-  const PrivacyRoute() : super(PrivacyRoute.name, path: 'privacy-page');
-
-  static const String name = 'PrivacyRoute';
-}
-
-/// generated route for
-/// [_i23.LoginPage]
-class LoginRoute extends _i26.PageRouteInfo<void> {
+/// [_i21.LoginPage]
+class LoginRoute extends _i24.PageRouteInfo<void> {
   const LoginRoute() : super(LoginRoute.name, path: 'login-page');
 
   static const String name = 'LoginRoute';
 }
 
 /// generated route for
-/// [_i24.PhoneValidationPage]
-class PhoneValidationRoute extends _i26.PageRouteInfo<void> {
+/// [_i22.PhoneValidationPage]
+class PhoneValidationRoute extends _i24.PageRouteInfo<void> {
   const PhoneValidationRoute()
       : super(PhoneValidationRoute.name, path: 'phone-validation-page');
 
@@ -732,8 +699,8 @@ class PhoneValidationRoute extends _i26.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i25.LoadingPage]
-class LoadingRoute extends _i26.PageRouteInfo<void> {
+/// [_i23.LoadingPage]
+class LoadingRoute extends _i24.PageRouteInfo<void> {
   const LoadingRoute() : super(LoadingRoute.name, path: 'loading-page');
 
   static const String name = 'LoadingRoute';

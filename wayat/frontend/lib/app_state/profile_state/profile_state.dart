@@ -47,9 +47,4 @@ abstract class _ProfileState with Store {
   Future deleteCurrentUser() async {
     _profileService.deleteCurrentUser();
   }
-
-  @action
-  Future logOut() async {
-    _profileService.logOut();
-  }
 }

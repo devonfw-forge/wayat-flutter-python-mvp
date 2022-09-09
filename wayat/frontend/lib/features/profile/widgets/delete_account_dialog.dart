@@ -46,7 +46,7 @@ class DeleteAccountDialog extends StatelessWidget {
                 enabled: true,
                 onPressed: () {
                   AutoRouter.of(context).pop();
-                  profileState.logOut();
+                  userSession.logOut();
                   profileState.deleteCurrentUser();
                 }),
             CustomTextButton(

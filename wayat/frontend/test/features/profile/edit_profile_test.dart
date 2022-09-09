@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
+import 'package:wayat/features/profile/pages/edit_profile_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:mockito/annotations.dart';
