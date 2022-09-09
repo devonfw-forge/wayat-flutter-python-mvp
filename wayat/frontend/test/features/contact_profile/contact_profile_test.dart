@@ -17,10 +17,11 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'contact_profile_test.mocks.dart';
 
-@GenerateMocks([UserStatusState, ContactProfileController, HomeState])
+@GenerateMocks([UserStatusState, ContactProfileController, HomeState, HttpProvider])
 void main() async {
   // Constants for the test contacts creation
   const String contactName = "Contact Name";
@@ -30,6 +31,7 @@ void main() async {
   late UserStatusState mockUserStatusState;
   late HomeState mockHomeState;
   late ContactProfileController mockController;
+  late HttpProvider mockHttpProvider;
 
   late Contact nonLocatedContact;
   late ContactLocation locatedContact;
@@ -63,9 +65,11 @@ void main() async {
   setUpAll(() {
     mockUserStatusState = MockUserStatusState();
     mockHomeState = MockHomeState();
+    mockHttpProvider = MockHttpProvider();
 
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
     GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
 
     nonLocatedContact = nonLocatedContactFactory();
@@ -75,6 +79,7 @@ void main() async {
     HttpOverrides.global = null;
 
     when(mockUserStatusState.contacts).thenReturn([locatedContact]);
+    when(mockController.shareLocationToContact).thenReturn(true);
   });
 
   Widget _createApp(Widget body) {
