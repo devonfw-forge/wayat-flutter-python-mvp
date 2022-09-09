@@ -8,7 +8,6 @@ import 'package:wayat/common/widgets/card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
-import 'package:wayat/features/profile/widgets/delete_account_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -34,10 +33,11 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 16),
         _buildProfileImage(),
         const SizedBox(height: 16),
-        Observer(builder: (context) {
-          MyUser myUser = userSession.currentUser!;
+        Observer(builder: (_) {
+          if (userSession.currentUser == null) return const Text("");
+          String name = userSession.currentUser!.name;
           return Text(
-            myUser.name,
+            name,
             textAlign: TextAlign.center,
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
@@ -47,9 +47,9 @@ class ProfilePage extends StatelessWidget {
         }),
         const SizedBox(height: 32),
         _buildShareLocationPart(),
-        const SizedBox(height: 48),
-        _buildAccountPart(context),
-        const SizedBox(height: 42),
+        Divider(),
+        const SizedBox(height: 20),
+        _buildAccountPart(),
       ],
     );
   }
@@ -59,6 +59,7 @@ class ProfilePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Observer(builder: (context) {
+          if (userSession.currentUser == null) return Container();
           MyUser myUser = userSession.currentUser!;
           return Container(
             key: const Key("profile_image"),
@@ -115,7 +116,7 @@ class ProfilePage extends StatelessWidget {
   //Build UI for "Account" part
   /// - "Log Out" custom button
   /// - "Delete Account" custom button
-  Widget _buildAccountPart(BuildContext context) {
+  Widget _buildAccountPart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -132,18 +133,9 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.logOut,
             onTap: () {
-              profileState.logOut();
+              userSession.logOut();
             }),
         const SizedBox(height: 24),
-        CustomCard(
-            text: appLocalizations.deleteAccount,
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return DeleteAccountDialog();
-                  });
-            }),
       ],
     );
   }
@@ -167,6 +159,7 @@ class ProfilePage extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomSwitch(
+              key: const Key("sw_en_prof"),
               value: locationState.shareLocationEnabled,
               onChanged: (newValue) {
                 locationState.setShareLocationEnabled(newValue);
