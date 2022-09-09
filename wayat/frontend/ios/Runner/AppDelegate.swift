@@ -13,5 +13,4 @@ import GoogleMaps
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-  
 }
