@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 
 from app.business.wayat_management.models.user import AddContactsRequest, ListUsersWithPhoneAndSharingIndicatorResponse, \
     UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest, dto_to_user_with_phone_response, \
-    UserWithSharingIndicator
+    UserWithSharingIndicator, UpdateContactPreferencesRequest
 from app.business.wayat_management.services.map import MapService
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
@@ -45,6 +45,16 @@ async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depe
                          user_service: UserService = Depends(UserService)):
     await user_service.delete_contact(user_id=user.uid, contact_id=contact_id)
     await map_service.force_status_update(uid=user.uid, force_contacts_active=False)
+    await map_service.force_status_update(uid=contact_id, force_contacts_active=False)
+
+
+@router.post("/{contact_id}",
+             description="Updates sharing configuration with a contact")
+async def update_contact_prefs(contact_id: str, r: UpdateContactPreferencesRequest,
+                               user: FirebaseAuthenticatedUser = Depends(get_user()),
+                               map_service: MapService = Depends(MapService),
+                               user_service: UserService = Depends(UserService)):
+    await user_service.update_contact_prefs(user_id=user.uid, contact_id=contact_id, share_location=r.share_location)
     await map_service.force_status_update(uid=contact_id, force_contacts_active=False)
 
 
