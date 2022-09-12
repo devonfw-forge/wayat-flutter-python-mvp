@@ -19,6 +19,7 @@ class FirebaseAuthenticatedUser(User):
 
 class FirebaseSettings(BaseSettings):
     credentials_file: str
+    api_key: str
 
     class Config:
         env_prefix = "FIREBASE_"
