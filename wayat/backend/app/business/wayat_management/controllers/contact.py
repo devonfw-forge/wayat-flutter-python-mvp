@@ -2,8 +2,9 @@ import logging
 
 from fastapi import APIRouter, Depends
 
-from app.business.wayat_management.models.user import AddContactsRequest, ListUsersWithPhoneResponse, \
-    UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest, dto_to_user_with_phone_response
+from app.business.wayat_management.models.user import AddContactsRequest, ListUsersWithPhoneAndSharingIndicatorResponse, \
+    UserWithPhoneResponse, PendingFriendsRequestsResponse, HandleFriendRequestRequest, dto_to_user_with_phone_response, \
+    UserWithSharingIndicator
 from app.business.wayat_management.services.map import MapService
 from app.business.wayat_management.services.user import UserService
 from app.common import get_user
@@ -21,13 +22,20 @@ async def add_contact(request: AddContactsRequest, user_service: UserService = D
     await user_service.add_contacts(uid=user.uid, users=request.users)
 
 
-@router.get("", description="Get the list of contacts for a user", response_model=ListUsersWithPhoneResponse)
+@router.get("", description="Get the list of contacts for a user",
+            response_model=ListUsersWithPhoneAndSharingIndicatorResponse)
 async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
                        user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts for user {user.uid}")
-    cts = await user_service.get_user_contacts(user.uid)
-    contacts_phone = [UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url) for u in cts]
-    return ListUsersWithPhoneResponse(users=contacts_phone)
+    cts_dtos, cts_sharing = await user_service.get_user_contacts(user.uid)
+    contacts_phone = [UserWithSharingIndicator(
+        id=u.id,
+        phone=u.phone,
+        name=u.name,
+        share_location=u in cts_sharing,
+        image_url=u.image_url
+    ) for u in cts_dtos]
+    return ListUsersWithPhoneAndSharingIndicatorResponse(users=contacts_phone)
 
 
 @router.delete("/{contact_id}",
