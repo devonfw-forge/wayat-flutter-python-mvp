@@ -26,6 +26,10 @@ Flutter/flutter_assets/
 Flutter/flutter_export_environment.sh
 ServiceDefinitions.json
 Runner/GeneratedPluginRegistrant.*
+firebase_app_id_file.json
+Runner/GoogleService-Info.*
+Runner.xcscheme
+
 
 # Exceptions to above rules.
 !default.mode1v3

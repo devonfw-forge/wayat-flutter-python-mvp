@@ -69,6 +69,8 @@ void main() async {
         phone: "123");
   }
 
+  late BuildContext buildContext;
+
   setUpAll(() {
     mockUserStatusState = MockUserStatusState();
     mockHomeState = MockHomeState();
@@ -94,6 +96,7 @@ void main() async {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateTitle: (context) {
+        buildContext = context;
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
@@ -207,7 +210,7 @@ void main() async {
           contact: locatedContact, navigationSource: "Contacts")));
       expect(
           find.text(
-              "${appLocalizations.contactProfileLastUpdated} ${timeago.format(locatedContact.lastUpdated)}"),
+              "${appLocalizations.contactProfileLastUpdated} ${timeago.format(locatedContact.lastUpdated, locale: Localizations.localeOf(buildContext).languageCode)}"),
           findsOneWidget);
     });
 

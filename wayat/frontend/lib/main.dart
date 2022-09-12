@@ -15,19 +15,26 @@ import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
-    name: "WAYAT",
-    options: DefaultFirebaseOptions.currentPlatformOptions
-  );
-
+      name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
   await registerSingletons();
+  setTimeAgoLocales();
 
   runApp(const MyApp());
+}
+
+void setTimeAgoLocales() {
+  timeago.setLocaleMessages('en', timeago.EnMessages());
+  timeago.setLocaleMessages('es', timeago.EsMessages());
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
 Future registerSingletons() async {
@@ -76,7 +83,8 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     // It will be executed if the app is opened from background, but not when it is
     // opened for first time
     if (state == AppLifecycleState.resumed) {
-      if (!mapState.mapOpened) {
+      if (!mapState.mapOpened &&
+          GetIt.I.get<SessionState>().currentUser != null) {
         await mapState.openMap();
       }
     }
