@@ -32,7 +32,7 @@ async def get_contacts(user: FirebaseAuthenticatedUser = Depends(get_user()),
         id=u.id,
         phone=u.phone,
         name=u.name,
-        share_location=u in cts_sharing,
+        share_location=u.id in cts_sharing,
         image_url=u.image_url
     ) for u in cts_dtos]
     return ListUsersWithPhoneAndSharingIndicatorResponse(users=contacts_phone)
