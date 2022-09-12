@@ -104,9 +104,10 @@ class MockSessionState extends _i1.Mock implements _i5.SessionState {
       returnValue: _i7.Future<void>.value(),
       returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
-  _i7.Future<dynamic> isLogged() =>
-      (super.noSuchMethod(Invocation.method(#isLogged, []),
-          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
+  _i7.Future<void> isLogged() => (super.noSuchMethod(
+      Invocation.method(#isLogged, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),

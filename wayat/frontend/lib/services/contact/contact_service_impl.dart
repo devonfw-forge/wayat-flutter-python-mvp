@@ -13,6 +13,7 @@ class ContactServiceImpl implements ContactService {
   Future<List<Contact>> getAll() async {
     Map<String, dynamic> response =
         await httpProvider.sendGetRequest(APIContract.contacts);
+    if (response["users"] == null) return [];
     List<Contact> contacts = (response["users"] as List<dynamic>)
         .map((e) => Contact.fromMap(e))
         .toList();
