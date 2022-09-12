@@ -13,13 +13,13 @@ mixin _$GroupsController on _GroupsController, Store {
       Atom(name: '_GroupsController.groups', context: context);
 
   @override
-  List<Group> get groups {
+  ObservableList<Group> get groups {
     _$groupsAtom.reportRead();
     return super.groups;
   }
 
   @override
-  set groups(List<Group> value) {
+  set groups(ObservableList<Group> value) {
     _$groupsAtom.reportWrite(value, super.groups, () {
       super.groups = value;
     });

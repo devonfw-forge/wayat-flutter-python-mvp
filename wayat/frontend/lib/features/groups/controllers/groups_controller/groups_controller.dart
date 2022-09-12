@@ -16,7 +16,7 @@ abstract class _GroupsController with Store {
       : groupsService = groupsService ?? GroupsServiceImpl();
 
   @observable
-  List<Group> groups = [];
+  ObservableList<Group> groups = ObservableList.of([]);
 
   /// Calls [GroupService.getAll] to update the user's groups. They are only
   /// updated in the UI if the response differs with the local data.
@@ -33,10 +33,10 @@ abstract class _GroupsController with Store {
 
   @action
   void setGroups(List<Group> groups) {
-    this.groups = groups;
+    this.groups = ObservableList.of(groups);
   }
 
   Future createGroup(Group group, XFile picture) async {
-    groupsService.create(group, picture);
+    await groupsService.create(group, picture);
   }
 }

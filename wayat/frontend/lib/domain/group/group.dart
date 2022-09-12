@@ -4,43 +4,42 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'package:wayat/domain/contact/contact.dart';
-import 'package:wayat/lang/app_localizations.dart';
 
 class Group {
   String id;
-  List<Contact> contacts;
+  List<Contact> members;
   String name;
   String imageUrl;
 
   Group({
     required this.id,
-    required this.contacts,
+    required this.members,
     required this.name,
     required this.imageUrl,
   });
 
   Group copyWith({
     String? id,
-    List<Contact>? contacts,
+    List<Contact>? members,
     String? name,
     String? imageUrl,
   }) {
     return Group(
       id: id ?? this.id,
-      contacts: contacts ?? this.contacts,
+      members: members ?? this.members,
       name: name ?? this.name,
       imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
   factory Group.empty() {
-    return Group(id: "", contacts: [], name: "", imageUrl: "");
+    return Group(id: "", members: [], name: "", imageUrl: "");
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'contacts': contacts.map((x) => x.toMap()).toList(),
+      'members': members.map((x) => x.toMap()).toList(),
       'name': name,
       'image_url': imageUrl,
     };
@@ -49,8 +48,8 @@ class Group {
   factory Group.fromMap(Map<String, dynamic> map) {
     return Group(
       id: map['id'] as String,
-      contacts: List<Contact>.from(
-        (map['contacts']).map<Contact>(
+      members: List<Contact>.from(
+        (map['members']).map<Contact>(
           (x) => Contact.fromMap(x as Map<String, dynamic>),
         ),
       ),
@@ -66,13 +65,13 @@ class Group {
 
   @override
   String toString() =>
-      'Group(id: $id, contacts: $contacts, name: $name, imageUrl: $imageUrl)';
+      'Group(id: $id, members: $members, name: $name, imageUrl: $imageUrl)';
 
   @override
   bool operator ==(covariant Group other) {
     if (identical(this, other)) return true;
 
-    return listEquals(other.contacts, contacts) &&
+    return listEquals(other.members, members) &&
         other.id == id &&
         other.name == name &&
         other.imageUrl == imageUrl;
@@ -80,5 +79,5 @@ class Group {
 
   @override
   int get hashCode =>
-      id.hashCode ^ contacts.hashCode ^ name.hashCode ^ imageUrl.hashCode;
+      id.hashCode ^ members.hashCode ^ name.hashCode ^ imageUrl.hashCode;
 }
