@@ -49,6 +49,11 @@
     "information": "Información",
     "darkTheme": "Habilitar tema oscuro",
     "language": "Idioma",
+    "en": "Inglés",
+    "es": "Español",
+    "fr": "Francés",
+    "ge": "Alemán",
+    "du": "Holandés",
 
     "chooseProfileFoto": "Escoger imagen desde",
     "camera": "Cámara",

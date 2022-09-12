@@ -119,12 +119,11 @@ class ProfilePage extends StatelessWidget {
             }),
         const SizedBox(height: 24),
 
-        //TODO: Implement the Preferences page
-        // CustomCard(
-        //     text: appLocalizations.preferences,
-        //     onTap: () {
-        //       controller.setPreferences(true);
-        //     }),
+        CustomCard(
+            text: appLocalizations.preferences,
+            onTap: () {
+              profileState.setCurrentPage(ProfileCurrentPages.preference);
+            }),
       ],
     );
   }

@@ -89,10 +89,13 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
 
+    // Locale myLocale = Localizations.localeOf(context);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      // locale: const Locale('es'),
       onGenerateTitle: (context) {
         // In the app build, the context does not contain an AppLocalizations instance.
         // However, after the title is generated the AppLocalizations instance is the
