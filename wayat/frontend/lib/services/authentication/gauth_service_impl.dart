@@ -85,6 +85,7 @@ class GoogleAuthService implements AuthService {
         20;
   }
 
+  @override
   Future<bool> sendDoneOnboarding(bool doneOnboarding) async {
     return (await httpProvider.sendPostRequest(
                     APIContract.userProfile, {"onboarding_completed": true}))

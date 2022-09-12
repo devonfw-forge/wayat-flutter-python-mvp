@@ -61,7 +61,7 @@ class ContactProfilePage extends StatelessWidget {
               mapSection(context, canBeLocated),
               dataSection(context, canBeLocated),
               divider(),
-              shareMyLocation()
+              shareMyLocationRow()
             ],
           ),
         ),
@@ -88,17 +88,17 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
   
-  Widget shareMyLocation() {
+  Widget shareMyLocationRow() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             appLocalizations.shareMyLocation,
             style: const TextStyle(
-                fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
+                fontWeight: FontWeight.w400, color: Colors.black87, fontSize: 18),
           ),
           Observer(builder: (context) {
             bool enabled = controller.shareLocationToContact;

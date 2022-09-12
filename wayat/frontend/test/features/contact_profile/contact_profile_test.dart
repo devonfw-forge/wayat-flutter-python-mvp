@@ -18,10 +18,17 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/common/widgets/switch.dart';
 
 import 'contact_profile_test.mocks.dart';
 
-@GenerateMocks([UserStatusState, ContactProfileController, HomeState, HttpProvider])
+@GenerateMocks([
+  UserStatusState, 
+  ContactProfileController, 
+  HomeState, 
+  HttpProvider
+])
+
 void main() async {
   // Constants for the test contacts creation
   const String contactName = "Contact Name";
@@ -30,7 +37,7 @@ void main() async {
 
   late UserStatusState mockUserStatusState;
   late HomeState mockHomeState;
-  late ContactProfileController mockController;
+  late ContactProfileController mockContactProfileController;
   late HttpProvider mockHttpProvider;
 
   late Contact nonLocatedContact;
@@ -74,12 +81,12 @@ void main() async {
 
     nonLocatedContact = nonLocatedContactFactory();
     locatedContact = locatedContactFactory();
-    mockController = MockContactProfileController();
+    mockContactProfileController = MockContactProfileController();
 
     HttpOverrides.global = null;
 
     when(mockUserStatusState.contacts).thenReturn([locatedContact]);
-    when(mockController.shareLocationToContact).thenReturn(true);
+    when(mockContactProfileController.shareLocationToContact).thenReturn(true);
   });
 
   Widget _createApp(Widget body) {
@@ -146,26 +153,26 @@ void main() async {
 
     testWidgets("The map appears when the contact can be located",
         (tester) async {
-      when(mockController.getMarkerImage(locatedContact)).thenAnswer(
+      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
           (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
 
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: locatedContact,
           navigationSource: "Contacts",
-          controller: mockController)));
+          controller: mockContactProfileController)));
       await tester.pump();
 
       expect(find.byType(GoogleMap), findsOneWidget);
     });
 
     testWidgets("There is no message when the map is loaded", (tester) async {
-      when(mockController.getMarkerImage(locatedContact)).thenAnswer(
+      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
           (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
 
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: locatedContact,
           navigationSource: "Contacts",
-          controller: mockController)));
+          controller: mockContactProfileController)));
       await tester.pump();
 
       expect(find.text(appLocalizations.contactProfileLocationNotAvailable),
@@ -253,18 +260,35 @@ void main() async {
     testWidgets(
         "Google Maps service is called when pressing the Routing button",
         (tester) async {
-      when(mockController.openMaps(locatedContact)).thenReturn(null);
-      when(mockController.getMarkerImage(locatedContact)).thenAnswer(
+      when(mockContactProfileController.openMaps(locatedContact)).thenReturn(null);
+      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
           (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
 
       await tester.pumpWidget(_createApp(ContactProfilePage(
         contact: locatedContact,
         navigationSource: "Contacts",
-        controller: mockController,
+        controller: mockContactProfileController,
       )));
       await tester.pump();
       await tester.tap(find.byType(CircleIconButton));
-      verify(mockController.openMaps(locatedContact)).called(1);
+      verify(mockContactProfileController.openMaps(locatedContact)).called(1);
+    });
+  });
+
+  group("Share location to contacts switch works correctly", () {
+    testWidgets("The \"share my location\" text and switch displays correctly",
+        (tester) async {
+      await tester.pumpWidget(_createApp(ContactProfilePage(
+          contact: nonLocatedContact, navigationSource: "Contacts")));
+      expect(find.text(appLocalizations.shareMyLocation), findsOneWidget);
+      expect(find.byType(CustomSwitch), findsOneWidget);
+    });
+    
+    testWidgets("Share my location to contact switch ",
+        (tester) async {
+      await tester.pumpWidget(_createApp(ContactProfilePage(
+          contact: nonLocatedContact, navigationSource: "Contacts")));
+      expect(find.text(appLocalizations.shareMyLocation), findsOneWidget);
     });
   });
 }

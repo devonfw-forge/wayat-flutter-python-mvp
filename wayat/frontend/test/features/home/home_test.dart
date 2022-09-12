@@ -14,6 +14,7 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/features/contact_profile/controller/contact_profile_controller.dart';
 import 'package:wayat/features/contact_profile/page/contact_profile_page.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -27,6 +28,7 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'home_test.mocks.dart';
 
@@ -41,7 +43,10 @@ import 'home_test.mocks.dart';
   FriendsController,
   RequestsController,
   SuggestionsController,
+  ContactProfileController,
+  HttpProvider
 ])
+
 void main() async {
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
@@ -55,6 +60,8 @@ void main() async {
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
       MockSuggestionsController();
+  final HttpProvider mockHttpProvider = MockHttpProvider();
+  late ContactProfileController mockContactProfileController;
 
   final MyUser user = MyUser(
       id: "2",
@@ -67,6 +74,21 @@ void main() async {
 
   setUpAll(() {
     HttpOverrides.global = null;
+
+    GetIt.I.allowReassignment = true;
+
+    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
+    GetIt.I
+        .registerSingleton<ContactsPageController>(mockContactsPageController);
+    GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<LocationState>(mockLocationState);
+    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
+    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
+
+    mockContactProfileController = MockContactProfileController();
 
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
@@ -88,18 +110,7 @@ void main() async {
     when(mockUserStatusState.contacts).thenReturn([]);
     when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
     when(mockSessionState.currentUser).thenReturn(user);
-
-    GetIt.I.allowReassignment = true;
-
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    GetIt.I
-        .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    when(mockContactProfileController.shareLocationToContact).thenReturn(true);
   });
 
   Widget _createApp() {
