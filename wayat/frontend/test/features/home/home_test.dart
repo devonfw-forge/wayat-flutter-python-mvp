@@ -17,6 +17,7 @@ import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contact_profile/page/contact_profile_page.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';
@@ -76,7 +77,8 @@ void main() async {
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
     when(mockLocationState.shareLocationEnabled).thenReturn(false);
-    when(mockContactsPageController.viewSentRequests).thenReturn(false);
+    when(mockContactsPageController.currentPage)
+        .thenReturn(ContactsCurrentPages.contacts);
     when(mockContactsPageController.friendsController)
         .thenReturn(mockFriendsController);
     when(mockContactsPageController.requestsController)

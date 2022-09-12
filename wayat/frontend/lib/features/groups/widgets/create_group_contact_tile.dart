@@ -39,11 +39,13 @@ class CreateGroupContactTile extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: CircleAvatar(
-                    radius: 13,
+                    radius: 15,
                     backgroundColor: Colors.black,
-                    child: CircleAvatar(
-                        radius: 12,
-                        backgroundImage: NetworkImage(contact.imageUrl)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: CircleAvatar(
+                          backgroundImage: NetworkImage(contact.imageUrl)),
+                    ),
                   ),
                 ),
                 const SizedBox(

@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mobx/mobx.dart' as mobx;
 import 'package:mockito/mockito.dart';
 import 'package:wayat/common/widgets/buttons/custom_text_button.dart';
 import 'package:wayat/common/widgets/message_card.dart';
@@ -21,10 +20,10 @@ import 'groups_page_test.mocks.dart';
 @GenerateMocks([GroupsController, GroupsService])
 void main() async {
   GroupsController mockGroupsController = MockGroupsController();
-  GroupsService mockGroupsService = MockGroupsService();
 
   setUpAll(() {
     HttpOverrides.global = null;
+    GetIt.I.registerSingleton(LangSingleton());
   });
 
   Widget _createApp(Widget body) {

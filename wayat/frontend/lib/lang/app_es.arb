@@ -98,5 +98,7 @@
     "groupName": "Nombre del grupo",
     "addParticipants": "Añadir participantes",
     "addParticipantsTip": "¡Empieza a añadir amigos para crear un grupo!",
-    "addFriends": "Añadir amigos"
+    "addFriends": "Añadir amigos",
+
+    "done": "Hecho"
 }

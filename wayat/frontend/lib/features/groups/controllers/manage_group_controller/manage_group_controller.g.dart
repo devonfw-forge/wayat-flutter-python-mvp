@@ -29,13 +29,13 @@ mixin _$ManageGroupController on _ManageGroupController, Store {
       Atom(name: '_ManageGroupController.selectedContacts', context: context);
 
   @override
-  List<Contact> get selectedContacts {
+  ObservableList<Contact> get selectedContacts {
     _$selectedContactsAtom.reportRead();
     return super.selectedContacts;
   }
 
   @override
-  set selectedContacts(List<Contact> value) {
+  set selectedContacts(ObservableList<Contact> value) {
     _$selectedContactsAtom.reportWrite(value, super.selectedContacts, () {
       super.selectedContacts = value;
     });
@@ -45,13 +45,13 @@ mixin _$ManageGroupController on _ManageGroupController, Store {
       Atom(name: '_ManageGroupController.selectedFile', context: context);
 
   @override
-  XFile get selectedFile {
+  XFile? get selectedFile {
     _$selectedFileAtom.reportRead();
     return super.selectedFile;
   }
 
   @override
-  set selectedFile(XFile value) {
+  set selectedFile(XFile? value) {
     _$selectedFileAtom.reportWrite(value, super.selectedFile, () {
       super.selectedFile = value;
     });
@@ -77,6 +77,17 @@ mixin _$ManageGroupController on _ManageGroupController, Store {
         name: '_ManageGroupController.removeContact');
     try {
       return super.removeContact(contact);
+    } finally {
+      _$_ManageGroupControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSelectedFile(XFile? file) {
+    final _$actionInfo = _$_ManageGroupControllerActionController.startAction(
+        name: '_ManageGroupController.setSelectedFile');
+    try {
+      return super.setSelectedFile(file);
     } finally {
       _$_ManageGroupControllerActionController.endAction(_$actionInfo);
     }

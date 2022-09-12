@@ -6,9 +6,11 @@
 import 'dart:async' as _i10;
 
 import 'package:flutter/cupertino.dart' as _i5;
+import 'package:image_picker/image_picker.dart' as _i13;
 import 'package:mobx/mobx.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:wayat/domain/contact/contact.dart' as _i9;
+import 'package:wayat/domain/group/group.dart' as _i12;
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart'
     as _i7;
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart'
@@ -19,6 +21,7 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
     as _i2;
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
     as _i4;
+import 'package:wayat/services/groups/groups_service.dart' as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -268,4 +271,23 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
   void addContact(_i9.Contact? contact) =>
       super.noSuchMethod(Invocation.method(#addContact, [contact]),
           returnValueForMissingStub: null);
+}
+
+/// A class which mocks [GroupsService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGroupsService extends _i1.Mock implements _i11.GroupsService {
+  MockGroupsService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i10.Future<List<_i12.Group>> getAll() =>
+      (super.noSuchMethod(Invocation.method(#getAll, []),
+              returnValue: _i10.Future<List<_i12.Group>>.value(<_i12.Group>[]))
+          as _i10.Future<List<_i12.Group>>);
+  @override
+  _i10.Future<dynamic> create(_i12.Group? group, _i13.XFile? picture) =>
+      (super.noSuchMethod(Invocation.method(#create, [group, picture]),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
 }
