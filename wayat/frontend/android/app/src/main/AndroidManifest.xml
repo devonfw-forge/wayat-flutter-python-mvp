@@ -12,7 +12,6 @@
         android:label="wayat"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-   <!-- Necessary for apps that target Android 9.0 or higher --><uses-library android:name="org.apache.http.legacy" android:required="false" />
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="${GOOGLE_MAPS_KEY}"/>
         <activity

@@ -1,5 +1,7 @@
+import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
@@ -32,7 +34,8 @@ abstract class _SessionState with Store {
     hasDoneOnboarding = true;
   }
 
-  Future isLogged() async {
+  Future<void> isLogged() async {
+    if (currentUser != null) return;
     if (!googleSignedIn) {
       GoogleSignInAccount? account = await authService.signInSilently();
       if (account != null) {
@@ -106,7 +109,14 @@ abstract class _SessionState with Store {
   }
 
   Future logOut() async {
-    authService.signOut();
+    final MapState mapState = GetIt.I.get<MapState>();
+    await mapState.closeMap();
+    finishLoggedIn = false;
+    googleSignedIn = false;
+    hasDoneOnboarding = false;
+
+    await authService.signOut();
+    currentUser = null;
   }
 
   bool isOnboardingCompleted() {

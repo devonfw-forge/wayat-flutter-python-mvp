@@ -1,14 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
-
 import 'session_state_test.mocks.dart';
 
-@GenerateMocks([AuthService, GoogleSignInAccount])
+@GenerateMocks([AuthService, GoogleSignInAccount, MapState])
 void main() async {
   MyUser testUser = _generateMyUser("Test");
 
@@ -342,6 +343,10 @@ void main() async {
   });
 
   test("LogOut calls signOut in Authentication service", () async {
+    final MockMapState mockMapState = MockMapState();
+    GetIt.I.registerLazySingleton<MapState>(() => mockMapState);
+    when(mockMapState.closeMap()).thenAnswer((_) => Future.value());
+
     AuthService mockAuthService = MockAuthService();
     when(mockAuthService.signOut()).thenAnswer((_) => Future.value(null));
     SessionState sessionState = SessionState(authService: mockAuthService);
