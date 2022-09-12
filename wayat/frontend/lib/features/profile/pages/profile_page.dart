@@ -4,10 +4,11 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/common/widgets/card.dart';
+import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
+import 'package:wayat/features/profile/widgets/delete_account_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -49,7 +50,7 @@ class ProfilePage extends StatelessWidget {
         _buildShareLocationPart(),
         Divider(),
         const SizedBox(height: 20),
-        _buildAccountPart(),
+        _buildAccountPart(context),
       ],
     );
   }
@@ -116,7 +117,7 @@ class ProfilePage extends StatelessWidget {
   //Build UI for "Account" part
   /// - "Log Out" custom button
   /// - "Delete Account" custom button
-  Widget _buildAccountPart() {
+  Widget _buildAccountPart(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -136,6 +137,15 @@ class ProfilePage extends StatelessWidget {
               userSession.logOut();
             }),
         const SizedBox(height: 24),
+        CustomCard(
+            text: appLocalizations.deleteAccount,
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return DeleteAccountDialog();
+                  });
+            }),
       ],
     );
   }
