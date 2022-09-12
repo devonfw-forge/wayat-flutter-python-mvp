@@ -98,5 +98,16 @@
     "contactProfileSharingLocationWithYou": "Compartiendo ubicación contigo",
     "contactProfileLocationNotAvailable": "Posición no disponible",
     "contactProfileNotSharingLocation": "Sin compartir ubicación",
-    "contactProfileLastUpdated": "Última actualización"
+    "contactProfileLastUpdated": "Última actualización",
+
+    "groups_title": "GRUPOS",
+    "createGroup": "Crear grupo",
+    "noGroupsMessage": "Ups. No has creado ningún grupo",
+    "newGroup": "Nuevo grupo",
+    "groupName": "Nombre del grupo",
+    "addParticipants": "Añadir participantes",
+    "addParticipantsTip": "¡Empieza a añadir amigos para crear un grupo!",
+    "addFriends": "Añadir amigos",
+
+    "done": "Hecho"
 }

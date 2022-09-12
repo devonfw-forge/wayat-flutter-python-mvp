@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 
@@ -26,6 +26,9 @@ abstract class _ContactsPageController with Store {
 
   Duration maxTimeBetweenUpdates = const Duration(seconds: 30);
 
+  @observable
+  ContactsCurrentPages currentPage = ContactsCurrentPages.contacts;
+
   _ContactsPageController() {
     friendsController = FriendsController();
     // Requests controller needs access to the friends controller to
@@ -42,12 +45,9 @@ abstract class _ContactsPageController with Store {
 
   TextEditingController searchBarController = TextEditingController();
 
-  @observable
-  bool viewSentRequests = false;
-
   @action
-  void setviewSentRequests(bool view) {
-    viewSentRequests = view;
+  void setContactsCurrentPage(ContactsCurrentPages currentPage) {
+    this.currentPage = currentPage;
   }
 
   @action
