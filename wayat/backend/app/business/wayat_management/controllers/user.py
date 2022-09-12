@@ -97,4 +97,4 @@ async def update_preferences(request: UpdatePreferencesRequest,
         # share_location was changed to true in this request, so we must refresh the user status
         # on all the maps of the user friend which "should be updated"
         logger.debug(f"Updating maps of {user.uid} friends")
-        await map_service.regenerate_map_status(uid=user.uid, force=True)
+        await map_service.update_contacts_status(uid=user.uid, force=True)
