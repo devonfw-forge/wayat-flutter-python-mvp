@@ -100,5 +100,16 @@
     "contactProfileSharingLocationWithYou": "Sharing location with you",
     "contactProfileLocationNotAvailable": "Location not available",
     "contactProfileNotSharingLocation": "Not sharing location",
-    "contactProfileLastUpdated": "Last updated"
+    "contactProfileLastUpdated": "Last updated",
+
+    "groupsTitle": "GROUPS",
+    "createGroup": "Create group",
+    "noGroupsMessage": "Oops. You don't have any group",
+    "newGroup": "New group",
+    "groupName": "Group name",
+    "addParticipants": "Add participants",
+    "addParticipantsTip": "Start adding some friends to create a group!",
+    "addFriends": "Add friends",
+    
+    "done": "Done"
 } 
