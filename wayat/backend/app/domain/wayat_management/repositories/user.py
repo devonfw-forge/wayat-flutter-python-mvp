@@ -179,12 +179,12 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         async def execute(t: AsyncTransaction):
             update_a = {
                 "contacts": firestore.ArrayRemove([b_id]),
-                "location_shared_with": firestore.ArrayUnion([b_id]),
+                "location_shared_with": firestore.ArrayRemove([b_id]),
             }
             self._validate_update(update_a)
             update_b = {
                 "contacts": firestore.ArrayRemove([a_id]),
-                "location_shared_with": firestore.ArrayUnion([a_id]),
+                "location_shared_with": firestore.ArrayRemove([a_id]),
             }
             self._validate_update(update_b)
             t.update(a_ref, update_a)
