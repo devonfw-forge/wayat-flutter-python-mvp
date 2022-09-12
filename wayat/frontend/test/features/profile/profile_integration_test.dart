@@ -12,7 +12,7 @@ import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
-import 'package:wayat/common/widgets/card.dart';
+import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -181,5 +181,45 @@ void main() async {
     expect(
         find.widgetWithText(Padding, appLocalizations.profile), findsWidgets);
     expect(find.text("newUsername"), findsWidgets);
+  });
+
+  testWidgets('Integration test for enable/disable sharing location',
+      (tester) async {
+    when(mockLocationState.shareLocationEnabled).thenReturn(true);
+    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
+    when(mockLocationState.setShareLocationEnabled(false)).thenReturn(null);
+    await navigateToProfilePage(tester);
+
+    // Check the profile page is displayed
+    expect(
+        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+
+    // Check if switch is displayed
+    Finder switchF = find.byKey(const Key("sw_en_prof"));
+    expect(switchF, findsOneWidget);
+
+    //Check switch triggers callback
+    await tester.tap(switchF);
+    await tester.pumpAndSettle();
+
+    await tester.tap(switchF);
+    await tester.pumpAndSettle();
+    verify(mockLocationState.setShareLocationEnabled(false)).called(2);
+  });
+
+  testWidgets('Integration test for LogOut', (tester) async {
+    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
+    await navigateToProfilePage(tester);
+
+    // Check the profile page is displayed
+    expect(
+        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+
+    // Emulate a tap on the logOut profile button
+    await tester.tap(find.descendant(
+        of: find.widgetWithText(CustomCard, appLocalizations.logOut),
+        matching: find.byType(InkWell)));
+
+    verify(mockSessionState.logOut()).called(1);
   });
 }

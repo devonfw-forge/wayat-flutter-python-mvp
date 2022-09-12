@@ -169,6 +169,10 @@ class MockProfileService extends _i1.Mock implements _i16.ProfileService {
   _i17.Future<bool> updateProfileName(String? name) =>
       (super.noSuchMethod(Invocation.method(#updateProfileName, [name]),
           returnValue: _i17.Future<bool>.value(false)) as _i17.Future<bool>);
+  @override
+  _i17.Future<bool> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i17.Future<bool>.value(false)) as _i17.Future<bool>);
 }
 
 /// A class which mocks [ContactsPageController].
@@ -348,9 +352,11 @@ class MockSessionState extends _i1.Mock implements _i20.SessionState {
               returnValueForMissingStub: _i17.Future<void>.value())
           as _i17.Future<void>);
   @override
-  _i17.Future<dynamic> isLogged() =>
+  _i17.Future<void> isLogged() =>
       (super.noSuchMethod(Invocation.method(#isLogged, []),
-          returnValue: _i17.Future<dynamic>.value()) as _i17.Future<dynamic>);
+              returnValue: _i17.Future<void>.value(),
+              returnValueForMissingStub: _i17.Future<void>.value())
+          as _i17.Future<void>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),

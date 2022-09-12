@@ -319,9 +319,11 @@ class MockSessionState extends _i1.Mock implements _i16.SessionState {
               returnValueForMissingStub: _i18.Future<void>.value())
           as _i18.Future<void>);
   @override
-  _i18.Future<dynamic> isLogged() =>
+  _i18.Future<void> isLogged() =>
       (super.noSuchMethod(Invocation.method(#isLogged, []),
-          returnValue: _i18.Future<dynamic>.value()) as _i18.Future<dynamic>);
+              returnValue: _i18.Future<void>.value(),
+              returnValueForMissingStub: _i18.Future<void>.value())
+          as _i18.Future<void>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
@@ -616,6 +618,10 @@ class MockProfileState extends _i1.Mock implements _i24.ProfileState {
   @override
   _i18.Future<dynamic> updateCurrentUserName(String? newName) =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUserName, [newName]),
+          returnValue: _i18.Future<dynamic>.value()) as _i18.Future<dynamic>);
+  @override
+  _i18.Future<dynamic> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
           returnValue: _i18.Future<dynamic>.value()) as _i18.Future<dynamic>);
 }
 

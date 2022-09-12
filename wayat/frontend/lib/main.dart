@@ -22,7 +22,7 @@ Future main() async {
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatformOptions);
+      name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
   await registerSingletons();
   setTimeAgoLocales();
 
@@ -83,7 +83,8 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     // It will be executed if the app is opened from background, but not when it is
     // opened for first time
     if (state == AppLifecycleState.resumed) {
-      if (!mapState.mapOpened) {
+      if (!mapState.mapOpened &&
+          GetIt.I.get<SessionState>().currentUser != null) {
         await mapState.openMap();
       }
     }

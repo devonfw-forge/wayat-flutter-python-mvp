@@ -7,8 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/common/widgets/card.dart';
-import 'package:wayat/common/widgets/contact_image.dart';
+import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
@@ -91,8 +90,15 @@ void main() async {
 
   testWidgets('Edit profile button', (tester) async {
     await tester.pumpWidget(_createApp(ProfilePage()));
-    expect(find.text(appLocalizations.profileActiveLocation), findsOneWidget);
+    expect(find.text(appLocalizations.editProfile), findsOneWidget);
     expect(find.widgetWithText(CustomCard, appLocalizations.editProfile),
+        findsOneWidget);
+  });
+
+  testWidgets('LogOut button', (tester) async {
+    await tester.pumpWidget(_createApp(ProfilePage()));
+    expect(find.text(appLocalizations.logOut), findsOneWidget);
+    expect(find.widgetWithText(CustomCard, appLocalizations.logOut),
         findsOneWidget);
   });
 }
