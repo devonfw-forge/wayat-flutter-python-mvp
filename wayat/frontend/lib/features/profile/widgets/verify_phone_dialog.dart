@@ -64,22 +64,15 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
       titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 18),
       titlePadding: const EdgeInsets.only(top: 32, left: 32, right: 32),
-      content: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 220.0),
-        //height: MediaQuery.of(context).size.height * 0.27,
-        //width: MediaQuery.of(context).size.width,
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getVerifyPhoneText(
-                  appLocalizations.verifyPhoneText, widget.phoneNumber),
-              const SizedBox(height: 32),
-              _getVirifyTextfields(controller),
-              _getVerifyResendCode(
-                  appLocalizations.didnotReceiveCode, controller),
-            ]),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _getVerifyPhoneText(
+              appLocalizations.verifyPhoneText, widget.phoneNumber),
+          const SizedBox(height: 32),
+          _getVirifyTextfields(controller),
+          _getVerifyResendCode(appLocalizations.didnotReceiveCode, controller),
+        ],
       ),
       actionsPadding: const EdgeInsets.only(left: 32, right: 32, bottom: 32),
       actions: [
@@ -135,26 +128,24 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
   }
 
   Widget _getVerifyResendCode(String text, controller) {
-    return Expanded(
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Text(text,
-            textAlign: TextAlign.start,
+    return Column(children: [
+      Text(text,
+          textAlign: TextAlign.start,
+          style: const TextStyle(
+              fontWeight: FontWeight.w400,
+              color: Colors.black87,
+              fontSize: 14)),
+      TextButton(
+          child: Text(
+            appLocalizations.resendCode,
             style: const TextStyle(
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
                 color: Colors.black87,
-                fontSize: 14)),
-        TextButton(
-            child: Text(
-              appLocalizations.resendCode,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                  fontSize: 15),
-            ),
-            onPressed: () async {
-              await controller.sendOTP();
-            })
-      ]),
-    );
+                fontSize: 15),
+          ),
+          onPressed: () async {
+            await controller.sendOTP();
+          })
+    ]);
   }
 }

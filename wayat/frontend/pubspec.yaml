@@ -67,6 +67,7 @@ dependencies:
   mockito: ^5.3.0
   pinput: ^2.2.12
   firebase_phone_auth_handler: ^1.0.6
+  smart_auth: ^1.0.5
 
 dev_dependencies:
   flutter_test:
