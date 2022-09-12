@@ -210,3 +210,15 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             "groups": [g.dict() for g in user_groups]
         }
         await self.update(document_id=user_id, data=update)
+
+    async def update_sharing_preferences(self, user_id: str, contact_id: str, share_location: bool):
+        if share_location is True:
+            update = {
+                "location_shared_with": firestore.ArrayUnion([contact_id]),
+            }
+        else:
+            update = {
+                "location_shared_with": firestore.ArrayRemove([contact_id]),
+            }
+        await self.update(document_id=user_id, data=update)
+

@@ -290,3 +290,6 @@ class UserService:
         new_image = await self._file_repository.upload_group_image(filename=image_name,
                                                                    data=resize_image(picture, self.THUMBNAIL_SIZE))
         await self.update_group(user, group, image_ref=new_image)
+
+    async def update_contact_prefs(self, user_id, contact_id, *, share_location: bool):
+        await self._user_repository.update_sharing_preferences(user_id, contact_id, share_location)
