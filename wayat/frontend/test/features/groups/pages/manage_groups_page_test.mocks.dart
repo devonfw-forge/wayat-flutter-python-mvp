@@ -3,23 +3,26 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i11;
+import 'dart:async' as _i13;
 
-import 'package:flutter/cupertino.dart' as _i7;
-import 'package:mobx/mobx.dart' as _i3;
+import 'package:flutter/cupertino.dart' as _i8;
+import 'package:image_picker/image_picker.dart' as _i3;
+import 'package:mobx/mobx.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/domain/contact/contact.dart' as _i9;
+import 'package:wayat/domain/contact/contact.dart' as _i10;
 import 'package:wayat/domain/group/group.dart' as _i2;
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart'
-    as _i10;
+    as _i11;
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart'
-    as _i5;
-import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart'
-    as _i4;
-import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
     as _i6;
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart'
+    as _i12;
+import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart'
+    as _i5;
+import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
+    as _i7;
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart'
-    as _i8;
+    as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -37,49 +40,54 @@ class _FakeGroup_0 extends _i1.SmartFake implements _i2.Group {
       : super(parent, parentInvocation);
 }
 
-class _FakeReactiveContext_1 extends _i1.SmartFake
-    implements _i3.ReactiveContext {
-  _FakeReactiveContext_1(Object parent, Invocation parentInvocation)
+class _FakeXFile_1 extends _i1.SmartFake implements _i3.XFile {
+  _FakeXFile_1(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeRequestsController_2 extends _i1.SmartFake
-    implements _i4.RequestsController {
-  _FakeRequestsController_2(Object parent, Invocation parentInvocation)
+class _FakeReactiveContext_2 extends _i1.SmartFake
+    implements _i4.ReactiveContext {
+  _FakeReactiveContext_2(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeFriendsController_3 extends _i1.SmartFake
-    implements _i5.FriendsController {
-  _FakeFriendsController_3(Object parent, Invocation parentInvocation)
+class _FakeRequestsController_3 extends _i1.SmartFake
+    implements _i5.RequestsController {
+  _FakeRequestsController_3(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeSuggestionsController_4 extends _i1.SmartFake
-    implements _i6.SuggestionsController {
-  _FakeSuggestionsController_4(Object parent, Invocation parentInvocation)
+class _FakeFriendsController_4 extends _i1.SmartFake
+    implements _i6.FriendsController {
+  _FakeFriendsController_4(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeDateTime_5 extends _i1.SmartFake implements DateTime {
-  _FakeDateTime_5(Object parent, Invocation parentInvocation)
+class _FakeSuggestionsController_5 extends _i1.SmartFake
+    implements _i7.SuggestionsController {
+  _FakeSuggestionsController_5(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeDuration_6 extends _i1.SmartFake implements Duration {
-  _FakeDuration_6(Object parent, Invocation parentInvocation)
+class _FakeDateTime_6 extends _i1.SmartFake implements DateTime {
+  _FakeDateTime_6(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeTextEditingController_7 extends _i1.SmartFake
-    implements _i7.TextEditingController {
-  _FakeTextEditingController_7(Object parent, Invocation parentInvocation)
+class _FakeDuration_7 extends _i1.SmartFake implements Duration {
+  _FakeDuration_7(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeObservableList_8<T> extends _i1.SmartFake
-    implements _i3.ObservableList<T> {
-  _FakeObservableList_8(Object parent, Invocation parentInvocation)
+class _FakeTextEditingController_8 extends _i1.SmartFake
+    implements _i8.TextEditingController {
+  _FakeTextEditingController_8(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeObservableList_9<T> extends _i1.SmartFake
+    implements _i4.ObservableList<T> {
+  _FakeObservableList_9(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -87,7 +95,7 @@ class _FakeObservableList_8<T> extends _i1.SmartFake
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockManageGroupController extends _i1.Mock
-    implements _i8.ManageGroupController {
+    implements _i9.ManageGroupController {
   MockManageGroupController() {
     _i1.throwOnMissingStub(this);
   }
@@ -100,29 +108,38 @@ class MockManageGroupController extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#group, value),
           returnValueForMissingStub: null);
   @override
-  List<_i9.Contact> get selectedContacts =>
+  List<_i10.Contact> get selectedContacts =>
       (super.noSuchMethod(Invocation.getter(#selectedContacts),
-          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
+          returnValue: <_i10.Contact>[]) as List<_i10.Contact>);
   @override
-  set selectedContacts(List<_i9.Contact>? value) =>
+  set selectedContacts(List<_i10.Contact>? value) =>
       super.noSuchMethod(Invocation.setter(#selectedContacts, value),
           returnValueForMissingStub: null);
   @override
-  List<_i9.Contact> get allContacts =>
-      (super.noSuchMethod(Invocation.getter(#allContacts),
-          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
+  _i3.XFile get selectedFile =>
+      (super.noSuchMethod(Invocation.getter(#selectedFile),
+              returnValue: _FakeXFile_1(this, Invocation.getter(#selectedFile)))
+          as _i3.XFile);
   @override
-  _i3.ReactiveContext get context =>
+  set selectedFile(_i3.XFile? value) =>
+      super.noSuchMethod(Invocation.setter(#selectedFile, value),
+          returnValueForMissingStub: null);
+  @override
+  List<_i10.Contact> get allContacts =>
+      (super.noSuchMethod(Invocation.getter(#allContacts),
+          returnValue: <_i10.Contact>[]) as List<_i10.Contact>);
+  @override
+  _i4.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
-                  _FakeReactiveContext_1(this, Invocation.getter(#context)))
-          as _i3.ReactiveContext);
+                  _FakeReactiveContext_2(this, Invocation.getter(#context)))
+          as _i4.ReactiveContext);
   @override
-  void addContact(_i9.Contact? contact) =>
+  void addContact(_i10.Contact? contact) =>
       super.noSuchMethod(Invocation.method(#addContact, [contact]),
           returnValueForMissingStub: null);
   @override
-  void removeContact(_i9.Contact? contact) =>
+  void removeContact(_i10.Contact? contact) =>
       super.noSuchMethod(Invocation.method(#removeContact, [contact]),
           returnValueForMissingStub: null);
 }
@@ -131,40 +148,40 @@ class MockManageGroupController extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockContactsPageController extends _i1.Mock
-    implements _i10.ContactsPageController {
+    implements _i11.ContactsPageController {
   MockContactsPageController() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.RequestsController get requestsController =>
+  _i5.RequestsController get requestsController =>
       (super.noSuchMethod(Invocation.getter(#requestsController),
-              returnValue: _FakeRequestsController_2(
+              returnValue: _FakeRequestsController_3(
                   this, Invocation.getter(#requestsController)))
-          as _i4.RequestsController);
+          as _i5.RequestsController);
   @override
-  set requestsController(_i4.RequestsController? _requestsController) => super
+  set requestsController(_i5.RequestsController? _requestsController) => super
       .noSuchMethod(Invocation.setter(#requestsController, _requestsController),
           returnValueForMissingStub: null);
   @override
-  _i5.FriendsController get friendsController =>
+  _i6.FriendsController get friendsController =>
       (super.noSuchMethod(Invocation.getter(#friendsController),
-              returnValue: _FakeFriendsController_3(
+              returnValue: _FakeFriendsController_4(
                   this, Invocation.getter(#friendsController)))
-          as _i5.FriendsController);
+          as _i6.FriendsController);
   @override
-  set friendsController(_i5.FriendsController? _friendsController) => super
+  set friendsController(_i6.FriendsController? _friendsController) => super
       .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
           returnValueForMissingStub: null);
   @override
-  _i6.SuggestionsController get suggestionsController =>
+  _i7.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
-              returnValue: _FakeSuggestionsController_4(
+              returnValue: _FakeSuggestionsController_5(
                   this, Invocation.getter(#suggestionsController)))
-          as _i6.SuggestionsController);
+          as _i7.SuggestionsController);
   @override
   set suggestionsController(
-          _i6.SuggestionsController? _suggestionsController) =>
+          _i7.SuggestionsController? _suggestionsController) =>
       super.noSuchMethod(
           Invocation.setter(#suggestionsController, _suggestionsController),
           returnValueForMissingStub: null);
@@ -172,7 +189,7 @@ class MockContactsPageController extends _i1.Mock
   DateTime get timeFriendsUpdate =>
       (super.noSuchMethod(Invocation.getter(#timeFriendsUpdate),
               returnValue:
-                  _FakeDateTime_5(this, Invocation.getter(#timeFriendsUpdate)))
+                  _FakeDateTime_6(this, Invocation.getter(#timeFriendsUpdate)))
           as DateTime);
   @override
   set timeFriendsUpdate(DateTime? _timeFriendsUpdate) => super.noSuchMethod(
@@ -182,7 +199,7 @@ class MockContactsPageController extends _i1.Mock
   DateTime get timeRequestsUpdate =>
       (super.noSuchMethod(Invocation.getter(#timeRequestsUpdate),
               returnValue:
-                  _FakeDateTime_5(this, Invocation.getter(#timeRequestsUpdate)))
+                  _FakeDateTime_6(this, Invocation.getter(#timeRequestsUpdate)))
           as DateTime);
   @override
   set timeRequestsUpdate(DateTime? _timeRequestsUpdate) => super.noSuchMethod(
@@ -192,7 +209,7 @@ class MockContactsPageController extends _i1.Mock
   DateTime get timeSuggestionsUpdate => (super.noSuchMethod(
           Invocation.getter(#timeSuggestionsUpdate),
           returnValue:
-              _FakeDateTime_5(this, Invocation.getter(#timeSuggestionsUpdate)))
+              _FakeDateTime_6(this, Invocation.getter(#timeSuggestionsUpdate)))
       as DateTime);
   @override
   set timeSuggestionsUpdate(DateTime? _timeSuggestionsUpdate) =>
@@ -203,7 +220,7 @@ class MockContactsPageController extends _i1.Mock
   Duration get maxTimeBetweenUpdates => (super.noSuchMethod(
           Invocation.getter(#maxTimeBetweenUpdates),
           returnValue:
-              _FakeDuration_6(this, Invocation.getter(#maxTimeBetweenUpdates)))
+              _FakeDuration_7(this, Invocation.getter(#maxTimeBetweenUpdates)))
       as Duration);
   @override
   set maxTimeBetweenUpdates(Duration? _maxTimeBetweenUpdates) =>
@@ -211,33 +228,34 @@ class MockContactsPageController extends _i1.Mock
           Invocation.setter(#maxTimeBetweenUpdates, _maxTimeBetweenUpdates),
           returnValueForMissingStub: null);
   @override
-  _i7.TextEditingController get searchBarController =>
-      (super.noSuchMethod(Invocation.getter(#searchBarController),
-              returnValue: _FakeTextEditingController_7(
-                  this, Invocation.getter(#searchBarController)))
-          as _i7.TextEditingController);
+  _i12.ContactsCurrentPages get currentPage =>
+      (super.noSuchMethod(Invocation.getter(#currentPage),
+              returnValue: _i12.ContactsCurrentPages.contacts)
+          as _i12.ContactsCurrentPages);
   @override
-  set searchBarController(_i7.TextEditingController? _searchBarController) =>
+  set currentPage(_i12.ContactsCurrentPages? value) =>
+      super.noSuchMethod(Invocation.setter(#currentPage, value),
+          returnValueForMissingStub: null);
+  @override
+  _i8.TextEditingController get searchBarController =>
+      (super.noSuchMethod(Invocation.getter(#searchBarController),
+              returnValue: _FakeTextEditingController_8(
+                  this, Invocation.getter(#searchBarController)))
+          as _i8.TextEditingController);
+  @override
+  set searchBarController(_i8.TextEditingController? _searchBarController) =>
       super.noSuchMethod(
           Invocation.setter(#searchBarController, _searchBarController),
           returnValueForMissingStub: null);
   @override
-  bool get viewSentRequests =>
-      (super.noSuchMethod(Invocation.getter(#viewSentRequests),
-          returnValue: false) as bool);
-  @override
-  set viewSentRequests(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#viewSentRequests, value),
-          returnValueForMissingStub: null);
-  @override
-  _i3.ReactiveContext get context =>
+  _i4.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
-                  _FakeReactiveContext_1(this, Invocation.getter(#context)))
-          as _i3.ReactiveContext);
+                  _FakeReactiveContext_2(this, Invocation.getter(#context)))
+          as _i4.ReactiveContext);
   @override
-  void setviewSentRequests(bool? view) =>
-      super.noSuchMethod(Invocation.method(#setviewSentRequests, [view]),
+  void setContactsCurrentPage(_i12.ContactsCurrentPages? currentPage) => super
+      .noSuchMethod(Invocation.method(#setContactsCurrentPage, [currentPage]),
           returnValueForMissingStub: null);
   @override
   void setSearchBarText(String? text) =>
@@ -252,7 +270,7 @@ class MockContactsPageController extends _i1.Mock
 /// A class which mocks [FriendsController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFriendsController extends _i1.Mock implements _i5.FriendsController {
+class MockFriendsController extends _i1.Mock implements _i6.FriendsController {
   MockFriendsController() {
     _i1.throwOnMissingStub(this);
   }
@@ -266,55 +284,55 @@ class MockFriendsController extends _i1.Mock implements _i5.FriendsController {
       super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
           returnValueForMissingStub: null);
   @override
-  List<_i9.Contact> get allContacts =>
+  List<_i10.Contact> get allContacts =>
       (super.noSuchMethod(Invocation.getter(#allContacts),
-          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
+          returnValue: <_i10.Contact>[]) as List<_i10.Contact>);
   @override
-  set allContacts(List<_i9.Contact>? _allContacts) =>
+  set allContacts(List<_i10.Contact>? _allContacts) =>
       super.noSuchMethod(Invocation.setter(#allContacts, _allContacts),
           returnValueForMissingStub: null);
   @override
-  _i3.ObservableList<_i9.Contact> get filteredContacts =>
+  _i4.ObservableList<_i10.Contact> get filteredContacts =>
       (super.noSuchMethod(Invocation.getter(#filteredContacts),
-              returnValue: _FakeObservableList_8<_i9.Contact>(
+              returnValue: _FakeObservableList_9<_i10.Contact>(
                   this, Invocation.getter(#filteredContacts)))
-          as _i3.ObservableList<_i9.Contact>);
+          as _i4.ObservableList<_i10.Contact>);
   @override
-  set filteredContacts(_i3.ObservableList<_i9.Contact>? value) =>
+  set filteredContacts(_i4.ObservableList<_i10.Contact>? value) =>
       super.noSuchMethod(Invocation.setter(#filteredContacts, value),
           returnValueForMissingStub: null);
   @override
-  List<_i9.Contact> get availableContacts =>
+  List<_i10.Contact> get availableContacts =>
       (super.noSuchMethod(Invocation.getter(#availableContacts),
-          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
+          returnValue: <_i10.Contact>[]) as List<_i10.Contact>);
   @override
-  List<_i9.Contact> get unavailableContacts =>
+  List<_i10.Contact> get unavailableContacts =>
       (super.noSuchMethod(Invocation.getter(#unavailableContacts),
-          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
+          returnValue: <_i10.Contact>[]) as List<_i10.Contact>);
   @override
-  _i3.ReactiveContext get context =>
+  _i4.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
-                  _FakeReactiveContext_1(this, Invocation.getter(#context)))
-          as _i3.ReactiveContext);
+                  _FakeReactiveContext_2(this, Invocation.getter(#context)))
+          as _i4.ReactiveContext);
   @override
-  _i11.Future<void> updateContacts() =>
+  _i13.Future<void> updateContacts() =>
       (super.noSuchMethod(Invocation.method(#updateContacts, []),
-              returnValue: _i11.Future<void>.value(),
-              returnValueForMissingStub: _i11.Future<void>.value())
-          as _i11.Future<void>);
+              returnValue: _i13.Future<void>.value(),
+              returnValueForMissingStub: _i13.Future<void>.value())
+          as _i13.Future<void>);
   @override
   void setTextFilter(String? text) =>
       super.noSuchMethod(Invocation.method(#setTextFilter, [text]),
           returnValueForMissingStub: null);
   @override
-  _i11.Future<void> removeContact(_i9.Contact? contact) =>
+  _i13.Future<void> removeContact(_i10.Contact? contact) =>
       (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
-              returnValue: _i11.Future<void>.value(),
-              returnValueForMissingStub: _i11.Future<void>.value())
-          as _i11.Future<void>);
+              returnValue: _i13.Future<void>.value(),
+              returnValueForMissingStub: _i13.Future<void>.value())
+          as _i13.Future<void>);
   @override
-  void addContact(_i9.Contact? contact) =>
+  void addContact(_i10.Contact? contact) =>
       super.noSuchMethod(Invocation.method(#addContact, [contact]),
           returnValueForMissingStub: null);
 }

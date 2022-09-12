@@ -6,8 +6,10 @@ import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/contacts/widgets/contacts_section_title.dart';
+import 'package:wayat/features/contacts/widgets/navigation_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class FriendsPage extends StatelessWidget {
@@ -67,12 +69,22 @@ class FriendsPage extends StatelessWidget {
   Widget header() {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
-      child: Observer(builder: (context) {
-        int numFriends = controller.filteredContacts.length;
-        return ContactsSectionTitle(
-          text: "${appLocalizations.friendsPageTitle} ($numFriends)",
-        );
-      }),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Observer(builder: (context) {
+            int numFriends = controller.filteredContacts.length;
+            return ContactsSectionTitle(
+              text: "${appLocalizations.friendsPageTitle} ($numFriends)",
+            );
+          }),
+          NavigationButton(
+              onTap: () => GetIt.I
+                  .get<ContactsPageController>()
+                  .setContactsCurrentPage(ContactsCurrentPages.groups),
+              text: appLocalizations.groupsTitle)
+        ],
+      ),
     );
   }
 }

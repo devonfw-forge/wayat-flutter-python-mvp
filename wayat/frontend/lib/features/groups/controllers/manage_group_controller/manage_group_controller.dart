@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -19,6 +21,11 @@ abstract class _ManageGroupController with Store {
 
   @observable
   List<Contact> selectedContacts = [];
+
+  @observable
+  late XFile selectedFile;
+
+  TextEditingController groupNameController = TextEditingController();
 
   final FriendsController _friendsController =
       GetIt.I.get<ContactsPageController>().friendsController;

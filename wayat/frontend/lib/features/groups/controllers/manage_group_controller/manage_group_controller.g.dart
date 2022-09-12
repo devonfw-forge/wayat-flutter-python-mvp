@@ -41,6 +41,22 @@ mixin _$ManageGroupController on _ManageGroupController, Store {
     });
   }
 
+  late final _$selectedFileAtom =
+      Atom(name: '_ManageGroupController.selectedFile', context: context);
+
+  @override
+  XFile get selectedFile {
+    _$selectedFileAtom.reportRead();
+    return super.selectedFile;
+  }
+
+  @override
+  set selectedFile(XFile value) {
+    _$selectedFileAtom.reportWrite(value, super.selectedFile, () {
+      super.selectedFile = value;
+    });
+  }
+
   late final _$_ManageGroupControllerActionController =
       ActionController(name: '_ManageGroupController', context: context);
 
@@ -70,7 +86,8 @@ mixin _$ManageGroupController on _ManageGroupController, Store {
   String toString() {
     return '''
 group: ${group},
-selectedContacts: ${selectedContacts}
+selectedContacts: ${selectedContacts},
+selectedFile: ${selectedFile}
     ''';
   }
 }
