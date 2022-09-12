@@ -38,11 +38,17 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def find_by_phone(self, *, phones: list[str]):
         return [item async for item in self.where("phone", 'in', phones)]
 
-    async def get_contacts(self, uid: str):
+    async def get_contacts(self, uid: str) -> Tuple[list[UserEntity], list[str]]:
+        """
+        Returns the list of contacts (UserEntity) and the list of ids of users with which the user is sharing location
+
+        :param uid: the UID of the User
+        :return: the list of contacts and the list of ids with which the user is sharing the location
+        """
         self_user = await self.get_or_throw(uid)
         coroutines = [self.get_or_throw(u) for u in self_user.contacts]
         contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)  # type: ignore
-        return contacts_entities
+        return contacts_entities, self_user.location_shared_with
 
     async def update_user_location(self, uid: str, latitude: float, longitude: float, address: str) -> None:
         location: Location = Location(
