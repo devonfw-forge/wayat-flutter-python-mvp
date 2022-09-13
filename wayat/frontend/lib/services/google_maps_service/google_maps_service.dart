@@ -52,6 +52,9 @@ class GoogleMapsService {
     } on HandshakeException {
       log("Exception: Bad handshake to googleapis.com");
       return "ERROR_ADDRESS";
+    } on SocketException {
+      log("Client Socket Exception");
+      return "ERROR_ADDRESS";
     }
   }
 }

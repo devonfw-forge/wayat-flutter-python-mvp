@@ -10,6 +10,14 @@
     "phonePageDescription": "Se requiere un número de teléfono válido",
     "invalidPhoneNumber": "Número de teléfono inválido",
     "phoneUpdateError": "Error al configurar el número de teléfono",
+    "verifyPhoneTitle": "Verificar teléfono",
+    "verifyPhoneText": "Verifique su nuevo teléfono móvil. El código se envía a",
+    "didnotReceiveCode": "¿No recibiste el código",
+    "resendCode": "Reenviar codigo",
+    "verify": "Verificar",
+    "cancel": "Cancelar",
+    "delete": "Borrar",
+    "deleteAccountText": "¿Está seguro de que desea eliminar su cuenta de Wayat? Tenga en cuenta que no hay opción para restaurar la cuenta o sus datos una vez que se elimina.",
     
     "home": "Inicio",
     "contacts": "Contactos",
@@ -55,7 +63,7 @@
     "gallery": "Galería",
     "save": "Guardar",
 
-    "changePhone": "Cambiar de teléfono",
+    "changePhone": "Teléfono",
     "changePassword": "Cambiar Contraseña",
 
     "close": "Cerrar",
@@ -89,5 +97,16 @@
     "contactProfileSharingLocationWithYou": "Compartiendo ubicación contigo",
     "contactProfileLocationNotAvailable": "Posición no disponible",
     "contactProfileNotSharingLocation": "Sin compartir ubicación",
-    "contactProfileLastUpdated": "Última actualización"
+    "contactProfileLastUpdated": "Última actualización",
+
+    "groups_title": "GRUPOS",
+    "createGroup": "Crear grupo",
+    "noGroupsMessage": "Ups. No has creado ningún grupo",
+    "newGroup": "Nuevo grupo",
+    "groupName": "Nombre del grupo",
+    "addParticipants": "Añadir participantes",
+    "addParticipantsTip": "¡Empieza a añadir amigos para crear un grupo!",
+    "addFriends": "Añadir amigos",
+
+    "done": "Hecho"
 }

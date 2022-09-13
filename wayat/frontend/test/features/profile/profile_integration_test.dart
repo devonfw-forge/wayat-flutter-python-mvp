@@ -12,10 +12,11 @@ import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
-import 'package:wayat/common/widgets/card.dart';
+import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -74,7 +75,8 @@ void main() async {
     when(mockProfileService.updateProfileName("newUsername"))
         .thenAnswer((_) => Future.value(true));
     when(mockLocationState.shareLocationEnabled).thenReturn(false);
-    when(mockContactsPageController.viewSentRequests).thenReturn(false);
+    when(mockContactsPageController.currentPage)
+        .thenReturn(ContactsCurrentPages.contacts);
     when(mockContactsPageController.friendsController)
         .thenReturn(mockFriendsController);
     when(mockContactsPageController.requestsController)
