@@ -6,6 +6,12 @@ steps:
       - 'gs://wayat_secrets/firebase.json'
       - .
     dir: wayat/backend
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp
+      - 'gs://wayat_secrets/PROD.env'
+      - .
+    dir: wayat/backend
   - name: gcr.io/cloud-builders/docker
     args:
       - build
