@@ -7,7 +7,7 @@ from app.business.wayat_management.exceptions.http import InvalidImageFormatExce
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
     UpdateUserRequest,
-    ListUsersWithPhoneResponse,
+    ListUsersWithPhoneAndSharingIndicatorResponse,
     FindByPhoneRequest,
     UpdatePreferencesRequest,
     dto_to_user_with_phone_response,
@@ -72,13 +72,13 @@ async def update_profile_picture(upload_file: UploadFile,
 
 @router.post("/find-by-phone",
              description="Get a list of users filtered by phone",
-             response_model=ListUsersWithPhoneResponse,
+             response_model=ListUsersWithPhoneAndSharingIndicatorResponse,
              dependencies=[Depends(get_user())])
 async def get_users_filtered(request: FindByPhoneRequest, user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts with phones {request.phones}")
     users = await user_service.find_by_phone(request.phones)
     users_phone = list(map(dto_to_user_with_phone_response, users))
-    return ListUsersWithPhoneResponse(users=users_phone)
+    return ListUsersWithPhoneAndSharingIndicatorResponse(users=users_phone)
 
 
 @router.post("/preferences", description="Update the preferences of a user")
@@ -97,4 +97,4 @@ async def update_preferences(request: UpdatePreferencesRequest,
         # share_location was changed to true in this request, so we must refresh the user status
         # on all the maps of the user friend which "should be updated"
         logger.debug(f"Updating maps of {user.uid} friends")
-        await map_service.regenerate_map_status(uid=user.uid, force=True)
+        await map_service.update_contacts_status(uid=user.uid, force=True)

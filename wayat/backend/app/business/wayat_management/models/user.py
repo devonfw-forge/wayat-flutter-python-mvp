@@ -47,8 +47,12 @@ class UserWithPhoneResponse(UserID):
     image_url: str
 
 
-class ListUsersWithPhoneResponse(BaseModel):
-    users: list[UserWithPhoneResponse]
+class UserWithSharingIndicator(UserWithPhoneResponse):
+    share_location: bool
+
+
+class ListUsersWithPhoneAndSharingIndicatorResponse(BaseModel):
+    users: list[UserWithSharingIndicator]
 
 
 class PendingFriendsRequestsResponse(BaseModel):
@@ -59,6 +63,10 @@ class PendingFriendsRequestsResponse(BaseModel):
 class HandleFriendRequestRequest(BaseModel):
     uid: str
     accept: bool
+
+
+class UpdateContactPreferencesRequest(BaseModel):
+    share_location: bool
 
 
 def dto_to_user_with_phone_response(u: UserDTO):
