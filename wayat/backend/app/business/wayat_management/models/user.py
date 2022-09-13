@@ -47,6 +47,10 @@ class UserWithPhoneResponse(UserID):
     image_url: str
 
 
+class ListUsersWithPhoneResponse(BaseModel):
+    users: list[UserWithPhoneResponse]
+
+
 class UserWithSharingIndicator(UserWithPhoneResponse):
     share_location: bool
 

@@ -7,10 +7,9 @@ from app.business.wayat_management.exceptions.http import InvalidImageFormatExce
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
     UpdateUserRequest,
-    ListUsersWithPhoneAndSharingIndicatorResponse,
     FindByPhoneRequest,
     UpdatePreferencesRequest,
-    dto_to_user_with_phone_response,
+    dto_to_user_with_phone_response, ListUsersWithPhoneResponse,
 )
 from app.business.wayat_management.services.map import MapService
 from app.business.wayat_management.services.user import UserService
@@ -72,13 +71,13 @@ async def update_profile_picture(upload_file: UploadFile,
 
 @router.post("/find-by-phone",
              description="Get a list of users filtered by phone",
-             response_model=ListUsersWithPhoneAndSharingIndicatorResponse,
+             response_model=ListUsersWithPhoneResponse,
              dependencies=[Depends(get_user())])
 async def get_users_filtered(request: FindByPhoneRequest, user_service: UserService = Depends(UserService)):
     logger.debug(f"Getting contacts with phones {request.phones}")
     users = await user_service.find_by_phone(request.phones)
     users_phone = list(map(dto_to_user_with_phone_response, users))
-    return ListUsersWithPhoneAndSharingIndicatorResponse(users=users_phone)
+    return ListUsersWithPhoneResponse(users=users_phone)
 
 
 @router.post("/preferences", description="Update the preferences of a user")
