@@ -14,7 +14,7 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/features/groups/pages/manage_group_page.dart';
@@ -27,6 +27,7 @@ import 'package:wayat/services/groups/groups_service.dart';
 import 'manage_groups_page_test.mocks.dart';
 
 @GenerateMocks([
+  GroupsController,
   ManageGroupController,
   ContactsPageController,
   FriendsController,
@@ -38,6 +39,7 @@ void main() async {
   ContactsPageController mockContactsPageController =
       MockContactsPageController();
   FriendsController mockFriendsController = MockFriendsController();
+  GroupsController mockGroupsController = MockGroupsController();
 
   setUpAll(() {
     HttpOverrides.global = null;
@@ -51,6 +53,7 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
+    GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
   Widget _createApp(Widget body) {
@@ -80,9 +83,7 @@ void main() async {
 
   testWidgets("When pressing back button the current page changes",
       (tester) async {
-    when(mockContactsPageController
-            .setContactsCurrentPage(ContactsCurrentPages.groups))
-        .thenReturn(null);
+    when(mockGroupsController.setSelectedGroup(null)).thenReturn(null);
 
     await tester.pumpWidget(_createApp(ManageGroupPage(
       controller: mockManageGroupController,
@@ -91,15 +92,11 @@ void main() async {
     await tester.tap(find.byIcon(Icons.arrow_back));
     await tester.pumpAndSettle();
 
-    verify(mockContactsPageController
-            .setContactsCurrentPage(ContactsCurrentPages.groups))
-        .called(1);
+    verify(mockGroupsController.setSelectedGroup(null)).called(1);
   });
 
   testWidgets("Save button saves group and goes back", (tester) async {
-    when(mockContactsPageController
-            .setContactsCurrentPage(ContactsCurrentPages.groups))
-        .thenReturn(null);
+    when(mockGroupsController.setSelectedGroup(null)).thenReturn(null);
     when(mockManageGroupController.saveGroup())
         .thenAnswer((_) => Future.value(null));
 
@@ -111,9 +108,7 @@ void main() async {
     await tester.pumpAndSettle();
 
     verify(mockManageGroupController.saveGroup()).called(1);
-    verify(mockContactsPageController
-            .setContactsCurrentPage(ContactsCurrentPages.groups))
-        .called(1);
+    verify(mockGroupsController.setSelectedGroup(null)).called(1);
   });
 
   testWidgets("Group image is built correctly", (tester) async {

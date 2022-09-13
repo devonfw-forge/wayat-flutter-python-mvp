@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'package:wayat/services/groups/groups_service_impl.dart';
+import 'package:wayat/services/utils/list_utils_service.dart';
 
 part 'groups_controller.g.dart';
 
@@ -27,7 +28,8 @@ abstract class _GroupsController with Store {
   /// Returns 'true' if the groups were updated and 'false' if there was no need
   Future<bool> updateGroups() async {
     List<Group> fetchedGroups = await groupsService.getAll();
-    if (fetchedGroups != groups) {
+    if (ListUtilsService.haveDifferentElements(
+        fetchedGroups, groups.toList())) {
       setGroups(fetchedGroups);
       return true;
     }
