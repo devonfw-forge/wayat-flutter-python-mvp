@@ -18,7 +18,10 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "deleteAccountText": "Are you sure that you want to delete your Wayat account? Please note that there is no option to restore the account or its data once it's deleted.",
-    
+    "phoneEmpty": "Empty field. Input a correct phone number.",
+    "phoneIncorrect": "Incorrect phone number. Enter valid phone.",
+    "phoneDifferent": "Enter different phone number of the previous one.",
+
     "home": "Home",
     "contacts": "Contacts",
     "events": "Events",

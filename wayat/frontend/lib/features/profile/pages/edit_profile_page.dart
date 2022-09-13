@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -25,10 +24,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final EditProfileController controller = EditProfileController();
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   XFile? currentSelectedImage;
   String? name;
-  final String _errorPhoneMsg = "";
+  bool _validPhone = false;
+  String _errorPhoneMsg = "";
 
   TextStyle _textStyle(Color color, double size) =>
       TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
@@ -47,11 +48,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const SizedBox(height: 34.5),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: _phoneTextField(),
+            child: _formPhone(),
           )
         ],
       ),
     );
+  }
+
+  Form _formPhone() {
+    return Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            _phoneTextField(),
+          ],
+        ));
   }
 
   Widget _profileAppBar() {
@@ -170,9 +181,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       );
 
   IntlPhoneField _phoneTextField() {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    //delete this line on release, and turn on AppCheck in Firestore Console
-    //auth.setSettings(appVerificationDisabledForTesting: true);
     return IntlPhoneField(
       // Only numbers are allowed as input
       keyboardType: TextInputType.number,
@@ -180,23 +188,46 @@ class _EditProfilePageState extends State<EditProfilePage> {
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
       ],
       decoration: InputDecoration(
+          labelText: user.phone.substring(3),
           errorText: _errorPhoneMsg != "" ? _errorPhoneMsg : null,
-          labelText: user.phone,
           labelStyle: _textStyle(Colors.black87, 16),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
-      onChanged: (phone) async {
-        if (phone.completeNumber.length == 12 &&
-            phone.completeNumber != user.phone) {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return VerifyPhoneNumberDialog(
-                    phoneNumber: phone.completeNumber);
-              });
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (newTextValue) {
+        if (newTextValue!.number.isEmpty) {
+          return appLocalizations.phoneEmpty;
         }
+        if (newTextValue.completeNumber.length < 12) {
+          _errorPhoneMsg = appLocalizations.phoneIncorrect;
+          return _errorPhoneMsg;
+        }
+        if (newTextValue.completeNumber == user.phone) {
+          _errorPhoneMsg = appLocalizations.phoneDifferent;
+          return _errorPhoneMsg;
+        }
+        _errorPhoneMsg = '';
+        return null;
+      },
+      onChanged: (phone) {
+        setState(() {
+          if (_formKey.currentState != null) {
+            _validPhone = _formKey.currentState!.validate();
+            if (_validPhone) _submit(phone.completeNumber);
+          }
+        });
       },
     );
+  }
+
+  void _submit(String newPhone) {
+    if (_errorPhoneMsg == '') {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return VerifyPhoneNumberDialog(phoneNumber: newPhone);
+          });
+    }
   }
 
   Widget _getImageFromCameraOrGallary() {

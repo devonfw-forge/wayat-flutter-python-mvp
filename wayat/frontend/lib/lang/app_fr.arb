@@ -18,7 +18,10 @@
     "cancel": "Annuler",
     "delete": "Effacer",
     "deleteAccountText": "Êtes-vous sûr de vouloir supprimer votre compte Wayat? Veuillez noter qu'il n'y a pas d'option pour restaurer le compte ou ses données une fois qu'il est supprimé.",
-    
+    "phoneEmpty": "Champ vide. Entrez un numéro de téléphone correct.",
+    "phoneIncorrect": "Numéro de téléphone incorrect. Entrez un téléphone valide.",
+    "phoneDifferent": "Entrez un numéro de téléphone différent du précédent.",
+
     "home": "Home",
     "contacts": "Contacts",
     "events": "Evénements",
