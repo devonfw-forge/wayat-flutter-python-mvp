@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/languages.dart';
-import 'package:wayat/main.dart';
 
 class PreferencesPage extends StatelessWidget {
   const PreferencesPage({Key? key}) : super(key: key);
-
-  void _changeLanguage(Language? language) {
-    print(language);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         _profileAppBar(),
-        // TODO: implement dark mode
-        // const SizedBox(height: 34.5),
-        // _buildEnableDarkThemeSwitchButton(),
         const SizedBox(height: 34.5),
-        _buildLanguageButton(context),
+        _buildEnableDarkThemeSwitchButton(),
+        const SizedBox(height: 34.5),
+        _buildLanguageButton(),
       ],
     );
   }
@@ -96,79 +88,37 @@ class PreferencesPage extends StatelessWidget {
         ],
       );
 
-  Row _buildLanguageButton(BuildContext context) {
-    String _languageTranslation(String shortLanguage) {
-      switch (shortLanguage) {
-        case 'es':
-          return appLocalizations.es;
-        case 'en':
-          return appLocalizations.en;
-        case 'ge':
-          return appLocalizations.ge;
-        case 'fr':
-          return appLocalizations.fr;
-        case 'de':
-          return appLocalizations.du;
-        default:
-          return appLocalizations.en;
-      }
-    }
-
+  Row _buildLanguageButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            appLocalizations.language,
+            appLocalizations.darkTheme,
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
                 fontSize: 16),
           ),
         ),
-        InkWell(
-          onTap: () {
-            Localizations.override(
-              context: context,
-              locale: const Locale('en'),
-              delegates: [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate
-              ],
-            );
-            print('---------------------- ' +
-                Localizations.localeOf(context).languageCode);
-          },
-          child: Row(
-            children: [
-              DropdownButton(
-                  items: Language.languageList()
-                      .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
-                            value: lang,
-                            child: Row(
-                              children: [Text(lang.name)],
-                            ),
-                          )).toList(),
-                  onChanged: (Language? language){
-                    _changeLanguage(language);
-                  }
-              ),
-              Text(
-                _languageTranslation(
-                    Localizations.localeOf(context).languageCode),
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                    fontSize: 16),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: const Icon(Icons.arrow_forward,
-                    color: Colors.black87, size: 16),
-              )
-            ],
-          ),
+        Row(
+          children: [
+            Text(
+              appLocalizations.language,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
+                  fontSize: 16),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: InkWell(
+                  onTap: () {},
+                  child: const Icon(Icons.arrow_forward,
+                      color: Colors.black87, size: 16)),
+            )
+          ],
         ),
       ],
     );

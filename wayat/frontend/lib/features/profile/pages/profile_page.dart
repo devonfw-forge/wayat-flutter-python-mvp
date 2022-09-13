@@ -110,12 +110,6 @@ class ProfilePage extends StatelessWidget {
               profileState.setCurrentPage(ProfileCurrentPages.editProfile);
             }),
         const SizedBox(height: 24),
-
-        CustomCard(
-            text: appLocalizations.preferences,
-            onTap: () {
-              profileState.setCurrentPage(ProfileCurrentPages.preference);
-            }),
       ],
     );
   }
