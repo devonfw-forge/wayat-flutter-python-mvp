@@ -31,6 +31,7 @@ class HomeMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controllerGroups.updateGroups();
     GetIt.I.get<MapState>().openMap();
     controller.setOnMarkerPressed(
         (contact, icon) => showContactDialog(contact, icon, context));
@@ -98,51 +99,49 @@ class HomeMapPage extends StatelessWidget {
   }
 
   Widget groupsSlider() {
-    return FutureBuilder(
-        future: controllerGroups.updateGroups(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Observer(builder: (_) {
-              List<Group> groups = controllerGroups.groups;
-              return (groups.isEmpty)
-                  ? const Text("No groups") // TODO Add Internacionalization
-                  : Container(
-                      height: 70,
-                      width: double.infinity,
-                      child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: groups.length,
-                          itemBuilder: ((context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 4.0),
-                              child: Container(
-                                width: 60,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ContactImage(
-                                      imageUrl: groups[index].imageUrl,
-                                      radius: 25,
-                                      lineWidth: 1.0,
-                                      color: ColorTheme.primaryColor,
-                                    ),
-                                    Text(
-                                      groups[index].name,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          })),
-                    );
-            });
-          }
-          return Container();
-        });
+    List<Group> groups = controllerGroups.groups;
+    return (groups.isEmpty)
+        ? Text(appLocalizations.noGroupsMessage)
+        : Container(
+            height: 70,
+            width: double.infinity,
+            child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                scrollDirection: Axis.horizontal,
+                itemCount: groups.length,
+                itemBuilder: ((context, index) {
+                  final Group group = groups[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Container(
+                      width: 60,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              controller.filterGroup(group);
+                            },
+                            child: ContactImage(
+                              imageUrl: group.imageUrl,
+                              radius: 25,
+                              lineWidth: 3.0,
+                              color: group == controller.selectedGroup
+                                  ? ColorTheme.primaryColor
+                                  : Colors.black,
+                            ),
+                          ),
+                          Text(
+                            group.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                })),
+          );
   }
 
   GoogleMap googleMap(Set<Marker> markers) {
