@@ -26,7 +26,7 @@ abstract class _ManageGroupController with Store {
 
   @observable
   late ObservableList<Contact> selectedContacts =
-      ObservableList.of(group.contacts);
+      ObservableList.of(group.members);
 
   @observable
   XFile? selectedFile;
@@ -57,7 +57,7 @@ abstract class _ManageGroupController with Store {
   }
 
   Future saveGroup() async {
-    group.contacts = selectedContacts;
+    group.members = selectedContacts;
     group.name = (groupNameController.text != "")
         ? groupNameController.text
         //AppLocalizations cannot be used from unit tests because they require a context to initialize

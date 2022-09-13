@@ -1,1 +1,1 @@
-enum ContactsCurrentPages { contacts, sentRequests, groups, manageGroup }
+enum ContactsCurrentPages { contacts, sentRequests, groups }

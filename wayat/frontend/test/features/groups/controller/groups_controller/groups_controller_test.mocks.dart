@@ -3,12 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
-import 'package:image_picker/image_picker.dart' as _i5;
+import 'package:http/http.dart' as _i2;
+import 'package:image_picker/image_picker.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/domain/group/group.dart' as _i4;
-import 'package:wayat/services/groups/groups_service.dart' as _i2;
+import 'package:wayat/domain/group/group.dart' as _i5;
+import 'package:wayat/services/common/http_provider/http_provider.dart' as _i7;
+import 'package:wayat/services/groups/groups_service.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -21,21 +23,83 @@ import 'package:wayat/services/groups/groups_service.dart' as _i2;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeResponse_0 extends _i1.SmartFake implements _i2.Response {
+  _FakeResponse_0(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_1 extends _i1.SmartFake
+    implements _i2.StreamedResponse {
+  _FakeStreamedResponse_1(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [GroupsService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGroupsService extends _i1.Mock implements _i2.GroupsService {
+class MockGroupsService extends _i1.Mock implements _i3.GroupsService {
   MockGroupsService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i4.Group>> getAll() =>
+  _i4.Future<List<_i5.Group>> getAll() =>
       (super.noSuchMethod(Invocation.method(#getAll, []),
-              returnValue: _i3.Future<List<_i4.Group>>.value(<_i4.Group>[]))
-          as _i3.Future<List<_i4.Group>>);
+              returnValue: _i4.Future<List<_i5.Group>>.value(<_i5.Group>[]))
+          as _i4.Future<List<_i5.Group>>);
   @override
-  _i3.Future<dynamic> create(_i4.Group? group, _i5.XFile? picture) =>
+  _i4.Future<dynamic> create(_i5.Group? group, _i6.XFile? picture) =>
       (super.noSuchMethod(Invocation.method(#create, [group, picture]),
-          returnValue: _i3.Future<dynamic>.value()) as _i3.Future<dynamic>);
+          returnValue: _i4.Future<dynamic>.value()) as _i4.Future<dynamic>);
+}
+
+/// A class which mocks [HttpProvider].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockHttpProvider extends _i1.Mock implements _i7.HttpProvider {
+  MockHttpProvider() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get baseUrl =>
+      (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
+          as String);
+  @override
+  set baseUrl(String? _baseUrl) =>
+      super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
+          returnValueForMissingStub: null);
+  @override
+  _i4.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
+      (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
+              returnValue:
+                  _i4.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
+          as _i4.Future<Map<String, dynamic>>);
+  @override
+  _i4.Future<_i2.Response> sendPostRequest(
+          String? subPath, Map<String, dynamic>? body) =>
+      (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
+              returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
+                  this, Invocation.method(#sendPostRequest, [subPath, body]))))
+          as _i4.Future<_i2.Response>);
+  @override
+  _i4.Future<_i2.StreamedResponse> sendPostImageRequest(
+          String? subPath, String? filePath, String? type) =>
+      (super.noSuchMethod(
+          Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
+          returnValue: _i4.Future<_i2.StreamedResponse>.value(
+              _FakeStreamedResponse_1(
+                  this,
+                  Invocation.method(
+                      #sendPostImageRequest, [subPath, filePath, type])))) as _i4
+          .Future<_i2.StreamedResponse>);
+  @override
+  _i4.Future<bool> sendPutRequest(
+          String? subPath, Map<String, dynamic>? body) =>
+      (super.noSuchMethod(Invocation.method(#sendPutRequest, [subPath, body]),
+          returnValue: _i4.Future<bool>.value(false)) as _i4.Future<bool>);
+  @override
+  _i4.Future<bool> sendDelRequest(String? subPath) =>
+      (super.noSuchMethod(Invocation.method(#sendDelRequest, [subPath]),
+          returnValue: _i4.Future<bool>.value(false)) as _i4.Future<bool>);
 }
