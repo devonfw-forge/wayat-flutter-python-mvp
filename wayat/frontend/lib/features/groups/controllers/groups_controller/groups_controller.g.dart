@@ -13,15 +13,31 @@ mixin _$GroupsController on _GroupsController, Store {
       Atom(name: '_GroupsController.groups', context: context);
 
   @override
-  List<Group> get groups {
+  ObservableList<Group> get groups {
     _$groupsAtom.reportRead();
     return super.groups;
   }
 
   @override
-  set groups(List<Group> value) {
+  set groups(ObservableList<Group> value) {
     _$groupsAtom.reportWrite(value, super.groups, () {
       super.groups = value;
+    });
+  }
+
+  late final _$selectedGroupAtom =
+      Atom(name: '_GroupsController.selectedGroup', context: context);
+
+  @override
+  Group? get selectedGroup {
+    _$selectedGroupAtom.reportRead();
+    return super.selectedGroup;
+  }
+
+  @override
+  set selectedGroup(Group? value) {
+    _$selectedGroupAtom.reportWrite(value, super.selectedGroup, () {
+      super.selectedGroup = value;
     });
   }
 
@@ -42,7 +58,8 @@ mixin _$GroupsController on _GroupsController, Store {
   @override
   String toString() {
     return '''
-groups: ${groups}
+groups: ${groups},
+selectedGroup: ${selectedGroup}
     ''';
   }
 }

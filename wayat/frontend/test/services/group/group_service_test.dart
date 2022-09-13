@@ -59,7 +59,7 @@ void main() async {
         imageUrl: "url",
         phone: "phone");
     Group group =
-        Group(id: "id", contacts: [contact], name: "name", imageUrl: "url");
+        Group(id: "id", members: [contact], name: "name", imageUrl: "url");
 
     when(mockHttpProvider.sendPostRequest(APIContract.groups, {
       "name": group.name,
@@ -103,7 +103,7 @@ void main() async {
         imageUrl: "url",
         phone: "phone");
     Group group =
-        Group(id: "id", contacts: [contact], name: "name", imageUrl: "url");
+        Group(id: "id", members: [contact], name: "name", imageUrl: "url");
 
     when(mockHttpProvider.sendPostRequest(APIContract.groups, {
       "name": group.name,

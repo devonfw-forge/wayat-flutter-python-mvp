@@ -72,5 +72,5 @@ void main() async {
 }
 
 Group _createGroup({String? id, String? name}) {
-  return Group(id: id ?? "", contacts: [], name: name ?? "", imageUrl: "");
+  return Group(id: id ?? "", members: [], name: name ?? "", imageUrl: "");
 }
