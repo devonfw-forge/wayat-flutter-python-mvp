@@ -9,13 +9,16 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'manage_group_controller_test.mocks.dart';
 
-@GenerateMocks([ContactsPageController, FriendsController, GroupsService])
+@GenerateMocks(
+    [ContactsPageController, FriendsController, GroupsService, HttpProvider])
 void main() async {
   ContactsPageController mockContactsPageController =
       MockContactsPageController();
@@ -23,6 +26,7 @@ void main() async {
   GroupsService mockGroupsService = MockGroupsService();
   setUpAll(() {
     // This is necessary because Group uses appLocalizations for the default group name
+    GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
@@ -87,6 +91,10 @@ void main() async {
 
     manageGroupController.saveGroup();
     verify(mockGroupsService.create(emptyGroup, null)).called(1);
+  });
+
+  test("ManageGroupController intialized with real service", () {
+    ManageGroupController();
   });
 }
 

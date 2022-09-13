@@ -14,6 +14,7 @@ import 'package:wayat/features/groups/pages/groups_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/groups/groups_service.dart';
+import 'package:mobx/mobx.dart' as mobx;
 
 import 'groups_page_test.mocks.dart';
 
@@ -24,6 +25,10 @@ void main() async {
   setUpAll(() {
     HttpOverrides.global = null;
     GetIt.I.registerSingleton(LangSingleton());
+    GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
+
+    when(mockGroupsController.updateGroups())
+        .thenAnswer((_) => Future.value(true));
   });
 
   Widget _createApp(Widget body) {
@@ -41,9 +46,8 @@ void main() async {
   }
 
   testWidgets("Groups header appears correctly", (tester) async {
-    when(mockGroupsController.groups).thenReturn([]);
-    await tester.pumpWidget(
-        _createApp(GroupsPage(groupsController: mockGroupsController)));
+    when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
+    await tester.pumpWidget(_createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithIcon(IconButton, Icons.keyboard_arrow_down),
@@ -54,17 +58,17 @@ void main() async {
   });
 
   testWidgets("The no groups message appears correctly", (tester) async {
-    when(mockGroupsController.groups).thenReturn([]);
-    await tester.pumpWidget(
-        _createApp(GroupsPage(groupsController: mockGroupsController)));
+    when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
+    await tester.pumpWidget(_createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(MessageCard, appLocalizations.noGroupsMessage),
         findsOneWidget);
 
-    when(mockGroupsController.groups).thenReturn([Group.empty()]);
-    await tester.pumpWidget(
-        _createApp(GroupsPage(groupsController: mockGroupsController)));
+    when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([
+      Group(id: "", name: "", imageUrl: "https://example.com", members: [])
+    ]));
+    await tester.pumpWidget(_createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(MessageCard, appLocalizations.noGroupsMessage),

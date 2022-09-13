@@ -17,14 +17,14 @@ void main() {
   setUp(() {
     group = Group(
         id: "id",
-        contacts: [testContact],
+        members: [testContact],
         name: "name",
         imageUrl: "https://example.com/group");
   });
 
   test("Checking attributes", () {
     expect(group.id, "id");
-    expect(group.contacts, [testContact]);
+    expect(group.members, [testContact]);
     expect(group.name, "name");
     expect(group.imageUrl, "https://example.com/group");
   });
@@ -32,36 +32,36 @@ void main() {
   test("Checking copy method", () {
     Group copyGroup = group.copyWith();
     expect(copyGroup.id, "id");
-    expect(copyGroup.contacts, [testContact]);
+    expect(copyGroup.members, [testContact]);
     expect(copyGroup.name, "name");
     expect(copyGroup.imageUrl, "https://example.com/group");
 
     copyGroup = group.copyWith(
         id: "anotherId",
-        contacts: [],
+        members: [],
         name: "anotherName",
         imageUrl: "https://image.com/group");
 
     expect(copyGroup.id, "anotherId");
-    expect(copyGroup.contacts, []);
+    expect(copyGroup.members, []);
     expect(copyGroup.name, "anotherName");
     expect(copyGroup.imageUrl, "https://image.com/group");
   });
 
   test("Check String conversion", () {
     expect(group.toString(),
-        "Group(id: id, contacts: [Contact(id: id, available: true, name: name, email: mail@mail.com, imageUrl: https://example.com/contact, phone: +34123456789)], name: name, imageUrl: https://example.com/group)");
+        "Group(id: id, members: [Contact(id: id, available: true, name: name, email: mail@mail.com, imageUrl: https://example.com/contact, phone: +34123456789)], name: name, imageUrl: https://example.com/group)");
   });
 
   test("Checking toMap conversion", () {
-    List<String> attributes = ["id", "contacts", "name", "image_url"];
+    List<String> attributes = ["id", "members", "name", "image_url"];
 
     Map<String, dynamic> groupMap = group.toMap();
     for (var key in attributes) {
       expect(groupMap.containsKey(key), true);
     }
     expect(groupMap["id"], group.id);
-    expect(groupMap["contacts"], group.contacts.map((e) => e.toMap()).toList());
+    expect(groupMap["members"], group.members.map((e) => e.toMap()).toList());
     expect(groupMap["name"], group.name);
     expect(groupMap["image_url"], group.imageUrl);
   });

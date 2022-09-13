@@ -10,8 +10,7 @@ import 'package:wayat/common/widgets/custom_textfield.dart';
 import 'package:wayat/common/widgets/message_card.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
-import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:wayat/features/groups/widgets/create_group_contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -27,9 +26,7 @@ class ManageGroupPage extends StatelessWidget {
     return WillPopScope(
         child: manageGroupContent(context),
         onWillPop: () async {
-          GetIt.I
-              .get<ContactsPageController>()
-              .setContactsCurrentPage(ContactsCurrentPages.groups);
+          GetIt.I.get<GroupsController>().setSelectedGroup(null);
           return true;
         });
   }
@@ -68,9 +65,8 @@ class ManageGroupPage extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () => GetIt.I
-                  .get<ContactsPageController>()
-                  .setContactsCurrentPage(ContactsCurrentPages.groups),
+              onPressed: () =>
+                  GetIt.I.get<GroupsController>().setSelectedGroup(null),
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
@@ -84,9 +80,7 @@ class ManageGroupPage extends StatelessWidget {
             text: appLocalizations.save,
             onPressed: () {
               controller.saveGroup();
-              GetIt.I
-                  .get<ContactsPageController>()
-                  .setContactsCurrentPage(ContactsCurrentPages.groups);
+              GetIt.I.get<GroupsController>().setSelectedGroup(null);
             }),
       ],
     );
