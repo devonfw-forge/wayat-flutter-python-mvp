@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -50,9 +51,9 @@ class HomeMapPage extends StatelessWidget {
       return Column(
         children: [
           searchBar(),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
+          groupsSlider(),
+          const SizedBox(height: 15),
           Expanded(child: googleMap(markers)),
         ],
       );
@@ -90,6 +91,29 @@ class HomeMapPage extends StatelessWidget {
         },
         optionsViewBuilder: (context, onSelected, options) =>
             SuggestionsDialog(options: options, onSelected: onSelected));
+  }
+
+  Widget groupsSlider() {
+    List<Widget> list = [];
+    for (var i = 0; i < 20; i++) {
+      list.add(SizedBox(width: 10));
+      list.add(GestureDetector(
+        onTap: () {
+          print("Test contact group image");
+        },
+        child: ContactImage(
+            imageUrl:
+                "https://www.psicoactiva.com/wp-content/uploads/2019/06/amigos-personas-allegadas.jpg",
+            radius: 25,
+            lineWidth: 3.0),
+      ));
+    }
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: list,
+      ),
+    );
   }
 
   GoogleMap googleMap(Set<Marker> markers) {
