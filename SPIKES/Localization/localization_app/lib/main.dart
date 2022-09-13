@@ -74,7 +74,6 @@ class _MyAppState extends State<MyApp> {
               return const Locale("en", "US");
             }
           }
-          return supportedLocales.first;
         },
         home: const HomePage(),
       );

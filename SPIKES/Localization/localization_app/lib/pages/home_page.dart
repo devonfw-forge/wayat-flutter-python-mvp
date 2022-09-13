@@ -25,27 +25,24 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(getTranslated(context, 'language')!),
-            Container(
-              padding: const EdgeInsets.all(20),
-              child: DropdownButton<Language>(
-                underline: const SizedBox(),
-                icon: const Icon(
-                  Icons.language,
-                  color: Colors.blue,
-                ),
-                onChanged: (Language? language) {
-                  if (language != null) {
-                    _changeLanguage(language);
-                  }
-                },
-                items: Language.languageList(context)
-                    .map<DropdownMenuItem<Language>>(
-                      (e) =>
-                          DropdownMenuItem<Language>(value: e, child: Text(e.name!)),
-                    )
-                    .toList(),
+            Text(getTranslated(context, 'language')!, style: const TextStyle(fontSize: 24),),
+            DropdownButton<Language>(
+              underline: const SizedBox(),
+              icon: const Icon(
+                Icons.language,
+                color: Colors.blue,
               ),
+              onChanged: (Language? language) {
+                if (language != null) {
+                  _changeLanguage(language);
+                }
+              },
+              items: Language.languageList(context)
+                  .map<DropdownMenuItem<Language>>(
+                    (e) =>
+                        DropdownMenuItem<Language>(value: e, child: Text(e.name!)),
+                  )
+                  .toList(),
             ),
           ],
         ),
