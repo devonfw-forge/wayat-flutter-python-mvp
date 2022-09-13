@@ -22,11 +22,11 @@
     "home": "Home",
     "contacts": "Contacts",
     "events": "Evénements",
-    "name": "Nom",
 
     "profile": "Profil",
     "editProfile": "Editer le Profil",
     "viewProfile" : "Voir le profil",
+    "name": "Nom",
 
     "addEvents": "Ajouter un événement",
     "notifications": "Notifications",
@@ -58,13 +58,13 @@
     "darkTheme": "Activer le thème sombre",
     "language": "Langue",
 
+    "changePhone": "Téléphone",
+    "changePassword": "Changer le mot de passe",
+
     "chooseProfileFoto": "Choisissez la photo de profil",
     "camera": "Caméra",
     "gallery": "Galerie",
     "save": "Enregistrer",
-
-    "changePhone": "Téléphone",
-    "changePassword": "Changer le mot de passe",
 
     "close" : "Fermer",
     "loadingAddress" : "Adresse de chargement",
@@ -92,5 +92,22 @@
     "viewInformation": "Voir les informations",
 
     "profileShareLocation": "Paramètres de localisation",
-    "profileActiveLocation": "Partage d'emplacement"
+    "profileActiveLocation": "Partage d'emplacement",
+
+    "contactProfileSharingLocationWithYou": "Partage de position avec vous",
+    "contactProfileLocationNotAvailable": "Poste non disponible",
+    "contactProfileNotSharingLocation": "Pas de partage de position",
+    "contactProfileLastUpdated": "Dernière mise à jour",
+
+    "groupsTitle": "GROUPES",
+    "createGroup": "Créer un groupe",
+    "noGroupsMessage": "Oops. Vous n'avez créé aucun groupe",
+    "newGroup": "Nouveau groupe",
+    "groupName": "Nom de groupe",
+    "addParticipants": "Ajouter des participants",
+    "addParticipantsTip": "Commencez à ajouter des amis pour créer un groupe!",
+    "addFriends": "Ajouter des amis",
+    "groupParticipants": "Participants du groupe",
+
+    "done": "Fait"
 }
