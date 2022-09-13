@@ -7,18 +7,21 @@ class ContactImage extends StatelessWidget {
 
   final double lineWidth;
 
+  final Color? color;
+
   const ContactImage(
       {Key? key,
       required this.imageUrl,
       required this.radius,
-      required this.lineWidth})
+      required this.lineWidth,
+      this.color})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
         radius: radius,
-        backgroundColor: Colors.black,
+        backgroundColor: color ?? Colors.black,
         child: CircleAvatar(
           backgroundImage: NetworkImage(imageUrl),
           radius: radius - lineWidth,

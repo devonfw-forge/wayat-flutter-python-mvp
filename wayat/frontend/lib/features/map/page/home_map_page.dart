@@ -5,11 +5,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
@@ -17,6 +20,7 @@ import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
+  final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationState locationState = GetIt.I.get<LocationState>();
   final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
   final MapController controller;
@@ -51,9 +55,9 @@ class HomeMapPage extends StatelessWidget {
       return Column(
         children: [
           searchBar(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           groupsSlider(),
-          const SizedBox(height: 15),
+          const SizedBox(height: 5),
           Expanded(child: googleMap(markers)),
         ],
       );
@@ -94,26 +98,51 @@ class HomeMapPage extends StatelessWidget {
   }
 
   Widget groupsSlider() {
-    List<Widget> list = [];
-    for (var i = 0; i < 20; i++) {
-      list.add(SizedBox(width: 10));
-      list.add(GestureDetector(
-        onTap: () {
-          print("Test contact group image");
-        },
-        child: ContactImage(
-            imageUrl:
-                "https://www.psicoactiva.com/wp-content/uploads/2019/06/amigos-personas-allegadas.jpg",
-            radius: 25,
-            lineWidth: 3.0),
-      ));
-    }
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: list,
-      ),
-    );
+    return FutureBuilder(
+        future: controllerGroups.updateGroups(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Observer(builder: (_) {
+              List<Group> groups = controllerGroups.groups;
+              return (groups.isEmpty)
+                  ? const Text("No groups") // TODO Add Internacionalization
+                  : Container(
+                      height: 70,
+                      width: double.infinity,
+                      child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: groups.length,
+                          itemBuilder: ((context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: Container(
+                                width: 60,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ContactImage(
+                                      imageUrl: groups[index].imageUrl,
+                                      radius: 25,
+                                      lineWidth: 1.0,
+                                      color: ColorTheme.primaryColor,
+                                    ),
+                                    Text(
+                                      groups[index].name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
+                    );
+            });
+          }
+          return Container();
+        });
   }
 
   GoogleMap googleMap(Set<Marker> markers) {
