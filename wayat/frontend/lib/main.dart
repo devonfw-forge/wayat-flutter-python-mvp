@@ -54,8 +54,8 @@ Future registerWebSingletons() async {
     OnboardingController());
   GetIt.I.registerSingleton<ContactsPageController>(
     ContactsPageController());
+  GetIt.I.registerSingleton<UserStatusState>(UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
-  GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
 }
 
 Future registerSingletons() async {
