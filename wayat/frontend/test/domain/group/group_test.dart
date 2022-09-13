@@ -6,6 +6,7 @@ import 'package:wayat/domain/group/group.dart';
 
 void main() {
   Contact testContact = Contact(
+      shareLocation: true,
       available: true,
       id: "id",
       name: "name",

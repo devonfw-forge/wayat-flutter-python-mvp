@@ -37,6 +37,7 @@ void main() async {
 
   test("GetAll converts from List of IDs to List of Contacts", () async {
     Contact contact = Contact(
+        shareLocation: true,
         available: true,
         id: "id",
         name: "name",
@@ -82,6 +83,7 @@ void main() async {
     String fileType = "";
 
     Contact contact = Contact(
+        shareLocation: true,
         available: true,
         id: "id",
         name: "name",
@@ -126,6 +128,7 @@ void main() async {
     String fileType = "";
 
     Contact contact = Contact(
+        shareLocation: true,
         available: true,
         id: "id",
         name: "name",
