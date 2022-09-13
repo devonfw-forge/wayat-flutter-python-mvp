@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import mimetypes
-from typing import BinaryIO, Optional, Tuple
+from typing import BinaryIO, Optional, Tuple, List
 
 import requests
 from fastapi import Depends
@@ -111,8 +111,9 @@ class UserService:
         if new_contacts:
             await self._user_repository.create_friend_request(uid, list(new_contacts))
 
-    async def get_user_contacts(self, uid: str):
-        return list(map(self.map_to_dto, await self._user_repository.get_contacts(uid)))
+    async def get_user_contacts(self, uid: str) -> Tuple[List[UserDTO], List[str]]:
+        user_contacts, contacts_sharing = await self._user_repository.get_contacts(uid)
+        return list(map(self.map_to_dto, user_contacts)), contacts_sharing
 
     async def get_contact(self, uid: str) -> UserDTO:
         """
@@ -289,3 +290,6 @@ class UserService:
         new_image = await self._file_repository.upload_group_image(filename=image_name,
                                                                    data=resize_image(picture, self.THUMBNAIL_SIZE))
         await self.update_group(user, group, image_ref=new_image)
+
+    async def update_contact_prefs(self, user_id, contact_id, *, share_location: bool):
+        await self._user_repository.update_sharing_preferences(user_id, contact_id, share_location)
