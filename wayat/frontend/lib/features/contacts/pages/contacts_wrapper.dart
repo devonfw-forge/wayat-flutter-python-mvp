@@ -21,8 +21,6 @@ class ContactsWrapper extends StatelessWidget {
                 ContactsRoute(),
                 if (currentPage != ContactsCurrentPages.contacts)
                   getCurrentRoute(currentPage),
-                if (currentPage == ContactsCurrentPages.manageGroup)
-                  ManageGroupRoute()
               ]);
     });
   }
@@ -33,9 +31,8 @@ class ContactsWrapper extends StatelessWidget {
         return ContactsRoute();
       case ContactsCurrentPages.sentRequests:
         return SentRequestsRoute();
-      case ContactsCurrentPages.manageGroup:
       case ContactsCurrentPages.groups:
-        return GroupsRoute();
+        return GroupsWrapper();
     }
   }
 }

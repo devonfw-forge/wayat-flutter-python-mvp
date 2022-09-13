@@ -7,17 +7,14 @@ import 'package:wayat/common/widgets/message_card.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
-import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/widgets/group_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class GroupsPage extends StatelessWidget {
-  final GroupsController controller;
+  final GroupsController controller = GetIt.I.get<GroupsController>();
 
-  GroupsPage({GroupsController? groupsController, Key? key})
-      : controller = groupsController ?? GroupsController(),
-        super(key: key);
+  GroupsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +72,8 @@ class GroupsPage extends StatelessWidget {
                               horizontal: 15.0, vertical: 5),
                           child: GroupTile(
                             group: groups[index],
-                            onPressed: () {},
+                            onPressed: () =>
+                                controller.setSelectedGroup(groups[index]),
                           ),
                         );
                       });
@@ -111,9 +109,7 @@ class GroupsPage extends StatelessWidget {
             ],
           ),
           CustomTextButton(
-            onPressed: () => GetIt.I
-                .get<ContactsPageController>()
-                .setContactsCurrentPage(ContactsCurrentPages.manageGroup),
+            onPressed: () => controller.setSelectedGroup(Group.empty()),
             text: appLocalizations.createGroup,
           )
         ],

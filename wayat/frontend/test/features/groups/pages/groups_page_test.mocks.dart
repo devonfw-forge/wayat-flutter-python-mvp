@@ -69,6 +69,10 @@ class MockGroupsController extends _i1.Mock implements _i4.GroupsController {
       super.noSuchMethod(Invocation.setter(#groups, value),
           returnValueForMissingStub: null);
   @override
+  set selectedGroup(_i5.Group? value) =>
+      super.noSuchMethod(Invocation.setter(#selectedGroup, value),
+          returnValueForMissingStub: null);
+  @override
   _i3.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
@@ -86,6 +90,10 @@ class MockGroupsController extends _i1.Mock implements _i4.GroupsController {
   _i6.Future<dynamic> createGroup(_i5.Group? group, _i7.XFile? picture) =>
       (super.noSuchMethod(Invocation.method(#createGroup, [group, picture]),
           returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  @override
+  void setSelectedGroup(_i5.Group? group) =>
+      super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
+          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [GroupsService].

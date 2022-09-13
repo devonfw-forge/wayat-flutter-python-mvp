@@ -25,6 +25,22 @@ mixin _$GroupsController on _GroupsController, Store {
     });
   }
 
+  late final _$selectedGroupAtom =
+      Atom(name: '_GroupsController.selectedGroup', context: context);
+
+  @override
+  Group? get selectedGroup {
+    _$selectedGroupAtom.reportRead();
+    return super.selectedGroup;
+  }
+
+  @override
+  set selectedGroup(Group? value) {
+    _$selectedGroupAtom.reportWrite(value, super.selectedGroup, () {
+      super.selectedGroup = value;
+    });
+  }
+
   late final _$_GroupsControllerActionController =
       ActionController(name: '_GroupsController', context: context);
 
@@ -42,7 +58,8 @@ mixin _$GroupsController on _GroupsController, Store {
   @override
   String toString() {
     return '''
-groups: ${groups}
+groups: ${groups},
+selectedGroup: ${selectedGroup}
     ''';
   }
 }
