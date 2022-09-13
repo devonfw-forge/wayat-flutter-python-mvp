@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,9 +22,14 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
+  
   await Firebase.initializeApp(
       name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
-  await registerSingletons();
+  if (kIsWeb) {
+    await registerWebSingletons();
+  } else {
+    await registerSingletons();
+  }
   setTimeAgoLocales();
 
   runApp(const MyApp());
@@ -35,6 +41,21 @@ void setTimeAgoLocales() {
   timeago.setLocaleMessages('fr', timeago.FrMessages());
   timeago.setLocaleMessages('de', timeago.DeMessages());
   timeago.setLocaleMessages('nl', timeago.NlMessages());
+}
+
+Future registerWebSingletons() async {
+  GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
+  GetIt.I.registerSingleton<HttpProvider>(HttpProvider());
+  GetIt.I.registerSingleton<MapState>(MapState());
+  GetIt.I.registerSingleton<SessionState>(SessionState());
+  GetIt.I.registerSingleton<HomeState>(HomeState());
+  GetIt.I.registerSingleton<ProfileState>(ProfileState());
+  GetIt.I.registerSingleton<OnboardingController>(
+    OnboardingController());
+  GetIt.I.registerSingleton<ContactsPageController>(
+    ContactsPageController());
+  GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
+  GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
 }
 
 Future registerSingletons() async {

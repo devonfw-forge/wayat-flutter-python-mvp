@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -8,7 +9,7 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 
 class UserStatusService {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT'));
 
   late bool _lastActive;
   late List _lastContactRefs;
