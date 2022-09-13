@@ -31,4 +31,10 @@ class ProfileServiceImpl implements ProfileService {
         20;
     return done;
   }
+
+  @override
+  Future<bool> deleteCurrentUser() async {
+    bool done = (await httpProvider.sendDelRequest(APIContract.userProfile));
+    return done;
+  }
 }

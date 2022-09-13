@@ -4,10 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/contacts/widgets/contacts_section_title.dart';
 import 'package:wayat/features/contacts/widgets/empty_page_message.dart';
+import 'package:wayat/features/contacts/widgets/navigation_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class RequestsPage extends StatelessWidget {
@@ -82,30 +84,12 @@ class RequestsPage extends StatelessWidget {
               text: "${appLocalizations.pendingRequestsTitle} ($numRequests)",
             );
           }),
-          goToSentRequestsButton()
+          NavigationButton(
+              onTap: () => GetIt.I
+                  .get<ContactsPageController>()
+                  .setContactsCurrentPage(ContactsCurrentPages.sentRequests),
+              text: appLocalizations.sentButtonNavigation)
         ],
-      ),
-    );
-  }
-
-  Widget goToSentRequestsButton() {
-    return InkWell(
-      borderRadius: const BorderRadius.all(Radius.circular(10)),
-      onTap: () =>
-          GetIt.I.get<ContactsPageController>().setviewSentRequests(true),
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Row(children: [
-          Text(appLocalizations.sentButtonNavigation,
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w500)),
-          const Icon(
-            Icons.chevron_right,
-            color: Colors.black54,
-          )
-        ]),
       ),
     );
   }

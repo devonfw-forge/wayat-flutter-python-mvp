@@ -73,6 +73,26 @@ void main() async {
         find.text("${appLocalizations.friendsPageTitle} (3)"), findsOneWidget);
   });
 
+  testWidgets("Friends Page shows the button to navigate to groups",
+      (tester) async {
+    when(mockFriendsController.filteredContacts)
+        .thenReturn(mobx.ObservableList.of([]));
+
+    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpAndSettle();
+
+    expect(
+        find.ancestor(
+            of: find.byIcon(Icons.chevron_right),
+            matching: find.byType(InkWell)),
+        findsOneWidget);
+    expect(
+        find.ancestor(
+            of: find.text(appLocalizations.groupsTitle),
+            matching: find.byType(InkWell)),
+        findsOneWidget);
+  });
+
   testWidgets("The friends list shows the correct number of contacts",
       (tester) async {
     when(mockFriendsController.filteredContacts)

@@ -205,6 +205,10 @@ class MockProfileState extends _i1.Mock implements _i8.ProfileState {
   _i7.Future<dynamic> updateCurrentUserName(String? newName) =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUserName, [newName]),
           returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
+  @override
+  _i7.Future<dynamic> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
 }
 
 /// A class which mocks [HttpProvider].
