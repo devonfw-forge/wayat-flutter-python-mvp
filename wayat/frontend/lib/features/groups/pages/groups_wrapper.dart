@@ -15,12 +15,16 @@ class GroupsWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
       Group? selectedGroup = controller.selectedGroup;
+      bool editGroup = controller.editGroup;
+      bool updatingGroup = controller.updatingGroup;
       return AutoRouter.declarative(
           routes: (_) => [
                 GroupsRoute(),
                 if (selectedGroup != null) ViewGroupRoute(),
-                if (selectedGroup != null && selectedGroup == Group.empty())
-                  ManageGroupRoute(group: selectedGroup)
+                if (selectedGroup != null &&
+                    (selectedGroup == Group.empty() || editGroup))
+                  ManageGroupRoute(group: selectedGroup),
+                if (updatingGroup) const LoadingGroupRoute()
               ]);
     });
   }

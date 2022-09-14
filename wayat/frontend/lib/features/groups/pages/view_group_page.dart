@@ -27,7 +27,7 @@ class ViewGroupPage extends StatelessWidget {
   Widget groupViewContent(BuildContext context) {
     return Column(
       children: [
-        header(),
+        header(context),
         Expanded(
             child: Column(
           children: [
@@ -82,7 +82,7 @@ class ViewGroupPage extends StatelessWidget {
     );
   }
 
-  Widget header() {
+  Widget header(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -93,19 +93,58 @@ class ViewGroupPage extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
-            Text(
-              key: const Key("GroupNameHeader"),
-              selectedGroup.name,
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: Text(
+                key: const Key("GroupNameHeader"),
+                selectedGroup.name,
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             )
           ],
         ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.more_vert, color: ColorTheme.primaryColor),
-          splashRadius: 20,
-        ),
+        popUpMenu()
       ],
+    );
+  }
+
+  Widget popUpMenu() {
+    const int editGroup = 0;
+    const int deleteGroup = 1;
+
+    return PopupMenuButton(
+      padding: const EdgeInsets.all(0),
+      elevation: 1,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+          side: const BorderSide(color: ColorTheme.secondaryColor)),
+      offset: const Offset(-20, 40),
+      icon: const Icon(
+        Icons.more_vert,
+        color: ColorTheme.primaryColor,
+      ),
+      splashRadius: 20,
+      itemBuilder: (context) => <PopupMenuEntry>[
+        PopupMenuItem(
+          value: editGroup,
+          height: 25,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: Text(appLocalizations.editGroup),
+        ),
+        PopupMenuItem(
+            value: deleteGroup,
+            height: 25,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Text(appLocalizations.deleteGroup))
+      ],
+      onSelected: (value) {
+        if (value == editGroup) {
+          groupsController.setEditGroup(true);
+        }
+      },
     );
   }
 
@@ -116,10 +155,16 @@ class ViewGroupPage extends StatelessWidget {
         const SizedBox(
           height: 15,
         ),
-        Text(
-          key: const Key("GroupNameInfo"),
-          selectedGroup.name,
-          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Text(
+            key: const Key("GroupNameInfo"),
+            selectedGroup.name,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+            textAlign: TextAlign.center,
+          ),
         )
       ],
     );

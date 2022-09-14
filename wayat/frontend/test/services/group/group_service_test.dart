@@ -158,4 +158,128 @@ void main() async {
     verifyNever(mockHttpProvider.sendPostImageRequest(
         "${APIContract.groupPicture}/newId", filePath, fileType));
   });
+
+  test("Update calls the correct endpoint with the correct data", () async {
+    http.StreamedResponse mockResponseImage = MockStreamedResponse();
+    when(mockResponseImage.stream)
+        .thenAnswer((_) => http.ByteStream.fromBytes(utf8.encode("id")));
+
+    XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
+    String filePath = emptyFile.path;
+    String fileType = "";
+
+    Contact contact = Contact(
+        available: true,
+        id: "id",
+        name: "name",
+        email: "email",
+        imageUrl: "url",
+        phone: "phone");
+    Group group =
+        Group(id: "id", members: [contact], name: "name", imageUrl: "url");
+
+    when(mockHttpProvider.sendPutRequest("${APIContract.groups}/${group.id}", {
+      "name": group.name,
+      "members": [contact.id]
+    })).thenAnswer((_) => Future.value(true));
+
+    when(mockHttpProvider.sendPostImageRequest(
+            "${APIContract.groupPicture}/id", filePath, fileType))
+        .thenAnswer((_) => Future.value(mockResponseImage));
+
+    GroupsService groupsService = GroupsServiceImpl();
+
+    await groupsService.update(group, emptyFile);
+
+    verify(
+        mockHttpProvider.sendPutRequest("${APIContract.groups}/${group.id}", {
+      "name": group.name,
+      "members": [contact.id]
+    })).called(1);
+    verify(mockHttpProvider.sendPostImageRequest(
+            "${APIContract.groupPicture}/id", filePath, fileType))
+        .called(1);
+  });
+
+  test("If there is no picture, we dont post any on update", () async {
+    http.StreamedResponse mockResponseImage = MockStreamedResponse();
+    when(mockResponseImage.stream)
+        .thenAnswer((_) => http.ByteStream.fromBytes(utf8.encode("id")));
+
+    XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
+    String filePath = emptyFile.path;
+    String fileType = "";
+
+    Contact contact = Contact(
+        available: true,
+        id: "id",
+        name: "name",
+        email: "email",
+        imageUrl: "url",
+        phone: "phone");
+    Group group =
+        Group(id: "id", members: [contact], name: "name", imageUrl: "url");
+
+    when(mockHttpProvider.sendPutRequest("${APIContract.groups}/${group.id}", {
+      "name": group.name,
+      "members": [contact.id]
+    })).thenAnswer((_) => Future.value(true));
+
+    when(mockHttpProvider.sendPostImageRequest(
+            "${APIContract.groupPicture}/id", filePath, fileType))
+        .thenAnswer((_) => Future.value(mockResponseImage));
+
+    GroupsService groupsService = GroupsServiceImpl();
+
+    await groupsService.update(group, null);
+
+    verify(
+        mockHttpProvider.sendPutRequest("${APIContract.groups}/${group.id}", {
+      "name": group.name,
+      "members": [contact.id]
+    })).called(1);
+    verifyNever(mockHttpProvider.sendPostImageRequest(
+        "${APIContract.groupPicture}/id", filePath, fileType));
+  });
+
+  test("If the group udpate fails, we don't send the picture", () async {
+    http.StreamedResponse mockResponseImage = MockStreamedResponse();
+    when(mockResponseImage.stream)
+        .thenAnswer((_) => http.ByteStream.fromBytes(utf8.encode("id")));
+
+    XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
+    String filePath = emptyFile.path;
+    String fileType = "";
+
+    Contact contact = Contact(
+        available: true,
+        id: "id",
+        name: "name",
+        email: "email",
+        imageUrl: "url",
+        phone: "phone");
+    Group group =
+        Group(id: "id", members: [contact], name: "name", imageUrl: "url");
+
+    when(mockHttpProvider.sendPutRequest("${APIContract.groups}/${group.id}", {
+      "name": group.name,
+      "members": [contact.id]
+    })).thenAnswer((_) => Future.value(false));
+
+    when(mockHttpProvider.sendPostImageRequest(
+            "${APIContract.groupPicture}/id", filePath, fileType))
+        .thenAnswer((_) => Future.value(mockResponseImage));
+
+    GroupsService groupsService = GroupsServiceImpl();
+
+    await groupsService.update(group, emptyFile);
+
+    verify(
+        mockHttpProvider.sendPutRequest("${APIContract.groups}/${group.id}", {
+      "name": group.name,
+      "members": [contact.id]
+    })).called(1);
+    verifyNever(mockHttpProvider.sendPostImageRequest(
+        "${APIContract.groupPicture}/id", filePath, fileType));
+  });
 }

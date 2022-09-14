@@ -41,6 +41,38 @@ mixin _$GroupsController on _GroupsController, Store {
     });
   }
 
+  late final _$editGroupAtom =
+      Atom(name: '_GroupsController.editGroup', context: context);
+
+  @override
+  bool get editGroup {
+    _$editGroupAtom.reportRead();
+    return super.editGroup;
+  }
+
+  @override
+  set editGroup(bool value) {
+    _$editGroupAtom.reportWrite(value, super.editGroup, () {
+      super.editGroup = value;
+    });
+  }
+
+  late final _$updatingGroupAtom =
+      Atom(name: '_GroupsController.updatingGroup', context: context);
+
+  @override
+  bool get updatingGroup {
+    _$updatingGroupAtom.reportRead();
+    return super.updatingGroup;
+  }
+
+  @override
+  set updatingGroup(bool value) {
+    _$updatingGroupAtom.reportWrite(value, super.updatingGroup, () {
+      super.updatingGroup = value;
+    });
+  }
+
   late final _$_GroupsControllerActionController =
       ActionController(name: '_GroupsController', context: context);
 
@@ -56,10 +88,34 @@ mixin _$GroupsController on _GroupsController, Store {
   }
 
   @override
+  void setEditGroup(bool editValue) {
+    final _$actionInfo = _$_GroupsControllerActionController.startAction(
+        name: '_GroupsController.setEditGroup');
+    try {
+      return super.setEditGroup(editValue);
+    } finally {
+      _$_GroupsControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setUpdatingGroup(bool updatingGroup) {
+    final _$actionInfo = _$_GroupsControllerActionController.startAction(
+        name: '_GroupsController.setUpdatingGroup');
+    try {
+      return super.setUpdatingGroup(updatingGroup);
+    } finally {
+      _$_GroupsControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 groups: ${groups},
-selectedGroup: ${selectedGroup}
+selectedGroup: ${selectedGroup},
+editGroup: ${editGroup},
+updatingGroup: ${updatingGroup}
     ''';
   }
 }

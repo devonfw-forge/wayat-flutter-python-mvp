@@ -71,6 +71,7 @@ void main() async {
   }
 
   testWidgets("ManageGroups header is correct", (tester) async {
+    when(mockManageGroupController.group).thenReturn(Group.empty());
     await tester.pumpWidget(
         _createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
@@ -83,6 +84,7 @@ void main() async {
 
   testWidgets("When pressing back button the current page changes",
       (tester) async {
+    when(mockManageGroupController.group).thenReturn(Group.empty());
     when(mockGroupsController.setSelectedGroup(null)).thenReturn(null);
 
     await tester.pumpWidget(_createApp(ManageGroupPage(
@@ -96,6 +98,7 @@ void main() async {
   });
 
   testWidgets("Save button saves group and goes back", (tester) async {
+    when(mockManageGroupController.group).thenReturn(Group.empty());
     when(mockGroupsController.setSelectedGroup(null)).thenReturn(null);
     when(mockManageGroupController.saveGroup())
         .thenAnswer((_) => Future.value(null));
@@ -141,6 +144,20 @@ void main() async {
         _createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
 
+    expect(find.byIcon(Icons.person_outline), findsNothing);
+  });
+
+  testWidgets("Group Image uses the network image if group has imageUrl",
+      (tester) async {
+    Group group = Group.empty();
+    group.id = "id";
+    group.imageUrl = "https://example.com";
+    when(mockManageGroupController.group).thenReturn(group);
+    when(mockManageGroupController.selectedFile).thenReturn(null);
+    await tester.pumpWidget(
+        _createApp(ManageGroupPage(controller: mockManageGroupController)));
+    await tester.pumpAndSettle();
+    expect(find.byType(CircleAvatar), findsWidgets);
     expect(find.byIcon(Icons.person_outline), findsNothing);
   });
 

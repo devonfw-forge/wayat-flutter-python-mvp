@@ -22,6 +22,12 @@ abstract class _GroupsController with Store {
   @observable
   Group? selectedGroup;
 
+  @observable
+  bool editGroup = false;
+
+  @observable
+  bool updatingGroup = false;
+
   /// Calls [GroupService.getAll] to update the user's groups. They are only
   /// updated in the UI if the response differs with the local data.
   ///
@@ -47,5 +53,15 @@ abstract class _GroupsController with Store {
 
   void setSelectedGroup(Group? group) {
     selectedGroup = group;
+  }
+
+  @action
+  void setEditGroup(bool editValue) {
+    editGroup = editValue;
+  }
+
+  @action
+  void setUpdatingGroup(bool updatingGroup) {
+    this.updatingGroup = updatingGroup;
   }
 }
