@@ -12,17 +12,18 @@ import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
-
 import 'contacts_page_test.mocks.dart';
 
 @GenerateMocks([
@@ -36,6 +37,7 @@ import 'contacts_page_test.mocks.dart';
   FriendsController,
   RequestsController,
   SuggestionsController,
+  GroupsController
 ])
 void main() async {
   HttpOverrides.global = null;
@@ -52,6 +54,7 @@ void main() async {
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
       MockSuggestionsController();
+  final GroupsController mockGroupsController = MockGroupsController();
 
   setUpAll(() {
     when(mockContactsPageController.searchBarController)
@@ -73,6 +76,10 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
     when(mockUserStatusState.contacts).thenReturn([]);
+    when(mockGroupsController.updateGroups())
+        .thenAnswer((_) => Future.value(true));
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[].asObservable());
 
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
@@ -83,6 +90,7 @@ void main() async {
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
     GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
   Widget _createApp() {
