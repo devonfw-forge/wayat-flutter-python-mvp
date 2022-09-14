@@ -29,9 +29,15 @@ class _FakeGroupsService_0 extends _i1.SmartFake implements _i2.GroupsService {
       : super(parent, parentInvocation);
 }
 
-class _FakeReactiveContext_1 extends _i1.SmartFake
+class _FakeObservableList_1<T> extends _i1.SmartFake
+    implements _i3.ObservableList<T> {
+  _FakeObservableList_1(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeReactiveContext_2 extends _i1.SmartFake
     implements _i3.ReactiveContext {
-  _FakeReactiveContext_1(Object parent, Invocation parentInvocation)
+  _FakeReactiveContext_2(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -54,17 +60,23 @@ class MockGroupsController extends _i1.Mock implements _i4.GroupsController {
       super.noSuchMethod(Invocation.setter(#groupsService, _groupsService),
           returnValueForMissingStub: null);
   @override
-  List<_i5.Group> get groups => (super.noSuchMethod(Invocation.getter(#groups),
-      returnValue: <_i5.Group>[]) as List<_i5.Group>);
+  _i3.ObservableList<_i5.Group> get groups => (super.noSuchMethod(
+      Invocation.getter(#groups),
+      returnValue: _FakeObservableList_1<_i5.Group>(
+          this, Invocation.getter(#groups))) as _i3.ObservableList<_i5.Group>);
   @override
-  set groups(List<_i5.Group>? value) =>
+  set groups(_i3.ObservableList<_i5.Group>? value) =>
       super.noSuchMethod(Invocation.setter(#groups, value),
+          returnValueForMissingStub: null);
+  @override
+  set selectedGroup(_i5.Group? value) =>
+      super.noSuchMethod(Invocation.setter(#selectedGroup, value),
           returnValueForMissingStub: null);
   @override
   _i3.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
-                  _FakeReactiveContext_1(this, Invocation.getter(#context)))
+                  _FakeReactiveContext_2(this, Invocation.getter(#context)))
           as _i3.ReactiveContext);
   @override
   _i6.Future<bool> updateGroups() =>
@@ -78,6 +90,10 @@ class MockGroupsController extends _i1.Mock implements _i4.GroupsController {
   _i6.Future<dynamic> createGroup(_i5.Group? group, _i7.XFile? picture) =>
       (super.noSuchMethod(Invocation.method(#createGroup, [group, picture]),
           returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  @override
+  void setSelectedGroup(_i5.Group? group) =>
+      super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
+          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [GroupsService].

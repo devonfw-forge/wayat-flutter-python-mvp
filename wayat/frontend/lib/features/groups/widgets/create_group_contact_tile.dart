@@ -62,14 +62,10 @@ class CreateGroupContactTile extends StatelessWidget {
                 ),
               ],
             ),
-            Row(
-              children: [
-                IconButton(
-                  onPressed: iconAction,
-                  icon: (selected) ? Icon(selectedIcon) : Icon(unselectedIcon),
-                  color: ColorTheme.primaryColor,
-                )
-              ],
+            IconButton(
+              onPressed: iconAction,
+              icon: (selected) ? Icon(selectedIcon) : Icon(unselectedIcon),
+              color: ColorTheme.primaryColor,
             ),
           ],
         ),

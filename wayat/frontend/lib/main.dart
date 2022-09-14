@@ -8,6 +8,7 @@ import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
@@ -44,6 +45,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+  GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
   GetIt.I.registerLazySingleton<ContactsPageController>(
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());

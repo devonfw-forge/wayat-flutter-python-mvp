@@ -25,11 +25,11 @@
     "home": "Inicio",
     "contacts": "Contactos",
     "events": "Eventos",
-    "name": "Nombre",
 
     "profile": "Perfil",
     "editProfile": "Editar Perfil",
     "viewProfile": "Ver perfil",
+    "name": "Nombre",
 
     "addEvents": "Añadir Eventos",
     "notifications": "Notificaciones",
@@ -61,13 +61,13 @@
     "darkTheme": "Habilitar tema oscuro",
     "language": "Idioma",
 
+    "changePhone": "Teléfono",
+    "changePassword": "Cambiar Contraseña",
+
     "chooseProfileFoto": "Escoger imagen desde",
     "camera": "Cámara",
     "gallery": "Galería",
     "save": "Guardar",
-
-    "changePhone": "Teléfono",
-    "changePassword": "Cambiar Contraseña",
 
     "close": "Cerrar",
     "loadingAddress": "Cargando dirección",
@@ -103,7 +103,7 @@
     "contactProfileNotSharingLocation": "Sin compartir ubicación",
     "contactProfileLastUpdated": "Última actualización",
 
-    "groups_title": "GRUPOS",
+    "groupsTitle": "GRUPOS",
     "createGroup": "Crear grupo",
     "noGroupsMessage": "Ups. No has creado ningún grupo",
     "newGroup": "Nuevo grupo",
@@ -111,6 +111,7 @@
     "addParticipants": "Añadir participantes",
     "addParticipantsTip": "¡Empieza a añadir amigos para crear un grupo!",
     "addFriends": "Añadir amigos",
+    "groupParticipants": "Participantes del grupo",
 
     "done": "Hecho"
 }

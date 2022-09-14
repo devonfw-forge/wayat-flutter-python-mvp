@@ -11,7 +11,9 @@ import 'package:wayat/features/contacts/pages/contacts_page/requests_page/reques
 import 'package:wayat/features/contacts/pages/sent_requests_page/sent_requests_page.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/suggestions_page/suggestions_page.dart';
 import 'package:wayat/features/groups/pages/groups_page.dart';
+import 'package:wayat/features/groups/pages/groups_wrapper.dart';
 import 'package:wayat/features/groups/pages/manage_group_page.dart';
+import 'package:wayat/features/groups/pages/view_group_page.dart';
 import 'package:wayat/features/home/pages/home_page.dart';
 import 'package:wayat/features/home/pages/home_wrapper.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
@@ -49,10 +51,13 @@ import 'package:wayat/features/root/root_wrapper.dart';
               page: SentRequestsPage,
               transitionsBuilder: TransitionsBuilders.slideLeftWithFade),
           CustomRoute(
-            page: GroupsPage,
-            transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-          ),
-          AutoRoute(page: ManageGroupPage)
+              page: GroupsWrapper,
+              transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+              children: [
+                AutoRoute(page: GroupsPage),
+                AutoRoute(page: ManageGroupPage),
+                AutoRoute(page: ViewGroupPage)
+              ]),
         ]),
         AutoRoute(page: NotificationsPage),
         AutoRoute(page: ProfileWrapper, children: [

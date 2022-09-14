@@ -1,6 +1,0 @@
-{
-    "title" : "Titulo",
-    "helloWorld": "¡Hola Mundo!",
-    "pushMessage": "Has pulsado el boton esta cantidad de veces:",
-    "increment": "Incrementar"
-}
