@@ -26,7 +26,7 @@ class ManageGroupPage extends StatelessWidget {
     return WillPopScope(
         child: manageGroupContent(context),
         onWillPop: () async {
-          GetIt.I.get<GroupsController>().setSelectedGroup(null);
+          goBack();
           return true;
         });
   }
@@ -65,8 +65,7 @@ class ManageGroupPage extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () =>
-                  GetIt.I.get<GroupsController>().setSelectedGroup(null),
+              onPressed: goBack,
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
@@ -78,9 +77,13 @@ class ManageGroupPage extends StatelessWidget {
         ),
         CustomTextButton(
             text: appLocalizations.save,
-            onPressed: () {
-              controller.saveGroup();
-              GetIt.I.get<GroupsController>().setSelectedGroup(null);
+            onPressed: () async {
+              GroupsController groupsController =
+                  GetIt.I.get<GroupsController>();
+              groupsController.setUpdatingGroup(true);
+              await controller.saveGroup();
+              groupsController.setUpdatingGroup(false);
+              goBack();
             }),
       ],
     );
@@ -92,25 +95,7 @@ class ManageGroupPage extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: CircleAvatar(
-              radius: 45,
-              backgroundColor: Colors.black87,
-              child: Observer(builder: (context) {
-                XFile? picture = controller.selectedFile;
-                return CircleAvatar(
-                  backgroundColor: Colors.black87,
-                  backgroundImage:
-                      (picture != null) ? FileImage(File(picture.path)) : null,
-                  radius: 40,
-                  child: (picture == null)
-                      ? const Icon(
-                          Icons.person_outline,
-                          color: Colors.white,
-                          size: 55,
-                        )
-                      : null,
-                );
-              })),
+          child: groupPicture(),
         ),
         InkWell(
           borderRadius: BorderRadius.circular(100),
@@ -133,6 +118,38 @@ class ManageGroupPage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  CircleAvatar groupPicture() {
+    return CircleAvatar(
+        radius: 45,
+        backgroundColor: Colors.black87,
+        child: Observer(builder: (context) {
+          XFile? picture = controller.selectedFile;
+          String imageUrl = controller.group.imageUrl;
+          ImageProvider? imageProvider;
+
+          if (picture == null) {
+            if (imageUrl != "") {
+              imageProvider = NetworkImage(imageUrl);
+            }
+          } else {
+            imageProvider = FileImage(File(picture.path));
+          }
+
+          return CircleAvatar(
+            backgroundColor: Colors.black87,
+            backgroundImage: imageProvider,
+            radius: 40,
+            child: (picture == null && imageUrl == "")
+                ? const Icon(
+                    Icons.person_outline,
+                    color: Colors.white,
+                    size: 55,
+                  )
+                : null,
+          );
+        }));
   }
 
   Widget groupName() {
@@ -289,8 +306,10 @@ class ManageGroupPage extends StatelessWidget {
           const SizedBox(height: 20),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             TextButton.icon(
-                onPressed: () =>
-                    controller.getFromSource(ImageSource.camera, context),
+                onPressed: () {
+                  controller.getFromSource(ImageSource.camera);
+                  Navigator.pop(context);
+                },
                 icon: const Icon(
                   Icons.camera_alt,
                   size: 30,
@@ -301,8 +320,10 @@ class ManageGroupPage extends StatelessWidget {
                   style: const TextStyle(color: Colors.black87),
                 )),
             TextButton.icon(
-                onPressed: () =>
-                    controller.getFromSource(ImageSource.gallery, context),
+                onPressed: () {
+                  controller.getFromSource(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
                 icon: const Icon(
                   Icons.image,
                   size: 30,
@@ -314,5 +335,11 @@ class ManageGroupPage extends StatelessWidget {
                 )),
           ])
         ]));
+  }
+
+  void goBack() {
+    GroupsController groupsController = GetIt.I.get<GroupsController>();
+    groupsController.setEditGroup(false);
+    groupsController.setSelectedGroup(null);
   }
 }
