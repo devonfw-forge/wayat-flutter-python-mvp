@@ -108,6 +108,8 @@
     "addParticipantsTip": "¡Empieza a añadir amigos para crear un grupo!",
     "addFriends": "Añadir amigos",
     "groupParticipants": "Participantes del grupo",
+    "editGroup": "Editar grupo",
+    "deleteGroup": "Eliminar grupo",
 
     "done": "Hecho"
 }
