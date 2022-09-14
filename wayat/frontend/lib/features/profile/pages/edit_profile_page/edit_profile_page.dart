@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -28,6 +29,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   XFile? currentSelectedImage;
   String? name;
+  String newPhoneNumber = "";
   bool _validPhone = false;
   String _errorPhoneMsg = "";
 
@@ -38,19 +40,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          _profileAppBar(),
-          _buildEditProfileImage(),
-          const SizedBox(height: 32),
-          _nameTextField(),
-          const SizedBox(height: 34.5),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _formPhone(),
-          )
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            _profileAppBar(),
+            _buildEditProfileImage(),
+            const SizedBox(height: 32),
+            _nameTextField(),
+            const SizedBox(height: 34.5),
+            Observer(builder: (_) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _formPhone(),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -196,14 +202,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (newTextValue) {
         if (newTextValue!.number.isEmpty) {
-          return appLocalizations.phoneEmpty;
+          setState(() {
+            _errorPhoneMsg = appLocalizations.phoneEmpty;
+          });
+          return _errorPhoneMsg;
         }
         if (newTextValue.completeNumber.length < 12) {
-          _errorPhoneMsg = appLocalizations.phoneIncorrect;
+          setState(() {
+            _errorPhoneMsg = appLocalizations.phoneIncorrect;
+          });
           return _errorPhoneMsg;
         }
         if (newTextValue.completeNumber == user.phone) {
-          _errorPhoneMsg = appLocalizations.phoneDifferent;
+          setState(() {
+            _errorPhoneMsg = appLocalizations.phoneDifferent;
+          });
           return _errorPhoneMsg;
         }
         _errorPhoneMsg = '';
@@ -222,6 +235,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _submit(String newPhone) {
     if (_errorPhoneMsg == '') {
+      newPhoneNumber = newPhone;
       showDialog(
           context: context,
           builder: (context) {

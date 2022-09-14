@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:pinput/pinput.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
@@ -46,10 +47,20 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
         phoneNumber: widget.phoneNumber,
         signOutOnSuccessfulVerification: false,
         linkWithExistingUser: false,
-        onCodeSent: () {},
-        onLoginSuccess: (userCredential, autoVerified) async {},
-        onLoginFailed: (authException, stackTrace) {},
-        onError: (error, stackTrace) {},
+        onCodeSent: () {
+          debugPrint("-------------------------------------- send code");
+        },
+        onLoginSuccess: (userCredential, autoVerified) async {
+          debugPrint(
+              "-------------------------------------- phone successfully changed $userCredential");
+        },
+        onLoginFailed: (authException, stackTrace) {
+          debugPrint(
+              "-------------------------------------- Invalid code = $authException");
+        },
+        onError: (error, stackTrace) {
+          debugPrint("-------------------------------------- Error = $error");
+        },
         builder: (context, controller) {
           return _buildValidationAlertDialog(context, controller);
         },
@@ -59,12 +70,13 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
 
   Widget _buildValidationAlertDialog(context, controller) {
     return AlertDialog(
-      //backgroundColor: Theme.of(context).primaryColor,
       title: Text(appLocalizations.verifyPhoneTitle),
       titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 18),
       titlePadding: const EdgeInsets.only(top: 32, left: 32, right: 32),
       content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _getVerifyPhoneText(
@@ -96,6 +108,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
       ],
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: Colors.black, width: 1),
       ),
     );
   }
@@ -128,26 +141,24 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
   }
 
   Widget _getVerifyResendCode(String text, controller) {
-    return Expanded(
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Text(text,
-            textAlign: TextAlign.start,
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      Text(text,
+          textAlign: TextAlign.start,
+          style: const TextStyle(
+              fontWeight: FontWeight.w400,
+              color: Colors.black87,
+              fontSize: 14)),
+      TextButton(
+          child: Text(
+            appLocalizations.resendCode,
             style: const TextStyle(
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
                 color: Colors.black87,
-                fontSize: 14)),
-        TextButton(
-            child: Text(
-              appLocalizations.resendCode,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                  fontSize: 15),
-            ),
-            onPressed: () async {
-              await controller.sendOTP();
-            })
-      ]),
-    );
+                fontSize: 15),
+          ),
+          onPressed: () async {
+            await controller.sendOTP();
+          })
+    ]);
   }
 }

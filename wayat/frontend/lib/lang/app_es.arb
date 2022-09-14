@@ -12,7 +12,7 @@
     "phoneUpdateError": "Error al configurar el número de teléfono",
     "verifyPhoneTitle": "Verificar teléfono",
     "verifyPhoneText": "Verifique su nuevo teléfono móvil. El código se envía a",
-    "didnotReceiveCode": "¿No recibiste el código",
+    "didnotReceiveCode": "¿No recibiste el código?",
     "resendCode": "Reenviar codigo",
     "verify": "Verificar",
     "cancel": "Cancelar",
