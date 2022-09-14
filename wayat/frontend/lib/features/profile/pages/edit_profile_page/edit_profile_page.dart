@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -187,6 +188,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
       );
 
   IntlPhoneField _phoneTextField() {
+    //delete this line on release, and turn on AppCheck in Firestore Console
+    //FirebaseAuth auth = FirebaseAuth.instance;
+    //auth.setSettings(appVerificationDisabledForTesting: true);
     return IntlPhoneField(
       // Only numbers are allowed as input
       keyboardType: TextInputType.number,

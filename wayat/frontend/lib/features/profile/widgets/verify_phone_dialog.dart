@@ -141,24 +141,27 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
   }
 
   Widget _getVerifyResendCode(String text, controller) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-      Text(text,
-          textAlign: TextAlign.start,
-          style: const TextStyle(
-              fontWeight: FontWeight.w400,
-              color: Colors.black87,
-              fontSize: 14)),
-      TextButton(
-          child: Text(
-            appLocalizations.resendCode,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-                fontSize: 15),
-          ),
-          onPressed: () async {
-            await controller.sendOTP();
-          })
-    ]);
+    return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(text,
+              textAlign: TextAlign.start,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black87,
+                  fontSize: 14)),
+          TextButton(
+              child: Text(
+                appLocalizations.resendCode,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                    fontSize: 15),
+              ),
+              onPressed: () async {
+                await controller.sendOTP();
+              })
+        ]);
   }
 }
