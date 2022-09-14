@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
@@ -21,7 +22,7 @@ class GoogleAuthService implements AuthService {
   late GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email'],
   );
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
 
   GoogleAuthService({GoogleSignIn? gS}) {
     if (gS != null) _googleSignIn = gS;

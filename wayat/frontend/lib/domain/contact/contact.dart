@@ -40,7 +40,7 @@ class Contact extends User {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = super.toMap();
     map['available'] = available;
-    map['share_location'] = available;
+    map['share_location'] = shareLocation;
     return map;
   }
 
@@ -52,7 +52,7 @@ class Contact extends User {
       email: map['email'] ?? "",
       imageUrl: map['image_url'] as String,
       phone: map['phone'] as String,
-      shareLocation: (map['share_location'] ?? true) as bool
+      shareLocation: (map['share_location'] ?? false) as bool
     );
   }
 
@@ -64,7 +64,7 @@ class Contact extends User {
 
   @override
   String toString() {
-    return 'Contact(id: $id, available: $available, name: $name, email: $email, imageUrl: $imageUrl, phone: $phone)';
+    return 'Contact(id: $id, available: $available, name: $name, email: $email, imageUrl: $imageUrl, phone: $phone, shareLocation: $shareLocation)';
   }
 
   @override
@@ -75,6 +75,6 @@ class Contact extends User {
 
   @override
   int get hashCode {
-    return available.hashCode ^ super.hashCode;
+    return available.hashCode ^ shareLocation.hashCode ^ super.hashCode;
   }
 }

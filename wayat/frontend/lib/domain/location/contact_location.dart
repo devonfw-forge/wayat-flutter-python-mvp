@@ -71,7 +71,7 @@ class ContactLocation extends Contact {
   factory ContactLocation.fromMap(Map<String, dynamic> map) {
     return ContactLocation(
         available: map['available'] as bool,
-        shareLocation: map['share_location'] as bool,
+        shareLocation: (map['share_location'] ?? false) as bool,
         id: map['id'] as String,
         name: map['name'] as String,
         email: map['email'] as String,
