@@ -47,6 +47,7 @@ void main() async {
 
   List<Contact> sentRequestsContacts = [
     Contact(
+        shareLocation: true,
         available: false,
         id: 'TESTID12345',
         name: 'Test User',
@@ -54,6 +55,7 @@ void main() async {
         imageUrl: "https://example.com/image1",
         phone: "+34123456789"),
     Contact(
+        shareLocation: true,
         available: false,
         id: 'TESTID123456',
         name: 'Test User Second',
@@ -64,6 +66,7 @@ void main() async {
 
   List<Contact> pendingRequestsContacts = [
     Contact(
+        shareLocation: true,
         available: false,
         id: 'TESTID1234567',
         name: 'Test User Third',
@@ -71,6 +74,7 @@ void main() async {
         imageUrl: "https://example.com/image3",
         phone: "+34987654321"),
     Contact(
+        shareLocation: true,
         available: false,
         id: 'TESTID12345678',
         name: 'Test User Fourth',

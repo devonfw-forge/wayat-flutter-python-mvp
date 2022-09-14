@@ -8,6 +8,7 @@ void main() {
   setUp(() {
     contactLocation = ContactLocation(
         available: true,
+        shareLocation: true,
         id: "1",
         name: "test_name",
         email: "test@mail.com",

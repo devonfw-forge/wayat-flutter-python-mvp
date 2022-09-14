@@ -28,20 +28,33 @@ class GoogleMapsService {
   }
 
   static Future<String> getAddressFromCoordinates(LatLng coords) async {
-    String mapsKey = dotenv.get('GOOGLE_MAPS_KEY');
+    String mapsKey = "";
+    if (kIsWeb) {
+      mapsKey = dotenv.get('WEB_API_KEY');
+    } else if (Platform.isAndroid) {
+      mapsKey = dotenv.get('ANDROID_API_KEY');
+    } else if (Platform.isIOS) {
+      mapsKey = dotenv.get('IOS_API_KEY');
+    }
 
-    Uri url = Uri.parse(
-        "https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.latitude},${coords.longitude}&key=$mapsKey");
+    Uri url = Uri.https(
+      "maps.googleapis.com", "/maps/api/geocode/json",
+      {
+        "latlng": "${coords.latitude},${coords.longitude}",
+        "key": mapsKey
+      }
+    );
     try {
       Response response = await get(url);
       Map<String, dynamic> json = jsonDecode(response.body);
       AddressResponse addressResponse = AddressResponse.fromJson(json);
       return addressResponse.firstValidAddress();
-    } on HandshakeException {
-      log("Exception: Bad handshake to googleapis.com");
-      return "ERROR_ADDRESS";
     } on SocketException {
-      log("Client Socket Exception");
+      log("Exception: Failed host lookup to googleapis.com");
+      return "ERROR_ADDRESS";
+    }
+    on HandshakeException {
+      log("Exception: Bad handshake to googleapis.com");
       return "ERROR_ADDRESS";
     }
   }
