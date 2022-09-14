@@ -1,0 +1,20 @@
+{
+  "fr": [
+    "contactProfileSharingLocationWithYou",
+    "contactProfileLocationNotAvailable",
+    "contactProfileNotSharingLocation",
+    "contactProfileLastUpdated",
+    "groupsTitle",
+    "createGroup",
+    "noGroupsMessage",
+    "newGroup",
+    "groupName",
+    "addParticipants",
+    "addParticipantsTip",
+    "addFriends",
+    "groupParticipants",
+    "editGroup",
+    "deleteGroup",
+    "done"
+  ]
+}

@@ -56,7 +56,8 @@ import 'package:wayat/features/root/root_wrapper.dart';
               children: [
                 AutoRoute(page: GroupsPage),
                 AutoRoute(page: ManageGroupPage),
-                AutoRoute(page: ViewGroupPage)
+                AutoRoute(page: ViewGroupPage),
+                AutoRoute(page: LoadingPage, name: "LoadingGroupRoute")
               ]),
         ]),
         AutoRoute(page: NotificationsPage),
