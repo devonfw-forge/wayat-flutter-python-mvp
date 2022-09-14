@@ -48,14 +48,6 @@ async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depe
     await map_service.force_status_update(uid=contact_id, force_contacts_active=False)
 
 
-@router.post("/{contact_id}",
-             description="Updates sharing configuration with a contact")
-async def update_contact_prefs(contact_id: str, r: UpdateContactPreferencesRequest,
-                               user: FirebaseAuthenticatedUser = Depends(get_user()),
-                               map_service: MapService = Depends(MapService),
-                               user_service: UserService = Depends(UserService)):
-    await user_service.update_contact_prefs(user_id=user.uid, contact_id=contact_id, share_location=r.share_location)
-    await map_service.force_status_update(uid=contact_id, force_contacts_active=False)
 
 
 @router.get("/requests", description="Returns pending sent and received friendship requests",
@@ -81,6 +73,16 @@ async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAut
     if r.accept is True:  # If accepted a friend request refresh maps
         await map_service.force_status_update(uid=user.uid)
         await map_service.force_status_update(uid=r.uid)
+
+
+@router.post("/{contact_id}",
+             description="Updates sharing configuration with a contact")
+async def update_contact_prefs(contact_id: str, r: UpdateContactPreferencesRequest,
+                               user: FirebaseAuthenticatedUser = Depends(get_user()),
+                               map_service: MapService = Depends(MapService),
+                               user_service: UserService = Depends(UserService)):
+    await user_service.update_contact_prefs(user_id=user.uid, contact_id=contact_id, share_location=r.share_location)
+    await map_service.force_status_update(uid=contact_id, force_contacts_active=False)
 
 
 @router.delete("/requests/sent/{contact_id}", description="Cancel a sent friendship request")

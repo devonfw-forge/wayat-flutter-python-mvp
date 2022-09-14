@@ -23,7 +23,9 @@ Future main() async {
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
-      name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
+    name: "WAYAT", 
+    options: CustomFirebaseOptions.currentPlatformOptions
+  );
   await registerSingletons();
   setTimeAgoLocales();
 

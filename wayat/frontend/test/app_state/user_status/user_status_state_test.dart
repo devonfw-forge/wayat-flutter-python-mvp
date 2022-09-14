@@ -110,6 +110,7 @@ void main() async {
 
 ContactLocation _contactFactory(String contactName) {
   return ContactLocation(
+    shareLocation: true,
     available: true,
     id: "id $contactName",
     name: contactName,

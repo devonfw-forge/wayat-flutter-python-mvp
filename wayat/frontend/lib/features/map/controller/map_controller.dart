@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'dart:async';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/image_service/image_service.dart';
@@ -34,6 +35,9 @@ abstract class _MapController with Store {
   late GoogleMapController gMapController;
 
   String searchBarText = "";
+  Group? selectedGroup;
+
+  List<Contact> groupMembers = [];
 
   late Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
 
@@ -56,8 +60,8 @@ abstract class _MapController with Store {
     Set<Marker> newMarkers = contacts
         .map(
           (e) => Marker(
-              markerId: MarkerId(
-                  e.name + e.longitude.toString() + e.latitude.toString()),
+              markerId:
+                  MarkerId("${e.id}¿?${e.name}¿?${e.longitude}${e.latitude}"),
               position: LatLng(e.latitude, e.longitude),
               icon: bitmaps[e.imageUrl] ?? BitmapDescriptor.defaultMarker,
               onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),
@@ -109,11 +113,35 @@ abstract class _MapController with Store {
     filterMarkers();
   }
 
+  void filterGroup(Group group) {
+    if (group == selectedGroup) {
+      selectedGroup = null;
+      groupMembers = [];
+    } else {
+      selectedGroup = group;
+      groupMembers = group.members;
+    }
+    filterMarkersByGroup();
+  }
+
+  @action
+  void filterMarkersByGroup() {
+    if (groupMembers.isEmpty) {
+      filteredMarkers = ObservableSet.of(allMarkers);
+    } else {
+      final groupMembersId = groupMembers.map((e) => e.id.toLowerCase());
+      filteredMarkers = ObservableSet.of(allMarkers.where((element) =>
+          groupMembersId
+              .contains(element.markerId.value.toLowerCase().split("¿?")[0])));
+    }
+  }
+
   @action
   void filterMarkers() {
     filteredMarkers = ObservableSet.of(allMarkers
         .where((element) => element.markerId.value
             .toLowerCase()
+            .split("¿?")[1]
             .contains(searchBarText.toLowerCase()))
         .toSet());
   }

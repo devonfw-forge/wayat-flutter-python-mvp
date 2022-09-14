@@ -7,6 +7,7 @@ void main() {
   late Contact contact;
   setUp(() {
     contact = Contact(
+        shareLocation: true,
         available: true,
         id: "1",
         name: "test_name",
@@ -51,7 +52,7 @@ void main() {
 
   test("Checking string conversion", () {
     expect(contact.toString(),
-        "Contact(id: 1, available: true, name: test_name, email: test@mail.com, imageUrl: url://image, phone: 600600600)");
+        "Contact(id: 1, available: true, name: test_name, email: test@mail.com, imageUrl: url://image, phone: 600600600, shareLocation: true)");
   });
 
   test("Checking toMap conversion", () {

@@ -51,7 +51,65 @@ void main() async {
     expect(
         find.descendant(of: find.byType(Row), matching: find.text(group.name)),
         findsOneWidget);
-    expect(find.widgetWithIcon(IconButton, Icons.more_vert), findsOneWidget);
+    expect(
+        find.widgetWithIcon(PopupMenuButton, Icons.more_vert), findsOneWidget);
+  });
+
+  testWidgets("Clicking on the dots icon shows the menu", (tester) async {
+    Group group = _createGroup("GroupName", []);
+    when(mockGroupsController.selectedGroup).thenReturn(group);
+
+    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PopupMenuItem), findsNothing);
+    expect(find.text(appLocalizations.editGroup), findsNothing);
+    expect(find.text(appLocalizations.deleteGroup), findsNothing);
+
+    await tester.tap(find.byIcon(Icons.more_vert));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PopupMenuItem), findsNWidgets(2));
+    expect(find.text(appLocalizations.editGroup), findsOneWidget);
+    expect(find.text(appLocalizations.deleteGroup), findsOneWidget);
+  });
+
+  testWidgets("Tapping on edit group calls the correct controller method",
+      (tester) async {
+    Group group = _createGroup("GroupName", []);
+    when(mockGroupsController.selectedGroup).thenReturn(group);
+    when(mockGroupsController.setEditGroup(true)).thenReturn(null);
+
+    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.more_vert));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(appLocalizations.editGroup));
+    await tester.pumpAndSettle();
+    verify(mockGroupsController.setEditGroup(true)).called(1);
+  });
+
+  testWidgets("Tapping on delete group calls the correct controller methods",
+      (tester) async {
+    Group group = _createGroup("GroupName", []);
+    String groupId = "id";
+    group.id = groupId;
+    when(mockGroupsController.selectedGroup).thenReturn(group);
+    when(mockGroupsController.deleteGroup(groupId))
+        .thenAnswer((_) => Future.value(null));
+
+    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.more_vert));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(appLocalizations.deleteGroup));
+    await tester.pumpAndSettle();
+    verify(mockGroupsController.deleteGroup(groupId)).called(1);
+    verify(mockGroupsController.setSelectedGroup(null)).called(1);
   });
 
   testWidgets("Tapping on the arrow icon changes the state to go back",
@@ -120,6 +178,7 @@ Group _createGroup(String name, List<Contact> members) {
 
 Contact _createContact(String name) {
   return Contact(
+      shareLocation: true,
       available: true,
       id: "id",
       name: name,

@@ -6,6 +6,7 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'package:wayat/services/groups/groups_service_impl.dart';
@@ -66,16 +67,14 @@ abstract class _ManageGroupController with Store {
     if (group.id == "") {
       await groupsService.create(group, selectedFile);
     } else {
-      // TODO: Edit group
+      await groupsService.update(group, selectedFile);
     }
   }
 
-  // Hurts coverage because it cannot be tested (cannot get context to mock,
-  //verify calls or call from unit tests)
-  Future getFromSource(ImageSource source, BuildContext context) async {
+  Future getFromSource(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
     setSelectedFile(newImage);
-    Navigator.pop(context);
+    //Navigator.of(context, rootNavigator: true).pop();
   }
 }

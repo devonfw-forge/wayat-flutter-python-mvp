@@ -22,6 +22,12 @@ abstract class _GroupsController with Store {
   @observable
   Group? selectedGroup;
 
+  @observable
+  bool editGroup = false;
+
+  @observable
+  bool updatingGroup = false;
+
   /// Calls [GroupService.getAll] to update the user's groups. They are only
   /// updated in the UI if the response differs with the local data.
   ///
@@ -48,4 +54,28 @@ abstract class _GroupsController with Store {
   void setSelectedGroup(Group? group) {
     selectedGroup = group;
   }
+
+  @action
+  void setEditGroup(bool editValue) {
+    editGroup = editValue;
+  }
+
+  @action
+  void setUpdatingGroup(bool updatingGroup) {
+    this.updatingGroup = updatingGroup;
+  }
+
+  Future deleteGroup(String groupId) async {
+    await groupsService.delete(groupId);
+  }
+
+/*   
+  This is a better approach codewise for the delete and save processes,
+  but I have not managed to correctly mock/verify the arguments 
+  for this function in a testing environment
+  void doActionAndUpdateGroups(Future Function() action) async {
+    setUpdatingGroup(true);
+    await action();
+    setUpdatingGroup(false);
+  } */
 }

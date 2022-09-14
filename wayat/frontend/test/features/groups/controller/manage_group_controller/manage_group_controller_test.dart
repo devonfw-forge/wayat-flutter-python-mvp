@@ -9,7 +9,6 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/lang/lang_singleton.dart';
@@ -93,6 +92,19 @@ void main() async {
     verify(mockGroupsService.create(emptyGroup, null)).called(1);
   });
 
+  test("SaveGroup updates the group if the ID is not empty", () {
+    Group group = Group.empty();
+    group.name = "Name";
+    group.id = "ID";
+    when(mockGroupsService.update(group, null))
+        .thenAnswer((_) => Future.value(null));
+    ManageGroupController manageGroupController =
+        ManageGroupController(group: group, groupsService: mockGroupsService);
+
+    manageGroupController.saveGroup();
+    verify(mockGroupsService.update(group, null)).called(1);
+  });
+
   test("ManageGroupController intialized with real service", () {
     ManageGroupController();
   });
@@ -100,6 +112,7 @@ void main() async {
 
 Contact _contactFactory(String contactName) {
   return Contact(
+    shareLocation: true,
     available: true,
     id: "id $contactName",
     name: contactName,
