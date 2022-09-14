@@ -259,10 +259,10 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             name="test",
             phone="+34-TEST",
         )
-        self.mock_user_repo.get_contacts.return_value = [test_entity]
+        self.mock_user_repo.get_contacts.return_value = ([test_entity], [])
 
         # Call to be tested
-        user_dtos = await self.user_service.get_user_contacts("uid")
+        user_dtos, _ = await self.user_service.get_user_contacts("uid")
 
         # Asserts
         self.assertCountEqual(user_dtos, [self.user_service.map_to_dto(test_entity)])
@@ -334,6 +334,14 @@ class UserServiceTests(IsolatedAsyncioTestCase):
                 call(user_id=user, user_groups=[user_group_info, extra_group])
             ],
             any_order=True)
+
+    async def test_update_contact_prefs_should_call_repo(self):
+        user, contact, share = "test", "test_contact", True
+        # Call under test
+        await self.user_service.update_contact_prefs(user_id=user, contact_id=contact, share_location=share)
+
+        # Asserts
+        self.mock_user_repo.update_sharing_preferences.assert_called_with(user, contact, share)
 
     async def test_upload_profile_picture_should_call_repo(self):
         # Mocks

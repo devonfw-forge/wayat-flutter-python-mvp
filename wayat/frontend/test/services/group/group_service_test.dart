@@ -13,8 +13,6 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'package:wayat/services/groups/groups_service_impl.dart';
 import 'package:http/http.dart' as http;
-// ignore: depend_on_referenced_packages
-import 'package:mime/mime.dart';
 
 import 'group_service_test.mocks.dart';
 
@@ -27,16 +25,48 @@ void main() async {
   });
 
   test("GetAll calls the correct endpoint with the correct data", () async {
-/*     when(mockHttpProvider.sendGetRequest(APIContract.groups))
+    when(mockHttpProvider.sendGetRequest(APIContract.groups))
         .thenAnswer((_) => Future.value({}));
 
     GroupsService groupsService = GroupsServiceImpl();
 
     await groupsService.getAll();
 
-    verify(mockHttpProvider.sendGetRequest(APIContract.groups)).called(1); */
-    // TODO: Visualize Groups
-    expect(true, true);
+    verify(mockHttpProvider.sendGetRequest(APIContract.groups)).called(1);
+  });
+
+  test("GetAll converts from List of IDs to List of Contacts", () async {
+    Contact contact = Contact(
+        available: true,
+        id: "id",
+        name: "name",
+        email: "email",
+        imageUrl: "url",
+        phone: "phone");
+    Group group =
+        Group(id: "id", members: [contact], name: "name", imageUrl: "url");
+
+    Map<String, dynamic> groupResponse = group.toMap();
+    groupResponse["members"] = [contact.id];
+
+    when(mockHttpProvider.sendGetRequest(APIContract.contacts))
+        .thenAnswer((_) => Future.value({
+              "users": [contact.toMap()]
+            }));
+
+    when(mockHttpProvider.sendGetRequest(APIContract.groups))
+        .thenAnswer((_) => Future.value({
+              "groups": [groupResponse]
+            }));
+
+    GroupsService groupsService = GroupsServiceImpl();
+
+    List<Group> groups = await groupsService.getAll();
+
+    verify(mockHttpProvider.sendGetRequest(APIContract.groups)).called(1);
+    verify(mockHttpProvider.sendGetRequest(APIContract.contacts)).called(1);
+
+    expect(groups, [group]);
   });
 
   test("Create calls the correct endpoint with the correct data", () async {

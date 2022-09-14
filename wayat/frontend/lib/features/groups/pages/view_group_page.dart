@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/basic_contact_tile.dart';
 import 'package:wayat/domain/group/group.dart';
-import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
+import 'package:wayat/lang/app_localizations.dart';
 
+// ignore: must_be_immutable
 class ViewGroupPage extends StatelessWidget {
   final GroupsController groupsController = GetIt.I.get<GroupsController>();
   late Group selectedGroup = groupsController.selectedGroup!;
@@ -15,6 +17,7 @@ class ViewGroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        groupsController.setSelectedGroup(null);
         return true;
       },
       child: groupViewContent(context),
@@ -42,14 +45,35 @@ class ViewGroupPage extends StatelessWidget {
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
                     border: Border.all(color: Colors.black)),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: selectedGroup.members.length,
-                    itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ContactTile(
-                              contact: selectedGroup.members[index]),
-                        )),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 15),
+                        child: Text(
+                          appLocalizations.groupParticipants,
+                          style: const TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: selectedGroup.members.length,
+                          itemBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10),
+                                child: BasicContactTile(
+                                    contact: selectedGroup.members[index]),
+                              )),
+                      const SizedBox(
+                        height: 10,
+                      )
+                    ],
+                  ),
+                ),
               ),
             )
           ],
@@ -70,6 +94,7 @@ class ViewGroupPage extends StatelessWidget {
               splashRadius: 20,
             ),
             Text(
+              key: const Key("GroupNameHeader"),
               selectedGroup.name,
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
             )
@@ -92,6 +117,7 @@ class ViewGroupPage extends StatelessWidget {
           height: 15,
         ),
         Text(
+          key: const Key("GroupNameInfo"),
           selectedGroup.name,
           style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
         )
