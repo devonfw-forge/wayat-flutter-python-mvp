@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:wayat/domain/contact/contact.dart';
@@ -35,7 +36,7 @@ class ContactServiceImpl implements ContactService {
             .replaceAll('(', '')
             .replaceAll(')', ''))
         .toList();
-
+    log(phoneList.toString());
     Response response = await httpProvider
         .sendPostRequest(APIContract.findByPhone, {"phones": phoneList});
     Map<String, dynamic> jsonBody =
