@@ -10,7 +10,9 @@ import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +20,7 @@ import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/features/map/widgets/suggestions_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:mobx/mobx.dart' show ObservableSet;
+import 'package:mobx/mobx.dart' show ObservableListExtension, ObservableSet;
 import 'package:wayat/services/image_service/image_service.dart';
 
 import 'search_bar_test.mocks.dart';
@@ -29,6 +31,7 @@ import 'search_bar_test.mocks.dart';
   MapState,
   MapController,
   ImageService,
+  GroupsController
 ], customMocks: [])
 void main() async {
   late LocationState mockLocationState;
@@ -39,11 +42,13 @@ void main() async {
     mockLocationState = MockLocationState();
     mockUserStatusState = MockUserStatusState();
     mockMapState = MockMapState();
+    final GroupsController mockGroupsController = MockGroupsController();
 
     GetIt.I.registerSingleton<LocationState>(mockLocationState);
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
     GetIt.I.registerSingleton<MapState>(mockMapState);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
+    GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
 
     HttpOverrides.global = null;
 
@@ -51,6 +56,10 @@ void main() async {
         .thenAnswer((realInvocation) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(0, 0));
     when(mockLocationState.shareLocationEnabled).thenReturn(true);
+    when(mockGroupsController.updateGroups())
+        .thenAnswer((_) => Future.value(true));
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[].asObservable());
   });
 
   Widget _createApp(Widget body) {

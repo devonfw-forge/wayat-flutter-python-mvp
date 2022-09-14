@@ -12,19 +12,25 @@ import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/common/widgets/contact_image.dart';
+import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
+import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
+import 'package:wayat/features/map/controller/map_controller.dart';
+import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
-import 'contacts_page_test.mocks.dart';
+
+import 'home_map_page_test.mocks.dart';
 
 @GenerateMocks([
   ContactsPageController,
@@ -37,15 +43,14 @@ import 'contacts_page_test.mocks.dart';
   FriendsController,
   RequestsController,
   SuggestionsController,
-  GroupsController
+  GroupsController,
+  MapController
 ])
 void main() async {
-  HttpOverrides.global = null;
-
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final SessionState mockSessionState = MockSessionState();
   final HomeState mockHomeState = MockHomeState();
+  final SessionState mockSessionState = MockSessionState();
   final LocationState mockLocationState = MockLocationState();
   final UserStatusState mockUserStatusState = MockUserStatusState();
   final ProfileState mockProfileState = MockProfileState();
@@ -55,8 +60,35 @@ void main() async {
   final SuggestionsController mockSuggestionsController =
       MockSuggestionsController();
   final GroupsController mockGroupsController = MockGroupsController();
+  final MapController mockMapController = MockMapController();
+
+  final MyUser user = MyUser(
+      id: "2",
+      name: "test",
+      email: "test@capg.com",
+      imageUrl: "http://example.com",
+      phone: "123456789",
+      onboardingCompleted: true,
+      shareLocationEnabled: true);
+
+  final Group myGroup = Group(
+      id: "123",
+      members: [
+        Contact(
+            shareLocation: true,
+            available: true,
+            id: "",
+            name: "",
+            email: "",
+            imageUrl: "https://test.com",
+            phone: "")
+      ],
+      name: "GroupTest",
+      imageUrl: "https://test.com");
 
   setUpAll(() {
+    HttpOverrides.global = null;
+
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
     when(mockSessionState.finishLoggedIn).thenReturn(true);
@@ -76,16 +108,20 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
     when(mockUserStatusState.contacts).thenReturn([]);
+    when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
+    when(mockSessionState.currentUser).thenReturn(user);
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
-    when(mockGroupsController.groups)
-        .thenAnswer((_) => <Group>[].asObservable());
+    when(mockMapController.filterGroup(myGroup))
+        .thenAnswer((_) => Future.value());
+
+    GetIt.I.allowReassignment = true;
 
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
     GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<SessionState>(mockSessionState);
     GetIt.I.registerSingleton<LocationState>(mockLocationState);
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
@@ -108,57 +144,55 @@ void main() async {
     );
   }
 
-  Future navigateToContactsPage(WidgetTester tester) async {
-    await tester.pumpWidget(_createApp());
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.contacts_outlined));
-    await tester.pumpAndSettle();
+  Contact _contactFactory() {
+    return Contact(
+      shareLocation: true,
+      available: true,
+      id: "2",
+      name: "test",
+      email: "Contact email",
+      imageUrl: "https://example.com/image",
+      phone: "123",
+    );
   }
 
-  testWidgets("The search bar appears correctly", (tester) async {
-    await navigateToContactsPage(tester);
-    const Key searchBarKey = Key("ContactsSearchBar");
+  testWidgets('Slider Groups without groups', (tester) async {
+    final HomeState homeState = HomeState();
+    GetIt.I.registerSingleton<HomeState>(homeState);
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[].asObservable());
 
-    expect(find.byKey(searchBarKey), findsOneWidget);
+    await tester.pumpWidget(_createApp());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.map));
+    await tester.pumpAndSettle();
+
+    expect(find.text(appLocalizations.noGroupsMessage), findsOneWidget);
+
     expect(
         find.descendant(
-            of: find.byKey(searchBarKey),
-            matching: find.text(appLocalizations.search)),
-        findsOneWidget);
-    expect(
-        find.descendant(
-            of: find.byKey(searchBarKey), matching: find.byIcon(Icons.search)),
-        findsOneWidget);
+            of: find.byKey(const Key("groupSlider")),
+            matching: find.byType(ContactImage)),
+        findsNothing);
   });
 
-  testWidgets("The tab bar appears correctly", (tester) async {
-    await navigateToContactsPage(tester);
+  testWidgets('Slider Groups with groups', (tester) async {
+    final HomeState homeState = HomeState();
+    GetIt.I.registerSingleton<HomeState>(homeState);
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[myGroup].asObservable());
 
-    expect(find.byType(TabBar), findsOneWidget);
-    expect(find.byType(Tab), findsNWidgets(3));
-    expect(
-        find.descendant(
-            of: find.byType(Tab),
-            matching: find.text(appLocalizations.friendsTab)),
-        findsOneWidget);
-    expect(
-        find.descendant(
-            of: find.byType(Tab),
-            matching: find.text(appLocalizations.requestsTab)),
-        findsOneWidget);
-    expect(
-        find.descendant(
-            of: find.byType(Tab),
-            matching: find.text(appLocalizations.suggestionsTab)),
-        findsOneWidget);
-  });
+    await tester.pumpWidget(_createApp());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.map));
+    await tester.pumpAndSettle();
 
-  testWidgets("The search bar text changes the controller text",
-      (tester) async {
-    const Key searchBarKey = Key("ContactsSearchBar");
-    when(mockContactsPageController.setSearchBarText("Input")).thenReturn(null);
-    await navigateToContactsPage(tester);
-    await tester.enterText(find.byKey(searchBarKey), "Input");
-    verify(mockContactsPageController.setSearchBarText("Input")).called(1);
+    expect(find.text(appLocalizations.noGroupsMessage), findsNothing);
+
+    expect(
+        find.descendant(
+            of: find.byKey(const Key("groupSlider")),
+            matching: find.byType(ContactImage)),
+        findsOneWidget);
   });
 }

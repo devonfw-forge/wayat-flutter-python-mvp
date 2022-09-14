@@ -13,6 +13,7 @@ import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contact_profile/controller/contact_profile_controller.dart';
 import 'package:wayat/features/contact_profile/page/contact_profile_page.dart';
@@ -22,6 +23,7 @@ import 'package:wayat/features/contacts/controller/navigation/contacts_current_p
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
@@ -44,10 +46,10 @@ import 'home_test.mocks.dart';
   FriendsController,
   RequestsController,
   SuggestionsController,
+  GroupsController,
   ContactProfileController,
   HttpProvider
 ])
-
 void main() async {
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
@@ -61,6 +63,7 @@ void main() async {
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
       MockSuggestionsController();
+  final GroupsController mockGroupsController = MockGroupsController();
   final HttpProvider mockHttpProvider = MockHttpProvider();
   late ContactProfileController mockContactProfileController;
 
@@ -112,7 +115,12 @@ void main() async {
     when(mockUserStatusState.contacts).thenReturn([]);
     when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
     when(mockSessionState.currentUser).thenReturn(user);
+    when(mockGroupsController.updateGroups())
+        .thenAnswer((_) => Future.value(true));
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[].asObservable());
     when(mockContactProfileController.shareLocationToContact).thenReturn(true);
+    GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
   Widget _createApp() {
