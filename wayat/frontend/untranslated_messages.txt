@@ -13,6 +13,8 @@
     "addParticipantsTip",
     "addFriends",
     "groupParticipants",
+    "editGroup",
+    "deleteGroup",
     "done"
   ]
 }
