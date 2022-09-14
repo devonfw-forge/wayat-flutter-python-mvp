@@ -103,6 +103,7 @@ class HomeMapPage extends StatelessWidget {
     return (groups.isEmpty)
         ? Text(appLocalizations.noGroupsMessage)
         : Container(
+            key: const Key("groupSlider"),
             height: 70,
             width: double.infinity,
             child: ListView.builder(
