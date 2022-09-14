@@ -547,6 +547,22 @@ class MockGroupsController extends _i1.Mock implements _i20.GroupsController {
       super.noSuchMethod(Invocation.setter(#selectedGroup, value),
           returnValueForMissingStub: null);
   @override
+  bool get editGroup =>
+      (super.noSuchMethod(Invocation.getter(#editGroup), returnValue: false)
+          as bool);
+  @override
+  set editGroup(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#editGroup, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get updatingGroup =>
+      (super.noSuchMethod(Invocation.getter(#updatingGroup), returnValue: false)
+          as bool);
+  @override
+  set updatingGroup(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#updatingGroup, value),
+          returnValueForMissingStub: null);
+  @override
   _i6.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
@@ -567,5 +583,13 @@ class MockGroupsController extends _i1.Mock implements _i20.GroupsController {
   @override
   void setSelectedGroup(_i18.Group? group) =>
       super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
+          returnValueForMissingStub: null);
+  @override
+  void setEditGroup(bool? editValue) =>
+      super.noSuchMethod(Invocation.method(#setEditGroup, [editValue]),
+          returnValueForMissingStub: null);
+  @override
+  void setUpdatingGroup(bool? updatingGroup) =>
+      super.noSuchMethod(Invocation.method(#setUpdatingGroup, [updatingGroup]),
           returnValueForMissingStub: null);
 }
