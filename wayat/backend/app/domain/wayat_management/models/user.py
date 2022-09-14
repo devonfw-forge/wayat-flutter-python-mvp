@@ -32,6 +32,7 @@ class UserEntity(BaseFirebaseModel):
     phone: Optional[str]
     image_ref: Optional[str]
     contacts: list[str] = Field(default_factory=list)
+    location_shared_with: list[str] = Field(default_factory=list)
     sent_requests: list[str] = Field(default_factory=list)
     pending_requests: list[str] = Field(default_factory=list)
     location: Optional[Location]
