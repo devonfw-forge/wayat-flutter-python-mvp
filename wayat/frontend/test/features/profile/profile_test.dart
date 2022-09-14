@@ -38,6 +38,7 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
     when(mockSessionState.currentUser).thenAnswer((_) => user);
+
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
     GetIt.I.registerSingleton<LocationState>(mockLocationState);
     when(mockLocationState.shareLocationEnabled).thenAnswer((_) => false);

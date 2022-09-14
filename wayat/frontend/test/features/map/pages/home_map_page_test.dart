@@ -23,7 +23,6 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
-import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
@@ -76,6 +75,7 @@ void main() async {
       id: "123",
       members: [
         Contact(
+            shareLocation: true,
             available: true,
             id: "",
             name: "",
@@ -146,6 +146,7 @@ void main() async {
 
   Contact _contactFactory() {
     return Contact(
+      shareLocation: true,
       available: true,
       id: "2",
       name: "test",

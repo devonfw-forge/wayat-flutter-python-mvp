@@ -15,6 +15,7 @@ import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/features/contact_profile/controller/contact_profile_controller.dart';
 import 'package:wayat/features/contact_profile/page/contact_profile_page.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -30,6 +31,7 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'home_test.mocks.dart';
 
@@ -44,7 +46,9 @@ import 'home_test.mocks.dart';
   FriendsController,
   RequestsController,
   SuggestionsController,
-  GroupsController
+  GroupsController,
+  ContactProfileController,
+  HttpProvider
 ])
 void main() async {
   final ContactsPageController mockContactsPageController =
@@ -60,6 +64,8 @@ void main() async {
   final SuggestionsController mockSuggestionsController =
       MockSuggestionsController();
   final GroupsController mockGroupsController = MockGroupsController();
+  final HttpProvider mockHttpProvider = MockHttpProvider();
+  late ContactProfileController mockContactProfileController;
 
   final MyUser user = MyUser(
       id: "2",
@@ -72,6 +78,21 @@ void main() async {
 
   setUpAll(() {
     HttpOverrides.global = null;
+
+    GetIt.I.allowReassignment = true;
+
+    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
+    GetIt.I
+        .registerSingleton<ContactsPageController>(mockContactsPageController);
+    GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<LocationState>(mockLocationState);
+    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
+    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
+
+    mockContactProfileController = MockContactProfileController();
 
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
@@ -98,18 +119,7 @@ void main() async {
         .thenAnswer((_) => Future.value(true));
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
-
-    GetIt.I.allowReassignment = true;
-
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    GetIt.I
-        .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    when(mockContactProfileController.shareLocationToContact).thenReturn(true);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
@@ -131,6 +141,7 @@ void main() async {
   Contact _contactFactory() {
     return Contact(
       available: true,
+      shareLocation: true,
       id: "2",
       name: "test",
       email: "Contact email",

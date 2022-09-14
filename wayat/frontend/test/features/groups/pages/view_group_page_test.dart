@@ -157,6 +157,7 @@ Group _createGroup(String name, List<Contact> members) {
 
 Contact _createContact(String name) {
   return Contact(
+      shareLocation: true,
       available: true,
       id: "id",
       name: name,
