@@ -80,8 +80,13 @@ class ManageGroupPage extends StatelessWidget {
             onPressed: () async {
               GroupsController groupsController =
                   GetIt.I.get<GroupsController>();
+              /*
+              I find this approach better but I have not found a way to correctly
+              mock the argument for doActionAndUpdateGroups
+               groupsController.doActionAndUpdateGroups(
+                  () async => await controller.saveGroup()); */
               groupsController.setUpdatingGroup(true);
-              await controller.saveGroup();
+              controller.saveGroup();
               groupsController.setUpdatingGroup(false);
               goBack();
             }),

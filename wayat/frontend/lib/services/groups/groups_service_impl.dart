@@ -76,4 +76,9 @@ class GroupsServiceImpl implements GroupsService {
           "${APIContract.groupPicture}/${group.id}", picture.path, type);
     }
   }
+
+  @override
+  Future delete(String groupId) async {
+    await httpProvider.sendDelRequest("${APIContract.groups}/$groupId");
+  }
 }
