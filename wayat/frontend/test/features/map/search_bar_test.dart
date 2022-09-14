@@ -247,6 +247,7 @@ ImageService _prepareMockImageService(List<ContactLocation> contacts) {
 ContactLocation _locatedContactFactory(String contactName) {
   return ContactLocation(
       available: true,
+      shareLocation: true,
       id: "id1",
       name: contactName,
       email: "Contact email",

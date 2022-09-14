@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
@@ -8,6 +9,7 @@ import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/common/widgets/buttons/circle_icon_button.dart';
+import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -34,6 +36,7 @@ class ContactProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.setShareLocationToContact(contact.shareLocation, contact);
     ContactLocation? contactLocated = GetIt.I
         .get<UserStatusState>()
         .contacts
@@ -52,13 +55,17 @@ class ContactProfilePage extends StatelessWidget {
       child: Scaffold(
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            appBar(),
-            mapSection(context, canBeLocated),
-            dataSection(context, canBeLocated)
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              appBar(),
+              mapSection(context, canBeLocated),
+              dataSection(context, canBeLocated),
+              divider(),
+              shareMyLocationRow()
+            ],
+          ),
         ),
       ),
     );
@@ -78,6 +85,32 @@ class ContactProfilePage extends StatelessWidget {
             navigationSource,
             style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
           )
+        ],
+      ),
+    );
+  }
+  
+  Widget shareMyLocationRow() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            appLocalizations.shareMyLocation,
+            style: const TextStyle(
+                fontWeight: FontWeight.w400, color: Colors.black87, fontSize: 18),
+          ),
+          Observer(builder: (context) {
+            bool enabled = controller.shareLocationToContact;
+            return CustomSwitch(
+              value: enabled,
+              onChanged: (newValue) {
+                controller.setShareLocationToContact(newValue, contact);
+              },
+            );
+          })
         ],
       ),
     );
@@ -137,6 +170,15 @@ class ContactProfilePage extends StatelessWidget {
               : Container()
         ],
       ),
+    );
+  }
+
+  Divider divider() {
+    return const Divider(
+      endIndent: 15,
+      indent: 15,
+      height: 1,
+      thickness: 1,
     );
   }
 
