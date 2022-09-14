@@ -32,7 +32,6 @@ class ContactServiceImpl implements ContactService {
     List<String> phoneList = importedContacts
         .map((e) => e.replaceAll(RegExp(r'[^+0-9]+'),''))
         .toList();
-    log(phoneList.toString());
     Response response = await httpProvider
         .sendPostRequest(APIContract.findByPhone, {"phones": phoneList});
     Map<String, dynamic> jsonBody =
