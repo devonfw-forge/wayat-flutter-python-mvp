@@ -140,9 +140,20 @@ class ViewGroupPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Text(appLocalizations.deleteGroup))
       ],
-      onSelected: (value) {
+      onSelected: (value) async {
         if (value == editGroup) {
           groupsController.setEditGroup(true);
+        } else if (value == deleteGroup) {
+          /*
+          I find this approach better but I have not found a way to correctly
+          mock the argument for doActionAndUpdateGroups
+          groupsController.doActionAndUpdateGroups(
+              () async => await groupsController.deleteGroup(selectedGroup.id));
+              */
+          groupsController.setUpdatingGroup(true);
+          await groupsController.deleteGroup(selectedGroup.id);
+          groupsController.setUpdatingGroup(false);
+          groupsController.setSelectedGroup(null);
         }
       },
     );

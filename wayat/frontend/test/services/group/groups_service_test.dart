@@ -14,7 +14,7 @@ import 'package:wayat/services/groups/groups_service.dart';
 import 'package:wayat/services/groups/groups_service_impl.dart';
 import 'package:http/http.dart' as http;
 
-import 'group_service_test.mocks.dart';
+import 'groups_service_test.mocks.dart';
 
 @GenerateMocks([HttpProvider, http.Response, http.StreamedResponse])
 void main() async {
@@ -284,5 +284,18 @@ void main() async {
     })).called(1);
     verifyNever(mockHttpProvider.sendPostImageRequest(
         "${APIContract.groupPicture}/id", filePath, fileType));
+  });
+
+  test("Delete calls the correct endpoint", () async {
+    String groupId = "id";
+    when(mockHttpProvider.sendDelRequest("${APIContract.groups}/$groupId"))
+        .thenAnswer((_) => Future.value(true));
+
+    GroupsService groupsService = GroupsServiceImpl();
+
+    await groupsService.delete(groupId);
+
+    verify(mockHttpProvider.sendDelRequest("${APIContract.groups}/$groupId"))
+        .called(1);
   });
 }

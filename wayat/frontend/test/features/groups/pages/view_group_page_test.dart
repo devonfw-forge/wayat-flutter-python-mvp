@@ -91,6 +91,27 @@ void main() async {
     verify(mockGroupsController.setEditGroup(true)).called(1);
   });
 
+  testWidgets("Tapping on delete group calls the correct controller methods",
+      (tester) async {
+    Group group = _createGroup("GroupName", []);
+    String groupId = "id";
+    group.id = groupId;
+    when(mockGroupsController.selectedGroup).thenReturn(group);
+    when(mockGroupsController.deleteGroup(groupId))
+        .thenAnswer((_) => Future.value(null));
+
+    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.more_vert));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(appLocalizations.deleteGroup));
+    await tester.pumpAndSettle();
+    verify(mockGroupsController.deleteGroup(groupId)).called(1);
+    verify(mockGroupsController.setSelectedGroup(null)).called(1);
+  });
+
   testWidgets("Tapping on the arrow icon changes the state to go back",
       (tester) async {
     Group group = _createGroup("GroupName", []);

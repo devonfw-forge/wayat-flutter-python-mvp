@@ -136,6 +136,19 @@ void main() async {
     expect(groupsController.updatingGroup, false);
   });
 
+  test("DeleteGroup calls the right service method", () {
+    String groupId = "id";
+    when(mockGroupsService.delete(groupId))
+        .thenAnswer((_) => Future.value(null));
+
+    GroupsController groupsController =
+        GroupsController(groupsService: mockGroupsService);
+
+    groupsController.deleteGroup(groupId);
+
+    verify(mockGroupsService.delete(groupId)).called(1);
+  });
+
   test("GroupsController intialized with real service", () {
     GroupsController();
   });
