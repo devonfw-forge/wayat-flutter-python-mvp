@@ -10,6 +10,14 @@
     "phonePageDescription": "A valid phone number is required",
     "invalidPhoneNumber": "Invalid phone number",
     "phoneUpdateError": "Error setting phone number",
+    "verifyPhoneTitle": "Verify phone",
+    "verifyPhoneText": "Please verify your new mobile phone. Code is sent to",
+    "didnotReceiveCode": "Didn't receive code?",
+    "resendCode": "Resend code",
+    "verify": "Verify",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteAccountText": "Are you sure that you want to delete your Wayat account? Please note that there is no option to restore the account or its data once it's deleted.",
     
     "home": "Home",
     "contacts": "Contacts",
@@ -53,7 +61,7 @@
     "darkTheme": "Enable dark theme",
     "language": "English",
 
-    "changePhone": "Change phone",
+    "changePhone": "Phone",
     "changePassword": "Change password",
 
     "chooseProfileFoto": "Choose picture from",
@@ -92,5 +100,17 @@
     "contactProfileSharingLocationWithYou": "Sharing location with you",
     "contactProfileLocationNotAvailable": "Location not available",
     "contactProfileNotSharingLocation": "Not sharing location",
-    "contactProfileLastUpdated": "Last updated"
+    "contactProfileLastUpdated": "Last updated",
+
+    "groupsTitle": "GROUPS",
+    "createGroup": "Create group",
+    "noGroupsMessage": "Oops. You don't have any group",
+    "newGroup": "New group",
+    "groupName": "Group name",
+    "addParticipants": "Add participants",
+    "addParticipantsTip": "Start adding some friends to create a group!",
+    "addFriends": "Add friends",
+    "groupParticipants": "Group participants",
+    
+    "done": "Done"
 } 

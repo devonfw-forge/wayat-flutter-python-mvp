@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional, List, Tuple
 from fastapi import Depends
 from google.cloud import firestore
 from google.cloud.firestore import AsyncClient, AsyncTransaction
@@ -38,11 +38,17 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def find_by_phone(self, *, phones: list[str]):
         return [item async for item in self.where("phone", 'in', phones)]
 
-    async def get_contacts(self, uid: str):
+    async def get_contacts(self, uid: str) -> Tuple[list[UserEntity], list[str]]:
+        """
+        Returns the list of contacts (UserEntity) and the list of ids of users with which the user is sharing location
+
+        :param uid: the UID of the User
+        :return: the list of contacts and the list of ids with which the user is sharing the location
+        """
         self_user = await self.get_or_throw(uid)
         coroutines = [self.get_or_throw(u) for u in self_user.contacts]
         contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)  # type: ignore
-        return contacts_entities
+        return contacts_entities, self_user.location_shared_with
 
     async def update_user_location(self, uid: str, latitude: float, longitude: float, address: str) -> None:
         location: Location = Location(
@@ -52,7 +58,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         )
         await self.update(data={"location": location.dict()}, document_id=uid)
 
-    async def get_user_groups(self, uid: str) -> (List[GroupInfo], UserEntity):
+    async def get_user_groups(self, uid: str) -> Tuple[List[GroupInfo], UserEntity]:
         user = await self.get_or_throw(uid)
         return user.groups, user
 
@@ -148,12 +154,14 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
                 if self_uid in sender.sent_requests:
                     update_sender = {
                         "sent_requests": firestore.ArrayRemove([self_uid]),
-                        "contacts": firestore.ArrayUnion([self_uid])
+                        "contacts": firestore.ArrayUnion([self_uid]),
+                        "location_shared_with": firestore.ArrayUnion([self_uid]),
                     }
                     self._validate_update(update_sender)
                     update_receiver = {
                         "pending_requests": firestore.ArrayRemove([friend_uid]),
-                        "contacts": firestore.ArrayUnion([friend_uid])
+                        "contacts": firestore.ArrayUnion([friend_uid]),
+                        "location_shared_with": firestore.ArrayUnion([friend_uid]),
                     }
                     self._validate_update(update_receiver)
                     t.update(sender_ref, update_sender)
@@ -170,11 +178,13 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         @firestore.async_transactional
         async def execute(t: AsyncTransaction):
             update_a = {
-                "contacts": firestore.ArrayRemove([b_id])
+                "contacts": firestore.ArrayRemove([b_id]),
+                "location_shared_with": firestore.ArrayRemove([b_id]),
             }
             self._validate_update(update_a)
             update_b = {
-                "contacts": firestore.ArrayRemove([a_id])
+                "contacts": firestore.ArrayRemove([a_id]),
+                "location_shared_with": firestore.ArrayRemove([a_id]),
             }
             self._validate_update(update_b)
             t.update(a_ref, update_a)
@@ -200,3 +210,15 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             "groups": [g.dict() for g in user_groups]
         }
         await self.update(document_id=user_id, data=update)
+
+    async def update_sharing_preferences(self, user_id: str, contact_id: str, share_location: bool):
+        if share_location is True:
+            update = {
+                "location_shared_with": firestore.ArrayUnion([contact_id]),
+            }
+        else:
+            update = {
+                "location_shared_with": firestore.ArrayRemove([contact_id]),
+            }
+        await self.update(document_id=user_id, data=update)
+

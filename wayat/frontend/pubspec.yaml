@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.5 <3.0.0"
+  sdk: ">=2.17.6 <3.0.0"
 
 dependencies:
   flutter:
@@ -33,7 +33,7 @@ dependencies:
   # Environment variables
   flutter_dotenv: ^5.0.2
   # Google maps
-  google_maps_flutter: ^2.1.10
+  google_maps_flutter: ^2.2.0
   # AZ ListView for imported contacts
   azlistview: ^2.0.0
   # Key Value storage
@@ -55,13 +55,13 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   image: ^3.2.0
   # For the x minutes ago in the Pop Up for the Map contacts
-  timeago: ^3.2.2
+  timeago: ^3.3.0
   # To launch google maps app
   url_launcher: ^6.1.5
   # Firebase dependencies
   firebase_core: ^1.20.0
-  cloud_firestore: ^3.4.3
-  firebase_auth: ^3.6.1
+  cloud_firestore: ^3.4.6
+  firebase_auth: ^3.7.0
   image_picker: ^0.8.5+3
   # Testing mocks
   mockito: ^5.3.0

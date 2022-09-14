@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
@@ -10,7 +11,15 @@ import 'package:wayat/services/google_maps_service/address_response/address_resp
 
 class GoogleMapsService {
   static void openMaps(double lat, double lng) async {
-    var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    var uri;
+    if (kIsWeb || Platform.isAndroid) {
+      uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    } else if (Platform.isIOS) {
+      //apple maps
+      uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
+      //google maps
+      //uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
+    }
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
@@ -30,6 +39,9 @@ class GoogleMapsService {
       return addressResponse.firstValidAddress();
     } on HandshakeException {
       log("Exception: Bad handshake to googleapis.com");
+      return "ERROR_ADDRESS";
+    } on SocketException {
+      log("Client Socket Exception");
       return "ERROR_ADDRESS";
     }
   }

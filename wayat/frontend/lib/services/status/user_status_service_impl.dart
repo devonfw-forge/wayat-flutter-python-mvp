@@ -16,6 +16,9 @@ class UserStatusService {
   Future setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(ShareLocationMode) onLocationModeUpdate}) async {
+    if (GetIt.I.get<SessionState>().currentUser == null) {
+      return;
+    }
     final docRef = db
         .collection("status")
         .doc(GetIt.I.get<SessionState>().currentUser!.id);
@@ -63,7 +66,9 @@ class UserStatusService {
             contacts.firstWhere((contact) => contact.id == e["uid"]);
         GeoPoint loc = e["location"];
         String address = e["address"] ?? "ERROR_ADDRESS";
-        if (address == "ERROR_ADDRESS") { address = appLocalizations.errorAddress; }
+        if (address == "ERROR_ADDRESS") {
+          address = appLocalizations.errorAddress;
+        }
         Timestamp lastUpdated = e["last_updated"];
         ContactLocation located = ContactLocation(
             available: true,

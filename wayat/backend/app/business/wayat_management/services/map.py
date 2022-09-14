@@ -57,7 +57,7 @@ class MapService:
                               address: str,
                               ):
         await self._user_repository.update_user_location(uid, latitude, longitude, address)
-        await self._update_contacts_status(uid, latitude, longitude)
+        await self.update_contacts_status(uid, latitude, longitude)
 
     async def update_map_status(self, uid: str, next_map_state: bool):
         if next_map_state is True:
@@ -144,21 +144,21 @@ class MapService:
         else:
             return None
 
-    async def _update_contacts_status(self, uid: str, latitude: float, longitude: float):
+    async def update_contacts_status(self, uid: str, latitude: float = None, longitude: float = None, force=False):
         contacts_with_map_open = await self._user_repository.find_contacts_with_map_open(uid)
-        contacts_in_range = [c for c in contacts_with_map_open if self._in_range(latitude, longitude, c.location)]
-
-        # Update my active status if at least one friend is looking at me
-        active_value = len(contacts_in_range) != 0
-        await self._status_repository.set_active(uid, active_value)
+        if latitude is not None and longitude is not None:
+            contacts_in_range = [c for c in contacts_with_map_open if self._in_range(latitude, longitude, c.location)]
+            # Update my active status if at least one friend is looking at me
+            active_value = len(contacts_in_range) != 0
+            await self._status_repository.set_active(uid, active_value)
 
         # Update all maps that point at me
         await asyncio.gather(
-            *[self._update_contact_status(c) for c in contacts_with_map_open]
+            *[self._update_contact_status(c, force) for c in contacts_with_map_open]
         )
 
-    async def _update_contact_status(self, contact: UserEntity):
-        if self._needs_update(contact.last_status_update):
+    async def _update_contact_status(self, contact: UserEntity, force: bool):
+        if force or self._needs_update(contact.last_status_update):
             await self.regenerate_map_status(user=contact)
 
     def _needs_update(self, last_updated: datetime):
