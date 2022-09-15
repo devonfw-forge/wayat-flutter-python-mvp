@@ -79,7 +79,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         else:
             return user_entity.location, user_entity.location_shared_with
 
-    async def find_contacts_with_map_open(self, uid: str) -> list[UserEntity]:
+    async def find_contacts_with_map_open(self, uid: str, in_shared_list: bool = True) -> list[UserEntity]:
         result_stream = (
             self._get_collection_reference()
             .where("contacts", "array_contains", uid)
@@ -87,8 +87,15 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             .where("map_valid_until", ">", get_current_time())
             .stream()
         )
-        return [self._model(document_id=result.id, **result.to_dict()) async for result in
-                result_stream]  # type: ignore
+        all_models = [self._model(document_id=result.id, **result.to_dict())
+                      async for result in result_stream]  # type: ignore
+        if in_shared_list is True:
+            user = await self.get_or_throw(document_id=uid)
+            shared_list = user.location_shared_with
+            models = [el for el in all_models if el.document_id in shared_list]
+        else:
+            models = all_models
+        return models
 
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})
