@@ -38,8 +38,9 @@ void main() async {
 
   testWidgets('Virification dialdg widget has correct AlertDialog',
       (tester) async {
-    await tester.pumpWidget(_createApp(const VerifyPhoneNumberDialog(
+    await tester.pumpWidget(_createApp(VerifyPhoneNumberDialog(
       phoneNumber: '+34600947886',
+      callbackPhone: () {},
     )));
     await tester.pump(const Duration(seconds: 1));
     expect(find.byType(PinInputField), findsOneWidget);
