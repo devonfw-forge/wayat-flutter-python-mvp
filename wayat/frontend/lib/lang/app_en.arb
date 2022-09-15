@@ -22,6 +22,11 @@
     "phoneIncorrect": "Incorrect phone number. Enter valid phone.",
     "phoneDifferent": "Enter different phone number of the previous one.",
 
+    "phoneDeniedPermissions": "Denied permissions.",
+    "phoneErrorCode" : "Wrong code, try again",
+    "phoneErrorTooRequest" : "Too many code request, try it later",
+    "phoneUnexpectedError" : "Unexpected error, try it later.",
+
     "home": "Home",
     "contacts": "Contacts",
     "events": "Events",

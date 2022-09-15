@@ -1,5 +1,3 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -27,12 +25,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final EditProfileController controller = EditProfileController();
   final GlobalKey<FormState> _formKey = GlobalKey();
-
-  XFile? currentSelectedImage;
-  String? name;
-  String newPhoneNumber = "";
-  bool _validPhone = false;
-  String _errorPhoneMsg = "";
 
   TextStyle _textStyle(Color color, double size) =>
       TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
@@ -86,23 +78,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   iconSize: 25,
-                  onPressed: () {
-                    newPhoneNumber = "";
-                    controller.onPressedBackButton();
-                  },
+                  onPressed: () => controller.onPressedBackButton(),
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
                 padding: const EdgeInsets.only(left: 14),
-                child: Text(appLocalizations.profile,
-                    style: _textStyle(Colors.black87, 16)),
+                child: Text(
+                  appLocalizations.profile,
+                  style: _textStyle(Colors.black87, 16),
+                ),
               ),
             ],
           ),
           TextButton(
-            onPressed: () async {
-              await controller.onPressedSaveButton(
-                  name, currentSelectedImage, newPhoneNumber);
-            },
+            onPressed: () async => await controller.onPressedSaveButton(),
             child: Text(
               appLocalizations.save,
               style: _textStyle(ColorTheme.primaryColor, 16),
@@ -116,38 +104,37 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget _buildEditProfileImage() {
     return Stack(alignment: Alignment.bottomRight, children: <Widget>[
-      Container(
-        width: 120.0,
-        height: 120.0,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: (currentSelectedImage != null)
-                ? FileImage(io.File(currentSelectedImage!.path))
-                    as ImageProvider
-                : NetworkImage(
-                    GetIt.I.get<SessionState>().currentUser!.imageUrl),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(100.0)),
-          border: Border.all(
-            color: Colors.black87,
-            width: 7.0,
-          ),
-        ),
+      Observer(
+        builder: (_) {
+          return Container(
+            width: 120.0,
+            height: 120.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: (controller.currentSelectedImage != null)
+                    ? FileImage(io.File(controller.currentSelectedImage!.path))
+                        as ImageProvider
+                    : NetworkImage(
+                        GetIt.I.get<SessionState>().currentUser!.imageUrl),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(100.0)),
+              border: Border.all(
+                color: Colors.black87,
+                width: 7.0,
+              ),
+            ),
+          );
+        },
       ),
       InkWell(
-        onTap: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (builder) => _getImageFromCameraOrGallary());
-        },
+        onTap: () => showModalBottomSheet(
+            context: context,
+            builder: (builder) => _getImageFromCameraOrGallary()),
         child: const CircleAvatar(
             backgroundColor: Colors.black,
             radius: 28,
-            child: Icon(
-              Icons.edit_outlined,
-              color: Colors.white,
-            )),
+            child: Icon(Icons.edit_outlined, color: Colors.white)),
       ),
     ]);
   }
@@ -182,120 +169,100 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     border: InputBorder.none,
                     hintText: user.name,
                     hintStyle: _textStyle(Colors.black38, 18)),
-                onChanged: ((text) {
-                  name = text;
-                })),
+                onChanged: ((text) => controller.setName(text))),
           )),
         ]),
       );
 
-  IntlPhoneField _phoneTextField() {
-    return IntlPhoneField(
-      // Only numbers are allowed as input
-      keyboardType: TextInputType.number,
-      invalidNumberMessage: appLocalizations.invalidPhoneNumber,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-      ],
-      decoration: InputDecoration(
-          labelText: user.phone.substring(3),
-          errorText: _errorPhoneMsg != "" ? _errorPhoneMsg : null,
-          labelStyle: _textStyle(Colors.black87, 16),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-      initialCountryCode: 'ES',
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (newTextValue) {
-        if (newTextValue!.number.isEmpty) {
-          setState(() {
-            _errorPhoneMsg = appLocalizations.phoneEmpty;
-          });
-          return _errorPhoneMsg;
-        }
-        if (newTextValue.completeNumber.length < 12) {
-          setState(() {
-            _errorPhoneMsg = appLocalizations.phoneIncorrect;
-          });
-          return _errorPhoneMsg;
-        }
-
-        if (newTextValue.completeNumber == user.phone) {
-          setState(() {
-            _errorPhoneMsg = appLocalizations.phoneDifferent;
-          });
-          return _errorPhoneMsg;
-        }
-        _errorPhoneMsg = '';
-        return null;
-      },
-      onChanged: (phone) {
-        setState(() {
-          if (_formKey.currentState != null) {
-            _validPhone = _formKey.currentState!.validate();
-            if (phone.completeNumber == newPhoneNumber) return;
-            if (_validPhone) _submit(phone.completeNumber);
-          }
-        });
+  Observer _phoneTextField() {
+    return Observer(
+      builder: (_) {
+        return IntlPhoneField(
+          // Only numbers are allowed as input
+          keyboardType: TextInputType.number,
+          invalidNumberMessage: appLocalizations.invalidPhoneNumber,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          ],
+          decoration: InputDecoration(
+              labelText: user.phone.substring(3),
+              errorText: controller.errorPhoneFormat.isNotEmpty
+                  ? controller.errorPhoneFormat
+                  : null,
+              labelStyle: _textStyle(Colors.black87, 16),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          initialCountryCode: 'ES',
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (newTextValue) =>
+              controller.validatePhoneNumber(newTextValue),
+          onChanged: (phone) {
+            if (_formKey.currentState != null) {
+              final validPhone = _formKey.currentState!.validate();
+              if (phone.completeNumber == controller.user.phone ||
+                  phone.completeNumber == controller.phoneNumber) return;
+              if (validPhone) _submit(phone.completeNumber);
+            }
+          },
+        );
       },
     );
   }
 
-  void updatePhoneNumber(String phone) {
-    newPhoneNumber = phone;
-  }
-
   void _submit(String newPhone) {
-    if (_errorPhoneMsg == '') {
-      newPhoneNumber = "";
+    if (controller.errorPhoneVerificationMsg == '') {
+      controller.setNewPhoneNumber("");
       showDialog(
           context: context,
           builder: (context) {
             return VerifyPhoneNumberDialog(
-                phoneNumber: newPhone, callbackPhone: updatePhoneNumber);
+                phoneNumber: newPhone,
+                callbackPhone: controller.setNewPhoneNumber);
           });
     }
   }
 
   Widget _getImageFromCameraOrGallary() {
-    return Container(
-        height: MediaQuery.of(context).size.height / 8,
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: Column(children: [
-          Text(appLocalizations.chooseProfileFoto,
-              style: const TextStyle(fontSize: 18)),
-          const SizedBox(height: 20),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            TextButton.icon(
-                onPressed: () => _getFromSource(ImageSource.camera),
-                icon: const Icon(
-                  Icons.camera_alt,
-                  size: 30,
-                  color: Colors.black87,
-                ),
-                label: Text(
-                  appLocalizations.camera,
-                  style: const TextStyle(color: Colors.black87),
-                )),
-            TextButton.icon(
-                onPressed: () => _getFromSource(ImageSource.gallery),
-                icon: const Icon(
-                  Icons.image,
-                  size: 30,
-                  color: Colors.black87,
-                ),
-                label: Text(
-                  appLocalizations.gallery,
-                  style: const TextStyle(color: Colors.black87),
-                )),
-          ])
-        ]));
+    return Observer(
+      builder: (_) => Container(
+          height: MediaQuery.of(context).size.height / 8,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(children: [
+            Text(appLocalizations.chooseProfileFoto,
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 20),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              TextButton.icon(
+                  onPressed: () => _getFromSource(ImageSource.camera),
+                  icon: const Icon(
+                    Icons.camera_alt,
+                    size: 30,
+                    color: Colors.black87,
+                  ),
+                  label: Text(
+                    appLocalizations.camera,
+                    style: const TextStyle(color: Colors.black87),
+                  )),
+              TextButton.icon(
+                  onPressed: () => _getFromSource(ImageSource.gallery),
+                  icon: const Icon(
+                    Icons.image,
+                    size: 30,
+                    color: Colors.black87,
+                  ),
+                  label: Text(
+                    appLocalizations.gallery,
+                    style: const TextStyle(color: Colors.black87),
+                  )),
+            ])
+          ])),
+    );
   }
 
-  void _getFromSource(ImageSource source) async {
+  Future _getFromSource(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
-    setState(() {
-      currentSelectedImage = newImage;
-    });
-    AutoRouter.of(context).pop();
+    controller.setNewImage(newImage);
+    Navigator.of(context).pop();
   }
 }

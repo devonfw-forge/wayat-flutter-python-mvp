@@ -1,12 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
 import 'package:wayat/features/profile/widgets/pin_input_field.dart';
-import 'package:wayat/lang/app_localizations.dart';
 
 class VerifyPhoneNumberDialog extends StatefulWidget {
   static const id = 'VerifyPhoneNumberScreen';
@@ -47,7 +45,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
       child: FirebasePhoneAuthProvider(
         child: FirebasePhoneAuthHandler(
           phoneNumber: widget.phoneNumber,
-          autoRetrievalTimeOutDuration: Duration(seconds: 5),
+          otpExpirationDuration: const Duration(seconds: 30),
           signOutOnSuccessfulVerification: false,
           linkWithExistingUser: false,
           onCodeSent: () {
@@ -60,15 +58,13 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           onLoginFailed:
               (FirebaseAuthException authException, StackTrace? stackTrace) {
             if (authException.code == "permission-denied") {
-              errorMsg = "Permisos denegados";
+              errorMsg = appLocalizations.phoneDeniedPermissions;
             } else if (authException.code == "invalid-verification-code") {
-              errorMsg = "Codigo erroneo, solicita otro codigo";
+              errorMsg = appLocalizations.phoneErrorCode;
             } else if (authException.code == "too-many-requests") {
-              errorMsg =
-                  "Se ha excedido el numero de intentos para este numero";
+              errorMsg = appLocalizations.phoneErrorTooRequest;
             } else {
-              errorMsg =
-                  "Error inesperado, por favor intentalo otra vez mas tarde";
+              errorMsg = appLocalizations.phoneUnexpectedError;
             }
             setState(() {});
           },
@@ -112,7 +108,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
                 : Text(
                     textAlign: TextAlign.center,
                     errorMsg,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
                   )
           ],
