@@ -128,7 +128,7 @@ class MapService:
 
         # Implementation
         new_contact_refs = await asyncio.gather(
-            *[self._create_contact_ref(contact_uid) for contact_uid in user_to_update.contacts],
+            *[self._create_contact_ref(contact_uid, user_to_update) for contact_uid in user_to_update.contacts],
         )  # type: list[ContactRefInfo]
 
         await asyncio.gather(
