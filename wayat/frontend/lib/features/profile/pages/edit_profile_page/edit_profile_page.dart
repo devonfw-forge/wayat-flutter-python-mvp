@@ -87,6 +87,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   constraints: const BoxConstraints(),
                   iconSize: 25,
                   onPressed: () {
+                    newPhoneNumber = "";
                     controller.onPressedBackButton();
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
@@ -99,7 +100,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           TextButton(
             onPressed: () async {
-              await controller.onPressedSaveButton(name, currentSelectedImage);
+              await controller.onPressedSaveButton(
+                  name, currentSelectedImage, newPhoneNumber);
             },
             child: Text(
               appLocalizations.save,
@@ -188,12 +190,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
       );
 
   IntlPhoneField _phoneTextField() {
-    //delete this line on release, and turn on AppCheck in Firestore Console
-    //FirebaseAuth auth = FirebaseAuth.instance;
-    //auth.setSettings(appVerificationDisabledForTesting: true);
     return IntlPhoneField(
       // Only numbers are allowed as input
       keyboardType: TextInputType.number,
+      invalidNumberMessage: appLocalizations.invalidPhoneNumber,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
       ],
@@ -217,6 +217,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           });
           return _errorPhoneMsg;
         }
+
         if (newTextValue.completeNumber == user.phone) {
           setState(() {
             _errorPhoneMsg = appLocalizations.phoneDifferent;
@@ -230,6 +231,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         setState(() {
           if (_formKey.currentState != null) {
             _validPhone = _formKey.currentState!.validate();
+            if (phone.completeNumber == newPhoneNumber) return;
             if (_validPhone) _submit(phone.completeNumber);
           }
         });
@@ -237,13 +239,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
+  void updatePhoneNumber(String phone) {
+    newPhoneNumber = phone;
+  }
+
   void _submit(String newPhone) {
     if (_errorPhoneMsg == '') {
-      newPhoneNumber = newPhone;
+      newPhoneNumber = "";
       showDialog(
           context: context,
           builder: (context) {
-            return VerifyPhoneNumberDialog(phoneNumber: newPhone);
+            return VerifyPhoneNumberDialog(
+                phoneNumber: newPhone, callbackPhone: updatePhoneNumber);
           });
     }
   }

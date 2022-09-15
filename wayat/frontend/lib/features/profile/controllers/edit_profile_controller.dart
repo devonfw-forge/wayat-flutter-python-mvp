@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/services/profile/profile_service_impl.dart';
 
@@ -14,7 +15,7 @@ class EditProfileController {
   }
 
   Future<void> onPressedSaveButton(
-      String? name, XFile? currentSelectedImage) async {
+      String? name, XFile? currentSelectedImage, String phoneNumber) async {
     onPressedBackButton();
 
     if (name != null ? name.replaceAll(" ", "").isNotEmpty : false) {
@@ -23,6 +24,9 @@ class EditProfileController {
 
     if (currentSelectedImage != null) {
       await profileState.updateUserImage(currentSelectedImage);
+    }
+    if (phoneNumber.isNotEmpty) {
+      await GetIt.I.get<SessionState>().updatePhone(phoneNumber);
     }
   }
 }
