@@ -86,7 +86,7 @@ class ManageGroupPage extends StatelessWidget {
                groupsController.doActionAndUpdateGroups(
                   () async => await controller.saveGroup()); */
               groupsController.setUpdatingGroup(true);
-              controller.saveGroup();
+              await controller.saveGroup();
               groupsController.setUpdatingGroup(false);
               goBack();
             }),
