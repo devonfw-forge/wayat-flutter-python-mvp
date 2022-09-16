@@ -59,7 +59,12 @@
 
     "information": "Information",
     "darkTheme": "Enable dark theme",
-    "language": "English",
+    "language": "Language",
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French",
+    "ge": "German",
+    "du": "Dutch",
 
     "changePhone": "Phone",
     "changePassword": "Change password",

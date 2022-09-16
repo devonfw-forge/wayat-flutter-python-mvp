@@ -57,6 +57,11 @@
     "information": "Información",
     "darkTheme": "Habilitar tema oscuro",
     "language": "Idioma",
+    "en": "Inglés",
+    "es": "Español",
+    "fr": "Francés",
+    "ge": "Alemán",
+    "du": "Holandés",
 
     "changePhone": "Teléfono",
     "changePassword": "Cambiar Contraseña",

@@ -9,6 +9,7 @@ class LangSingleton {
 
   void initialize(context) {
     appLocalizations = AppLocalizations.of(context)!;
+    print('info localeName: '+appLocalizations.localeName);
   }
 
   AppLocalizations get() {

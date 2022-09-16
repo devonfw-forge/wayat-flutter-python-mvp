@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
@@ -12,6 +13,7 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/lang/language_constants.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/options.dart';
@@ -33,9 +35,9 @@ Future main() async {
 void setTimeAgoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
   timeago.setLocaleMessages('es', timeago.EsMessages());
-  timeago.setLocaleMessages('fr', timeago.FrMessages());
-  timeago.setLocaleMessages('de', timeago.DeMessages());
-  timeago.setLocaleMessages('nl', timeago.NlMessages());
+  // timeago.setLocaleMessages('fr', timeago.FrMessages());
+  // timeago.setLocaleMessages('de', timeago.DeMessages());
+  // timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
 Future registerSingletons() async {
@@ -59,13 +61,28 @@ Future registerSingletons() async {
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  static _MyApp? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyApp>();
+
   @override
   State<MyApp> createState() => _MyApp();
 }
 
 class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   final _appRouter = AppRouter();
+
+  late Locale _locale;
+
+  Future<Locale> getLocaleSharePreferences() async => await getLocaleConstants();
+
   final MapState mapState = GetIt.I.get<MapState>();
+  final ProfileState profileState = GetIt.I.get<ProfileState>();
+
+  void setLocale(Locale value) {
+    setState(() {
+      _locale = value;
+    });
+  }
 
   @override
   void initState() {
@@ -105,18 +122,37 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        // In the app build, the context does not contain an AppLocalizations instance.
-        // However, after the title is generated the AppLocalizations instance is the
-        // first time it is not null
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
-    );
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: _locale,
+        onGenerateTitle: (context) {
+          // In the app build, the context does not contain an AppLocalizations instance.
+          // However, after the title is generated the AppLocalizations instance is the
+          // first time it is not null
+          GetIt.I.get<LangSingleton>().initialize(context);
+          // print('itemlocale context: ' +
+          //     Localizations.localeOf(context).languageCode);
+          // print('var localizations: ' +
+          //     GetIt.I.get<LangSingleton>().appLocalizations.language);
+          return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
+        },
+        localeResolutionCallback: (locale, supportedLocales) {
+          // print('infolocaleL: ' + locale!.languageCode);
+          // print('infolocaleC: ' + locale.countryCode.toString());
+          // print('infosupportedsList: ' + supportedLocales.toString());
+          for (Locale supportedLocale in supportedLocales) {
+            // print('infosupportedLocale: ' +
+            //     supportedLocale.languageCode.toString());
+            if (supportedLocale.languageCode == locale?.languageCode) {
+              // print('info entra: '+supportedLocale.toString());
+              return supportedLocale;
+            }
+          }
+          return const Locale("en", "US");
+        },
+        routerDelegate: _appRouter.delegate(),
+        routeInformationParser: _appRouter.defaultRouteParser(),
+      );
   }
 }

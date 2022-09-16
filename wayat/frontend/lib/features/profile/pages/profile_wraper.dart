@@ -32,7 +32,7 @@ class ProfileWrapper extends StatelessWidget {
       case ProfileCurrentPages.editProfile:
         return const EditProfileRoute();
       case ProfileCurrentPages.preference:
-        return const PreferencesRoute();
+        return PreferencesRoute();
       case ProfileCurrentPages.faqs:
         return const FaqsRoute();
       case ProfileCurrentPages.privacy:
