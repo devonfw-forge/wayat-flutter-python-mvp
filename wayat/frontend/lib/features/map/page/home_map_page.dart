@@ -101,8 +101,8 @@ class HomeMapPage extends StatelessWidget {
   Widget groupsSlider() {
     List<Group> groups = controllerGroups.groups;
     return (groups.isEmpty)
-        ? Text(appLocalizations.noGroupsMessage)
-        : Container(
+        ? Container()
+        : SizedBox(
             key: const Key("groupSlider"),
             height: 70,
             width: double.infinity,
@@ -114,7 +114,7 @@ class HomeMapPage extends StatelessWidget {
                   final Group group = groups[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Container(
+                    child: SizedBox(
                       width: 60,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
