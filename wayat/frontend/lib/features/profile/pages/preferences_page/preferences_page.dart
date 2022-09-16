@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:restart_app/restart_app.dart';
+import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/lang/language.dart';
 
 class PreferencesPage extends StatelessWidget {
-  const PreferencesPage({Key? key}) : super(key: key);
+  PreferencesPage({Key? key}) : super(key: key);
+
+  final EditProfileController controller = EditProfileController();
+  final ProfileState profileState = GetIt.I.get<ProfileState>();
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +21,9 @@ class PreferencesPage extends StatelessWidget {
       children: [
         _profileAppBar(),
         const SizedBox(height: 34.5),
-        _buildEnableDarkThemeSwitchButton(),
-        const SizedBox(height: 34.5),
+        // TODO: implement the dark mode
+        // _buildEnableDarkThemeSwitchButton(),
+        // const SizedBox(height: 34.5),
         _buildLanguageButton(),
       ],
     );
@@ -57,11 +67,12 @@ class PreferencesPage extends StatelessWidget {
             child: Row(
               children: [
                 InkWell(
-                    onTap: () async {
+                    onTap: () {
                       // Route to Profile main page
+                      controller.onPressedBackButton();
                     },
                     child: const Icon(Icons.arrow_back,
-                        color: Colors.black87, size: 16)),
+                        color: Colors.black87, size: 24)),
                 Padding(
                   padding: const EdgeInsets.only(left: 14),
                   child: Text(
@@ -69,58 +80,75 @@ class PreferencesPage extends StatelessWidget {
                     style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.black87,
-                        fontSize: 16),
+                        fontSize: 19),
                   ),
                 ),
               ],
             ),
           ),
-          TextButton(
-            onPressed: () {
-              // Save changes
-            },
-            child: Text(
-              appLocalizations.save,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-              textAlign: TextAlign.right,
+          Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: TextButton(
+              onPressed: () {
+                // Save changes
+              },
+              child: Text(
+                appLocalizations.save,
+                style:
+                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                textAlign: TextAlign.right,
+              ),
             ),
           )
         ],
       );
 
-  Row _buildLanguageButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            appLocalizations.darkTheme,
+  Padding _buildLanguageButton() {
+    final List<Language> itemList = Language.languageList();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            GetIt.I.get<LangSingleton>().appLocalizations.language,
             style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black87,
-                fontSize: 16),
+                fontSize: 19),
           ),
-        ),
-        Row(
-          children: [
-            Text(
-              appLocalizations.language,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 16),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: InkWell(
-                  onTap: () {},
-                  child: const Icon(Icons.arrow_forward,
-                      color: Colors.black87, size: 16)),
-            )
-          ],
-        ),
-      ],
+          _languageButton(itemList),
+        ],
+      ),
     );
+  }
+
+  Widget _languageButton(List<Language> itemList) {
+    return Observer(builder: (context) {
+      Language languageSelected = profileState.language!;
+      return DropdownButton<Language>(
+        value: languageSelected,
+        borderRadius: BorderRadius.circular(10),
+        underline: const SizedBox(),
+        icon: const Icon(Icons.arrow_drop_down, size: 24),
+        onChanged: (Language? language) async {
+          if (language != null) {
+            await profileState.changeLanguage(language);
+            Restart.restartApp();
+          }
+        },
+        items: itemList
+            .map<DropdownMenuItem<Language>>(
+              (e) => DropdownMenuItem<Language>(
+                  value: e,
+                  child: Text(
+                    e.name,
+                    style: const TextStyle(fontSize: 19),
+                  )),
+            )
+            .toList(),
+      );
+    });
   }
 }

@@ -227,9 +227,23 @@ void main() async {
         find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
 
     // Emulate a tap on the logOut profile button
-    await tester.tap(find.descendant(
+    Finder logOutButton = find.descendant(
         of: find.widgetWithText(CustomCard, appLocalizations.logOut),
-        matching: find.byType(InkWell)));
+        matching: find.byType(InkWell));
+
+    final listFinder =
+        find.widgetWithText(Scrollable, appLocalizations.profileShareLocation);
+
+    // Scroll until the item to be found appears.
+    await tester.scrollUntilVisible(
+      logOutButton,
+      500.0,
+      scrollable: listFinder,
+    );
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(logOutButton);
 
     verify(mockSessionState.logOut()).called(1);
   });

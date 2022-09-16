@@ -12,6 +12,7 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/lang/language_constants.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/options.dart';
@@ -35,9 +36,9 @@ Future main() async {
 void setTimeAgoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
   timeago.setLocaleMessages('es', timeago.EsMessages());
-  timeago.setLocaleMessages('fr', timeago.FrMessages());
-  timeago.setLocaleMessages('de', timeago.DeMessages());
-  timeago.setLocaleMessages('nl', timeago.NlMessages());
+  // timeago.setLocaleMessages('fr', timeago.FrMessages());
+  // timeago.setLocaleMessages('de', timeago.DeMessages());
+  // timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
 Future registerSingletons() async {
@@ -67,7 +68,9 @@ class MyApp extends StatefulWidget {
 
 class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   final _appRouter = AppRouter();
+  
   final MapState mapState = GetIt.I.get<MapState>();
+  final ProfileState profileState = GetIt.I.get<ProfileState>();
 
   @override
   void initState() {
@@ -106,19 +109,33 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
 
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        // In the app build, the context does not contain an AppLocalizations instance.
-        // However, after the title is generated the AppLocalizations instance is the
-        // first time it is not null
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
+    return FutureBuilder(
+      future: GetIt.I.get<ProfileState>().initializeLocale(),
+      builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
+        return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: snapshot.data,
+            onGenerateTitle: (context) {
+              // In the app build, the context does not contain an AppLocalizations instance.
+              // However, after the title is generated the AppLocalizations instance is the
+              // first time it is not null
+              GetIt.I.get<LangSingleton>().initialize(context);
+              return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
+            },
+            localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
+              for (Locale supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale?.languageCode) {
+                  return supportedLocale;
+                }
+              }
+              return const Locale("en", "US");
+            },
+            routerDelegate: _appRouter.delegate(),
+            routeInformationParser: _appRouter.defaultRouteParser(),
+          );
+      }
     );
   }
 }

@@ -48,7 +48,7 @@ class ProfilePage extends StatelessWidget {
         }),
         const SizedBox(height: 32),
         _buildShareLocationPart(),
-        Divider(),
+        const Divider(),
         const SizedBox(height: 20),
         _buildAccountPart(context),
       ],
@@ -110,6 +110,11 @@ class ProfilePage extends StatelessWidget {
               profileState.setCurrentPage(ProfileCurrentPages.editProfile);
             }),
         const SizedBox(height: 24),
+        CustomCard(
+            text: appLocalizations.preferences,
+            onTap: () {
+              profileState.setCurrentPage(ProfileCurrentPages.preference);
+            }),
       ],
     );
   }

@@ -6,7 +6,8 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
-import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/lang/app_localizations.dart';
+
 
 class PhoneValidationPage extends StatefulWidget {
   const PhoneValidationPage({Key? key}) : super(key: key);
@@ -16,7 +17,6 @@ class PhoneValidationPage extends StatefulWidget {
 }
 
 class _PhoneValidationPageState extends State<PhoneValidationPage> {
-  final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
   final userSession = GetIt.I.get<SessionState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _validPhone = false;
