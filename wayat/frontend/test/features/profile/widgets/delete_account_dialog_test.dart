@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/widgets/delete_account_dialog.dart';

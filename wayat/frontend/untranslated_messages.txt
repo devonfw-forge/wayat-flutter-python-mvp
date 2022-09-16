@@ -1,10 +1,5 @@
 {
   "fr": [
-    "en",
-    "es",
-    "fr",
-    "ge",
-    "du",
     "contactProfileSharingLocationWithYou",
     "contactProfileLocationNotAvailable",
     "contactProfileNotSharingLocation",
@@ -18,6 +13,8 @@
     "addParticipantsTip",
     "addFriends",
     "groupParticipants",
+    "editGroup",
+    "deleteGroup",
     "done"
   ]
 }
