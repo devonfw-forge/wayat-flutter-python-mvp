@@ -65,6 +65,7 @@ dependencies:
   image_picker: ^0.8.5+3
   # Testing mocks
   mockito: ^5.3.0
+  restart_app: ^1.1.0+1
 
 dev_dependencies:
   flutter_test:

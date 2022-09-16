@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
@@ -61,28 +60,15 @@ Future registerSingletons() async {
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static _MyApp? of(BuildContext context) =>
-      context.findAncestorStateOfType<_MyApp>();
-
   @override
   State<MyApp> createState() => _MyApp();
 }
 
 class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   final _appRouter = AppRouter();
-
-  late Locale _locale;
-
-  Future<Locale> getLocaleSharePreferences() async => await getLocaleConstants();
-
+  
   final MapState mapState = GetIt.I.get<MapState>();
   final ProfileState profileState = GetIt.I.get<ProfileState>();
-
-  void setLocale(Locale value) {
-    setState(() {
-      _locale = value;
-    });
-  }
 
   @override
   void initState() {
@@ -121,38 +107,33 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
 
-    return MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: _locale,
-        onGenerateTitle: (context) {
-          // In the app build, the context does not contain an AppLocalizations instance.
-          // However, after the title is generated the AppLocalizations instance is the
-          // first time it is not null
-          GetIt.I.get<LangSingleton>().initialize(context);
-          // print('itemlocale context: ' +
-          //     Localizations.localeOf(context).languageCode);
-          // print('var localizations: ' +
-          //     GetIt.I.get<LangSingleton>().appLocalizations.language);
-          return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-        },
-        localeResolutionCallback: (locale, supportedLocales) {
-          // print('infolocaleL: ' + locale!.languageCode);
-          // print('infolocaleC: ' + locale.countryCode.toString());
-          // print('infosupportedsList: ' + supportedLocales.toString());
-          for (Locale supportedLocale in supportedLocales) {
-            // print('infosupportedLocale: ' +
-            //     supportedLocale.languageCode.toString());
-            if (supportedLocale.languageCode == locale?.languageCode) {
-              // print('info entra: '+supportedLocale.toString());
-              return supportedLocale;
-            }
-          }
-          return const Locale("en", "US");
-        },
-        routerDelegate: _appRouter.delegate(),
-        routeInformationParser: _appRouter.defaultRouteParser(),
-      );
+    return FutureBuilder(
+      future: GetIt.I.get<ProfileState>().initializeLocale(),
+      builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
+        return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: snapshot.data,
+            onGenerateTitle: (context) {
+              // In the app build, the context does not contain an AppLocalizations instance.
+              // However, after the title is generated the AppLocalizations instance is the
+              // first time it is not null
+              GetIt.I.get<LangSingleton>().initialize(context);
+              return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
+            },
+            localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
+              for (Locale supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale?.languageCode) {
+                  return supportedLocale;
+                }
+              }
+              return const Locale("en", "US");
+            },
+            routerDelegate: _appRouter.delegate(),
+            routeInformationParser: _appRouter.defaultRouteParser(),
+          );
+      }
+    );
   }
 }

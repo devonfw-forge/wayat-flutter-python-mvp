@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
@@ -17,6 +18,9 @@ class PreferencesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+          print('----------------------------> 4 ' +
+              GetIt.I.get<LangSingleton>().appLocalizations.language);
     return Column(
       children: [
         _profileAppBar(),
@@ -126,9 +130,7 @@ class PreferencesPage extends StatelessWidget {
 
   Widget _languageButton(List<Language> itemList) {
     return Observer(builder: (context) {
-      Language languageSelected = profileState.language;
-      print('itemlist: ' + itemList.map((e) => e.name).toString());
-      print('itemselected: ' + languageSelected.name.toString());
+      Language languageSelected = profileState.language!;
       return DropdownButton<Language>(
         value: languageSelected,
         borderRadius: BorderRadius.circular(10),
@@ -138,9 +140,7 @@ class PreferencesPage extends StatelessWidget {
         onChanged: (Language? language) async {
           if (language != null) {
             await profileState.changeLanguage(language);
-            // profileState.setLocale(Locale(language.languageCode));
-            MyApp.of(context)!
-                .setLocale(Locale.fromSubtags(languageCode: language.languageCode));
+            Restart.restartApp();
           }
         },
         items: itemList
@@ -148,7 +148,7 @@ class PreferencesPage extends StatelessWidget {
               (e) => DropdownMenuItem<Language>(
                   value: e,
                   child: Text(
-                    e.name!,
+                    e.name,
                     style: const TextStyle(fontSize: 19),
                   )),
             )

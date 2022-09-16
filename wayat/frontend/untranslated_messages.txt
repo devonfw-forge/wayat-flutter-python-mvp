@@ -1,0 +1,23 @@
+{
+  "fr": [
+    "en",
+    "es",
+    "fr",
+    "ge",
+    "du",
+    "contactProfileSharingLocationWithYou",
+    "contactProfileLocationNotAvailable",
+    "contactProfileNotSharingLocation",
+    "contactProfileLastUpdated",
+    "groupsTitle",
+    "createGroup",
+    "noGroupsMessage",
+    "newGroup",
+    "groupName",
+    "addParticipants",
+    "addParticipantsTip",
+    "addFriends",
+    "groupParticipants",
+    "done"
+  ]
+}

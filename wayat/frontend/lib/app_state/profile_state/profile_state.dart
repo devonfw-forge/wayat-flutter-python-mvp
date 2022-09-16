@@ -26,13 +26,19 @@ abstract class _ProfileState with Store {
   bool isAccount = false;
 
   @observable
-  late Language language = getLanguage();
+  Language? language;
 
   @observable
-  late Locale locale = Locale(language.languageCode);
+  Locale? locale;
 
-  Language getLanguage(){
-    if (Platform.localeName.toLowerCase().contains('es')) {
+  Future<Locale> initializeLocale() async {
+    locale = await getLocaleConstants();
+    language = _getLanguage(locale!.languageCode);
+    return locale!;
+  }
+
+  Language _getLanguage(String lnguageCode){
+    if (lnguageCode.contains('es')) {
       return Language('Español', 'es');
     }
     return Language('English', 'en');
@@ -67,20 +73,18 @@ abstract class _ProfileState with Store {
     _profileService.deleteCurrentUser();
   }
 
-  @action
-  void setLocale(Locale newLocale) {
+  void _setLocale(Locale newLocale) {
     locale = newLocale;
   }
 
-
-  void setLanguage(Language newLanguage) {
+  void _setLanguage(Language newLanguage) {
     language = newLanguage;
   }
 
   @action
   Future changeLanguage(Language language) async {
-    setLanguage(language);
+    _setLanguage(language);
     Locale locale = await setLocaleConstants(language.languageCode);
-    setLocale(locale);
+    _setLocale(locale);
   }
 }

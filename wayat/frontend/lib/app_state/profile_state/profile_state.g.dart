@@ -45,13 +45,13 @@ mixin _$ProfileState on _ProfileState, Store {
       Atom(name: '_ProfileState.language', context: context);
 
   @override
-  Language get language {
+  Language? get language {
     _$languageAtom.reportRead();
     return super.language;
   }
 
   @override
-  set language(Language value) {
+  set language(Language? value) {
     _$languageAtom.reportWrite(value, super.language, () {
       super.language = value;
     });
@@ -61,13 +61,13 @@ mixin _$ProfileState on _ProfileState, Store {
       Atom(name: '_ProfileState.locale', context: context);
 
   @override
-  Locale get locale {
+  Locale? get locale {
     _$localeAtom.reportRead();
     return super.locale;
   }
 
   @override
-  set locale(Locale value) {
+  set locale(Locale? value) {
     _$localeAtom.reportWrite(value, super.locale, () {
       super.locale = value;
     });
@@ -116,17 +116,6 @@ mixin _$ProfileState on _ProfileState, Store {
         name: '_ProfileState.setCurrentPage');
     try {
       return super.setCurrentPage(newPage);
-    } finally {
-      _$_ProfileStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setLocale(Locale newLocale) {
-    final _$actionInfo = _$_ProfileStateActionController.startAction(
-        name: '_ProfileState.setLocale');
-    try {
-      return super.setLocale(newLocale);
     } finally {
       _$_ProfileStateActionController.endAction(_$actionInfo);
     }

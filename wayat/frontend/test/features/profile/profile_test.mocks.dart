@@ -3,25 +3,25 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i12;
-import 'dart:ui' as _i5;
+import 'dart:async' as _i11;
+import 'dart:ui' as _i4;
 
-import 'package:google_maps_flutter/google_maps_flutter.dart' as _i8;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as _i7;
 import 'package:image_picker/image_picker.dart' as _i15;
 import 'package:mobx/mobx.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:wayat/app_state/location_state/location_state.dart' as _i16;
-import 'package:wayat/app_state/profile_state/profile_state.dart' as _i13;
-import 'package:wayat/app_state/user_session/session_state.dart' as _i10;
-import 'package:wayat/app_state/user_status/user_status_state.dart' as _i7;
-import 'package:wayat/domain/user/my_user.dart' as _i11;
+import 'package:wayat/app_state/profile_state/profile_state.dart' as _i12;
+import 'package:wayat/app_state/user_session/session_state.dart' as _i9;
+import 'package:wayat/app_state/user_status/user_status_state.dart' as _i6;
+import 'package:wayat/domain/user/my_user.dart' as _i10;
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart'
-    as _i14;
-import 'package:wayat/lang/language.dart' as _i4;
+    as _i13;
+import 'package:wayat/lang/language.dart' as _i14;
 import 'package:wayat/services/authentication/auth_service.dart' as _i2;
-import 'package:wayat/services/location/share_location_service.dart' as _i6;
+import 'package:wayat/services/location/share_location_service.dart' as _i5;
 import 'package:wayat/services/location/share_location_service_factory.dart'
-    as _i9;
+    as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -45,43 +45,38 @@ class _FakeReactiveContext_1 extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
-class _FakeLanguage_2 extends _i1.SmartFake implements _i4.Language {
-  _FakeLanguage_2(Object parent, Invocation parentInvocation)
+class _FakeLocale_2 extends _i1.SmartFake implements _i4.Locale {
+  _FakeLocale_2(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeLocale_3 extends _i1.SmartFake implements _i5.Locale {
-  _FakeLocale_3(Object parent, Invocation parentInvocation)
+class _FakeShareLocationService_3 extends _i1.SmartFake
+    implements _i5.ShareLocationService {
+  _FakeShareLocationService_3(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeShareLocationService_4 extends _i1.SmartFake
-    implements _i6.ShareLocationService {
-  _FakeShareLocationService_4(Object parent, Invocation parentInvocation)
+class _FakeUserStatusState_4 extends _i1.SmartFake
+    implements _i6.UserStatusState {
+  _FakeUserStatusState_4(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeUserStatusState_5 extends _i1.SmartFake
-    implements _i7.UserStatusState {
-  _FakeUserStatusState_5(Object parent, Invocation parentInvocation)
+class _FakeLatLng_5 extends _i1.SmartFake implements _i7.LatLng {
+  _FakeLatLng_5(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeLatLng_6 extends _i1.SmartFake implements _i8.LatLng {
-  _FakeLatLng_6(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-class _FakeShareLocationServiceFactory_7 extends _i1.SmartFake
-    implements _i9.ShareLocationServiceFactory {
-  _FakeShareLocationServiceFactory_7(Object parent, Invocation parentInvocation)
+class _FakeShareLocationServiceFactory_6 extends _i1.SmartFake
+    implements _i8.ShareLocationServiceFactory {
+  _FakeShareLocationServiceFactory_6(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
 /// A class which mocks [SessionState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSessionState extends _i1.Mock implements _i10.SessionState {
+class MockSessionState extends _i1.Mock implements _i9.SessionState {
   MockSessionState() {
     _i1.throwOnMissingStub(this);
   }
@@ -111,7 +106,7 @@ class MockSessionState extends _i1.Mock implements _i10.SessionState {
       super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
           returnValueForMissingStub: null);
   @override
-  set currentUser(_i11.MyUser? value) =>
+  set currentUser(_i10.MyUser? value) =>
       super.noSuchMethod(Invocation.setter(#currentUser, value),
           returnValueForMissingStub: null);
   @override
@@ -127,17 +122,17 @@ class MockSessionState extends _i1.Mock implements _i10.SessionState {
                   _FakeReactiveContext_1(this, Invocation.getter(#context)))
           as _i3.ReactiveContext);
   @override
-  _i12.Future<void> doneOnBoarding() =>
+  _i11.Future<void> doneOnBoarding() =>
       (super.noSuchMethod(Invocation.method(#doneOnBoarding, []),
-              returnValue: _i12.Future<void>.value(),
-              returnValueForMissingStub: _i12.Future<void>.value())
-          as _i12.Future<void>);
+              returnValue: _i11.Future<void>.value(),
+              returnValueForMissingStub: _i11.Future<void>.value())
+          as _i11.Future<void>);
   @override
-  _i12.Future<void> isLogged() =>
+  _i11.Future<void> isLogged() =>
       (super.noSuchMethod(Invocation.method(#isLogged, []),
-              returnValue: _i12.Future<void>.value(),
-              returnValueForMissingStub: _i12.Future<void>.value())
-          as _i12.Future<void>);
+              returnValue: _i11.Future<void>.value(),
+              returnValueForMissingStub: _i11.Future<void>.value())
+          as _i11.Future<void>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
@@ -147,39 +142,39 @@ class MockSessionState extends _i1.Mock implements _i10.SessionState {
       Invocation.method(#setFinishLoggedIn, [finishedLoggedIn]),
       returnValueForMissingStub: null);
   @override
-  _i12.Future<dynamic> initializeUser() =>
+  _i11.Future<dynamic> initializeUser() =>
       (super.noSuchMethod(Invocation.method(#initializeUser, []),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  _i12.Future<dynamic> updateCurrentUser() =>
+  _i11.Future<dynamic> updateCurrentUser() =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  _i12.Future<bool> updatePhone(String? phone) =>
+  _i11.Future<bool> updatePhone(String? phone) =>
       (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
-          returnValue: _i12.Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: _i11.Future<bool>.value(false)) as _i11.Future<bool>);
   @override
-  _i12.Future<bool> setDoneOnBoarding() =>
+  _i11.Future<bool> setDoneOnBoarding() =>
       (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
-          returnValue: _i12.Future<bool>.value(false)) as _i12.Future<bool>);
+          returnValue: _i11.Future<bool>.value(false)) as _i11.Future<bool>);
   @override
-  _i12.Future<dynamic> doLoginProcess() =>
+  _i11.Future<dynamic> doLoginProcess() =>
       (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  _i12.Future<dynamic> initializeUserSession() =>
+  _i11.Future<dynamic> initializeUserSession() =>
       (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  _i12.Future<void> login() =>
+  _i11.Future<void> login() =>
       (super.noSuchMethod(Invocation.method(#login, []),
-              returnValue: _i12.Future<void>.value(),
-              returnValueForMissingStub: _i12.Future<void>.value())
-          as _i12.Future<void>);
+              returnValue: _i11.Future<void>.value(),
+              returnValueForMissingStub: _i11.Future<void>.value())
+          as _i11.Future<void>);
   @override
-  _i12.Future<dynamic> logOut() =>
+  _i11.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
   bool isOnboardingCompleted() =>
       (super.noSuchMethod(Invocation.method(#isOnboardingCompleted, []),
@@ -193,18 +188,18 @@ class MockSessionState extends _i1.Mock implements _i10.SessionState {
 /// A class which mocks [ProfileState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProfileState extends _i1.Mock implements _i13.ProfileState {
+class MockProfileState extends _i1.Mock implements _i12.ProfileState {
   MockProfileState() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i14.ProfileCurrentPages get currentPage =>
+  _i13.ProfileCurrentPages get currentPage =>
       (super.noSuchMethod(Invocation.getter(#currentPage),
-              returnValue: _i14.ProfileCurrentPages.editProfile)
-          as _i14.ProfileCurrentPages);
+              returnValue: _i13.ProfileCurrentPages.editProfile)
+          as _i13.ProfileCurrentPages);
   @override
-  set currentPage(_i14.ProfileCurrentPages? value) =>
+  set currentPage(_i13.ProfileCurrentPages? value) =>
       super.noSuchMethod(Invocation.setter(#currentPage, value),
           returnValueForMissingStub: null);
   @override
@@ -216,19 +211,11 @@ class MockProfileState extends _i1.Mock implements _i13.ProfileState {
       super.noSuchMethod(Invocation.setter(#isAccount, value),
           returnValueForMissingStub: null);
   @override
-  _i4.Language get language => (super.noSuchMethod(Invocation.getter(#language),
-          returnValue: _FakeLanguage_2(this, Invocation.getter(#language)))
-      as _i4.Language);
-  @override
-  set language(_i4.Language? value) =>
+  set language(_i14.Language? value) =>
       super.noSuchMethod(Invocation.setter(#language, value),
           returnValueForMissingStub: null);
   @override
-  _i5.Locale get locale => (super.noSuchMethod(Invocation.getter(#locale),
-          returnValue: _FakeLocale_3(this, Invocation.getter(#locale)))
-      as _i5.Locale);
-  @override
-  set locale(_i5.Locale? value) =>
+  set locale(_i4.Locale? value) =>
       super.noSuchMethod(Invocation.setter(#locale, value),
           returnValueForMissingStub: null);
   @override
@@ -238,43 +225,35 @@ class MockProfileState extends _i1.Mock implements _i13.ProfileState {
                   _FakeReactiveContext_1(this, Invocation.getter(#context)))
           as _i3.ReactiveContext);
   @override
-  _i4.Language getLanguage() =>
-      (super.noSuchMethod(Invocation.method(#getLanguage, []),
-              returnValue:
-                  _FakeLanguage_2(this, Invocation.method(#getLanguage, [])))
-          as _i4.Language);
+  _i11.Future<_i4.Locale> initializeLocale() => (super.noSuchMethod(
+          Invocation.method(#initializeLocale, []),
+          returnValue: _i11.Future<_i4.Locale>.value(
+              _FakeLocale_2(this, Invocation.method(#initializeLocale, []))))
+      as _i11.Future<_i4.Locale>);
   @override
-  void setCurrentPage(_i14.ProfileCurrentPages? newPage) =>
+  void setCurrentPage(_i13.ProfileCurrentPages? newPage) =>
       super.noSuchMethod(Invocation.method(#setCurrentPage, [newPage]),
           returnValueForMissingStub: null);
   @override
-  _i12.Future<dynamic> updateCurrentUser() =>
+  _i11.Future<dynamic> updateCurrentUser() =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  _i12.Future<dynamic> updateUserImage(_i15.XFile? newImage) =>
+  _i11.Future<dynamic> updateUserImage(_i15.XFile? newImage) =>
       (super.noSuchMethod(Invocation.method(#updateUserImage, [newImage]),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  _i12.Future<dynamic> updateCurrentUserName(String? newName) =>
+  _i11.Future<dynamic> updateCurrentUserName(String? newName) =>
       (super.noSuchMethod(Invocation.method(#updateCurrentUserName, [newName]),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  _i12.Future<dynamic> deleteCurrentUser() =>
+  _i11.Future<dynamic> deleteCurrentUser() =>
       (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
-  void setLocale(_i5.Locale? newLocale) =>
-      super.noSuchMethod(Invocation.method(#setLocale, [newLocale]),
-          returnValueForMissingStub: null);
-  @override
-  void setLanguage(_i4.Language? newLanguage) =>
-      super.noSuchMethod(Invocation.method(#setLanguage, [newLanguage]),
-          returnValueForMissingStub: null);
-  @override
-  _i12.Future<dynamic> changeLanguage(_i4.Language? language) =>
+  _i11.Future<dynamic> changeLanguage(_i14.Language? language) =>
       (super.noSuchMethod(Invocation.method(#changeLanguage, [language]),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
 }
 
 /// A class which mocks [LocationState].
@@ -286,33 +265,33 @@ class MockLocationState extends _i1.Mock implements _i16.LocationState {
   }
 
   @override
-  _i6.ShareLocationService get shareLocationService =>
+  _i5.ShareLocationService get shareLocationService =>
       (super.noSuchMethod(Invocation.getter(#shareLocationService),
-              returnValue: _FakeShareLocationService_4(
+              returnValue: _FakeShareLocationService_3(
                   this, Invocation.getter(#shareLocationService)))
-          as _i6.ShareLocationService);
+          as _i5.ShareLocationService);
   @override
-  set shareLocationService(_i6.ShareLocationService? _shareLocationService) =>
+  set shareLocationService(_i5.ShareLocationService? _shareLocationService) =>
       super.noSuchMethod(
           Invocation.setter(#shareLocationService, _shareLocationService),
           returnValueForMissingStub: null);
   @override
-  _i7.UserStatusState get userStatusState => (super.noSuchMethod(
+  _i6.UserStatusState get userStatusState => (super.noSuchMethod(
           Invocation.getter(#userStatusState),
           returnValue:
-              _FakeUserStatusState_5(this, Invocation.getter(#userStatusState)))
-      as _i7.UserStatusState);
+              _FakeUserStatusState_4(this, Invocation.getter(#userStatusState)))
+      as _i6.UserStatusState);
   @override
-  set userStatusState(_i7.UserStatusState? _userStatusState) =>
+  set userStatusState(_i6.UserStatusState? _userStatusState) =>
       super.noSuchMethod(Invocation.setter(#userStatusState, _userStatusState),
           returnValueForMissingStub: null);
   @override
-  _i8.LatLng get currentLocation => (super.noSuchMethod(
+  _i7.LatLng get currentLocation => (super.noSuchMethod(
           Invocation.getter(#currentLocation),
-          returnValue: _FakeLatLng_6(this, Invocation.getter(#currentLocation)))
-      as _i8.LatLng);
+          returnValue: _FakeLatLng_5(this, Invocation.getter(#currentLocation)))
+      as _i7.LatLng);
   @override
-  set currentLocation(_i8.LatLng? value) =>
+  set currentLocation(_i7.LatLng? value) =>
       super.noSuchMethod(Invocation.setter(#currentLocation, value),
           returnValueForMissingStub: null);
   @override
@@ -324,17 +303,17 @@ class MockLocationState extends _i1.Mock implements _i16.LocationState {
       super.noSuchMethod(Invocation.setter(#shareLocationEnabled, value),
           returnValueForMissingStub: null);
   @override
-  _i9.ShareLocationServiceFactory get shareLocationServiceFactory =>
+  _i8.ShareLocationServiceFactory get shareLocationServiceFactory =>
       (super.noSuchMethod(Invocation.getter(#shareLocationServiceFactory),
-              returnValue: _FakeShareLocationServiceFactory_7(
+              returnValue: _FakeShareLocationServiceFactory_6(
                   this, Invocation.getter(#shareLocationServiceFactory)))
-          as _i9.ShareLocationServiceFactory);
+          as _i8.ShareLocationServiceFactory);
   @override
-  dynamic Function(_i8.LatLng) get onLocationChanged => (super.noSuchMethod(
+  dynamic Function(_i7.LatLng) get onLocationChanged => (super.noSuchMethod(
       Invocation.getter(#onLocationChanged),
-      returnValue: (_i8.LatLng __p0) => null) as dynamic Function(_i8.LatLng));
+      returnValue: (_i7.LatLng __p0) => null) as dynamic Function(_i7.LatLng));
   @override
-  set onLocationChanged(dynamic Function(_i8.LatLng)? _onLocationChanged) =>
+  set onLocationChanged(dynamic Function(_i7.LatLng)? _onLocationChanged) =>
       super.noSuchMethod(
           Invocation.setter(#onLocationChanged, _onLocationChanged),
           returnValueForMissingStub: null);
@@ -345,15 +324,15 @@ class MockLocationState extends _i1.Mock implements _i16.LocationState {
                   _FakeReactiveContext_1(this, Invocation.getter(#context)))
           as _i3.ReactiveContext);
   @override
-  _i12.Future<dynamic> initialize() =>
+  _i11.Future<dynamic> initialize() =>
       (super.noSuchMethod(Invocation.method(#initialize, []),
-          returnValue: _i12.Future<dynamic>.value()) as _i12.Future<dynamic>);
+          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
   void setShareLocationEnabled(bool? shareLocation) => super.noSuchMethod(
       Invocation.method(#setShareLocationEnabled, [shareLocation]),
       returnValueForMissingStub: null);
   @override
-  void setCurrentLocation(_i8.LatLng? newLocation) =>
+  void setCurrentLocation(_i7.LatLng? newLocation) =>
       super.noSuchMethod(Invocation.method(#setCurrentLocation, [newLocation]),
           returnValueForMissingStub: null);
 }
