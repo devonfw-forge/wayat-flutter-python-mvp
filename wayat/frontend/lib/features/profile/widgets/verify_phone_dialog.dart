@@ -1,21 +1,24 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:wayat/features/profile/controllers/verify_phone_dialog_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
 import 'package:wayat/features/profile/widgets/pin_input_field.dart';
 
 class VerifyPhoneNumberDialog extends StatefulWidget {
-  static const id = 'VerifyPhoneNumberScreen';
   final String phoneNumber;
   final Function callbackPhone;
+  final VerifyPhoneDialogController controller;
 
-  const VerifyPhoneNumberDialog({
-    Key? key,
-    required this.phoneNumber,
-    required this.callbackPhone,
-  }) : super(key: key);
+  VerifyPhoneNumberDialog(
+      {Key? key,
+      required this.phoneNumber,
+      required this.callbackPhone,
+      controller})
+      : controller = controller ?? VerifyPhoneDialogController(),
+        super(key: key);
 
   @override
   State<VerifyPhoneNumberDialog> createState() =>
@@ -48,24 +51,15 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           otpExpirationDuration: const Duration(seconds: 30),
           signOutOnSuccessfulVerification: false,
           linkWithExistingUser: false,
-          onCodeSent: () {
-            // debugPrint("DEBUG send code");
-          },
+          onCodeSent: () {},
           onLoginSuccess:
               (UserCredential userCredential, bool autoVerified) async {
             widget.callbackPhone(widget.phoneNumber);
           },
           onLoginFailed:
               (FirebaseAuthException authException, StackTrace? stackTrace) {
-            if (authException.code == "permission-denied") {
-              errorMsg = appLocalizations.phoneDeniedPermissions;
-            } else if (authException.code == "invalid-verification-code") {
-              errorMsg = appLocalizations.phoneErrorCode;
-            } else if (authException.code == "too-many-requests") {
-              errorMsg = appLocalizations.phoneErrorTooRequest;
-            } else {
-              errorMsg = appLocalizations.phoneUnexpectedError;
-            }
+            errorMsg =
+                widget.controller.generateLoginFailedMessage(authException);
             setState(() {});
           },
           onError: (Object error, StackTrace stackTrace) {},
