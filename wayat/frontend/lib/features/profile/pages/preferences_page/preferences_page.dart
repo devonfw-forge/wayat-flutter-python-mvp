@@ -8,7 +8,6 @@ import 'package:wayat/features/profile/controllers/edit_profile_controller.dart'
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/lang/language.dart';
-import 'package:wayat/main.dart';
 
 class PreferencesPage extends StatelessWidget {
   PreferencesPage({Key? key}) : super(key: key);
@@ -18,9 +17,6 @@ class PreferencesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-          print('----------------------------> 4 ' +
-              GetIt.I.get<LangSingleton>().appLocalizations.language);
     return Column(
       children: [
         _profileAppBar(),
@@ -134,9 +130,8 @@ class PreferencesPage extends StatelessWidget {
       return DropdownButton<Language>(
         value: languageSelected,
         borderRadius: BorderRadius.circular(10),
-        dropdownColor: Colors.grey[200],
         underline: const SizedBox(),
-        icon: const Icon(Icons.arrow_forward, size: 24),
+        icon: const Icon(Icons.arrow_drop_down, size: 24),
         onChanged: (Language? language) async {
           if (language != null) {
             await profileState.changeLanguage(language);
