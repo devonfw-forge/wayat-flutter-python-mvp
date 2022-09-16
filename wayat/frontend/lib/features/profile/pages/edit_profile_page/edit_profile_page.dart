@@ -8,7 +8,6 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
-import 'package:wayat/features/profile/widgets/verify_phone_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
