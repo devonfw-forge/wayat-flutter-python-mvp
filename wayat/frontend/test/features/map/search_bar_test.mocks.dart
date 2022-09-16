@@ -592,4 +592,8 @@ class MockGroupsController extends _i1.Mock implements _i20.GroupsController {
   void setUpdatingGroup(bool? updatingGroup) =>
       super.noSuchMethod(Invocation.method(#setUpdatingGroup, [updatingGroup]),
           returnValueForMissingStub: null);
+  @override
+  _i13.Future<dynamic> deleteGroup(String? groupId) =>
+      (super.noSuchMethod(Invocation.method(#deleteGroup, [groupId]),
+          returnValue: _i13.Future<dynamic>.value()) as _i13.Future<dynamic>);
 }
