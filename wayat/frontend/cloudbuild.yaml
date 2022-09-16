@@ -55,7 +55,7 @@ steps:
       - build
       - apk
     env:
-      - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
+      - 'ANDROID_API_KEY=${_ANDROID_API_KEY}'
     dir: wayat/frontend
   # Upload build:
   - id: "Uploading APK"
