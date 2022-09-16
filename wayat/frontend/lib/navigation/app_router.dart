@@ -22,7 +22,7 @@ import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_wrapper.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
 import 'package:wayat/features/profile/pages/faqs_page/faqs_page.dart';
-import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
+import 'package:wayat/features/profile/pages//preferences_page/preferences_page.dart';
 import 'package:wayat/features/profile/pages/privacy_page/privacy_page.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';

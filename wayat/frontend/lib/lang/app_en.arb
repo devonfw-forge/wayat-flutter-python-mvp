@@ -18,7 +18,15 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "deleteAccountText": "Are you sure that you want to delete your Wayat account? Please note that there is no option to restore the account or its data once it's deleted.",
-    
+    "phoneEmpty": "Empty field. Input a correct phone number.",
+    "phoneIncorrect": "Incorrect phone number. Enter valid phone.",
+    "phoneDifferent": "Enter different phone number of the previous one.",
+
+    "phoneDeniedPermissions": "Denied permissions.",
+    "phoneErrorCode" : "Wrong code, try again",
+    "phoneErrorTooRequest" : "Too many code request, try it later",
+    "phoneUnexpectedError" : "Unexpected error, try it later.",
+
     "home": "Home",
     "contacts": "Contacts",
     "events": "Events",
@@ -87,6 +95,7 @@
     "inviteContacts": "Invite contacts to Wayat",
     "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
     "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
+    "invitationText": "Invitation text",
     "invitationCopied": "Copied to your clipboard",
 
     "accept": "Accept",

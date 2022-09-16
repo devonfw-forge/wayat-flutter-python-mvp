@@ -1045,6 +1045,10 @@ class MockGroupsController extends _i1.Mock implements _i32.GroupsController {
   void setUpdatingGroup(bool? updatingGroup) =>
       super.noSuchMethod(Invocation.method(#setUpdatingGroup, [updatingGroup]),
           returnValueForMissingStub: null);
+  @override
+  _i22.Future<dynamic> deleteGroup(String? groupId) =>
+      (super.noSuchMethod(Invocation.method(#deleteGroup, [groupId]),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
 }
 
 /// A class which mocks [ContactProfileController].
