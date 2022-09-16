@@ -167,8 +167,6 @@ void main() async {
     await tester.tap(find.byIcon(Icons.map));
     await tester.pumpAndSettle();
 
-    expect(find.text(appLocalizations.noGroupsMessage), findsOneWidget);
-
     expect(
         find.descendant(
             of: find.byKey(const Key("groupSlider")),
@@ -186,8 +184,6 @@ void main() async {
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.map));
     await tester.pumpAndSettle();
-
-    expect(find.text(appLocalizations.noGroupsMessage), findsNothing);
 
     expect(
         find.descendant(
