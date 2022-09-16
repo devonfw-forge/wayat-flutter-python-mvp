@@ -197,29 +197,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
           validator: (newTextValue) =>
               controller.validatePhoneNumber(newTextValue),
           onChanged: (phone) {
-            if (_formKey.currentState != null) {
-              final validPhone = _formKey.currentState!.validate();
-              if (phone.completeNumber == controller.user.phone ||
-                  phone.completeNumber == controller.phoneNumber) return;
-              if (validPhone) _submit(phone.completeNumber);
-            }
+            controller.onChangePhoneNumber(phone, _formKey, context);
           },
         );
       },
     );
-  }
-
-  void _submit(String newPhone) {
-    if (controller.errorPhoneVerificationMsg == '') {
-      controller.setNewPhoneNumber("");
-      showDialog(
-          context: context,
-          builder: (context) {
-            return VerifyPhoneNumberDialog(
-                phoneNumber: newPhone,
-                callbackPhone: controller.setNewPhoneNumber);
-          });
-    }
   }
 
   Widget _getImageFromCameraOrGallary() {
@@ -233,7 +215,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               TextButton.icon(
-                  onPressed: () => _getFromSource(ImageSource.camera),
+                  onPressed: () =>
+                      controller.getFromSource(ImageSource.camera, context),
                   icon: const Icon(
                     Icons.camera_alt,
                     size: 30,
@@ -244,7 +227,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     style: const TextStyle(color: Colors.black87),
                   )),
               TextButton.icon(
-                  onPressed: () => _getFromSource(ImageSource.gallery),
+                  onPressed: () =>
+                      controller.getFromSource(ImageSource.gallery, context),
                   icon: const Icon(
                     Icons.image,
                     size: 30,
@@ -257,12 +241,5 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ])
           ])),
     );
-  }
-
-  Future _getFromSource(ImageSource source) async {
-    ImagePicker imagePicker = ImagePicker();
-    XFile? newImage = await imagePicker.pickImage(source: source);
-    controller.setNewImage(newImage);
-    Navigator.of(context).pop();
   }
 }

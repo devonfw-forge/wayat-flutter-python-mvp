@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
+import 'package:wayat/features/profile/widgets/verify_phone_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/profile/profile_service_impl.dart';
 import 'package:mobx/mobx.dart';
@@ -87,8 +91,36 @@ abstract class _EditProfileController with Store {
     } else {
       errorPhoneFormat = "";
     }
-
-    print("DEBUG $errorPhoneFormat");
     return errorPhoneFormat;
+  }
+
+  void onChangePhoneNumber(
+      PhoneNumber phone, GlobalKey<FormState> formKey, BuildContext context) {
+    if (formKey.currentState != null) {
+      final validPhone = formKey.currentState!.validate();
+      if (phone.completeNumber == user.phone ||
+          phone.completeNumber == phoneNumber) return;
+      if (validPhone) _submit(phone.completeNumber, context);
+    }
+  }
+
+  void _submit(String newPhone, BuildContext context) {
+    FocusScope.of(context).unfocus();
+    if (errorPhoneVerificationMsg == '') {
+      setNewPhoneNumber("");
+      showDialog(
+          context: context,
+          builder: (context) {
+            return VerifyPhoneNumberDialog(
+                phoneNumber: newPhone, callbackPhone: setNewPhoneNumber);
+          });
+    }
+  }
+
+  Future getFromSource(ImageSource source, BuildContext context) async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? newImage = await imagePicker.pickImage(source: source);
+    setNewImage(newImage);
+    Navigator.of(context).pop();
   }
 }
