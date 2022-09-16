@@ -70,6 +70,16 @@ flutter pub run build_runner watch --delete-conflicting-outputs
 ~~~
 Also, the command should be left running in a terminal instance located in the project folder to make development easier when modifying files that need to generate extra code
 
+To generate translations files:
+~~~
+flutter gen-l10n
+~~~
+
+To generate Android and IOS icons:
+~~~
+flutter pub run flutter_launcher_icons:main
+~~~
+
 ## Considerations
 
 An *.env* file containing the following keys must be included in the root of the repository:

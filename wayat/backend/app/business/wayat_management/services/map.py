@@ -128,7 +128,7 @@ class MapService:
 
         # Implementation
         new_contact_refs = await asyncio.gather(
-            *[self._create_contact_ref(contact_uid) for contact_uid in user_to_update.contacts],
+            *[self._create_contact_ref(contact_uid, user_to_update) for contact_uid in user_to_update.contacts],
         )  # type: list[ContactRefInfo]
 
         await asyncio.gather(
@@ -136,9 +136,11 @@ class MapService:
             self._user_repository.update_last_status(uid),
         )
 
-    async def _create_contact_ref(self, contact_uid: str) -> ContactRefInfo | None:
-        contact_location = await self._user_repository.get_user_location(contact_uid)
-        if contact_location is not None and self._should_show(contact_location):
+    async def _create_contact_ref(self, contact_uid: str, self_user: UserEntity) -> ContactRefInfo | None:
+        contact_location, sharing_with = await self._user_repository.get_user_location(contact_uid)
+        if contact_location is not None and \
+                self._should_show(contact_location) and \
+                self_user.document_id in sharing_with:
             return ContactRefInfo(uid=contact_uid, last_updated=contact_location.last_updated,
                                   location=contact_location.value, address=contact_location.address)
         else:

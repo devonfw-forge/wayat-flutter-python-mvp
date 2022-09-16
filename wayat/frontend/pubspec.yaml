@@ -68,6 +68,7 @@ dependencies:
   pinput: ^2.2.12
   firebase_phone_auth_handler: ^1.0.6
   smart_auth: ^1.0.5
+  flutter_launcher_icons: ^0.10.0
 
 dev_dependencies:
   flutter_test:
@@ -93,3 +94,9 @@ flutter:
   assets:
     - .env
     - assets/images/
+  
+flutter_icons:
+  image_path_ios: 'assets/images/wayat_icon.png'
+  image_path_android: 'assets/images/wayat_icon.png'
+  android: true
+  ios: true

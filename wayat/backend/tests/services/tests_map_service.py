@@ -34,6 +34,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
                 email="user1@test.com",
                 phone="+34-TEST-1",
                 contacts=["user_2", "user_3"],
+                location_shared_with=["user_2", "user_3"]
             ),
             "user_2": UserEntity(
                 document_id="user_2",
@@ -41,6 +42,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
                 email="user2@test.com",
                 phone="+34-TEST-2",
                 contacts=["user_1"],
+                location_shared_with=["user_1"]
             ),
             "user_3": UserEntity(
                 document_id="user_3",
@@ -48,6 +50,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
                 email="user3@test.com",
                 phone="+34-TEST-3",
                 contacts=["user_1"],
+                location_shared_with=["user_1"]
             )
         }
 
@@ -149,7 +152,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         datetime_mock.now.return_value = now_timestamp
 
         def mocking_get_user_location(user_id: str):
-            return self.mock_entities[user_id].location
+            return self.mock_entities[user_id].location, self.mock_entities[user_id].location_shared_with
 
         # Mock the user repo
         self.mock_user_repo.find_contacts_with_map_open.return_value = [self.mock_entities["user_2"],
@@ -280,10 +283,10 @@ class MapServiceTests(IsolatedAsyncioTestCase):
     async def test_none_values(self):
         uid = "user_1"
         # Mocks
-        self.mock_user_repo.get_user_location.return_value = None
+        self.mock_user_repo.get_user_location.return_value = None, None
 
         # Call to be tested
-        res = await self.map_service._create_contact_ref(contact_uid=uid)
+        res = await self.map_service._create_contact_ref(contact_uid=uid, self_user=self.mock_entities[uid])
         assert res is None
 
         res = self.map_service._in_range(latitude=0, longitude=0, contact_location=None)

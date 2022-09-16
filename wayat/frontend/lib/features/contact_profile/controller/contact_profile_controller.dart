@@ -36,7 +36,7 @@ abstract class _ContactProfileController with Store {
   @action
   Future<void> setShareLocationToContact(bool shareLocationToContact, Contact contact) async {
     if (shareLocationToContact != contact.shareLocation) {
-      Response res = await httpProvider.sendPostRequest('${APIContract.contacts}/${contact.id}', 
+      httpProvider.sendPostRequest('${APIContract.contacts}/${contact.id}', 
         {
           'share_location': shareLocationToContact
         }
