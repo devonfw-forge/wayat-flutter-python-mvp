@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+<<<<<<< HEAD
 import 'dart:async' as _i20;
 import 'dart:ui' as _i13;
 
@@ -27,15 +28,54 @@ import 'package:wayat/features/contacts/controller/friends_controller/friends_co
     as _i3;
 import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart'
     as _i17;
+=======
+import 'dart:async' as _i22;
+
+import 'package:flutter/cupertino.dart' as _i5;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as _i10;
+import 'package:http/http.dart' as _i17;
+import 'package:image_picker/image_picker.dart' as _i30;
+import 'package:mobx/mobx.dart' as _i6;
+import 'package:mockito/mockito.dart' as _i1;
+import 'package:wayat/app_state/home_state/home_state.dart' as _i23;
+import 'package:wayat/app_state/location_state/location_state.dart' as _i25;
+import 'package:wayat/app_state/location_state/share_mode.dart' as _i27;
+import 'package:wayat/app_state/map_state/map_state.dart' as _i31;
+import 'package:wayat/app_state/profile_state/profile_state.dart' as _i28;
+import 'package:wayat/app_state/user_session/session_state.dart' as _i20;
+import 'package:wayat/app_state/user_status/user_status_state.dart' as _i9;
+import 'package:wayat/domain/contact/contact.dart' as _i24;
+import 'package:wayat/domain/group/group.dart' as _i33;
+import 'package:wayat/domain/location/contact_location.dart' as _i26;
+import 'package:wayat/domain/user/my_user.dart' as _i21;
+import 'package:wayat/features/contact_profile/controller/contact_profile_controller.dart'
+    as _i34;
+import 'package:wayat/features/contacts/controller/contacts_page_controller.dart'
+    as _i18;
+import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart'
+    as _i3;
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart'
+    as _i19;
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart'
     as _i2;
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
     as _i4;
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart'
+    as _i32;
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart'
+<<<<<<< HEAD
     as _i27;
 import 'package:wayat/lang/language.dart' as _i28;
 import 'package:wayat/services/authentication/auth_service.dart' as _i7;
 import 'package:wayat/services/contact/contact_service.dart' as _i15;
+=======
+    as _i29;
+import 'package:wayat/services/authentication/auth_service.dart' as _i7;
+import 'package:wayat/services/common/http_provider/http_provider.dart' as _i16;
+import 'package:wayat/services/contact/contact_service.dart' as _i14;
+import 'package:wayat/services/groups/groups_service.dart' as _i15;
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
 import 'package:wayat/services/location/share_location_service.dart' as _i8;
 import 'package:wayat/services/location/share_location_service_factory.dart'
     as _i11;
@@ -151,11 +191,43 @@ class _FakeContactService_16 extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
+class _FakeGroupsService_16 extends _i1.SmartFake
+    implements _i15.GroupsService {
+  _FakeGroupsService_16(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeHttpProvider_17 extends _i1.SmartFake implements _i16.HttpProvider {
+  _FakeHttpProvider_17(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeBitmapDescriptor_18 extends _i1.SmartFake
+    implements _i10.BitmapDescriptor {
+  _FakeBitmapDescriptor_18(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeResponse_19 extends _i1.SmartFake implements _i17.Response {
+  _FakeResponse_19(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_20 extends _i1.SmartFake
+    implements _i17.StreamedResponse {
+  _FakeStreamedResponse_20(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [ContactsPageController].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockContactsPageController extends _i1.Mock
+<<<<<<< HEAD
     implements _i16.ContactsPageController {
+=======
+    implements _i18.ContactsPageController {
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   MockContactsPageController() {
     _i1.throwOnMissingStub(this);
   }
@@ -235,12 +307,21 @@ class MockContactsPageController extends _i1.Mock
           Invocation.setter(#maxTimeBetweenUpdates, _maxTimeBetweenUpdates),
           returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   _i17.ContactsCurrentPages get currentPage =>
       (super.noSuchMethod(Invocation.getter(#currentPage),
               returnValue: _i17.ContactsCurrentPages.contacts)
           as _i17.ContactsCurrentPages);
   @override
   set currentPage(_i17.ContactsCurrentPages? value) =>
+=======
+  _i19.ContactsCurrentPages get currentPage =>
+      (super.noSuchMethod(Invocation.getter(#currentPage),
+              returnValue: _i19.ContactsCurrentPages.contacts)
+          as _i19.ContactsCurrentPages);
+  @override
+  set currentPage(_i19.ContactsCurrentPages? value) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.setter(#currentPage, value),
           returnValueForMissingStub: null);
   @override
@@ -261,7 +342,11 @@ class MockContactsPageController extends _i1.Mock
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   void setContactsCurrentPage(_i17.ContactsCurrentPages? currentPage) => super
+=======
+  void setContactsCurrentPage(_i19.ContactsCurrentPages? currentPage) => super
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       .noSuchMethod(Invocation.method(#setContactsCurrentPage, [currentPage]),
           returnValueForMissingStub: null);
   @override
@@ -277,7 +362,11 @@ class MockContactsPageController extends _i1.Mock
 /// A class which mocks [SessionState].
 ///
 /// See the documentation for Mockito's code generation for more information.
+<<<<<<< HEAD
 class MockSessionState extends _i1.Mock implements _i18.SessionState {
+=======
+class MockSessionState extends _i1.Mock implements _i20.SessionState {
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   MockSessionState() {
     _i1.throwOnMissingStub(this);
   }
@@ -307,7 +396,11 @@ class MockSessionState extends _i1.Mock implements _i18.SessionState {
       super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
           returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   set currentUser(_i19.MyUser? value) =>
+=======
+  set currentUser(_i21.MyUser? value) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.setter(#currentUser, value),
           returnValueForMissingStub: null);
   @override
@@ -323,6 +416,7 @@ class MockSessionState extends _i1.Mock implements _i18.SessionState {
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   _i20.Future<void> doneOnBoarding() =>
       (super.noSuchMethod(Invocation.method(#doneOnBoarding, []),
               returnValue: _i20.Future<void>.value(),
@@ -334,6 +428,19 @@ class MockSessionState extends _i1.Mock implements _i18.SessionState {
               returnValue: _i20.Future<void>.value(),
               returnValueForMissingStub: _i20.Future<void>.value())
           as _i20.Future<void>);
+=======
+  _i22.Future<void> doneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#doneOnBoarding, []),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  _i22.Future<void> isLogged() =>
+      (super.noSuchMethod(Invocation.method(#isLogged, []),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
@@ -343,6 +450,7 @@ class MockSessionState extends _i1.Mock implements _i18.SessionState {
       Invocation.method(#setFinishLoggedIn, [finishedLoggedIn]),
       returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   _i20.Future<dynamic> initializeUser() =>
       (super.noSuchMethod(Invocation.method(#initializeUser, []),
           returnValue: _i20.Future<dynamic>.value()) as _i20.Future<dynamic>);
@@ -376,6 +484,41 @@ class MockSessionState extends _i1.Mock implements _i18.SessionState {
   _i20.Future<dynamic> logOut() =>
       (super.noSuchMethod(Invocation.method(#logOut, []),
           returnValue: _i20.Future<dynamic>.value()) as _i20.Future<dynamic>);
+=======
+  _i22.Future<dynamic> initializeUser() =>
+      (super.noSuchMethod(Invocation.method(#initializeUser, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  _i22.Future<dynamic> updateCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  _i22.Future<bool> updatePhone(String? phone) =>
+      (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
+          returnValue: _i22.Future<bool>.value(false)) as _i22.Future<bool>);
+  @override
+  _i22.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
+          returnValue: _i22.Future<bool>.value(false)) as _i22.Future<bool>);
+  @override
+  _i22.Future<dynamic> doLoginProcess() =>
+      (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  _i22.Future<dynamic> initializeUserSession() =>
+      (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  _i22.Future<void> login() =>
+      (super.noSuchMethod(Invocation.method(#login, []),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  _i22.Future<dynamic> logOut() =>
+      (super.noSuchMethod(Invocation.method(#logOut, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   @override
   bool isOnboardingCompleted() =>
       (super.noSuchMethod(Invocation.method(#isOnboardingCompleted, []),
@@ -389,13 +532,21 @@ class MockSessionState extends _i1.Mock implements _i18.SessionState {
 /// A class which mocks [HomeState].
 ///
 /// See the documentation for Mockito's code generation for more information.
+<<<<<<< HEAD
 class MockHomeState extends _i1.Mock implements _i21.HomeState {
+=======
+class MockHomeState extends _i1.Mock implements _i23.HomeState {
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   MockHomeState() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
+<<<<<<< HEAD
   set selectedContact(_i22.Contact? value) =>
+=======
+  set selectedContact(_i24.Contact? value) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.setter(#selectedContact, value),
           returnValueForMissingStub: null);
   @override
@@ -415,7 +566,11 @@ class MockHomeState extends _i1.Mock implements _i21.HomeState {
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   void setSelectedContact(_i22.Contact? newContact, String? navigationSource) =>
+=======
+  void setSelectedContact(_i24.Contact? newContact, String? navigationSource) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(
           Invocation.method(
               #setSelectedContact, [newContact, navigationSource]),
@@ -425,7 +580,11 @@ class MockHomeState extends _i1.Mock implements _i21.HomeState {
 /// A class which mocks [LocationState].
 ///
 /// See the documentation for Mockito's code generation for more information.
+<<<<<<< HEAD
 class MockLocationState extends _i1.Mock implements _i23.LocationState {
+=======
+class MockLocationState extends _i1.Mock implements _i25.LocationState {
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   MockLocationState() {
     _i1.throwOnMissingStub(this);
   }
@@ -492,9 +651,15 @@ class MockLocationState extends _i1.Mock implements _i23.LocationState {
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   _i20.Future<dynamic> initialize() =>
       (super.noSuchMethod(Invocation.method(#initialize, []),
           returnValue: _i20.Future<dynamic>.value()) as _i20.Future<dynamic>);
+=======
+  _i22.Future<dynamic> initialize() =>
+      (super.noSuchMethod(Invocation.method(#initialize, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   @override
   void setShareLocationEnabled(bool? shareLocation) => super.noSuchMethod(
       Invocation.method(#setShareLocationEnabled, [shareLocation]),
@@ -520,6 +685,7 @@ class MockUserStatusState extends _i1.Mock implements _i9.UserStatusState {
                   this, Invocation.getter(#userStatusService)))
           as _i12.UserStatusService);
   @override
+<<<<<<< HEAD
   List<_i24.ContactLocation> get contacts =>
       (super.noSuchMethod(Invocation.getter(#contacts),
           returnValue: <_i24.ContactLocation>[]) as List<_i24.ContactLocation>);
@@ -544,12 +710,39 @@ class MockUserStatusState extends _i1.Mock implements _i9.UserStatusState {
   @override
   set onContactsRefUpdateCallback(
           dynamic Function(List<_i24.ContactLocation>)?
+=======
+  List<_i26.ContactLocation> get contacts =>
+      (super.noSuchMethod(Invocation.getter(#contacts),
+          returnValue: <_i26.ContactLocation>[]) as List<_i26.ContactLocation>);
+  @override
+  set contacts(List<_i26.ContactLocation>? value) =>
+      super.noSuchMethod(Invocation.setter(#contacts, value),
+          returnValueForMissingStub: null);
+  @override
+  _i27.ShareLocationMode get locationMode => (super.noSuchMethod(
+      Invocation.getter(#locationMode),
+      returnValue: _i27.ShareLocationMode.active) as _i27.ShareLocationMode);
+  @override
+  set locationMode(_i27.ShareLocationMode? value) =>
+      super.noSuchMethod(Invocation.setter(#locationMode, value),
+          returnValueForMissingStub: null);
+  @override
+  dynamic Function(List<_i26.ContactLocation>)
+      get onContactsRefUpdateCallback =>
+          (super.noSuchMethod(Invocation.getter(#onContactsRefUpdateCallback),
+                  returnValue: (List<_i26.ContactLocation> __p0) => null)
+              as dynamic Function(List<_i26.ContactLocation>));
+  @override
+  set onContactsRefUpdateCallback(
+          dynamic Function(List<_i26.ContactLocation>)?
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
               _onContactsRefUpdateCallback) =>
       super.noSuchMethod(
           Invocation.setter(
               #onContactsRefUpdateCallback, _onContactsRefUpdateCallback),
           returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   dynamic Function(_i25.ShareLocationMode) get onLocationModeUpdateCallback =>
       (super.noSuchMethod(Invocation.getter(#onLocationModeUpdateCallback),
               returnValue: (_i25.ShareLocationMode __p0) => null)
@@ -557,6 +750,15 @@ class MockUserStatusState extends _i1.Mock implements _i9.UserStatusState {
   @override
   set onLocationModeUpdateCallback(
           dynamic Function(_i25.ShareLocationMode)?
+=======
+  dynamic Function(_i27.ShareLocationMode) get onLocationModeUpdateCallback =>
+      (super.noSuchMethod(Invocation.getter(#onLocationModeUpdateCallback),
+              returnValue: (_i27.ShareLocationMode __p0) => null)
+          as dynamic Function(_i27.ShareLocationMode));
+  @override
+  set onLocationModeUpdateCallback(
+          dynamic Function(_i27.ShareLocationMode)?
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
               _onLocationModeUpdateCallback) =>
       super.noSuchMethod(
           Invocation.setter(
@@ -569,6 +771,7 @@ class MockUserStatusState extends _i1.Mock implements _i9.UserStatusState {
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   _i20.Future<dynamic> initializeListener() =>
       (super.noSuchMethod(Invocation.method(#initializeListener, []),
           returnValue: _i20.Future<dynamic>.value()) as _i20.Future<dynamic>);
@@ -578,6 +781,17 @@ class MockUserStatusState extends _i1.Mock implements _i9.UserStatusState {
           returnValueForMissingStub: null);
   @override
   void setLocationMode(_i25.ShareLocationMode? newMode) =>
+=======
+  _i22.Future<dynamic> initializeListener() =>
+      (super.noSuchMethod(Invocation.method(#initializeListener, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  void setContactList(List<_i26.ContactLocation>? newContacts) =>
+      super.noSuchMethod(Invocation.method(#setContactList, [newContacts]),
+          returnValueForMissingStub: null);
+  @override
+  void setLocationMode(_i27.ShareLocationMode? newMode) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.method(#setLocationMode, [newMode]),
           returnValueForMissingStub: null);
 }
@@ -585,18 +799,31 @@ class MockUserStatusState extends _i1.Mock implements _i9.UserStatusState {
 /// A class which mocks [ProfileState].
 ///
 /// See the documentation for Mockito's code generation for more information.
+<<<<<<< HEAD
 class MockProfileState extends _i1.Mock implements _i26.ProfileState {
+=======
+class MockProfileState extends _i1.Mock implements _i28.ProfileState {
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   MockProfileState() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
+<<<<<<< HEAD
   _i27.ProfileCurrentPages get currentPage =>
       (super.noSuchMethod(Invocation.getter(#currentPage),
               returnValue: _i27.ProfileCurrentPages.editProfile)
           as _i27.ProfileCurrentPages);
   @override
   set currentPage(_i27.ProfileCurrentPages? value) =>
+=======
+  _i29.ProfileCurrentPages get currentPage =>
+      (super.noSuchMethod(Invocation.getter(#currentPage),
+              returnValue: _i29.ProfileCurrentPages.editProfile)
+          as _i29.ProfileCurrentPages);
+  @override
+  set currentPage(_i29.ProfileCurrentPages? value) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.setter(#currentPage, value),
           returnValueForMissingStub: null);
   @override
@@ -622,6 +849,7 @@ class MockProfileState extends _i1.Mock implements _i26.ProfileState {
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   _i20.Future<_i13.Locale> initializeLocale() => (super.noSuchMethod(
           Invocation.method(#initializeLocale, []),
           returnValue: _i20.Future<_i13.Locale>.value(
@@ -651,12 +879,37 @@ class MockProfileState extends _i1.Mock implements _i26.ProfileState {
   _i20.Future<dynamic> changeLanguage(_i28.Language? language) =>
       (super.noSuchMethod(Invocation.method(#changeLanguage, [language]),
           returnValue: _i20.Future<dynamic>.value()) as _i20.Future<dynamic>);
+=======
+  void setCurrentPage(_i29.ProfileCurrentPages? newPage) =>
+      super.noSuchMethod(Invocation.method(#setCurrentPage, [newPage]),
+          returnValueForMissingStub: null);
+  @override
+  _i22.Future<dynamic> updateCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  _i22.Future<dynamic> updateUserImage(_i30.XFile? newImage) =>
+      (super.noSuchMethod(Invocation.method(#updateUserImage, [newImage]),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  _i22.Future<dynamic> updateCurrentUserName(String? newName) =>
+      (super.noSuchMethod(Invocation.method(#updateCurrentUserName, [newName]),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  _i22.Future<dynamic> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
 }
 
 /// A class which mocks [MapState].
 ///
 /// See the documentation for Mockito's code generation for more information.
+<<<<<<< HEAD
 class MockMapState extends _i1.Mock implements _i30.MapState {
+=======
+class MockMapState extends _i1.Mock implements _i31.MapState {
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   MockMapState() {
     _i1.throwOnMissingStub(this);
   }
@@ -668,7 +921,11 @@ class MockMapState extends _i1.Mock implements _i30.MapState {
                   this, Invocation.getter(#mapStatusService)))
           as _i14.MapStatusService);
   @override
+<<<<<<< HEAD
   set timer(_i20.Timer? _timer) =>
+=======
+  set timer(_i22.Timer? _timer) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.setter(#timer, _timer),
           returnValueForMissingStub: null);
   @override
@@ -696,6 +953,7 @@ class MockMapState extends _i1.Mock implements _i30.MapState {
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   _i20.Future<void> openMap() =>
       (super.noSuchMethod(Invocation.method(#openMap, []),
               returnValue: _i20.Future<void>.value(),
@@ -707,6 +965,19 @@ class MockMapState extends _i1.Mock implements _i30.MapState {
               returnValue: _i20.Future<void>.value(),
               returnValueForMissingStub: _i20.Future<void>.value())
           as _i20.Future<void>);
+=======
+  _i22.Future<void> openMap() =>
+      (super.noSuchMethod(Invocation.method(#openMap, []),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  _i22.Future<void> closeMap() =>
+      (super.noSuchMethod(Invocation.method(#closeMap, []),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
 }
 
 /// A class which mocks [FriendsController].
@@ -726,6 +997,7 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
       super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
           returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   List<_i22.Contact> get allContacts =>
       (super.noSuchMethod(Invocation.getter(#allContacts),
           returnValue: <_i22.Contact>[]) as List<_i22.Contact>);
@@ -751,6 +1023,33 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
   List<_i22.Contact> get unavailableContacts =>
       (super.noSuchMethod(Invocation.getter(#unavailableContacts),
           returnValue: <_i22.Contact>[]) as List<_i22.Contact>);
+=======
+  List<_i24.Contact> get allContacts =>
+      (super.noSuchMethod(Invocation.getter(#allContacts),
+          returnValue: <_i24.Contact>[]) as List<_i24.Contact>);
+  @override
+  set allContacts(List<_i24.Contact>? _allContacts) =>
+      super.noSuchMethod(Invocation.setter(#allContacts, _allContacts),
+          returnValueForMissingStub: null);
+  @override
+  _i6.ObservableList<_i24.Contact> get filteredContacts =>
+      (super.noSuchMethod(Invocation.getter(#filteredContacts),
+              returnValue: _FakeObservableList_14<_i24.Contact>(
+                  this, Invocation.getter(#filteredContacts)))
+          as _i6.ObservableList<_i24.Contact>);
+  @override
+  set filteredContacts(_i6.ObservableList<_i24.Contact>? value) =>
+      super.noSuchMethod(Invocation.setter(#filteredContacts, value),
+          returnValueForMissingStub: null);
+  @override
+  List<_i24.Contact> get availableContacts =>
+      (super.noSuchMethod(Invocation.getter(#availableContacts),
+          returnValue: <_i24.Contact>[]) as List<_i24.Contact>);
+  @override
+  List<_i24.Contact> get unavailableContacts =>
+      (super.noSuchMethod(Invocation.getter(#unavailableContacts),
+          returnValue: <_i24.Contact>[]) as List<_i24.Contact>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   @override
   _i6.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
@@ -758,16 +1057,25 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   _i20.Future<void> updateContacts() =>
       (super.noSuchMethod(Invocation.method(#updateContacts, []),
               returnValue: _i20.Future<void>.value(),
               returnValueForMissingStub: _i20.Future<void>.value())
           as _i20.Future<void>);
+=======
+  _i22.Future<void> updateContacts() =>
+      (super.noSuchMethod(Invocation.method(#updateContacts, []),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   @override
   void setTextFilter(String? text) =>
       super.noSuchMethod(Invocation.method(#setTextFilter, [text]),
           returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   _i20.Future<void> removeContact(_i22.Contact? contact) =>
       (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
               returnValue: _i20.Future<void>.value(),
@@ -775,6 +1083,15 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
           as _i20.Future<void>);
   @override
   void addContact(_i22.Contact? contact) =>
+=======
+  _i22.Future<void> removeContact(_i24.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  void addContact(_i24.Contact? contact) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.method(#addContact, [contact]),
           returnValueForMissingStub: null);
 }
@@ -807,6 +1124,7 @@ class MockRequestsController extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
           returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   _i6.ObservableList<_i22.Contact> get filteredPendingRequests =>
       (super.noSuchMethod(Invocation.getter(#filteredPendingRequests),
               returnValue: _FakeObservableList_15<_i22.Contact>(
@@ -834,6 +1152,35 @@ class MockRequestsController extends _i1.Mock
           as _i6.ObservableList<_i22.Contact>);
   @override
   set sentRequests(_i6.ObservableList<_i22.Contact>? value) =>
+=======
+  _i6.ObservableList<_i24.Contact> get filteredPendingRequests =>
+      (super.noSuchMethod(Invocation.getter(#filteredPendingRequests),
+              returnValue: _FakeObservableList_14<_i24.Contact>(
+                  this, Invocation.getter(#filteredPendingRequests)))
+          as _i6.ObservableList<_i24.Contact>);
+  @override
+  set filteredPendingRequests(_i6.ObservableList<_i24.Contact>? value) =>
+      super.noSuchMethod(Invocation.setter(#filteredPendingRequests, value),
+          returnValueForMissingStub: null);
+  @override
+  _i6.ObservableList<_i24.Contact> get pendingRequests =>
+      (super.noSuchMethod(Invocation.getter(#pendingRequests),
+              returnValue: _FakeObservableList_14<_i24.Contact>(
+                  this, Invocation.getter(#pendingRequests)))
+          as _i6.ObservableList<_i24.Contact>);
+  @override
+  set pendingRequests(_i6.ObservableList<_i24.Contact>? value) =>
+      super.noSuchMethod(Invocation.setter(#pendingRequests, value),
+          returnValueForMissingStub: null);
+  @override
+  _i6.ObservableList<_i24.Contact> get sentRequests =>
+      (super.noSuchMethod(Invocation.getter(#sentRequests),
+              returnValue: _FakeObservableList_14<_i24.Contact>(
+                  this, Invocation.getter(#sentRequests)))
+          as _i6.ObservableList<_i24.Contact>);
+  @override
+  set sentRequests(_i6.ObservableList<_i24.Contact>? value) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.setter(#sentRequests, value),
           returnValueForMissingStub: null);
   @override
@@ -843,6 +1190,7 @@ class MockRequestsController extends _i1.Mock
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   _i20.Future<void> updateRequests() =>
       (super.noSuchMethod(Invocation.method(#updateRequests, []),
               returnValue: _i20.Future<void>.value(),
@@ -872,6 +1220,37 @@ class MockRequestsController extends _i1.Mock
               returnValue: _i20.Future<void>.value(),
               returnValueForMissingStub: _i20.Future<void>.value())
           as _i20.Future<void>);
+=======
+  _i22.Future<void> updateRequests() =>
+      (super.noSuchMethod(Invocation.method(#updateRequests, []),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  _i22.Future<void> sendRequest(_i24.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#sendRequest, [contact]),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  _i22.Future<void> rejectRequest(_i24.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#rejectRequest, [contact]),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  _i22.Future<void> acceptRequest(_i24.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#acceptRequest, [contact]),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  _i22.Future<void> unsendRequest(_i24.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#unsendRequest, [contact]),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   @override
   void setTextFilter(String? text) =>
       super.noSuchMethod(Invocation.method(#setTextFilter, [text]),
@@ -914,6 +1293,7 @@ class MockSuggestionsController extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
           returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   List<_i22.Contact> get allSuggestions =>
       (super.noSuchMethod(Invocation.getter(#allSuggestions),
           returnValue: <_i22.Contact>[]) as List<_i22.Contact>);
@@ -929,6 +1309,23 @@ class MockSuggestionsController extends _i1.Mock
           as _i6.ObservableList<_i22.Contact>);
   @override
   set filteredSuggestions(_i6.ObservableList<_i22.Contact>? value) =>
+=======
+  List<_i24.Contact> get allSuggestions =>
+      (super.noSuchMethod(Invocation.getter(#allSuggestions),
+          returnValue: <_i24.Contact>[]) as List<_i24.Contact>);
+  @override
+  set allSuggestions(List<_i24.Contact>? _allSuggestions) =>
+      super.noSuchMethod(Invocation.setter(#allSuggestions, _allSuggestions),
+          returnValueForMissingStub: null);
+  @override
+  _i6.ObservableList<_i24.Contact> get filteredSuggestions =>
+      (super.noSuchMethod(Invocation.getter(#filteredSuggestions),
+              returnValue: _FakeObservableList_14<_i24.Contact>(
+                  this, Invocation.getter(#filteredSuggestions)))
+          as _i6.ObservableList<_i24.Contact>);
+  @override
+  set filteredSuggestions(_i6.ObservableList<_i24.Contact>? value) =>
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
       super.noSuchMethod(Invocation.setter(#filteredSuggestions, value),
           returnValueForMissingStub: null);
   @override
@@ -938,6 +1335,7 @@ class MockSuggestionsController extends _i1.Mock
                   _FakeReactiveContext_6(this, Invocation.getter(#context)))
           as _i6.ReactiveContext);
   @override
+<<<<<<< HEAD
   _i20.Future<void> sendRequest(_i22.Contact? contact) =>
       (super.noSuchMethod(Invocation.method(#sendRequest, [contact]),
               returnValue: _i20.Future<void>.value(),
@@ -947,12 +1345,210 @@ class MockSuggestionsController extends _i1.Mock
   _i20.Future<dynamic> updateSuggestedContacts() =>
       (super.noSuchMethod(Invocation.method(#updateSuggestedContacts, []),
           returnValue: _i20.Future<dynamic>.value()) as _i20.Future<dynamic>);
+=======
+  _i22.Future<void> sendRequest(_i24.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#sendRequest, [contact]),
+              returnValue: _i22.Future<void>.value(),
+              returnValueForMissingStub: _i22.Future<void>.value())
+          as _i22.Future<void>);
+  @override
+  _i22.Future<dynamic> updateSuggestedContacts() =>
+      (super.noSuchMethod(Invocation.method(#updateSuggestedContacts, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
   @override
   void setTextFilter(String? text) =>
       super.noSuchMethod(Invocation.method(#setTextFilter, [text]),
           returnValueForMissingStub: null);
   @override
+<<<<<<< HEAD
   _i20.Future<dynamic> copyInvitation() =>
       (super.noSuchMethod(Invocation.method(#copyInvitation, []),
           returnValue: _i20.Future<dynamic>.value()) as _i20.Future<dynamic>);
+=======
+  _i22.Future<dynamic> copyInvitation() =>
+      (super.noSuchMethod(Invocation.method(#copyInvitation, []),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+}
+
+/// A class which mocks [GroupsController].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGroupsController extends _i1.Mock implements _i32.GroupsController {
+  MockGroupsController() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i15.GroupsService get groupsService => (super.noSuchMethod(
+          Invocation.getter(#groupsService),
+          returnValue:
+              _FakeGroupsService_16(this, Invocation.getter(#groupsService)))
+      as _i15.GroupsService);
+  @override
+  set groupsService(_i15.GroupsService? _groupsService) =>
+      super.noSuchMethod(Invocation.setter(#groupsService, _groupsService),
+          returnValueForMissingStub: null);
+  @override
+  _i6.ObservableList<_i33.Group> get groups => (super.noSuchMethod(
+      Invocation.getter(#groups),
+      returnValue: _FakeObservableList_14<_i33.Group>(
+          this, Invocation.getter(#groups))) as _i6.ObservableList<_i33.Group>);
+  @override
+  set groups(_i6.ObservableList<_i33.Group>? value) =>
+      super.noSuchMethod(Invocation.setter(#groups, value),
+          returnValueForMissingStub: null);
+  @override
+  set selectedGroup(_i33.Group? value) =>
+      super.noSuchMethod(Invocation.setter(#selectedGroup, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get editGroup =>
+      (super.noSuchMethod(Invocation.getter(#editGroup), returnValue: false)
+          as bool);
+  @override
+  set editGroup(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#editGroup, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get updatingGroup =>
+      (super.noSuchMethod(Invocation.getter(#updatingGroup), returnValue: false)
+          as bool);
+  @override
+  set updatingGroup(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#updatingGroup, value),
+          returnValueForMissingStub: null);
+  @override
+  _i6.ReactiveContext get context =>
+      (super.noSuchMethod(Invocation.getter(#context),
+              returnValue:
+                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
+          as _i6.ReactiveContext);
+  @override
+  _i22.Future<bool> updateGroups() =>
+      (super.noSuchMethod(Invocation.method(#updateGroups, []),
+          returnValue: _i22.Future<bool>.value(false)) as _i22.Future<bool>);
+  @override
+  void setGroups(List<_i33.Group>? groups) =>
+      super.noSuchMethod(Invocation.method(#setGroups, [groups]),
+          returnValueForMissingStub: null);
+  @override
+  _i22.Future<dynamic> createGroup(_i33.Group? group, _i30.XFile? picture) =>
+      (super.noSuchMethod(Invocation.method(#createGroup, [group, picture]),
+          returnValue: _i22.Future<dynamic>.value()) as _i22.Future<dynamic>);
+  @override
+  void setSelectedGroup(_i33.Group? group) =>
+      super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
+          returnValueForMissingStub: null);
+  @override
+  void setEditGroup(bool? editValue) =>
+      super.noSuchMethod(Invocation.method(#setEditGroup, [editValue]),
+          returnValueForMissingStub: null);
+  @override
+  void setUpdatingGroup(bool? updatingGroup) =>
+      super.noSuchMethod(Invocation.method(#setUpdatingGroup, [updatingGroup]),
+          returnValueForMissingStub: null);
+}
+
+/// A class which mocks [ContactProfileController].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockContactProfileController extends _i1.Mock
+    implements _i34.ContactProfileController {
+  MockContactProfileController() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i16.HttpProvider get httpProvider =>
+      (super.noSuchMethod(Invocation.getter(#httpProvider),
+              returnValue:
+                  _FakeHttpProvider_17(this, Invocation.getter(#httpProvider)))
+          as _i16.HttpProvider);
+  @override
+  bool get shareLocationToContact =>
+      (super.noSuchMethod(Invocation.getter(#shareLocationToContact),
+          returnValue: false) as bool);
+  @override
+  set shareLocationToContact(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#shareLocationToContact, value),
+          returnValueForMissingStub: null);
+  @override
+  _i6.ReactiveContext get context =>
+      (super.noSuchMethod(Invocation.getter(#context),
+              returnValue:
+                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
+          as _i6.ReactiveContext);
+  @override
+  _i22.Future<_i10.BitmapDescriptor> getMarkerImage(_i24.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#getMarkerImage, [contact]),
+              returnValue: _i22.Future<_i10.BitmapDescriptor>.value(
+                  _FakeBitmapDescriptor_18(
+                      this, Invocation.method(#getMarkerImage, [contact]))))
+          as _i22.Future<_i10.BitmapDescriptor>);
+  @override
+  void openMaps(_i26.ContactLocation? contact) =>
+      super.noSuchMethod(Invocation.method(#openMaps, [contact]),
+          returnValueForMissingStub: null);
+  @override
+  _i22.Future<void> setShareLocationToContact(
+          bool? shareLocationToContact, _i24.Contact? contact) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #setShareLocationToContact, [shareLocationToContact, contact]),
+          returnValue: _i22.Future<void>.value(),
+          returnValueForMissingStub:
+              _i22.Future<void>.value()) as _i22.Future<void>);
+}
+
+/// A class which mocks [HttpProvider].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockHttpProvider extends _i1.Mock implements _i16.HttpProvider {
+  MockHttpProvider() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get baseUrl =>
+      (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
+          as String);
+  @override
+  set baseUrl(String? _baseUrl) =>
+      super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
+          returnValueForMissingStub: null);
+  @override
+  _i22.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
+      (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
+              returnValue:
+                  _i22.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
+          as _i22.Future<Map<String, dynamic>>);
+  @override
+  _i22.Future<_i17.Response> sendPostRequest(
+          String? subPath, Map<String, dynamic>? body) =>
+      (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
+              returnValue: _i22.Future<_i17.Response>.value(_FakeResponse_19(
+                  this, Invocation.method(#sendPostRequest, [subPath, body]))))
+          as _i22.Future<_i17.Response>);
+  @override
+  _i22.Future<_i17.StreamedResponse> sendPostImageRequest(
+          String? subPath, String? filePath, String? type) =>
+      (super.noSuchMethod(
+              Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
+              returnValue: _i22.Future<_i17.StreamedResponse>.value(
+                  _FakeStreamedResponse_20(
+                      this,
+                      Invocation.method(
+                          #sendPostImageRequest, [subPath, filePath, type]))))
+          as _i22.Future<_i17.StreamedResponse>);
+  @override
+  _i22.Future<bool> sendPutRequest(
+          String? subPath, Map<String, dynamic>? body) =>
+      (super.noSuchMethod(Invocation.method(#sendPutRequest, [subPath, body]),
+          returnValue: _i22.Future<bool>.value(false)) as _i22.Future<bool>);
+  @override
+  _i22.Future<bool> sendDelRequest(String? subPath) =>
+      (super.noSuchMethod(Invocation.method(#sendDelRequest, [subPath]),
+          returnValue: _i22.Future<bool>.value(false)) as _i22.Future<bool>);
+>>>>>>> c5b6ad5cd47266fc32446ea1c50d39e0881c1f4a
 }

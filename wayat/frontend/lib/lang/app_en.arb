@@ -95,6 +95,7 @@
     "viewInformation": "View information",
 
     "profileShareLocation": "Share Location",
+    "shareMyLocation": "Share my location",
     "profileActiveLocation": "Active Location",
 
     "contactProfileSharingLocationWithYou": "Sharing location with you",
@@ -111,6 +112,8 @@
     "addParticipantsTip": "Start adding some friends to create a group!",
     "addFriends": "Add friends",
     "groupParticipants": "Group participants",
+    "editGroup": "Edit group",
+    "deleteGroup": "Delete group",
     
     "done": "Done"
 } 

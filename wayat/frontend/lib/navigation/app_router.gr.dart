@@ -16,10 +16,10 @@ import 'package:flutter/material.dart' as _i31;
 
 import '../domain/contact/contact.dart' as _i32;
 import '../domain/group/group.dart' as _i36;
-import '../features/authentication/page/loading_page.dart' as _i29;
-import '../features/authentication/page/login_page.dart' as _i27;
+import '../features/authentication/page/loading_page.dart' as _i22;
+import '../features/authentication/page/login_page.dart' as _i28;
 import '../features/authentication/page/login_wrapper.dart' as _i4;
-import '../features/authentication/page/phone_validation_page.dart' as _i28;
+import '../features/authentication/page/phone_validation_page.dart' as _i29;
 import '../features/contact_profile/controller/contact_profile_controller.dart'
     as _i33;
 import '../features/contact_profile/page/contact_profile_page.dart' as _i8;
@@ -48,12 +48,12 @@ import '../features/onboarding/pages/onboarding_page.dart' as _i5;
 import '../features/onboarding/pages/onboarding_wrapper.dart' as _i2;
 import '../features/onboarding/pages/progress_page.dart' as _i6;
 import '../features/profile/pages/edit_profile_page/edit_profile_page.dart'
-    as _i23;
-import '../features/profile/pages/faqs_page/faqs_page.dart' as _i25;
-import '../features/profile/pages/preferences_page/preferences_page.dart'
     as _i24;
-import '../features/profile/pages/privacy_page/privacy_page.dart' as _i26;
-import '../features/profile/pages/profile_page.dart' as _i22;
+import '../features/profile/pages/faqs_page/faqs_page.dart' as _i26;
+import '../features/profile/pages/preferences_page/preferences_page.dart'
+    as _i25;
+import '../features/profile/pages/privacy_page/privacy_page.dart' as _i27;
+import '../features/profile/pages/profile_page.dart' as _i23;
 import '../features/profile/pages/profile_wraper.dart' as _i12;
 import '../features/root/root_wrapper.dart' as _i1;
 
@@ -204,41 +204,43 @@ class AppRouter extends _i30.RootStackRouter {
       return _i30.MaterialPageX<dynamic>(
           routeData: routeData, child: _i21.ViewGroupPage(key: args.key));
     },
+    LoadingGroupRoute.name: (routeData) {
+      return _i30.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i22.LoadingPage());
+    },
     ProfileRoute.name: (routeData) {
       final args = routeData.argsAs<ProfileRouteArgs>(
           orElse: () => const ProfileRouteArgs());
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i22.ProfilePage(key: args.key));
+          routeData: routeData, child: _i23.ProfilePage(key: args.key));
     },
     EditProfileRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i23.EditProfilePage());
+          routeData: routeData, child: const _i24.EditProfilePage());
     },
     PreferencesRoute.name: (routeData) {
-      final args = routeData.argsAs<PreferencesRouteArgs>(
-          orElse: () => const PreferencesRouteArgs());
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i24.PreferencesPage(key: args.key));
+          routeData: routeData, child: const _i24.PreferencesPage());
     },
     FaqsRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i25.FaqsPage());
+          routeData: routeData, child: const _i26.FaqsPage());
     },
     PrivacyRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i26.PrivacyPage());
+          routeData: routeData, child: const _i27.PrivacyPage());
     },
     LoginRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i27.LoginPage());
+          routeData: routeData, child: const _i28.LoginPage());
     },
     PhoneValidationRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i28.PhoneValidationPage());
+          routeData: routeData, child: const _i29.PhoneValidationPage());
     },
     LoadingRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i29.LoadingPage());
+          routeData: routeData, child: const _i22.LoadingPage());
     }
   };
 
@@ -298,6 +300,9 @@ class AppRouter extends _i30.RootStackRouter {
                                       parent: GroupsWrapper.name),
                                   _i30.RouteConfig(ViewGroupRoute.name,
                                       path: 'view-group-page',
+                                      parent: GroupsWrapper.name),
+                                  _i30.RouteConfig(LoadingGroupRoute.name,
+                                      path: 'loading-page',
                                       parent: GroupsWrapper.name)
                                 ])
                           ]),
@@ -808,7 +813,16 @@ class ViewGroupRouteArgs {
 }
 
 /// generated route for
-/// [_i22.ProfilePage]
+/// [_i22.LoadingPage]
+class LoadingGroupRoute extends _i30.PageRouteInfo<void> {
+  const LoadingGroupRoute()
+      : super(LoadingGroupRoute.name, path: 'loading-page');
+
+  static const String name = 'LoadingGroupRoute';
+}
+
+/// generated route for
+/// [_i23.ProfilePage]
 class ProfileRoute extends _i30.PageRouteInfo<ProfileRouteArgs> {
   ProfileRoute({_i31.Key? key})
       : super(ProfileRoute.name,
@@ -829,7 +843,7 @@ class ProfileRouteArgs {
 }
 
 /// generated route for
-/// [_i23.EditProfilePage]
+/// [_i24.EditProfilePage]
 class EditProfileRoute extends _i30.PageRouteInfo<void> {
   const EditProfileRoute()
       : super(EditProfileRoute.name, path: 'edit-profile-page');
@@ -838,28 +852,16 @@ class EditProfileRoute extends _i30.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i24.PreferencesPage]
-class PreferencesRoute extends _i30.PageRouteInfo<PreferencesRouteArgs> {
-  PreferencesRoute({_i31.Key? key})
-      : super(PreferencesRoute.name,
-            path: 'preferences-page', args: PreferencesRouteArgs(key: key));
+/// [_i25.PreferencesPage]
+class PreferencesRoute extends _i30.PageRouteInfo<void> {
+  const PreferencesRoute()
+      : super(PreferencesRoute.name, path: 'preferences-page');
 
   static const String name = 'PreferencesRoute';
 }
 
-class PreferencesRouteArgs {
-  const PreferencesRouteArgs({this.key});
-
-  final _i31.Key? key;
-
-  @override
-  String toString() {
-    return 'PreferencesRouteArgs{key: $key}';
-  }
-}
-
 /// generated route for
-/// [_i25.FaqsPage]
+/// [_i26.FaqsPage]
 class FaqsRoute extends _i30.PageRouteInfo<void> {
   const FaqsRoute() : super(FaqsRoute.name, path: 'faqs-page');
 
@@ -867,7 +869,7 @@ class FaqsRoute extends _i30.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i26.PrivacyPage]
+/// [_i27.PrivacyPage]
 class PrivacyRoute extends _i30.PageRouteInfo<void> {
   const PrivacyRoute() : super(PrivacyRoute.name, path: 'privacy-page');
 
@@ -875,7 +877,7 @@ class PrivacyRoute extends _i30.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i27.LoginPage]
+/// [_i28.LoginPage]
 class LoginRoute extends _i30.PageRouteInfo<void> {
   const LoginRoute() : super(LoginRoute.name, path: 'login-page');
 
@@ -883,7 +885,7 @@ class LoginRoute extends _i30.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i28.PhoneValidationPage]
+/// [_i29.PhoneValidationPage]
 class PhoneValidationRoute extends _i30.PageRouteInfo<void> {
   const PhoneValidationRoute()
       : super(PhoneValidationRoute.name, path: 'phone-validation-page');
@@ -892,7 +894,7 @@ class PhoneValidationRoute extends _i30.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i29.LoadingPage]
+/// [_i22.LoadingPage]
 class LoadingRoute extends _i30.PageRouteInfo<void> {
   const LoadingRoute() : super(LoadingRoute.name, path: 'loading-page');
 

@@ -106,6 +106,49 @@ void main() async {
     expect(groupsController.selectedGroup, group);
   });
 
+  test("SetEditGroup is correct", () {
+    GroupsController groupsController =
+        GroupsController(groupsService: mockGroupsService);
+
+    expect(groupsController.editGroup, false);
+
+    groupsController.setEditGroup(true);
+
+    expect(groupsController.editGroup, true);
+
+    groupsController.setEditGroup(false);
+
+    expect(groupsController.editGroup, false);
+  });
+
+  test("SetUpdatingGroup is correct", () {
+    GroupsController groupsController =
+        GroupsController(groupsService: mockGroupsService);
+
+    expect(groupsController.updatingGroup, false);
+
+    groupsController.setUpdatingGroup(true);
+
+    expect(groupsController.updatingGroup, true);
+
+    groupsController.setUpdatingGroup(false);
+
+    expect(groupsController.updatingGroup, false);
+  });
+
+  test("DeleteGroup calls the right service method", () {
+    String groupId = "id";
+    when(mockGroupsService.delete(groupId))
+        .thenAnswer((_) => Future.value(null));
+
+    GroupsController groupsController =
+        GroupsController(groupsService: mockGroupsService);
+
+    groupsController.deleteGroup(groupId);
+
+    verify(mockGroupsService.delete(groupId)).called(1);
+  });
+
   test("GroupsController intialized with real service", () {
     GroupsController();
   });

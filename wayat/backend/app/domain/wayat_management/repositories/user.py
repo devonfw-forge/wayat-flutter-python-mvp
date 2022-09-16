@@ -62,24 +62,24 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         user = await self.get_or_throw(uid)
         return user.groups, user
 
-    async def get_user_location(self, uid: str, force=False) -> Location | None:
+    async def get_user_location(self, uid: str, force=False) -> Tuple[Location | None, list[str]]:
         """
         Returns the location of a User. If force=False (default), this Location will be None if the User has the
         share_location property set to False.
 
-        :param force: whether to ignore share_location or not
-        :param uid: the UID of the User
+        :param force: whether to ignore share_location or not :param uid: the UID of the User
         :return: the Location of the User, or None if it's not available
+        and the list of contacts with which the user is sharing
         """
         user_entity = await self.get_or_throw(uid)
         if user_entity.location is None:  # if not available, return None
-            return None
+            return None, user_entity.location_shared_with
         elif not force and not user_entity.share_location:  # if not forcing, decide on not(share_location)
-            return None
+            return None, user_entity.location_shared_with
         else:
-            return user_entity.location
+            return user_entity.location, user_entity.location_shared_with
 
-    async def find_contacts_with_map_open(self, uid: str) -> list[UserEntity]:
+    async def find_contacts_with_map_open(self, uid: str, in_shared_list: bool = True) -> list[UserEntity]:
         result_stream = (
             self._get_collection_reference()
             .where("contacts", "array_contains", uid)
@@ -87,8 +87,15 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             .where("map_valid_until", ">", get_current_time())
             .stream()
         )
-        return [self._model(document_id=result.id, **result.to_dict()) async for result in
-                result_stream]  # type: ignore
+        all_models = [self._model(document_id=result.id, **result.to_dict())
+                      async for result in result_stream]  # type: ignore
+        if in_shared_list is True:
+            user = await self.get_or_throw(document_id=uid)
+            shared_list = user.location_shared_with
+            models = [el for el in all_models if el.document_id in shared_list]
+        else:
+            models = all_models
+        return models
 
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})

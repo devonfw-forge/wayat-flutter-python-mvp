@@ -65,6 +65,7 @@ dependencies:
   image_picker: ^0.8.5+3
   # Testing mocks
   mockito: ^5.3.0
+  flutter_launcher_icons: ^0.10.0
   restart_app: ^1.1.0+1
 
 dev_dependencies:
@@ -91,3 +92,9 @@ flutter:
   assets:
     - .env
     - assets/images/
+  
+flutter_icons:
+  image_path_ios: 'assets/images/wayat_icon.png'
+  image_path_android: 'assets/images/wayat_icon.png'
+  android: true
+  ios: true

@@ -51,6 +51,14 @@ class MockGroupsService extends _i1.Mock implements _i3.GroupsService {
   _i4.Future<dynamic> create(_i5.Group? group, _i6.XFile? picture) =>
       (super.noSuchMethod(Invocation.method(#create, [group, picture]),
           returnValue: _i4.Future<dynamic>.value()) as _i4.Future<dynamic>);
+  @override
+  _i4.Future<dynamic> update(_i5.Group? group, _i6.XFile? picture) =>
+      (super.noSuchMethod(Invocation.method(#update, [group, picture]),
+          returnValue: _i4.Future<dynamic>.value()) as _i4.Future<dynamic>);
+  @override
+  _i4.Future<dynamic> delete(String? groupId) =>
+      (super.noSuchMethod(Invocation.method(#delete, [groupId]),
+          returnValue: _i4.Future<dynamic>.value()) as _i4.Future<dynamic>);
 }
 
 /// A class which mocks [HttpProvider].
