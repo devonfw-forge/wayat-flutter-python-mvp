@@ -21,6 +21,7 @@ import 'edit_profile_test.mocks.dart';
 void main() async {
   final MockSessionState mockSessionState = MockSessionState();
   final MockProfileState mockProfileState = MockProfileState();
+
   late MyUser user;
 
   setUpAll(() async {
@@ -37,6 +38,9 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
     when(mockSessionState.currentUser).thenAnswer((_) => user);
+    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
+    when(mockProfileState.deleteCurrentUser())
+        .thenAnswer((_) => Future.value());
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
   });
@@ -83,5 +87,14 @@ void main() async {
               matching: find.text(appLocalizations.name)),
           findsOneWidget);
     });
+  });
+
+  testWidgets('Check dialog to change photo is showed', (tester) async {
+    //Avoid overflow errors
+    FlutterError.onError = null;
+    await tester.pumpWidget(_createApp(EditProfilePage()));
+    await tester.tap(find.widgetWithIcon(InkWell, Icons.edit_outlined));
+    await tester.pumpAndSettle();
+    expect(find.text(appLocalizations.chooseProfileFoto), findsOneWidget);
   });
 }

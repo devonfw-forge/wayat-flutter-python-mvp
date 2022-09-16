@@ -36,7 +36,7 @@ void main() async {
     );
   }
 
-  testWidgets('Virification dialdg widget has correct AlertDialog',
+  testWidgets('Verification dialog widget has correct AlertDialog',
       (tester) async {
     await tester.pumpWidget(_createApp(VerifyPhoneNumberDialog(
       phoneNumber: '+34600947886',

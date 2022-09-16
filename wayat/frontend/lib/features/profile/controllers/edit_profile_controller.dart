@@ -80,8 +80,8 @@ abstract class _EditProfileController with Store {
   }
 
   @action
-  String validatePhoneNumber(textValue) {
-    if (textValue!.number.isEmpty) {
+  String validatePhoneNumber(PhoneNumber textValue) {
+    if (textValue.number.isEmpty) {
       errorPhoneFormat = appLocalizations.phoneEmpty;
     } else if (textValue.completeNumber.length < 12) {
       errorPhoneFormat = appLocalizations.phoneIncorrect;

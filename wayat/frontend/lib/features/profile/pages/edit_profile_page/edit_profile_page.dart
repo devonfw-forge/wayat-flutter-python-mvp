@@ -13,7 +13,11 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  final EditProfileController controller;
+
+  EditProfilePage({Key? key, EditProfileController? controller})
+      : controller = controller ?? EditProfileController(),
+        super(key: key);
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -22,7 +26,6 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
   final ProfileState profileState = GetIt.I.get<ProfileState>();
-  final EditProfileController controller = EditProfileController();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   TextStyle _textStyle(Color color, double size) =>
@@ -77,7 +80,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   iconSize: 25,
-                  onPressed: () => controller.onPressedBackButton(),
+                  onPressed: () => widget.controller.onPressedBackButton(),
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
                 padding: const EdgeInsets.only(left: 14),
@@ -89,7 +92,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ],
           ),
           TextButton(
-            onPressed: () async => await controller.onPressedSaveButton(),
+            onPressed: () async =>
+                await widget.controller.onPressedSaveButton(),
             child: Text(
               appLocalizations.save,
               style: _textStyle(ColorTheme.primaryColor, 16),
@@ -110,8 +114,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             height: 120.0,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: (controller.currentSelectedImage != null)
-                    ? FileImage(io.File(controller.currentSelectedImage!.path))
+                image: (widget.controller.currentSelectedImage != null)
+                    ? FileImage(io.File(
+                            widget.controller.currentSelectedImage!.path))
                         as ImageProvider
                     : NetworkImage(
                         GetIt.I.get<SessionState>().currentUser!.imageUrl),
@@ -168,7 +173,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     border: InputBorder.none,
                     hintText: user.name,
                     hintStyle: _textStyle(Colors.black38, 18)),
-                onChanged: ((text) => controller.setName(text))),
+                onChanged: ((text) => widget.controller.setName(text))),
           )),
         ]),
       );
@@ -185,8 +190,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ],
           decoration: InputDecoration(
               labelText: user.phone.substring(3),
-              errorText: controller.errorPhoneFormat.isNotEmpty
-                  ? controller.errorPhoneFormat
+              errorText: widget.controller.errorPhoneFormat.isNotEmpty
+                  ? widget.controller.errorPhoneFormat
                   : null,
               labelStyle: _textStyle(Colors.black87, 16),
               border:
@@ -194,9 +199,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           initialCountryCode: 'ES',
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (newTextValue) =>
-              controller.validatePhoneNumber(newTextValue),
+              widget.controller.validatePhoneNumber(newTextValue),
           onChanged: (phone) {
-            controller.onChangePhoneNumber(phone, _formKey, context);
+            widget.controller.onChangePhoneNumber(phone, _formKey, context);
           },
         );
       },
@@ -214,8 +219,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               TextButton.icon(
-                  onPressed: () =>
-                      controller.getFromSource(ImageSource.camera, context),
+                  onPressed: () => widget.controller
+                      .getFromSource(ImageSource.camera, context),
                   icon: const Icon(
                     Icons.camera_alt,
                     size: 30,
@@ -226,8 +231,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     style: const TextStyle(color: Colors.black87),
                   )),
               TextButton.icon(
-                  onPressed: () =>
-                      controller.getFromSource(ImageSource.gallery, context),
+                  onPressed: () => widget.controller
+                      .getFromSource(ImageSource.gallery, context),
                   icon: const Icon(
                     Icons.image,
                     size: 30,
