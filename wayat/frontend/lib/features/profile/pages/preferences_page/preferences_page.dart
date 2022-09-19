@@ -20,7 +20,7 @@ class PreferencesPage extends StatefulWidget {
 class _PreferencesPageState extends State<PreferencesPage> {
   final EditProfileController controller = EditProfileController();
   final ProfileState profileState = GetIt.I.get<ProfileState>();
-  Language? changedLanguage;
+  late Language? changedLanguage = profileState.language;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
             padding: const EdgeInsets.only(right: 14),
             child: TextButton(
               onPressed: () async {
-                if (changedLanguage != null) {
+                if (changedLanguage != profileState.language) {
                   await profileState.changeLanguage(changedLanguage!);
                   Restart.restartApp();
                 } else {
