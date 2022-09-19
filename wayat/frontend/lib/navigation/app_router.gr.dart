@@ -48,6 +48,8 @@ import '../features/onboarding/pages/onboarding_page.dart' as _i5;
 import '../features/onboarding/pages/onboarding_wrapper.dart' as _i2;
 import '../features/onboarding/pages/progress_page.dart' as _i6;
 import '../features/profile/controllers/edit_profile_controller.dart' as _i37;
+import '../features/profile/controllers/phone_verification_controller.dart'
+    as _i38;
 import '../features/profile/pages/edit_profile_page/edit_profile_page.dart'
     as _i24;
 import '../features/profile/pages/faqs_page/faqs_page.dart' as _i26;
@@ -220,8 +222,10 @@ class AppRouter extends _i30.RootStackRouter {
           orElse: () => const EditProfileRouteArgs());
       return _i30.MaterialPageX<dynamic>(
           routeData: routeData,
-          child:
-              _i24.EditProfilePage(key: args.key, controller: args.controller));
+          child: _i24.EditProfilePage(
+              key: args.key,
+              controller: args.controller,
+              phoneController: args.phoneController));
     },
     PreferencesRoute.name: (routeData) {
       final args = routeData.argsAs<PreferencesRouteArgs>(
@@ -242,8 +246,12 @@ class AppRouter extends _i30.RootStackRouter {
           routeData: routeData, child: const _i28.LoginPage());
     },
     PhoneValidationRoute.name: (routeData) {
+      final args = routeData.argsAs<PhoneValidationRouteArgs>(
+          orElse: () => const PhoneValidationRouteArgs());
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i29.PhoneValidationPage());
+          routeData: routeData,
+          child: _i29.PhoneValidationPage(
+              key: args.key, phoneController: args.phoneController));
     },
     LoadingRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
@@ -852,24 +860,32 @@ class ProfileRouteArgs {
 /// generated route for
 /// [_i24.EditProfilePage]
 class EditProfileRoute extends _i30.PageRouteInfo<EditProfileRouteArgs> {
-  EditProfileRoute({_i31.Key? key, _i37.EditProfileController? controller})
+  EditProfileRoute(
+      {_i31.Key? key,
+      _i37.EditProfileController? controller,
+      _i38.PhoneVerificationController? phoneController})
       : super(EditProfileRoute.name,
             path: 'edit-profile-page',
-            args: EditProfileRouteArgs(key: key, controller: controller));
+            args: EditProfileRouteArgs(
+                key: key,
+                controller: controller,
+                phoneController: phoneController));
 
   static const String name = 'EditProfileRoute';
 }
 
 class EditProfileRouteArgs {
-  const EditProfileRouteArgs({this.key, this.controller});
+  const EditProfileRouteArgs({this.key, this.controller, this.phoneController});
 
   final _i31.Key? key;
 
   final _i37.EditProfileController? controller;
 
+  final _i38.PhoneVerificationController? phoneController;
+
   @override
   String toString() {
-    return 'EditProfileRouteArgs{key: $key, controller: $controller}';
+    return 'EditProfileRouteArgs{key: $key, controller: $controller, phoneController: $phoneController}';
   }
 }
 
@@ -920,11 +936,29 @@ class LoginRoute extends _i30.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i29.PhoneValidationPage]
-class PhoneValidationRoute extends _i30.PageRouteInfo<void> {
-  const PhoneValidationRoute()
-      : super(PhoneValidationRoute.name, path: 'phone-validation-page');
+class PhoneValidationRoute
+    extends _i30.PageRouteInfo<PhoneValidationRouteArgs> {
+  PhoneValidationRoute(
+      {_i31.Key? key, _i38.PhoneVerificationController? phoneController})
+      : super(PhoneValidationRoute.name,
+            path: 'phone-validation-page',
+            args: PhoneValidationRouteArgs(
+                key: key, phoneController: phoneController));
 
   static const String name = 'PhoneValidationRoute';
+}
+
+class PhoneValidationRouteArgs {
+  const PhoneValidationRouteArgs({this.key, this.phoneController});
+
+  final _i31.Key? key;
+
+  final _i38.PhoneVerificationController? phoneController;
+
+  @override
+  String toString() {
+    return 'PhoneValidationRouteArgs{key: $key, phoneController: $phoneController}';
+  }
 }
 
 /// generated route for

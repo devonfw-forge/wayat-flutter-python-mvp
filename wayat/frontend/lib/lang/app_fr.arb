@@ -27,6 +27,8 @@
     "phoneErrorTooRequest" : "Le nombre de tentatives a été dépassé, veuillez réessayer plus tard.",
     "phoneUnexpectedError" : "Erreur inattendue, veuillez réessayer plus tard.",
 
+    "phoneUsed": "Ce numéro est déjà utilisé",
+
     "home": "Home",
     "contacts": "Contacts",
     "events": "Evénements",
