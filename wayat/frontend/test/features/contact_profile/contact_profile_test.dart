@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -67,6 +68,7 @@ void main() async {
   late BuildContext buildContext;
 
   setUpAll(() {
+    dotenv.load();
     mockUserStatusState = MockUserStatusState();
     mockHomeState = MockHomeState();
     mockHttpProvider = MockHttpProvider();
@@ -136,7 +138,7 @@ void main() async {
           contact: nonLocatedContact, navigationSource: "Contacts")));
       await tester.pump();
 
-      expect(find.byType(GoogleMap), findsNothing);
+      expect(find.byType(Image), findsNothing);
     });
 
     testWidgets("There is a message indicating that location is not available",
@@ -151,15 +153,11 @@ void main() async {
 
     testWidgets("The map appears when the contact can be located",
         (tester) async {
-      when(mockContactProfileController.getMarkerImage(locatedContact))
-          .thenAnswer(
-              (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
-
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: locatedContact,
           navigationSource: "Contacts",
           controller: mockContactProfileController)));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       expect(find.byType(Image), findsOneWidget);
     });
