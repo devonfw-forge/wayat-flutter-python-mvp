@@ -59,10 +59,8 @@ class GoogleMapsService {
     });
 
     String pathAndQuery = "${url.path}?${url.query}";
-    print("DEBUG ${url.path}?${url.query}");
     Digest signature =
         Hmac(sha1, base64.decode(secret)).convert(utf8.encode(pathAndQuery));
-    print("DEBUG signature ${signature.bytes}");
 
     String signatureInBase64 = base64.encode(signature.bytes);
     String signatureInBase64Normalized = base64.normalize(signatureInBase64);
