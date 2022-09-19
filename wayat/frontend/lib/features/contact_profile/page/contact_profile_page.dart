@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -53,8 +51,8 @@ class ContactProfilePage extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
+        appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(40), child: CustomAppBar()),
         body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -89,7 +87,7 @@ class ContactProfilePage extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget shareMyLocationRow() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
@@ -100,7 +98,9 @@ class ContactProfilePage extends StatelessWidget {
           Text(
             appLocalizations.shareMyLocation,
             style: const TextStyle(
-                fontWeight: FontWeight.w400, color: Colors.black87, fontSize: 18),
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+                fontSize: 18),
           ),
           Observer(builder: (context) {
             bool enabled = controller.shareLocationToContact;

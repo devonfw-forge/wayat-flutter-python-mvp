@@ -20,8 +20,8 @@ class ProgressOnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
+      appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(40), child: CustomAppBar()),
       body: Column(
         children: [
           onBoardingHeader(context),
@@ -47,7 +47,7 @@ class ProgressOnboardingPage extends StatelessWidget {
                 onPressed: () {
                   bool movedBack = controller.moveBack();
                   if (!movedBack) {
-                    controller.setOnBoardingState(OnBoardingState.NotStarted);
+                    controller.setOnBoardingState(OnBoardingState.notStarted);
                   }
                 },
                 icon: const Icon(Icons.arrow_back)),
