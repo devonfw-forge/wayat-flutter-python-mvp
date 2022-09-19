@@ -53,27 +53,25 @@ class GoogleMapsService {
 
     Uri url = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "key": apiKey,
       "size": "400x400",
       "zoom": "16",
+      "key": apiKey,
     });
 
     String pathAndQuery = "${url.path}?${url.query}";
     Digest signature =
         Hmac(sha1, base64.decode(secret)).convert(utf8.encode(pathAndQuery));
 
-    String signatureInBase64 = base64.encode(signature.bytes);
-    String signatureInBase64Normalized = base64.normalize(signatureInBase64);
+    String signatureInBase64 = base64Url.encode(signature.bytes);
 
     Uri signedUrl = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "key": apiKey,
       "size": "400x400",
       "zoom": "16",
-      "signature": signatureInBase64Normalized
+      "key": apiKey,
     });
 
-    return signedUrl.toString();
+    return "$signedUrl&signature=$signatureInBase64";
   }
 
   static String getApIKey() {

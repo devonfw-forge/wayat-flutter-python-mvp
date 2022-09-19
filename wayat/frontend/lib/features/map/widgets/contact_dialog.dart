@@ -151,13 +151,18 @@ class ContactDialog extends StatelessWidget {
       borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(5), topRight: Radius.circular(5)),
       child: Container(
+        height: double.infinity,
+        width: double.infinity,
         decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.black, width: 1))),
         child: Stack(
           alignment: AlignmentDirectional.center,
           children: [
-            Image.network(GoogleMapsService.getStaticMapImageFromCoords(
-                LatLng(contact.latitude, contact.longitude))),
+            Image.network(
+              GoogleMapsService.getStaticMapImageFromCoords(
+                  LatLng(contact.latitude, contact.longitude)),
+              headers: {},
+            ),
             CircleAvatar(
               backgroundImage: NetworkImage(contact.imageUrl),
             )
