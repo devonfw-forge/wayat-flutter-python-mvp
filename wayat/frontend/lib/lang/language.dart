@@ -9,8 +9,8 @@ class Language {
       Language('English', 'en'),
       Language('Español', 'es'),
       Language('Français', 'fr'),
-      Language('Deutsch', 'ge'),
-      Language('Nederlands', 'du'),
+      Language('Deutsch', 'de'),
+      Language('Dutch', 'nl'),
     ];
   }
 

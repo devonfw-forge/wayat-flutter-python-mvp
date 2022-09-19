@@ -135,7 +135,7 @@ class PreferencesPage extends StatelessWidget {
         onChanged: (Language? language) async {
           if (language != null) {
             await profileState.changeLanguage(language);
-            //Restart.restartApp();
+            Restart.restartApp();
           }
         },
         items: itemList
