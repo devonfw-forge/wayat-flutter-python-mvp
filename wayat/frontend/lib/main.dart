@@ -12,7 +12,6 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:wayat/lang/language_constants.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/options.dart';
@@ -36,9 +35,9 @@ Future main() async {
 void setTimeAgoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
   timeago.setLocaleMessages('es', timeago.EsMessages());
-  // timeago.setLocaleMessages('fr', timeago.FrMessages());
-  // timeago.setLocaleMessages('de', timeago.DeMessages());
-  // timeago.setLocaleMessages('nl', timeago.NlMessages());
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
 Future registerSingletons() async {
