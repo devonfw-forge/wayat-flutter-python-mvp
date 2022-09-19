@@ -28,22 +28,10 @@ class GoogleMapsService {
   }
 
   static Future<String> getAddressFromCoordinates(LatLng coords) async {
-    String mapsKey = "";
-    if (kIsWeb) {
-      mapsKey = dotenv.get('WEB_API_KEY');
-    } else if (Platform.isAndroid) {
-      mapsKey = dotenv.get('ANDROID_API_KEY');
-    } else if (Platform.isIOS) {
-      mapsKey = dotenv.get('IOS_API_KEY');
-    }
+    String mapsKey = getApIKey();
 
-    Uri url = Uri.https(
-      "maps.googleapis.com", "/maps/api/geocode/json",
-      {
-        "latlng": "${coords.latitude},${coords.longitude}",
-        "key": mapsKey
-      }
-    );
+    Uri url = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
+        {"latlng": "${coords.latitude},${coords.longitude}", "key": mapsKey});
     try {
       Response response = await get(url);
       Map<String, dynamic> json = jsonDecode(response.body);
@@ -52,10 +40,36 @@ class GoogleMapsService {
     } on SocketException {
       log("Exception: Failed host lookup to googleapis.com");
       return "ERROR_ADDRESS";
-    }
-    on HandshakeException {
+    } on HandshakeException {
       log("Exception: Bad handshake to googleapis.com");
       return "ERROR_ADDRESS";
+    }
+  }
+
+  static String getStaticMapImageFromCoords(LatLng coords) {
+    String apiKey = getApIKey();
+
+    Uri url = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
+      "center": "${coords.latitude},${coords.longitude}",
+      "key": apiKey,
+      "size": "400x400",
+      "zoom": "16",
+    });
+
+    print("DEBUG " + url.toString());
+
+    return url.toString();
+  }
+
+  static String getApIKey() {
+    if (kIsWeb) {
+      return dotenv.get('WEB_API_KEY');
+    } else if (Platform.isAndroid) {
+      return dotenv.get('ANDROID_API_KEY');
+    } else if (Platform.isIOS) {
+      return dotenv.get('IOS_API_KEY');
+    } else {
+      return "";
     }
   }
 }

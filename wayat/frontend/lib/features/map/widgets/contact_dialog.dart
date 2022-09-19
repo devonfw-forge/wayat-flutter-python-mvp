@@ -24,8 +24,7 @@ class ContactDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           side: const BorderSide(color: Colors.black, width: 1)),
-      child: 
-      SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [mapSection(context), dataSection(context)],
@@ -154,6 +153,27 @@ class ContactDialog extends StatelessWidget {
       child: Container(
         decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.black, width: 1))),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            Image.network(GoogleMapsService.getStaticMapImageFromCoords(
+                LatLng(contact.latitude, contact.longitude))),
+            CircleAvatar(
+              backgroundImage: NetworkImage(contact.imageUrl),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+/*   Widget googleMap() {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+      child: Container(
+        decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.black, width: 1))),
         child: GoogleMap(
           zoomControlsEnabled: false,
           zoomGesturesEnabled: false,
@@ -171,5 +191,5 @@ class ContactDialog extends StatelessWidget {
         ),
       ),
     );
-  }
+  } */
 }
