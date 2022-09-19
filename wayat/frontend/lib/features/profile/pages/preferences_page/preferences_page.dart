@@ -139,7 +139,8 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   Widget _languageButton(List<Language> itemList) {
     return Observer(builder: (context) {
-      Language languageSelected = profileState.language!;
+      Language languageSelected =
+          profileState.language ?? Language('English', 'en');
       return DropdownButton<Language>(
         value: (changedLanguage == null) ? languageSelected : changedLanguage,
         borderRadius: BorderRadius.circular(10),
