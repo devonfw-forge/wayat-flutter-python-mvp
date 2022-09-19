@@ -54,8 +54,8 @@ class ContactProfilePage extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
+        appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(40), child: CustomAppBar()),
         body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
