@@ -15,7 +15,6 @@ class PhoneVerificationController = _PhoneVerificationController
 
 abstract class _PhoneVerificationController with Store {
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
 
   @observable
   String phoneNumber = "";
