@@ -26,6 +26,9 @@ abstract class _ManageGroupController with Store {
   Group group;
 
   @observable
+  bool showValidationGroup = false;
+
+  @observable
   late ObservableList<Contact> selectedContacts =
       ObservableList.of(group.members);
 
@@ -64,11 +67,24 @@ abstract class _ManageGroupController with Store {
         //AppLocalizations cannot be used from unit tests because they require a context to initialize
         : appLocalizations.newGroup;
 
-    if (group.id == "") {
-      await groupsService.create(group, selectedFile);
-    } else {
-      await groupsService.update(group, selectedFile);
+    groupValidation();
+    if (!showValidationGroup) {
+      if (group.id == "") {
+        await groupsService.create(group, selectedFile);
+      } else {
+        await groupsService.update(group, selectedFile);
+      }
     }
+  }
+
+  @action
+  void groupValidation() {
+    if (selectedContacts.length >= 2) {
+      showValidationGroup = false;
+    } else {
+      showValidationGroup = true;
+    }
+    print('info showValid: ' + showValidationGroup.toString());
   }
 
   Future getFromSource(ImageSource source) async {
