@@ -224,10 +224,8 @@ class AppRouter extends _i30.RootStackRouter {
               _i24.EditProfilePage(key: args.key, controller: args.controller));
     },
     PreferencesRoute.name: (routeData) {
-      final args = routeData.argsAs<PreferencesRouteArgs>(
-          orElse: () => const PreferencesRouteArgs());
       return _i30.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i25.PreferencesPage(key: args.key));
+          routeData: routeData, child: const _i25.PreferencesPage());
     },
     FaqsRoute.name: (routeData) {
       return _i30.MaterialPageX<dynamic>(
@@ -875,23 +873,11 @@ class EditProfileRouteArgs {
 
 /// generated route for
 /// [_i25.PreferencesPage]
-class PreferencesRoute extends _i30.PageRouteInfo<PreferencesRouteArgs> {
-  PreferencesRoute({_i31.Key? key})
-      : super(PreferencesRoute.name,
-            path: 'preferences-page', args: PreferencesRouteArgs(key: key));
+class PreferencesRoute extends _i30.PageRouteInfo<void> {
+  const PreferencesRoute()
+      : super(PreferencesRoute.name, path: 'preferences-page');
 
   static const String name = 'PreferencesRoute';
-}
-
-class PreferencesRouteArgs {
-  const PreferencesRouteArgs({this.key});
-
-  final _i31.Key? key;
-
-  @override
-  String toString() {
-    return 'PreferencesRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
