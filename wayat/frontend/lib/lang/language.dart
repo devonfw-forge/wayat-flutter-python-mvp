@@ -1,5 +1,3 @@
-import 'package:wayat/lang/app_localizations.dart';
-
 class Language {
   final String name;
   final String languageCode;
@@ -10,6 +8,9 @@ class Language {
     return <Language>[
       Language('English', 'en'),
       Language('Español', 'es'),
+      Language('Français', 'fr'),
+      Language('Deutsch', 'ge'),
+      Language('Nederlands', 'du'),
     ];
   }
 
