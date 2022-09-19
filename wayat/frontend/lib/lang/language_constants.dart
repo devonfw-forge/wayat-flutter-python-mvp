@@ -21,6 +21,12 @@ Locale _locale(String languageCode) {
       return const Locale('en', 'US');
     case 'es':
       return const Locale('es', "ES");
+    case 'fr':
+      return const Locale('fr', 'FR');
+    case 'de':
+      return const Locale('de', 'DE');
+    case 'nl':
+      return const Locale('nl', "NL");
     default:
       return const Locale('en', 'US');
   }
