@@ -27,6 +27,8 @@
     "phoneErrorTooRequest" : "Teveel code aangevraagd, probeer het later",
     "phoneUnexpectedError" : "Onverwachte fout, probeer het later.",
 
+    "phoneUsed": "Aantal in gebruik",
+
     "home": "Home",
     "contacts": "Contacten",
     "events": "Evenementen",

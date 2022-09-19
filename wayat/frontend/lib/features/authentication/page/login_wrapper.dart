@@ -27,7 +27,7 @@ class LoginWrapper extends StatelessWidget {
                         if (!signedIn)
                           const LoginRoute()
                         else if (currentUser != null && currentUser.phone == "")
-                          const PhoneValidationRoute()
+                          PhoneValidationRoute()
                         else
                           const LoadingRoute()
                       ]);

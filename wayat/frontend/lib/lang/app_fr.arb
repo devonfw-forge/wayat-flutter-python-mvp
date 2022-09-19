@@ -27,6 +27,8 @@
     "phoneErrorTooRequest" : "Trop de demandes de code, essayez plus tard",
     "phoneUnexpectedError" : "Erreur inattendue, essayez plus tard",
 
+    "phoneUsed": "Ce numéro est déjà utilisé",
+
     "home": "Accueil",
     "contacts": "Contacts",
     "events": "Événements",
