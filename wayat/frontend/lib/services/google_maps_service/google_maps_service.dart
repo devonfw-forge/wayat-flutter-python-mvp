@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -48,6 +48,8 @@ class GoogleMapsService {
 
   static String getStaticMapImageFromCoords(LatLng coords) {
     String apiKey = getApIKey();
+    String secret = dotenv.get("MAPS_STATIC_SECRET").replaceAll("\"", "");
+    secret = base64.normalize(secret);
 
     Uri url = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
@@ -56,9 +58,24 @@ class GoogleMapsService {
       "zoom": "16",
     });
 
-    print("DEBUG " + url.toString());
+    String pathAndQuery = "${url.path}?${url.query}";
+    print("DEBUG ${url.path}?${url.query}");
+    Digest signature =
+        Hmac(sha1, base64.decode(secret)).convert(utf8.encode(pathAndQuery));
+    print("DEBUG signature ${signature.bytes}");
 
-    return url.toString();
+    String signatureInBase64 = base64.encode(signature.bytes);
+    String signatureInBase64Normalized = base64.normalize(signatureInBase64);
+
+    Uri signedUrl = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
+      "center": "${coords.latitude},${coords.longitude}",
+      "key": apiKey,
+      "size": "400x400",
+      "zoom": "16",
+      "signature": signatureInBase64Normalized
+    });
+
+    return signedUrl.toString();
   }
 
   static String getApIKey() {

@@ -17,6 +17,7 @@ import 'package:wayat/features/contact_profile/controller/contact_profile_contro
 import 'package:wayat/lang/app_localizations.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
+import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
 class ContactProfilePage extends StatelessWidget {
   Contact contact;
@@ -89,7 +90,7 @@ class ContactProfilePage extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget shareMyLocationRow() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
@@ -100,7 +101,9 @@ class ContactProfilePage extends StatelessWidget {
           Text(
             appLocalizations.shareMyLocation,
             style: const TextStyle(
-                fontWeight: FontWeight.w400, color: Colors.black87, fontSize: 18),
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+                fontSize: 18),
           ),
           Observer(builder: (context) {
             bool enabled = controller.shareLocationToContact;
@@ -225,7 +228,7 @@ class ContactProfilePage extends StatelessWidget {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(5), topRight: Radius.circular(5))),
       child: (canBelocated)
-          ? googleMap(contact as ContactLocation)
+          ? googleMap(contact as ContactLocation, context)
           : locationNotAvailableMessage(context),
     );
   }
@@ -246,38 +249,30 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
-  Widget googleMap(ContactLocation contact) {
-    return FutureBuilder(
-        future: controller.getMarkerImage(contact),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                child: GoogleMap(
-                  zoomControlsEnabled: false,
-                  zoomGesturesEnabled: false,
-                  rotateGesturesEnabled: false,
-                  scrollGesturesEnabled: false,
-                  tiltGesturesEnabled: false,
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(contact.latitude, contact.longitude),
-                      zoom: 16),
-                  markers: {
-                    Marker(
-                        markerId: MarkerId(contact.name),
-                        position: LatLng(contact.latitude, contact.longitude),
-                        icon: snapshot.data as BitmapDescriptor)
-                  },
-                ),
+  Widget googleMap(ContactLocation contact, BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.4,
+      width: double.infinity,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Image.network(
+                GoogleMapsService.getStaticMapImageFromCoords(
+                    LatLng(contact.latitude, contact.longitude)),
+                fit: BoxFit.cover,
               ),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        });
+            ),
+            CircleAvatar(
+              backgroundImage: NetworkImage(contact.imageUrl),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

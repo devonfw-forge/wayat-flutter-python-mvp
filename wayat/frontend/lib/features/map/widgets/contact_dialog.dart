@@ -166,30 +166,4 @@ class ContactDialog extends StatelessWidget {
       ),
     );
   }
-
-/*   Widget googleMap() {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-      child: Container(
-        decoration: const BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.black, width: 1))),
-        child: GoogleMap(
-          zoomControlsEnabled: false,
-          zoomGesturesEnabled: false,
-          rotateGesturesEnabled: false,
-          scrollGesturesEnabled: false,
-          tiltGesturesEnabled: false,
-          initialCameraPosition: CameraPosition(
-              target: LatLng(contact.latitude, contact.longitude), zoom: 16),
-          markers: {
-            Marker(
-                markerId: MarkerId(contact.name),
-                position: LatLng(contact.latitude, contact.longitude),
-                icon: icon)
-          },
-        ),
-      ),
-    );
-  } */
 }

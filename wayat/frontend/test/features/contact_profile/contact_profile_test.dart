@@ -22,13 +22,8 @@ import 'package:wayat/common/widgets/switch.dart';
 
 import 'contact_profile_test.mocks.dart';
 
-@GenerateMocks([
-  UserStatusState, 
-  ContactProfileController, 
-  HomeState, 
-  HttpProvider
-])
-
+@GenerateMocks(
+    [UserStatusState, ContactProfileController, HomeState, HttpProvider])
 void main() async {
   // Constants for the test contacts creation
   const String contactName = "Contact Name";
@@ -156,8 +151,9 @@ void main() async {
 
     testWidgets("The map appears when the contact can be located",
         (tester) async {
-      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
-          (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
+      when(mockContactProfileController.getMarkerImage(locatedContact))
+          .thenAnswer(
+              (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
 
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: locatedContact,
@@ -165,12 +161,13 @@ void main() async {
           controller: mockContactProfileController)));
       await tester.pump();
 
-      expect(find.byType(GoogleMap), findsOneWidget);
+      expect(find.byType(Image), findsOneWidget);
     });
 
     testWidgets("There is no message when the map is loaded", (tester) async {
-      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
-          (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
+      when(mockContactProfileController.getMarkerImage(locatedContact))
+          .thenAnswer(
+              (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
 
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: locatedContact,
@@ -263,9 +260,11 @@ void main() async {
     testWidgets(
         "Google Maps service is called when pressing the Routing button",
         (tester) async {
-      when(mockContactProfileController.openMaps(locatedContact)).thenReturn(null);
-      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
-          (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
+      when(mockContactProfileController.openMaps(locatedContact))
+          .thenReturn(null);
+      when(mockContactProfileController.getMarkerImage(locatedContact))
+          .thenAnswer(
+              (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
 
       await tester.pumpWidget(_createApp(ContactProfilePage(
         contact: locatedContact,
@@ -286,9 +285,8 @@ void main() async {
       expect(find.text(appLocalizations.shareMyLocation), findsOneWidget);
       expect(find.byType(CustomSwitch), findsOneWidget);
     });
-    
-    testWidgets("Share my location to contact switch ",
-        (tester) async {
+
+    testWidgets("Share my location to contact switch ", (tester) async {
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: nonLocatedContact, navigationSource: "Contacts")));
       expect(find.text(appLocalizations.shareMyLocation), findsOneWidget);

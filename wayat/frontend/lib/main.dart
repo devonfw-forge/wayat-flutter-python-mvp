@@ -1,4 +1,8 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,11 +19,17 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/options.dart';
+import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (kDebugMode) {
+    log("DEBUG MODE: Using HttpOverrides");
+    HttpOverrides.global = HttpDebugOverride();
+  }
+
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
