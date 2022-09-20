@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,13 +23,8 @@ import 'package:wayat/common/widgets/switch.dart';
 
 import 'contact_profile_test.mocks.dart';
 
-@GenerateMocks([
-  UserStatusState, 
-  ContactProfileController, 
-  HomeState, 
-  HttpProvider
-])
-
+@GenerateMocks(
+    [UserStatusState, ContactProfileController, HomeState, HttpProvider])
 void main() async {
   // Constants for the test contacts creation
   const String contactName = "Contact Name";
@@ -72,6 +68,7 @@ void main() async {
   late BuildContext buildContext;
 
   setUpAll(() {
+    dotenv.load();
     mockUserStatusState = MockUserStatusState();
     mockHomeState = MockHomeState();
     mockHttpProvider = MockHttpProvider();
@@ -141,7 +138,7 @@ void main() async {
           contact: nonLocatedContact, navigationSource: "Contacts")));
       await tester.pump();
 
-      expect(find.byType(GoogleMap), findsNothing);
+      expect(find.byType(Image), findsNothing);
     });
 
     testWidgets("There is a message indicating that location is not available",
@@ -156,21 +153,19 @@ void main() async {
 
     testWidgets("The map appears when the contact can be located",
         (tester) async {
-      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
-          (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
-
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: locatedContact,
           navigationSource: "Contacts",
           controller: mockContactProfileController)));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      expect(find.byType(GoogleMap), findsOneWidget);
+      expect(find.byType(Image), findsOneWidget);
     });
 
     testWidgets("There is no message when the map is loaded", (tester) async {
-      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
-          (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
+      when(mockContactProfileController.getMarkerImage(locatedContact))
+          .thenAnswer(
+              (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
 
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: locatedContact,
@@ -263,9 +258,11 @@ void main() async {
     testWidgets(
         "Google Maps service is called when pressing the Routing button",
         (tester) async {
-      when(mockContactProfileController.openMaps(locatedContact)).thenReturn(null);
-      when(mockContactProfileController.getMarkerImage(locatedContact)).thenAnswer(
-          (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
+      when(mockContactProfileController.openMaps(locatedContact))
+          .thenReturn(null);
+      when(mockContactProfileController.getMarkerImage(locatedContact))
+          .thenAnswer(
+              (realInvocation) => Future.value(BitmapDescriptor.defaultMarker));
 
       await tester.pumpWidget(_createApp(ContactProfilePage(
         contact: locatedContact,
@@ -286,9 +283,8 @@ void main() async {
       expect(find.text(appLocalizations.shareMyLocation), findsOneWidget);
       expect(find.byType(CustomSwitch), findsOneWidget);
     });
-    
-    testWidgets("Share my location to contact switch ",
-        (tester) async {
+
+    testWidgets("Share my location to contact switch ", (tester) async {
       await tester.pumpWidget(_createApp(ContactProfilePage(
           contact: nonLocatedContact, navigationSource: "Contacts")));
       expect(find.text(appLocalizations.shareMyLocation), findsOneWidget);
