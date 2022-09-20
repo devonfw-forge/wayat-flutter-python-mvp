@@ -17,7 +17,7 @@ class HomeWrapper extends StatelessWidget {
       Contact? selectedContact = homeState.selectedContact;
       return AutoRouter.declarative(
           routes: (_) => [
-                HomeRoute(),
+                const HomeRoute(),
                 if (selectedContact != null)
                   ContactProfileRoute(
                       contact: selectedContact,

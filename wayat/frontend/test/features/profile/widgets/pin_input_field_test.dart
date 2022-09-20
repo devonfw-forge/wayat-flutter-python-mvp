@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/profile/widgets/pin_input_field.dart';
 import 'package:wayat/lang/lang_singleton.dart';

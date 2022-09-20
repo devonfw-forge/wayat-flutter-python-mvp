@@ -24,8 +24,8 @@ class HomePage extends StatelessWidget {
 
         return Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
+          appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(40), child: CustomAppBar()),
           body: child,
           bottomNavigationBar: Container(
             padding: const EdgeInsets.symmetric(vertical: 10),

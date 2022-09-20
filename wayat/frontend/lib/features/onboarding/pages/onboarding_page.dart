@@ -56,7 +56,7 @@ class OnBoardingPage extends StatelessWidget {
             child: CustomOutlinedButton(
                 text: appLocalizations.next,
                 onPressed: () =>
-                    controller.setOnBoardingState(OnBoardingState.Current)))
+                    controller.setOnBoardingState(OnBoardingState.current)))
       ])),
     );
   }
