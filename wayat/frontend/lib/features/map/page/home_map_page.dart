@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
@@ -25,18 +23,15 @@ import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/location/background_location_exception.dart';
 import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationState locationState = GetIt.I.get<LocationState>();
   final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
   final MapController controller;
-  final AppLocalizations appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
 
   HomeMapPage({MapController? controller, Key? key})
       : controller = controller ?? MapController(),
