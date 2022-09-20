@@ -125,6 +125,7 @@
     "groupParticipants": "Gruppenteilnehmer",
     "editGroup": "Gruppe bearbeiten",
     "deleteGroup": "Gruppe löschen",
+    "groupValidation": "Sie müssen mindestens zwei Kontakte auswählen",
     
     "done": "Erledigt"
 } 
