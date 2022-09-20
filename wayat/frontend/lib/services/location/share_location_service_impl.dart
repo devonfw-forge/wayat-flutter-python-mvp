@@ -69,7 +69,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
       try {
         await location.enableBackgroundMode(enable: true);
       } on PlatformException catch(e) {
-        if (e.code == "PERMISSION_DENIED_NEVER_ASK") {
+        if (e.code == "PERMISSION_DENIED"
+          || e.code == "PERMISSION_DENIED_NEVER_ASK") {
           throw BackgroundLocationException();
         }
         log("${e.code}: ${e.message}");

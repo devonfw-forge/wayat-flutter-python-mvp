@@ -15,6 +15,7 @@
     "didnotReceiveCode": "Didn't receive code?",
     "resendCode": "Resend code",
     "verify": "Verify",
+    "retry": "Retry",
     "cancel": "Cancel",
     "delete": "Delete",
     "deleteAccountText": "Are you sure that you want to delete your Wayat account? Please note that there is no option to restore the account or its data once it's deleted.",
@@ -128,12 +129,6 @@
     
     "done": "Done",
 
-    "noLocation": "No location",
-    "noLocationServiceFound": "No location service found",
     "locationPermission": "Location permission",
-    "locationPermissionNotGranted": "Not granted, please accept location permissions",
-    "locationAccess": "Location access",
-    "backgroundLocationAccess": "Location permissions are needed for all the time, select it in the configuration section",
-    "unknownError": "Unknown error",
-    "unknownLocationPermissionError": "Unknown location permission error"
+    "locationPermissionNotGranted": "Location permission not granted, please accept location permissions for all the time. Select it in the settings section"
 } 

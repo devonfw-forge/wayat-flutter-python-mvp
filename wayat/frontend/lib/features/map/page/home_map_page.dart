@@ -67,60 +67,49 @@ class HomeMapPage extends StatelessWidget {
       try {
         return await locationState.initialize();
       } on NoLocationServiceException {
-        await _showMyDialog(context,
-          appLocalizations.noLocation, 
-          appLocalizations.noLocationServiceFound
-        );
-        // Open settings in location section 
-        AppSettings.openLocationSettings();
+        await _showLocationPermissionDialog(context, true);
       } on RejectedLocationException {
-        await _showMyDialog(context,
-          appLocalizations.locationPermission, 
-          appLocalizations.locationPermissionNotGranted
-        );
-        // Open settings in the current app section 
-        AppSettings.openAppSettings();
+        await _showLocationPermissionDialog(context);
       } on BackgroundLocationException {
-        await _showMyDialog(context,
-          appLocalizations.locationAccess, 
-          appLocalizations.backgroundLocationAccess
-        );
-        // Open settings in the current app section 
-        AppSettings.openAppSettings();
+        await _showLocationPermissionDialog(context);
       } on PlatformException {
-        await _showMyDialog(context,
-          appLocalizations.unknownError, 
-          appLocalizations.unknownLocationPermissionError);
+        await _showLocationPermissionDialog(context);
       }
     }
   }
 
-  Future<void> _showMyDialog(context, title, body) async {
+  Future<void> _showLocationPermissionDialog(context, [service_error=false]) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
+          title: Text(appLocalizations.locationPermission),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(body),
+                Text(appLocalizations.locationPermissionNotGranted),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Retry'),
+              child: Text(appLocalizations.retry),
               onPressed: () async {
-                AutoRouter.of(context).pop();
+                await AutoRouter.of(context).pop();
+                // Open settings does not stop current app execution
+                if (service_error) {
+                  // Open settings in location section 
+                  await AppSettings.openLocationSettings();
+                } else {
+                  // Open settings in the current app section 
+                  await AppSettings.openAppSettings();
+                }
               },
             ),
             TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                exit(0);
-              },
+              child: Text(appLocalizations.cancel),
+              onPressed: () { exit(0); },
             ),
           ],
         );
