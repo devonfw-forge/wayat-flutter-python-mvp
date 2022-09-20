@@ -70,6 +70,7 @@ dependencies:
   smart_auth: ^1.0.5
   flutter_launcher_icons: ^0.10.0
   restart_app: ^1.1.0+1
+  app_settings: ^4.1.8
 
 
 dev_dependencies:

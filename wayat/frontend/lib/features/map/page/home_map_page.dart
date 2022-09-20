@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:app_settings/app_settings.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,6 +23,9 @@ import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/location/background_location_exception.dart';
+import 'package:wayat/services/location/no_location_service_exception.dart';
+import 'package:wayat/services/location/rejected_location_exception.dart';
 
 class HomeMapPage extends StatelessWidget {
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
@@ -37,7 +45,7 @@ class HomeMapPage extends StatelessWidget {
         (contact, icon) => showContactDialog(contact, icon, context));
 
     return FutureBuilder(
-        future: locationState.initialize(),
+        future: initializeLocationState(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Stack(
@@ -47,6 +55,64 @@ class HomeMapPage extends StatelessWidget {
             return const LoadingWidget();
           }
         });
+  }
+
+  Future<dynamic> initializeLocationState(context) async {
+    while (true) {
+      try {
+        return await locationState.initialize();
+      } on NoLocationServiceException {
+        await _showLocationPermissionDialog(context, true);
+      } on RejectedLocationException {
+        await _showLocationPermissionDialog(context);
+      } on BackgroundLocationException {
+        await _showLocationPermissionDialog(context);
+      } on PlatformException {
+        await _showLocationPermissionDialog(context);
+      }
+    }
+  }
+
+  Future<void> _showLocationPermissionDialog(context,
+      [serviceError = false]) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(appLocalizations.locationPermission),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(appLocalizations.locationPermissionNotGranted),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(appLocalizations.retry),
+              onPressed: () async {
+                await AutoRouter.of(context).pop();
+                // Open settings does not stop current app execution
+                if (serviceError) {
+                  // Open settings in location section
+                  await AppSettings.openLocationSettings();
+                } else {
+                  // Open settings in the current app section
+                  await AppSettings.openAppSettings();
+                }
+              },
+            ),
+            TextButton(
+              child: Text(appLocalizations.cancel),
+              onPressed: () {
+                exit(0);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Observer _mapLayer() {
