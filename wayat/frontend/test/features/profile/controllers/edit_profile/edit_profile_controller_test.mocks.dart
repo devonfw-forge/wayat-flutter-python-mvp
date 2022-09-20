@@ -6,17 +6,17 @@
 import 'dart:async' as _i9;
 import 'dart:ui' as _i3;
 
-import 'package:http/http.dart' as _i6;
+import 'package:http/http.dart' as _i5;
 import 'package:image_picker/image_picker.dart' as _i10;
 import 'package:mobx/mobx.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/app_state/profile_state/profile_state.dart' as _i7;
+import 'package:wayat/app_state/profile_state/profile_state.dart' as _i6;
 import 'package:wayat/app_state/user_session/session_state.dart' as _i11;
 import 'package:wayat/domain/user/my_user.dart' as _i12;
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart'
-    as _i8;
-import 'package:wayat/lang/language.dart' as _i4;
-import 'package:wayat/services/authentication/auth_service.dart' as _i5;
+    as _i7;
+import 'package:wayat/lang/language.dart' as _i8;
+import 'package:wayat/services/authentication/auth_service.dart' as _i4;
 import 'package:wayat/services/common/http_provider/http_provider.dart' as _i13;
 
 // ignore_for_file: type=lint
@@ -41,42 +41,37 @@ class _FakeLocale_1 extends _i1.SmartFake implements _i3.Locale {
       : super(parent, parentInvocation);
 }
 
-class _FakeLanguage_2 extends _i1.SmartFake implements _i4.Language {
-  _FakeLanguage_2(Object parent, Invocation parentInvocation)
+class _FakeAuthService_2 extends _i1.SmartFake implements _i4.AuthService {
+  _FakeAuthService_2(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeAuthService_3 extends _i1.SmartFake implements _i5.AuthService {
-  _FakeAuthService_3(Object parent, Invocation parentInvocation)
+class _FakeResponse_3 extends _i1.SmartFake implements _i5.Response {
+  _FakeResponse_3(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeResponse_4 extends _i1.SmartFake implements _i6.Response {
-  _FakeResponse_4(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-class _FakeStreamedResponse_5 extends _i1.SmartFake
-    implements _i6.StreamedResponse {
-  _FakeStreamedResponse_5(Object parent, Invocation parentInvocation)
+class _FakeStreamedResponse_4 extends _i1.SmartFake
+    implements _i5.StreamedResponse {
+  _FakeStreamedResponse_4(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
 /// A class which mocks [ProfileState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProfileState extends _i1.Mock implements _i7.ProfileState {
+class MockProfileState extends _i1.Mock implements _i6.ProfileState {
   MockProfileState() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i8.ProfileCurrentPages get currentPage =>
+  _i7.ProfileCurrentPages get currentPage =>
       (super.noSuchMethod(Invocation.getter(#currentPage),
-              returnValue: _i8.ProfileCurrentPages.editProfile)
-          as _i8.ProfileCurrentPages);
+              returnValue: _i7.ProfileCurrentPages.editProfile)
+          as _i7.ProfileCurrentPages);
   @override
-  set currentPage(_i8.ProfileCurrentPages? value) =>
+  set currentPage(_i7.ProfileCurrentPages? value) =>
       super.noSuchMethod(Invocation.setter(#currentPage, value),
           returnValueForMissingStub: null);
   @override
@@ -88,7 +83,7 @@ class MockProfileState extends _i1.Mock implements _i7.ProfileState {
       super.noSuchMethod(Invocation.setter(#isAccount, value),
           returnValueForMissingStub: null);
   @override
-  set language(_i4.Language? value) =>
+  set language(_i8.Language? value) =>
       super.noSuchMethod(Invocation.setter(#language, value),
           returnValueForMissingStub: null);
   @override
@@ -108,13 +103,7 @@ class MockProfileState extends _i1.Mock implements _i7.ProfileState {
               _FakeLocale_1(this, Invocation.method(#initializeLocale, []))))
       as _i9.Future<_i3.Locale>);
   @override
-  _i4.Language getLanguage(String? lnguageCode) =>
-      (super.noSuchMethod(Invocation.method(#getLanguage, [lnguageCode]),
-              returnValue: _FakeLanguage_2(
-                  this, Invocation.method(#getLanguage, [lnguageCode])))
-          as _i4.Language);
-  @override
-  void setCurrentPage(_i8.ProfileCurrentPages? newPage) =>
+  void setCurrentPage(_i7.ProfileCurrentPages? newPage) =>
       super.noSuchMethod(Invocation.method(#setCurrentPage, [newPage]),
           returnValueForMissingStub: null);
   @override
@@ -134,15 +123,7 @@ class MockProfileState extends _i1.Mock implements _i7.ProfileState {
       (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
           returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
   @override
-  void setLocale(_i3.Locale? newLocale) =>
-      super.noSuchMethod(Invocation.method(#setLocale, [newLocale]),
-          returnValueForMissingStub: null);
-  @override
-  void setLanguage(_i4.Language? newLanguage) =>
-      super.noSuchMethod(Invocation.method(#setLanguage, [newLanguage]),
-          returnValueForMissingStub: null);
-  @override
-  _i9.Future<dynamic> changeLanguage(_i4.Language? language) =>
+  _i9.Future<dynamic> changeLanguage(_i8.Language? language) =>
       (super.noSuchMethod(Invocation.method(#changeLanguage, [language]),
           returnValue: _i9.Future<dynamic>.value()) as _i9.Future<dynamic>);
 }
@@ -184,11 +165,11 @@ class MockSessionState extends _i1.Mock implements _i11.SessionState {
       super.noSuchMethod(Invocation.setter(#currentUser, value),
           returnValueForMissingStub: null);
   @override
-  _i5.AuthService get authService =>
+  _i4.AuthService get authService =>
       (super.noSuchMethod(Invocation.getter(#authService),
               returnValue:
-                  _FakeAuthService_3(this, Invocation.getter(#authService)))
-          as _i5.AuthService);
+                  _FakeAuthService_2(this, Invocation.getter(#authService)))
+          as _i4.AuthService);
   @override
   _i2.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
@@ -278,23 +259,23 @@ class MockHttpProvider extends _i1.Mock implements _i13.HttpProvider {
                   _i9.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
           as _i9.Future<Map<String, dynamic>>);
   @override
-  _i9.Future<_i6.Response> sendPostRequest(
+  _i9.Future<_i5.Response> sendPostRequest(
           String? subPath, Map<String, dynamic>? body) =>
       (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i9.Future<_i6.Response>.value(_FakeResponse_4(
+              returnValue: _i9.Future<_i5.Response>.value(_FakeResponse_3(
                   this, Invocation.method(#sendPostRequest, [subPath, body]))))
-          as _i9.Future<_i6.Response>);
+          as _i9.Future<_i5.Response>);
   @override
-  _i9.Future<_i6.StreamedResponse> sendPostImageRequest(
+  _i9.Future<_i5.StreamedResponse> sendPostImageRequest(
           String? subPath, String? filePath, String? type) =>
       (super.noSuchMethod(
           Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
-          returnValue: _i9.Future<_i6.StreamedResponse>.value(
-              _FakeStreamedResponse_5(
+          returnValue: _i9.Future<_i5.StreamedResponse>.value(
+              _FakeStreamedResponse_4(
                   this,
                   Invocation.method(
                       #sendPostImageRequest, [subPath, filePath, type])))) as _i9
-          .Future<_i6.StreamedResponse>);
+          .Future<_i5.StreamedResponse>);
   @override
   _i9.Future<bool> sendPutRequest(
           String? subPath, Map<String, dynamic>? body) =>
