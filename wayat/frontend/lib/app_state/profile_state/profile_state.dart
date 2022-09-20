@@ -10,7 +10,6 @@ import 'package:wayat/services/profile/profile_service_impl.dart';
 import 'package:wayat/lang/language_constants.dart';
 part 'profile_state.g.dart';
 
-
 // ignore: library_private_types_in_public_api
 class ProfileState = _ProfileState with _$ProfileState;
 
@@ -31,11 +30,12 @@ abstract class _ProfileState with Store {
 
   Future<Locale> initializeLocale() async {
     locale = await getLocaleConstants();
-    language = _getLanguage(locale!.languageCode);
+    language = getLanguage(locale!.languageCode);
     return locale!;
   }
 
-  Language _getLanguage(String lnguageCode){
+  @visibleForTesting
+  Language getLanguage(String lnguageCode) {
     if (lnguageCode.contains('es')) {
       return Language('Español', 'es');
     }
@@ -80,18 +80,20 @@ abstract class _ProfileState with Store {
     _profileService.deleteCurrentUser();
   }
 
-  void _setLocale(Locale newLocale) {
+  @visibleForTesting
+  void setLocale(Locale newLocale) {
     locale = newLocale;
   }
 
-  void _setLanguage(Language newLanguage) {
+  @visibleForTesting
+  void setLanguage(Language newLanguage) {
     language = newLanguage;
   }
 
   @action
   Future changeLanguage(Language language) async {
-    _setLanguage(language);
+    setLanguage(language);
     Locale locale = await setLocaleConstants(language.languageCode);
-    _setLocale(locale);
+    setLocale(locale);
   }
 }
