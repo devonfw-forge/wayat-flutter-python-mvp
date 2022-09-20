@@ -24,7 +24,6 @@ import 'onboarding_test.mocks.dart';
       as: #MockOnboardingRelaxed, onMissingStub: OnMissingStub.returnDefault),
 ])
 void main() {
-
   late OnboardingController controller;
 
   setUpAll(() {
@@ -65,13 +64,14 @@ void main() {
 
   testWidgets('Onboarding has a next button', (tester) async {
     await tester.pumpWidget(_createApp(OnBoardingPage()));
-    expect(find.widgetWithText(CustomOutlinedButton, appLocalizations.next), findsOneWidget);
+    expect(find.widgetWithText(CustomOutlinedButton, appLocalizations.next),
+        findsOneWidget);
   });
 
   testWidgets('OnBoarding next step', (tester) async {
     await tester.pumpWidget(_createApp(OnBoardingPage()));
     await tester.tap(find.byType(CustomOutlinedButton));
     await tester.pumpAndSettle();
-    verify(controller.setOnBoardingState(OnBoardingState.Current)).called(1);
+    verify(controller.setOnBoardingState(OnBoardingState.current)).called(1);
   });
 }

@@ -29,7 +29,7 @@ abstract class _OnboardingController with Store {
   }
 
   @observable
-  OnBoardingState onBoardingState = OnBoardingState.NotStarted;
+  OnBoardingState onBoardingState = OnBoardingState.notStarted;
 
   @observable
   OnBoardingProgress currentPage = OnBoardingProgress.initialManageContactsTip;

@@ -18,19 +18,18 @@ class SuggestionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    suggestionsController.updateSuggestedContacts();
     //The paddings are placed individually on each item instead of on the
     //complete column as to not cut the scrolls indicators
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomInviteWayat(onCopyInvitation: () { suggestionsController.copyInvitation().then((_) {
-            ScaffoldMessenger.of(context).showSnackBar(
+          CustomInviteWayat(onCopyInvitation: () {
+            suggestionsController.copyInvitation().then((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(appLocalizations.invitationCopied)));
-          });
-          
-           }),
+            });
+          }),
           header(),
           const SizedBox(
             height: 10,
