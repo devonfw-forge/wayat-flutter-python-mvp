@@ -126,5 +126,14 @@
     "editGroup": "Edit group",
     "deleteGroup": "Delete group",
     
-    "done": "Done"
+    "done": "Done",
+
+    "noLocation": "No location",
+    "noLocationServiceFound": "No location service found",
+    "locationPermission": "Location permission",
+    "locationPermissionNotGranted": "Not granted, please accept location permissions",
+    "locationAccess": "Location access",
+    "backgroundLocationAccess": "Location permissions are needed for all the time, select it in the configuration section",
+    "unknownError": "Unknown error",
+    "unknownLocationPermissionError": "Unknown location permission error"
 } 

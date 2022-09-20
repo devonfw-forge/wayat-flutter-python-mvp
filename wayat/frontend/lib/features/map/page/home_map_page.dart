@@ -1,7 +1,14 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:app_settings/app_settings.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
@@ -18,12 +25,18 @@ import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/services/location/background_location_exception.dart';
+import 'package:wayat/services/location/no_location_service_exception.dart';
+import 'package:wayat/services/location/rejected_location_exception.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeMapPage extends StatelessWidget {
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationState locationState = GetIt.I.get<LocationState>();
   final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
   final MapController controller;
+  final AppLocalizations appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
 
   HomeMapPage({MapController? controller, Key? key})
       : controller = controller ?? MapController(),
@@ -37,7 +50,7 @@ class HomeMapPage extends StatelessWidget {
         (contact, icon) => showContactDialog(contact, icon, context));
 
     return FutureBuilder(
-        future: locationState.initialize(),
+        future: initializeLocationState(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Stack(
@@ -48,6 +61,72 @@ class HomeMapPage extends StatelessWidget {
           }
         });
   }
+
+  Future<dynamic> initializeLocationState(context) async {
+    while(true) {
+      try {
+        return await locationState.initialize();
+      } on NoLocationServiceException {
+        await _showMyDialog(context,
+          appLocalizations.noLocation, 
+          appLocalizations.noLocationServiceFound
+        );
+        // Open settings in location section 
+        AppSettings.openLocationSettings();
+      } on RejectedLocationException {
+        await _showMyDialog(context,
+          appLocalizations.locationPermission, 
+          appLocalizations.locationPermissionNotGranted
+        );
+        // Open settings in the current app section 
+        AppSettings.openAppSettings();
+      } on BackgroundLocationException {
+        await _showMyDialog(context,
+          appLocalizations.locationAccess, 
+          appLocalizations.backgroundLocationAccess
+        );
+        // Open settings in the current app section 
+        AppSettings.openAppSettings();
+      } on PlatformException {
+        await _showMyDialog(context,
+          appLocalizations.unknownError, 
+          appLocalizations.unknownLocationPermissionError);
+      }
+    }
+  }
+
+  Future<void> _showMyDialog(context, title, body) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(body),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Retry'),
+              onPressed: () async {
+                AutoRouter.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                exit(0);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } 
 
   Observer _mapLayer() {
     return Observer(builder: (context) {
