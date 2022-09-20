@@ -48,11 +48,13 @@ abstract class _ManageGroupController with Store {
   @action
   void addContact(Contact contact) {
     selectedContacts.add(contact);
+    groupValidation();
   }
 
   @action
   void removeContact(Contact contact) {
     selectedContacts.remove(contact);
+    groupValidation();
   }
 
   @action
@@ -84,7 +86,6 @@ abstract class _ManageGroupController with Store {
     } else {
       showValidationGroup = true;
     }
-    print('info showValid: ' + showValidationGroup.toString());
   }
 
   Future getFromSource(ImageSource source) async {

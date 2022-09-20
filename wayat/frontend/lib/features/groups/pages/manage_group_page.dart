@@ -63,11 +63,10 @@ class ManageGroupPage extends StatelessWidget {
     return Observer(
       builder: (context) {
         bool showValidGroupController = controller.showValidationGroup;
-        print('info showValidGroup: ' + showValidGroupController.toString());
         return Visibility(
           visible: showValidGroupController,
-          child: const Text(
-            'Debes seleccionar al menos dos contactos',
+          child: Text(
+            appLocalizations.groupValidation,
             style: TextStyle(color: Colors.red),
           ),
         );
