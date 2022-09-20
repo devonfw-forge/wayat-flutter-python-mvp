@@ -2,48 +2,53 @@
     "appTitle": "wayat",
 
     "login": "Se connecter",
-    "loginGoogle": "Connectez-vous avec Google",
+    "loginGoogle": "Se connecter avec Google",
     "email": "Email",
     "password": "Mot de passe",
     "phoneNumber": "Numéro de téléphone",
-    "forgotPasswQuestion": "Avez-vous oublié votre mot de passe?",
+    "forgotPasswQuestion": "Vous avez oublié votre mot de passe?",
     "phonePageDescription": "Un numéro de téléphone valide est requis",
     "invalidPhoneNumber": "Numéro de téléphone invalide",
-    "phoneUpdateError": "Erreur lors de la définition du numéro de téléphone",
+    "phoneUpdateError": "Erreur dans la définition du numéro de téléphone",
     "verifyPhoneTitle": "Vérifier le téléphone",
     "verifyPhoneText": "Veuillez vérifier votre nouveau téléphone portable. Le code est envoyé à",
-    "didnotReceiveCode": "Code non reçu?",
+    "didnotReceiveCode": "Vous n'avez pas reçu le code?",
     "resendCode": "Renvoyer le code",
     "verify": "Vérifier",
     "cancel": "Annuler",
-    "delete": "Effacer",
-    "deleteAccountText": "Êtes-vous sûr de vouloir supprimer votre compte Wayat? Veuillez noter qu'il n'y a pas d'option pour restaurer le compte ou ses données une fois qu'il est supprimé.",
+    "delete": "Supprimer",
+    "deleteAccountText": "Êtes-vous sûr de vouloir supprimer votre compte Wayat? Veuillez noter qu'il n'y a aucune option pour restaurer le compte ou ses données une fois qu'il a été supprimé.",
     "phoneEmpty": "Champ vide. Entrez un numéro de téléphone correct.",
     "phoneIncorrect": "Numéro de téléphone incorrect. Entrez un téléphone valide.",
     "phoneDifferent": "Entrez un numéro de téléphone différent du précédent.",
 
-    "phoneDeniedPermissions": "Permis refusés.",
-    "phoneErrorCode" : "Mauvais code, demandez un autre code.",
-    "phoneErrorTooRequest" : "Le nombre de tentatives a été dépassé, veuillez réessayer plus tard.",
-    "phoneUnexpectedError" : "Erreur inattendue, veuillez réessayer plus tard.",
+    "phoneDeniedPermissions": "Permissions refusées.",
+    "phoneErrorCode" : "Mauvais code, réessayez",
+    "phoneErrorTooRequest" : "Trop de demandes de code, essayez plus tard",
+    "phoneUnexpectedError" : "Erreur inattendue, essayez plus tard",
 
-    "home": "Home",
+    "phoneUsed": "Ce numéro est déjà utilisé",
+
+    "home": "Accueil",
     "contacts": "Contacts",
-    "events": "Evénements",
-    "name": "Nom",
+    "events": "Événements",
 
     "profile": "Profil",
-    "editProfile": "Editer le Profil",
-    "viewProfile" : "Voir le profil",
+    "editProfile": "Modifier le profil",
+    "viewProfile": "Voir le profil",
+    "name": "Nom",
 
-    "addEvents": "Ajouter un événement",
     "notifications": "Notifications",
+    "addEvents": "Ajouter un événement",
 
-    "manageContactsTip": "Vous pourrez modifier les\nautorisations de vos contacts\nquand vous le voudrez.",
-    "allowedContactsTitle": "Définissez les contacts autorisés",
-    "allowedContactsBody": "Sélectionnez les contacts que vous\nautoriserez à voir votre emplacement.",
+    "manageContactsTip": "Vous pourrez modifier l'autorisation de vos contacts quand vous le voudrez",
+    "allowedContactsTitle": "Définir vos contacts autorisés",
+    "@allowedContactsTitle": {
+        "description": "C'est le titre de la page d'accueil de OnBoarding 1"
+    },
+    "allowedContactsBody": "Sélectionnez les contacts que vous autoriserez à voir votre position.",
 
-    "importContactsTip": "Tout d'abord, sélectionnez les contacts\nqui seront autorisés à voir votre position.",
+    "importContactsTip": "Tout d'abord, sélectionnez les contacts qui seront autorisés à voir votre position.",
     "manageContacts": "Gérer les contacts",
 
     "next": "Suivant",
@@ -51,31 +56,31 @@
 
     "selectContacts": "Sélectionner les contacts",
 
-    "sharingLocation": "Lieu de partage",
-    "activeSharingLocation": "Emplacement actif",
+    "sharingLocation": "Partager l'emplacement",
+    "activeSharingLocation": "Lieu de partage actif",
     "doNotDisturb": "Ne pas déranger",
-
+    
     "preferences": "Préférences",
     "faqs": "FAQS",
-    "privacy": "Intimité",
+    "privacy": "Vie privée",
     "account": "Compte",
-    "logOut": "Se Déconnecter",
-    "deleteAccount": "Supprimer le Compte",
+    "logOut": "Déconnexion",
+    "deleteAccount": "Supprimer le compte",
 
-    "information": "Informations",
+    "information": "Information",
     "darkTheme": "Activer le thème sombre",
     "language": "Langue",
-
-    "chooseProfileFoto": "Choisissez la photo de profil",
-    "camera": "Caméra",
-    "gallery": "Galerie",
-    "save": "Enregistrer",
 
     "changePhone": "Téléphone",
     "changePassword": "Changer le mot de passe",
 
-    "close" : "Fermer",
-    "loadingAddress" : "Adresse de chargement",
+    "chooseProfileFoto": "Choisir une photo de",
+    "camera": "Appareil photo",
+    "gallery": "Galerie",
+    "save": "Sauvegarder",
+   
+    "close": "Fermer",
+    "loadingAddress": "Chargement de l'adresse",
     "errorAddress": "Impossible d'obtenir l'adresse",
 
     "friendsTab": "Amis",
@@ -83,24 +88,43 @@
     "suggestionsTab": "Suggestions",
 
     "friendsPageTitle": "MES AMIS",
-    "pendingRequestsTitle": "DEMANDES D'AMITIÉ",
-    "suggestionsPageTitle": "AJOUTER À VOS CONTACTS",
+    "pendingRequestsTitle": "DEMANDES D'AMIS",
+    "suggestionsPageTitle": "AJOUTER VOS CONTACTS",
     "sentRequestsTitle": "DEMANDES ENVOYÉES",
-    "sentButtonNavigation": "ENVOYÉ",
+    "sentButtonNavigation": "SENT",
     "sentButtonTile": "Envoyé",
     "noPendingRequests": "Vous n'avez aucune demande en attente",
-    "inviteContacts": "Invitez vos contacts sur Wayat",
+    "inviteContacts": "Inviter des contacts à Wayat",
     "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
     "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
-    "invitationText": "Invitation texte",
+    "invitationText": "Texte de l'invitation",
     "invitationCopied": "Copié dans votre presse-papiers",
 
     "accept": "Accepter",
-    "search": "Recherche",
+    "search": "Rechercher",
 
     "viewInformation": "Voir les informations",
 
-    "profileShareLocation": "Paramètres de localisation",
+    "profileShareLocation": "Partager l'emplacement",
     "shareMyLocation": "Partager ma position",
-    "profileActiveLocation": "Partage d'emplacement"
-}
+    "profileActiveLocation": "Emplacement actif",
+
+    "contactProfileSharingLocationWithYou": "Partager sa position avec vous",
+    "contactProfileLocationNotAvailable": "Localisation non disponible",
+    "contactProfileNotSharingLocation": "Ne partage pas l'emplacement",
+    "contactProfileLastUpdated": "Dernière mise à jour",
+
+    "groupsTitle": "GROUPS",
+    "createGroup": "Créer un groupe",
+    "noGroupsMessage": "Oops. Vous n'avez pas de groupe",
+    "newGroup": "Nouveau groupe",
+    "groupName": "Nom du groupe",
+    "addParticipants": "Ajouter des participants",
+    "addParticipantsTip": "Commencez à ajouter des amis pour créer un groupe !",
+    "addFriends": "Ajouter des amis",
+    "groupParticipants": "Participants au groupe",
+    "editGroup": "Modifier le groupe",
+    "deleteGroup": "Supprimer le groupe",
+    
+    "done": "Terminé"
+} 

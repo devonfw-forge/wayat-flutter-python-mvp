@@ -21,6 +21,8 @@
     "phoneEmpty": "Campo vacío. Introduzca un número de teléfono correcto.",
     "phoneIncorrect": "Número de teléfono incorrecto. Introduce un teléfono válido.",
     "phoneDifferent": "Introduzca un número de teléfono diferente del anterior.",
+
+    "phoneUsed": "Este número ya esta en uso",
     
     "phoneDeniedPermissions": "Permisos denegados.",
     "phoneErrorCode" : "Código erróneo, solicita otro código.",

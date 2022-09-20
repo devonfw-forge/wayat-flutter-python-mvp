@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
+import 'package:wayat/features/profile/controllers/phone_verification_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
-
 class PhoneValidationPage extends StatefulWidget {
-  const PhoneValidationPage({Key? key}) : super(key: key);
+  final PhoneVerificationController phoneController;
+  PhoneValidationPage({Key? key, PhoneVerificationController? phoneController})
+      : phoneController = phoneController ?? PhoneVerificationController(),
+        super(key: key);
 
   @override
   State<PhoneValidationPage> createState() => _PhoneValidationPageState();
@@ -19,9 +23,10 @@ class PhoneValidationPage extends StatefulWidget {
 class _PhoneValidationPageState extends State<PhoneValidationPage> {
   final userSession = GetIt.I.get<SessionState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  bool _validPhone = false;
-  String _phoneNumber = "";
-  String _errorPhoneMsg = "";
+  String errorSettingPhone = "";
+
+  TextStyle _textStyle(Color color, double size) =>
+      TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
 
   @override
   Widget build(BuildContext context) {
@@ -70,31 +75,41 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
   Form _formPhone() {
     return Form(
         key: _formKey,
-        child: Column(
-          children: [
-            _phoneInput(),
-            _submitButton(),
-          ],
+        child: Observer(
+          builder: (_) => Column(
+            children: [
+              _phoneTextField(),
+              _submitButton(),
+              Text(
+                errorSettingPhone,
+                style: const TextStyle(
+                    color: Colors.red, fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
         ));
   }
 
-  IntlPhoneField _phoneInput() {
+  Widget _phoneTextField() {
     return IntlPhoneField(
       // Only numbers are allowed as input
       keyboardType: TextInputType.number,
+      invalidNumberMessage: appLocalizations.invalidPhoneNumber,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
       ],
       decoration: InputDecoration(
-          errorText: _errorPhoneMsg != "" ? _errorPhoneMsg : null,
-          labelText: appLocalizations.phoneNumber,
+          errorText: widget.phoneController.errorPhoneFormat.isNotEmpty
+              ? widget.phoneController.errorPhoneFormat
+              : null,
+          labelStyle: _textStyle(Colors.black87, 16),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       initialCountryCode: 'ES',
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (newTextValue) =>
+          widget.phoneController.validatePhoneNumber(newTextValue),
       onChanged: (phone) {
-        setState(() {
-          _validPhone = _formKey.currentState!.validate();
-          if (_validPhone) _phoneNumber = phone.completeNumber;
-        });
+        widget.phoneController.onChangePhoneNumber(phone, _formKey, context);
       },
     );
   }
@@ -103,21 +118,21 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
     return Container(
       padding: const EdgeInsets.only(top: 30),
       child: CustomOutlinedButton(
-        onPressed: !_validPhone ? null : _submit,
+        onPressed: widget.phoneController.validPhone ? _submit : null,
         text: appLocalizations.next,
       ),
     );
   }
 
   _submit() async {
-    bool updated =
-        await userSession.updatePhone(_phoneNumber);
-    if (updated) {
+    final bool updated =
+        await userSession.updatePhone(widget.phoneController.phoneNumber);
+
+    if (updated && widget.phoneController.validPhone) {
       userSession.setFinishLoggedIn(true);
     } else {
-      setState(() {
-        _errorPhoneMsg = appLocalizations.phoneUpdateError;
-      });
+      errorSettingPhone = appLocalizations.phoneUsed;
+      setState(() {});
     }
   }
 }

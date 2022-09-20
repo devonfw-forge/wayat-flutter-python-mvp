@@ -1,0 +1,130 @@
+{
+    "appTitle": "wayat",
+
+    "login": "Anmelden",
+    "loginGoogle": "Mit Google anmelden",
+    "email": "E-Mail",
+    "password": "Kennwort",
+    "phoneNumber": "Telefonnummer",
+    "forgotPasswQuestion": "Haben Sie Ihr Passwort vergessen?",
+    "phonePageDescription": "Eine gültige Telefonnummer ist erforderlich",
+    "invalidPhoneNumber": "Ungültige Telefonnummer",
+    "phoneUpdateError": "Fehler beim Einstellen der Telefonnummer",
+    "verifyPhoneTitle": "Telefon überprüfen",
+    "verifyPhoneText": "Bitte verifizieren Sie Ihr neues Mobiltelefon. Code wird gesendet an",
+    "didnotReceiveCode": "Haben Sie den Code nicht erhalten?",
+    "resendCode": "Code erneut senden",
+    "verify": "Überprüfen",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleteAccountText": "Sind Sie sicher, dass Sie Ihr Wayat-Konto löschen möchten? Bitte beachten Sie, dass es keine Möglichkeit gibt, das Konto oder seine Daten wiederherzustellen, sobald es gelöscht ist.",
+    "phoneEmpty": "Leeres Feld. Geben Sie eine korrekte Telefonnummer ein.",
+    "phoneIncorrect": "Falsche Telefonnummer. Geben Sie eine gültige Telefonnummer ein.",
+    "phoneDifferent": "Geben Sie eine andere Telefonnummer als die vorherige ein.",
+
+    "phoneDeniedPermissions": "Berechtigungen verweigert.",
+    "phoneErrorCode" : "Falscher Code, versuchen Sie es erneut",
+    "phoneErrorTooRequest" : "Zu viele Code-Anfragen, versuchen Sie es später",
+    "phoneUnexpectedError" : "Unerwarteter Fehler, versuchen Sie es später.",
+
+    "phoneUsed": "Nummer in verwendet",
+
+    "home": "Home",
+    "contacts": "Kontakte",
+    "events": "Veranstaltungen",
+
+    "profile": "Profil",
+    "editProfile": "Profil bearbeiten",
+    "viewProfile": "Profil ansehen",
+    "name": "Name",
+
+    "notifications": "Benachrichtigungen",
+    "addEvents": "Ereignis hinzufügen",
+
+    "manageContactsTip": "Sie können die Berechtigung Ihrer Kontakte ändern, wann immer Sie wollen",
+    "allowedContactsTitle": "Legen Sie Ihre erlaubten Kontakte fest",
+    "@allowedContactsTitle": {
+        "description": "Dies ist der Titel der OnBoarding 1 Seite"
+    },
+    "allowedContactsBody": "Wählen Sie die Kontakte aus, denen Sie erlauben wollen, Ihren Standort zu sehen.",
+
+    "importContactsTip": "Wählen Sie zunächst die Kontakte aus, die Ihren Standort sehen dürfen.",
+    "manageContacts": "Kontakte verwalten",
+
+    "next": "Weiter",
+    "skip": "Überspringen",
+
+    "selectContacts": "Kontakte auswählen",
+
+    "sharingLocation": "Gemeinsamer Standort",
+    "activeSharingLocation": "Aktiver Freigabeort",
+    "doNotDisturb": "Bitte nicht stören",
+    
+    "preferences": "Präferenzen",
+    "faqs": "FAQS",
+    "privacy": "Datenschutz",
+    "account": "Konto",
+    "logOut": "Abmelden",
+    "deleteAccount": "Konto löschen",
+
+    "information": "Informationen",
+    "darkTheme": "Dunkles Thema aktivieren",
+    "language": "Sprache",
+
+    "changePhone": "Telefon",
+    "changePassword": "Passwort ändern",
+
+    "chooseProfileFoto": "Bild auswählen aus",
+    "camera": "Kamera",
+    "gallery": "Galerie",
+    "save": "Speichern",
+   
+    "close": "Schließen",
+    "loadingAddress": "Adresse laden",
+    "errorAddress": "Konnte keine Adresse erhalten",
+
+    "friendsTab": "Freunde",
+    "requestsTab": "Gesuche",
+    "suggestionsTab": "Vorschläge",
+
+    "friendsPageTitle": "MEINE FREUNDE",
+    "pendingRequestsTitle": "FREUNDSCHAFTSANFRAGEN",
+    "suggestionsPageTitle": "IHRE KONTAKTE HINZUFÜGEN",
+    "sentRequestsTitle": "GESENDETE ANFRAGEN",
+    "sentButtonNavigation": "SENT",
+    "sentButtonTile": "Gesendet",
+    "noPendingRequests": "Sie haben keine anstehenden Anfragen",
+    "inviteContacts": "Kontakte zu Wayat einladen",
+    "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
+    "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
+    "invitationText": "Einladungs-Text",
+    "invitationCopied": "In Ihre Zwischenablage kopiert",
+
+    "accept": "Akzeptieren",
+    "search": "Suchen",
+
+    "viewInformation": "Informationen anzeigen",
+
+    "profileShareLocation": "Standort teilen",
+    "shareMyLocation": "Meinen Standort freigeben",
+    "profileActiveLocation": "Aktiver Standort",
+
+    "contactProfileSharingLocationWithYou": "Standort mit Ihnen teilen",
+    "contactProfileLocationNotAvailable": "Standort nicht verfügbar",
+    "contactProfileNotSharingLocation": "Standort nicht freigeben",
+    "contactProfileLastUpdated": "Zuletzt aktualisiert",
+
+    "groupsTitle": "GROUPS",
+    "createGroup": "Gruppe erstellen",
+    "noGroupsMessage": "Oops. Sie haben keine Gruppe",
+    "newGroup": "Neue Gruppe",
+    "groupName": "Gruppenname",
+    "addParticipants": "Teilnehmer hinzufügen",
+    "addParticipantsTip": "Füge Freunde hinzu, um eine Gruppe zu gründen!",
+    "addFriends": "Freunde hinzufügen",
+    "groupParticipants": "Gruppenteilnehmer",
+    "editGroup": "Gruppe bearbeiten",
+    "deleteGroup": "Gruppe löschen",
+    
+    "done": "Erledigt"
+} 

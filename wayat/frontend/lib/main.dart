@@ -43,9 +43,9 @@ Future main() async {
 void setTimeAgoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
   timeago.setLocaleMessages('es', timeago.EsMessages());
-  // timeago.setLocaleMessages('fr', timeago.FrMessages());
-  // timeago.setLocaleMessages('de', timeago.DeMessages());
-  // timeago.setLocaleMessages('nl', timeago.NlMessages());
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
 Future registerSingletons() async {

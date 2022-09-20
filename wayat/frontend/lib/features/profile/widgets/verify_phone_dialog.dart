@@ -37,6 +37,13 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
   }
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -48,13 +55,13 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
       child: FirebasePhoneAuthProvider(
         child: FirebasePhoneAuthHandler(
           phoneNumber: widget.phoneNumber,
-          otpExpirationDuration: const Duration(seconds: 30),
           signOutOnSuccessfulVerification: false,
           linkWithExistingUser: false,
           onCodeSent: () {},
           onLoginSuccess:
               (UserCredential userCredential, bool autoVerified) async {
             widget.callbackPhone(widget.phoneNumber);
+            AutoRouter.of(context).pop();
           },
           onLoginFailed:
               (FirebaseAuthException authException, StackTrace? stackTrace) {

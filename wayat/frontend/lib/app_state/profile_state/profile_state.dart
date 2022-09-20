@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
@@ -40,6 +38,15 @@ abstract class _ProfileState with Store {
   Language _getLanguage(String lnguageCode){
     if (lnguageCode.contains('es')) {
       return Language('Español', 'es');
+    }
+    if (lnguageCode.contains('fr')) {
+      return Language('Français', 'fr');
+    }
+    if (lnguageCode.contains('de')) {
+      return Language('Deutsch', 'de');
+    }
+    if (lnguageCode.contains('nl')) {
+      return Language('Dutch', 'nl');
     }
     return Language('English', 'en');
   }

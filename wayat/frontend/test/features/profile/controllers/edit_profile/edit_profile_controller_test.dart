@@ -5,11 +5,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
+import 'package:wayat/features/profile/controllers/phone_verification_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -55,10 +55,11 @@ void main() async {
   testWidgets('Check setters for edit profile controller', (tester) async {
     await tester.pumpWidget(_createApp());
     EditProfileController controller = EditProfileController();
-    controller.setNewPhoneNumber("123");
-    expect(controller.phoneNumber, "123");
-    controller.setErrorPhoneMsg("errorVerification");
-    expect(controller.errorPhoneVerificationMsg, "errorVerification");
+    PhoneVerificationController phoneController = PhoneVerificationController();
+    phoneController.setNewPhoneNumber("123");
+    expect(phoneController.phoneNumber, "123");
+    phoneController.setErrorPhoneMsg("errorVerification");
+    expect(phoneController.errorPhoneVerificationMsg, "errorVerification");
     XFile image = XFile("");
     controller.setNewImage(image);
     expect(controller.currentSelectedImage, image);
@@ -66,7 +67,7 @@ void main() async {
 
   testWidgets('Check validation of phone number', (tester) async {
     await tester.pumpWidget(_createApp());
-    EditProfileController controller = EditProfileController();
+    PhoneVerificationController phoneController = PhoneVerificationController();
     PhoneNumber emptyPhone =
         PhoneNumber(number: "", countryCode: '+34', countryISOCode: '+34');
     PhoneNumber shortPhone =
@@ -76,12 +77,12 @@ void main() async {
     PhoneNumber correctPhone = PhoneNumber(
         number: "123456789", countryCode: '+34', countryISOCode: '+34');
 
-    expect(controller.validatePhoneNumber(emptyPhone),
+    expect(phoneController.validatePhoneNumber(emptyPhone),
         appLocalizations.phoneEmpty);
-    expect(controller.validatePhoneNumber(shortPhone),
+    expect(phoneController.validatePhoneNumber(shortPhone),
         appLocalizations.phoneIncorrect);
-    expect(controller.validatePhoneNumber(samePhone),
+    expect(phoneController.validatePhoneNumber(samePhone),
         appLocalizations.phoneDifferent);
-    expect(controller.validatePhoneNumber(correctPhone), "");
+    expect(phoneController.validatePhoneNumber(correctPhone), "");
   });
 }

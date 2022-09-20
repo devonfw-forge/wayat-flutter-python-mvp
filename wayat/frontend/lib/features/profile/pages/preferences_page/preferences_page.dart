@@ -3,17 +3,24 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/lang/language.dart';
 
-class PreferencesPage extends StatelessWidget {
-  PreferencesPage({Key? key}) : super(key: key);
+class PreferencesPage extends StatefulWidget {
+  const PreferencesPage({super.key});
 
+  @override
+  State<PreferencesPage> createState() => _PreferencesPageState();
+}
+
+class _PreferencesPageState extends State<PreferencesPage> {
   final EditProfileController controller = EditProfileController();
   final ProfileState profileState = GetIt.I.get<ProfileState>();
+  late Language? changedLanguage = profileState.language;
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +96,20 @@ class PreferencesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 14),
             child: TextButton(
-              onPressed: () {
-                // Save changes
+              onPressed: () async {
+                if (changedLanguage != profileState.language) {
+                  await profileState.changeLanguage(changedLanguage!);
+                  Restart.restartApp();
+                } else {
+                  controller.onPressedBackButton();
+                }
               },
               child: Text(
                 appLocalizations.save,
-                style:
-                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: ColorTheme.primaryColor,
+                    fontSize: 16),
                 textAlign: TextAlign.right,
               ),
             ),
@@ -105,7 +119,6 @@ class PreferencesPage extends StatelessWidget {
 
   Padding _buildLanguageButton() {
     final List<Language> itemList = Language.languageList();
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -126,17 +139,20 @@ class PreferencesPage extends StatelessWidget {
 
   Widget _languageButton(List<Language> itemList) {
     return Observer(builder: (context) {
-      Language languageSelected = profileState.language!;
+      Language languageSelected =
+          profileState.language ?? Language('English', 'en');
       return DropdownButton<Language>(
-        value: languageSelected,
+        value: (changedLanguage == null) ? languageSelected : changedLanguage,
         borderRadius: BorderRadius.circular(10),
         underline: const SizedBox(),
         icon: const Icon(Icons.arrow_drop_down, size: 24),
-        onChanged: (Language? language) async {
-          if (language != null) {
-            await profileState.changeLanguage(language);
-            Restart.restartApp();
-          }
+        onChanged: (Language? language) {
+          setState(() {
+            if (language != null) {
+              changedLanguage = language;
+              languageSelected = language;
+            }
+          });
         },
         items: itemList
             .map<DropdownMenuItem<Language>>(
