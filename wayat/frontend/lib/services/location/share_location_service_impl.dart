@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -59,18 +58,18 @@ class ShareLocationServiceImpl extends ShareLocationService {
     PermissionStatus permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
-      if (permissionGranted == PermissionStatus.denied
-        || permissionGranted == PermissionStatus.deniedForever) {
+      if (permissionGranted == PermissionStatus.denied ||
+          permissionGranted == PermissionStatus.deniedForever) {
         throw RejectedLocationException();
       }
     }
-    
-    if (! await location.isBackgroundModeEnabled()) {
+
+    if (!await location.isBackgroundModeEnabled()) {
       try {
         await location.enableBackgroundMode(enable: true);
-      } on PlatformException catch(e) {
-        if (e.code == "PERMISSION_DENIED"
-          || e.code == "PERMISSION_DENIED_NEVER_ASK") {
+      } on PlatformException catch (e) {
+        if (e.code == "PERMISSION_DENIED" ||
+            e.code == "PERMISSION_DENIED_NEVER_ASK") {
           throw BackgroundLocationException();
         }
         log("${e.code}: ${e.message}");

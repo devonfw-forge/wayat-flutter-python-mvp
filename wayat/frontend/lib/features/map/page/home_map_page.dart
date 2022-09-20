@@ -58,7 +58,7 @@ class HomeMapPage extends StatelessWidget {
   }
 
   Future<dynamic> initializeLocationState(context) async {
-    while(true) {
+    while (true) {
       try {
         return await locationState.initialize();
       } on NoLocationServiceException {
@@ -73,7 +73,8 @@ class HomeMapPage extends StatelessWidget {
     }
   }
 
-  Future<void> _showLocationPermissionDialog(context, [service_error=false]) async {
+  Future<void> _showLocationPermissionDialog(context,
+      [serviceError = false]) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -93,24 +94,26 @@ class HomeMapPage extends StatelessWidget {
               onPressed: () async {
                 await AutoRouter.of(context).pop();
                 // Open settings does not stop current app execution
-                if (service_error) {
-                  // Open settings in location section 
+                if (serviceError) {
+                  // Open settings in location section
                   await AppSettings.openLocationSettings();
                 } else {
-                  // Open settings in the current app section 
+                  // Open settings in the current app section
                   await AppSettings.openAppSettings();
                 }
               },
             ),
             TextButton(
               child: Text(appLocalizations.cancel),
-              onPressed: () { exit(0); },
+              onPressed: () {
+                exit(0);
+              },
             ),
           ],
         );
       },
     );
-  } 
+  }
 
   Observer _mapLayer() {
     return Observer(builder: (context) {
