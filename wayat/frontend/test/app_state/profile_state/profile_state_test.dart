@@ -146,6 +146,7 @@ void main() async {
     ProfileState profileState =
         ProfileState(profileService: mockProfileService);
 
+    // Check locale is changed
     Locale testLocale = const Locale("en", "US");
     profileState.setLocale(testLocale);
     expect(profileState.locale, testLocale);
@@ -154,6 +155,7 @@ void main() async {
     expect(profileState.locale != testLocale, true);
     expect(profileState.locale, newTestLocale);
 
+    // Check language is changed
     Language testLanguage = Language("en", "US");
     profileState.setLanguage(testLanguage);
     expect(profileState.language, testLanguage);
