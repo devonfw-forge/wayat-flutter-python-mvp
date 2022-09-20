@@ -8,15 +8,21 @@ import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
+import 'package:wayat/features/profile/controllers/phone_verification_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;
 
 class EditProfilePage extends StatefulWidget {
   final EditProfileController controller;
+  final PhoneVerificationController phoneController;
 
-  EditProfilePage({Key? key, EditProfileController? controller})
+  EditProfilePage(
+      {Key? key,
+      EditProfileController? controller,
+      PhoneVerificationController? phoneController})
       : controller = controller ?? EditProfileController(),
+        phoneController = phoneController ?? PhoneVerificationController(),
         super(key: key);
 
   @override
@@ -80,7 +86,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   iconSize: 25,
-                  onPressed: () => widget.controller.onPressedBackButton(),
+                  onPressed: () {
+                    widget.controller.onPressedBackButton();
+                    widget.phoneController.setNewPhoneNumber("");
+                  },
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
                 padding: const EdgeInsets.only(left: 14),
@@ -91,13 +100,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             ],
           ),
-          TextButton(
-            onPressed: () async =>
-                await widget.controller.onPressedSaveButton(),
-            child: Text(
-              appLocalizations.save,
-              style: _textStyle(ColorTheme.primaryColor, 16),
-              textAlign: TextAlign.right,
+          Observer(
+            builder: (_) => TextButton(
+              onPressed: () async => await widget.controller
+                  .onPressedSaveButton(widget.phoneController.phoneNumber),
+              child: Text(
+                appLocalizations.save,
+                style: _textStyle(ColorTheme.primaryColor, 16),
+                textAlign: TextAlign.right,
+              ),
             ),
           )
         ],
@@ -190,8 +201,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ],
           decoration: InputDecoration(
               labelText: user.phone.substring(3),
-              errorText: widget.controller.errorPhoneFormat.isNotEmpty
-                  ? widget.controller.errorPhoneFormat
+              errorText: widget.phoneController.errorPhoneFormat.isNotEmpty
+                  ? widget.phoneController.errorPhoneFormat
                   : null,
               labelStyle: _textStyle(Colors.black87, 16),
               border:
@@ -199,9 +210,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           initialCountryCode: 'ES',
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (newTextValue) =>
-              widget.controller.validatePhoneNumber(newTextValue),
+              widget.phoneController.validatePhoneNumber(newTextValue),
           onChanged: (phone) {
-            widget.controller.onChangePhoneNumber(phone, _formKey, context);
+            widget.phoneController
+                .onChangePhoneNumber(phone, _formKey, context);
           },
         );
       },

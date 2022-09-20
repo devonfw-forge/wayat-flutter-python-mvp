@@ -25,6 +25,7 @@
     "phoneEmpty": "Empty field. Input a correct phone number.",
     "phoneIncorrect": "Incorrect phone number. Enter valid phone.",
     "phoneDifferent": "Enter different phone number of the previous one.",
+    "phoneUsed": "Number in used",
     "phoneDeniedPermissions": "Denied permissions.",
     "phoneErrorCode" : "Wrong code, try again",
     "phoneErrorTooRequest" : "Too many code request, try it later",

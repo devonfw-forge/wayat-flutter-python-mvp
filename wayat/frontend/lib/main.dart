@@ -1,4 +1,8 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,21 +16,24 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:wayat/lang/language_constants.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/options.dart';
+import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (kDebugMode) {
+    log("DEBUG MODE: Using HttpOverrides");
+    HttpOverrides.global = HttpDebugOverride();
+  }
+
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
-    name: "WAYAT", 
-    options: CustomFirebaseOptions.currentPlatformOptions
-  );
+      name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
   await registerSingletons();
   setTimeAgoLocales();
 
@@ -36,9 +43,9 @@ Future main() async {
 void setTimeAgoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
   timeago.setLocaleMessages('es', timeago.EsMessages());
-  // timeago.setLocaleMessages('fr', timeago.FrMessages());
-  // timeago.setLocaleMessages('de', timeago.DeMessages());
-  // timeago.setLocaleMessages('nl', timeago.NlMessages());
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
 Future registerSingletons() async {
@@ -68,7 +75,7 @@ class MyApp extends StatefulWidget {
 
 class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   final _appRouter = AppRouter();
-  
+
   final MapState mapState = GetIt.I.get<MapState>();
   final ProfileState profileState = GetIt.I.get<ProfileState>();
 
@@ -110,9 +117,9 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     return FutureBuilder(
-      future: GetIt.I.get<ProfileState>().initializeLocale(),
-      builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-        return MaterialApp.router(
+        future: GetIt.I.get<ProfileState>().initializeLocale(),
+        builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
+          return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -124,7 +131,8 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
               GetIt.I.get<LangSingleton>().initialize(context);
               return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
             },
-            localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
+            localeResolutionCallback:
+                (Locale? locale, Iterable<Locale> supportedLocales) {
               for (Locale supportedLocale in supportedLocales) {
                 if (supportedLocale.languageCode == locale?.languageCode) {
                   return supportedLocale;
@@ -135,7 +143,6 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
             routerDelegate: _appRouter.delegate(),
             routeInformationParser: _appRouter.defaultRouteParser(),
           );
-      }
-    );
+        });
   }
 }
