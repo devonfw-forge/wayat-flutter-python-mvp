@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -17,7 +16,7 @@ class ContactProfileController = _ContactProfileController
 
 abstract class _ContactProfileController with Store {
   final ImageService _imageService = ImageService();
-  
+
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   @observable
@@ -34,13 +33,11 @@ abstract class _ContactProfileController with Store {
   }
 
   @action
-  Future<void> setShareLocationToContact(bool shareLocationToContact, Contact contact) async {
+  Future<void> setShareLocationToContact(
+      bool shareLocationToContact, Contact contact) async {
     if (shareLocationToContact != contact.shareLocation) {
-      httpProvider.sendPostRequest('${APIContract.contacts}/${contact.id}', 
-        {
-          'share_location': shareLocationToContact
-        }
-      );
+      httpProvider.sendPostRequest('${APIContract.contacts}/${contact.id}',
+          {'share_location': shareLocationToContact});
     }
     this.shareLocationToContact = shareLocationToContact;
     contact.shareLocation = shareLocationToContact;

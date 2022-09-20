@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
@@ -21,9 +21,9 @@ class OnBoardingWrapper extends StatelessWidget {
 
   PageRouteInfo<dynamic> getRoute(OnBoardingState state) {
     switch (state) {
-      case OnBoardingState.NotStarted:
+      case OnBoardingState.notStarted:
         return OnBoardingRoute();
-      case OnBoardingState.Current:
+      case OnBoardingState.current:
         return ProgressOnboardingRoute();
     }
   }

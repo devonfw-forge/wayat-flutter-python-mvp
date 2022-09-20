@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 
 class CustomSwitch extends StatefulWidget {
-  bool value;
-  Function(bool) onChanged;
+  final bool value;
+  final Function(bool) onChanged;
 
-  CustomSwitch({required this.value, required this.onChanged, Key? key})
+  const CustomSwitch({required this.value, required this.onChanged, Key? key})
       : super(key: key);
 
   @override

@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/google_maps_service/address_response/address.dart';
 
 part 'address_response.g.dart';

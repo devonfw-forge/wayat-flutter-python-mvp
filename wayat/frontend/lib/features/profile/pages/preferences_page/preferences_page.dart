@@ -11,14 +11,15 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/lang/language.dart';
 
 class PreferencesPage extends StatefulWidget {
-  const PreferencesPage({super.key});
+  final EditProfileController controller;
+  PreferencesPage({super.key, controller})
+      : controller = controller ?? EditProfileController();
 
   @override
   State<PreferencesPage> createState() => _PreferencesPageState();
 }
 
 class _PreferencesPageState extends State<PreferencesPage> {
-  final EditProfileController controller = EditProfileController();
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   late Language? changedLanguage = profileState.language;
 
@@ -76,7 +77,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 InkWell(
                     onTap: () {
                       // Route to Profile main page
-                      controller.onPressedBackButton();
+                      widget.controller.onPressedBackButton();
                     },
                     child: const Icon(Icons.arrow_back,
                         color: Colors.black87, size: 24)),
@@ -101,7 +102,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                   await profileState.changeLanguage(changedLanguage!);
                   Restart.restartApp();
                 } else {
-                  controller.onPressedBackButton();
+                  widget.controller.onPressedBackButton();
                 }
               },
               child: Text(
