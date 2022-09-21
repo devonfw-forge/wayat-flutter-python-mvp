@@ -11,28 +11,28 @@ steps:
     name: gcr.io/cloud-builders/gsutil
     args:
       - cp 
-      - 'gs://wayat_secrets/google-services.json'
+      - 'gs://wayat_prod_secrets/google-services.json'
       - .
     dir: wayat/frontend/android/app
   - id: "Getting key properties"
     name: gcr.io/cloud-builders/gsutil
     args:
       - cp 
-      - 'gs://wayat_secrets/key.properties'
+      - 'gs://wayat_prod_secrets/key.properties'
       - .
     dir: wayat/frontend/android
   - id: "Getting keystore"
     name: gcr.io/cloud-builders/gsutil
     args:
       - cp 
-      - 'gs://wayat_secrets/keystore.jks'
+      - 'gs://wayat_prod_secrets/keystore.jks'
       - .
     dir: wayat
   - id: "Getting env file"
     name: gcr.io/cloud-builders/gsutil
     args:
       - cp
-      - 'gs://wayat_secrets/.env'
+      - 'gs://wayat_prod_secrets/.env'
       - .
     dir: wayat/frontend/
   # Packages:
@@ -41,6 +41,16 @@ steps:
     args:
       - pub
       - get
+    dir: wayat/frontend
+  # Generated files:
+  - id: "Generating extra files"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - pub
+      - run
+      - build_runner
+      - build
+      - --delete-conflicting-outputs
     dir: wayat/frontend
   # Testing:
   - id: "Running Tests"
@@ -60,8 +70,8 @@ steps:
   # Upload build:
   - id: "Uploading APK"
     name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', '/workspace/wayat/frontend/build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_release_apk/wayat_release_$SHORT_SHA.apk']
-timeout: "3000s"
+    args: ['cp', '/workspace/wayat/frontend/build/app/outputs/flutter-apk/app-release.apk', 'gs://wayat_prod_release_apk/wayat_$SHORT_SHA.apk']
+timeout: "900s"
 options: 
   machineType: 'E2_HIGHCPU_8'
 # [END Wayat Frontend Build]
