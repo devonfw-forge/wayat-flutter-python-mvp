@@ -1,12 +1,16 @@
 {
+    "@_TITLE":{},
     "appTitle": "wayat",
 
+    "@_LOGIN":{},
     "login": "Log in",
     "loginGoogle": "Log in with Google",
     "email": "Email",
     "password": "Password",
     "phoneNumber": "Phone number",
     "forgotPasswQuestion": "Did you forgot your password?",
+
+    "@_PHONE_VALIDATION":{},
     "phonePageDescription": "A valid phone number is required",
     "invalidPhoneNumber": "Invalid phone number",
     "phoneUpdateError": "Error setting phone number",
@@ -22,45 +26,39 @@
     "phoneEmpty": "Empty field. Input a correct phone number.",
     "phoneIncorrect": "Incorrect phone number. Enter valid phone.",
     "phoneDifferent": "Enter different phone number of the previous one.",
-
     "phoneUsed": "Number in used",
-
     "phoneDeniedPermissions": "Denied permissions.",
     "phoneErrorCode" : "Wrong code, try again",
     "phoneErrorTooRequest" : "Too many code request, try it later",
     "phoneUnexpectedError" : "Unexpected error, try it later.",
 
+    "@_HOME":{},
     "home": "Home",
     "contacts": "Contacts",
     "events": "Events",
 
+    "@_ONBOARDING":{},
+    "manageContactsTip": "You'll be able to modify the\npermission of your contacts\nwhenever you want",
+    "allowedContactsTitle": "Set your allowed contacts",
+    "allowedContactsBody": "Select the contacts you will allow to\nsee your location.",
+    "next": "Next",
+    "skip": "Skip",
+
+    "@_IMPORT_CONTACTS":{},
+    "importContactsTip": "First of all, select the contacts that\nwill be allowed to see your location.",
+    "manageContacts": "Manage contacts",
+    "selectContacts": "Select contacts",
+
+    "@_LOCATION":{},
+    "sharingLocation": "Sharing Location",
+    "activeSharingLocation": "Active sharing Location",
+    "doNotDisturb": "Set do not disturb",
+
+    "@_PROFILE":{},
     "profile": "Profile",
     "editProfile": "Edit Profile",
     "viewProfile": "View profile",
     "name": "Name",
-
-    "notifications": "Notifications",
-    "addEvents": "Add Event",
-
-    "manageContactsTip": "You'll be able to modify the\npermission of your contacts\nwhenever you want",
-    "allowedContactsTitle": "Set your allowed contacts",
-    "@allowedContactsTitle": {
-        "description": "This is the title of the OnBoarding 1 page"
-    },
-    "allowedContactsBody": "Select the contacts you will allow to\nsee your location.",
-
-    "importContactsTip": "First of all, select the contacts that\nwill be allowed to see your location.",
-    "manageContacts": "Manage contacts",
-
-    "next": "Next",
-    "skip": "Skip",
-
-    "selectContacts": "Select contacts",
-
-    "sharingLocation": "Sharing Location",
-    "activeSharingLocation": "Active sharing Location",
-    "doNotDisturb": "Set do not disturb",
-    
     "preferences": "Preferences",
     "faqs": "FAQS",
     "privacy": "Privacy",
@@ -68,26 +66,32 @@
     "logOut": "Log Out",
     "deleteAccount": "Delete Account",
 
+    "@_EDIT_PROFILE":{},
+    "changePhone": "Phone",
+    "changePassword": "Change password",
+    "chooseProfileFoto": "Choose picture from",
+
+    "@_PREFERENCES":{},
     "information": "Information",
     "darkTheme": "Enable dark theme",
     "language": "Language",
-
-    "changePhone": "Phone",
-    "changePassword": "Change password",
-
-    "chooseProfileFoto": "Choose picture from",
+    
+    "@_COMMON":{},
     "camera": "Camera",
     "gallery": "Gallery",
     "save": "Save",
-   
     "close": "Close",
     "loadingAddress": "Loading address",
     "errorAddress": "Could not get address",
+    "accept": "Accept",
+    "search": "Search",
+    "viewInformation": "View information",
+    "done": "Done",
 
+    "@_CONTACTS":{},
     "friendsTab": "Friends",
     "requestsTab": "Requests",
     "suggestionsTab": "Suggestions",
-
     "friendsPageTitle": "MY FRIENDS",
     "pendingRequestsTitle": "FRIENDS REQUESTS",
     "suggestionsPageTitle": "ADD YOUR CONTACTS",
@@ -95,26 +99,24 @@
     "sentButtonNavigation": "SENT",
     "sentButtonTile": "Sent",
     "noPendingRequests": "You don't have any pending requests",
+    
+    "@_INVITATION":{},
     "inviteContacts": "Invite contacts to Wayat",
     "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
     "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
     "invitationText": "Invitation text",
     "invitationCopied": "Copied to your clipboard",
 
-    "accept": "Accept",
-    "search": "Search",
-
-    "viewInformation": "View information",
-
+    "@_SHARE_LOCATION":{},
     "profileShareLocation": "Share Location",
     "shareMyLocation": "Share my location",
     "profileActiveLocation": "Active Location",
-
     "contactProfileSharingLocationWithYou": "Sharing location with you",
     "contactProfileLocationNotAvailable": "Location not available",
     "contactProfileNotSharingLocation": "Not sharing location",
     "contactProfileLastUpdated": "Last updated",
 
+    "@_GROUPS":{},
     "groupsTitle": "GROUPS",
     "createGroup": "Create group",
     "noGroupsMessage": "Oops. You don't have any group",
@@ -126,6 +128,7 @@
     "groupParticipants": "Group participants",
     "editGroup": "Edit group",
     "deleteGroup": "Delete group",
+    "groupValidation": "You must select at least two contacts",
     
     "done": "Done",
 

@@ -47,6 +47,7 @@ class ManageGroupPage extends StatelessWidget {
                 groupName(),
                 addParticipantsSection(context),
                 participantsSection(context),
+                showInfoValidGroup(),
                 const SizedBox(
                   height: 10,
                 )
@@ -55,6 +56,21 @@ class ManageGroupPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget showInfoValidGroup() {
+    return Observer(
+      builder: (context) {
+        bool showValidGroupController = controller.showValidationGroup;
+        return Visibility(
+          visible: showValidGroupController,
+          child: Text(
+            appLocalizations.groupValidation,
+            style: TextStyle(color: Colors.red),
+          ),
+        );
+      },
     );
   }
 
@@ -81,14 +97,16 @@ class ManageGroupPage extends StatelessWidget {
               GroupsController groupsController =
                   GetIt.I.get<GroupsController>();
               /*
-              I find this approach better but I have not found a way to correctly
-              mock the argument for doActionAndUpdateGroups
-               groupsController.doActionAndUpdateGroups(
-                  () async => await controller.saveGroup()); */
-              groupsController.setUpdatingGroup(true);
+                I find this approach better but I have not found a way to correctly
+                mock the argument for doActionAndUpdateGroups
+                groupsController.doActionAndUpdateGroups(
+                    () async => await controller.saveGroup()); */
               await controller.saveGroup();
-              groupsController.setUpdatingGroup(false);
-              goBack();
+              if (!controller.showValidationGroup) {
+                groupsController.setUpdatingGroup(true);
+                groupsController.setUpdatingGroup(false);
+                goBack();
+              }
             }),
       ],
     );
@@ -198,7 +216,7 @@ class ManageGroupPage extends StatelessWidget {
               showFriendsBottomSheet(context);
             },
           ),
-        )
+        ),
       ],
     );
   }
