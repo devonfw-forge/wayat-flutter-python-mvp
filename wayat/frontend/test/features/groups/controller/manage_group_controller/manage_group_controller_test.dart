@@ -104,8 +104,10 @@ void main() async {
           .thenAnswer((_) => Future.value(null));
       ManageGroupController manageGroupController = ManageGroupController(
           group: emptyGroup, groupsService: mockGroupsService);
-      // List<Contact> firstList = _generateContacts(["TestA", "TestB"]);
-      // when(manageGroupController.selectedContacts).thenReturn(firstList);
+      Contact contactA = _contactFactory("TestA");
+      manageGroupController.addContact(contactA);
+      Contact contactB = _contactFactory("TestB");
+      manageGroupController.addContact(contactB);
 
       manageGroupController.saveGroup();
       verify(mockGroupsService.create(emptyGroup, null)).called(1);
@@ -119,8 +121,10 @@ void main() async {
           .thenAnswer((_) => Future.value(null));
       ManageGroupController manageGroupController =
           ManageGroupController(group: group, groupsService: mockGroupsService);
-      // List<Contact> firstList = _generateContacts(["TestA", "TestB"]);
-      // when(manageGroupController.selectedContacts).thenReturn(firstList);
+      Contact contactA = _contactFactory("TestA");
+      manageGroupController.addContact(contactA);
+      Contact contactB = _contactFactory("TestB");
+      manageGroupController.addContact(contactB);
 
       manageGroupController.saveGroup();
       verify(mockGroupsService.update(group, null)).called(1);
