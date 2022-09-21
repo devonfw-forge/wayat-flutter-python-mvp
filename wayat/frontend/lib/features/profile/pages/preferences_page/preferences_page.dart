@@ -37,35 +37,6 @@ class _PreferencesPageState extends State<PreferencesPage> {
     );
   }
 
-  Row _buildEnableDarkThemeSwitchButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            appLocalizations.darkTheme,
-            style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Colors.black87,
-                fontSize: 16),
-          ),
-        ),
-        Observer(builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CustomSwitch(
-              value: false, // change to controller.sharingLocation,
-              onChanged: (newValue) {
-                //controller.setSharingLocation(newValue);
-              },
-            ),
-          );
-        })
-      ],
-    );
-  }
-
   Row _profileAppBar() => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
