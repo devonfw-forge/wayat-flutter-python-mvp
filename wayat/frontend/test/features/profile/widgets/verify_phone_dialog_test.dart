@@ -22,7 +22,7 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -38,7 +38,7 @@ void main() async {
 
   testWidgets('Verification dialog widget has correct AlertDialog',
       (tester) async {
-    await tester.pumpWidget(_createApp(VerifyPhoneNumberDialog(
+    await tester.pumpWidget(createApp(VerifyPhoneNumberDialog(
       phoneNumber: '+34600947886',
       callbackPhone: () {},
     )));

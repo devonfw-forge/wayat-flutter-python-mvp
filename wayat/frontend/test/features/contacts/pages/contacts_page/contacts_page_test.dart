@@ -93,7 +93,7 @@ void main() async {
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget _createApp() {
+  Widget createApp() {
     final appRouter = AppRouter();
 
     return MaterialApp.router(
@@ -109,7 +109,7 @@ void main() async {
   }
 
   Future navigateToContactsPage(WidgetTester tester) async {
-    await tester.pumpWidget(_createApp());
+    await tester.pumpWidget(createApp());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.contacts_outlined));
     await tester.pumpAndSettle();

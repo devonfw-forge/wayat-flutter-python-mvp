@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
@@ -33,35 +32,6 @@ class _PreferencesPageState extends State<PreferencesPage> {
         // _buildEnableDarkThemeSwitchButton(),
         // const SizedBox(height: 34.5),
         _buildLanguageButton(),
-      ],
-    );
-  }
-
-  Row _buildEnableDarkThemeSwitchButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            appLocalizations.darkTheme,
-            style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Colors.black87,
-                fontSize: 16),
-          ),
-        ),
-        Observer(builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CustomSwitch(
-              value: false, // change to controller.sharingLocation,
-              onChanged: (newValue) {
-                //controller.setSharingLocation(newValue);
-              },
-            ),
-          );
-        })
       ],
     );
   }

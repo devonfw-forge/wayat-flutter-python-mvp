@@ -38,7 +38,7 @@ void main() async {
         .thenReturn(mockFriendsController);
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -57,7 +57,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -66,7 +66,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["A", "B", "C"])));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -78,7 +78,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -98,7 +98,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNothing);
@@ -106,7 +106,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["A", "B", "C"])));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNWidgets(3));
@@ -121,7 +121,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([contact]));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
 
     when(mockHomeState.setSelectedContact(contact, appLocalizations.contacts))
         .thenReturn(null);
@@ -149,7 +149,7 @@ void main() async {
     when(mockContactsPageController.friendsController)
         .thenReturn(friendsController);
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);

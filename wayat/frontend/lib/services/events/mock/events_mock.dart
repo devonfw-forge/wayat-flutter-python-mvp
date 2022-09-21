@@ -3,113 +3,113 @@ import 'package:wayat/domain/event/event.dart';
 class EventsMock {
   static final List<Event> events = [
     Event(
-      eventID: 123,
-      eventPhotoUrl:
+      id: 123,
+      photoUrl:
           'https://docs.flutter.dev/cookbook/img-files/effects/parallax/01-mount-rushmore.jpg',
-      eventDescription:
+      description:
           'Cupidatat pariatur voluptate fugiat laborum. Labore exercitation ullamco irure cillum enim ipsum eiusmod velit cillum ullamco tempor velit culpa. Ipsum excepteur non dolor deserunt laboris minim proident ipsum velit ex aliquip. Eu ex amet ipsum labore eu fugiat magna. Non mollit anim Lorem et commodo aliqua velit quis amet quis ut dolore cupidatat.',
-      eventName: 'Lorem Ipsum',
-      eventLocation: 'EEUU',
-      eventStartDate: '1/2/22',
-      eventEndDate: '2/2/22',
-      eventStartHour: '14:00',
-      eventEndHour: '18:00',
-      eventCreatedBy: 'Josué',
-      eventUserID: 321,
+      name: 'Lorem Ipsum',
+      location: 'EEUU',
+      startDate: '1/2/22',
+      endDate: '2/2/22',
+      startHour: '14:00',
+      endHour: '18:00',
+      createdBy: 'Josué',
+      userId: 321,
     ),
     Event(
-      eventID: 234,
-      eventPhotoUrl:
+      id: 234,
+      photoUrl:
           'https://docs.flutter.dev/cookbook/img-files/effects/parallax/02-singapore.jpg',
-      eventDescription:
+      description:
           'Cupidatat pariatur voluptate fugiat laborum. Labore exercitation ullamco irure cillum enim ipsum eiusmod velit cillum ullamco tempor velit culpa. Ipsum excepteur non dolor deserunt laboris minim proident ipsum velit ex aliquip. Eu ex amet ipsum labore eu fugiat magna. Non mollit anim Lorem et commodo aliqua velit quis amet quis ut dolore cupidatat.',
-      eventName: 'Lorem Ipsum',
-      eventLocation: 'Singapore',
-      eventStartDate: '3/2/22',
-      eventEndDate: '4/2/22',
-      eventStartHour: '15:00',
-      eventEndHour: '19:00',
-      eventCreatedBy: 'Fabián',
-      eventUserID: 432,
+      name: 'Lorem Ipsum',
+      location: 'Singapore',
+      startDate: '3/2/22',
+      endDate: '4/2/22',
+      startHour: '15:00',
+      endHour: '19:00',
+      createdBy: 'Fabián',
+      userId: 432,
     ),
     Event(
-      eventID: 345,
-      eventPhotoUrl:
+      id: 345,
+      photoUrl:
           'https://docs.flutter.dev/cookbook/img-files/effects/parallax/03-machu-picchu.jpg',
-      eventDescription:
+      description:
           'Cupidatat pariatur voluptate fugiat laborum. Labore exercitation ullamco irure cillum enim ipsum eiusmod velit cillum ullamco tempor velit culpa. Ipsum excepteur non dolor deserunt laboris minim proident ipsum velit ex aliquip. Eu ex amet ipsum labore eu fugiat magna. Non mollit anim Lorem et commodo aliqua velit quis amet quis ut dolore cupidatat.',
-      eventName: 'Lorem Ipsum',
-      eventLocation: 'Machu picchu',
-      eventStartDate: '5/2/22',
-      eventEndDate: '6/2/22',
-      eventStartHour: '16:00',
-      eventEndHour: '20:00',
-      eventCreatedBy: 'Eduard',
-      eventUserID: 543,
+      name: 'Lorem Ipsum',
+      location: 'Machu picchu',
+      startDate: '5/2/22',
+      endDate: '6/2/22',
+      startHour: '16:00',
+      endHour: '20:00',
+      createdBy: 'Eduard',
+      userId: 543,
     ),
     Event(
-      eventID: 456,
-      eventPhotoUrl:
+      id: 456,
+      photoUrl:
           'https://docs.flutter.dev/cookbook/img-files/effects/parallax/04-vitznau.jpg',
-      eventDescription:
+      description:
           'Cupidatat pariatur voluptate fugiat laborum. Labore exercitation ullamco irure cillum enim ipsum eiusmod velit cillum ullamco tempor velit culpa. Ipsum excepteur non dolor deserunt laboris minim proident ipsum velit ex aliquip. Eu ex amet ipsum labore eu fugiat magna. Non mollit anim Lorem et commodo aliqua velit quis amet quis ut dolore cupidatat.',
-      eventName: 'Lorem Ipsum',
-      eventLocation: 'Vitznau',
-      eventStartDate: '7/2/22',
-      eventEndDate: '8/2/22',
-      eventStartHour: '17:00',
-      eventEndHour: '21:00',
-      eventCreatedBy: 'Airam',
-      eventUserID: 654,
+      name: 'Lorem Ipsum',
+      location: 'Vitznau',
+      startDate: '7/2/22',
+      endDate: '8/2/22',
+      startHour: '17:00',
+      endHour: '21:00',
+      createdBy: 'Airam',
+      userId: 654,
     ),
     Event(
-      eventID: 567,
-      eventPhotoUrl:
+      id: 567,
+      photoUrl:
           'https://docs.flutter.dev/cookbook/img-files/effects/parallax/05-bali.jpg',
-      eventDescription:
+      description:
           'Cupidatat pariatur voluptate fugiat laborum. Labore exercitation ullamco irure cillum enim ipsum eiusmod velit cillum ullamco tempor velit culpa. Ipsum excepteur non dolor deserunt laboris minim proident ipsum velit ex aliquip. Eu ex amet ipsum labore eu fugiat magna. Non mollit anim Lorem et commodo aliqua velit quis amet quis ut dolore cupidatat.',
-      eventName: 'Lorem Ipsum',
-      eventLocation: 'Bali',
-      eventStartDate: '9/2/22',
-      eventEndDate: '10/2/22',
-      eventStartHour: '18:00',
-      eventEndHour: '22:00',
-      eventCreatedBy: 'Adrián',
-      eventUserID: 765,
+      name: 'Lorem Ipsum',
+      location: 'Bali',
+      startDate: '9/2/22',
+      endDate: '10/2/22',
+      startHour: '18:00',
+      endHour: '22:00',
+      createdBy: 'Adrián',
+      userId: 765,
     ),
     Event(
-      eventID: 678,
-      eventPhotoUrl:
+      id: 678,
+      photoUrl:
           'https://docs.flutter.dev/cookbook/img-files/effects/parallax/06-mexico-city.jpg',
-      eventDescription:
+      description:
           'Cupidatat pariatur voluptate fugiat laborum. Labore exercitation ullamco irure cillum enim ipsum eiusmod velit cillum ullamco tempor velit culpa. Ipsum excepteur non dolor deserunt laboris minim proident ipsum velit ex aliquip. Eu ex amet ipsum labore eu fugiat magna. Non mollit anim Lorem et commodo aliqua velit quis amet quis ut dolore cupidatat.',
-      eventName: 'Lorem Ipsum',
-      eventLocation: 'Mexico city',
-      eventStartDate: '11/2/22',
-      eventEndDate: '12/2/22',
-      eventStartHour: '19:00',
-      eventEndHour: '23:00',
-      eventCreatedBy: 'Luís',
-      eventUserID: 876,
+      name: 'Lorem Ipsum',
+      location: 'Mexico city',
+      startDate: '11/2/22',
+      endDate: '12/2/22',
+      startHour: '19:00',
+      endHour: '23:00',
+      createdBy: 'Luís',
+      userId: 876,
     ),
     Event(
-      eventID: 789,
-      eventPhotoUrl:
+      id: 789,
+      photoUrl:
           'https://docs.flutter.dev/cookbook/img-files/effects/parallax/07-cairo.jpg',
-      eventDescription:
+      description:
           'Cupidatat pariatur voluptate fugiat laborum. Labore exercitation ullamco irure cillum enim ipsum eiusmod velit cillum ullamco tempor velit culpa. Ipsum excepteur non dolor deserunt laboris minim proident ipsum velit ex aliquip. Eu ex amet ipsum labore eu fugiat magna. Non mollit anim Lorem et commodo aliqua velit quis amet quis ut dolore cupidatat.',
-      eventName: 'Lorem Ipsum',
-      eventLocation: 'Cairo',
-      eventStartDate: '13/2/22',
-      eventEndDate: '14/2/22',
-      eventStartHour: '20:00',
-      eventEndHour: '00:00',
-      eventCreatedBy: 'Serhi',
-      eventUserID: 987,
+      name: 'Lorem Ipsum',
+      location: 'Cairo',
+      startDate: '13/2/22',
+      endDate: '14/2/22',
+      startHour: '20:00',
+      endHour: '00:00',
+      createdBy: 'Serhi',
+      userId: 987,
     ),
   ];
 
   static List<Event> getEventsData() {
-    return events.where((event) => event.eventID != 0).toList();
+    return events.where((event) => event.id != 0).toList();
   }
 }

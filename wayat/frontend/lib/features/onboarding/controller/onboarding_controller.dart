@@ -11,6 +11,7 @@ import 'package:wayat/services/contact/import_phones_service_impl.dart';
 
 part 'onboarding_controller.g.dart';
 
+// ignore: library_private_types_in_public_api
 class OnboardingController = _OnboardingController with _$OnboardingController;
 
 abstract class _OnboardingController with Store {

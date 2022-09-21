@@ -10,7 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 void main() async {
   GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
 
-  Widget _createApp() {
+  Widget createApp() {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -22,7 +22,7 @@ void main() async {
   }
 
   testWidgets('Check error messages on Login Failed', (tester) async {
-    await tester.pumpWidget(_createApp());
+    await tester.pumpWidget(createApp());
     VerifyPhoneDialogController controller = VerifyPhoneDialogController();
     expect(
         controller.generateLoginFailedMessage(

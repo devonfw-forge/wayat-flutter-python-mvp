@@ -38,7 +38,7 @@ void main() async {
         .thenAnswer((_) => Future.value(true));
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -54,7 +54,7 @@ void main() async {
 
   testWidgets("Groups header appears correctly", (tester) async {
     when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
-    await tester.pumpWidget(_createApp(GroupsPage()));
+    await tester.pumpWidget(createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithIcon(IconButton, Icons.keyboard_arrow_down),
@@ -69,7 +69,7 @@ void main() async {
     when(mockContactsPageController
             .setContactsCurrentPage(ContactsCurrentPages.contacts))
         .thenReturn(null);
-    await tester.pumpWidget(_createApp(GroupsPage()));
+    await tester.pumpWidget(createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     await tester
@@ -85,7 +85,7 @@ void main() async {
       (tester) async {
     when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
     when(mockGroupsController.setSelectedGroup(Group.empty())).thenReturn(null);
-    await tester.pumpWidget(_createApp(GroupsPage()));
+    await tester.pumpWidget(createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(
@@ -97,7 +97,7 @@ void main() async {
 
   testWidgets("The no groups message appears correctly", (tester) async {
     when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
-    await tester.pumpWidget(_createApp(GroupsPage()));
+    await tester.pumpWidget(createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(MessageCard, appLocalizations.noGroupsMessage),
@@ -106,7 +106,7 @@ void main() async {
     when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([
       Group(id: "", name: "", imageUrl: "https://example.com", members: [])
     ]));
-    await tester.pumpWidget(_createApp(GroupsPage()));
+    await tester.pumpWidget(createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(MessageCard, appLocalizations.noGroupsMessage),
@@ -121,7 +121,7 @@ void main() async {
           imageUrl: "https://example.com",
           members: [])
     ]));
-    await tester.pumpWidget(_createApp(GroupsPage()));
+    await tester.pumpWidget(createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(GroupTile, "name"), findsOneWidget);
@@ -134,7 +134,7 @@ void main() async {
     when(mockGroupsController.groups)
         .thenReturn(mobx.ObservableList.of([group]));
     when(mockGroupsController.setSelectedGroup(group)).thenReturn(null);
-    await tester.pumpWidget(_createApp(GroupsPage()));
+    await tester.pumpWidget(createApp(GroupsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithText(GroupTile, "name"));

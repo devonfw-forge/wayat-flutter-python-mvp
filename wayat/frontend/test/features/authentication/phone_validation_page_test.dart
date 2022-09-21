@@ -29,7 +29,7 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -46,14 +46,14 @@ void main() async {
   group('Phone validation page has the correct widgets', () {
     testWidgets('Phone validation page has a app title', (tester) async {
       await tester.pumpWidget(
-          _createApp(PhoneValidationPage(phoneController: controller)));
+          createApp(PhoneValidationPage(phoneController: controller)));
       expect(find.widgetWithText(CustomWayatTitle, appLocalizations.appTitle),
           findsOneWidget);
     });
 
     testWidgets('Phone validation page has a login title', (tester) async {
       await tester.pumpWidget(
-          _createApp(PhoneValidationPage(phoneController: controller)));
+          createApp(PhoneValidationPage(phoneController: controller)));
       expect(find.widgetWithText(CustomLoginTitle, appLocalizations.login),
           findsOneWidget);
     });
@@ -61,28 +61,28 @@ void main() async {
     testWidgets('Phone validation page has a phone description title',
         (tester) async {
       await tester.pumpWidget(
-          _createApp(PhoneValidationPage(phoneController: controller)));
+          createApp(PhoneValidationPage(phoneController: controller)));
       expect(find.text(appLocalizations.phoneNumber), findsWidgets);
     });
 
     testWidgets('Phone validation page has a phone description',
         (tester) async {
       await tester.pumpWidget(
-          _createApp(PhoneValidationPage(phoneController: controller)));
+          createApp(PhoneValidationPage(phoneController: controller)));
       expect(find.text(appLocalizations.phonePageDescription), findsOneWidget);
     });
 
     testWidgets('Phone validation page has a phone input field',
         (tester) async {
       await tester.pumpWidget(
-          _createApp(PhoneValidationPage(phoneController: controller)));
+          createApp(PhoneValidationPage(phoneController: controller)));
       expect(find.byType(IntlPhoneField), findsOneWidget);
     });
 
     testWidgets('Phone validation page has a phone submit button',
         (tester) async {
       await tester.pumpWidget(
-          _createApp(PhoneValidationPage(phoneController: controller)));
+          createApp(PhoneValidationPage(phoneController: controller)));
       expect(find.byType(CustomOutlinedButton), findsOneWidget);
     });
   });

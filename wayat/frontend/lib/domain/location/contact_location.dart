@@ -1,5 +1,4 @@
 import 'package:wayat/domain/contact/contact.dart';
-import 'dart:convert';
 
 class ContactLocation extends Contact {
   double latitude;

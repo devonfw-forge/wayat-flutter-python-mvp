@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+// ignore: depend_on_referenced_packages
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -11,7 +12,7 @@ import 'package:wayat/services/google_maps_service/address_response/address_resp
 
 class GoogleMapsService {
   static void openMaps(double lat, double lng) async {
-    var uri;
+    late Uri uri;
     if (kIsWeb || Platform.isAndroid) {
       uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
     } else if (Platform.isIOS) {

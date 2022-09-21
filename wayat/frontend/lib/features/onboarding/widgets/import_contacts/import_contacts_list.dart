@@ -17,13 +17,6 @@ class ImportedContactsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-      TODO: Replace mock with a service call that does the following:
-        * 1. Make a call to ContactServiceImpl.getAll() //This service name should be refactored
-        * 2. Make a call to the BackEnd to get the contacts that have Wayat 
-        * 3. Wrap this widget in a FutureBuilder because the service call will be async
-     */
-
     return Stack(
       children: [
         Container(
