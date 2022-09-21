@@ -43,7 +43,7 @@ steps:
       - get
     dir: wayat/frontend
   # Generated files:
-  - id: "Getting packages"
+  - id: "Generating extra files"
     name: gcr.io/$PROJECT_ID/flutter:stable
     args:
       - pub
