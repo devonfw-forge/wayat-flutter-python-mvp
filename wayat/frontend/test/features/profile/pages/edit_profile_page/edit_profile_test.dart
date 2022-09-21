@@ -45,7 +45,7 @@ void main() async {
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -61,7 +61,7 @@ void main() async {
 
   group("Edit profile page has correct components", () {
     testWidgets('Profile button', (tester) async {
-      await tester.pumpWidget(_createApp(EditProfilePage()));
+      await tester.pumpWidget(createApp(EditProfilePage()));
       expect(find.widgetWithIcon(IconButton, Icons.arrow_back), findsOneWidget);
       expect(
           find.descendant(
@@ -72,12 +72,12 @@ void main() async {
           findsOneWidget);
     });
     testWidgets('Save button', (tester) async {
-      await tester.pumpWidget(_createApp(EditProfilePage()));
+      await tester.pumpWidget(createApp(EditProfilePage()));
       expect(find.widgetWithText(TextButton, appLocalizations.save),
           findsOneWidget);
     });
     testWidgets('Name edit card', (tester) async {
-      await tester.pumpWidget(_createApp(EditProfilePage()));
+      await tester.pumpWidget(createApp(EditProfilePage()));
       expect(find.widgetWithText(TextField, user.name), findsOneWidget);
       expect(
           find.descendant(
@@ -92,7 +92,7 @@ void main() async {
   testWidgets('Check dialog to change photo is showed', (tester) async {
     //Avoid overflow errors
     FlutterError.onError = null;
-    await tester.pumpWidget(_createApp(EditProfilePage()));
+    await tester.pumpWidget(createApp(EditProfilePage()));
     await tester.tap(find.widgetWithIcon(InkWell, Icons.edit_outlined));
     await tester.pumpAndSettle();
     expect(find.text(appLocalizations.chooseProfileFoto), findsOneWidget);

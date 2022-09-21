@@ -26,7 +26,7 @@ void main() async {
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -44,7 +44,7 @@ void main() async {
     Group group = _createGroup("GroupName", []);
     when(mockGroupsController.selectedGroup).thenReturn(group);
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithIcon(IconButton, Icons.arrow_back), findsOneWidget);
@@ -59,7 +59,7 @@ void main() async {
     Group group = _createGroup("GroupName", []);
     when(mockGroupsController.selectedGroup).thenReturn(group);
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(PopupMenuItem), findsNothing);
@@ -80,7 +80,7 @@ void main() async {
     when(mockGroupsController.selectedGroup).thenReturn(group);
     when(mockGroupsController.setEditGroup(true)).thenReturn(null);
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.more_vert));
@@ -100,7 +100,7 @@ void main() async {
     when(mockGroupsController.deleteGroup(groupId))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.more_vert));
@@ -118,7 +118,7 @@ void main() async {
     when(mockGroupsController.selectedGroup).thenReturn(group);
     when(mockGroupsController.setSelectedGroup(null)).thenReturn(null);
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithIcon(IconButton, Icons.arrow_back));
@@ -131,7 +131,7 @@ void main() async {
     Group group = _createGroup("GroupName", []);
     when(mockGroupsController.selectedGroup).thenReturn(group);
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(CircleAvatar), findsNWidgets(2));
@@ -142,7 +142,7 @@ void main() async {
     Group group = _createGroup("GroupName", []);
     when(mockGroupsController.selectedGroup).thenReturn(group);
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     expect(find.text(appLocalizations.groupParticipants), findsOneWidget);
@@ -153,7 +153,7 @@ void main() async {
     Group group = _createGroup("GroupName", []);
     when(mockGroupsController.selectedGroup).thenReturn(group);
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(BasicContactTile), findsNothing);
@@ -162,7 +162,7 @@ void main() async {
         "GroupName", [_createContact("TestA"), _createContact("TestB")]);
     when(mockGroupsController.selectedGroup).thenReturn(group);
 
-    await tester.pumpWidget(_createApp(ViewGroupPage()));
+    await tester.pumpWidget(createApp(ViewGroupPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(BasicContactTile), findsNWidgets(2));

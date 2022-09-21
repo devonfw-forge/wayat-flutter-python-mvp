@@ -9,6 +9,7 @@ import 'package:mobx/mobx.dart';
 
 part 'phone_verification_controller.g.dart';
 
+// ignore: library_private_types_in_public_api
 class PhoneVerificationController = _PhoneVerificationController
     with _$PhoneVerificationController;
 

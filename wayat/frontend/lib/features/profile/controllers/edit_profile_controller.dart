@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -10,6 +9,7 @@ import 'package:mobx/mobx.dart';
 
 part 'edit_profile_controller.g.dart';
 
+// ignore: library_private_types_in_public_api
 class EditProfileController = _EditProfileController
     with _$EditProfileController;
 
@@ -56,10 +56,9 @@ abstract class _EditProfileController with Store {
     }
   }
 
-  Future getFromSource(ImageSource source, BuildContext context) async {
+  Future getFromSource(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
     setNewImage(newImage);
-    Navigator.of(context).pop();
   }
 }

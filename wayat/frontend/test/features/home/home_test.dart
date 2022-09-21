@@ -123,7 +123,7 @@ void main() async {
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget _createApp() {
+  Widget createApp() {
     final appRouter = AppRouter();
 
     return MaterialApp.router(
@@ -138,7 +138,7 @@ void main() async {
     );
   }
 
-  Contact _contactFactory() {
+  Contact contactFactory() {
     return Contact(
       available: true,
       shareLocation: true,
@@ -154,7 +154,7 @@ void main() async {
     final HomeState homeState = HomeState();
     GetIt.I.registerSingleton<HomeState>(homeState);
 
-    await tester.pumpWidget(_createApp());
+    await tester.pumpWidget(createApp());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.map));
     await tester.pumpAndSettle();
@@ -162,7 +162,7 @@ void main() async {
     expect(find.byType(HomeMapPage), findsOneWidget);
     expect(find.byType(ContactProfilePage), findsNothing);
 
-    homeState.setSelectedContact(_contactFactory(), "wayat");
+    homeState.setSelectedContact(contactFactory(), "wayat");
 
     await tester.pumpAndSettle();
 
@@ -174,7 +174,7 @@ void main() async {
 
   group('Contacts redirection', () {
     Future navigateToContactsPage(WidgetTester tester) async {
-      await tester.pumpWidget(_createApp());
+      await tester.pumpWidget(createApp());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.contacts_outlined));
       await tester.pumpAndSettle();
@@ -190,7 +190,7 @@ void main() async {
 
   group('Map redirection', () {
     Future navigateToMapPage(WidgetTester tester) async {
-      await tester.pumpWidget(_createApp());
+      await tester.pumpWidget(createApp());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.map));
       await tester.pumpAndSettle();
@@ -206,7 +206,7 @@ void main() async {
 
   group('Profile redirection', () {
     Future navigateToProfilePage(WidgetTester tester) async {
-      await tester.pumpWidget(_createApp());
+      await tester.pumpWidget(createApp());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.person_outline));
       await tester.pumpAndSettle();

@@ -18,7 +18,7 @@ class CustomFilledButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         elevation: 0,
         minimumSize: const Size(double.infinity, 50),
-        primary: Colors.black,
+        backgroundColor: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(1000.0),
         ),

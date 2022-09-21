@@ -16,7 +16,7 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -31,8 +31,8 @@ void main() async {
   }
 
   testWidgets('Phone textfield widget has an input textfield', (tester) async {
-    await tester.pumpWidget(_createApp(PinInputField(
-      onSubmit: (String) {},
+    await tester.pumpWidget(createApp(PinInputField(
+      onSubmit: (_) {},
     )));
     expect(find.byType(PinInputField), findsOneWidget);
   });

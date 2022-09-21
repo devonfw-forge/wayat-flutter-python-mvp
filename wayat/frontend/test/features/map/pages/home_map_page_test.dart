@@ -128,7 +128,7 @@ void main() async {
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget _createApp() {
+  Widget createApp() {
     final appRouter = AppRouter();
 
     return MaterialApp.router(
@@ -143,25 +143,13 @@ void main() async {
     );
   }
 
-  Contact _contactFactory() {
-    return Contact(
-      shareLocation: true,
-      available: true,
-      id: "2",
-      name: "test",
-      email: "Contact email",
-      imageUrl: "https://example.com/image",
-      phone: "123",
-    );
-  }
-
   testWidgets('Slider Groups without groups', (tester) async {
     final HomeState homeState = HomeState();
     GetIt.I.registerSingleton<HomeState>(homeState);
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
 
-    await tester.pumpWidget(_createApp());
+    await tester.pumpWidget(createApp());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.map));
     await tester.pumpAndSettle();
@@ -179,7 +167,7 @@ void main() async {
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
 
-    await tester.pumpWidget(_createApp());
+    await tester.pumpWidget(createApp());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.map));
     await tester.pumpAndSettle();

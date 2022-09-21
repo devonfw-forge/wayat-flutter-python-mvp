@@ -37,7 +37,7 @@ void main() async {
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -52,28 +52,28 @@ void main() async {
   }
 
   testWidgets('Delete account dialog is correct', (tester) async {
-    await tester.pumpWidget(_createApp(DeleteAccountDialog()));
+    await tester.pumpWidget(createApp(DeleteAccountDialog()));
     expect(find.byType(AlertDialog), findsOneWidget);
   });
 
   testWidgets('Delete account dialog has a correct title', (tester) async {
-    await tester.pumpWidget(_createApp(DeleteAccountDialog()));
+    await tester.pumpWidget(createApp(DeleteAccountDialog()));
     expect(find.text(appLocalizations.deleteAccount), findsOneWidget);
   });
 
   testWidgets('Delete account dialog has a correct text', (tester) async {
-    await tester.pumpWidget(_createApp(DeleteAccountDialog()));
+    await tester.pumpWidget(createApp(DeleteAccountDialog()));
     expect(find.text(appLocalizations.deleteAccountText), findsOneWidget);
   });
 
   testWidgets('Delete account dialog has button Verify', (tester) async {
-    await tester.pumpWidget(_createApp(DeleteAccountDialog()));
+    await tester.pumpWidget(createApp(DeleteAccountDialog()));
     expect(find.byType(CustomTextButton), findsOneWidget);
     expect(find.text(appLocalizations.delete), findsOneWidget);
   });
 
   testWidgets('Delete account dialog has button Cancel', (tester) async {
-    await tester.pumpWidget(_createApp(DeleteAccountDialog()));
+    await tester.pumpWidget(createApp(DeleteAccountDialog()));
     expect(find.byType(CustomTextButton), findsOneWidget);
     expect(find.text(appLocalizations.cancel), findsOneWidget);
   });

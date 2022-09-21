@@ -231,8 +231,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               TextButton.icon(
-                  onPressed: () => widget.controller
-                      .getFromSource(ImageSource.camera, context),
+                  onPressed: () {
+                    widget.controller.getFromSource(ImageSource.camera);
+                    Navigator.pop(context);
+                  },
                   icon: const Icon(
                     Icons.camera_alt,
                     size: 30,
@@ -243,8 +245,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     style: const TextStyle(color: Colors.black87),
                   )),
               TextButton.icon(
-                  onPressed: () => widget.controller
-                      .getFromSource(ImageSource.gallery, context),
+                  onPressed: () {
+                    widget.controller.getFromSource(ImageSource.gallery);
+                    Navigator.pop(context);
+                  },
                   icon: const Icon(
                     Icons.image,
                     size: 30,

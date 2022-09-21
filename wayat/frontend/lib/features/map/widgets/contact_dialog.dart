@@ -161,7 +161,6 @@ class ContactDialog extends StatelessWidget {
             Image.network(
               GoogleMapsService.getStaticMapImageFromCoords(
                   LatLng(contact.latitude, contact.longitude)),
-              headers: {},
             ),
             CircleAvatar(
               backgroundImage: NetworkImage(contact.imageUrl),

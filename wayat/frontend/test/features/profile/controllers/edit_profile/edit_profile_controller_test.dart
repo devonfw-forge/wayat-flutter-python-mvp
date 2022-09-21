@@ -41,7 +41,7 @@ void main() async {
     when(mockSessionState.currentUser).thenReturn(fakeUser);
   });
 
-  Widget _createApp() {
+  Widget createApp() {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -53,7 +53,7 @@ void main() async {
   }
 
   testWidgets('Check setters for edit profile controller', (tester) async {
-    await tester.pumpWidget(_createApp());
+    await tester.pumpWidget(createApp());
     EditProfileController controller = EditProfileController();
     PhoneVerificationController phoneController = PhoneVerificationController();
     phoneController.setNewPhoneNumber("123");
@@ -66,7 +66,7 @@ void main() async {
   });
 
   testWidgets('Check validation of phone number', (tester) async {
-    await tester.pumpWidget(_createApp());
+    await tester.pumpWidget(createApp());
     PhoneVerificationController phoneController = PhoneVerificationController();
     PhoneNumber emptyPhone =
         PhoneNumber(number: "", countryCode: '+34', countryISOCode: '+34');

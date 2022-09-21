@@ -17,6 +17,7 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:collection/collection.dart';
 import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
+// ignore: must_be_immutable
 class ContactProfilePage extends StatelessWidget {
   Contact contact;
 

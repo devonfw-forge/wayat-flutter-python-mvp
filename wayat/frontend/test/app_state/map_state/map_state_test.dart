@@ -119,6 +119,7 @@ void main() async {
 
   test("MapState can be created without controller", () async {
     await dotenv.load(fileName: ".env");
+    // ignore: unused_local_variable
     MapState mapState = MapState();
   });
 }

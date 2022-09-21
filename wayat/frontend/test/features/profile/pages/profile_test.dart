@@ -44,7 +44,7 @@ void main() async {
     when(mockLocationState.shareLocationEnabled).thenAnswer((_) => false);
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -59,45 +59,45 @@ void main() async {
   }
 
   testWidgets('Profile page has Profile label', (tester) async {
-    await tester.pumpWidget(_createApp(ProfilePage()));
+    await tester.pumpWidget(createApp(ProfilePage()));
     expect(find.widgetWithText(ListView, appLocalizations.profile),
         findsOneWidget);
   });
 
   group("Profile page has user profile data", () {
     testWidgets('Profile image', (tester) async {
-      await tester.pumpWidget(_createApp(ProfilePage()));
+      await tester.pumpWidget(createApp(ProfilePage()));
       expect(find.byKey(const Key("profile_image")), findsOneWidget);
     });
 
     testWidgets('Username', (tester) async {
-      await tester.pumpWidget(_createApp(ProfilePage()));
+      await tester.pumpWidget(createApp(ProfilePage()));
       expect(find.text(user.name), findsOneWidget);
     });
   });
 
   group("Share location settings UI", () {
     testWidgets('Settings title', (tester) async {
-      await tester.pumpWidget(_createApp(ProfilePage()));
+      await tester.pumpWidget(createApp(ProfilePage()));
       expect(find.text(appLocalizations.profileShareLocation), findsOneWidget);
     });
 
     testWidgets('Switch active location', (tester) async {
-      await tester.pumpWidget(_createApp(ProfilePage()));
+      await tester.pumpWidget(createApp(ProfilePage()));
       expect(find.text(appLocalizations.profileActiveLocation), findsOneWidget);
       expect(find.byType(CustomSwitch), findsOneWidget);
     });
   });
 
   testWidgets('Edit profile button', (tester) async {
-    await tester.pumpWidget(_createApp(ProfilePage()));
+    await tester.pumpWidget(createApp(ProfilePage()));
     expect(find.text(appLocalizations.editProfile), findsOneWidget);
     expect(find.widgetWithText(CustomCard, appLocalizations.editProfile),
         findsOneWidget);
   });
 
   testWidgets('LogOut button', (tester) async {
-    await tester.pumpWidget(_createApp(ProfilePage()));
+    await tester.pumpWidget(createApp(ProfilePage()));
     expect(find.text(appLocalizations.logOut), findsOneWidget);
     expect(find.widgetWithText(CustomCard, appLocalizations.logOut),
         findsOneWidget);
