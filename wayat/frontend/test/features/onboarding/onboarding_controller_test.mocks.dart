@@ -67,7 +67,7 @@ class MockOnboardingController extends _i1.Mock
   @override
   _i5.OnBoardingState get onBoardingState =>
       (super.noSuchMethod(Invocation.getter(#onBoardingState),
-          returnValue: _i5.OnBoardingState.NotStarted) as _i5.OnBoardingState);
+          returnValue: _i5.OnBoardingState.notStarted) as _i5.OnBoardingState);
   @override
   set onBoardingState(_i5.OnBoardingState? value) =>
       super.noSuchMethod(Invocation.setter(#onBoardingState, value),
@@ -173,8 +173,8 @@ class MockOnboardingRelaxed extends _i1.Mock
   @override
   _i5.OnBoardingState get onBoardingState =>
       (super.noSuchMethod(Invocation.getter(#onBoardingState),
-              returnValue: _i5.OnBoardingState.NotStarted,
-              returnValueForMissingStub: _i5.OnBoardingState.NotStarted)
+              returnValue: _i5.OnBoardingState.notStarted,
+              returnValueForMissingStub: _i5.OnBoardingState.notStarted)
           as _i5.OnBoardingState);
   @override
   set onBoardingState(_i5.OnBoardingState? value) =>

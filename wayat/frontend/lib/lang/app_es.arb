@@ -15,6 +15,7 @@
     "didnotReceiveCode": "¿No recibiste el código?",
     "resendCode": "Reenviar codigo",
     "verify": "Verificar",
+    "retry": "Reintentar",
     "cancel": "Cancelar",
     "delete": "Borrar",
     "deleteAccountText": "¿Está seguro de que desea eliminar su cuenta de Wayat? Tenga en cuenta que no hay opción para restaurar la cuenta o sus datos una vez que se elimina.",
@@ -124,5 +125,8 @@
     "deleteGroup": "Eliminar grupo",
     "groupValidation": "Debes seleccionar al menos dos contactos",
 
-    "done": "Hecho"
+    "done": "Hecho",
+    
+    "locationPermission": "Permiso de ubicación",
+    "locationPermissionNotGranted": "Permiso de ubicación no otorgado, acepte los permisos de ubicación para todo el tiempo. Selecciónelo en la sección de configuración"
 }

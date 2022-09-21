@@ -16,6 +16,7 @@
     "resendCode": "Renvoyer le code",
     "verify": "Vérifier",
     "cancel": "Annuler",
+    "retry": "Recommencez",
     "delete": "Supprimer",
     "deleteAccountText": "Êtes-vous sûr de vouloir supprimer votre compte Wayat? Veuillez noter qu'il n'y a aucune option pour restaurer le compte ou ses données une fois qu'il a été supprimé.",
     "phoneEmpty": "Champ vide. Entrez un numéro de téléphone correct.",
@@ -127,5 +128,8 @@
     "deleteGroup": "Supprimer le groupe",
     "groupValidation": "Vous devez sélectionner au moins deux contacts",
     
-    "done": "Terminé"
+    "done": "Terminé",
+
+    "locationPermission": "Autorisation de localisation",
+    "locationPermissionNotGranted": "Autorisation de localisation non accordée, veuillez accepter les autorisations de localisation pour tout le temps. Sélectionnez-le dans la section des paramètres"
 } 

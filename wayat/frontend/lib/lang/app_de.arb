@@ -15,6 +15,7 @@
     "didnotReceiveCode": "Haben Sie den Code nicht erhalten?",
     "resendCode": "Code erneut senden",
     "verify": "Überprüfen",
+    "retry": "Wiederholen",
     "cancel": "Abbrechen",
     "delete": "Löschen",
     "deleteAccountText": "Sind Sie sicher, dass Sie Ihr Wayat-Konto löschen möchten? Bitte beachten Sie, dass es keine Möglichkeit gibt, das Konto oder seine Daten wiederherzustellen, sobald es gelöscht ist.",
@@ -127,5 +128,8 @@
     "deleteGroup": "Gruppe löschen",
     "groupValidation": "Sie müssen mindestens zwei Kontakte auswählen",
     
-    "done": "Erledigt"
+    "done": "Erledigt",
+    
+    "locationPermission": "Standorterlaubnis",
+    "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus"
 } 

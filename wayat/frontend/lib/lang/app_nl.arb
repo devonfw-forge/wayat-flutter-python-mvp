@@ -15,6 +15,7 @@
     "didnotReceiveCode": "Geen code ontvangen?",
     "resendCode": "Stuur code opnieuw.",
     "verify": "Controleer",
+    "retry": "Opnieuw proberen",
     "cancel": "Annuleren",
     "delete": "Delete",
     "deleteAccountText": "Weet je zeker dat je je Wayat account wilt verwijderen? Let op: er is geen optie om het account of de gegevens ervan te herstellen als het verwijderd is.",
@@ -127,5 +128,8 @@
     "deleteGroup": "Groep verwijderen",
     "groupValidation": "U moet ten minste twee contacten selecteren",
     
-    "done": "Gedaan"
+    "done": "Gedaan",
+    
+    "locationPermission": "Locatietoestemming",
+    "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen"
 } 

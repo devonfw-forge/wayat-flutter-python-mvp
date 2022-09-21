@@ -19,6 +19,7 @@
     "didnotReceiveCode": "Didn't receive code?",
     "resendCode": "Resend code",
     "verify": "Verify",
+    "retry": "Retry",
     "cancel": "Cancel",
     "delete": "Delete",
     "deleteAccountText": "Are you sure that you want to delete your Wayat account? Please note that there is no option to restore the account or its data once it's deleted.",
@@ -128,4 +129,9 @@
     "editGroup": "Edit group",
     "deleteGroup": "Delete group",
     "groupValidation": "You must select at least two contacts"
+    
+    "done": "Done",
+
+    "locationPermission": "Location permission",
+    "locationPermissionNotGranted": "Location permission not granted, please accept location permissions for all the time. Select it in the settings section"
 } 

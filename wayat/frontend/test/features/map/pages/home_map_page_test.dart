@@ -24,7 +24,6 @@ import 'package:wayat/features/contacts/controller/suggestions_controller/sugges
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
-import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
