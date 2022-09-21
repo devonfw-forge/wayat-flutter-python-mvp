@@ -29,7 +29,7 @@ steps:
     args:
       - run
       - deploy
-      - wayat-flutter-python-mvp
+      - wayat-api
       - '--image'
       - >-
         gcr.io/wayat-prod-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
