@@ -8,6 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/pages/sent_requests_page/sent_requests_page.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
@@ -42,7 +43,7 @@ void main() async {
         .thenReturn(mobx.ObservableList.of([]));
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -57,7 +58,7 @@ void main() async {
   }
 
   testWidgets("Sent requests header is correct", (tester) async {
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.text(appLocalizations.sentRequestsTitle), findsOneWidget);
@@ -65,21 +66,24 @@ void main() async {
   });
 
   testWidgets("Tapping on the header icon closes the page", (tester) async {
-    when(mockContactsPageController.setviewSentRequests(false))
+    when(mockContactsPageController
+            .setContactsCurrentPage(ContactsCurrentPages.contacts))
         .thenAnswer((_) => Future.value(null));
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.keyboard_arrow_down));
     await tester.pumpAndSettle();
 
-    verify(mockContactsPageController.setviewSentRequests(false)).called(1);
+    verify(mockContactsPageController
+            .setContactsCurrentPage(ContactsCurrentPages.contacts))
+        .called(1);
   });
 
   testWidgets("Sent requests tiles are displayed correctly", (tester) async {
     when(mockRequestsController.sentRequests)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["TestA"])));
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);
@@ -91,14 +95,14 @@ void main() async {
   testWidgets("The number of requests tiles is correct", (tester) async {
     when(mockRequestsController.sentRequests)
         .thenReturn(mobx.ObservableList.of(_generateContacts([])));
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNothing);
 
     when(mockRequestsController.sentRequests).thenReturn(
         mobx.ObservableList.of(_generateContacts(["TestA", "TestB", "TestC"])));
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNWidgets(3));
@@ -112,7 +116,7 @@ void main() async {
     when(mockRequestsController.unsendRequest(contact))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithIcon(IconButton, Icons.close));
@@ -135,7 +139,7 @@ void main() async {
 
     requestsController.sentRequests = mobx.ObservableList.of([contact]);
 
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);
@@ -150,6 +154,7 @@ void main() async {
 Contact _contactFactory(String contactName) {
   return Contact(
     available: true,
+    shareLocation: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

@@ -64,6 +64,10 @@ class MockProfileService extends _i1.Mock implements _i5.ProfileService {
   _i6.Future<bool> updateProfileName(String? name) =>
       (super.noSuchMethod(Invocation.method(#updateProfileName, [name]),
           returnValue: _i6.Future<bool>.value(false)) as _i6.Future<bool>);
+  @override
+  _i6.Future<bool> deleteCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
+          returnValue: _i6.Future<bool>.value(false)) as _i6.Future<bool>);
 }
 
 /// A class which mocks [SessionState].
@@ -120,9 +124,10 @@ class MockSessionState extends _i1.Mock implements _i8.SessionState {
       returnValue: _i6.Future<void>.value(),
       returnValueForMissingStub: _i6.Future<void>.value()) as _i6.Future<void>);
   @override
-  _i6.Future<dynamic> isLogged() =>
-      (super.noSuchMethod(Invocation.method(#isLogged, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<void> isLogged() => (super.noSuchMethod(
+      Invocation.method(#isLogged, []),
+      returnValue: _i6.Future<void>.value(),
+      returnValueForMissingStub: _i6.Future<void>.value()) as _i6.Future<void>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),

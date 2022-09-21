@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.5 <3.0.0"
+  sdk: ">=2.17.6 <3.0.0"
 
 dependencies:
   flutter:
@@ -33,7 +33,7 @@ dependencies:
   # Environment variables
   flutter_dotenv: ^5.0.2
   # Google maps
-  google_maps_flutter: ^2.1.10
+  google_maps_flutter: ^2.2.0
   # AZ ListView for imported contacts
   azlistview: ^2.0.0
   # Key Value storage
@@ -55,16 +55,23 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   image: ^3.2.0
   # For the x minutes ago in the Pop Up for the Map contacts
-  timeago: ^3.2.2
+  timeago: ^3.3.0
   # To launch google maps app
   url_launcher: ^6.1.5
   # Firebase dependencies
   firebase_core: ^1.20.0
-  cloud_firestore: ^3.4.3
-  firebase_auth: ^3.6.1
+  cloud_firestore: ^3.4.6
+  firebase_auth: ^3.7.0
   image_picker: ^0.8.5+3
   # Testing mocks
   mockito: ^5.3.0
+  pinput: ^2.2.12
+  firebase_phone_auth_handler: ^1.0.6
+  smart_auth: ^1.0.5
+  flutter_launcher_icons: ^0.10.0
+  restart_app: ^1.1.0+1
+  app_settings: ^4.1.8
+
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +86,7 @@ dev_dependencies:
   mobx_codegen: ^2.0.7
   # Dialogs
   speech_balloon: ^0.0.4
+  remove_from_coverage: 2.0.0
 
 
 
@@ -90,3 +98,13 @@ flutter:
   assets:
     - .env
     - assets/images/
+  
+flutter_icons:
+  android: true
+  image_path_android: 'assets/images/wayat_icon.png'
+  ios: true
+  image_path_ios: 'assets/images/wayat_icon.png'
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/images/wayat_icon.png"

@@ -9,7 +9,7 @@ class LangSingleton {
 
   void initialize(context) {
     appLocalizations = AppLocalizations.of(context)!;
-  }
+ }
 
   AppLocalizations get() {
     return appLocalizations;

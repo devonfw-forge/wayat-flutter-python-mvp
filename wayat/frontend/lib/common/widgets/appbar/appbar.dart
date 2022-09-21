@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/lang/lang_singleton.dart';
+import 'package:wayat/lang/app_localizations.dart';
+
 
 class CustomAppBar extends StatelessWidget {
-  CustomAppBar({Key? key}) : super(key: key);
-
-  final appLocalizations = GetIt.I.get<LangSingleton>().appLocalizations;
+  const CustomAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

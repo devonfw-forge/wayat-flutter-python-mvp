@@ -19,6 +19,7 @@ class FirebaseAuthenticatedUser(User):
 
 class FirebaseSettings(BaseSettings):
     credentials_file: str
+    api_key: str
 
     class Config:
         env_prefix = "FIREBASE_"
@@ -62,7 +63,7 @@ class FirebaseService(IdentityProvider):
                         raise UnauthorizedException(required_roles)
             user: FirebaseAuthenticatedUser = FirebaseAuthenticatedUser(
                 uid=decoded_token["uid"],
-                email=decoded_token["email"],
+                email=decoded_token.get("email", ""),
                 roles=roles,
                 phone=decoded_token.get("phone", None),
                 name=decoded_token.get("name", None),

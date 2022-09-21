@@ -30,13 +30,9 @@ class ProfileWrapper extends StatelessWidget {
   PageRouteInfo getCurrentPage(ProfileCurrentPages currentPage) {
     switch (currentPage) {
       case ProfileCurrentPages.editProfile:
-        return const EditProfileRoute();
+        return EditProfileRoute();
       case ProfileCurrentPages.preference:
-        return const PreferencesRoute();
-      case ProfileCurrentPages.faqs:
-        return const FaqsRoute();
-      case ProfileCurrentPages.privacy:
-        return const PrivacyRoute();
+        return PreferencesRoute();
       case ProfileCurrentPages.profile:
         return ProfileRoute();
     }

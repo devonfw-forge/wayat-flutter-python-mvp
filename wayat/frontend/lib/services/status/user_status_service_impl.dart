@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -8,7 +9,7 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 
 class UserStatusService {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT'));
 
   late bool _lastActive;
   late List _lastContactRefs;
@@ -16,6 +17,9 @@ class UserStatusService {
   Future setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(ShareLocationMode) onLocationModeUpdate}) async {
+    if (GetIt.I.get<SessionState>().currentUser == null) {
+      return;
+    }
     final docRef = db
         .collection("status")
         .doc(GetIt.I.get<SessionState>().currentUser!.id);
@@ -63,10 +67,13 @@ class UserStatusService {
             contacts.firstWhere((contact) => contact.id == e["uid"]);
         GeoPoint loc = e["location"];
         String address = e["address"] ?? "ERROR_ADDRESS";
-        if (address == "ERROR_ADDRESS") { address = appLocalizations.errorAddress; }
+        if (address == "ERROR_ADDRESS") {
+          address = appLocalizations.errorAddress;
+        }
         Timestamp lastUpdated = e["last_updated"];
         ContactLocation located = ContactLocation(
             available: true,
+            shareLocation: contact.shareLocation,
             id: contact.id,
             name: contact.name,
             email: contact.name,

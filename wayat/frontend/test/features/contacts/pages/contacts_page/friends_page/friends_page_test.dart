@@ -38,7 +38,7 @@ void main() async {
         .thenReturn(mockFriendsController);
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -57,7 +57,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -66,11 +66,31 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["A", "B", "C"])));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(
         find.text("${appLocalizations.friendsPageTitle} (3)"), findsOneWidget);
+  });
+
+  testWidgets("Friends Page shows the button to navigate to groups",
+      (tester) async {
+    when(mockFriendsController.filteredContacts)
+        .thenReturn(mobx.ObservableList.of([]));
+
+    await tester.pumpWidget(createApp(FriendsPage()));
+    await tester.pumpAndSettle();
+
+    expect(
+        find.ancestor(
+            of: find.byIcon(Icons.chevron_right),
+            matching: find.byType(InkWell)),
+        findsOneWidget);
+    expect(
+        find.ancestor(
+            of: find.text(appLocalizations.groupsTitle),
+            matching: find.byType(InkWell)),
+        findsOneWidget);
   });
 
   testWidgets("The friends list shows the correct number of contacts",
@@ -78,7 +98,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNothing);
@@ -86,7 +106,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["A", "B", "C"])));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNWidgets(3));
@@ -101,7 +121,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([contact]));
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
 
     when(mockHomeState.setSelectedContact(contact, appLocalizations.contacts))
         .thenReturn(null);
@@ -129,7 +149,7 @@ void main() async {
     when(mockContactsPageController.friendsController)
         .thenReturn(friendsController);
 
-    await tester.pumpWidget(_createApp(FriendsPage()));
+    await tester.pumpWidget(createApp(FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);
@@ -144,6 +164,7 @@ void main() async {
 Contact _contactFactory(String contactName) {
   return Contact(
     available: true,
+    shareLocation: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

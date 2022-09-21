@@ -1,8 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
+import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
@@ -13,7 +22,7 @@ class GoogleAuthService implements AuthService {
   late GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email'],
   );
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
 
   GoogleAuthService({GoogleSignIn? gS}) {
     if (gS != null) _googleSignIn = gS;
@@ -52,6 +61,7 @@ class GoogleAuthService implements AuthService {
   /// Throws on [Exception] if there is no authenticated user
   @override
   Future<String> getIdToken() async {
+    if (_auth.currentUser == null) return "";
     return await _auth.currentUser!.getIdToken();
   }
 
@@ -72,8 +82,19 @@ class GoogleAuthService implements AuthService {
   /// *Sign out* the current user.
   @override
   Future<void> signOut() async {
+    await FirebaseFirestore.instance.terminate();
     await _auth.signOut();
     await _googleSignIn.signOut();
+
+    // ResetSingleton instances to reset any information for the current user
+    GetIt.I.resetLazySingleton<OnboardingController>();
+    GetIt.I.resetLazySingleton<ContactsPageController>();
+    GetIt.I.resetLazySingleton<UserStatusState>();
+    GetIt.I.resetLazySingleton<LocationState>();
+    GetIt.I.resetLazySingleton<ProfileState>();
+    GetIt.I.resetLazySingleton<MapState>();
+    GetIt.I.resetLazySingleton<HomeState>();
+    GetIt.I.resetLazySingleton<HttpProvider>();
   }
 
   @override
@@ -85,6 +106,7 @@ class GoogleAuthService implements AuthService {
         20;
   }
 
+  @override
   Future<bool> sendDoneOnboarding(bool doneOnboarding) async {
     return (await httpProvider.sendPostRequest(
                     APIContract.userProfile, {"onboarding_completed": true}))

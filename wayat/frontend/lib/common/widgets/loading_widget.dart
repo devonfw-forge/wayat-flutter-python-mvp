@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wayat/common/theme/colors.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
@@ -6,10 +7,10 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Colors.grey[50],
       child: const Center(
           child: CircularProgressIndicator(
-        backgroundColor: Colors.white,
+        color: ColorTheme.primaryColor,
       )),
     );
   }

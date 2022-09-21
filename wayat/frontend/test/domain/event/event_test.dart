@@ -7,72 +7,72 @@ void main() {
   late Event event;
   setUp(() {
     event = Event(
-      eventID: 1,
-      eventPhotoUrl: "url://eventimage",
-      eventDescription: "description",
-      eventName: "Event name",
-      eventLocation: "Location event",
-      eventStartDate: "12/3/4",
-      eventEndDate: "12/3/4",
-      eventStartHour: "13:45",
-      eventEndHour: "13:50",
-      eventCreatedBy: "Creator",
-      eventUserID: 1,
+      id: 1,
+      photoUrl: "url://eventimage",
+      description: "description",
+      name: "Event name",
+      location: "Location event",
+      startDate: "12/3/4",
+      endDate: "12/3/4",
+      startHour: "13:45",
+      endHour: "13:50",
+      createdBy: "Creator",
+      userId: 1,
     );
   });
 
   test("Checking attributes", () {
-    expect(event.eventID, 1);
-    expect(event.eventPhotoUrl, "url://eventimage");
-    expect(event.eventDescription, "description");
-    expect(event.eventName, "Event name");
-    expect(event.eventLocation, "Location event");
-    expect(event.eventStartDate, "12/3/4");
-    expect(event.eventEndDate, "12/3/4");
-    expect(event.eventStartHour, "13:45");
-    expect(event.eventEndHour, "13:50");
-    expect(event.eventCreatedBy, "Creator");
-    expect(event.eventUserID, 1);
+    expect(event.id, 1);
+    expect(event.photoUrl, "url://eventimage");
+    expect(event.description, "description");
+    expect(event.name, "Event name");
+    expect(event.location, "Location event");
+    expect(event.startDate, "12/3/4");
+    expect(event.endDate, "12/3/4");
+    expect(event.startHour, "13:45");
+    expect(event.endHour, "13:50");
+    expect(event.createdBy, "Creator");
+    expect(event.userId, 1);
   });
 
   test("Checking copy method", () {
     Event eventCopy = event.copyWith();
-    expect(eventCopy.eventID, 1);
-    expect(eventCopy.eventPhotoUrl, "url://eventimage");
-    expect(eventCopy.eventDescription, "description");
-    expect(eventCopy.eventName, "Event name");
-    expect(eventCopy.eventLocation, "Location event");
-    expect(eventCopy.eventStartDate, "12/3/4");
-    expect(eventCopy.eventEndDate, "12/3/4");
-    expect(eventCopy.eventStartHour, "13:45");
-    expect(eventCopy.eventEndHour, "13:50");
-    expect(eventCopy.eventCreatedBy, "Creator");
-    expect(eventCopy.eventUserID, 1);
+    expect(eventCopy.id, 1);
+    expect(eventCopy.photoUrl, "url://eventimage");
+    expect(eventCopy.description, "description");
+    expect(eventCopy.name, "Event name");
+    expect(eventCopy.location, "Location event");
+    expect(eventCopy.startDate, "12/3/4");
+    expect(eventCopy.endDate, "12/3/4");
+    expect(eventCopy.startHour, "13:45");
+    expect(eventCopy.endHour, "13:50");
+    expect(eventCopy.createdBy, "Creator");
+    expect(eventCopy.userId, 1);
 
     eventCopy = event.copyWith(
-        idEvent: 2,
+        id: 2,
         photoUrl: "url://eventimage2",
         description: "description2",
-        eventName: "Event name 2",
-        eventLocation: "Location event 2",
-        eventStartDate: "13/3/4",
-        eventEndDate: "12/10/5",
-        eventStartHour: "1:45",
-        eventEndHour: "2:50",
+        name: "Event name 2",
+        location: "Location event 2",
+        startDate: "13/3/4",
+        endDate: "12/10/5",
+        startHour: "1:45",
+        endHour: "2:50",
         createdBy: "Creator2",
-        idUser: 2);
+        userId: 2);
 
-    expect(eventCopy.eventID, 2);
-    expect(eventCopy.eventPhotoUrl, "url://eventimage2");
-    expect(eventCopy.eventDescription, "description2");
-    expect(eventCopy.eventName, "Event name 2");
-    expect(eventCopy.eventLocation, "Location event 2");
-    expect(eventCopy.eventStartDate, "13/3/4");
-    expect(eventCopy.eventEndDate, "12/10/5");
-    expect(eventCopy.eventStartHour, "1:45");
-    expect(eventCopy.eventEndHour, "2:50");
-    expect(eventCopy.eventCreatedBy, "Creator2");
-    expect(eventCopy.eventUserID, 2);
+    expect(eventCopy.id, 2);
+    expect(eventCopy.photoUrl, "url://eventimage2");
+    expect(eventCopy.description, "description2");
+    expect(eventCopy.name, "Event name 2");
+    expect(eventCopy.location, "Location event 2");
+    expect(eventCopy.startDate, "13/3/4");
+    expect(eventCopy.endDate, "12/10/5");
+    expect(eventCopy.startHour, "1:45");
+    expect(eventCopy.endHour, "2:50");
+    expect(eventCopy.createdBy, "Creator2");
+    expect(eventCopy.userId, 2);
   });
 
   test("Checking string conversion", () {
@@ -99,23 +99,23 @@ void main() {
     for (var key in attributes) {
       expect(eventMap.containsKey(key), true);
     }
-    expect(eventMap['idEvent'] == event.eventID, true);
-    expect(eventMap['photoUrl'] == event.eventPhotoUrl, true);
-    expect(eventMap['description'] == event.eventDescription, true);
-    expect(eventMap['eventName'] == event.eventName, true);
-    expect(eventMap['eventLocation'] == event.eventLocation, true);
-    expect(eventMap['eventStartDate'] == event.eventStartDate, true);
-    expect(eventMap['eventEndDate'] == event.eventEndDate, true);
-    expect(eventMap['eventStartHour'] == event.eventStartHour, true);
-    expect(eventMap['eventEndHour'] == event.eventEndHour, true);
-    expect(eventMap['createdBy'] == event.eventCreatedBy, true);
-    expect(eventMap['idUser'] == event.eventUserID, true);
+    expect(eventMap['idEvent'] == event.id, true);
+    expect(eventMap['photoUrl'] == event.photoUrl, true);
+    expect(eventMap['description'] == event.description, true);
+    expect(eventMap['eventName'] == event.name, true);
+    expect(eventMap['eventLocation'] == event.location, true);
+    expect(eventMap['eventStartDate'] == event.startDate, true);
+    expect(eventMap['eventEndDate'] == event.endDate, true);
+    expect(eventMap['eventStartHour'] == event.startHour, true);
+    expect(eventMap['eventEndHour'] == event.endHour, true);
+    expect(eventMap['createdBy'] == event.createdBy, true);
+    expect(eventMap['idUser'] == event.userId, true);
   });
 
   test("Checking comparison operator", () {
     Event event2 = event.copyWith();
     expect(event == event2, true);
-    event2 = event.copyWith(idEvent: 2);
+    event2 = event.copyWith(id: 2);
     expect(event == event2, false);
   });
 
@@ -134,6 +134,6 @@ void main() {
 
   test("Checking hashCode", () {
     expect(event.hashCode == event.copyWith().hashCode, true);
-    expect(event.hashCode == event.copyWith(idEvent: 2).hashCode, false);
+    expect(event.hashCode == event.copyWith(id: 2).hashCode, false);
   });
 }

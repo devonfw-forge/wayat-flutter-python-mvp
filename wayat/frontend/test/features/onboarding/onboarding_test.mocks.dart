@@ -108,9 +108,10 @@ class MockSessionState extends _i1.Mock implements _i5.SessionState {
       returnValue: _i7.Future<void>.value(),
       returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
-  _i7.Future<dynamic> isLogged() =>
-      (super.noSuchMethod(Invocation.method(#isLogged, []),
-          returnValue: _i7.Future<dynamic>.value()) as _i7.Future<dynamic>);
+  _i7.Future<void> isLogged() => (super.noSuchMethod(
+      Invocation.method(#isLogged, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
@@ -183,7 +184,7 @@ class MockOnboardingController extends _i1.Mock
   @override
   _i9.OnBoardingState get onBoardingState =>
       (super.noSuchMethod(Invocation.getter(#onBoardingState),
-          returnValue: _i9.OnBoardingState.NotStarted) as _i9.OnBoardingState);
+          returnValue: _i9.OnBoardingState.notStarted) as _i9.OnBoardingState);
   @override
   set onBoardingState(_i9.OnBoardingState? value) =>
       super.noSuchMethod(Invocation.setter(#onBoardingState, value),
@@ -309,11 +310,10 @@ class MockSessionStateRelaxed extends _i1.Mock implements _i5.SessionState {
       returnValue: _i7.Future<void>.value(),
       returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
-  _i7.Future<dynamic> isLogged() =>
-      (super.noSuchMethod(Invocation.method(#isLogged, []),
-              returnValue: _i7.Future<dynamic>.value(),
-              returnValueForMissingStub: _i7.Future<dynamic>.value())
-          as _i7.Future<dynamic>);
+  _i7.Future<void> isLogged() => (super.noSuchMethod(
+      Invocation.method(#isLogged, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
   void setGoogleSignIn(bool? signedIn) =>
       super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
@@ -397,8 +397,8 @@ class MockOnboardingRelaxed extends _i1.Mock
   @override
   _i9.OnBoardingState get onBoardingState =>
       (super.noSuchMethod(Invocation.getter(#onBoardingState),
-              returnValue: _i9.OnBoardingState.NotStarted,
-              returnValueForMissingStub: _i9.OnBoardingState.NotStarted)
+              returnValue: _i9.OnBoardingState.notStarted,
+              returnValueForMissingStub: _i9.OnBoardingState.notStarted)
           as _i9.OnBoardingState);
   @override
   set onBoardingState(_i9.OnBoardingState? value) =>

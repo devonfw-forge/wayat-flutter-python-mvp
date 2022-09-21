@@ -58,7 +58,7 @@ class HttpProvider {
   /// using the configured authentication
   Future<bool> sendPutRequest(String subPath, Map<String, dynamic> body) async {
     Response resultJson = await put(Uri.parse("$baseUrl/$subPath"),
-        headers: await _getHeaders(), body: body);
+        headers: await _getHeaders(), body: jsonEncode(body));
     // Checks if a 20X status code is returned
     return resultJson.statusCode / 10 == 20;
   }

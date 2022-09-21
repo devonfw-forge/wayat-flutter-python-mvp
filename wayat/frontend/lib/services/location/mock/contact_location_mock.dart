@@ -5,6 +5,7 @@ class ContactLocationMock {
     ContactLocation(
         id: "",
         available: true,
+        shareLocation: true,
         name: "User active",
         email: "user@mail.com",
         imageUrl:
@@ -17,6 +18,7 @@ class ContactLocationMock {
     ContactLocation(
         id: "",
         available: true,
+        shareLocation: true,
         name: "User pepe",
         email: "user@mail.com",
         imageUrl:
@@ -28,6 +30,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: false,
+        shareLocation: true,
         id: "",
         name: "Pepe USer",
         email: "user@mail.com",
@@ -41,6 +44,7 @@ class ContactLocationMock {
     ContactLocation(
         id: "",
         available: true,
+        shareLocation: true,
         name: "Name",
         email: "user@mail.com",
         imageUrl:
@@ -53,6 +57,7 @@ class ContactLocationMock {
     ContactLocation(
         id: "",
         available: false,
+        shareLocation: true,
         name: "DisplayName User",
         email: "user@mail.com",
         imageUrl:
@@ -64,6 +69,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: true,
+        shareLocation: true,
         id: "",
         name: "Test test",
         email: "user@mail.com",
@@ -76,6 +82,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: false,
+        shareLocation: true,
         name: "Test testing",
         email: "user@mail.com",
         id: "",
@@ -88,6 +95,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: true,
+        shareLocation: true,
         id: "",
         name: "Testing testing",
         email: "user@mail.com",
@@ -100,6 +108,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: false,
+        shareLocation: true,
         name: "Testing test",
         email: "user@mail.com",
         id: "",
@@ -112,6 +121,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: true,
+        shareLocation: true,
         name: "User the second",
         email: "user@mail.com",
         id: "",
@@ -124,6 +134,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: true,
+        shareLocation: true,
         name: "User the third",
         id: "",
         email: "user@mail.com",
@@ -136,6 +147,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: false,
+        shareLocation: true,
         id: "",
         name: "User the fourth",
         email: "user@mail.com",
@@ -149,6 +161,7 @@ class ContactLocationMock {
     ContactLocation(
         id: "",
         available: true,
+        shareLocation: true,
         name: "User the fifth",
         email: "user@mail.com",
         imageUrl:
@@ -161,6 +174,7 @@ class ContactLocationMock {
     ContactLocation(
         id: "",
         available: false,
+        shareLocation: true,
         name: "User the barbarian",
         email: "user@mail.com",
         imageUrl:
@@ -172,6 +186,7 @@ class ContactLocationMock {
         lastUpdated: DateTime.now().subtract(const Duration(minutes: 6))),
     ContactLocation(
         available: true,
+        shareLocation: true,
         id: "",
         name: "User the wise",
         email: "user@mail.com",

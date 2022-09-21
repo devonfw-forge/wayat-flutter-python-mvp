@@ -1,5 +1,4 @@
 import 'package:wayat/domain/contact/contact.dart';
-import 'dart:convert';
 
 class ContactLocation extends Contact {
   double latitude;
@@ -22,6 +21,7 @@ class ContactLocation extends Contact {
       required super.email,
       required super.imageUrl,
       required super.phone,
+      required super.shareLocation,
       required this.latitude,
       required this.longitude,
       required this.address,
@@ -30,6 +30,7 @@ class ContactLocation extends Contact {
   @override
   ContactLocation copyWith(
       {bool? available,
+      bool? shareLocation,
       String? id,
       String? name,
       String? email,
@@ -49,7 +50,8 @@ class ContactLocation extends Contact {
         latitude: latitude ?? this.latitude,
         longitude: longitude ?? this.longitude,
         address: address ?? this.address,
-        lastUpdated: lastUpdated ?? this.lastUpdated);
+        lastUpdated: lastUpdated ?? this.lastUpdated,
+        shareLocation: shareLocation ?? this.shareLocation);
   }
 
   @override
@@ -68,6 +70,7 @@ class ContactLocation extends Contact {
   factory ContactLocation.fromMap(Map<String, dynamic> map) {
     return ContactLocation(
         available: map['available'] as bool,
+        shareLocation: (map['share_location'] ?? false) as bool,
         id: map['id'] as String,
         name: map['name'] as String,
         email: map['email'] as String,

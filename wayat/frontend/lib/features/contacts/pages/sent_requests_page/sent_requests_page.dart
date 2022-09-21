@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
+import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -16,16 +17,24 @@ class SentRequestsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          header(),
-          const SizedBox(
-            height: 10,
-          ),
-          sentRequestsList()
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        GetIt.I
+            .get<ContactsPageController>()
+            .setContactsCurrentPage(ContactsCurrentPages.contacts);
+        return true;
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header(),
+            const SizedBox(
+              height: 10,
+            ),
+            sentRequestsList()
+          ],
+        ),
       ),
     );
   }
@@ -74,18 +83,14 @@ class SentRequestsPage extends StatelessWidget {
               padding: EdgeInsets.zero,
               onPressed: () => GetIt.I
                   .get<ContactsPageController>()
-                  .setviewSentRequests(false)),
-          Observer(builder: (context) {
-            int numRequests = controller.sentRequests.length;
-            return Text(
-              //"${appLocalizations.sentRequestsTitle} ($numRequests)",
-              appLocalizations.sentRequestsTitle,
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600),
-            );
-          }),
+                  .setContactsCurrentPage(ContactsCurrentPages.contacts)),
+          Text(
+            appLocalizations.sentRequestsTitle,
+            style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );

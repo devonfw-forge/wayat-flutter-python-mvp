@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
@@ -6,6 +7,7 @@ import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/common/widgets/buttons/circle_icon_button.dart';
+import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -13,7 +15,9 @@ import 'package:wayat/features/contact_profile/controller/contact_profile_contro
 import 'package:wayat/lang/app_localizations.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
+import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
+// ignore: must_be_immutable
 class ContactProfilePage extends StatelessWidget {
   Contact contact;
 
@@ -32,6 +36,7 @@ class ContactProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.setShareLocationToContact(contact.shareLocation, contact);
     ContactLocation? contactLocated = GetIt.I
         .get<UserStatusState>()
         .contacts
@@ -48,15 +53,19 @@ class ContactProfilePage extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(40), child: CustomAppBar()),
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            appBar(),
-            mapSection(context, canBeLocated),
-            dataSection(context, canBeLocated)
-          ],
+        appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(40), child: CustomAppBar()),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              appBar(),
+              mapSection(context, canBeLocated),
+              dataSection(context, canBeLocated),
+              divider(),
+              shareMyLocationRow()
+            ],
+          ),
         ),
       ),
     );
@@ -76,6 +85,34 @@ class ContactProfilePage extends StatelessWidget {
             navigationSource,
             style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget shareMyLocationRow() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            appLocalizations.shareMyLocation,
+            style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+                fontSize: 18),
+          ),
+          Observer(builder: (context) {
+            bool enabled = controller.shareLocationToContact;
+            return CustomSwitch(
+              value: enabled,
+              onChanged: (newValue) {
+                controller.setShareLocationToContact(newValue, contact);
+              },
+            );
+          })
         ],
       ),
     );
@@ -110,7 +147,7 @@ class ContactProfilePage extends StatelessWidget {
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 (contact is ContactLocation)
-                    ? locationInfo()
+                    ? locationInfo(context)
                     : Padding(
                         padding: const EdgeInsets.only(top: 5.0),
                         child: Text(
@@ -138,7 +175,16 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
-  Column locationInfo() {
+  Divider divider() {
+    return const Divider(
+      endIndent: 15,
+      indent: 15,
+      height: 1,
+      thickness: 1,
+    );
+  }
+
+  Column locationInfo(BuildContext context) {
     ContactLocation locatedContact = contact as ContactLocation;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +210,7 @@ class ContactProfilePage extends StatelessWidget {
           height: 5,
         ),
         Text(
-          "${appLocalizations.contactProfileLastUpdated} ${timeago.format(locatedContact.lastUpdated)}",
+          "${appLocalizations.contactProfileLastUpdated} ${timeago.format(locatedContact.lastUpdated, locale: Localizations.localeOf(context).languageCode)}",
           style: const TextStyle(fontSize: 17, color: Colors.black54),
         ),
       ],
@@ -181,7 +227,7 @@ class ContactProfilePage extends StatelessWidget {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(5), topRight: Radius.circular(5))),
       child: (canBelocated)
-          ? googleMap(contact as ContactLocation)
+          ? googleMap(contact as ContactLocation, context)
           : locationNotAvailableMessage(context),
     );
   }
@@ -202,38 +248,30 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
-  Widget googleMap(ContactLocation contact) {
-    return FutureBuilder(
-        future: controller.getMarkerImage(contact),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                child: GoogleMap(
-                  zoomControlsEnabled: false,
-                  zoomGesturesEnabled: false,
-                  rotateGesturesEnabled: false,
-                  scrollGesturesEnabled: false,
-                  tiltGesturesEnabled: false,
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(contact.latitude, contact.longitude),
-                      zoom: 16),
-                  markers: {
-                    Marker(
-                        markerId: MarkerId(contact.name),
-                        position: LatLng(contact.latitude, contact.longitude),
-                        icon: snapshot.data as BitmapDescriptor)
-                  },
-                ),
+  Widget googleMap(ContactLocation contact, BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.4,
+      width: double.infinity,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Image.network(
+                GoogleMapsService.getStaticMapImageFromCoords(
+                    LatLng(contact.latitude, contact.longitude)),
+                fit: BoxFit.cover,
               ),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        });
+            ),
+            CircleAvatar(
+              backgroundImage: NetworkImage(contact.imageUrl),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
