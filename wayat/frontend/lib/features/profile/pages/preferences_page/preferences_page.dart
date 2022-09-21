@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/common/theme/colors.dart';
-import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
