@@ -162,7 +162,7 @@ class ViewGroupPage extends StatelessWidget {
   Widget groupInformation() {
     return Column(
       children: [
-        groupPicture(),
+        (selectedGroup.imageUrl != "") ? groupPicture() : Container(),
         const SizedBox(
           height: 15,
         ),
