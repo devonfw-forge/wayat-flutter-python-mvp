@@ -25,6 +25,9 @@ abstract class _ManageGroupController with Store {
   Group group;
 
   @observable
+  bool showValidationGroup = false;
+
+  @observable
   late ObservableList<Contact> selectedContacts =
       ObservableList.of(group.members);
 
@@ -44,11 +47,13 @@ abstract class _ManageGroupController with Store {
   @action
   void addContact(Contact contact) {
     selectedContacts.add(contact);
+    groupValidation();
   }
 
   @action
   void removeContact(Contact contact) {
     selectedContacts.remove(contact);
+    groupValidation();
   }
 
   @action
@@ -63,10 +68,22 @@ abstract class _ManageGroupController with Store {
         //AppLocalizations cannot be used from unit tests because they require a context to initialize
         : appLocalizations.newGroup;
 
-    if (group.id == "") {
-      await groupsService.create(group, selectedFile);
+    groupValidation();
+    if (!showValidationGroup) {
+      if (group.id == "") {
+        await groupsService.create(group, selectedFile);
+      } else {
+        await groupsService.update(group, selectedFile);
+      }
+    }
+  }
+
+  @action
+  void groupValidation() {
+    if (selectedContacts.length >= 2) {
+      showValidationGroup = false;
     } else {
-      await groupsService.update(group, selectedFile);
+      showValidationGroup = true;
     }
   }
 

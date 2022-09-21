@@ -50,6 +50,7 @@ void main() async {
     when(mockManageGroupController.selectedContacts)
         .thenReturn(mobx.ObservableList.of([]));
     when(mockManageGroupController.selectedFile).thenReturn(null);
+    when(mockManageGroupController.showValidationGroup).thenReturn(false);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
@@ -95,6 +96,14 @@ void main() async {
     await tester.pumpAndSettle();
 
     verify(mockGroupsController.setSelectedGroup(null)).called(1);
+  });
+
+  testWidgets('ValidationGroup with less than two contacts selected set showValidationGroup to true', (tester) async{
+
+  });
+
+  testWidgets('ValidationGroup with two contacts selected set showValidationGroup to false', (tester) async{
+
   });
 
   testWidgets("Save button saves group and goes back", (tester) async {

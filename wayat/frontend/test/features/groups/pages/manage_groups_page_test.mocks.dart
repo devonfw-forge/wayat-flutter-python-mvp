@@ -196,6 +196,14 @@ class MockManageGroupController extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#group, value),
           returnValueForMissingStub: null);
   @override
+  bool get showValidationGroup =>
+      (super.noSuchMethod(Invocation.getter(#showValidationGroup),
+          returnValue: false) as bool);
+  @override
+  set showValidationGroup(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#showValidationGroup, value),
+          returnValueForMissingStub: null);
+  @override
   _i3.ObservableList<_i13.Contact> get selectedContacts =>
       (super.noSuchMethod(Invocation.getter(#selectedContacts),
               returnValue: _FakeObservableList_1<_i13.Contact>(
@@ -252,6 +260,10 @@ class MockManageGroupController extends _i1.Mock
   _i10.Future<dynamic> saveGroup() =>
       (super.noSuchMethod(Invocation.method(#saveGroup, []),
           returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  void groupValidation() =>
+      super.noSuchMethod(Invocation.method(#groupValidation, []),
+          returnValueForMissingStub: null);
   @override
   _i10.Future<dynamic> getFromSource(_i11.ImageSource? source) =>
       (super.noSuchMethod(Invocation.method(#getFromSource, [source]),

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -80,29 +81,54 @@ void main() async {
     expect(manageGroupController.selectedFile, emptyFile);
   });
 
-  test("SaveGroup creates the group if the ID is empty", () {
-    Group emptyGroup = Group.empty();
-    emptyGroup.name = "Name";
-    when(mockGroupsService.create(emptyGroup, null))
-        .thenAnswer((_) => Future.value(null));
-    ManageGroupController manageGroupController = ManageGroupController(
-        group: emptyGroup, groupsService: mockGroupsService);
+  group('SaveGroup validation', () {
 
-    manageGroupController.saveGroup();
-    verify(mockGroupsService.create(emptyGroup, null)).called(1);
-  });
+    test('SaveGroup does not create or update the group if there are less than two contacts selected', (){
+      Group emptyGroup = Group.empty();
+      emptyGroup.name = "Name";
+      when(mockGroupsService.create(emptyGroup, null))
+          .thenAnswer((_) => Future.value(null));
+      ManageGroupController manageGroupController = ManageGroupController(
+          group: emptyGroup, groupsService: mockGroupsService);
 
-  test("SaveGroup updates the group if the ID is not empty", () {
-    Group group = Group.empty();
-    group.name = "Name";
-    group.id = "ID";
-    when(mockGroupsService.update(group, null))
-        .thenAnswer((_) => Future.value(null));
-    ManageGroupController manageGroupController =
-        ManageGroupController(group: group, groupsService: mockGroupsService);
+      manageGroupController.saveGroup();
+      expect(manageGroupController.showValidationGroup, true);
+      verifyNever(mockGroupsService.create(emptyGroup, null)).called(0);
+      verifyNever(mockGroupsService.update(emptyGroup, null)).called(0);
+    });
 
-    manageGroupController.saveGroup();
-    verify(mockGroupsService.update(group, null)).called(1);
+    test("SaveGroup creates the group if the ID is empty and there are more than two contacts selected", () {
+      Group emptyGroup = Group.empty();
+      emptyGroup.name = "Name";
+      when(mockGroupsService.create(emptyGroup, null))
+          .thenAnswer((_) => Future.value(null));
+      ManageGroupController manageGroupController = ManageGroupController(
+          group: emptyGroup, groupsService: mockGroupsService);
+      Contact contactA = _contactFactory("TestA");
+      manageGroupController.addContact(contactA);
+      Contact contactB = _contactFactory("TestB");
+      manageGroupController.addContact(contactB);
+
+      manageGroupController.saveGroup();
+      verify(mockGroupsService.create(emptyGroup, null)).called(1);
+    });
+
+    test("SaveGroup updates the group if the ID is not empty and there are more than two contacts selected", () {
+      Group group = Group.empty();
+      group.name = "Name";
+      group.id = "ID";
+      when(mockGroupsService.update(group, null))
+          .thenAnswer((_) => Future.value(null));
+      ManageGroupController manageGroupController =
+          ManageGroupController(group: group, groupsService: mockGroupsService);
+      Contact contactA = _contactFactory("TestA");
+      manageGroupController.addContact(contactA);
+      Contact contactB = _contactFactory("TestB");
+      manageGroupController.addContact(contactB);
+
+      manageGroupController.saveGroup();
+      verify(mockGroupsService.update(group, null)).called(1);
+    });
   });
 
   test("ManageGroupController intialized with real service", () {
