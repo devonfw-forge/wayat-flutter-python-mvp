@@ -41,6 +41,38 @@ mixin _$ProfileState on _ProfileState, Store {
     });
   }
 
+  late final _$languageAtom =
+      Atom(name: '_ProfileState.language', context: context);
+
+  @override
+  Language? get language {
+    _$languageAtom.reportRead();
+    return super.language;
+  }
+
+  @override
+  set language(Language? value) {
+    _$languageAtom.reportWrite(value, super.language, () {
+      super.language = value;
+    });
+  }
+
+  late final _$localeAtom =
+      Atom(name: '_ProfileState.locale', context: context);
+
+  @override
+  Locale? get locale {
+    _$localeAtom.reportRead();
+    return super.locale;
+  }
+
+  @override
+  set locale(Locale? value) {
+    _$localeAtom.reportWrite(value, super.locale, () {
+      super.locale = value;
+    });
+  }
+
   late final _$updateCurrentUserAsyncAction =
       AsyncAction('_ProfileState.updateCurrentUser', context: context);
 
@@ -66,6 +98,15 @@ mixin _$ProfileState on _ProfileState, Store {
     return _$deleteCurrentUserAsyncAction.run(() => super.deleteCurrentUser());
   }
 
+  late final _$changeLanguageAsyncAction =
+      AsyncAction('_ProfileState.changeLanguage', context: context);
+
+  @override
+  Future<dynamic> changeLanguage(Language language) {
+    return _$changeLanguageAsyncAction
+        .run(() => super.changeLanguage(language));
+  }
+
   late final _$_ProfileStateActionController =
       ActionController(name: '_ProfileState', context: context);
 
@@ -84,7 +125,9 @@ mixin _$ProfileState on _ProfileState, Store {
   String toString() {
     return '''
 currentPage: ${currentPage},
-isAccount: ${isAccount}
+isAccount: ${isAccount},
+language: ${language},
+locale: ${locale}
     ''';
   }
 }

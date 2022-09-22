@@ -30,13 +30,8 @@ class ContactServiceImpl implements ContactService {
   Future<List<Contact>> getFilteredContacts(
       List<String> importedContacts) async {
     List<String> phoneList = importedContacts
-        .map((e) => e
-            .replaceAll(' ', '')
-            .replaceAll('-', '')
-            .replaceAll('(', '')
-            .replaceAll(')', ''))
+        .map((e) => e.replaceAll(RegExp(r'[^+0-9]+'), ''))
         .toList();
-
     Response response = await httpProvider
         .sendPostRequest(APIContract.findByPhone, {"phones": phoneList});
     Map<String, dynamic> jsonBody =

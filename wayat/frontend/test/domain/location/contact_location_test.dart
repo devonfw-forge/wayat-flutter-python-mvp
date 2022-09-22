@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 
@@ -8,6 +6,7 @@ void main() {
   setUp(() {
     contactLocation = ContactLocation(
         available: true,
+        shareLocation: true,
         id: "1",
         name: "test_name",
         email: "test@mail.com",

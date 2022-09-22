@@ -41,7 +41,7 @@ void main() async {
         .thenReturn(mockRequestsController);
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -59,7 +59,7 @@ void main() async {
     when(mockRequestsController.filteredPendingRequests)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["A"])));
 
-    await tester.pumpWidget(_createApp(RequestsPage()));
+    await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(ContactTile, appLocalizations.accept),
@@ -72,7 +72,7 @@ void main() async {
     when(mockRequestsController.filteredPendingRequests)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(_createApp(RequestsPage()));
+    await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.text("${appLocalizations.pendingRequestsTitle} (0)"),
@@ -81,7 +81,7 @@ void main() async {
     when(mockRequestsController.filteredPendingRequests)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["A", "B", "C"])));
 
-    await tester.pumpWidget(_createApp(RequestsPage()));
+    await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.text("${appLocalizations.pendingRequestsTitle} (3)"),
@@ -96,7 +96,7 @@ void main() async {
             .setContactsCurrentPage(ContactsCurrentPages.sentRequests))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(RequestsPage()));
+    await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.text(appLocalizations.sentButtonNavigation), findsOneWidget);
@@ -117,7 +117,7 @@ void main() async {
     when(mockRequestsController.acceptRequest(contact))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(RequestsPage()));
+    await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithText(TextButton, appLocalizations.accept));
@@ -133,7 +133,7 @@ void main() async {
     when(mockRequestsController.rejectRequest(contact))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(RequestsPage()));
+    await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithIcon(IconButton, Icons.close));
@@ -155,7 +155,7 @@ void main() async {
     when(mockRequestsService.acceptRequest(contact))
         .thenAnswer((realInvocation) => Future.value(true));
 
-    await tester.pumpWidget(_createApp(RequestsPage()));
+    await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);
@@ -180,7 +180,7 @@ void main() async {
     when(mockRequestsService.rejectRequest(contact))
         .thenAnswer((realInvocation) => Future.value(true));
 
-    await tester.pumpWidget(_createApp(RequestsPage()));
+    await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);
@@ -195,6 +195,7 @@ void main() async {
 Contact _contactFactory(String contactName) {
   return Contact(
     available: true,
+    shareLocation: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

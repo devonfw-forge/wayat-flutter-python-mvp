@@ -7,10 +7,9 @@ from app.business.wayat_management.exceptions.http import InvalidImageFormatExce
 from app.business.wayat_management.models.user import (
     UserProfileResponse,
     UpdateUserRequest,
-    ListUsersWithPhoneResponse,
     FindByPhoneRequest,
     UpdatePreferencesRequest,
-    dto_to_user_with_phone_response,
+    dto_to_user_with_phone_response, ListUsersWithPhoneResponse,
 )
 from app.business.wayat_management.services.map import MapService
 from app.business.wayat_management.services.user import UserService

@@ -50,13 +50,14 @@ void main() async {
     when(mockManageGroupController.selectedContacts)
         .thenReturn(mobx.ObservableList.of([]));
     when(mockManageGroupController.selectedFile).thenReturn(null);
+    when(mockManageGroupController.showValidationGroup).thenReturn(false);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -71,8 +72,9 @@ void main() async {
   }
 
   testWidgets("ManageGroups header is correct", (tester) async {
+    when(mockManageGroupController.group).thenReturn(Group.empty());
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: mockManageGroupController)));
+        createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithIcon(IconButton, Icons.arrow_back), findsOneWidget);
@@ -83,9 +85,10 @@ void main() async {
 
   testWidgets("When pressing back button the current page changes",
       (tester) async {
+    when(mockManageGroupController.group).thenReturn(Group.empty());
     when(mockGroupsController.setSelectedGroup(null)).thenReturn(null);
 
-    await tester.pumpWidget(_createApp(ManageGroupPage(
+    await tester.pumpWidget(createApp(ManageGroupPage(
       controller: mockManageGroupController,
       key: const Key("ManageGroup"),
     )));
@@ -95,12 +98,21 @@ void main() async {
     verify(mockGroupsController.setSelectedGroup(null)).called(1);
   });
 
+  testWidgets('ValidationGroup with less than two contacts selected set showValidationGroup to true', (tester) async{
+
+  });
+
+  testWidgets('ValidationGroup with two contacts selected set showValidationGroup to false', (tester) async{
+
+  });
+
   testWidgets("Save button saves group and goes back", (tester) async {
+    when(mockManageGroupController.group).thenReturn(Group.empty());
     when(mockGroupsController.setSelectedGroup(null)).thenReturn(null);
     when(mockManageGroupController.saveGroup())
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(ManageGroupPage(
+    await tester.pumpWidget(createApp(ManageGroupPage(
       controller: mockManageGroupController,
       key: const Key("ManageGroup"),
     )));
@@ -116,7 +128,7 @@ void main() async {
     when(mockPicture.path).thenReturn("");
     when(mockManageGroupController.group).thenReturn(Group.empty());
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: mockManageGroupController)));
+        createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
 
     when(mockManageGroupController.selectedFile).thenReturn(null);
@@ -138,15 +150,29 @@ void main() async {
     when(mockManageGroupController.selectedFile).thenReturn(mockPicture);
 
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: mockManageGroupController)));
+        createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.person_outline), findsNothing);
   });
 
+  testWidgets("Group Image uses the network image if group has imageUrl",
+      (tester) async {
+    Group group = Group.empty();
+    group.id = "id";
+    group.imageUrl = "https://example.com";
+    when(mockManageGroupController.group).thenReturn(group);
+    when(mockManageGroupController.selectedFile).thenReturn(null);
+    await tester.pumpWidget(
+        createApp(ManageGroupPage(controller: mockManageGroupController)));
+    await tester.pumpAndSettle();
+    expect(find.byType(CircleAvatar), findsWidgets);
+    expect(find.byIcon(Icons.person_outline), findsNothing);
+  });
+
   testWidgets("Pressing edit icon opens select image bottom sheet",
       (tester) async {
-    await tester.pumpWidget(_createApp(ManageGroupPage(
+    await tester.pumpWidget(createApp(ManageGroupPage(
       controller: mockManageGroupController,
     )));
     await tester.tap(find.byIcon(Icons.edit_outlined));
@@ -162,7 +188,7 @@ void main() async {
   testWidgets("Edit fields section is correct", (tester) async {
     when(mockManageGroupController.group).thenReturn(Group.empty());
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: mockManageGroupController)));
+        createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(CustomTextField, appLocalizations.groupName),
@@ -174,7 +200,7 @@ void main() async {
   testWidgets("Add participants section is built correctly", (tester) async {
     when(mockManageGroupController.group).thenReturn(Group.empty());
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: mockManageGroupController)));
+        createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
 
     expect(find.text(appLocalizations.addParticipants), findsOneWidget);
@@ -194,7 +220,7 @@ void main() async {
     when(mockManageGroupController.allContacts)
         .thenReturn(_generateContacts(["TestA", "TestB"]));
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: mockManageGroupController)));
+        createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(CustomOutlinedButtonIcon));
@@ -215,7 +241,7 @@ void main() async {
     when(mockFriendsController.allContacts).thenReturn([contact]);
 
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: manageGroupController)));
+        createApp(ManageGroupPage(controller: manageGroupController)));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(CustomOutlinedButtonIcon));
@@ -254,7 +280,7 @@ void main() async {
     when(mockFriendsController.allContacts).thenReturn([contact]);
 
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: manageGroupController)));
+        createApp(ManageGroupPage(controller: manageGroupController)));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(CustomOutlinedButtonIcon));
@@ -280,7 +306,7 @@ void main() async {
     when(mockFriendsController.allContacts).thenReturn([contact]);
 
     await tester.pumpWidget(
-        _createApp(ManageGroupPage(controller: manageGroupController)));
+        createApp(ManageGroupPage(controller: manageGroupController)));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(CustomOutlinedButtonIcon));
@@ -316,6 +342,7 @@ void main() async {
 
 Contact _contactFactory(String contactName) {
   return Contact(
+    shareLocation: true,
     available: true,
     id: "id $contactName",
     name: contactName,

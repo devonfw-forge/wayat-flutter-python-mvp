@@ -128,6 +128,22 @@ class MockGroupsController extends _i1.Mock implements _i9.GroupsController {
       super.noSuchMethod(Invocation.setter(#selectedGroup, value),
           returnValueForMissingStub: null);
   @override
+  bool get editGroup =>
+      (super.noSuchMethod(Invocation.getter(#editGroup), returnValue: false)
+          as bool);
+  @override
+  set editGroup(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#editGroup, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get updatingGroup =>
+      (super.noSuchMethod(Invocation.getter(#updatingGroup), returnValue: false)
+          as bool);
+  @override
+  set updatingGroup(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#updatingGroup, value),
+          returnValueForMissingStub: null);
+  @override
   _i3.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
@@ -149,6 +165,18 @@ class MockGroupsController extends _i1.Mock implements _i9.GroupsController {
   void setSelectedGroup(_i4.Group? group) =>
       super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
           returnValueForMissingStub: null);
+  @override
+  void setEditGroup(bool? editValue) =>
+      super.noSuchMethod(Invocation.method(#setEditGroup, [editValue]),
+          returnValueForMissingStub: null);
+  @override
+  void setUpdatingGroup(bool? updatingGroup) =>
+      super.noSuchMethod(Invocation.method(#setUpdatingGroup, [updatingGroup]),
+          returnValueForMissingStub: null);
+  @override
+  _i10.Future<dynamic> deleteGroup(String? groupId) =>
+      (super.noSuchMethod(Invocation.method(#deleteGroup, [groupId]),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
 }
 
 /// A class which mocks [ManageGroupController].
@@ -166,6 +194,14 @@ class MockManageGroupController extends _i1.Mock
   @override
   set group(_i4.Group? value) =>
       super.noSuchMethod(Invocation.setter(#group, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get showValidationGroup =>
+      (super.noSuchMethod(Invocation.getter(#showValidationGroup),
+          returnValue: false) as bool);
+  @override
+  set showValidationGroup(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#showValidationGroup, value),
           returnValueForMissingStub: null);
   @override
   _i3.ObservableList<_i13.Contact> get selectedContacts =>
@@ -225,9 +261,12 @@ class MockManageGroupController extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#saveGroup, []),
           returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i10.Future<dynamic> getFromSource(
-          _i11.ImageSource? source, _i5.BuildContext? context) =>
-      (super.noSuchMethod(Invocation.method(#getFromSource, [source, context]),
+  void groupValidation() =>
+      super.noSuchMethod(Invocation.method(#groupValidation, []),
+          returnValueForMissingStub: null);
+  @override
+  _i10.Future<dynamic> getFromSource(_i11.ImageSource? source) =>
+      (super.noSuchMethod(Invocation.method(#getFromSource, [source]),
           returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
 }
 
@@ -488,5 +527,13 @@ class MockGroupsService extends _i1.Mock implements _i2.GroupsService {
   @override
   _i10.Future<dynamic> create(_i4.Group? group, _i11.XFile? picture) =>
       (super.noSuchMethod(Invocation.method(#create, [group, picture]),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  _i10.Future<dynamic> update(_i4.Group? group, _i11.XFile? picture) =>
+      (super.noSuchMethod(Invocation.method(#update, [group, picture]),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  _i10.Future<dynamic> delete(String? groupId) =>
+      (super.noSuchMethod(Invocation.method(#delete, [groupId]),
           returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
 }

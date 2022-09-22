@@ -24,7 +24,6 @@ import 'onboarding_test.mocks.dart';
       as: #MockOnboardingRelaxed, onMissingStub: OnMissingStub.returnDefault),
 ])
 void main() {
-
   late OnboardingController controller;
 
   setUpAll(() {
@@ -34,7 +33,7 @@ void main() {
     controller = GetIt.I.get<OnboardingController>();
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -49,29 +48,30 @@ void main() {
   }
 
   testWidgets('Onboarding has a app title', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
+    await tester.pumpWidget(createApp(OnBoardingPage()));
     expect(find.text(appLocalizations.appTitle), findsOneWidget);
   });
 
   testWidgets('Onboarding has a allowed contacts title', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
+    await tester.pumpWidget(createApp(OnBoardingPage()));
     expect(find.text(appLocalizations.allowedContactsTitle), findsOneWidget);
   });
 
   testWidgets('Onboarding has a allowed contacts description', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
+    await tester.pumpWidget(createApp(OnBoardingPage()));
     expect(find.text(appLocalizations.allowedContactsBody), findsOneWidget);
   });
 
   testWidgets('Onboarding has a next button', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
-    expect(find.widgetWithText(CustomOutlinedButton, appLocalizations.next), findsOneWidget);
+    await tester.pumpWidget(createApp(OnBoardingPage()));
+    expect(find.widgetWithText(CustomOutlinedButton, appLocalizations.next),
+        findsOneWidget);
   });
 
   testWidgets('OnBoarding next step', (tester) async {
-    await tester.pumpWidget(_createApp(OnBoardingPage()));
+    await tester.pumpWidget(createApp(OnBoardingPage()));
     await tester.tap(find.byType(CustomOutlinedButton));
     await tester.pumpAndSettle();
-    verify(controller.setOnBoardingState(OnBoardingState.Current)).called(1);
+    verify(controller.setOnBoardingState(OnBoardingState.current)).called(1);
   });
 }

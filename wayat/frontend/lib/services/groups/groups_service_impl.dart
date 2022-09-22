@@ -60,4 +60,25 @@ class GroupsServiceImpl implements GroupsService {
     await httpProvider.sendPostImageRequest(
         "${APIContract.groupPicture}/$groupId", picture.path, type);
   }
+
+  @override
+  Future update(Group group, XFile? picture) async {
+    bool response = await httpProvider.sendPutRequest(
+        "${APIContract.groups}/${group.id}", {
+      "name": group.name,
+      "members": group.members.map((e) => e.id).toList()
+    });
+
+    if (picture != null && response) {
+      String type = lookupMimeType(picture.path) ?? picture.mimeType ?? "";
+
+      await httpProvider.sendPostImageRequest(
+          "${APIContract.groupPicture}/${group.id}", picture.path, type);
+    }
+  }
+
+  @override
+  Future delete(String groupId) async {
+    await httpProvider.sendDelRequest("${APIContract.groups}/$groupId");
+  }
 }

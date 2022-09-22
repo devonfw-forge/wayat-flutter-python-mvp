@@ -10,7 +10,9 @@ import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +20,7 @@ import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/features/map/widgets/suggestions_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:mobx/mobx.dart' show ObservableSet;
+import 'package:mobx/mobx.dart' show ObservableListExtension, ObservableSet;
 import 'package:wayat/services/image_service/image_service.dart';
 
 import 'search_bar_test.mocks.dart';
@@ -29,6 +31,7 @@ import 'search_bar_test.mocks.dart';
   MapState,
   MapController,
   ImageService,
+  GroupsController
 ], customMocks: [])
 void main() async {
   late LocationState mockLocationState;
@@ -39,11 +42,13 @@ void main() async {
     mockLocationState = MockLocationState();
     mockUserStatusState = MockUserStatusState();
     mockMapState = MockMapState();
+    final GroupsController mockGroupsController = MockGroupsController();
 
     GetIt.I.registerSingleton<LocationState>(mockLocationState);
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
     GetIt.I.registerSingleton<MapState>(mockMapState);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
+    GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
 
     HttpOverrides.global = null;
 
@@ -51,9 +56,13 @@ void main() async {
         .thenAnswer((realInvocation) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(0, 0));
     when(mockLocationState.shareLocationEnabled).thenReturn(true);
+    when(mockGroupsController.updateGroups())
+        .thenAnswer((_) => Future.value(true));
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[].asObservable());
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -70,7 +79,7 @@ void main() async {
   testWidgets("The search bar appears correctly", (tester) async {
     when(mockUserStatusState.contacts).thenReturn([]);
 
-    await tester.pumpWidget(_createApp(HomeMapPage()));
+    await tester.pumpWidget(createApp(HomeMapPage()));
     await tester.pump();
     expect(find.byType(SearchBar), findsOneWidget);
     expect(find.widgetWithIcon(SearchBar, Icons.search), findsOneWidget);
@@ -88,7 +97,7 @@ void main() async {
     when(controller.getMarkers())
         .thenAnswer((realInvocation) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(HomeMapPage(controller: controller)));
+    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
     await tester.pump();
     verify(controller.getMarkers()).called(greaterThanOrEqualTo(1));
   });
@@ -102,7 +111,7 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(_createApp(HomeMapPage(controller: controller)));
+    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
     await tester.pump();
     expect(controller.contacts.length, 4);
     expect(controller.allMarkers.length, 4);
@@ -118,7 +127,7 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(_createApp(HomeMapPage(controller: controller)));
+    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
     await tester.pump();
     expect(controller.allMarkers.length, 4);
     expect(controller.filteredMarkers.length, 4);
@@ -145,7 +154,7 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(_createApp(HomeMapPage(controller: controller)));
+    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
     await tester.pump();
 
     await tester.enterText(find.byType(SearchBar), "test");
@@ -164,7 +173,7 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(_createApp(HomeMapPage(controller: controller)));
+    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
     await tester.pump();
 
     await tester.enterText(find.byType(SearchBar), "test");
@@ -192,7 +201,7 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(_createApp(HomeMapPage(controller: controller)));
+    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
     await tester.pump();
 
     await tester.enterText(find.byType(SearchBar), "a");
@@ -222,8 +231,7 @@ void main() async {
     when(mockController.onSuggestionsTap(contact))
         .thenAnswer((_) => Future.value(null));
 
-    await tester
-        .pumpWidget(_createApp(HomeMapPage(controller: mockController)));
+    await tester.pumpWidget(createApp(HomeMapPage(controller: mockController)));
     await tester.pump();
 
     await tester.enterText(find.byType(SearchBar), "a");
@@ -247,6 +255,7 @@ ImageService _prepareMockImageService(List<ContactLocation> contacts) {
 ContactLocation _locatedContactFactory(String contactName) {
   return ContactLocation(
       available: true,
+      shareLocation: true,
       id: "id1",
       name: contactName,
       email: "Contact email",

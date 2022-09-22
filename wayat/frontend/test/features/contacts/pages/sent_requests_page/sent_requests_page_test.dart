@@ -43,7 +43,7 @@ void main() async {
         .thenReturn(mobx.ObservableList.of([]));
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -58,7 +58,7 @@ void main() async {
   }
 
   testWidgets("Sent requests header is correct", (tester) async {
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.text(appLocalizations.sentRequestsTitle), findsOneWidget);
@@ -69,7 +69,7 @@ void main() async {
     when(mockContactsPageController
             .setContactsCurrentPage(ContactsCurrentPages.contacts))
         .thenAnswer((_) => Future.value(null));
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.keyboard_arrow_down));
@@ -83,7 +83,7 @@ void main() async {
   testWidgets("Sent requests tiles are displayed correctly", (tester) async {
     when(mockRequestsController.sentRequests)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["TestA"])));
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);
@@ -95,14 +95,14 @@ void main() async {
   testWidgets("The number of requests tiles is correct", (tester) async {
     when(mockRequestsController.sentRequests)
         .thenReturn(mobx.ObservableList.of(_generateContacts([])));
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNothing);
 
     when(mockRequestsController.sentRequests).thenReturn(
         mobx.ObservableList.of(_generateContacts(["TestA", "TestB", "TestC"])));
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNWidgets(3));
@@ -116,7 +116,7 @@ void main() async {
     when(mockRequestsController.unsendRequest(contact))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithIcon(IconButton, Icons.close));
@@ -139,7 +139,7 @@ void main() async {
 
     requestsController.sentRequests = mobx.ObservableList.of([contact]);
 
-    await tester.pumpWidget(_createApp(SentRequestsPage()));
+    await tester.pumpWidget(createApp(SentRequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);
@@ -154,6 +154,7 @@ void main() async {
 Contact _contactFactory(String contactName) {
   return Contact(
     available: true,
+    shareLocation: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

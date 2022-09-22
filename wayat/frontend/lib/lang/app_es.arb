@@ -12,13 +12,24 @@
     "phoneUpdateError": "Error al configurar el número de teléfono",
     "verifyPhoneTitle": "Verificar teléfono",
     "verifyPhoneText": "Verifique su nuevo teléfono móvil. El código se envía a",
-    "didnotReceiveCode": "¿No recibiste el código",
+    "didnotReceiveCode": "¿No recibiste el código?",
     "resendCode": "Reenviar codigo",
     "verify": "Verificar",
+    "retry": "Reintentar",
     "cancel": "Cancelar",
     "delete": "Borrar",
     "deleteAccountText": "¿Está seguro de que desea eliminar su cuenta de Wayat? Tenga en cuenta que no hay opción para restaurar la cuenta o sus datos una vez que se elimina.",
+    "phoneEmpty": "Campo vacío. Introduzca un número de teléfono correcto.",
+    "phoneIncorrect": "Número de teléfono incorrecto. Introduce un teléfono válido.",
+    "phoneDifferent": "Introduzca un número de teléfono diferente del anterior.",
+
+    "phoneUsed": "Este número ya esta en uso",
     
+    "phoneDeniedPermissions": "Permisos denegados.",
+    "phoneErrorCode" : "Código erróneo, solicita otro código.",
+    "phoneErrorTooRequest" : "Se ha excedido el número de intentos, intentelo más tarde.",
+    "phoneUnexpectedError" : "Error inesperado, por favor intentalo otra vez más tarde.",
+
     "home": "Inicio",
     "contacts": "Contactos",
     "events": "Eventos",
@@ -84,6 +95,7 @@
     "inviteContacts": "Invita a tus contactos a Wayat",
     "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
     "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
+    "invitationText": "Invitación texto",
     "invitationCopied": "Copiado en el portapapeles",
 
     "accept": "Aceptar",
@@ -92,6 +104,7 @@
     "viewInformation": "Ver información",
 
     "profileShareLocation": "Ajustes de ubicación",
+    "shareMyLocation": "Compartir mi ubicación",
     "profileActiveLocation": "Compartir ubicación",
 
     "contactProfileSharingLocationWithYou": "Compartiendo ubicación contigo",
@@ -108,6 +121,12 @@
     "addParticipantsTip": "¡Empieza a añadir amigos para crear un grupo!",
     "addFriends": "Añadir amigos",
     "groupParticipants": "Participantes del grupo",
+    "editGroup": "Editar grupo",
+    "deleteGroup": "Eliminar grupo",
+    "groupValidation": "Debes seleccionar al menos dos contactos",
 
-    "done": "Hecho"
+    "done": "Hecho",
+    
+    "locationPermission": "Permiso de ubicación",
+    "locationPermissionNotGranted": "Permiso de ubicación no otorgado, acepte los permisos de ubicación para todo el tiempo. Selecciónelo en la sección de configuración"
 }

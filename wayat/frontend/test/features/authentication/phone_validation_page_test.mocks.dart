@@ -5,10 +5,14 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
 
+import 'package:flutter/material.dart' as _i9;
+import 'package:intl_phone_field/phone_number.dart' as _i8;
 import 'package:mobx/mobx.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/app_state/user_session/session_state.dart' as _i4;
-import 'package:wayat/domain/user/my_user.dart' as _i5;
+import 'package:wayat/app_state/user_session/session_state.dart' as _i5;
+import 'package:wayat/domain/user/my_user.dart' as _i4;
+import 'package:wayat/features/profile/controllers/phone_verification_controller.dart'
+    as _i7;
 import 'package:wayat/services/authentication/auth_service.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -33,10 +37,15 @@ class _FakeReactiveContext_1 extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
+class _FakeMyUser_2 extends _i1.SmartFake implements _i4.MyUser {
+  _FakeMyUser_2(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [SessionState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSessionState extends _i1.Mock implements _i4.SessionState {
+class MockSessionState extends _i1.Mock implements _i5.SessionState {
   MockSessionState() {
     _i1.throwOnMissingStub(this);
   }
@@ -66,7 +75,7 @@ class MockSessionState extends _i1.Mock implements _i4.SessionState {
       super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
           returnValueForMissingStub: null);
   @override
-  set currentUser(_i5.MyUser? value) =>
+  set currentUser(_i4.MyUser? value) =>
       super.noSuchMethod(Invocation.setter(#currentUser, value),
           returnValueForMissingStub: null);
   @override
@@ -139,4 +148,79 @@ class MockSessionState extends _i1.Mock implements _i4.SessionState {
   bool hasPhone() =>
       (super.noSuchMethod(Invocation.method(#hasPhone, []), returnValue: false)
           as bool);
+}
+
+/// A class which mocks [PhoneVerificationController].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPhoneVerificationController extends _i1.Mock
+    implements _i7.PhoneVerificationController {
+  MockPhoneVerificationController() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.MyUser get user => (super.noSuchMethod(Invocation.getter(#user),
+          returnValue: _FakeMyUser_2(this, Invocation.getter(#user)))
+      as _i4.MyUser);
+  @override
+  String get phoneNumber =>
+      (super.noSuchMethod(Invocation.getter(#phoneNumber), returnValue: '')
+          as String);
+  @override
+  set phoneNumber(String? value) =>
+      super.noSuchMethod(Invocation.setter(#phoneNumber, value),
+          returnValueForMissingStub: null);
+  @override
+  String get errorPhoneVerificationMsg =>
+      (super.noSuchMethod(Invocation.getter(#errorPhoneVerificationMsg),
+          returnValue: '') as String);
+  @override
+  set errorPhoneVerificationMsg(String? value) =>
+      super.noSuchMethod(Invocation.setter(#errorPhoneVerificationMsg, value),
+          returnValueForMissingStub: null);
+  @override
+  String get errorPhoneFormat =>
+      (super.noSuchMethod(Invocation.getter(#errorPhoneFormat), returnValue: '')
+          as String);
+  @override
+  set errorPhoneFormat(String? value) =>
+      super.noSuchMethod(Invocation.setter(#errorPhoneFormat, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get validPhone =>
+      (super.noSuchMethod(Invocation.getter(#validPhone), returnValue: false)
+          as bool);
+  @override
+  set validPhone(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#validPhone, value),
+          returnValueForMissingStub: null);
+  @override
+  _i3.ReactiveContext get context =>
+      (super.noSuchMethod(Invocation.getter(#context),
+              returnValue:
+                  _FakeReactiveContext_1(this, Invocation.getter(#context)))
+          as _i3.ReactiveContext);
+  @override
+  void setNewPhoneNumber(String? phone) =>
+      super.noSuchMethod(Invocation.method(#setNewPhoneNumber, [phone]),
+          returnValueForMissingStub: null);
+  @override
+  void setValidPhoneNumber(String? phone) =>
+      super.noSuchMethod(Invocation.method(#setValidPhoneNumber, [phone]),
+          returnValueForMissingStub: null);
+  @override
+  void setErrorPhoneMsg(String? msg) =>
+      super.noSuchMethod(Invocation.method(#setErrorPhoneMsg, [msg]),
+          returnValueForMissingStub: null);
+  @override
+  String validatePhoneNumber(dynamic textValue) =>
+      (super.noSuchMethod(Invocation.method(#validatePhoneNumber, [textValue]),
+          returnValue: '') as String);
+  @override
+  void onChangePhoneNumber(_i8.PhoneNumber? phone,
+          _i9.GlobalKey<_i9.FormState>? formKey, _i9.BuildContext? context) =>
+      super.noSuchMethod(
+          Invocation.method(#onChangePhoneNumber, [phone, formKey, context]),
+          returnValueForMissingStub: null);
 }

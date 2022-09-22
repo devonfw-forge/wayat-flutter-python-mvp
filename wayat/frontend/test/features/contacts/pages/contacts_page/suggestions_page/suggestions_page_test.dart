@@ -46,7 +46,7 @@ void main() async {
         .thenAnswer((_) => Future.value([]));
   });
 
-  Widget _createApp(Widget body) {
+  Widget createApp(Widget body) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -67,7 +67,7 @@ void main() async {
       when(mockSuggestionsController.filteredSuggestions)
           .thenReturn(mobx.ObservableList<Contact>.of([]));
 
-      await tester.pumpWidget(_createApp(SuggestionsPage()));
+      await tester.pumpWidget(createApp(SuggestionsPage()));
       expect(
           find.widgetWithText(
               CustomInviteWayat, appLocalizations.inviteContacts),
@@ -80,7 +80,7 @@ void main() async {
       when(mockSuggestionsController.copyInvitation())
           .thenAnswer((_) => Future.value(null));
 
-      await tester.pumpWidget(_createApp(SuggestionsPage()));
+      await tester.pumpWidget(createApp(SuggestionsPage()));
 
       await tester.tap(find.byType(TextButton));
       verify(mockSuggestionsController.copyInvitation()).called(1);
@@ -88,7 +88,7 @@ void main() async {
   });
 
   testWidgets("Suggestions page title is correct", (tester) async {
-    await tester.pumpWidget(_createApp(SuggestionsPage()));
+    await tester.pumpWidget(createApp(SuggestionsPage()));
     await tester.pumpAndSettle();
 
     expect(find.text(appLocalizations.suggestionsPageTitle), findsOneWidget);
@@ -99,7 +99,7 @@ void main() async {
     when(mockSuggestionsController.filteredSuggestions)
         .thenReturn(mobx.ObservableList.of(mobx.ObservableList.of([])));
 
-    await tester.pumpWidget(_createApp(SuggestionsPage()));
+    await tester.pumpWidget(createApp(SuggestionsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNothing);
@@ -107,7 +107,7 @@ void main() async {
     when(mockSuggestionsController.filteredSuggestions).thenReturn(
         mobx.ObservableList.of(_generateContacts(["TestA", "TestB", "TestC"])));
 
-    await tester.pumpWidget(_createApp(SuggestionsPage()));
+    await tester.pumpWidget(createApp(SuggestionsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNWidgets(3));
@@ -121,7 +121,7 @@ void main() async {
     when(mockSuggestionsController.sendRequest(contact))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(_createApp(SuggestionsPage()));
+    await tester.pumpWidget(createApp(SuggestionsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.add_circle_outline));
@@ -143,7 +143,7 @@ void main() async {
     when(mockContactsPageController.suggestionsController)
         .thenReturn(suggestionsController);
 
-    await tester.pumpWidget(_createApp(SuggestionsPage()));
+    await tester.pumpWidget(createApp(SuggestionsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);
@@ -158,6 +158,7 @@ void main() async {
 Contact _contactFactory(String contactName) {
   return Contact(
     available: true,
+    shareLocation: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

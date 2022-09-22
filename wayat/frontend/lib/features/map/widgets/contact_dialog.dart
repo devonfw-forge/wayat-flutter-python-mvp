@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -26,9 +24,11 @@ class ContactDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           side: const BorderSide(color: Colors.black, width: 1)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [mapSection(context), dataSection(context)],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [mapSection(context), dataSection(context)],
+        ),
       ),
     );
   }
@@ -151,22 +151,21 @@ class ContactDialog extends StatelessWidget {
       borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(5), topRight: Radius.circular(5)),
       child: Container(
+        height: double.infinity,
+        width: double.infinity,
         decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.black, width: 1))),
-        child: GoogleMap(
-          zoomControlsEnabled: false,
-          zoomGesturesEnabled: false,
-          rotateGesturesEnabled: false,
-          scrollGesturesEnabled: false,
-          tiltGesturesEnabled: false,
-          initialCameraPosition: CameraPosition(
-              target: LatLng(contact.latitude, contact.longitude), zoom: 16),
-          markers: {
-            Marker(
-                markerId: MarkerId(contact.name),
-                position: LatLng(contact.latitude, contact.longitude),
-                icon: icon)
-          },
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            Image.network(
+              GoogleMapsService.getStaticMapImageFromCoords(
+                  LatLng(contact.latitude, contact.longitude)),
+            ),
+            CircleAvatar(
+              backgroundImage: NetworkImage(contact.imageUrl),
+            )
+          ],
         ),
       ),
     );

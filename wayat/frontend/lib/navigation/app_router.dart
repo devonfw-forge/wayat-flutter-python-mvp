@@ -17,13 +17,10 @@ import 'package:wayat/features/groups/pages/view_group_page.dart';
 import 'package:wayat/features/home/pages/home_page.dart';
 import 'package:wayat/features/home/pages/home_wrapper.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
-import 'package:wayat/features/notifications/page/notifications_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_wrapper.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
-import 'package:wayat/features/profile/pages/faqs_page/faqs_page.dart';
-import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
-import 'package:wayat/features/profile/pages/privacy_page/privacy_page.dart';
+import 'package:wayat/features/profile/pages//preferences_page/preferences_page.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
 import 'package:wayat/features/profile/pages/profile_wraper.dart';
@@ -40,7 +37,6 @@ import 'package:wayat/features/root/root_wrapper.dart';
     AutoRoute(page: HomeWrapper, children: [
       AutoRoute(page: HomePage, children: [
         AutoRoute(page: HomeMapPage),
-        //AutoRoute(page: CreateEventPage),
         AutoRoute(page: ContactsWrapper, children: [
           AutoRoute(page: ContactsPage, children: [
             AutoRoute(page: FriendsPage),
@@ -56,16 +52,14 @@ import 'package:wayat/features/root/root_wrapper.dart';
               children: [
                 AutoRoute(page: GroupsPage),
                 AutoRoute(page: ManageGroupPage),
-                AutoRoute(page: ViewGroupPage)
+                AutoRoute(page: ViewGroupPage),
+                AutoRoute(page: LoadingPage, name: "LoadingGroupRoute")
               ]),
         ]),
-        AutoRoute(page: NotificationsPage),
         AutoRoute(page: ProfileWrapper, children: [
           AutoRoute(page: ProfilePage),
           AutoRoute(page: EditProfilePage),
           AutoRoute(page: PreferencesPage),
-          AutoRoute(page: FaqsPage),
-          AutoRoute(page: PrivacyPage),
         ]),
       ]),
       AutoRoute(page: ContactProfilePage)

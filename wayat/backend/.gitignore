@@ -129,3 +129,5 @@ dmypy.json
 
 # Firebase local .json
 firebase.json
+
+*.env

@@ -25,6 +25,22 @@ mixin _$ManageGroupController on _ManageGroupController, Store {
     });
   }
 
+  late final _$showValidationGroupAtom = Atom(
+      name: '_ManageGroupController.showValidationGroup', context: context);
+
+  @override
+  bool get showValidationGroup {
+    _$showValidationGroupAtom.reportRead();
+    return super.showValidationGroup;
+  }
+
+  @override
+  set showValidationGroup(bool value) {
+    _$showValidationGroupAtom.reportWrite(value, super.showValidationGroup, () {
+      super.showValidationGroup = value;
+    });
+  }
+
   late final _$selectedContactsAtom =
       Atom(name: '_ManageGroupController.selectedContacts', context: context);
 
@@ -94,9 +110,21 @@ mixin _$ManageGroupController on _ManageGroupController, Store {
   }
 
   @override
+  void groupValidation() {
+    final _$actionInfo = _$_ManageGroupControllerActionController.startAction(
+        name: '_ManageGroupController.groupValidation');
+    try {
+      return super.groupValidation();
+    } finally {
+      _$_ManageGroupControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 group: ${group},
+showValidationGroup: ${showValidationGroup},
 selectedContacts: ${selectedContacts},
 selectedFile: ${selectedFile}
     ''';

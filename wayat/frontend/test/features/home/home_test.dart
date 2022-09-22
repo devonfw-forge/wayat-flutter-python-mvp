@@ -13,7 +13,9 @@ import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/features/contact_profile/controller/contact_profile_controller.dart';
 import 'package:wayat/features/contact_profile/page/contact_profile_page.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -21,6 +23,7 @@ import 'package:wayat/features/contacts/controller/navigation/contacts_current_p
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
@@ -28,6 +31,7 @@ import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
+import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'home_test.mocks.dart';
 
@@ -42,6 +46,9 @@ import 'home_test.mocks.dart';
   FriendsController,
   RequestsController,
   SuggestionsController,
+  GroupsController,
+  ContactProfileController,
+  HttpProvider
 ])
 void main() async {
   final ContactsPageController mockContactsPageController =
@@ -56,6 +63,9 @@ void main() async {
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
       MockSuggestionsController();
+  final GroupsController mockGroupsController = MockGroupsController();
+  final HttpProvider mockHttpProvider = MockHttpProvider();
+  late ContactProfileController mockContactProfileController;
 
   final MyUser user = MyUser(
       id: "2",
@@ -68,6 +78,21 @@ void main() async {
 
   setUpAll(() {
     HttpOverrides.global = null;
+
+    GetIt.I.allowReassignment = true;
+
+    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
+    GetIt.I
+        .registerSingleton<ContactsPageController>(mockContactsPageController);
+    GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<LocationState>(mockLocationState);
+    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
+    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
+
+    mockContactProfileController = MockContactProfileController();
 
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
@@ -90,21 +115,15 @@ void main() async {
     when(mockUserStatusState.contacts).thenReturn([]);
     when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
     when(mockSessionState.currentUser).thenReturn(user);
-
-    GetIt.I.allowReassignment = true;
-
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    GetIt.I
-        .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    when(mockGroupsController.updateGroups())
+        .thenAnswer((_) => Future.value(true));
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[].asObservable());
+    when(mockContactProfileController.shareLocationToContact).thenReturn(true);
+    GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget _createApp() {
+  Widget createApp() {
     final appRouter = AppRouter();
 
     return MaterialApp.router(
@@ -119,9 +138,10 @@ void main() async {
     );
   }
 
-  Contact _contactFactory() {
+  Contact contactFactory() {
     return Contact(
       available: true,
+      shareLocation: true,
       id: "2",
       name: "test",
       email: "Contact email",
@@ -134,7 +154,7 @@ void main() async {
     final HomeState homeState = HomeState();
     GetIt.I.registerSingleton<HomeState>(homeState);
 
-    await tester.pumpWidget(_createApp());
+    await tester.pumpWidget(createApp());
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.map));
     await tester.pumpAndSettle();
@@ -142,7 +162,7 @@ void main() async {
     expect(find.byType(HomeMapPage), findsOneWidget);
     expect(find.byType(ContactProfilePage), findsNothing);
 
-    homeState.setSelectedContact(_contactFactory(), "wayat");
+    homeState.setSelectedContact(contactFactory(), "wayat");
 
     await tester.pumpAndSettle();
 
@@ -154,7 +174,7 @@ void main() async {
 
   group('Contacts redirection', () {
     Future navigateToContactsPage(WidgetTester tester) async {
-      await tester.pumpWidget(_createApp());
+      await tester.pumpWidget(createApp());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.contacts_outlined));
       await tester.pumpAndSettle();
@@ -170,7 +190,7 @@ void main() async {
 
   group('Map redirection', () {
     Future navigateToMapPage(WidgetTester tester) async {
-      await tester.pumpWidget(_createApp());
+      await tester.pumpWidget(createApp());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.map));
       await tester.pumpAndSettle();
@@ -186,7 +206,7 @@ void main() async {
 
   group('Profile redirection', () {
     Future navigateToProfilePage(WidgetTester tester) async {
-      await tester.pumpWidget(_createApp());
+      await tester.pumpWidget(createApp());
       await tester.pumpAndSettle();
       await tester.tap(find.byIcon(Icons.person_outline));
       await tester.pumpAndSettle();
