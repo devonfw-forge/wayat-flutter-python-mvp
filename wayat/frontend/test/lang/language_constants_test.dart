@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wayat/lang/language_constants.dart';
 
 void main() async {
-
   test("Generate Locale correctly", () {
     expect(locale('en'), const Locale("en", "US"));
 
@@ -18,7 +17,7 @@ void main() async {
 
     expect(locale('unkown'), const Locale("en", "US"));
   });
-  
+
   test("setLocaleConstants save the language on sharePreferences", () async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setLocaleConstants('es');
