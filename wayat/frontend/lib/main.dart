@@ -35,11 +35,9 @@ Future main() async {
   
   await Firebase.initializeApp(
       name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
-  if (kIsWeb) {
-    await registerWebSingletons();
-  } else {
-    await registerSingletons();
-  }
+
+  await registerSingletons();
+  
   setTimeAgoLocales();
 
   runApp(const MyApp());
@@ -53,7 +51,7 @@ void setTimeAgoLocales() {
   timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
-Future registerWebSingletons() async {
+Future registerSingletons() async {
   GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   GetIt.I.registerSingleton<HttpProvider>(HttpProvider());
   GetIt.I.registerSingleton<MapState>(MapState());
@@ -68,25 +66,6 @@ Future registerWebSingletons() async {
   GetIt.I.registerSingleton<UserStatusState>(UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
 }
-
-Future registerSingletons() async {
-  //Register with GetIt all the singletons for the repos like this
-  //GetIt.I.registerLazySingleton<AbstractClass>(() => ImplementationClass())
-  GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
-  GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
-  GetIt.I.registerLazySingleton<MapState>(() => MapState());
-  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
-  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
-  GetIt.I.registerLazySingleton<OnboardingController>(
-      () => OnboardingController());
-  GetIt.I.registerLazySingleton<ContactsPageController>(
-      () => ContactsPageController());
-  GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
-  GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
-  GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
-}
-
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
