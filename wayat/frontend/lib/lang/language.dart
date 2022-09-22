@@ -19,7 +19,4 @@ class Language {
     if (identical(this, other)) return true;
     return name == other.name && languageCode == other.languageCode;
   }
-
-  @override
-  int get hashCode => name.hashCode ^ languageCode.hashCode ^ super.hashCode;
 }
