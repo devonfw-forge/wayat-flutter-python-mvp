@@ -51,14 +51,19 @@ class _FakeAuthService_3 extends _i1.SmartFake implements _i5.AuthService {
       : super(parent, parentInvocation);
 }
 
-class _FakeResponse_4 extends _i1.SmartFake implements _i6.Response {
-  _FakeResponse_4(Object parent, Invocation parentInvocation)
+class _FakeClient_4 extends _i1.SmartFake implements _i6.Client {
+  _FakeClient_4(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeStreamedResponse_5 extends _i1.SmartFake
+class _FakeResponse_5 extends _i1.SmartFake implements _i6.Response {
+  _FakeResponse_5(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_6 extends _i1.SmartFake
     implements _i6.StreamedResponse {
-  _FakeStreamedResponse_5(Object parent, Invocation parentInvocation)
+  _FakeStreamedResponse_6(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -264,6 +269,10 @@ class MockHttpProvider extends _i1.Mock implements _i13.HttpProvider {
   }
 
   @override
+  _i6.Client get client => (super.noSuchMethod(Invocation.getter(#client),
+          returnValue: _FakeClient_4(this, Invocation.getter(#client)))
+      as _i6.Client);
+  @override
   String get baseUrl =>
       (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
           as String);
@@ -271,6 +280,12 @@ class MockHttpProvider extends _i1.Mock implements _i13.HttpProvider {
   set baseUrl(String? _baseUrl) =>
       super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
           returnValueForMissingStub: null);
+  @override
+  _i9.Future<Map<String, String>> getHeaders() =>
+      (super.noSuchMethod(Invocation.method(#getHeaders, []),
+              returnValue:
+                  _i9.Future<Map<String, String>>.value(<String, String>{}))
+          as _i9.Future<Map<String, String>>);
   @override
   _i9.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
       (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
@@ -281,7 +296,7 @@ class MockHttpProvider extends _i1.Mock implements _i13.HttpProvider {
   _i9.Future<_i6.Response> sendPostRequest(
           String? subPath, Map<String, dynamic>? body) =>
       (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i9.Future<_i6.Response>.value(_FakeResponse_4(
+              returnValue: _i9.Future<_i6.Response>.value(_FakeResponse_5(
                   this, Invocation.method(#sendPostRequest, [subPath, body]))))
           as _i9.Future<_i6.Response>);
   @override
@@ -290,7 +305,7 @@ class MockHttpProvider extends _i1.Mock implements _i13.HttpProvider {
       (super.noSuchMethod(
           Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
           returnValue: _i9.Future<_i6.StreamedResponse>.value(
-              _FakeStreamedResponse_5(
+              _FakeStreamedResponse_6(
                   this,
                   Invocation.method(
                       #sendPostImageRequest, [subPath, filePath, type])))) as _i9

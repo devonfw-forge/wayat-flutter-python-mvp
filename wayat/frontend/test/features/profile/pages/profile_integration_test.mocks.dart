@@ -148,20 +148,25 @@ class _FakeContactService_15 extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
-class _FakeResponse_16 extends _i1.SmartFake implements _i15.Response {
-  _FakeResponse_16(Object parent, Invocation parentInvocation)
+class _FakeClient_16 extends _i1.SmartFake implements _i15.Client {
+  _FakeClient_16(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeStreamedResponse_17 extends _i1.SmartFake
+class _FakeResponse_17 extends _i1.SmartFake implements _i15.Response {
+  _FakeResponse_17(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_18 extends _i1.SmartFake
     implements _i15.StreamedResponse {
-  _FakeStreamedResponse_17(Object parent, Invocation parentInvocation)
+  _FakeStreamedResponse_18(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeGroupsService_18 extends _i1.SmartFake
+class _FakeGroupsService_19 extends _i1.SmartFake
     implements _i16.GroupsService {
-  _FakeGroupsService_18(Object parent, Invocation parentInvocation)
+  _FakeGroupsService_19(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -931,6 +936,10 @@ class MockHttpProvider extends _i1.Mock implements _i30.HttpProvider {
   }
 
   @override
+  _i15.Client get client => (super.noSuchMethod(Invocation.getter(#client),
+          returnValue: _FakeClient_16(this, Invocation.getter(#client)))
+      as _i15.Client);
+  @override
   String get baseUrl =>
       (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
           as String);
@@ -938,6 +947,12 @@ class MockHttpProvider extends _i1.Mock implements _i30.HttpProvider {
   set baseUrl(String? _baseUrl) =>
       super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
           returnValueForMissingStub: null);
+  @override
+  _i18.Future<Map<String, String>> getHeaders() =>
+      (super.noSuchMethod(Invocation.method(#getHeaders, []),
+              returnValue:
+                  _i18.Future<Map<String, String>>.value(<String, String>{}))
+          as _i18.Future<Map<String, String>>);
   @override
   _i18.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
       (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
@@ -948,7 +963,7 @@ class MockHttpProvider extends _i1.Mock implements _i30.HttpProvider {
   _i18.Future<_i15.Response> sendPostRequest(
           String? subPath, Map<String, dynamic>? body) =>
       (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i18.Future<_i15.Response>.value(_FakeResponse_16(
+              returnValue: _i18.Future<_i15.Response>.value(_FakeResponse_17(
                   this, Invocation.method(#sendPostRequest, [subPath, body]))))
           as _i18.Future<_i15.Response>);
   @override
@@ -957,7 +972,7 @@ class MockHttpProvider extends _i1.Mock implements _i30.HttpProvider {
       (super.noSuchMethod(
               Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
               returnValue: _i18.Future<_i15.StreamedResponse>.value(
-                  _FakeStreamedResponse_17(
+                  _FakeStreamedResponse_18(
                       this,
                       Invocation.method(
                           #sendPostImageRequest, [subPath, filePath, type]))))
@@ -985,7 +1000,7 @@ class MockGroupsController extends _i1.Mock implements _i31.GroupsController {
   _i16.GroupsService get groupsService => (super.noSuchMethod(
           Invocation.getter(#groupsService),
           returnValue:
-              _FakeGroupsService_18(this, Invocation.getter(#groupsService)))
+              _FakeGroupsService_19(this, Invocation.getter(#groupsService)))
       as _i16.GroupsService);
   @override
   set groupsService(_i16.GroupsService? _groupsService) =>
