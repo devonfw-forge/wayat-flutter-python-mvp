@@ -21,4 +21,10 @@ void main() async {
     expect(Language.languageList() is List<Language>, true);
     expect(Language.languageList().isNotEmpty, true);
   });
+
+  test("hashcode check", () {
+    Language copyOfLang = lang;
+    expect(lang.hashCode == copyOfLang.hashCode, true);
+    expect(lang.hashCode == sameLang.hashCode, false);
+  });
 }
