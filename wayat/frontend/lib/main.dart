@@ -64,6 +64,7 @@ Future registerWebSingletons() async {
     OnboardingController());
   GetIt.I.registerSingleton<ContactsPageController>(
     ContactsPageController());
+  GetIt.I.registerSingleton<GroupsController>(GroupsController());
   GetIt.I.registerSingleton<UserStatusState>(UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
 }
@@ -72,18 +73,18 @@ Future registerSingletons() async {
   //Register with GetIt all the singletons for the repos like this
   //GetIt.I.registerLazySingleton<AbstractClass>(() => ImplementationClass())
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
+  GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
+  GetIt.I.registerLazySingleton<MapState>(() => MapState());
+  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
+  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
-  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-  GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
   GetIt.I.registerLazySingleton<ContactsPageController>(
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
-  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
-  GetIt.I.registerLazySingleton<MapState>(() => MapState());
-  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
-  GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
+  GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
 }
 
 class MyApp extends StatefulWidget {
