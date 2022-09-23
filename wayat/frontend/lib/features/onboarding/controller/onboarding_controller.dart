@@ -56,7 +56,7 @@ abstract class _OnboardingController with Store {
     return selectedContacts.contains(contact);
   }
 
-  void finishOnBoarding(BuildContext context) {
+  void finishOnBoarding() {
     contactService.sendRequests(selectedContacts);
     SessionState userSession = GetIt.I.get<SessionState>();
     userSession.doneOnBoarding();

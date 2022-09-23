@@ -3,9 +3,8 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i10;
+import 'dart:async' as _i9;
 
-import 'package:flutter/cupertino.dart' as _i9;
 import 'package:mobx/mobx.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:wayat/domain/contact/contact.dart' as _i8;
@@ -16,7 +15,7 @@ import 'package:wayat/features/onboarding/controller/onboarding_progress.dart'
 import 'package:wayat/features/onboarding/controller/onboarding_state.dart'
     as _i6;
 import 'package:wayat/services/contact/contact_service.dart' as _i3;
-import 'package:wayat/services/contact/flutter_contacts_handler.dart' as _i11;
+import 'package:wayat/services/contact/flutter_contacts_handler.dart' as _i10;
 import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -129,8 +128,8 @@ class MockOnboardingController extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#isSelected, [contact]),
           returnValue: false) as bool);
   @override
-  void finishOnBoarding(_i9.BuildContext? context) =>
-      super.noSuchMethod(Invocation.method(#finishOnBoarding, [context]),
+  void finishOnBoarding() =>
+      super.noSuchMethod(Invocation.method(#finishOnBoarding, []),
           returnValueForMissingStub: null);
   @override
   void progressTo(_i7.OnBoardingProgress? newPage) =>
@@ -164,12 +163,12 @@ class MockContactsAddressServiceImpl extends _i1.Mock
   }
 
   @override
-  _i10.Future<List<String>> getAllPhones(
-          {_i11.FlutterContactsHandler? handler}) =>
+  _i9.Future<List<String>> getAllPhones(
+          {_i10.FlutterContactsHandler? handler}) =>
       (super.noSuchMethod(
               Invocation.method(#getAllPhones, [], {#handler: handler}),
-              returnValue: _i10.Future<List<String>>.value(<String>[]))
-          as _i10.Future<List<String>>);
+              returnValue: _i9.Future<List<String>>.value(<String>[]))
+          as _i9.Future<List<String>>);
 }
 
 /// A class which mocks [ContactService].
@@ -181,26 +180,25 @@ class MockContactService extends _i1.Mock implements _i3.ContactService {
   }
 
   @override
-  _i10.Future<List<_i8.Contact>> getAll() => (super.noSuchMethod(
-          Invocation.method(#getAll, []),
-          returnValue: _i10.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
-      as _i10.Future<List<_i8.Contact>>);
+  _i9.Future<List<_i8.Contact>> getAll() =>
+      (super.noSuchMethod(Invocation.method(#getAll, []),
+              returnValue: _i9.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
+          as _i9.Future<List<_i8.Contact>>);
   @override
-  _i10.Future<void> sendRequests(List<_i8.Contact>? contacts) =>
+  _i9.Future<void> sendRequests(List<_i8.Contact>? contacts) =>
       (super.noSuchMethod(Invocation.method(#sendRequests, [contacts]),
-              returnValue: _i10.Future<void>.value(),
-              returnValueForMissingStub: _i10.Future<void>.value())
-          as _i10.Future<void>);
+              returnValue: _i9.Future<void>.value(),
+              returnValueForMissingStub: _i9.Future<void>.value())
+          as _i9.Future<void>);
   @override
-  _i10.Future<List<_i8.Contact>> getFilteredContacts(
+  _i9.Future<List<_i8.Contact>> getFilteredContacts(
           List<String>? importedContacts) =>
       (super.noSuchMethod(
               Invocation.method(#getFilteredContacts, [importedContacts]),
-              returnValue:
-                  _i10.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
-          as _i10.Future<List<_i8.Contact>>);
+              returnValue: _i9.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
+          as _i9.Future<List<_i8.Contact>>);
   @override
-  _i10.Future<bool> removeContact(_i8.Contact? contact) =>
+  _i9.Future<bool> removeContact(_i8.Contact? contact) =>
       (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
-          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
+          returnValue: _i9.Future<bool>.value(false)) as _i9.Future<bool>);
 }
