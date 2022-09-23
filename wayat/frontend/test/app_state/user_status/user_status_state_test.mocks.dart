@@ -209,9 +209,11 @@ class MockLocationState extends _i1.Mock implements _i14.LocationState {
                   _FakeReactiveContext_5(this, Invocation.getter(#context)))
           as _i7.ReactiveContext);
   @override
-  _i11.Future<dynamic> initialize() =>
+  _i11.Future<void> initialize() =>
       (super.noSuchMethod(Invocation.method(#initialize, []),
-          returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
+              returnValue: _i11.Future<void>.value(),
+              returnValueForMissingStub: _i11.Future<void>.value())
+          as _i11.Future<void>);
   @override
   void setShareLocationEnabled(bool? shareLocation) => super.noSuchMethod(
       Invocation.method(#setShareLocationEnabled, [shareLocation]),

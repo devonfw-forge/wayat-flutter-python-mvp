@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,13 +37,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late bool shareLocationEnabled;
   late Function(LatLng) changeLocationStateCallback;
 
-  /// Creates a ShareLocationService.
-  ///
-  /// Throw a [RejectedLocationException] if the user
-  /// rejects location permissions. Throws a [NoLocationServiceException]
-  /// if the call to ```Location.requestService()``` results in an error
-  static Future<ShareLocationServiceImpl> create(ShareLocationMode mode,
-      bool shareLocation, Function(LatLng) onLocationChangedCallback) async {
+  static Future<void> _checkLocationPermissions() async {
     Location location = Location();
 
     // First, enable device location
@@ -76,8 +71,21 @@ class ShareLocationServiceImpl extends ShareLocationService {
         rethrow;
       }
     }
+  }
 
-    LocationData initialLocation = await location.getLocation();
+  /// Creates a ShareLocationService.
+  ///
+  /// Throw a [RejectedLocationException] if the user
+  /// rejects location permissions. Throws a [NoLocationServiceException]
+  /// if the call to ```Location.requestService()``` results in an error
+  static Future<ShareLocationServiceImpl> create(ShareLocationMode mode,
+      bool shareLocation, Function(LatLng) onLocationChangedCallback) async {
+
+    if (! kIsWeb) {
+      await _checkLocationPermissions();
+    }
+
+    LocationData initialLocation = await Location().getLocation();
 
     return ShareLocationServiceImpl._create(
         initialLocation, mode, shareLocation, onLocationChangedCallback);
@@ -102,7 +110,9 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     sendLocationToBack(initialLocation);
 
-    location.enableBackgroundMode(enable: true);
+    if(!kIsWeb) {
+      location.enableBackgroundMode(enable: true);
+    }
 
     location.onLocationChanged.listen((LocationData newLocation) {
       if (shareLocationEnabled) {

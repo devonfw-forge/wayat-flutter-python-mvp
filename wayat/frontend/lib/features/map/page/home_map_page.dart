@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -19,6 +19,7 @@ import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
+import 'package:wayat/features/map/page/abstract_map_widget.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
@@ -48,6 +49,10 @@ class HomeMapPage extends StatelessWidget {
         future: initializeLocationState(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            if (kIsWeb) {
+              return Stack(children: [_mapLayer()],
+            );
+            }
             return Stack(
               children: [_mapLayer(), _draggableSheetLayer()],
             );
@@ -211,20 +216,8 @@ class HomeMapPage extends StatelessWidget {
           );
   }
 
-  GoogleMap googleMap(Set<Marker> markers) {
-    LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
-        locationState.currentLocation.longitude);
-
-    return GoogleMap(
-      initialCameraPosition:
-          CameraPosition(target: currentLocation, zoom: 14.5),
-      myLocationEnabled: true,
-      zoomControlsEnabled: false,
-      markers: markers,
-      onMapCreated: (googleMapController) {
-        controller.gMapController = googleMapController;
-      },
-    );
+  Widget googleMap(Set<Marker> markers) {
+    return getMapWidget(markers, controller);
   }
 
   DraggableScrollableSheet _draggableSheetLayer() {

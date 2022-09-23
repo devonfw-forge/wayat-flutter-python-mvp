@@ -56,7 +56,6 @@ abstract class _MapController with Store {
   Future<Set<Marker>> generateMarkers() async {
     Map<String, BitmapDescriptor> bitmaps = await imageService
         .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
-
     Set<Marker> newMarkers = contacts
         .map(
           (e) => Marker(

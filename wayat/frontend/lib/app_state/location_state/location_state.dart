@@ -21,8 +21,7 @@ abstract class _LocationState with Store {
   LatLng currentLocation = const LatLng(0, 0);
 
   @observable
-  bool shareLocationEnabled =
-      GetIt.I.get<SessionState>().currentUser!.shareLocationEnabled;
+  bool shareLocationEnabled = false;
 
   final ShareLocationServiceFactory shareLocationServiceFactory;
 
@@ -33,14 +32,17 @@ abstract class _LocationState with Store {
       : shareLocationServiceFactory =
             shareLocationServiceFactory ?? ShareLocationServiceFactory();
 
-  Future initialize() async {
+  Future<void> initialize() async {
     userStatusState = GetIt.I.get<UserStatusState>();
 
+    shareLocationEnabled =
+      GetIt.I.get<SessionState>().currentUser!.shareLocationEnabled;
+    
     shareLocationService = await shareLocationServiceFactory.create(
         shareLocationMode: userStatusState.locationMode,
         shareLocationEnabled: shareLocationEnabled,
         onLocationChanged: onLocationChanged);
-
+    
     await userStatusState.initializeListener();
 
     LocationData currentLocationData =
