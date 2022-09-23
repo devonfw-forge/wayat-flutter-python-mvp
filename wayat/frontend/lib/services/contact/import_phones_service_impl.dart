@@ -2,7 +2,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:wayat/services/contact/flutter_contacts_handler.dart';
 
 class ContactsAddressServiceImpl {
-  static Future<List<String>> getAllPhones(
+  Future<List<String>> getAllPhones(
       {FlutterContactsHandler? handler}) async {
     FlutterContactsHandler contactsHandler =
         handler ?? FlutterContactsHandler();

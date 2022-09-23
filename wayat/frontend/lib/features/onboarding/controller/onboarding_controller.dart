@@ -15,15 +15,18 @@ part 'onboarding_controller.g.dart';
 class OnboardingController = _OnboardingController with _$OnboardingController;
 
 abstract class _OnboardingController with Store {
-  ContactService contactService = ContactServiceImpl();
+  final ContactsAddressServiceImpl importContactService;
+  final ContactService contactService;
 
-  _OnboardingController() {
+  _OnboardingController({ContactsAddressServiceImpl? addressServiceImpl, ContactService? contactService})
+      : importContactService = addressServiceImpl ?? ContactsAddressServiceImpl(),
+      contactService = contactService ?? ContactServiceImpl() {
     importContacts();
   }
 
   void importContacts() async {
     List<String> importedContacts =
-        await ContactsAddressServiceImpl.getAllPhones();
+        await importContactService.getAllPhones();
     List<Contact> filteredContacts =
         await contactService.getFilteredContacts(importedContacts);
     addAll(filteredContacts);

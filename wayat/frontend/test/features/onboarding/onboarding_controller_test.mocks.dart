@@ -3,18 +3,21 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/cupertino.dart' as _i8;
-import 'package:mobx/mobx.dart' as _i3;
+import 'dart:async' as _i10;
+
+import 'package:flutter/cupertino.dart' as _i9;
+import 'package:mobx/mobx.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/domain/contact/contact.dart' as _i7;
+import 'package:wayat/domain/contact/contact.dart' as _i8;
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart'
-    as _i4;
-import 'package:wayat/features/onboarding/controller/onboarding_progress.dart'
-    as _i6;
-import 'package:wayat/features/onboarding/controller/onboarding_state.dart'
     as _i5;
-import 'package:wayat/services/contact/contact_service.dart' as _i2;
-import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i9;
+import 'package:wayat/features/onboarding/controller/onboarding_progress.dart'
+    as _i7;
+import 'package:wayat/features/onboarding/controller/onboarding_state.dart'
+    as _i6;
+import 'package:wayat/services/contact/contact_service.dart' as _i3;
+import 'package:wayat/services/contact/flutter_contacts_handler.dart' as _i11;
+import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -27,21 +30,27 @@ import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i9;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeContactService_0 extends _i1.SmartFake
-    implements _i2.ContactService {
-  _FakeContactService_0(Object parent, Invocation parentInvocation)
+class _FakeContactsAddressServiceImpl_0 extends _i1.SmartFake
+    implements _i2.ContactsAddressServiceImpl {
+  _FakeContactsAddressServiceImpl_0(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeObservableMap_1<K, V> extends _i1.SmartFake
-    implements _i3.ObservableMap<K, V> {
-  _FakeObservableMap_1(Object parent, Invocation parentInvocation)
+class _FakeContactService_1 extends _i1.SmartFake
+    implements _i3.ContactService {
+  _FakeContactService_1(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeReactiveContext_2 extends _i1.SmartFake
-    implements _i3.ReactiveContext {
-  _FakeReactiveContext_2(Object parent, Invocation parentInvocation)
+class _FakeObservableMap_2<K, V> extends _i1.SmartFake
+    implements _i4.ObservableMap<K, V> {
+  _FakeObservableMap_2(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeReactiveContext_3 extends _i1.SmartFake
+    implements _i4.ReactiveContext {
+  _FakeReactiveContext_3(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -49,80 +58,82 @@ class _FakeReactiveContext_2 extends _i1.SmartFake
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockOnboardingController extends _i1.Mock
-    implements _i4.OnboardingController {
+    implements _i5.OnboardingController {
   MockOnboardingController() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.ContactService get contactService => (super.noSuchMethod(
+  _i2.ContactsAddressServiceImpl get importContactService =>
+      (super.noSuchMethod(Invocation.getter(#importContactService),
+              returnValue: _FakeContactsAddressServiceImpl_0(
+                  this, Invocation.getter(#importContactService)))
+          as _i2.ContactsAddressServiceImpl);
+  @override
+  _i3.ContactService get contactService => (super.noSuchMethod(
           Invocation.getter(#contactService),
           returnValue:
-              _FakeContactService_0(this, Invocation.getter(#contactService)))
-      as _i2.ContactService);
+              _FakeContactService_1(this, Invocation.getter(#contactService)))
+      as _i3.ContactService);
   @override
-  set contactService(_i2.ContactService? _contactService) =>
-      super.noSuchMethod(Invocation.setter(#contactService, _contactService),
-          returnValueForMissingStub: null);
-  @override
-  _i5.OnBoardingState get onBoardingState =>
+  _i6.OnBoardingState get onBoardingState =>
       (super.noSuchMethod(Invocation.getter(#onBoardingState),
-          returnValue: _i5.OnBoardingState.notStarted) as _i5.OnBoardingState);
+          returnValue: _i6.OnBoardingState.notStarted) as _i6.OnBoardingState);
   @override
-  set onBoardingState(_i5.OnBoardingState? value) =>
+  set onBoardingState(_i6.OnBoardingState? value) =>
       super.noSuchMethod(Invocation.setter(#onBoardingState, value),
           returnValueForMissingStub: null);
   @override
-  _i6.OnBoardingProgress get currentPage =>
+  _i7.OnBoardingProgress get currentPage =>
       (super.noSuchMethod(Invocation.getter(#currentPage),
-              returnValue: _i6.OnBoardingProgress.initialManageContactsTip)
-          as _i6.OnBoardingProgress);
+              returnValue: _i7.OnBoardingProgress.initialManageContactsTip)
+          as _i7.OnBoardingProgress);
   @override
-  set currentPage(_i6.OnBoardingProgress? value) =>
+  set currentPage(_i7.OnBoardingProgress? value) =>
       super.noSuchMethod(Invocation.setter(#currentPage, value),
           returnValueForMissingStub: null);
   @override
-  _i3.ObservableMap<_i7.Contact, bool> get contacts =>
+  _i4.ObservableMap<_i8.Contact, bool> get contacts =>
       (super.noSuchMethod(Invocation.getter(#contacts),
-              returnValue: _FakeObservableMap_1<_i7.Contact, bool>(
+              returnValue: _FakeObservableMap_2<_i8.Contact, bool>(
                   this, Invocation.getter(#contacts)))
-          as _i3.ObservableMap<_i7.Contact, bool>);
+          as _i4.ObservableMap<_i8.Contact, bool>);
   @override
-  set contacts(_i3.ObservableMap<_i7.Contact, bool>? value) =>
+  set contacts(_i4.ObservableMap<_i8.Contact, bool>? value) =>
       super.noSuchMethod(Invocation.setter(#contacts, value),
           returnValueForMissingStub: null);
   @override
-  List<_i7.Contact> get contactList =>
+  List<_i8.Contact> get contactList =>
       (super.noSuchMethod(Invocation.getter(#contactList),
-          returnValue: <_i7.Contact>[]) as List<_i7.Contact>);
+          returnValue: <_i8.Contact>[]) as List<_i8.Contact>);
   @override
-  List<_i7.Contact> get selectedContacts =>
+  List<_i8.Contact> get selectedContacts =>
       (super.noSuchMethod(Invocation.getter(#selectedContacts),
-          returnValue: <_i7.Contact>[]) as List<_i7.Contact>);
+          returnValue: <_i8.Contact>[]) as List<_i8.Contact>);
   @override
-  List<_i7.Contact> get unselectedContacts =>
+  List<_i8.Contact> get unselectedContacts =>
       (super.noSuchMethod(Invocation.getter(#unselectedContacts),
-          returnValue: <_i7.Contact>[]) as List<_i7.Contact>);
+          returnValue: <_i8.Contact>[]) as List<_i8.Contact>);
   @override
-  _i3.ReactiveContext get context =>
+  _i4.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
               returnValue:
-                  _FakeReactiveContext_2(this, Invocation.getter(#context)))
-          as _i3.ReactiveContext);
+                  _FakeReactiveContext_3(this, Invocation.getter(#context)))
+          as _i4.ReactiveContext);
   @override
   void importContacts() =>
       super.noSuchMethod(Invocation.method(#importContacts, []),
           returnValueForMissingStub: null);
   @override
-  bool isSelected(_i7.Contact? contact) =>
+  bool isSelected(_i8.Contact? contact) =>
       (super.noSuchMethod(Invocation.method(#isSelected, [contact]),
           returnValue: false) as bool);
   @override
-  void finishOnBoarding(_i8.BuildContext? context) =>
+  void finishOnBoarding(_i9.BuildContext? context) =>
       super.noSuchMethod(Invocation.method(#finishOnBoarding, [context]),
           returnValueForMissingStub: null);
   @override
-  void progressTo(_i6.OnBoardingProgress? newPage) =>
+  void progressTo(_i7.OnBoardingProgress? newPage) =>
       super.noSuchMethod(Invocation.method(#progressTo, [newPage]),
           returnValueForMissingStub: null);
   @override
@@ -130,15 +141,15 @@ class MockOnboardingController extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#moveBack, []), returnValue: false)
           as bool);
   @override
-  void updateSelected(_i7.Contact? contact) =>
+  void updateSelected(_i8.Contact? contact) =>
       super.noSuchMethod(Invocation.method(#updateSelected, [contact]),
           returnValueForMissingStub: null);
   @override
-  void addAll(List<_i7.Contact>? contactList) =>
+  void addAll(List<_i8.Contact>? contactList) =>
       super.noSuchMethod(Invocation.method(#addAll, [contactList]),
           returnValueForMissingStub: null);
   @override
-  void setOnBoardingState(_i5.OnBoardingState? state) =>
+  void setOnBoardingState(_i6.OnBoardingState? state) =>
       super.noSuchMethod(Invocation.method(#setOnBoardingState, [state]),
           returnValueForMissingStub: null);
 }
@@ -147,117 +158,49 @@ class MockOnboardingController extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockContactsAddressServiceImpl extends _i1.Mock
-    implements _i9.ContactsAddressServiceImpl {
+    implements _i2.ContactsAddressServiceImpl {
   MockContactsAddressServiceImpl() {
     _i1.throwOnMissingStub(this);
   }
+
+  @override
+  _i10.Future<List<String>> getAllPhones(
+          {_i11.FlutterContactsHandler? handler}) =>
+      (super.noSuchMethod(
+              Invocation.method(#getAllPhones, [], {#handler: handler}),
+              returnValue: _i10.Future<List<String>>.value(<String>[]))
+          as _i10.Future<List<String>>);
 }
 
-/// A class which mocks [OnboardingController].
+/// A class which mocks [ContactService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockOnboardingRelaxed extends _i1.Mock
-    implements _i4.OnboardingController {
-  @override
-  _i2.ContactService get contactService => (super.noSuchMethod(
-          Invocation.getter(#contactService),
-          returnValue:
-              _FakeContactService_0(this, Invocation.getter(#contactService)),
-          returnValueForMissingStub:
-              _FakeContactService_0(this, Invocation.getter(#contactService)))
-      as _i2.ContactService);
-  @override
-  set contactService(_i2.ContactService? _contactService) =>
-      super.noSuchMethod(Invocation.setter(#contactService, _contactService),
-          returnValueForMissingStub: null);
-  @override
-  _i5.OnBoardingState get onBoardingState =>
-      (super.noSuchMethod(Invocation.getter(#onBoardingState),
-              returnValue: _i5.OnBoardingState.notStarted,
-              returnValueForMissingStub: _i5.OnBoardingState.notStarted)
-          as _i5.OnBoardingState);
-  @override
-  set onBoardingState(_i5.OnBoardingState? value) =>
-      super.noSuchMethod(Invocation.setter(#onBoardingState, value),
-          returnValueForMissingStub: null);
-  @override
-  _i6.OnBoardingProgress get currentPage =>
-      (super.noSuchMethod(Invocation.getter(#currentPage),
-          returnValue: _i6.OnBoardingProgress.initialManageContactsTip,
-          returnValueForMissingStub: _i6.OnBoardingProgress
-              .initialManageContactsTip) as _i6.OnBoardingProgress);
-  @override
-  set currentPage(_i6.OnBoardingProgress? value) =>
-      super.noSuchMethod(Invocation.setter(#currentPage, value),
-          returnValueForMissingStub: null);
-  @override
-  _i3.ObservableMap<_i7.Contact, bool> get contacts => (super.noSuchMethod(
-          Invocation.getter(#contacts),
-          returnValue: _FakeObservableMap_1<_i7.Contact, bool>(
-              this, Invocation.getter(#contacts)),
-          returnValueForMissingStub: _FakeObservableMap_1<_i7.Contact, bool>(
-              this, Invocation.getter(#contacts)))
-      as _i3.ObservableMap<_i7.Contact, bool>);
-  @override
-  set contacts(_i3.ObservableMap<_i7.Contact, bool>? value) =>
-      super.noSuchMethod(Invocation.setter(#contacts, value),
-          returnValueForMissingStub: null);
-  @override
-  List<_i7.Contact> get contactList =>
-      (super.noSuchMethod(Invocation.getter(#contactList),
-          returnValue: <_i7.Contact>[],
-          returnValueForMissingStub: <_i7.Contact>[]) as List<_i7.Contact>);
-  @override
-  List<_i7.Contact> get selectedContacts =>
-      (super.noSuchMethod(Invocation.getter(#selectedContacts),
-          returnValue: <_i7.Contact>[],
-          returnValueForMissingStub: <_i7.Contact>[]) as List<_i7.Contact>);
-  @override
-  List<_i7.Contact> get unselectedContacts =>
-      (super.noSuchMethod(Invocation.getter(#unselectedContacts),
-          returnValue: <_i7.Contact>[],
-          returnValueForMissingStub: <_i7.Contact>[]) as List<_i7.Contact>);
-  @override
-  _i3.ReactiveContext get context => (super.noSuchMethod(
-      Invocation.getter(#context),
-      returnValue: _FakeReactiveContext_2(this, Invocation.getter(#context)),
-      returnValueForMissingStub: _FakeReactiveContext_2(
-          this, Invocation.getter(#context))) as _i3.ReactiveContext);
-  @override
-  void importContacts() =>
-      super.noSuchMethod(Invocation.method(#importContacts, []),
-          returnValueForMissingStub: null);
-  @override
-  bool isSelected(_i7.Contact? contact) =>
-      (super.noSuchMethod(Invocation.method(#isSelected, [contact]),
-          returnValue: false, returnValueForMissingStub: false) as bool);
-  @override
-  void finishOnBoarding(_i8.BuildContext? context) =>
-      super.noSuchMethod(Invocation.method(#finishOnBoarding, [context]),
-          returnValueForMissingStub: null);
-  @override
-  void progressTo(_i6.OnBoardingProgress? newPage) =>
-      super.noSuchMethod(Invocation.method(#progressTo, [newPage]),
-          returnValueForMissingStub: null);
-  @override
-  bool moveBack() => (super.noSuchMethod(Invocation.method(#moveBack, []),
-      returnValue: false, returnValueForMissingStub: false) as bool);
-  @override
-  void updateSelected(_i7.Contact? contact) =>
-      super.noSuchMethod(Invocation.method(#updateSelected, [contact]),
-          returnValueForMissingStub: null);
-  @override
-  void addAll(List<_i7.Contact>? contactList) =>
-      super.noSuchMethod(Invocation.method(#addAll, [contactList]),
-          returnValueForMissingStub: null);
-  @override
-  void setOnBoardingState(_i5.OnBoardingState? state) =>
-      super.noSuchMethod(Invocation.method(#setOnBoardingState, [state]),
-          returnValueForMissingStub: null);
-}
+class MockContactService extends _i1.Mock implements _i3.ContactService {
+  MockContactService() {
+    _i1.throwOnMissingStub(this);
+  }
 
-/// A class which mocks [ContactsAddressServiceImpl].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockContactsAddressServiceImplRelaxed extends _i1.Mock
-    implements _i9.ContactsAddressServiceImpl {}
+  @override
+  _i10.Future<List<_i8.Contact>> getAll() => (super.noSuchMethod(
+          Invocation.method(#getAll, []),
+          returnValue: _i10.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
+      as _i10.Future<List<_i8.Contact>>);
+  @override
+  _i10.Future<void> sendRequests(List<_i8.Contact>? contacts) =>
+      (super.noSuchMethod(Invocation.method(#sendRequests, [contacts]),
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
+  @override
+  _i10.Future<List<_i8.Contact>> getFilteredContacts(
+          List<String>? importedContacts) =>
+      (super.noSuchMethod(
+              Invocation.method(#getFilteredContacts, [importedContacts]),
+              returnValue:
+                  _i10.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
+          as _i10.Future<List<_i8.Contact>>);
+  @override
+  _i10.Future<bool> removeContact(_i8.Contact? contact) =>
+      (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
+}
