@@ -72,6 +72,7 @@ dependencies:
   flutter_launcher_icons: ^0.10.0
   restart_app: ^1.1.0+1
   app_settings: ^4.1.8
+  url_strategy: ^0.2.0
 
 
 dev_dependencies:

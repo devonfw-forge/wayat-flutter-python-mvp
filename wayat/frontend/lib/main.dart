@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -29,6 +30,9 @@ Future main() async {
     log("DEBUG MODE: Using HttpOverrides");
     HttpOverrides.global = HttpDebugOverride();
   }
+
+  // AVoid # character in url (flutter web)
+  if (kIsWeb) { setPathUrlStrategy(); }
 
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
@@ -64,7 +68,7 @@ Future registerSingletons() async {
     ContactsPageController());
   GetIt.I.registerSingleton<GroupsController>(GroupsController());
   GetIt.I.registerSingleton<UserStatusState>(UserStatusState());
-  GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
+  GetIt.I.registerSingleton<LocationState>(LocationState());
 }
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
