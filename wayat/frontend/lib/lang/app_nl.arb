@@ -1,12 +1,16 @@
 {
+    "@_TITLE":{},
     "appTitle": "wayat",
 
+    "@_LOGIN":{},
     "login": "Log in",
     "loginGoogle": "Log in met Google",
     "email": "E-mail",
     "password": "Wachtwoord",
     "phoneNumber": "Telefoonnummer",
     "forgotPasswQuestion": "Bent u uw wachtwoord vergeten?",
+
+    "@_PHONE_VALIDATION":{},
     "phonePageDescription": "Een geldig telefoonnummer is vereist.",
     "invalidPhoneNumber": "Ongeldig telefoonnummer",
     "phoneUpdateError": "Fout bij het instellen van het telefoonnummer",
@@ -22,26 +26,18 @@
     "phoneEmpty": "Leeg veld. Voer een correct telefoonnummer in.",
     "phoneIncorrect": "Onjuist telefoonnummer. Voer een geldig telefoonnummer in.",
     "phoneDifferent": "Voer een ander telefoonnummer in dan het vorige.",
-
+    "phoneUsed": "Aantal in gebruik",
     "phoneDeniedPermissions": "Machtigingen geweigerd.",
     "phoneErrorCode" : "Verkeerde code, probeer opnieuw.",
     "phoneErrorTooRequest" : "Teveel code aangevraagd, probeer het later",
     "phoneUnexpectedError" : "Onverwachte fout, probeer het later.",
 
-    "phoneUsed": "Aantal in gebruik",
-
+    "@_HOME":{},
     "home": "Home",
     "contacts": "Contacten",
     "events": "Evenementen",
 
-    "profile": "Profiel",
-    "editProfile": "Profiel bewerken",
-    "viewProfile": "Profiel bekijken",
-    "name": "Naam",
-
-    "notifications": "Meldingen",
-    "addEvents": "Gebeurtenis toevoegen",
-
+    "@_ONBOARDING":{},
     "manageContactsTip": "U kunt de rechten van uw contacten wijzigen wanneer u maar wilt.",
     "allowedContactsTitle": "Stel uw toegestane contacten in.",
     "@allowedContactsTitle": {
@@ -49,18 +45,23 @@
     },
     "allowedContactsBody": "Selecteer de contacten die u toestaat uw locatie te zien.",
 
+    "@_IMPORT_CONTACTS":{},
     "importContactsTip": "Selecteer eerst de contacten die uw locatie mogen zien.",
     "manageContacts": "Contacten beheren.",
-
-    "next": "Volgende",
-    "skip": "Overslaan",
-
     "selectContacts": "Selecteer contacten",
 
+    "@_LOCATION":{},
     "sharingLocation": "Locatie delen",
     "activeSharingLocation": "Actief delen Locatie",
     "doNotDisturb": "Stel niet storen in",
-    
+
+    "@_PROFILE":{},
+    "profile": "Profiel",
+    "editProfile": "Profiel bewerken",
+    "viewProfile": "Profiel bekijken",
+    "name": "Naam",
+    "next": "Volgende",
+    "skip": "Overslaan",
     "preferences": "Voorkeuren",
     "faqs": "FAQS",
     "privacy": "Privacy",
@@ -68,26 +69,34 @@
     "logOut": "Uitloggen",
     "deleteAccount": "Account verwijderen",
 
+    "@_EDIT_PROFILE":{},
+    "changePhone": "Telefoon",
+    "changePassword": "Wachtwoord wijzigen",
+    "chooseProfileFoto": "Kies foto uit",
+
+    "@_PREFERENCES":{},
     "information": "Informatie",
     "darkTheme": "Schakel donker thema in.",
     "language": "Taal",
+    "iosChangeLangMsg": "U moet de toepassing opnieuw starten om de wijzigingen door te voeren.",
+    "iosChangeLangTitle": "Taal veranderen",
 
-    "changePhone": "Telefoon",
-    "changePassword": "Wachtwoord wijzigen",
-
-    "chooseProfileFoto": "Kies foto uit",
+    "@_COMMON":{},
     "camera": "Camera",
     "gallery": "Galerij",
     "save": "Opslaan",
-   
     "close": "Sluiten",
     "loadingAddress": "Adres laden",
     "errorAddress": "Could not get address",
+    "accept": "Accepteren",
+    "search": "Zoeken",
+    "viewInformation": "Informatie bekijken",
+    "done": "Gedaan",
 
+    "@_CONTACTS":{},
     "friendsTab": "Friends",
     "requestsTab": "Verzoeken",
     "suggestionsTab": "Suggesties",
-
     "friendsPageTitle": "MIJN VRIENDEN",
     "pendingRequestsTitle": "VRIENDEN VERZOEKEN",
     "suggestionsPageTitle": "VOEG UW CONTACTEN TOE",
@@ -95,26 +104,24 @@
     "sentButtonNavigation": "VERZENDEN",
     "sentButtonTile": "Verzonden",
     "noPendingRequests": "U heeft geen lopende verzoeken.",
+
+    "@_INVITATION":{},
     "inviteContacts": "Nodig contacten uit voor Wayat.",
     "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
     "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
     "invitationText": "Uitnodigingstekst",
     "invitationCopied": "Gekopieerd naar uw klembord.",
 
-    "accept": "Accepteren",
-    "search": "Zoeken",
-
-    "viewInformation": "Informatie bekijken",
-
+    "@_SHARE_LOCATION":{},
     "profileShareLocation": "Deel locatie",
     "shareMyLocation": "Deel mijn locatie",
     "profileActiveLocation": "Actieve locatie",
-
     "contactProfileSharingLocationWithYou": "Locatie delen met jou",
     "contactProfileLocationNotAvailable": "Locatie niet beschikbaar",
     "contactProfileNotSharingLocation": "Locatie niet gedeeld",
     "contactProfileLastUpdated": "Laatst bijgewerkt",
 
+    "@_GROUPS":{},
     "groupsTitle": "GROEPEN",
     "createGroup": "Groep aanmaken",
     "noGroupsMessage": "Oeps. Je hebt geen groep.",
@@ -127,9 +134,7 @@
     "editGroup": "Groep bewerken",
     "deleteGroup": "Groep verwijderen",
     "groupValidation": "U moet ten minste twee contacten selecteren",
-    
-    "done": "Gedaan",
-    
+        
     "locationPermission": "Locatietoestemming",
     "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen"
 } 

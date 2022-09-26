@@ -1,11 +1,11 @@
 import 'package:flutter_contacts/flutter_contacts.dart';
-import 'package:wayat/services/contact/flutter_contacts_handler.dart';
+import 'package:wayat/services/contact/flutter_contacts_handler_libw.dart';
 
 class ContactsAddressServiceImpl {
   Future<List<String>> getAllPhones(
-      {FlutterContactsHandler? handler}) async {
-    FlutterContactsHandler contactsHandler =
-        handler ?? FlutterContactsHandler();
+      {FlutterContactsHandlerLibW? handler}) async {
+    FlutterContactsHandlerLibW contactsHandler =
+        handler ?? FlutterContactsHandlerLibW();
     if (await contactsHandler.requestPermission()) {
       List<Contact> contacts = await contactsHandler.getContacts();
       return contacts
