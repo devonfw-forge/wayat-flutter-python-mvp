@@ -13,9 +13,9 @@ import 'package:wayat/services/google_maps_service/address_response/address_resp
 class GoogleMapsService {
   static void openMaps(double lat, double lng) async {
     late Uri uri;
-    if (kIsWeb || Platform.isAndroid) {
+    if (kIsWeb || defaultTargetPlatform == TargetPlatform.android) {
       uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-    } else if (Platform.isIOS) {
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       //apple maps
       uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
       //google maps
@@ -78,9 +78,9 @@ class GoogleMapsService {
   static String getApIKey() {
     if (kIsWeb) {
       return dotenv.get('WEB_API_KEY');
-    } else if (Platform.isAndroid) {
+    } else if (defaultTargetPlatform == TargetPlatform.android) {
       return dotenv.get('ANDROID_API_KEY');
-    } else if (Platform.isIOS) {
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return dotenv.get('IOS_API_KEY');
     } else {
       return "";
