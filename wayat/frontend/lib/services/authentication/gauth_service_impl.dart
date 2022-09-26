@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -24,7 +22,8 @@ class GoogleAuthService implements AuthService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   late GoogleSignIn _googleSignIn;
-  final FirebaseAuth _auth = FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
+  final FirebaseAuth _auth =
+      FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
 
   GoogleAuthService({GoogleSignIn? gS}) {
     if (gS != null) {

@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_contacts/contact.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/services/contact/flutter_contacts_handler.dart';
+import 'package:wayat/services/contact/flutter_contacts_handler_libw.dart';
 import 'package:wayat/services/contact/import_phones_service_impl.dart';
 import 'package:wayat/services/utils/list_utils_service.dart';
 
 import 'import_phones_service_impl_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<FlutterContactsHandler>()])
+@GenerateNiceMocks([MockSpec<FlutterContactsHandlerLibW>()])
 void main() async {
   setUpAll(() {
     WidgetsFlutterBinding.ensureInitialized();
@@ -18,10 +17,10 @@ void main() async {
   test(
       "GetAllPhones returns empty list if the permission of contacts is denied",
       () async {
-    FlutterContactsHandler mockHandler = MockFlutterContactsHandler();
+    FlutterContactsHandlerLibW mockHandler = MockFlutterContactsHandlerLibW();
     when(mockHandler.requestPermission()).thenAnswer((_) async => false);
     expect([],
-        await ContactsAddressServiceImpl.getAllPhones(handler: mockHandler));
+        await ContactsAddressServiceImpl().getAllPhones(handler: mockHandler));
   });
 
   test("GetAllPhones returns phones of contacts", () async {
@@ -38,12 +37,12 @@ void main() async {
 
     List<String> res = ["123", "321", "1234", "4321", "12345"];
 
-    FlutterContactsHandler mockHandler = MockFlutterContactsHandler();
+    FlutterContactsHandlerLibW mockHandler = MockFlutterContactsHandlerLibW();
     when(mockHandler.requestPermission()).thenAnswer((_) async => true);
     when(mockHandler.getContacts()).thenAnswer((_) async => contacts);
     expect(
       ListUtilsService.haveDifferentElements(res,
-          await ContactsAddressServiceImpl.getAllPhones(handler: mockHandler)),
+          await ContactsAddressServiceImpl().getAllPhones(handler: mockHandler)),
       false,
     );
   });

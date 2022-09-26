@@ -17,11 +17,6 @@ import 'onboarding_test.mocks.dart';
 @GenerateMocks([
   SessionState,
   OnboardingController
-], customMocks: [
-  MockSpec<SessionState>(
-      as: #MockSessionStateRelaxed, onMissingStub: OnMissingStub.returnDefault),
-  MockSpec<OnboardingController>(
-      as: #MockOnboardingRelaxed, onMissingStub: OnMissingStub.returnDefault),
 ])
 void main() {
   late OnboardingController controller;

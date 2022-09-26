@@ -6,7 +6,6 @@ import 'package:wayat/domain/group/group.dart';
 import 'dart:async';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/image_service/image_service.dart';
-import 'package:wayat/services/location/location_service_impl.dart';
 
 part 'map_controller.g.dart';
 
@@ -14,7 +13,7 @@ part 'map_controller.g.dart';
 class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
-  ImageService imageService = ImageService();
+  ImageService imageService;
 
   _MapController({ImageService? imageService})
       : imageService = imageService ?? ImageService();
@@ -68,27 +67,6 @@ abstract class _MapController with Store {
         )
         .toSet();
     return newMarkers;
-  }
-
-  void updateMarkers() async {
-    for (var contact in contacts) {
-      LatLng currentPosition = LatLng(contact.latitude, contact.longitude);
-      LatLng newPosition =
-          LocationServiceImpl().changeContactCoordinates(currentPosition);
-
-      Map<String, BitmapDescriptor> bitmaps = await imageService
-          .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
-      Set<Marker> newMarkers = contacts
-          .map(
-            (e) => Marker(
-                markerId: MarkerId(e.name),
-                position: newPosition,
-                icon: bitmaps[e.imageUrl]!,
-                onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),
-          )
-          .toSet();
-      setMarkers(newMarkers);
-    }
   }
 
   @action
