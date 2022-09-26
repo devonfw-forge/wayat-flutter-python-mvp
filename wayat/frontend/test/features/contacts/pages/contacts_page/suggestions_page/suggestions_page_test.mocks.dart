@@ -20,6 +20,7 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
     as _i4;
 import 'package:wayat/services/contact/contact_service.dart' as _i7;
+import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i12;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -269,8 +270,11 @@ class MockSuggestionsController extends _i1.Mock
               returnValueForMissingStub: _i11.Future<void>.value())
           as _i11.Future<void>);
   @override
-  _i11.Future<dynamic> updateSuggestedContacts() =>
-      (super.noSuchMethod(Invocation.method(#updateSuggestedContacts, []),
+  _i11.Future<dynamic> updateSuggestedContacts(
+          {_i12.ContactsAddressServiceImpl? contactsAddressServiceImpl}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateSuggestedContacts, [],
+              {#contactsAddressServiceImpl: contactsAddressServiceImpl}),
           returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
   void setTextFilter(String? text) =>

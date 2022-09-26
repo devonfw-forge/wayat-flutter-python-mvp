@@ -18,7 +18,7 @@ import 'package:wayat/app_state/map_state/map_state.dart' as _i29;
 import 'package:wayat/app_state/user_session/session_state.dart' as _i22;
 import 'package:wayat/app_state/user_status/user_status_state.dart' as _i9;
 import 'package:wayat/domain/contact/contact.dart' as _i25;
-import 'package:wayat/domain/group/group.dart' as _i32;
+import 'package:wayat/domain/group/group.dart' as _i33;
 import 'package:wayat/domain/location/contact_location.dart' as _i27;
 import 'package:wayat/domain/user/my_user.dart' as _i23;
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart'
@@ -32,10 +32,11 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
     as _i4;
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart'
-    as _i31;
+    as _i32;
 import 'package:wayat/services/authentication/auth_service.dart' as _i7;
-import 'package:wayat/services/common/http_provider/http_provider.dart' as _i30;
+import 'package:wayat/services/common/http_provider/http_provider.dart' as _i31;
 import 'package:wayat/services/contact/contact_service.dart' as _i14;
+import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i30;
 import 'package:wayat/services/groups/groups_service.dart' as _i16;
 import 'package:wayat/services/location/share_location_service.dart' as _i8;
 import 'package:wayat/services/location/share_location_service_factory.dart'
@@ -902,8 +903,11 @@ class MockSuggestionsController extends _i1.Mock
               returnValueForMissingStub: _i18.Future<void>.value())
           as _i18.Future<void>);
   @override
-  _i18.Future<dynamic> updateSuggestedContacts() =>
-      (super.noSuchMethod(Invocation.method(#updateSuggestedContacts, []),
+  _i18.Future<dynamic> updateSuggestedContacts(
+          {_i30.ContactsAddressServiceImpl? contactsAddressServiceImpl}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateSuggestedContacts, [],
+              {#contactsAddressServiceImpl: contactsAddressServiceImpl}),
           returnValue: _i18.Future<dynamic>.value()) as _i18.Future<dynamic>);
   @override
   void setTextFilter(String? text) =>
@@ -922,7 +926,7 @@ class MockSuggestionsController extends _i1.Mock
 /// A class which mocks [HttpProvider].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockHttpProvider extends _i1.Mock implements _i30.HttpProvider {
+class MockHttpProvider extends _i1.Mock implements _i31.HttpProvider {
   MockHttpProvider() {
     _i1.throwOnMissingStub(this);
   }
@@ -983,7 +987,7 @@ class MockHttpProvider extends _i1.Mock implements _i30.HttpProvider {
 /// A class which mocks [GroupsController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGroupsController extends _i1.Mock implements _i31.GroupsController {
+class MockGroupsController extends _i1.Mock implements _i32.GroupsController {
   MockGroupsController() {
     _i1.throwOnMissingStub(this);
   }
@@ -999,16 +1003,16 @@ class MockGroupsController extends _i1.Mock implements _i31.GroupsController {
       super.noSuchMethod(Invocation.setter(#groupsService, _groupsService),
           returnValueForMissingStub: null);
   @override
-  _i6.ObservableList<_i32.Group> get groups => (super.noSuchMethod(
+  _i6.ObservableList<_i33.Group> get groups => (super.noSuchMethod(
       Invocation.getter(#groups),
-      returnValue: _FakeObservableList_14<_i32.Group>(
-          this, Invocation.getter(#groups))) as _i6.ObservableList<_i32.Group>);
+      returnValue: _FakeObservableList_14<_i33.Group>(
+          this, Invocation.getter(#groups))) as _i6.ObservableList<_i33.Group>);
   @override
-  set groups(_i6.ObservableList<_i32.Group>? value) =>
+  set groups(_i6.ObservableList<_i33.Group>? value) =>
       super.noSuchMethod(Invocation.setter(#groups, value),
           returnValueForMissingStub: null);
   @override
-  set selectedGroup(_i32.Group? value) =>
+  set selectedGroup(_i33.Group? value) =>
       super.noSuchMethod(Invocation.setter(#selectedGroup, value),
           returnValueForMissingStub: null);
   @override
@@ -1038,15 +1042,15 @@ class MockGroupsController extends _i1.Mock implements _i31.GroupsController {
       (super.noSuchMethod(Invocation.method(#updateGroups, []),
           returnValue: _i18.Future<bool>.value(false)) as _i18.Future<bool>);
   @override
-  void setGroups(List<_i32.Group>? groups) =>
+  void setGroups(List<_i33.Group>? groups) =>
       super.noSuchMethod(Invocation.method(#setGroups, [groups]),
           returnValueForMissingStub: null);
   @override
-  _i18.Future<dynamic> createGroup(_i32.Group? group, _i19.XFile? picture) =>
+  _i18.Future<dynamic> createGroup(_i33.Group? group, _i19.XFile? picture) =>
       (super.noSuchMethod(Invocation.method(#createGroup, [group, picture]),
           returnValue: _i18.Future<dynamic>.value()) as _i18.Future<dynamic>);
   @override
-  void setSelectedGroup(_i32.Group? group) =>
+  void setSelectedGroup(_i33.Group? group) =>
       super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
           returnValueForMissingStub: null);
   @override
