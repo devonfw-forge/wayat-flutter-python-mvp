@@ -48,7 +48,7 @@ abstract class _SuggestionsController with Store {
   @action
   Future updateSuggestedContacts() async {
     List<String> adBookContacts =
-        await ContactsAddressServiceImpl.getAllPhones();
+        await ContactsAddressServiceImpl().getAllPhones();
     MyUser me = GetIt.I.get<SessionState>().currentUser!;
     await requestsController.updateRequests();
     List<Contact> newSuggestions =

@@ -20,7 +20,7 @@ void main() async {
     FlutterContactsHandlerLibW mockHandler = MockFlutterContactsHandlerLibW();
     when(mockHandler.requestPermission()).thenAnswer((_) async => false);
     expect([],
-        await ContactsAddressServiceImpl.getAllPhones(handler: mockHandler));
+        await ContactsAddressServiceImpl().getAllPhones(handler: mockHandler));
   });
 
   test("GetAllPhones returns phones of contacts", () async {
@@ -42,7 +42,7 @@ void main() async {
     when(mockHandler.getContacts()).thenAnswer((_) async => contacts);
     expect(
       ListUtilsService.haveDifferentElements(res,
-          await ContactsAddressServiceImpl.getAllPhones(handler: mockHandler)),
+          await ContactsAddressServiceImpl().getAllPhones(handler: mockHandler)),
       false,
     );
   });
