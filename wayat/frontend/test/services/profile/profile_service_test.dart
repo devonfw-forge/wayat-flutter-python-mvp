@@ -1,0 +1,53 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:wayat/services/common/api_contract/api_contract.dart';
+import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/profile/profile_service.dart';
+import 'package:wayat/services/profile/profile_service_impl.dart';
+
+import 'profile_service_test.mocks.dart';
+
+@GenerateNiceMocks([
+  MockSpec<HttpProvider>(),
+  MockSpec<Response>(),
+  MockSpec<StreamedResponse>()
+])
+void main() async {
+  HttpProvider mockHttpProvider = MockHttpProvider();
+
+  setUpAll(() {
+    GetIt.I.registerSingleton(mockHttpProvider);
+  });
+
+  test("uploadProfileImage calls the correct endpoint", () async {
+    XFile emptyFile =
+        XFile.fromData(Uint8List.fromList([]), path: "path", name: "name");
+    StreamedResponse mockStreamedResponse = MockStreamedResponse();
+    when(mockHttpProvider.sendPostImageRequest(
+            APIContract.userProfilePicture, "path", ""))
+        .thenAnswer((_) async => mockStreamedResponse);
+
+    ProfileService profileService = ProfileServiceImpl();
+
+    bool res = await profileService.uploadProfileImage(emptyFile);
+
+    expect(res, true);
+    verify(mockHttpProvider.sendPostImageRequest(
+            APIContract.userProfilePicture, "path", ""))
+        .called(1);
+  });
+
+  test("updateProfileName calls the correct endpoint", () async {
+    Response mockHttpResponse = MockResponse();
+    when(mockHttpResponse.statusCode).thenReturn(200);
+    String name = "name";
+    when(mockHttpProvider
+            .sendPostRequest(APIContract.userProfile, {"name": name}))
+        .thenAnswer((_) async => mockHttpResponse);
+  });
+}
