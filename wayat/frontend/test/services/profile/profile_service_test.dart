@@ -28,6 +28,7 @@ void main() async {
     XFile emptyFile =
         XFile.fromData(Uint8List.fromList([]), path: "path", name: "name");
     StreamedResponse mockStreamedResponse = MockStreamedResponse();
+    when(mockStreamedResponse.statusCode).thenReturn(200);
     when(mockHttpProvider.sendPostImageRequest(
             APIContract.userProfilePicture, "path", ""))
         .thenAnswer((_) async => mockStreamedResponse);
@@ -49,5 +50,25 @@ void main() async {
     when(mockHttpProvider
             .sendPostRequest(APIContract.userProfile, {"name": name}))
         .thenAnswer((_) async => mockHttpResponse);
+
+    ProfileService profileService = ProfileServiceImpl();
+
+    bool res = await profileService.updateProfileName(name);
+
+    expect(res, true);
+    verify(mockHttpProvider
+        .sendPostRequest(APIContract.userProfile, {"name": name})).called(1);
+  });
+
+  test("deleteCurrentUser calls the correct endpoint", () async {
+    when(mockHttpProvider.sendDelRequest(APIContract.userProfile))
+        .thenAnswer((_) async => true);
+
+    ProfileService profileService = ProfileServiceImpl();
+
+    bool res = await profileService.deleteCurrentUser();
+
+    expect(res, true);
+    verify(mockHttpProvider.sendDelRequest(APIContract.userProfile)).called(1);
   });
 }
