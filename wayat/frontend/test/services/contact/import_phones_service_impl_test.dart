@@ -17,7 +17,7 @@ void main() async {
   test(
       "GetAllPhones returns empty list if the permission of contacts is denied",
       () async {
-    FlutterContactsHandlerLibW mockHandler = MockFlutterContactsHandler();
+    FlutterContactsHandlerLibW mockHandler = MockFlutterContactsHandlerLibW();
     when(mockHandler.requestPermission()).thenAnswer((_) async => false);
     expect([],
         await ContactsAddressServiceImpl.getAllPhones(handler: mockHandler));
@@ -37,7 +37,7 @@ void main() async {
 
     List<String> res = ["123", "321", "1234", "4321", "12345"];
 
-    FlutterContactsHandlerLibW mockHandler = MockFlutterContactsHandler();
+    FlutterContactsHandlerLibW mockHandler = MockFlutterContactsHandlerLibW();
     when(mockHandler.requestPermission()).thenAnswer((_) async => true);
     when(mockHandler.getContacts()).thenAnswer((_) async => contacts);
     expect(

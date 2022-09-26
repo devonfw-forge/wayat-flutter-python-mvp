@@ -21,10 +21,10 @@ import 'package:wayat/services/contact/flutter_contacts_handler_libw.dart'
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-/// A class which mocks [FlutterContactsHandler].
+/// A class which mocks [FlutterContactsHandlerLibW].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFlutterContactsHandler extends _i1.Mock
+class MockFlutterContactsHandlerLibW extends _i1.Mock
     implements _i2.FlutterContactsHandlerLibW {
   @override
   _i3.Future<bool> requestPermission() =>
