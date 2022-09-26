@@ -461,10 +461,6 @@ class MockMapController extends _i1.Mock implements _i17.MapController {
               returnValue: _i13.Future<Set<_i4.Marker>>.value(<_i4.Marker>{}))
           as _i13.Future<Set<_i4.Marker>>);
   @override
-  void updateMarkers() =>
-      super.noSuchMethod(Invocation.method(#updateMarkers, []),
-          returnValueForMissingStub: null);
-  @override
   void setMarkers(Set<_i4.Marker>? newMarkers) =>
       super.noSuchMethod(Invocation.method(#setMarkers, [newMarkers]),
           returnValueForMissingStub: null);
