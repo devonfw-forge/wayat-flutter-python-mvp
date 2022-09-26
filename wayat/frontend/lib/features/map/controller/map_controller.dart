@@ -14,7 +14,7 @@ part 'map_controller.g.dart';
 class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
-  ImageService imageService = ImageService();
+  ImageService imageService;
 
   _MapController({ImageService? imageService})
       : imageService = imageService ?? ImageService();

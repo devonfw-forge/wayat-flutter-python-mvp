@@ -12,6 +12,10 @@ class AddressResponse {
   factory AddressResponse.fromJson(Map<String, dynamic> json) =>
       _$AddressResponseFromJson(json);
 
+  Map<String, dynamic> toJson() {
+    return _$AddressResponseToJson(this);
+  }
+
   String firstValidAddress() {
     if (results.isNotEmpty) {
       Address firstAddress = results.first;
