@@ -3,19 +3,22 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i9;
+import 'dart:async' as _i10;
 
 import 'package:mobx/mobx.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/domain/contact/contact.dart' as _i8;
+import 'package:wayat/app_state/user_session/session_state.dart' as _i12;
+import 'package:wayat/domain/contact/contact.dart' as _i9;
+import 'package:wayat/domain/user/my_user.dart' as _i13;
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart'
-    as _i5;
-import 'package:wayat/features/onboarding/controller/onboarding_progress.dart'
-    as _i7;
-import 'package:wayat/features/onboarding/controller/onboarding_state.dart'
     as _i6;
+import 'package:wayat/features/onboarding/controller/onboarding_progress.dart'
+    as _i8;
+import 'package:wayat/features/onboarding/controller/onboarding_state.dart'
+    as _i7;
+import 'package:wayat/services/authentication/auth_service.dart' as _i5;
 import 'package:wayat/services/contact/contact_service.dart' as _i3;
-import 'package:wayat/services/contact/flutter_contacts_handler.dart' as _i10;
+import 'package:wayat/services/contact/flutter_contacts_handler.dart' as _i11;
 import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -53,11 +56,16 @@ class _FakeReactiveContext_3 extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
+class _FakeAuthService_4 extends _i1.SmartFake implements _i5.AuthService {
+  _FakeAuthService_4(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [OnboardingController].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockOnboardingController extends _i1.Mock
-    implements _i5.OnboardingController {
+    implements _i6.OnboardingController {
   MockOnboardingController() {
     _i1.throwOnMissingStub(this);
   }
@@ -75,44 +83,44 @@ class MockOnboardingController extends _i1.Mock
               _FakeContactService_1(this, Invocation.getter(#contactService)))
       as _i3.ContactService);
   @override
-  _i6.OnBoardingState get onBoardingState =>
+  _i7.OnBoardingState get onBoardingState =>
       (super.noSuchMethod(Invocation.getter(#onBoardingState),
-          returnValue: _i6.OnBoardingState.notStarted) as _i6.OnBoardingState);
+          returnValue: _i7.OnBoardingState.notStarted) as _i7.OnBoardingState);
   @override
-  set onBoardingState(_i6.OnBoardingState? value) =>
+  set onBoardingState(_i7.OnBoardingState? value) =>
       super.noSuchMethod(Invocation.setter(#onBoardingState, value),
           returnValueForMissingStub: null);
   @override
-  _i7.OnBoardingProgress get currentPage =>
+  _i8.OnBoardingProgress get currentPage =>
       (super.noSuchMethod(Invocation.getter(#currentPage),
-              returnValue: _i7.OnBoardingProgress.initialManageContactsTip)
-          as _i7.OnBoardingProgress);
+              returnValue: _i8.OnBoardingProgress.initialManageContactsTip)
+          as _i8.OnBoardingProgress);
   @override
-  set currentPage(_i7.OnBoardingProgress? value) =>
+  set currentPage(_i8.OnBoardingProgress? value) =>
       super.noSuchMethod(Invocation.setter(#currentPage, value),
           returnValueForMissingStub: null);
   @override
-  _i4.ObservableMap<_i8.Contact, bool> get contacts =>
+  _i4.ObservableMap<_i9.Contact, bool> get contacts =>
       (super.noSuchMethod(Invocation.getter(#contacts),
-              returnValue: _FakeObservableMap_2<_i8.Contact, bool>(
+              returnValue: _FakeObservableMap_2<_i9.Contact, bool>(
                   this, Invocation.getter(#contacts)))
-          as _i4.ObservableMap<_i8.Contact, bool>);
+          as _i4.ObservableMap<_i9.Contact, bool>);
   @override
-  set contacts(_i4.ObservableMap<_i8.Contact, bool>? value) =>
+  set contacts(_i4.ObservableMap<_i9.Contact, bool>? value) =>
       super.noSuchMethod(Invocation.setter(#contacts, value),
           returnValueForMissingStub: null);
   @override
-  List<_i8.Contact> get contactList =>
+  List<_i9.Contact> get contactList =>
       (super.noSuchMethod(Invocation.getter(#contactList),
-          returnValue: <_i8.Contact>[]) as List<_i8.Contact>);
+          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
   @override
-  List<_i8.Contact> get selectedContacts =>
+  List<_i9.Contact> get selectedContacts =>
       (super.noSuchMethod(Invocation.getter(#selectedContacts),
-          returnValue: <_i8.Contact>[]) as List<_i8.Contact>);
+          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
   @override
-  List<_i8.Contact> get unselectedContacts =>
+  List<_i9.Contact> get unselectedContacts =>
       (super.noSuchMethod(Invocation.getter(#unselectedContacts),
-          returnValue: <_i8.Contact>[]) as List<_i8.Contact>);
+          returnValue: <_i9.Contact>[]) as List<_i9.Contact>);
   @override
   _i4.ReactiveContext get context =>
       (super.noSuchMethod(Invocation.getter(#context),
@@ -124,7 +132,7 @@ class MockOnboardingController extends _i1.Mock
       super.noSuchMethod(Invocation.method(#importContacts, []),
           returnValueForMissingStub: null);
   @override
-  bool isSelected(_i8.Contact? contact) =>
+  bool isSelected(_i9.Contact? contact) =>
       (super.noSuchMethod(Invocation.method(#isSelected, [contact]),
           returnValue: false) as bool);
   @override
@@ -132,7 +140,7 @@ class MockOnboardingController extends _i1.Mock
       super.noSuchMethod(Invocation.method(#finishOnBoarding, []),
           returnValueForMissingStub: null);
   @override
-  void progressTo(_i7.OnBoardingProgress? newPage) =>
+  void progressTo(_i8.OnBoardingProgress? newPage) =>
       super.noSuchMethod(Invocation.method(#progressTo, [newPage]),
           returnValueForMissingStub: null);
   @override
@@ -140,15 +148,15 @@ class MockOnboardingController extends _i1.Mock
       (super.noSuchMethod(Invocation.method(#moveBack, []), returnValue: false)
           as bool);
   @override
-  void updateSelected(_i8.Contact? contact) =>
+  void updateSelected(_i9.Contact? contact) =>
       super.noSuchMethod(Invocation.method(#updateSelected, [contact]),
           returnValueForMissingStub: null);
   @override
-  void addAll(List<_i8.Contact>? contactList) =>
+  void addAll(List<_i9.Contact>? contactList) =>
       super.noSuchMethod(Invocation.method(#addAll, [contactList]),
           returnValueForMissingStub: null);
   @override
-  void setOnBoardingState(_i6.OnBoardingState? state) =>
+  void setOnBoardingState(_i7.OnBoardingState? state) =>
       super.noSuchMethod(Invocation.method(#setOnBoardingState, [state]),
           returnValueForMissingStub: null);
 }
@@ -163,12 +171,12 @@ class MockContactsAddressServiceImpl extends _i1.Mock
   }
 
   @override
-  _i9.Future<List<String>> getAllPhones(
-          {_i10.FlutterContactsHandler? handler}) =>
+  _i10.Future<List<String>> getAllPhones(
+          {_i11.FlutterContactsHandler? handler}) =>
       (super.noSuchMethod(
               Invocation.method(#getAllPhones, [], {#handler: handler}),
-              returnValue: _i9.Future<List<String>>.value(<String>[]))
-          as _i9.Future<List<String>>);
+              returnValue: _i10.Future<List<String>>.value(<String>[]))
+          as _i10.Future<List<String>>);
 }
 
 /// A class which mocks [ContactService].
@@ -180,25 +188,138 @@ class MockContactService extends _i1.Mock implements _i3.ContactService {
   }
 
   @override
-  _i9.Future<List<_i8.Contact>> getAll() =>
-      (super.noSuchMethod(Invocation.method(#getAll, []),
-              returnValue: _i9.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
-          as _i9.Future<List<_i8.Contact>>);
+  _i10.Future<List<_i9.Contact>> getAll() => (super.noSuchMethod(
+          Invocation.method(#getAll, []),
+          returnValue: _i10.Future<List<_i9.Contact>>.value(<_i9.Contact>[]))
+      as _i10.Future<List<_i9.Contact>>);
   @override
-  _i9.Future<void> sendRequests(List<_i8.Contact>? contacts) =>
+  _i10.Future<void> sendRequests(List<_i9.Contact>? contacts) =>
       (super.noSuchMethod(Invocation.method(#sendRequests, [contacts]),
-              returnValue: _i9.Future<void>.value(),
-              returnValueForMissingStub: _i9.Future<void>.value())
-          as _i9.Future<void>);
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
   @override
-  _i9.Future<List<_i8.Contact>> getFilteredContacts(
+  _i10.Future<List<_i9.Contact>> getFilteredContacts(
           List<String>? importedContacts) =>
       (super.noSuchMethod(
               Invocation.method(#getFilteredContacts, [importedContacts]),
-              returnValue: _i9.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
-          as _i9.Future<List<_i8.Contact>>);
+              returnValue:
+                  _i10.Future<List<_i9.Contact>>.value(<_i9.Contact>[]))
+          as _i10.Future<List<_i9.Contact>>);
   @override
-  _i9.Future<bool> removeContact(_i8.Contact? contact) =>
+  _i10.Future<bool> removeContact(_i9.Contact? contact) =>
       (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
-          returnValue: _i9.Future<bool>.value(false)) as _i9.Future<bool>);
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
+}
+
+/// A class which mocks [SessionState].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSessionState extends _i1.Mock implements _i12.SessionState {
+  MockSessionState() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get finishLoggedIn => (super
+          .noSuchMethod(Invocation.getter(#finishLoggedIn), returnValue: false)
+      as bool);
+  @override
+  set finishLoggedIn(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#finishLoggedIn, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get googleSignedIn => (super
+          .noSuchMethod(Invocation.getter(#googleSignedIn), returnValue: false)
+      as bool);
+  @override
+  set googleSignedIn(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#googleSignedIn, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get hasDoneOnboarding =>
+      (super.noSuchMethod(Invocation.getter(#hasDoneOnboarding),
+          returnValue: false) as bool);
+  @override
+  set hasDoneOnboarding(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
+          returnValueForMissingStub: null);
+  @override
+  set currentUser(_i13.MyUser? value) =>
+      super.noSuchMethod(Invocation.setter(#currentUser, value),
+          returnValueForMissingStub: null);
+  @override
+  _i5.AuthService get authService =>
+      (super.noSuchMethod(Invocation.getter(#authService),
+              returnValue:
+                  _FakeAuthService_4(this, Invocation.getter(#authService)))
+          as _i5.AuthService);
+  @override
+  _i4.ReactiveContext get context =>
+      (super.noSuchMethod(Invocation.getter(#context),
+              returnValue:
+                  _FakeReactiveContext_3(this, Invocation.getter(#context)))
+          as _i4.ReactiveContext);
+  @override
+  _i10.Future<void> doneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#doneOnBoarding, []),
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
+  @override
+  _i10.Future<void> isLogged() =>
+      (super.noSuchMethod(Invocation.method(#isLogged, []),
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
+  @override
+  void setGoogleSignIn(bool? signedIn) =>
+      super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
+          returnValueForMissingStub: null);
+  @override
+  void setFinishLoggedIn(bool? finishedLoggedIn) => super.noSuchMethod(
+      Invocation.method(#setFinishLoggedIn, [finishedLoggedIn]),
+      returnValueForMissingStub: null);
+  @override
+  _i10.Future<dynamic> initializeUser() =>
+      (super.noSuchMethod(Invocation.method(#initializeUser, []),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  _i10.Future<dynamic> updateCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  _i10.Future<bool> updatePhone(String? phone) =>
+      (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
+  @override
+  _i10.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
+          returnValue: _i10.Future<bool>.value(false)) as _i10.Future<bool>);
+  @override
+  _i10.Future<dynamic> doLoginProcess() =>
+      (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  _i10.Future<dynamic> initializeUserSession() =>
+      (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  _i10.Future<void> login() =>
+      (super.noSuchMethod(Invocation.method(#login, []),
+              returnValue: _i10.Future<void>.value(),
+              returnValueForMissingStub: _i10.Future<void>.value())
+          as _i10.Future<void>);
+  @override
+  _i10.Future<dynamic> logOut() =>
+      (super.noSuchMethod(Invocation.method(#logOut, []),
+          returnValue: _i10.Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  bool isOnboardingCompleted() =>
+      (super.noSuchMethod(Invocation.method(#isOnboardingCompleted, []),
+          returnValue: false) as bool);
+  @override
+  bool hasPhone() =>
+      (super.noSuchMethod(Invocation.method(#hasPhone, []), returnValue: false)
+          as bool);
 }
