@@ -5,7 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i18;
 
-import 'package:flutter/cupertino.dart' as _i5;
+import 'package:flutter/material.dart' as _i5;
 import 'package:google_maps_flutter/google_maps_flutter.dart' as _i10;
 import 'package:http/http.dart' as _i15;
 import 'package:image_picker/image_picker.dart' as _i19;
@@ -217,10 +217,6 @@ class MockContactsPageController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   _i4.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
@@ -743,10 +739,6 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i18.Future<void>.value(),
               returnValueForMissingStub: _i18.Future<void>.value())
           as _i18.Future<void>);
-  @override
-  void addContact(_i25.Contact? contact) =>
-      super.noSuchMethod(Invocation.method(#addContact, [contact]),
-          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [RequestsController].
@@ -764,10 +756,6 @@ class MockRequestsController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   String get textFilter =>
       (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')
@@ -925,6 +913,10 @@ class MockSuggestionsController extends _i1.Mock
   _i18.Future<dynamic> copyInvitation() =>
       (super.noSuchMethod(Invocation.method(#copyInvitation, []),
           returnValue: _i18.Future<dynamic>.value()) as _i18.Future<dynamic>);
+  @override
+  String platformText() =>
+      (super.noSuchMethod(Invocation.method(#platformText, []), returnValue: '')
+          as String);
 }
 
 /// A class which mocks [HttpProvider].

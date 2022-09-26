@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
@@ -33,7 +32,7 @@ abstract class _SuggestionsController with Store {
 
   String textFilter = "";
 
-  List<Contact> allSuggestions = List.of([]);
+  List<Contact> allSuggestions = List<Contact>.of([]);
 
   @observable
   ObservableList<Contact> filteredSuggestions = ObservableList.of([]);
@@ -78,14 +77,15 @@ abstract class _SuggestionsController with Store {
   }
 
   Future copyInvitation() async {
-    await Clipboard.setData(ClipboardData(text: _platformText()));
+    await Clipboard.setData(ClipboardData(text: platformText()));
   }
 
-  String _platformText() {
-    if (Platform.isAndroid) {
+  @visibleForTesting
+  String platformText() {
+    if (defaultTargetPlatform == TargetPlatform.android) {
       return appLocalizations.invitationTextAndroid;
     }
-    if (Platform.isIOS) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
       return appLocalizations.invitationTextIOS;
     }
     return '';

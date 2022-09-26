@@ -6,7 +6,7 @@
 import 'dart:async' as _i24;
 import 'dart:ui' as _i13;
 
-import 'package:flutter/cupertino.dart' as _i5;
+import 'package:flutter/material.dart' as _i5;
 import 'package:google_maps_flutter/google_maps_flutter.dart' as _i10;
 import 'package:image_picker/image_picker.dart' as _i32;
 import 'package:location/location.dart' as _i19;
@@ -216,10 +216,6 @@ class MockContactsPageController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   _i4.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
@@ -827,10 +823,6 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i24.Future<void>.value(),
               returnValueForMissingStub: _i24.Future<void>.value())
           as _i24.Future<void>);
-  @override
-  void addContact(_i26.Contact? contact) =>
-      super.noSuchMethod(Invocation.method(#addContact, [contact]),
-          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [RequestsController].
@@ -848,10 +840,6 @@ class MockRequestsController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   String get textFilter =>
       (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')
@@ -1009,6 +997,10 @@ class MockSuggestionsController extends _i1.Mock
   _i24.Future<dynamic> copyInvitation() =>
       (super.noSuchMethod(Invocation.method(#copyInvitation, []),
           returnValue: _i24.Future<dynamic>.value()) as _i24.Future<dynamic>);
+  @override
+  String platformText() =>
+      (super.noSuchMethod(Invocation.method(#platformText, []), returnValue: '')
+          as String);
 }
 
 /// A class which mocks [GroupsController].
