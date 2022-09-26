@@ -14,10 +14,10 @@ class ProfileServiceImpl implements ProfileService {
   Future<bool> uploadProfileImage(XFile? selectedImage) async {
     //Uint8List bytes = await io.File(selectedImage!.path).readAsBytes();
     String filePath = selectedImage!.path;
-    String? fileType = lookupMimeType(filePath);
+    String fileType = lookupMimeType(filePath) ?? "";
 
     StreamedResponse res = await httpProvider.sendPostImageRequest(
-        APIContract.userProfilePicture, filePath, fileType!);
+        APIContract.userProfilePicture, filePath, fileType);
     bool done = res.statusCode / 10 == 20;
     return done;
   }
