@@ -9,11 +9,13 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 
 class UserStatusService {
-  final FirebaseFirestore db = FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT'));
+  final FirebaseFirestore db =
+      FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT'));
 
   late bool _lastActive;
   late List _lastContactRefs;
 
+  ///SetUp listener of contactLocation mode update from status
   Future setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(ShareLocationMode) onLocationModeUpdate}) async {
@@ -32,7 +34,7 @@ class UserStatusService {
     // Update contactRef before listenings
     onContactsRefUpdate(await _getContactRefsFromStatus(firestoreData));
 
-    // Subscribe to changes in tshe currentUser status document
+    // Subscribe to changes in the currentUser status document
     docRef.snapshots().listen(
       (event) async {
         if ((event.data()!["active"] as bool) != _lastActive) {
@@ -48,6 +50,7 @@ class UserStatusService {
     );
   }
 
+  ///Return active or passive location mode from Firestore status
   Future<ShareLocationMode> _getLocationModeFromStatus(
       Map<String, dynamic> firestoreData) async {
     if (firestoreData["active"] as bool) {
@@ -56,6 +59,9 @@ class UserStatusService {
     return ShareLocationMode.passive;
   }
 
+  ///Return [ContactLocation]
+  ///
+  ///Get contact uid, location, address and last updated data
   Future<List<ContactLocation>> _getContactRefsFromStatus(
       Map<String, dynamic> firestoreData) async {
     List<Contact> contacts = await ContactServiceImpl().getAll();
