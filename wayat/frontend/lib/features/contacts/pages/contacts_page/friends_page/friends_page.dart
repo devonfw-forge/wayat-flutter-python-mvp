@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
@@ -11,6 +13,8 @@ import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/contacts/widgets/contacts_section_title.dart';
 import 'package:wayat/features/contacts/widgets/navigation_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 
 class FriendsPage extends StatelessWidget {
   final FriendsController controller =
@@ -47,10 +51,16 @@ class FriendsPage extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: contacts.length,
             itemBuilder: (context, index) => ContactTile(
-                  onTilePressed: () => GetIt.I
-                      .get<HomeState>()
-                      .setSelectedContact(
-                          contacts[index], appLocalizations.contacts),
+                  onTilePressed: () {
+                    List<ContactLocation> contactsStatus =
+                        GetIt.I.get<UserStatusState>().contacts;
+                    ContactLocation? currentContact =
+                        contactsStatus.firstWhereOrNull(
+                            (element) => element.id == contacts[index].id);
+                    Contact selectedContact = currentContact ?? contacts[index];
+                    GetIt.I.get<HomeState>().setSelectedContact(
+                        selectedContact, appLocalizations.contacts);
+                  },
                   contact: contacts[index],
                   iconAction: IconButton(
                     onPressed: () async =>
