@@ -96,7 +96,7 @@ class GoogleAuthService implements AuthService {
   /// *Sign out* the current user.
   @override
   Future<void> signOut() async {
-    await FirebaseFirestore.instance.terminate();
+    await FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT')).terminate();
     await _auth.signOut();
     await _googleSignIn.signOut();
 
