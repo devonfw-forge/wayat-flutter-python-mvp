@@ -24,6 +24,7 @@ import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+/// Initializes the app.
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kDebugMode) {
@@ -44,6 +45,12 @@ Future main() async {
   runApp(const MyApp());
 }
 
+/// Loads the messages for the library [timeago] in the available languages for the app.
+///
+/// This messages are displayed in, for example, the [ContactDialog] that appears
+/// when tapping a user in the map, and format the date in a human friendly format.
+///
+/// For example: `2022-09-11 9:55` could translate to `five minutes ago`.
 void setTimeAgoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
   timeago.setLocaleMessages('es', timeago.EsMessages());
@@ -52,6 +59,10 @@ void setTimeAgoLocales() {
   timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
+/// Registers all the [MobX] singletons to handle the app's shared state.
+///
+/// All of the singletons are registered using lazy initialization, to ensure
+/// that only the one's that are being used will be instantiated.
 Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
@@ -68,6 +79,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
 }
 
+/// Main Application class
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -75,13 +87,15 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyApp();
 }
 
+/// Main application class' state
 class _MyApp extends State<MyApp> with WidgetsBindingObserver {
+  /// Instance of the application router, used to handle navigation declaratively
   final _appRouter = AppRouter();
 
+  /// Instance of the MapState to update when the user opens and closes the map
   final MapState mapState = GetIt.I.get<MapState>();
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
 
-  // Lock for concurrent code execution
+  /// To avoid sending multiple `mapOpened` and `mapClosed` requests to the server concurrently
   final Lock _lock = Lock();
 
   @override
@@ -96,6 +110,9 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  /// Sends `mapOpened` to the server when the app opens and `mapClosed` when it is closed
+  ///
+  /// It handles both first startupt as well as awaking the app from minimized in Android and iOS
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
@@ -120,6 +137,11 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     });
   }
 
+  /// Builds the app widget tree.
+  ///
+  /// Obtains the language of the system, sets it up in the first start,
+  /// and then initializes the UI, internationalization singleton, and
+  /// declarative router.
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
