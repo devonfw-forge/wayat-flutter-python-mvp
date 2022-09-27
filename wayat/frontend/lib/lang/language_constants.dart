@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String defaultLanguage = "en";
+String defaultLanguage = Platform.localeName.substring(0,2);
 
 Future<Locale> setLocaleConstants(String languageCode) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -12,6 +13,7 @@ Future<Locale> setLocaleConstants(String languageCode) async {
 Future<Locale> getLocaleConstants() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String languageCode = prefs.getString('languageCode') ?? defaultLanguage;
+  if (prefs.getString('languageCode') == null) await setLocaleConstants(languageCode);
   return locale(languageCode);
 }
 
