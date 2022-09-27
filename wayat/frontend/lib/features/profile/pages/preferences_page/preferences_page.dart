@@ -84,7 +84,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return RestartIosDialog();
+                          return const RestartIosDialog();
                         });
                   }
                 } else {
@@ -134,12 +134,10 @@ class _PreferencesPageState extends State<PreferencesPage> {
         underline: const SizedBox(),
         icon: const Icon(Icons.arrow_drop_down, size: 24),
         onChanged: (Language? language) {
-          setState(() {
-            if (language != null) {
-              changedLanguage = language;
-              languageSelected = language;
-            }
-          });
+          if (language != null) {
+            changedLanguage = language;
+            languageSelected = language;
+          }
         },
         items: itemList
             .map<DropdownMenuItem<Language>>(
