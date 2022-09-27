@@ -151,6 +151,7 @@ class ProfilePage extends StatelessWidget {
                     return DeleteAccountDialog();
                   });
             }),
+        const SizedBox(height: 24),
       ],
     );
   }
