@@ -105,17 +105,6 @@ mixin _$MapController on _MapController, Store {
   }
 
   @override
-  void filterMarkersByGroup() {
-    final _$actionInfo = _$_MapControllerActionController.startAction(
-        name: '_MapController.filterMarkersByGroup');
-    try {
-      return super.filterMarkersByGroup();
-    } finally {
-      _$_MapControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void filterMarkers() {
     final _$actionInfo = _$_MapControllerActionController.startAction(
         name: '_MapController.filterMarkers');

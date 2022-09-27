@@ -93,10 +93,11 @@ class GoogleAuthService implements AuthService {
     return account;
   }
 
-  /// *Sign out* the current user.
+  /// Sign out the current user.
+  /// Resets all the state after closing the firestore instance
   @override
   Future<void> signOut() async {
-    await FirebaseFirestore.instance.terminate();
+    await FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT')).terminate();
     await _auth.signOut();
     await _googleSignIn.signOut();
 

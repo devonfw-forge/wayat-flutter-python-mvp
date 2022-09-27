@@ -481,10 +481,6 @@ class MockMapController extends _i1.Mock implements _i17.MapController {
       super.noSuchMethod(Invocation.method(#filterGroup, [group]),
           returnValueForMissingStub: null);
   @override
-  void filterMarkersByGroup() =>
-      super.noSuchMethod(Invocation.method(#filterMarkersByGroup, []),
-          returnValueForMissingStub: null);
-  @override
   void filterMarkers() =>
       super.noSuchMethod(Invocation.method(#filterMarkers, []),
           returnValueForMissingStub: null);
