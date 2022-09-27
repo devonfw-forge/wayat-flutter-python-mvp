@@ -10,9 +10,11 @@ import 'package:mime/mime.dart';
 class ProfileServiceImpl implements ProfileService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
+  ///Update profile image from camera or gallery [selectedImage]
+  ///
+  ///send [POST] response to backend to update user profile image
   @override
   Future<bool> uploadProfileImage(XFile? selectedImage) async {
-    //Uint8List bytes = await io.File(selectedImage!.path).readAsBytes();
     String filePath = selectedImage!.path;
     String? fileType = lookupMimeType(filePath);
 
@@ -22,6 +24,9 @@ class ProfileServiceImpl implements ProfileService {
     return done;
   }
 
+  ///Update profile name from [name]
+  ///
+  ///send [POST] response to backend to update user profile name
   @override
   Future<bool> updateProfileName(String name) async {
     bool done = (await httpProvider
@@ -32,6 +37,9 @@ class ProfileServiceImpl implements ProfileService {
     return done;
   }
 
+  ///Delete current user
+  ///
+  ///send [DELETE] response to backend to delete current user
   @override
   Future<bool> deleteCurrentUser() async {
     bool done = (await httpProvider.sendDelRequest(APIContract.userProfile));
