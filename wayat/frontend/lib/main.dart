@@ -33,12 +33,12 @@ Future main() async {
 
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
-  
+
   await Firebase.initializeApp(
       name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
 
   await registerSingletons();
-  
+
   setTimeAgoLocales();
 
   runApp(const MyApp());
@@ -53,20 +53,21 @@ void setTimeAgoLocales() {
 }
 
 Future registerSingletons() async {
-  GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-  GetIt.I.registerSingleton<HttpProvider>(HttpProvider());
-  GetIt.I.registerSingleton<MapState>(MapState());
-  GetIt.I.registerSingleton<SessionState>(SessionState());
-  GetIt.I.registerSingleton<HomeState>(HomeState());
-  GetIt.I.registerSingleton<ProfileState>(ProfileState());
-  GetIt.I.registerSingleton<OnboardingController>(
-    OnboardingController());
-  GetIt.I.registerSingleton<ContactsPageController>(
-    ContactsPageController());
-  GetIt.I.registerSingleton<GroupsController>(GroupsController());
-  GetIt.I.registerSingleton<UserStatusState>(UserStatusState());
+  GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
+  GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
+  GetIt.I.registerLazySingleton<MapState>(() => MapState());
+  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
+  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
+  GetIt.I.registerLazySingleton<OnboardingController>(
+      () => OnboardingController());
+  GetIt.I.registerLazySingleton<ContactsPageController>(
+      () => ContactsPageController());
+  GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
+  GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
