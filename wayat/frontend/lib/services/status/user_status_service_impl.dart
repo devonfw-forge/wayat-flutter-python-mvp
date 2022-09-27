@@ -19,6 +19,7 @@ class UserStatusService {
   late bool _lastActive;
   late List _lastContactRefs;
 
+  ///SetUp listener of contactLocation mode update from status
   Future setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(ShareLocationMode) onLocationModeUpdate}) async {
@@ -37,7 +38,7 @@ class UserStatusService {
     // Update contactRef before listenings
     onContactsRefUpdate(await getContactRefsFromStatus(firestoreData));
 
-    // Subscribe to changes in tshe currentUser status document
+    // Subscribe to changes in the currentUser status document
     docRef.snapshots().listen(
       (event) async {
         if ((event.data()!["active"] as bool) != _lastActive) {
@@ -53,6 +54,7 @@ class UserStatusService {
     );
   }
 
+  ///Return active or passive location mode from Firestore status
   @visibleForTesting
   ShareLocationMode getLocationModeFromStatus(
       Map<String, dynamic> firestoreData) {
@@ -62,6 +64,9 @@ class UserStatusService {
     return ShareLocationMode.passive;
   }
 
+  ///Return [ContactLocation]
+  ///
+  ///Get contact uid, location, address and last updated data
   @visibleForTesting
   Future<List<ContactLocation>> getContactRefsFromStatus(
       Map<String, dynamic> firestoreData,
