@@ -134,10 +134,12 @@ class _PreferencesPageState extends State<PreferencesPage> {
         underline: const SizedBox(),
         icon: const Icon(Icons.arrow_drop_down, size: 24),
         onChanged: (Language? language) {
-          if (language != null) {
-            changedLanguage = language;
-            languageSelected = language;
-          }
+          setState(() {
+            if (language != null) {
+              changedLanguage = language;
+              languageSelected = language;
+            }
+          });
         },
         items: itemList
             .map<DropdownMenuItem<Language>>(
