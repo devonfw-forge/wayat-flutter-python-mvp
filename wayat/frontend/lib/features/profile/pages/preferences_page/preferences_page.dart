@@ -30,9 +30,6 @@ class _PreferencesPageState extends State<PreferencesPage> {
       children: [
         _profileAppBar(),
         const SizedBox(height: 34.5),
-        // TODO: implement the dark mode
-        // _buildEnableDarkThemeSwitchButton(),
-        // const SizedBox(height: 34.5),
         _buildLanguageButton(),
       ],
     );

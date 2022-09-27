@@ -144,7 +144,6 @@ void main() async {
     expect(providerResponse, false);
   });
 
-  // TODO: Research more on how to use argument matchers to improve this test
   test("sendPostImageRequest is correct", () async {
     String filePath = "test_resources/wayat_icon.png";
     http.Client mockClient = MockClient();

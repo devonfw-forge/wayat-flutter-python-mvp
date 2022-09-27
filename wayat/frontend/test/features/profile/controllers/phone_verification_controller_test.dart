@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl_phone_field/phone_number.dart';
 
 import 'phone_verification_controller_test.mocks.dart';
 
@@ -69,13 +68,9 @@ void main() async {
 
   testWidgets("Testing change number", (tester) async {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    late BuildContext gcontext;
-    PhoneNumber phone = PhoneNumber(
-        countryCode: "+34", number: "123456789", countryISOCode: '');
 
     await tester.pumpWidget(
       Builder(builder: (BuildContext context) {
-        gcontext = context;
         return createApp(Form(
             key: formKey,
             child: Column(children: [
