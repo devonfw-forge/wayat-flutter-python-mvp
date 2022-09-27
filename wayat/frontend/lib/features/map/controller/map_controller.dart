@@ -99,29 +99,23 @@ abstract class _MapController with Store {
       selectedGroup = group;
       groupMembers = group.members;
     }
-    filterMarkersByGroup();
-  }
-
-  @action
-  void filterMarkersByGroup() {
-    if (groupMembers.isEmpty) {
-      filteredMarkers = ObservableSet.of(allMarkers);
-    } else {
-      final groupMembersId = groupMembers.map((e) => e.id.toLowerCase());
-      filteredMarkers = ObservableSet.of(allMarkers.where((element) =>
-          groupMembersId
-              .contains(element.markerId.value.toLowerCase().split("¿?")[0])));
-    }
+    filterMarkers();
   }
 
   @action
   void filterMarkers() {
-    filteredMarkers = ObservableSet.of(allMarkers
-        .where((element) => element.markerId.value
-            .toLowerCase()
-            .split("¿?")[1]
-            .contains(searchBarText.toLowerCase()))
-        .toSet());
+    Iterable<Marker> markers = allMarkers.where((element) => element
+        .markerId.value
+        .toLowerCase()
+        .split("¿?")[1]
+        .contains(searchBarText.toLowerCase()));
+    if (groupMembers.isNotEmpty) {
+      final groupMembersId = groupMembers.map((e) => e.id.toLowerCase());
+      markers = markers.where((element) => groupMembersId
+          .contains(element.markerId.value.toLowerCase().split("¿?")[0]));
+    }
+
+    filteredMarkers = ObservableSet.of(markers.toSet());
   }
 
   void onSuggestionsTap(contact) {
