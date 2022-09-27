@@ -24,7 +24,7 @@ abstract class _ContactsPageController with Store {
   DateTime timeRequestsUpdate = DateTime(1970);
   DateTime timeSuggestionsUpdate = DateTime(1970);
 
-  Duration maxTimeBetweenUpdates = const Duration(seconds: 30);
+  Duration maxTimeBetweenUpdates = const Duration(seconds: 3);
 
   @observable
   ContactsCurrentPages currentPage = ContactsCurrentPages.contacts;
