@@ -3,16 +3,20 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
-import 'dart:typed_data' as _i6;
+import 'dart:async' as _i7;
+import 'dart:typed_data' as _i8;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i4;
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
     as _i3;
 import 'package:firebase_core/firebase_core.dart' as _i2;
+import 'package:mobx/mobx.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/domain/contact/contact.dart' as _i8;
-import 'package:wayat/services/contact/contact_service.dart' as _i7;
+import 'package:wayat/app_state/user_session/session_state.dart' as _i11;
+import 'package:wayat/domain/contact/contact.dart' as _i10;
+import 'package:wayat/domain/user/my_user.dart' as _i12;
+import 'package:wayat/services/authentication/auth_service.dart' as _i5;
+import 'package:wayat/services/contact/contact_service.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -70,6 +74,17 @@ class _FakeDocumentReference_7<T extends Object?> extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
+class _FakeAuthService_8 extends _i1.SmartFake implements _i5.AuthService {
+  _FakeAuthService_8(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeReactiveContext_9 extends _i1.SmartFake
+    implements _i6.ReactiveContext {
+  _FakeReactiveContext_9(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [FirebaseFirestore].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -116,20 +131,20 @@ class MockFirebaseFirestore extends _i1.Mock implements _i4.FirebaseFirestore {
               _FakeWriteBatch_3(this, Invocation.method(#batch, [])))
       as _i4.WriteBatch);
   @override
-  _i5.Future<void> clearPersistence() => (super.noSuchMethod(
+  _i7.Future<void> clearPersistence() => (super.noSuchMethod(
       Invocation.method(#clearPersistence, []),
-      returnValue: _i5.Future<void>.value(),
-      returnValueForMissingStub: _i5.Future<void>.value()) as _i5.Future<void>);
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
-  _i5.Future<void> enablePersistence(
+  _i7.Future<void> enablePersistence(
           [_i3.PersistenceSettings? persistenceSettings]) =>
       (super.noSuchMethod(
               Invocation.method(#enablePersistence, [persistenceSettings]),
-              returnValue: _i5.Future<void>.value(),
-              returnValueForMissingStub: _i5.Future<void>.value())
-          as _i5.Future<void>);
+              returnValue: _i7.Future<void>.value(),
+              returnValueForMissingStub: _i7.Future<void>.value())
+          as _i7.Future<void>);
   @override
-  _i4.LoadBundleTask loadBundle(_i6.Uint8List? bundle) => (super.noSuchMethod(
+  _i4.LoadBundleTask loadBundle(_i8.Uint8List? bundle) => (super.noSuchMethod(
       Invocation.method(#loadBundle, [bundle]),
       returnValue:
           _FakeLoadBundleTask_4(this, Invocation.method(#loadBundle, [bundle])),
@@ -144,16 +159,16 @@ class MockFirebaseFirestore extends _i1.Mock implements _i4.FirebaseFirestore {
               #useFirestoreEmulator, [host, port], {#sslEnabled: sslEnabled}),
           returnValueForMissingStub: null);
   @override
-  _i5.Future<_i4.QuerySnapshot<Map<String, dynamic>>> namedQueryGet(String? name,
+  _i7.Future<_i4.QuerySnapshot<Map<String, dynamic>>> namedQueryGet(String? name,
           {_i3.GetOptions? options = const _i3.GetOptions()}) =>
       (super.noSuchMethod(Invocation.method(#namedQueryGet, [name], {#options: options}),
-              returnValue: _i5.Future<_i4.QuerySnapshot<Map<String, dynamic>>>.value(_FakeQuerySnapshot_5<Map<String, dynamic>>(
+              returnValue: _i7.Future<_i4.QuerySnapshot<Map<String, dynamic>>>.value(_FakeQuerySnapshot_5<Map<String, dynamic>>(
                   this,
                   Invocation.method(#namedQueryGet, [name], {#options: options}))),
               returnValueForMissingStub:
-                  _i5.Future<_i4.QuerySnapshot<Map<String, dynamic>>>.value(
+                  _i7.Future<_i4.QuerySnapshot<Map<String, dynamic>>>.value(
                       _FakeQuerySnapshot_5<Map<String, dynamic>>(this, Invocation.method(#namedQueryGet, [name], {#options: options}))))
-          as _i5.Future<_i4.QuerySnapshot<Map<String, dynamic>>>);
+          as _i7.Future<_i4.QuerySnapshot<Map<String, dynamic>>>);
   @override
   _i4.Query<Map<String, dynamic>> collectionGroup(String? collectionPath) =>
       (super.noSuchMethod(Invocation.method(#collectionGroup, [collectionPath]),
@@ -163,10 +178,10 @@ class MockFirebaseFirestore extends _i1.Mock implements _i4.FirebaseFirestore {
                   this, Invocation.method(#collectionGroup, [collectionPath])))
           as _i4.Query<Map<String, dynamic>>);
   @override
-  _i5.Future<void> disableNetwork() => (super.noSuchMethod(
+  _i7.Future<void> disableNetwork() => (super.noSuchMethod(
       Invocation.method(#disableNetwork, []),
-      returnValue: _i5.Future<void>.value(),
-      returnValueForMissingStub: _i5.Future<void>.value()) as _i5.Future<void>);
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
   _i4.DocumentReference<Map<String, dynamic>> doc(String? documentPath) =>
       (super.noSuchMethod(Invocation.method(#doc, [documentPath]),
@@ -177,67 +192,184 @@ class MockFirebaseFirestore extends _i1.Mock implements _i4.FirebaseFirestore {
                       this, Invocation.method(#doc, [documentPath])))
           as _i4.DocumentReference<Map<String, dynamic>>);
   @override
-  _i5.Future<void> enableNetwork() => (super.noSuchMethod(
+  _i7.Future<void> enableNetwork() => (super.noSuchMethod(
       Invocation.method(#enableNetwork, []),
-      returnValue: _i5.Future<void>.value(),
-      returnValueForMissingStub: _i5.Future<void>.value()) as _i5.Future<void>);
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
-  _i5.Stream<void> snapshotsInSync() => (super.noSuchMethod(
+  _i7.Stream<void> snapshotsInSync() => (super.noSuchMethod(
       Invocation.method(#snapshotsInSync, []),
-      returnValue: _i5.Stream<void>.empty(),
-      returnValueForMissingStub: _i5.Stream<void>.empty()) as _i5.Stream<void>);
+      returnValue: _i7.Stream<void>.empty(),
+      returnValueForMissingStub: _i7.Stream<void>.empty()) as _i7.Stream<void>);
   @override
-  _i5.Future<T> runTransaction<T>(_i4.TransactionHandler<T>? transactionHandler,
+  _i7.Future<T> runTransaction<T>(_i4.TransactionHandler<T>? transactionHandler,
           {Duration? timeout = const Duration(seconds: 30),
           int? maxAttempts = 5}) =>
       (super.noSuchMethod(
               Invocation.method(#runTransaction, [transactionHandler],
                   {#timeout: timeout, #maxAttempts: maxAttempts}),
-              returnValue: _i5.Future<T>.value(null),
-              returnValueForMissingStub: _i5.Future<T>.value(null))
-          as _i5.Future<T>);
+              returnValue: _i7.Future<T>.value(null),
+              returnValueForMissingStub: _i7.Future<T>.value(null))
+          as _i7.Future<T>);
   @override
-  _i5.Future<void> terminate() => (super.noSuchMethod(
+  _i7.Future<void> terminate() => (super.noSuchMethod(
       Invocation.method(#terminate, []),
-      returnValue: _i5.Future<void>.value(),
-      returnValueForMissingStub: _i5.Future<void>.value()) as _i5.Future<void>);
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
   @override
-  _i5.Future<void> waitForPendingWrites() => (super.noSuchMethod(
+  _i7.Future<void> waitForPendingWrites() => (super.noSuchMethod(
       Invocation.method(#waitForPendingWrites, []),
-      returnValue: _i5.Future<void>.value(),
-      returnValueForMissingStub: _i5.Future<void>.value()) as _i5.Future<void>);
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
 }
 
 /// A class which mocks [ContactService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockContactService extends _i1.Mock implements _i7.ContactService {
+class MockContactService extends _i1.Mock implements _i9.ContactService {
   @override
-  _i5.Future<List<_i8.Contact>> getAll() =>
-      (super.noSuchMethod(Invocation.method(#getAll, []),
-              returnValue: _i5.Future<List<_i8.Contact>>.value(<_i8.Contact>[]),
-              returnValueForMissingStub:
-                  _i5.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
-          as _i5.Future<List<_i8.Contact>>);
+  _i7.Future<List<_i10.Contact>> getAll() => (super.noSuchMethod(
+          Invocation.method(#getAll, []),
+          returnValue: _i7.Future<List<_i10.Contact>>.value(<_i10.Contact>[]),
+          returnValueForMissingStub:
+              _i7.Future<List<_i10.Contact>>.value(<_i10.Contact>[]))
+      as _i7.Future<List<_i10.Contact>>);
   @override
-  _i5.Future<void> sendRequests(List<_i8.Contact>? contacts) =>
+  _i7.Future<void> sendRequests(List<_i10.Contact>? contacts) =>
       (super.noSuchMethod(Invocation.method(#sendRequests, [contacts]),
-              returnValue: _i5.Future<void>.value(),
-              returnValueForMissingStub: _i5.Future<void>.value())
-          as _i5.Future<void>);
+              returnValue: _i7.Future<void>.value(),
+              returnValueForMissingStub: _i7.Future<void>.value())
+          as _i7.Future<void>);
   @override
-  _i5.Future<List<_i8.Contact>> getFilteredContacts(
+  _i7.Future<List<_i10.Contact>> getFilteredContacts(
           List<String>? importedContacts) =>
       (super.noSuchMethod(
-              Invocation.method(#getFilteredContacts, [importedContacts]),
-              returnValue: _i5.Future<List<_i8.Contact>>.value(<_i8.Contact>[]),
-              returnValueForMissingStub:
-                  _i5.Future<List<_i8.Contact>>.value(<_i8.Contact>[]))
-          as _i5.Future<List<_i8.Contact>>);
+          Invocation.method(#getFilteredContacts, [importedContacts]),
+          returnValue: _i7.Future<List<_i10.Contact>>.value(<_i10.Contact>[]),
+          returnValueForMissingStub:
+              _i7.Future<List<_i10.Contact>>.value(<_i10.Contact>[])) as _i7
+          .Future<List<_i10.Contact>>);
   @override
-  _i5.Future<bool> removeContact(_i8.Contact? contact) =>
+  _i7.Future<bool> removeContact(_i10.Contact? contact) =>
       (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
-              returnValue: _i5.Future<bool>.value(false),
-              returnValueForMissingStub: _i5.Future<bool>.value(false))
-          as _i5.Future<bool>);
+              returnValue: _i7.Future<bool>.value(false),
+              returnValueForMissingStub: _i7.Future<bool>.value(false))
+          as _i7.Future<bool>);
+}
+
+/// A class which mocks [SessionState].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSessionState extends _i1.Mock implements _i11.SessionState {
+  @override
+  bool get finishLoggedIn =>
+      (super.noSuchMethod(Invocation.getter(#finishLoggedIn),
+          returnValue: false, returnValueForMissingStub: false) as bool);
+  @override
+  set finishLoggedIn(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#finishLoggedIn, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get googleSignedIn =>
+      (super.noSuchMethod(Invocation.getter(#googleSignedIn),
+          returnValue: false, returnValueForMissingStub: false) as bool);
+  @override
+  set googleSignedIn(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#googleSignedIn, value),
+          returnValueForMissingStub: null);
+  @override
+  bool get hasDoneOnboarding =>
+      (super.noSuchMethod(Invocation.getter(#hasDoneOnboarding),
+          returnValue: false, returnValueForMissingStub: false) as bool);
+  @override
+  set hasDoneOnboarding(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
+          returnValueForMissingStub: null);
+  @override
+  set currentUser(_i12.MyUser? value) =>
+      super.noSuchMethod(Invocation.setter(#currentUser, value),
+          returnValueForMissingStub: null);
+  @override
+  _i5.AuthService get authService => (super.noSuchMethod(
+      Invocation.getter(#authService),
+      returnValue: _FakeAuthService_8(this, Invocation.getter(#authService)),
+      returnValueForMissingStub: _FakeAuthService_8(
+          this, Invocation.getter(#authService))) as _i5.AuthService);
+  @override
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+      Invocation.getter(#context),
+      returnValue: _FakeReactiveContext_9(this, Invocation.getter(#context)),
+      returnValueForMissingStub: _FakeReactiveContext_9(
+          this, Invocation.getter(#context))) as _i6.ReactiveContext);
+  @override
+  _i7.Future<void> doneOnBoarding() => (super.noSuchMethod(
+      Invocation.method(#doneOnBoarding, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  @override
+  _i7.Future<void> isLogged() => (super.noSuchMethod(
+      Invocation.method(#isLogged, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  @override
+  void setGoogleSignIn(bool? signedIn) =>
+      super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
+          returnValueForMissingStub: null);
+  @override
+  void setFinishLoggedIn(bool? finishedLoggedIn) => super.noSuchMethod(
+      Invocation.method(#setFinishLoggedIn, [finishedLoggedIn]),
+      returnValueForMissingStub: null);
+  @override
+  _i7.Future<dynamic> initializeUser() =>
+      (super.noSuchMethod(Invocation.method(#initializeUser, []),
+              returnValue: _i7.Future<dynamic>.value(),
+              returnValueForMissingStub: _i7.Future<dynamic>.value())
+          as _i7.Future<dynamic>);
+  @override
+  _i7.Future<dynamic> updateCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
+              returnValue: _i7.Future<dynamic>.value(),
+              returnValueForMissingStub: _i7.Future<dynamic>.value())
+          as _i7.Future<dynamic>);
+  @override
+  _i7.Future<bool> updatePhone(String? phone) =>
+      (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
+              returnValue: _i7.Future<bool>.value(false),
+              returnValueForMissingStub: _i7.Future<bool>.value(false))
+          as _i7.Future<bool>);
+  @override
+  _i7.Future<bool> setDoneOnBoarding() =>
+      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
+              returnValue: _i7.Future<bool>.value(false),
+              returnValueForMissingStub: _i7.Future<bool>.value(false))
+          as _i7.Future<bool>);
+  @override
+  _i7.Future<dynamic> doLoginProcess() =>
+      (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
+              returnValue: _i7.Future<dynamic>.value(),
+              returnValueForMissingStub: _i7.Future<dynamic>.value())
+          as _i7.Future<dynamic>);
+  @override
+  _i7.Future<dynamic> initializeUserSession() =>
+      (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
+              returnValue: _i7.Future<dynamic>.value(),
+              returnValueForMissingStub: _i7.Future<dynamic>.value())
+          as _i7.Future<dynamic>);
+  @override
+  _i7.Future<void> login() => (super.noSuchMethod(Invocation.method(#login, []),
+      returnValue: _i7.Future<void>.value(),
+      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  @override
+  _i7.Future<dynamic> logOut() =>
+      (super.noSuchMethod(Invocation.method(#logOut, []),
+              returnValue: _i7.Future<dynamic>.value(),
+              returnValueForMissingStub: _i7.Future<dynamic>.value())
+          as _i7.Future<dynamic>);
+  @override
+  bool isOnboardingCompleted() =>
+      (super.noSuchMethod(Invocation.method(#isOnboardingCompleted, []),
+          returnValue: false, returnValueForMissingStub: false) as bool);
+  @override
+  bool hasPhone() => (super.noSuchMethod(Invocation.method(#hasPhone, []),
+      returnValue: false, returnValueForMissingStub: false) as bool);
 }

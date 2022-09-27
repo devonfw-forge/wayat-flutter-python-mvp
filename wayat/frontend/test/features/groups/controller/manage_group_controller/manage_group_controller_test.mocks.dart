@@ -5,7 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i11;
 
-import 'package:flutter/cupertino.dart' as _i5;
+import 'package:flutter/material.dart' as _i5;
 import 'package:http/http.dart' as _i7;
 import 'package:image_picker/image_picker.dart' as _i14;
 import 'package:mobx/mobx.dart' as _i6;
@@ -123,10 +123,6 @@ class MockContactsPageController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   _i4.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
@@ -285,10 +281,6 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i11.Future<void>.value(),
               returnValueForMissingStub: _i11.Future<void>.value())
           as _i11.Future<void>);
-  @override
-  void addContact(_i10.Contact? contact) =>
-      super.noSuchMethod(Invocation.method(#addContact, [contact]),
-          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [GroupsService].

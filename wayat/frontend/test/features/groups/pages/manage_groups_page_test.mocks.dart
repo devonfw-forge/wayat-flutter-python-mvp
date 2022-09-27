@@ -296,10 +296,6 @@ class MockContactsPageController extends _i1.Mock
                   this, Invocation.getter(#friendsController)))
           as _i7.FriendsController);
   @override
-  set friendsController(_i7.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
-  @override
   _i8.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
               returnValue: _FakeSuggestionsController_7(
@@ -457,10 +453,6 @@ class MockFriendsController extends _i1.Mock implements _i7.FriendsController {
               returnValue: _i10.Future<void>.value(),
               returnValueForMissingStub: _i10.Future<void>.value())
           as _i10.Future<void>);
-  @override
-  void addContact(_i13.Contact? contact) =>
-      super.noSuchMethod(Invocation.method(#addContact, [contact]),
-          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [XFile].
