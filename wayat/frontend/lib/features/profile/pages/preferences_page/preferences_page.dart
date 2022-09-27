@@ -84,7 +84,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return RestartIosDialog();
+                          return const RestartIosDialog();
                         });
                   }
                 } else {
