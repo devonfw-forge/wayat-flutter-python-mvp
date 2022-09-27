@@ -63,14 +63,21 @@ dependencies:
   cloud_firestore: ^3.4.6
   firebase_auth: ^3.7.0
   image_picker: ^0.8.5+3
+  # Phone verification
+  firebase_phone_auth_handler: ^1.0.6
+  pinput: ^2.2.12
+  smart_auth: ^1.0.5
   # Testing mocks
   mockito: ^5.3.0
-  pinput: ^2.2.12
-  firebase_phone_auth_handler: ^1.0.6
-  smart_auth: ^1.0.5
+  # Web dependencies
+  google_maps_flutter_web: ^0.4.0+2
+  # Icon generation
   flutter_launcher_icons: ^0.10.0
+  # Platfor app dependencies
   restart_app: ^1.1.0+1
   app_settings: ^4.1.8
+  # Synchronization
+  synchronized: ^3.0.0+3
 
 
 dev_dependencies:

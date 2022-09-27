@@ -47,7 +47,7 @@ class SelectedContacts extends StatelessWidget {
       child: CustomOutlinedButton(
           text: appLocalizations.next,
           onPressed: () {
-            controller.finishOnBoarding(context);
+            controller.finishOnBoarding();
           }),
     );
   }

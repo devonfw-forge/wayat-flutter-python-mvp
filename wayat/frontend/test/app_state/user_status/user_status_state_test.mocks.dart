@@ -4,7 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i11;
-import 'dart:typed_data' as _i15;
+import 'dart:typed_data' as _i16;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i2;
 import 'package:firebase_core/firebase_core.dart' as _i9;
@@ -12,10 +12,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart' as _i5;
 import 'package:location/location.dart' as _i8;
 import 'package:mobx/mobx.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/app_state/location_state/location_state.dart' as _i14;
+import 'package:wayat/app_state/location_state/location_state.dart' as _i15;
 import 'package:wayat/app_state/location_state/share_mode.dart' as _i13;
 import 'package:wayat/app_state/user_status/user_status_state.dart' as _i4;
 import 'package:wayat/domain/location/contact_location.dart' as _i12;
+import 'package:wayat/services/contact/contact_service.dart' as _i14;
 import 'package:wayat/services/location/share_location_service.dart' as _i3;
 import 'package:wayat/services/location/share_location_service_factory.dart'
     as _i6;
@@ -139,12 +140,29 @@ class MockUserStatusService extends _i1.Mock implements _i10.UserStatusService {
             #onLocationModeUpdate: onLocationModeUpdate
           }),
           returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
+  @override
+  _i13.ShareLocationMode getLocationModeFromStatus(
+          Map<String, dynamic>? firestoreData) =>
+      (super.noSuchMethod(
+              Invocation.method(#getLocationModeFromStatus, [firestoreData]),
+              returnValue: _i13.ShareLocationMode.active)
+          as _i13.ShareLocationMode);
+  @override
+  _i11.Future<List<_i12.ContactLocation>> getContactRefsFromStatus(
+          Map<String, dynamic>? firestoreData,
+          {_i14.ContactService? contactService}) =>
+      (super.noSuchMethod(
+              Invocation.method(#getContactRefsFromStatus, [firestoreData],
+                  {#contactService: contactService}),
+              returnValue: _i11.Future<List<_i12.ContactLocation>>.value(
+                  <_i12.ContactLocation>[]))
+          as _i11.Future<List<_i12.ContactLocation>>);
 }
 
 /// A class which mocks [LocationState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocationState extends _i1.Mock implements _i14.LocationState {
+class MockLocationState extends _i1.Mock implements _i15.LocationState {
   MockLocationState() {
     _i1.throwOnMissingStub(this);
   }
@@ -306,7 +324,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i2.FirebaseFirestore {
               returnValueForMissingStub: _i11.Future<void>.value())
           as _i11.Future<void>);
   @override
-  _i2.LoadBundleTask loadBundle(_i15.Uint8List? bundle) =>
+  _i2.LoadBundleTask loadBundle(_i16.Uint8List? bundle) =>
       (super.noSuchMethod(Invocation.method(#loadBundle, [bundle]),
               returnValue: _FakeLoadBundleTask_11(
                   this, Invocation.method(#loadBundle, [bundle])))

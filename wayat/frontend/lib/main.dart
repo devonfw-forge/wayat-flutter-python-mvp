@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -32,9 +33,12 @@ Future main() async {
 
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
+
   await Firebase.initializeApp(
       name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
+
   await registerSingletons();
+
   setTimeAgoLocales();
 
   runApp(const MyApp());
@@ -49,21 +53,19 @@ void setTimeAgoLocales() {
 }
 
 Future registerSingletons() async {
-  //Register with GetIt all the singletons for the repos like this
-  //GetIt.I.registerLazySingleton<AbstractClass>(() => ImplementationClass())
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
+  GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
+  GetIt.I.registerLazySingleton<MapState>(() => MapState());
+  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
+  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
-  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-  GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
   GetIt.I.registerLazySingleton<ContactsPageController>(
       () => ContactsPageController());
+  GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
   GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
   GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
-  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
-  GetIt.I.registerLazySingleton<MapState>(() => MapState());
-  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
-  GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
 }
 
 class MyApp extends StatefulWidget {
@@ -78,6 +80,9 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
 
   final MapState mapState = GetIt.I.get<MapState>();
   final ProfileState profileState = GetIt.I.get<ProfileState>();
+
+  // Lock for concurrent code execution
+  final Lock _lock = Lock();
 
   @override
   void initState() {
@@ -94,22 +99,25 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-    // It will be executed if the app is opened from background, but not when it is
-    // opened for first time
-    if (state == AppLifecycleState.resumed) {
-      if (!mapState.mapOpened &&
-          GetIt.I.get<SessionState>().currentUser != null) {
-        await mapState.openMap();
+    // Lock is necessary, since this function is executed concurrently when changing states
+    _lock.synchronized(() async {
+      // It will be executed if the app is opened from background, but not when it is
+      // opened for first time
+      if (state == AppLifecycleState.resumed) {
+        if (!mapState.mapOpened &&
+            GetIt.I.get<SessionState>().currentUser != null) {
+          await mapState.openMap();
+        }
       }
-    }
-    // Other states must execute a close map event, but detach is not included,
-    // when the app is closed it can not send a request
-    else if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused) {
-      if (mapState.mapOpened) {
-        await mapState.closeMap();
+      // Other states must execute a close map event, but detach is not included,
+      // when the app is closed it can not send a request
+      else if (state == AppLifecycleState.inactive ||
+          state == AppLifecycleState.paused) {
+        if (mapState.mapOpened) {
+          await mapState.closeMap();
+        }
       }
-    }
+    });
   }
 
   @override

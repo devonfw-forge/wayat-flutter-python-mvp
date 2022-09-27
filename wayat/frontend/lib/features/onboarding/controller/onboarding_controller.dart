@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -15,15 +14,18 @@ part 'onboarding_controller.g.dart';
 class OnboardingController = _OnboardingController with _$OnboardingController;
 
 abstract class _OnboardingController with Store {
-  ContactService contactService = ContactServiceImpl();
+  final ContactsAddressServiceImpl importContactService;
+  final ContactService contactService;
 
-  _OnboardingController() {
+  _OnboardingController({ContactsAddressServiceImpl? addressServiceImpl, ContactService? contactService})
+      : importContactService = addressServiceImpl ?? ContactsAddressServiceImpl(),
+      contactService = contactService ?? ContactServiceImpl() {
     importContacts();
   }
 
   void importContacts() async {
     List<String> importedContacts =
-        await ContactsAddressServiceImpl.getAllPhones();
+        await importContactService.getAllPhones();
     List<Contact> filteredContacts =
         await contactService.getFilteredContacts(importedContacts);
     addAll(filteredContacts);
@@ -53,7 +55,7 @@ abstract class _OnboardingController with Store {
     return selectedContacts.contains(contact);
   }
 
-  void finishOnBoarding(BuildContext context) {
+  void finishOnBoarding() {
     contactService.sendRequests(selectedContacts);
     SessionState userSession = GetIt.I.get<SessionState>();
     userSession.doneOnBoarding();

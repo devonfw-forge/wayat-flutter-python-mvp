@@ -5,7 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i11;
 
-import 'package:flutter/cupertino.dart' as _i5;
+import 'package:flutter/material.dart' as _i5;
 import 'package:mobx/mobx.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:wayat/domain/contact/contact.dart' as _i10;
@@ -20,6 +20,7 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
     as _i4;
 import 'package:wayat/services/contact/contact_service.dart' as _i7;
+import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i12;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -109,10 +110,6 @@ class MockContactsPageController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   _i4.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
@@ -273,8 +270,11 @@ class MockSuggestionsController extends _i1.Mock
               returnValueForMissingStub: _i11.Future<void>.value())
           as _i11.Future<void>);
   @override
-  _i11.Future<dynamic> updateSuggestedContacts() =>
-      (super.noSuchMethod(Invocation.method(#updateSuggestedContacts, []),
+  _i11.Future<dynamic> updateSuggestedContacts(
+          {_i12.ContactsAddressServiceImpl? contactsAddressServiceImpl}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateSuggestedContacts, [],
+              {#contactsAddressServiceImpl: contactsAddressServiceImpl}),
           returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
   @override
   void setTextFilter(String? text) =>
@@ -284,6 +284,10 @@ class MockSuggestionsController extends _i1.Mock
   _i11.Future<dynamic> copyInvitation() =>
       (super.noSuchMethod(Invocation.method(#copyInvitation, []),
           returnValue: _i11.Future<dynamic>.value()) as _i11.Future<dynamic>);
+  @override
+  String platformText() =>
+      (super.noSuchMethod(Invocation.method(#platformText, []), returnValue: '')
+          as String);
 }
 
 /// A class which mocks [ContactService].
@@ -383,10 +387,6 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i11.Future<void>.value(),
               returnValueForMissingStub: _i11.Future<void>.value())
           as _i11.Future<void>);
-  @override
-  void addContact(_i10.Contact? contact) =>
-      super.noSuchMethod(Invocation.method(#addContact, [contact]),
-          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [RequestsController].
@@ -404,10 +404,6 @@ class MockRequestsController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   String get textFilter =>
       (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')

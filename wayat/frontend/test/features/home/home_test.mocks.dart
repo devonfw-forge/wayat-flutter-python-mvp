@@ -6,7 +6,7 @@
 import 'dart:async' as _i24;
 import 'dart:ui' as _i13;
 
-import 'package:flutter/cupertino.dart' as _i5;
+import 'package:flutter/material.dart' as _i5;
 import 'package:google_maps_flutter/google_maps_flutter.dart' as _i10;
 import 'package:http/http.dart' as _i19;
 import 'package:image_picker/image_picker.dart' as _i32;
@@ -20,11 +20,11 @@ import 'package:wayat/app_state/profile_state/profile_state.dart' as _i30;
 import 'package:wayat/app_state/user_session/session_state.dart' as _i22;
 import 'package:wayat/app_state/user_status/user_status_state.dart' as _i9;
 import 'package:wayat/domain/contact/contact.dart' as _i26;
-import 'package:wayat/domain/group/group.dart' as _i35;
+import 'package:wayat/domain/group/group.dart' as _i36;
 import 'package:wayat/domain/location/contact_location.dart' as _i28;
 import 'package:wayat/domain/user/my_user.dart' as _i23;
 import 'package:wayat/features/contact_profile/controller/contact_profile_controller.dart'
-    as _i36;
+    as _i37;
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart'
     as _i20;
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart'
@@ -36,13 +36,14 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart'
     as _i4;
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart'
-    as _i34;
+    as _i35;
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart'
     as _i31;
 import 'package:wayat/lang/language.dart' as _i14;
 import 'package:wayat/services/authentication/auth_service.dart' as _i7;
 import 'package:wayat/services/common/http_provider/http_provider.dart' as _i18;
 import 'package:wayat/services/contact/contact_service.dart' as _i16;
+import 'package:wayat/services/contact/import_phones_service_impl.dart' as _i34;
 import 'package:wayat/services/groups/groups_service.dart' as _i17;
 import 'package:wayat/services/location/share_location_service.dart' as _i8;
 import 'package:wayat/services/location/share_location_service_factory.dart'
@@ -181,14 +182,19 @@ class _FakeBitmapDescriptor_20 extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
-class _FakeResponse_21 extends _i1.SmartFake implements _i19.Response {
-  _FakeResponse_21(Object parent, Invocation parentInvocation)
+class _FakeClient_21 extends _i1.SmartFake implements _i19.Client {
+  _FakeClient_21(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeStreamedResponse_22 extends _i1.SmartFake
+class _FakeResponse_22 extends _i1.SmartFake implements _i19.Response {
+  _FakeResponse_22(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_23 extends _i1.SmartFake
     implements _i19.StreamedResponse {
-  _FakeStreamedResponse_22(Object parent, Invocation parentInvocation)
+  _FakeStreamedResponse_23(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -217,10 +223,6 @@ class MockContactsPageController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   _i4.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
@@ -828,10 +830,6 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i24.Future<void>.value(),
               returnValueForMissingStub: _i24.Future<void>.value())
           as _i24.Future<void>);
-  @override
-  void addContact(_i26.Contact? contact) =>
-      super.noSuchMethod(Invocation.method(#addContact, [contact]),
-          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [RequestsController].
@@ -849,10 +847,6 @@ class MockRequestsController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   String get textFilter =>
       (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')
@@ -999,8 +993,11 @@ class MockSuggestionsController extends _i1.Mock
               returnValueForMissingStub: _i24.Future<void>.value())
           as _i24.Future<void>);
   @override
-  _i24.Future<dynamic> updateSuggestedContacts() =>
-      (super.noSuchMethod(Invocation.method(#updateSuggestedContacts, []),
+  _i24.Future<dynamic> updateSuggestedContacts(
+          {_i34.ContactsAddressServiceImpl? contactsAddressServiceImpl}) =>
+      (super.noSuchMethod(
+          Invocation.method(#updateSuggestedContacts, [],
+              {#contactsAddressServiceImpl: contactsAddressServiceImpl}),
           returnValue: _i24.Future<dynamic>.value()) as _i24.Future<dynamic>);
   @override
   void setTextFilter(String? text) =>
@@ -1010,12 +1007,16 @@ class MockSuggestionsController extends _i1.Mock
   _i24.Future<dynamic> copyInvitation() =>
       (super.noSuchMethod(Invocation.method(#copyInvitation, []),
           returnValue: _i24.Future<dynamic>.value()) as _i24.Future<dynamic>);
+  @override
+  String platformText() =>
+      (super.noSuchMethod(Invocation.method(#platformText, []), returnValue: '')
+          as String);
 }
 
 /// A class which mocks [GroupsController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGroupsController extends _i1.Mock implements _i34.GroupsController {
+class MockGroupsController extends _i1.Mock implements _i35.GroupsController {
   MockGroupsController() {
     _i1.throwOnMissingStub(this);
   }
@@ -1031,16 +1032,16 @@ class MockGroupsController extends _i1.Mock implements _i34.GroupsController {
       super.noSuchMethod(Invocation.setter(#groupsService, _groupsService),
           returnValueForMissingStub: null);
   @override
-  _i6.ObservableList<_i35.Group> get groups => (super.noSuchMethod(
+  _i6.ObservableList<_i36.Group> get groups => (super.noSuchMethod(
       Invocation.getter(#groups),
-      returnValue: _FakeObservableList_16<_i35.Group>(
-          this, Invocation.getter(#groups))) as _i6.ObservableList<_i35.Group>);
+      returnValue: _FakeObservableList_16<_i36.Group>(
+          this, Invocation.getter(#groups))) as _i6.ObservableList<_i36.Group>);
   @override
-  set groups(_i6.ObservableList<_i35.Group>? value) =>
+  set groups(_i6.ObservableList<_i36.Group>? value) =>
       super.noSuchMethod(Invocation.setter(#groups, value),
           returnValueForMissingStub: null);
   @override
-  set selectedGroup(_i35.Group? value) =>
+  set selectedGroup(_i36.Group? value) =>
       super.noSuchMethod(Invocation.setter(#selectedGroup, value),
           returnValueForMissingStub: null);
   @override
@@ -1070,15 +1071,15 @@ class MockGroupsController extends _i1.Mock implements _i34.GroupsController {
       (super.noSuchMethod(Invocation.method(#updateGroups, []),
           returnValue: _i24.Future<bool>.value(false)) as _i24.Future<bool>);
   @override
-  void setGroups(List<_i35.Group>? groups) =>
+  void setGroups(List<_i36.Group>? groups) =>
       super.noSuchMethod(Invocation.method(#setGroups, [groups]),
           returnValueForMissingStub: null);
   @override
-  _i24.Future<dynamic> createGroup(_i35.Group? group, _i32.XFile? picture) =>
+  _i24.Future<dynamic> createGroup(_i36.Group? group, _i32.XFile? picture) =>
       (super.noSuchMethod(Invocation.method(#createGroup, [group, picture]),
           returnValue: _i24.Future<dynamic>.value()) as _i24.Future<dynamic>);
   @override
-  void setSelectedGroup(_i35.Group? group) =>
+  void setSelectedGroup(_i36.Group? group) =>
       super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
           returnValueForMissingStub: null);
   @override
@@ -1099,7 +1100,7 @@ class MockGroupsController extends _i1.Mock implements _i34.GroupsController {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockContactProfileController extends _i1.Mock
-    implements _i36.ContactProfileController {
+    implements _i37.ContactProfileController {
   MockContactProfileController() {
     _i1.throwOnMissingStub(this);
   }
@@ -1155,6 +1156,10 @@ class MockHttpProvider extends _i1.Mock implements _i18.HttpProvider {
   }
 
   @override
+  _i19.Client get client => (super.noSuchMethod(Invocation.getter(#client),
+          returnValue: _FakeClient_21(this, Invocation.getter(#client)))
+      as _i19.Client);
+  @override
   String get baseUrl =>
       (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
           as String);
@@ -1162,6 +1167,12 @@ class MockHttpProvider extends _i1.Mock implements _i18.HttpProvider {
   set baseUrl(String? _baseUrl) =>
       super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
           returnValueForMissingStub: null);
+  @override
+  _i24.Future<Map<String, String>> getHeaders() =>
+      (super.noSuchMethod(Invocation.method(#getHeaders, []),
+              returnValue:
+                  _i24.Future<Map<String, String>>.value(<String, String>{}))
+          as _i24.Future<Map<String, String>>);
   @override
   _i24.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
       (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
@@ -1172,7 +1183,7 @@ class MockHttpProvider extends _i1.Mock implements _i18.HttpProvider {
   _i24.Future<_i19.Response> sendPostRequest(
           String? subPath, Map<String, dynamic>? body) =>
       (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i24.Future<_i19.Response>.value(_FakeResponse_21(
+              returnValue: _i24.Future<_i19.Response>.value(_FakeResponse_22(
                   this, Invocation.method(#sendPostRequest, [subPath, body]))))
           as _i24.Future<_i19.Response>);
   @override
@@ -1181,7 +1192,7 @@ class MockHttpProvider extends _i1.Mock implements _i18.HttpProvider {
       (super.noSuchMethod(
               Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
               returnValue: _i24.Future<_i19.StreamedResponse>.value(
-                  _FakeStreamedResponse_22(
+                  _FakeStreamedResponse_23(
                       this,
                       Invocation.method(
                           #sendPostImageRequest, [subPath, filePath, type]))))

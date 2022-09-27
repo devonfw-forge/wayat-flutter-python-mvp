@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -82,8 +81,9 @@ void main() async {
   });
 
   group('SaveGroup validation', () {
-
-    test('SaveGroup does not create or update the group if there are less than two contacts selected', (){
+    test(
+        'SaveGroup does not create or update the group if there are less than two contacts selected',
+        () {
       Group emptyGroup = Group.empty();
       emptyGroup.name = "Name";
       when(mockGroupsService.create(emptyGroup, null))
@@ -97,7 +97,9 @@ void main() async {
       verifyNever(mockGroupsService.update(emptyGroup, null)).called(0);
     });
 
-    test("SaveGroup creates the group if the ID is empty and there are more than two contacts selected", () {
+    test(
+        "SaveGroup creates the group if the ID is empty and there are more than two contacts selected",
+        () {
       Group emptyGroup = Group.empty();
       emptyGroup.name = "Name";
       when(mockGroupsService.create(emptyGroup, null))
@@ -113,7 +115,9 @@ void main() async {
       verify(mockGroupsService.create(emptyGroup, null)).called(1);
     });
 
-    test("SaveGroup updates the group if the ID is not empty and there are more than two contacts selected", () {
+    test(
+        "SaveGroup updates the group if the ID is not empty and there are more than two contacts selected",
+        () {
       Group group = Group.empty();
       group.name = "Name";
       group.id = "ID";

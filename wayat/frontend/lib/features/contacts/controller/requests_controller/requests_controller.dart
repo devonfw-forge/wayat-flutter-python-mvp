@@ -14,7 +14,7 @@ abstract class _RequestsController with Store {
   final RequestsService _service;
   static const String pendingRequestsKey = "pending_requests";
   static const String sentRequestsKey = "sent_requests";
-  late FriendsController friendsController;
+  final FriendsController friendsController;
 
   _RequestsController(
       {required this.friendsController, RequestsService? requestsService})
