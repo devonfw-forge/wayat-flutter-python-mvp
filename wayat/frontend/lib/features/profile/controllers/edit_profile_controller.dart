@@ -14,45 +14,45 @@ class EditProfileController = _EditProfileController
     with _$EditProfileController;
 
 abstract class _EditProfileController with Store {
-  /// Get current user state from FireStore
+  /// Reference to the current user
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
 
-  /// Get profile state
+  /// Reference to the profile state
   final ProfileState profileState = GetIt.I.get<ProfileState>();
 
-  /// Initialize profile service
+  /// Instance of the profile service
   ProfileServiceImpl profileService = ProfileServiceImpl();
 
-  /// Observalbe variable [name], which uses in change name function
+  /// Observable variable [name], used when updating the username
   @observable
   String? name;
 
-  /// Observable variable [currentSelectedImage], which uses in change user image
+  /// Observable variable [currentSelectedImage], used when changing the profile picture
   @observable
   XFile? currentSelectedImage;
 
-  /// If [validPhone] is true, phone validation is successfull, if - false, phone verification is failed
+  /// Whether the proccess of validating the phone is successful
   @observable
   bool validPhone = false;
 
-  /// Set user name to new [newName]
+  /// Sets user name to new [newName]
   @action
   void setName(String newName) {
     name = newName;
   }
 
-  /// Set user image to new [image]
+  /// Sets user image to new [image]
   @action
   void setNewImage(XFile? image) {
     currentSelectedImage = image;
   }
 
-  /// Back button to redirect from chiled pages [EditProfile] or [Preferences] to parent page [Profile]
+  /// Returns from the child pages [EditProfile] or [Preferences] to the parent page [Profile]
   void onPressedBackButton() {
     profileState.setCurrentPage(ProfileCurrentPages.profile);
   }
 
-  /// Update user changes name and/or image and/or phone number
+  /// Saves all the updates to the user's profile
   Future<void> onPressedSaveButton(String phoneNumber) async {
     /// Go back from EditProfile page to Profile page
     profileState.setCurrentPage(ProfileCurrentPages.profile);
