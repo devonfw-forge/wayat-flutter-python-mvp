@@ -1,3 +1,4 @@
+/// Parses the response of the [GroupService] `getAll()` method.
 class GroupResponse {
   String id;
   List<String> members;
