@@ -6,7 +6,6 @@ import 'package:wayat/domain/group/group.dart';
 import 'dart:async';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/image_service/image_service.dart';
-import 'package:wayat/services/location/location_service_impl.dart';
 
 part 'map_controller.g.dart';
 
@@ -14,7 +13,7 @@ part 'map_controller.g.dart';
 class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
-  ImageService imageService = ImageService();
+  ImageService imageService;
 
   _MapController({ImageService? imageService})
       : imageService = imageService ?? ImageService();
@@ -70,27 +69,6 @@ abstract class _MapController with Store {
     return newMarkers;
   }
 
-  void updateMarkers() async {
-    for (var contact in contacts) {
-      LatLng currentPosition = LatLng(contact.latitude, contact.longitude);
-      LatLng newPosition =
-          LocationServiceImpl().changeContactCoordinates(currentPosition);
-
-      Map<String, BitmapDescriptor> bitmaps = await imageService
-          .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
-      Set<Marker> newMarkers = contacts
-          .map(
-            (e) => Marker(
-                markerId: MarkerId(e.name),
-                position: newPosition,
-                icon: bitmaps[e.imageUrl]!,
-                onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),
-          )
-          .toSet();
-      setMarkers(newMarkers);
-    }
-  }
-
   @action
   void setMarkers(Set<Marker> newMarkers) {
     allMarkers = ObservableSet.of(newMarkers);
@@ -121,29 +99,23 @@ abstract class _MapController with Store {
       selectedGroup = group;
       groupMembers = group.members;
     }
-    filterMarkersByGroup();
-  }
-
-  @action
-  void filterMarkersByGroup() {
-    if (groupMembers.isEmpty) {
-      filteredMarkers = ObservableSet.of(allMarkers);
-    } else {
-      final groupMembersId = groupMembers.map((e) => e.id.toLowerCase());
-      filteredMarkers = ObservableSet.of(allMarkers.where((element) =>
-          groupMembersId
-              .contains(element.markerId.value.toLowerCase().split("¿?")[0])));
-    }
+    filterMarkers();
   }
 
   @action
   void filterMarkers() {
-    filteredMarkers = ObservableSet.of(allMarkers
-        .where((element) => element.markerId.value
-            .toLowerCase()
-            .split("¿?")[1]
-            .contains(searchBarText.toLowerCase()))
-        .toSet());
+    Iterable<Marker> markers = allMarkers.where((element) => element
+        .markerId.value
+        .toLowerCase()
+        .split("¿?")[1]
+        .contains(searchBarText.toLowerCase()));
+    if (groupMembers.isNotEmpty) {
+      final groupMembersId = groupMembers.map((e) => e.id.toLowerCase());
+      markers = markers.where((element) => groupMembersId
+          .contains(element.markerId.value.toLowerCase().split("¿?")[0]));
+    }
+
+    filteredMarkers = ObservableSet.of(markers.toSet());
   }
 
   void onSuggestionsTap(contact) {

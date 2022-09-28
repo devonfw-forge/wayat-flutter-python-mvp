@@ -5,7 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i11;
 
-import 'package:flutter/cupertino.dart' as _i5;
+import 'package:flutter/material.dart' as _i5;
 import 'package:http/http.dart' as _i7;
 import 'package:image_picker/image_picker.dart' as _i14;
 import 'package:mobx/mobx.dart' as _i6;
@@ -82,14 +82,19 @@ class _FakeObservableList_7<T> extends _i1.SmartFake
       : super(parent, parentInvocation);
 }
 
-class _FakeResponse_8 extends _i1.SmartFake implements _i7.Response {
-  _FakeResponse_8(Object parent, Invocation parentInvocation)
+class _FakeClient_8 extends _i1.SmartFake implements _i7.Client {
+  _FakeClient_8(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeStreamedResponse_9 extends _i1.SmartFake
+class _FakeResponse_9 extends _i1.SmartFake implements _i7.Response {
+  _FakeResponse_9(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_10 extends _i1.SmartFake
     implements _i7.StreamedResponse {
-  _FakeStreamedResponse_9(Object parent, Invocation parentInvocation)
+  _FakeStreamedResponse_10(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -118,10 +123,6 @@ class MockContactsPageController extends _i1.Mock
               returnValue: _FakeFriendsController_1(
                   this, Invocation.getter(#friendsController)))
           as _i3.FriendsController);
-  @override
-  set friendsController(_i3.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   _i4.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
@@ -280,10 +281,6 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
               returnValue: _i11.Future<void>.value(),
               returnValueForMissingStub: _i11.Future<void>.value())
           as _i11.Future<void>);
-  @override
-  void addContact(_i10.Contact? contact) =>
-      super.noSuchMethod(Invocation.method(#addContact, [contact]),
-          returnValueForMissingStub: null);
 }
 
 /// A class which mocks [GroupsService].
@@ -322,6 +319,10 @@ class MockHttpProvider extends _i1.Mock implements _i15.HttpProvider {
   }
 
   @override
+  _i7.Client get client => (super.noSuchMethod(Invocation.getter(#client),
+          returnValue: _FakeClient_8(this, Invocation.getter(#client)))
+      as _i7.Client);
+  @override
   String get baseUrl =>
       (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
           as String);
@@ -329,6 +330,12 @@ class MockHttpProvider extends _i1.Mock implements _i15.HttpProvider {
   set baseUrl(String? _baseUrl) =>
       super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
           returnValueForMissingStub: null);
+  @override
+  _i11.Future<Map<String, String>> getHeaders() =>
+      (super.noSuchMethod(Invocation.method(#getHeaders, []),
+              returnValue:
+                  _i11.Future<Map<String, String>>.value(<String, String>{}))
+          as _i11.Future<Map<String, String>>);
   @override
   _i11.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
       (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
@@ -339,7 +346,7 @@ class MockHttpProvider extends _i1.Mock implements _i15.HttpProvider {
   _i11.Future<_i7.Response> sendPostRequest(
           String? subPath, Map<String, dynamic>? body) =>
       (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i11.Future<_i7.Response>.value(_FakeResponse_8(
+              returnValue: _i11.Future<_i7.Response>.value(_FakeResponse_9(
                   this, Invocation.method(#sendPostRequest, [subPath, body]))))
           as _i11.Future<_i7.Response>);
   @override
@@ -348,7 +355,7 @@ class MockHttpProvider extends _i1.Mock implements _i15.HttpProvider {
       (super.noSuchMethod(
               Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
               returnValue: _i11.Future<_i7.StreamedResponse>.value(
-                  _FakeStreamedResponse_9(
+                  _FakeStreamedResponse_10(
                       this,
                       Invocation.method(
                           #sendPostImageRequest, [subPath, filePath, type]))))

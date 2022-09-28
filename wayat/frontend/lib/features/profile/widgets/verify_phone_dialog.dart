@@ -124,6 +124,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
                   onPressed: () async {
                     final verified = await controller.verifyOtp(enteredOtp);
                     if (verified) {
+                      // ignore: use_build_context_synchronously
                       AutoRouter.of(context).pop();
                     }
                   }),

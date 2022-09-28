@@ -91,11 +91,12 @@ abstract class _PhoneVerificationController with Store {
       validPhone = false;
       setNewPhoneNumber("");
       showDialog(
-          context: context,
-          builder: (context) {
-            return VerifyPhoneNumberDialog(
-                phoneNumber: newPhone, callbackPhone: setValidPhoneNumber);
-          });
+        context: context,
+        builder: (context) {
+          return VerifyPhoneNumberDialog(
+              phoneNumber: newPhone, callbackPhone: setValidPhoneNumber);
+        },
+      );
     }
   }
 }

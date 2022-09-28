@@ -62,6 +62,7 @@ class DeleteAccountDialog extends StatelessWidget {
       ],
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: Colors.black, width: 1),
       ),
     );
   }

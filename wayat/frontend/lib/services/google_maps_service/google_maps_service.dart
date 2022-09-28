@@ -7,34 +7,40 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
+import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
 
 class GoogleMapsService {
-  static void openMaps(double lat, double lng) async {
+  static Future openMaps(double lat, double lng,
+      {UrlLauncherLibW? urlLauncher}) async {
+    UrlLauncherLibW launcher = urlLauncher ?? UrlLauncherLibW();
     late Uri uri;
-    if (kIsWeb || Platform.isAndroid) {
+    // To test the kIsWeb condition, the access to this variable should be
+    // wrapped in its own class to allow for mocking
+    if (kIsWeb || defaultTargetPlatform == TargetPlatform.android) {
       uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-    } else if (Platform.isIOS) {
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       //apple maps
       uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
       //google maps
       //uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
     }
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+    if (await launcher.canLaunchUrl(uri)) {
+      await launcher.launchUrl(uri);
     } else {
       throw 'Could not launch ${uri.toString()}';
     }
   }
 
-  static Future<String> getAddressFromCoordinates(LatLng coords) async {
+  static Future<String> getAddressFromCoordinates(LatLng coords,
+      {Client? httpClient}) async {
+    Client client = httpClient ?? Client();
     String mapsKey = getApIKey();
 
     Uri url = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
         {"latlng": "${coords.latitude},${coords.longitude}", "key": mapsKey});
     try {
-      Response response = await get(url);
+      Response response = await client.get(url);
       Map<String, dynamic> json = jsonDecode(response.body);
       AddressResponse addressResponse = AddressResponse.fromJson(json);
       return addressResponse.firstValidAddress();
@@ -76,14 +82,14 @@ class GoogleMapsService {
   }
 
   static String getApIKey() {
-    if (kIsWeb) {
-      return dotenv.get('WEB_API_KEY');
-    } else if (Platform.isAndroid) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
       return dotenv.get('ANDROID_API_KEY');
-    } else if (Platform.isIOS) {
-      return dotenv.get('IOS_API_KEY');
-    } else {
-      return "";
     }
+
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return dotenv.get('IOS_API_KEY');
+    }
+
+    return dotenv.get('WEB_API_KEY');
   }
 }

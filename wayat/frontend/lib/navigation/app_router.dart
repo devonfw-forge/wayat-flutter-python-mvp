@@ -20,12 +20,19 @@ import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_wrapper.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
-import 'package:wayat/features/profile/pages//preferences_page/preferences_page.dart';
+import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
 import 'package:wayat/features/profile/pages/profile_wraper.dart';
 import 'package:wayat/features/root/root_wrapper.dart';
 
+/// Defines the routes and structure in order to automatically generate the app's router.
+///
+/// This makes sure that the navigation stack must, at all times, follow the
+/// tree structure defined in the [MaterialAutoRouter] annotation.
+///
+/// All pages must follow the naming convention `*Page`, to be renamed as `*Route` by the
+/// [AutoRoute] library using automatic code generation.
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
   AutoRoute(page: RootWrapper, initial: true, children: [
     AutoRoute(page: OnBoardingWrapper, children: [
