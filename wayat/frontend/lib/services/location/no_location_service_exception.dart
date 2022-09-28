@@ -1,3 +1,4 @@
+/// Thrown when the device cannot access a service location
 class NoLocationServiceException implements Exception {
   @override
   String toString() {
