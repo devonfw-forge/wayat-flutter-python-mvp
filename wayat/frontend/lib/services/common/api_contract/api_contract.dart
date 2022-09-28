@@ -1,3 +1,4 @@
+/// Defines the relative URLs for the server endpoints.
 class APIContract {
   /*
    * ============ USER ============ *
@@ -43,7 +44,7 @@ class APIContract {
    */
 
   /// [GET] Returns this user's groups
-
+  ///
   /// [GET] Returns a specific group (Required ID appended in the URL)
   ///
   /// [POST] Creates a group

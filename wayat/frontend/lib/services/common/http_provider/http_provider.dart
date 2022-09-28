@@ -9,14 +9,23 @@ import 'package:wayat/services/authentication/auth_service.dart';
 // ignore: depend_on_referenced_packages, implementation_imports
 import 'package:http_parser/src/media_type.dart';
 
+/// Encapsulates the proccess of making authorized HTTP requests from the services.
+///
+/// This allows for mocking all HTTP requests in service testing and also,
+/// reduces code duplication by abstracting this proccess.
 class HttpProvider {
+  /// Client that will make all requests
   final http.Client client;
 
+  /// Creates an [HttpProvider].
+  ///
+  /// The optional [http.CLient] argument is added for testing purposes.
   HttpProvider({http.Client? client}) : client = client ?? http.Client();
 
+  /// Gets the base url of the server using environment variables.
   String baseUrl = dotenv.get('BASE_URL');
 
-  /// Generetes a *dictionary* with the headers for backend connection
+  /// Returns the necessary content and authentication headers for all server requests.
   @visibleForTesting
   Future<Map<String, String>> getHeaders() async {
     AuthService authService = GetIt.I.get<SessionState>().authService;
@@ -26,7 +35,7 @@ class HttpProvider {
     };
   }
 
-  /// Sends a **GET** request to [baseUrl]/[subPath], using the configured authentication
+  /// Sends a `GET` request to `baseUrl`/`subPath`.
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
     final headers = await getHeaders();
     http.Response resultJson =
@@ -35,8 +44,7 @@ class HttpProvider {
         as Map<String, dynamic>;
   }
 
-  /// Sends a **POST** request to [baseUrl]/[subPath] and with [body] as content,
-  /// using the configured authentication
+  /// Sends a `POST` request to `baseUrl`/`subPath` with `body` as the content.
   Future<http.Response> sendPostRequest(
     String subPath,
     Map<String, dynamic> body,
@@ -46,8 +54,7 @@ class HttpProvider {
     return response;
   }
 
-  /// Sends a **POST** request to upload ImageFIle [baseUrl]/[subPath] and with [body] as content,
-  /// using the configured authentication
+  /// Sends a `POST` multipart request to upload the image located at `filePath` to `baseUrl`/`subPath`.
   Future<http.StreamedResponse> sendPostImageRequest(
     String subPath,
     String filePath,
@@ -66,8 +73,7 @@ class HttpProvider {
     return await client.send(request);
   }
 
-  /// Sends a **PUT** request to [baseUrl]/[subPath] and with [body] as content,
-  /// using the configured authentication
+  /// Sends a `PUT` request to `baseUrl`/`subPath` and with `body` as content.
   Future<bool> sendPutRequest(String subPath, Map<String, dynamic> body) async {
     http.Response resultJson = await client.put(Uri.parse("$baseUrl/$subPath"),
         headers: await getHeaders(), body: jsonEncode(body));
@@ -75,7 +81,7 @@ class HttpProvider {
     return resultJson.statusCode / 10 == 20;
   }
 
-  /// Sends a **DEL** request to [baseUrl]/[subPath], using the configured authentication
+  /// Sends a `DEL` request to `baseUrl`/`subPath`.
   Future<bool> sendDelRequest(String subPath) async {
     http.Response resultJson = await client
         .delete(Uri.parse("$baseUrl/$subPath"), headers: await getHeaders());
