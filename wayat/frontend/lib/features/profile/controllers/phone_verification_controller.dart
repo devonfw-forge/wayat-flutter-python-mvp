@@ -13,37 +13,51 @@ part 'phone_verification_controller.g.dart';
 class PhoneVerificationController = _PhoneVerificationController
     with _$PhoneVerificationController;
 
+/// Controller which contains methods and functions which validate phone number
 abstract class _PhoneVerificationController with Store {
+  /// Get current user session state from FireStore
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
 
+  /// Initialize [phoneNumber] variable
   @observable
   String phoneNumber = "";
 
+  /// Initialize [errorPhoneVerificationMsg] variable
   @observable
   String errorPhoneVerificationMsg = "";
 
+  /// Initialize [errorPhoneFormat] variable
   @observable
   String errorPhoneFormat = "";
 
+  /// If [validPhone] true, phone validation is successfull, if - false is failed
   @observable
   bool validPhone = false;
 
+  /// Set new [phone] number
   @action
   void setNewPhoneNumber(String phone) {
     phoneNumber = phone;
   }
 
+  /// Set valid [phone] number
   @action
   void setValidPhoneNumber(String phone) {
     phoneNumber = phone;
     validPhone = true;
   }
 
+  /// Set error [msg]
   @action
   void setErrorPhoneMsg(String msg) {
     errorPhoneVerificationMsg = msg;
   }
 
+  /// Validate new entered [textValue] phone number
+  ///
+  /// check phone number is not null
+  /// check phone number length is correct
+  /// check phone number is different of previous one
   @action
   String validatePhoneNumber(textValue) {
     if (textValue.number.isEmpty) {
@@ -58,6 +72,8 @@ abstract class _PhoneVerificationController with Store {
     return errorPhoneFormat;
   }
 
+  /// On change phone number, call validation
+  /// If [validPhone] true call [_submit]
   void onChangePhoneNumber(
       PhoneNumber phone, GlobalKey<FormState> formKey, BuildContext context) {
     if (formKey.currentState != null) {
@@ -68,6 +84,7 @@ abstract class _PhoneVerificationController with Store {
     }
   }
 
+  /// Show verification dialog to get OTP sms
   void _submit(String newPhone, BuildContext context) {
     FocusScope.of(context).unfocus();
     if (errorPhoneVerificationMsg == '') {
