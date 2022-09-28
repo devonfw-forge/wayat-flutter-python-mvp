@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'package:wayat/domain/user/user.dart';
 
+/// Current data of logged user
 class MyUser extends User {
+  /// Whether user finished the onboarding
   bool onboardingCompleted;
+
+  /// Whether user is sharing its location
   bool shareLocationEnabled;
 
   MyUser({
