@@ -12,29 +12,34 @@ part 'location_state.g.dart';
 // ignore: library_private_types_in_public_api
 class LocationState = _LocationState with _$LocationState;
 
+/// Controls and updates the user's location
 abstract class _LocationState with Store {
+  /// Service to communicate the updates to the server
   late ShareLocationService shareLocationService;
 
-  late UserStatusState userStatusState;
-
+  /// Stores the user's location
   @observable
   LatLng currentLocation = const LatLng(0, 0);
 
+  /// Whether the user is currently sending their location to the server
   @observable
   bool shareLocationEnabled =
       GetIt.I.get<SessionState>().currentUser!.shareLocationEnabled;
 
-  final ShareLocationServiceFactory shareLocationServiceFactory;
-
+  /// Callback that will be called when the service detects that it needs
+  /// to update the user's location
   late Function(LatLng) onLocationChanged =
       (newLoc) => setCurrentLocation(newLoc);
 
-  _LocationState({ShareLocationServiceFactory? shareLocationServiceFactory})
-      : shareLocationServiceFactory =
-            shareLocationServiceFactory ?? ShareLocationServiceFactory();
-
-  Future initialize() async {
-    userStatusState = GetIt.I.get<UserStatusState>();
+  /// Creates the share location service and sets up the initial location state
+  ///
+  /// Sets the [shareLocationService] to update the user's location, as well as initialize
+  /// the Firebase listener in the UserStatusState
+  Future initialize(
+      {ShareLocationServiceFactory? locationServiceFactory}) async {
+    ShareLocationServiceFactory shareLocationServiceFactory =
+        locationServiceFactory ?? ShareLocationServiceFactory();
+    UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
 
     shareLocationService = await shareLocationServiceFactory.create(
         shareLocationMode: userStatusState.locationMode,
@@ -49,12 +54,14 @@ abstract class _LocationState with Store {
         LatLng(currentLocationData.latitude!, currentLocationData.longitude!);
   }
 
+  /// Updates the option to share location in the state and [shareLocationService]
   @action
   void setShareLocationEnabled(bool shareLocation) {
     shareLocationEnabled = shareLocation;
     shareLocationService.setShareLocationEnabled(shareLocation);
   }
 
+  /// Updates current location
   @action
   void setCurrentLocation(LatLng newLocation) {
     currentLocation = newLocation;

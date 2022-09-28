@@ -66,7 +66,6 @@ abstract class _SessionState with Store {
     currentUser = await authService.getUserData();
   }
 
-  ///TODO: Evaluate doing optimistic update
   @action
   Future<bool> updatePhone(String phone) async {
     bool done = await authService.sendPhoneNumber(phone);
@@ -74,7 +73,6 @@ abstract class _SessionState with Store {
     return done;
   }
 
-  ///TODO: Evaluate doing optimistic update
   @action
   Future<bool> setDoneOnBoarding() async {
     bool done = await authService.sendDoneOnboarding(true);

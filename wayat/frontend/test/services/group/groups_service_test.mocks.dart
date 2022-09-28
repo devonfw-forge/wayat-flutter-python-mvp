@@ -21,19 +21,24 @@ import 'package:wayat/services/common/http_provider/http_provider.dart' as _i3;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeResponse_0 extends _i1.SmartFake implements _i2.Response {
-  _FakeResponse_0(Object parent, Invocation parentInvocation)
+class _FakeClient_0 extends _i1.SmartFake implements _i2.Client {
+  _FakeClient_0(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeStreamedResponse_1 extends _i1.SmartFake
+class _FakeResponse_1 extends _i1.SmartFake implements _i2.Response {
+  _FakeResponse_1(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
+class _FakeStreamedResponse_2 extends _i1.SmartFake
     implements _i2.StreamedResponse {
-  _FakeStreamedResponse_1(Object parent, Invocation parentInvocation)
+  _FakeStreamedResponse_2(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
-class _FakeByteStream_2 extends _i1.SmartFake implements _i2.ByteStream {
-  _FakeByteStream_2(Object parent, Invocation parentInvocation)
+class _FakeByteStream_3 extends _i1.SmartFake implements _i2.ByteStream {
+  _FakeByteStream_3(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -46,6 +51,10 @@ class MockHttpProvider extends _i1.Mock implements _i3.HttpProvider {
   }
 
   @override
+  _i2.Client get client => (super.noSuchMethod(Invocation.getter(#client),
+          returnValue: _FakeClient_0(this, Invocation.getter(#client)))
+      as _i2.Client);
+  @override
   String get baseUrl =>
       (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
           as String);
@@ -53,6 +62,12 @@ class MockHttpProvider extends _i1.Mock implements _i3.HttpProvider {
   set baseUrl(String? _baseUrl) =>
       super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
           returnValueForMissingStub: null);
+  @override
+  _i4.Future<Map<String, String>> getHeaders() =>
+      (super.noSuchMethod(Invocation.method(#getHeaders, []),
+              returnValue:
+                  _i4.Future<Map<String, String>>.value(<String, String>{}))
+          as _i4.Future<Map<String, String>>);
   @override
   _i4.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
       (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
@@ -63,7 +78,7 @@ class MockHttpProvider extends _i1.Mock implements _i3.HttpProvider {
   _i4.Future<_i2.Response> sendPostRequest(
           String? subPath, Map<String, dynamic>? body) =>
       (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_0(
+              returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_1(
                   this, Invocation.method(#sendPostRequest, [subPath, body]))))
           as _i4.Future<_i2.Response>);
   @override
@@ -72,7 +87,7 @@ class MockHttpProvider extends _i1.Mock implements _i3.HttpProvider {
       (super.noSuchMethod(
           Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
           returnValue: _i4.Future<_i2.StreamedResponse>.value(
-              _FakeStreamedResponse_1(
+              _FakeStreamedResponse_2(
                   this,
                   Invocation.method(
                       #sendPostImageRequest, [subPath, filePath, type])))) as _i4
@@ -131,7 +146,7 @@ class MockStreamedResponse extends _i1.Mock implements _i2.StreamedResponse {
 
   @override
   _i2.ByteStream get stream => (super.noSuchMethod(Invocation.getter(#stream),
-          returnValue: _FakeByteStream_2(this, Invocation.getter(#stream)))
+          returnValue: _FakeByteStream_3(this, Invocation.getter(#stream)))
       as _i2.ByteStream);
   @override
   int get statusCode =>

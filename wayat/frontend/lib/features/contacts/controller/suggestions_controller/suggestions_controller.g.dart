@@ -38,9 +38,11 @@ mixin _$SuggestionsController on _SuggestionsController, Store {
       context: context);
 
   @override
-  Future<dynamic> updateSuggestedContacts() {
-    return _$updateSuggestedContactsAsyncAction
-        .run(() => super.updateSuggestedContacts());
+  Future<dynamic> updateSuggestedContacts(
+      {ContactsAddressServiceImpl? contactsAddressServiceImpl}) {
+    return _$updateSuggestedContactsAsyncAction.run(() => super
+        .updateSuggestedContacts(
+            contactsAddressServiceImpl: contactsAddressServiceImpl));
   }
 
   late final _$_SuggestionsControllerActionController =
