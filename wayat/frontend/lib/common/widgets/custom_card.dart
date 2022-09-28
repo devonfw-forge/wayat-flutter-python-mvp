@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// Tile with text and icon arrow on trailing.
 class CustomCard extends StatelessWidget {
+  /// Text show inside widget
   final String text;
+
+  /// Callback executed when widget is pressed
+  // Null values will disable the widget
   final void Function()? onTap;
 
   const CustomCard({required this.text, Key? key, this.onTap})

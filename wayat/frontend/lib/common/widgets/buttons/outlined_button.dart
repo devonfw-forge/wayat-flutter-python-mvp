@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// Rounded border button with text
 class CustomOutlinedButton extends StatelessWidget {
+  /// Callback called when widget is pressed
+  // Null values will disabled the button
   final void Function()? onPressed;
+
+  /// Text displayed in the button
   final String text;
 
   const CustomOutlinedButton(

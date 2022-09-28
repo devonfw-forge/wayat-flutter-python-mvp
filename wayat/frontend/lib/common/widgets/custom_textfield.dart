@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
+/// Textfield with label and a hint inside it
 class CustomTextField extends StatelessWidget {
+  /// Name of the field showed at beggining of textfield
   final String label;
+
+  /// Value to edit
   final String hint;
+
+  /// Controller for textfield. It allows to listen changes.
   final TextEditingController controller;
 
   const CustomTextField(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Title of Wayat application for the AppBar
 class CustomWayatTitle extends StatelessWidget {
   const CustomWayatTitle({Key? key}) : super(key: key);
 

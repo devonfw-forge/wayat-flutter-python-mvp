@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+/// Button without border and with a solid white infill and text
 class CustomTextButton extends StatelessWidget {
+  /// Callback executed when widget is pressed
   final void Function()? onPressed;
+
+  /// Text displayed inside button
   final String text;
 
   const CustomTextButton(
