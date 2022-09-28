@@ -13,7 +13,9 @@ import 'package:wayat/services/groups/groups_service.dart';
 // ignore: depend_on_referenced_packages
 import 'package:mime/mime.dart';
 
+/// Implementation of [GroupService]
 class GroupsServiceImpl implements GroupsService {
+  /// Makes the HTTP calls for the service.
   HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   @override
