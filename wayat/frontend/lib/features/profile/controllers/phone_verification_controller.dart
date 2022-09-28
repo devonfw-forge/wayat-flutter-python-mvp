@@ -13,51 +13,51 @@ part 'phone_verification_controller.g.dart';
 class PhoneVerificationController = _PhoneVerificationController
     with _$PhoneVerificationController;
 
-/// Controller which contains methods and functions which validate phone number
+/// Controller used to validate the phone number
 abstract class _PhoneVerificationController with Store {
-  /// Get current user session state from FireStore
+  /// Gets current user
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
 
-  /// Initialize [phoneNumber] variable
+  /// Stores the user's phone number
   @observable
   String phoneNumber = "";
 
-  /// Initialize [errorPhoneVerificationMsg] variable
+  /// Stores the error message if the verification goes wrong
   @observable
   String errorPhoneVerificationMsg = "";
 
-  /// Initialize [errorPhoneFormat] variable
+  /// Stores the error format
   @observable
   String errorPhoneFormat = "";
 
-  /// If [validPhone] true, phone validation is successfull, if - false is failed
+  /// Whether the phone validation is successful
   @observable
   bool validPhone = false;
 
-  /// Set new [phone] number
+  /// Sets new [phone] number
   @action
   void setNewPhoneNumber(String phone) {
     phoneNumber = phone;
   }
 
-  /// Set valid [phone] number
+  /// Sets valid [phone] number
   @action
   void setValidPhoneNumber(String phone) {
     phoneNumber = phone;
     validPhone = true;
   }
 
-  /// Set error [msg]
+  /// Sets error [msg]
   @action
   void setErrorPhoneMsg(String msg) {
     errorPhoneVerificationMsg = msg;
   }
 
-  /// Validate new entered [textValue] phone number
+  /// Validates the new phone number in [textValue]
   ///
-  /// check phone number is not null
-  /// check phone number length is correct
-  /// check phone number is different of previous one
+  /// Checks phone number is not null
+  /// Checks phone number length is correct
+  /// Checks phone number is different from previous one
   @action
   String validatePhoneNumber(textValue) {
     if (textValue.number.isEmpty) {
@@ -72,8 +72,8 @@ abstract class _PhoneVerificationController with Store {
     return errorPhoneFormat;
   }
 
-  /// On change phone number, call validation
-  /// If [validPhone] true call [_submit]
+  /// When the phone number changes, validate it
+  /// If it is valid, call [_submit]
   void onChangePhoneNumber(
       PhoneNumber phone, GlobalKey<FormState> formKey, BuildContext context) {
     if (formKey.currentState != null) {
@@ -84,7 +84,7 @@ abstract class _PhoneVerificationController with Store {
     }
   }
 
-  /// Show verification dialog to get OTP sms
+  /// Shows verification dialog to get OTP sms
   void _submit(String newPhone, BuildContext context) {
     FocusScope.of(context).unfocus();
     if (errorPhoneVerificationMsg == '') {

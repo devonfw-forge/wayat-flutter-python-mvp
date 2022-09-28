@@ -1,5 +1,7 @@
+/// Defines the available screens in the profile
+///
 /// Main parent page = [profile]
-/// chiled pages [editProfile] and [preferences]
+/// children pages [editProfile] and [preferences]
 enum ProfileCurrentPages {
   editProfile,
   preference,

@@ -121,7 +121,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
     );
   }
 
-  /// Widget which change language of the application
+  /// Widget that changes the language of the application
   Widget _languageButton(List<Language> itemList) {
     return Observer(builder: (context) {
       Language languageSelected =
