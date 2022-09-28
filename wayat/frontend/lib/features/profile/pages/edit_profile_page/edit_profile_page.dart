@@ -39,24 +39,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            _profileAppBar(),
-            _buildEditProfileImage(),
-            const SizedBox(height: 32),
-            _nameTextField(),
-            const SizedBox(height: 34.5),
-            Observer(builder: (_) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: _formPhone(),
-              );
-            }),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        widget.controller.onPressedBackButton();
+        return true;
+      },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              _profileAppBar(),
+              _buildEditProfileImage(),
+              const SizedBox(height: 32),
+              _nameTextField(),
+              const SizedBox(height: 34.5),
+              Observer(builder: (_) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: _formPhone(),
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
