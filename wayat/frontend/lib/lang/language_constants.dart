@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Get current Platform environment
+/// Get system language code
 String defaultLanguage = Platform.localeName.substring(0, 2);
 
 /// Set locale from [languageCode] and save it to SharedInstanse
