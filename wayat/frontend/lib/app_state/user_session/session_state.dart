@@ -7,6 +7,10 @@ import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
 part 'session_state.g.dart';
 
+/// Manages all the states for the athenticad user related
+/// functionality. 
+/// 
+/// Also, it wraps the authentication service. 
 // ignore: library_private_types_in_public_api
 class SessionState = _SessionState with _$SessionState;
 
@@ -57,7 +61,7 @@ abstract class _SessionState with Store {
   _SessionState({AuthService? authService})
       : authService = authService ?? GoogleAuthService();
 
-  /// It calls `setDoneOnBoarding` function and then it changes 
+  /// Calls `setDoneOnBoarding` function and then it changes 
   /// the state of `hasDoneOnboarding` to `true`.
   @action
   Future<void> doneOnBoarding() async {
@@ -65,7 +69,7 @@ abstract class _SessionState with Store {
     hasDoneOnboarding = true;
   }
 
-  /// It checks if login process can be done without a
+  /// Checks if login process can be done without a
   /// graphical interface.
   /// 
   /// If this functions ends and `currentUser` remains `null`
@@ -81,7 +85,7 @@ abstract class _SessionState with Store {
     }
   }
 
-  /// It changes the state of `googleSignedIn`.
+  /// Changes the state of `googleSignedIn`.
   @action
   void setGoogleSignIn(bool signedIn) {
     if (googleSignedIn != signedIn) {
@@ -89,13 +93,13 @@ abstract class _SessionState with Store {
     }
   }
 
-  /// It changes the state of `finishLoggedIn`.
+  /// Changes the state of `finishLoggedIn`.
   @action
   void setFinishLoggedIn(bool finishedLoggedIn) {
     finishLoggedIn = finishedLoggedIn;
   }
 
-  /// It fetches all authenticated user data.
+  /// Fetches all authenticated user data.
   /// 
   /// Only if the user has not been initialized yet.
   @action
@@ -103,7 +107,7 @@ abstract class _SessionState with Store {
     currentUser ??= await authService.getUserData();
   }
 
-  /// It fetches and overrides all authenticated user data.
+  /// Fetches and overrides all authenticated user data.
   @action
   Future updateCurrentUser() async {
     currentUser = await authService.getUserData();
@@ -132,7 +136,7 @@ abstract class _SessionState with Store {
     return done;
   }
 
-  /// It fetches user data and finishes the
+  /// Fetches user data and finishes the
   /// login process if the phone has been set.
   Future doLoginProcess() async {
     if (!googleSignedIn) {
@@ -143,7 +147,7 @@ abstract class _SessionState with Store {
     }
   }
 
-  /// It sets the state to signed in and intializes the
+  /// Sets the state to signed in and intializes the
   /// authenticated user.
   Future initializeUserSession() async {
     setGoogleSignIn(true);
@@ -151,7 +155,7 @@ abstract class _SessionState with Store {
     hasDoneOnboarding = currentUser!.onboardingCompleted;
   }
 
-  /// It shows the graphical interface to login an user and
+  /// Shows the graphical interface to login an user and
   /// proceeds with the login process.
   Future<void> login() async {
     GoogleSignInAccount? gaccount = await authService.signIn();
@@ -179,13 +183,13 @@ abstract class _SessionState with Store {
     currentUser = null;
   }
 
-  /// It checks if the onboarding process has been 
+  /// Checks if the onboarding process has been 
   /// completed.
   bool isOnboardingCompleted() {
     return currentUser!.onboardingCompleted;
   }
 
-  /// It checks if the authenticated user has a 
+  /// Checks if the authenticated user has a 
   /// phone number.
   bool hasPhone() {
     return currentUser != null && currentUser!.phone != "";
