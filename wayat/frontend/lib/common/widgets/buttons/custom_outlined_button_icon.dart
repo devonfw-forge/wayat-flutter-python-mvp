@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
+/// Rounded border Button with text and Icon
 class CustomOutlinedButtonIcon extends StatelessWidget {
+  /// Callback when widget is pressed
   final void Function()? onPressed;
+
+  /// Text inside the widget
   final String text;
+
+  /// Icon from Material/Cupertino design
   final IconData icon;
 
   const CustomOutlinedButtonIcon(

@@ -5,6 +5,7 @@ import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Page that shows google authetication
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -12,7 +13,9 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+/// Contains the state of [LoginPage]
 class _LoginPageState extends State<LoginPage> {
+  /// User session singleton info
   final SessionState userSession = GetIt.I.get<SessionState>();
 
   @override
@@ -38,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Returns a sign in button and a google image
   Widget _signInButton() {
     return InkWell(
       onTap: () async {

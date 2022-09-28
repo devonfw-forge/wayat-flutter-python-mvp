@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -5,6 +6,7 @@ import 'package:restart_app/restart_app.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
+import 'package:wayat/features/profile/widgets/restart_ios_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/lang/language.dart';
@@ -24,16 +26,18 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _profileAppBar(),
-        const SizedBox(height: 34.5),
-        // TODO: implement the dark mode
-        // _buildEnableDarkThemeSwitchButton(),
-        // const SizedBox(height: 34.5),
-        _buildLanguageButton(),
-      ],
-    );
+    return WillPopScope(
+        onWillPop: () async {
+          widget.controller.onPressedBackButton();
+          return true;
+        },
+        child: Column(
+          children: [
+            _profileAppBar(),
+            const SizedBox(height: 34.5),
+            _buildLanguageButton(),
+          ],
+        ));
   }
 
   Row _profileAppBar() => Row(
@@ -70,7 +74,21 @@ class _PreferencesPageState extends State<PreferencesPage> {
               onPressed: () async {
                 if (changedLanguage != profileState.language) {
                   await profileState.changeLanguage(changedLanguage!);
-                  Restart.restartApp();
+                  //Check platform:
+                  //On Android restart App
+                  if (defaultTargetPlatform == TargetPlatform.android) {
+                    Restart.restartApp();
+                  } else
+                  //On iOS Apple ecosysstem don't allow restarting app programmatically
+                  //For now solution is to show to the user InfoDialog with recomendation
+                  //manually restarting iOS App
+                  if (defaultTargetPlatform == TargetPlatform.iOS) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const RestartIosDialog();
+                        });
+                  }
                 } else {
                   widget.controller.onPressedBackButton();
                 }
@@ -108,6 +126,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
     );
   }
 
+  /// Widget that changes the language of the application
   Widget _languageButton(List<Language> itemList) {
     return Observer(builder: (context) {
       Language languageSelected =

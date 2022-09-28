@@ -1,11 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+/// Basic user information, used for [Contact] and [MyUser]
 class User {
+  /// Unique id of user
   String id;
+
+  /// Current username
   String name;
+
+  /// email
   String email;
+
+  /// URL to the user image
   String imageUrl;
+
+  /// User phone number
   String phone;
 
   User({

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
@@ -13,7 +13,7 @@ class ContactsPageController = _ContactsPageController
 
 abstract class _ContactsPageController with Store {
   late RequestsController requestsController;
-  late FriendsController friendsController;
+  final FriendsController friendsController;
   late SuggestionsController suggestionsController;
 
   static const int friendsPageIndex = 0;
@@ -24,23 +24,22 @@ abstract class _ContactsPageController with Store {
   DateTime timeRequestsUpdate = DateTime(1970);
   DateTime timeSuggestionsUpdate = DateTime(1970);
 
-  Duration maxTimeBetweenUpdates = const Duration(seconds: 30);
+  Duration maxTimeBetweenUpdates = const Duration(seconds: 3);
 
   @observable
   ContactsCurrentPages currentPage = ContactsCurrentPages.contacts;
 
-  _ContactsPageController() {
-    friendsController = FriendsController();
-    // Requests controller needs access to the friends controller to
-    // be able to update the contacts if a request is accepted
-    requestsController =
-        RequestsController(friendsController: friendsController);
-    // Suggestions controller needs access to the friends and friendscontroller to
-    // be able to filter the imported address book contacts from the
-    // alreaady added wayat contacts without making extra REST calls
-    suggestionsController = SuggestionsController(
-        friendsController: friendsController,
-        requestsController: requestsController);
+  _ContactsPageController(
+      {FriendsController? friendsController,
+      RequestsController? requestsController,
+      SuggestionsController? suggestionsController})
+      : friendsController = friendsController ?? FriendsController() {
+    this.requestsController = requestsController ??
+        RequestsController(friendsController: this.friendsController);
+    this.suggestionsController = suggestionsController ??
+        SuggestionsController(
+            friendsController: this.friendsController,
+            requestsController: this.requestsController);
   }
 
   TextEditingController searchBarController = TextEditingController();
@@ -53,8 +52,8 @@ abstract class _ContactsPageController with Store {
   @action
   void setSearchBarText(String text) {
     friendsController.setTextFilter(text);
-    suggestionsController.setTextFilter(text);
     requestsController.setTextFilter(text);
+    suggestionsController.setTextFilter(text);
   }
 
   void updateTabData(int index) {

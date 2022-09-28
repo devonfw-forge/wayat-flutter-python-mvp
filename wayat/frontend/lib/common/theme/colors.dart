@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Color Style for the app
+///
+/// Uses different types of blues as primary and types of white as secondary
 class ColorTheme {
   static const Color primaryColor = Color.fromARGB(255, 115, 88, 251);
   static const Color primaryColorDimmed = Color.fromARGB(40, 115, 88, 251);

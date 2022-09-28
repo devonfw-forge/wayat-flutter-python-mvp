@@ -6,22 +6,29 @@ import 'package:wayat/services/status/map_status_service.dart';
 
 part 'map_state.g.dart';
 
+/// A state of the displayed map
 // ignore: library_private_types_in_public_api
 class MapState = _MapState with _$MapState;
 
+/// Implementation of the state of the displayed map
 abstract class _MapState with Store {
+  /// HTTP service of the map status
   final MapStatusService mapStatusService;
 
+  /// [Timer] instance to launch periodic requests of map status every [durationInterval]
   Timer? timer;
 
+  /// Time between request of status map
   Duration durationInterval = const Duration(seconds: 60);
 
+  /// Whether map is currently displayed
   @observable
   bool mapOpened = true;
 
   _MapState({MapStatusService? mapStatusService})
       : mapStatusService = mapStatusService ?? MapStatusService();
 
+  /// Sets and send the state to open
   @action
   Future<void> openMap() async {
     SessionState sessionState = GetIt.I.get<SessionState>();
@@ -39,6 +46,7 @@ abstract class _MapState with Store {
     mapOpened = true;
   }
 
+  /// Sents and send the state to close
   @action
   Future<void> closeMap() async {
     if (timer != null && timer!.isActive) timer!.cancel();

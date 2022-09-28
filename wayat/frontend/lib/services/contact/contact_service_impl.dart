@@ -6,7 +6,9 @@ import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 
+/// Implementation of the [ContactService] interface
 class ContactServiceImpl implements ContactService {
+  /// Makes the HTTP calls for the service.
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   @override

@@ -13,37 +13,51 @@ part 'phone_verification_controller.g.dart';
 class PhoneVerificationController = _PhoneVerificationController
     with _$PhoneVerificationController;
 
+/// Controller used to validate the phone number
 abstract class _PhoneVerificationController with Store {
+  /// Gets current user
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
 
+  /// Stores the user's phone number
   @observable
   String phoneNumber = "";
 
+  /// Stores the error message if the verification goes wrong
   @observable
   String errorPhoneVerificationMsg = "";
 
+  /// Stores the error format
   @observable
   String errorPhoneFormat = "";
 
+  /// Whether the phone validation is successful
   @observable
   bool validPhone = false;
 
+  /// Sets new [phone] number
   @action
   void setNewPhoneNumber(String phone) {
     phoneNumber = phone;
   }
 
+  /// Sets valid [phone] number
   @action
   void setValidPhoneNumber(String phone) {
     phoneNumber = phone;
     validPhone = true;
   }
 
+  /// Sets error [msg]
   @action
   void setErrorPhoneMsg(String msg) {
     errorPhoneVerificationMsg = msg;
   }
 
+  /// Validates the new phone number in [textValue]
+  ///
+  /// Checks phone number is not null
+  /// Checks phone number length is correct
+  /// Checks phone number is different from previous one
   @action
   String validatePhoneNumber(textValue) {
     if (textValue.number.isEmpty) {
@@ -58,6 +72,8 @@ abstract class _PhoneVerificationController with Store {
     return errorPhoneFormat;
   }
 
+  /// When the phone number changes, validate it
+  /// If it is valid, call [_submit]
   void onChangePhoneNumber(
       PhoneNumber phone, GlobalKey<FormState> formKey, BuildContext context) {
     if (formKey.currentState != null) {
@@ -68,17 +84,19 @@ abstract class _PhoneVerificationController with Store {
     }
   }
 
+  /// Shows verification dialog to get OTP sms
   void _submit(String newPhone, BuildContext context) {
     FocusScope.of(context).unfocus();
     if (errorPhoneVerificationMsg == '') {
       validPhone = false;
       setNewPhoneNumber("");
       showDialog(
-          context: context,
-          builder: (context) {
-            return VerifyPhoneNumberDialog(
-                phoneNumber: newPhone, callbackPhone: setValidPhoneNumber);
-          });
+        context: context,
+        builder: (context) {
+          return VerifyPhoneNumberDialog(
+              phoneNumber: newPhone, callbackPhone: setValidPhoneNumber);
+        },
+      );
     }
   }
 }
