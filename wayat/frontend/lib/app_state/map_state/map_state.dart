@@ -15,8 +15,10 @@ abstract class _MapState with Store {
   /// HTTP service of the map status
   final MapStatusService mapStatusService;
 
-  /// Time between request of status map
+  /// [Timer] instance to launch periodic requests of map status every [durationInterval]
   Timer? timer;
+
+  /// Time between request of status map
   Duration durationInterval = const Duration(seconds: 60);
 
   /// Whether map is currently displayed
@@ -26,7 +28,7 @@ abstract class _MapState with Store {
   _MapState({MapStatusService? mapStatusService})
       : mapStatusService = mapStatusService ?? MapStatusService();
 
-  /// Sents and send the state to open
+  /// Sets and send the state to open
   @action
   Future<void> openMap() async {
     SessionState sessionState = GetIt.I.get<SessionState>();
