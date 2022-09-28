@@ -62,8 +62,8 @@ abstract class _ProfileState with Store {
   _ProfileState({ProfileService? profileService})
       : _profileService = profileService ?? ProfileServiceImpl();
 
-  ///Set current page when page changes from Profile page to child page [newPage]
-  ///chiled pages: [EditProfile], [Preferences]
+  /// Set current page when page changes from Profile page to child page [newPage]
+  /// child pages: [EditProfile], [Preferences]
   @action
   void setCurrentPage(ProfileCurrentPages newPage) {
     currentPage = newPage;
