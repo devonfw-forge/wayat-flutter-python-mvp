@@ -5,10 +5,18 @@ import 'package:flutter/foundation.dart';
 
 import 'package:wayat/domain/contact/contact.dart';
 
+/// Entity of Group
 class Group {
+  /// unique id of group
   String id;
+
+  /// Members added to this group
   List<Contact> members;
+
+  /// Name assign by the user
   String name;
+
+  /// Image set by the user
   String imageUrl;
 
   Group({
