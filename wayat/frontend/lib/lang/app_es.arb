@@ -1,12 +1,16 @@
 {
+    "@_TITLE":{},
     "appTitle": "wayat",
 
+    "@_LOGIN":{},
     "login": "Iniciar sesión",
     "loginGoogle": "Iniciar sesión con Google",
     "email": "Email",
     "password": "Contraseña",
     "phoneNumber": "Número de teléfono",
     "forgotPasswQuestion": "¿Olvidaste tu contraseña?",
+
+    "@_PHONE_VALIDATION":{},
     "phonePageDescription": "Se requiere un número de teléfono válido",
     "invalidPhoneNumber": "Número de teléfono inválido",
     "phoneUpdateError": "Error al configurar el número de teléfono",
@@ -22,42 +26,39 @@
     "phoneEmpty": "Campo vacío. Introduzca un número de teléfono correcto.",
     "phoneIncorrect": "Número de teléfono incorrecto. Introduce un teléfono válido.",
     "phoneDifferent": "Introduzca un número de teléfono diferente del anterior.",
-
     "phoneUsed": "Este número ya esta en uso",
-    
     "phoneDeniedPermissions": "Permisos denegados.",
     "phoneErrorCode" : "Código erróneo, solicita otro código.",
     "phoneErrorTooRequest" : "Se ha excedido el número de intentos, intentelo más tarde.",
     "phoneUnexpectedError" : "Error inesperado, por favor intentalo otra vez más tarde.",
 
+    "@_HOME":{},
     "home": "Inicio",
     "contacts": "Contactos",
     "events": "Eventos",
 
-    "profile": "Perfil",
-    "editProfile": "Editar Perfil",
-    "viewProfile": "Ver perfil",
-    "name": "Nombre",
-
-    "addEvents": "Añadir Eventos",
-    "notifications": "Notificaciones",
-
+    "@_ONBOARDING":{},
     "manageContactsTip": "Podrás modificar los\npermisos de tus contactos\ncuando quieras",
     "allowedContactsTitle": "Establece tus contactos",
     "allowedContactsBody": "Selecciona los contactos que podrán\nver tu posición y eventos. También\npodrás crear grupos de familia, amigos,\ntrabajo o lo que desees.",
-
-    "importContactsTip": "En primer lugar, selecciona los\ncontactosque podrán ver tu posición.",
-    "manageContacts": "Gestionar contactos",
-
     "next": "Siguiente",
     "skip": "Saltar",
 
+    "@_IMPORT_CONTACTS":{},
+    "importContactsTip": "En primer lugar, selecciona los\ncontactosque podrán ver tu posición.",
+    "manageContacts": "Gestionar contactos",
     "selectContacts": "Selecciona contactos",
 
+    "@_LOCATION":{},
     "sharingLocation": "Compartir ubicación",
     "activeSharingLocation": "Ubicación activa",
     "doNotDisturb": "Establecer no molestar",
 
+    "@_PROFILE":{},
+    "profile": "Perfil",
+    "editProfile": "Editar Perfil",
+    "viewProfile": "Ver perfil",
+    "name": "Nombre",
     "preferences": "Preferencias",
     "faqs": "Preguntas frecuentes",
     "privacy": "Privacidad",
@@ -65,26 +66,34 @@
     "logOut": "Cerrar Sesión",
     "deleteAccount": "Borrar Cuenta",
 
+    "@_EDIT_PROFILE":{},
+    "changePhone": "Teléfono",
+    "changePassword": "Cambiar Contraseña",
+    "chooseProfileFoto": "Escoger imagen desde",
+
+    "@_PREFERENCES":{},
     "information": "Información",
     "darkTheme": "Habilitar tema oscuro",
     "language": "Idioma",
+    "iosChangeLangMsg": "Debe reiniciar la aplicación para que los cambios surtan efecto.",
+    "iosChangeLangTitle": "Cambiar idioma",
 
-    "changePhone": "Teléfono",
-    "changePassword": "Cambiar Contraseña",
-
-    "chooseProfileFoto": "Escoger imagen desde",
+    "@_COMMON":{},
     "camera": "Cámara",
     "gallery": "Galería",
     "save": "Guardar",
-
     "close": "Cerrar",
     "loadingAddress": "Cargando dirección",
     "errorAddress": "No se pudo obtener la dirección",
+    "accept": "Aceptar",
+    "search": "Buscar",
+    "viewInformation": "Ver información",
+    "done": "Hecho",
 
+    "@_CONTACTS":{},
     "friendsTab": "Amigos",
     "requestsTab": "Peticiones",
     "suggestionsTab": "Sugerencias",
-
     "friendsPageTitle": "MIS AMIGOS",
     "pendingRequestsTitle": "PETICIONES DE AMISTAD",
     "suggestionsPageTitle": "AÑADE A TUS CONTACTOS",
@@ -92,26 +101,24 @@
     "sentButtonNavigation": "ENVIADAS",
     "sentButtonTile": "Enviada",
     "noPendingRequests": "No tienes peticiones pendientes",
+
+    "@_INVITATION":{},
     "inviteContacts": "Invita a tus contactos a Wayat",
     "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
     "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
     "invitationText": "Invitación texto",
     "invitationCopied": "Copiado en el portapapeles",
 
-    "accept": "Aceptar",
-    "search": "Buscar",
-
-    "viewInformation": "Ver información",
-
+    "@_SHARE_LOCATION":{},
     "profileShareLocation": "Ajustes de ubicación",
     "shareMyLocation": "Compartir mi ubicación",
     "profileActiveLocation": "Compartir ubicación",
-
     "contactProfileSharingLocationWithYou": "Compartiendo ubicación contigo",
     "contactProfileLocationNotAvailable": "Posición no disponible",
     "contactProfileNotSharingLocation": "Sin compartir ubicación",
     "contactProfileLastUpdated": "Última actualización",
 
+    "@_GROUPS":{},
     "groupsTitle": "GRUPOS",
     "createGroup": "Crear grupo",
     "noGroupsMessage": "Ups. No has creado ningún grupo",
@@ -125,8 +132,6 @@
     "deleteGroup": "Eliminar grupo",
     "groupValidation": "Debes seleccionar al menos dos contactos",
 
-    "done": "Hecho",
-    
     "locationPermission": "Permiso de ubicación",
     "locationPermissionNotGranted": "Permiso de ubicación no otorgado, acepte los permisos de ubicación para todo el tiempo. Selecciónelo en la sección de configuración"
 }

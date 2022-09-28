@@ -1,12 +1,16 @@
 {
+    "@_TITLE":{},
     "appTitle": "wayat",
 
+    "@_LOGIN":{},
     "login": "Anmelden",
     "loginGoogle": "Mit Google anmelden",
     "email": "E-Mail",
     "password": "Kennwort",
     "phoneNumber": "Telefonnummer",
     "forgotPasswQuestion": "Haben Sie Ihr Passwort vergessen?",
+
+    "@_PHONE_VALIDATION":{},
     "phonePageDescription": "Eine gültige Telefonnummer ist erforderlich",
     "invalidPhoneNumber": "Ungültige Telefonnummer",
     "phoneUpdateError": "Fehler beim Einstellen der Telefonnummer",
@@ -22,45 +26,42 @@
     "phoneEmpty": "Leeres Feld. Geben Sie eine korrekte Telefonnummer ein.",
     "phoneIncorrect": "Falsche Telefonnummer. Geben Sie eine gültige Telefonnummer ein.",
     "phoneDifferent": "Geben Sie eine andere Telefonnummer als die vorherige ein.",
-
+    "phoneUsed": "Nummer in verwendet",
     "phoneDeniedPermissions": "Berechtigungen verweigert.",
     "phoneErrorCode" : "Falscher Code, versuchen Sie es erneut",
     "phoneErrorTooRequest" : "Zu viele Code-Anfragen, versuchen Sie es später",
     "phoneUnexpectedError" : "Unerwarteter Fehler, versuchen Sie es später.",
 
-    "phoneUsed": "Nummer in verwendet",
-
+    "@_HOME":{},
     "home": "Home",
     "contacts": "Kontakte",
     "events": "Veranstaltungen",
 
-    "profile": "Profil",
-    "editProfile": "Profil bearbeiten",
-    "viewProfile": "Profil ansehen",
-    "name": "Name",
-
-    "notifications": "Benachrichtigungen",
-    "addEvents": "Ereignis hinzufügen",
-
+    "@_ONBOARDING":{},
     "manageContactsTip": "Sie können die Berechtigung Ihrer Kontakte ändern, wann immer Sie wollen",
     "allowedContactsTitle": "Legen Sie Ihre erlaubten Kontakte fest",
     "@allowedContactsTitle": {
         "description": "Dies ist der Titel der OnBoarding 1 Seite"
     },
     "allowedContactsBody": "Wählen Sie die Kontakte aus, denen Sie erlauben wollen, Ihren Standort zu sehen.",
-
-    "importContactsTip": "Wählen Sie zunächst die Kontakte aus, die Ihren Standort sehen dürfen.",
-    "manageContacts": "Kontakte verwalten",
-
     "next": "Weiter",
     "skip": "Überspringen",
 
+    "@_IMPORT_CONTACTS":{},
+    "importContactsTip": "Wählen Sie zunächst die Kontakte aus, die Ihren Standort sehen dürfen.",
+    "manageContacts": "Kontakte verwalten",
     "selectContacts": "Kontakte auswählen",
 
+    "@_LOCATION":{},
     "sharingLocation": "Gemeinsamer Standort",
     "activeSharingLocation": "Aktiver Freigabeort",
     "doNotDisturb": "Bitte nicht stören",
-    
+
+    "@_PROFILE":{},
+    "profile": "Profil",
+    "editProfile": "Profil bearbeiten",
+    "viewProfile": "Profil ansehen",
+    "name": "Name",
     "preferences": "Präferenzen",
     "faqs": "FAQS",
     "privacy": "Datenschutz",
@@ -68,26 +69,34 @@
     "logOut": "Abmelden",
     "deleteAccount": "Konto löschen",
 
+    "@_EDIT_PROFILE":{},
+    "changePhone": "Telefon",
+    "changePassword": "Passwort ändern",
+    "chooseProfileFoto": "Bild auswählen aus",
+
+    "@_PREFERENCES":{},
     "information": "Informationen",
     "darkTheme": "Dunkles Thema aktivieren",
     "language": "Sprache",
+    "iosChangeLangMsg": "Sie müssen die Anwendung neu starten, damit die Änderungen wirksam werden.",
+    "iosChangeLangTitle": "Sprache ändern",
 
-    "changePhone": "Telefon",
-    "changePassword": "Passwort ändern",
-
-    "chooseProfileFoto": "Bild auswählen aus",
+    "@_COMMON":{},
     "camera": "Kamera",
     "gallery": "Galerie",
     "save": "Speichern",
-   
     "close": "Schließen",
     "loadingAddress": "Adresse laden",
     "errorAddress": "Konnte keine Adresse erhalten",
+    "accept": "Akzeptieren",
+    "search": "Suchen",
+    "viewInformation": "Informationen anzeigen",
+    "done": "Erledigt",
 
+    "@_CONTACTS":{},
     "friendsTab": "Freunde",
     "requestsTab": "Gesuche",
     "suggestionsTab": "Vorschläge",
-
     "friendsPageTitle": "MEINE FREUNDE",
     "pendingRequestsTitle": "FREUNDSCHAFTSANFRAGEN",
     "suggestionsPageTitle": "IHRE KONTAKTE HINZUFÜGEN",
@@ -95,26 +104,24 @@
     "sentButtonNavigation": "SENT",
     "sentButtonTile": "Gesendet",
     "noPendingRequests": "Sie haben keine anstehenden Anfragen",
+
+    "@_INVITATION":{},
     "inviteContacts": "Kontakte zu Wayat einladen",
     "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
     "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
     "invitationText": "Einladungs-Text",
     "invitationCopied": "In Ihre Zwischenablage kopiert",
 
-    "accept": "Akzeptieren",
-    "search": "Suchen",
-
-    "viewInformation": "Informationen anzeigen",
-
+    "@_SHARE_LOCATION":{},
     "profileShareLocation": "Standort teilen",
     "shareMyLocation": "Meinen Standort freigeben",
     "profileActiveLocation": "Aktiver Standort",
-
     "contactProfileSharingLocationWithYou": "Standort mit Ihnen teilen",
     "contactProfileLocationNotAvailable": "Standort nicht verfügbar",
     "contactProfileNotSharingLocation": "Standort nicht freigeben",
     "contactProfileLastUpdated": "Zuletzt aktualisiert",
 
+    "@_GROUPS":{},
     "groupsTitle": "GROUPS",
     "createGroup": "Gruppe erstellen",
     "noGroupsMessage": "Oops. Sie haben keine Gruppe",
@@ -127,9 +134,7 @@
     "editGroup": "Gruppe bearbeiten",
     "deleteGroup": "Gruppe löschen",
     "groupValidation": "Sie müssen mindestens zwei Kontakte auswählen",
-    
-    "done": "Erledigt",
-    
+        
     "locationPermission": "Standorterlaubnis",
     "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus"
 } 

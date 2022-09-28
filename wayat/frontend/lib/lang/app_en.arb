@@ -75,6 +75,8 @@
     "information": "Information",
     "darkTheme": "Enable dark theme",
     "language": "Language",
+    "iosChangeLangMsg": "You need to restart the application for the changes to take effect.",
+    "iosChangeLangTitle": "Change language",
     
     "@_COMMON":{},
     "camera": "Camera",
@@ -129,8 +131,6 @@
     "editGroup": "Edit group",
     "deleteGroup": "Delete group",
     "groupValidation": "You must select at least two contacts",
-    
-    "done": "Done",
 
     "locationPermission": "Location permission",
     "locationPermissionNotGranted": "Location permission not granted, please accept location permissions for all the time. Select it in the settings section"

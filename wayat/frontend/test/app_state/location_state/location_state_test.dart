@@ -38,8 +38,7 @@ void main() async {
     ShareLocationServiceFactory mockLocationServiceFactory =
         MockShareLocationServiceFactory();
 
-    LocationState locationState =
-        LocationState(shareLocationServiceFactory: mockLocationServiceFactory);
+    LocationState locationState = LocationState();
 
     when(mockLocationServiceFactory.create(
             shareLocationMode: ShareLocationMode.active,
@@ -55,7 +54,8 @@ void main() async {
 
     expect(locationState.currentLocation, const LatLng(0, 0));
 
-    await locationState.initialize();
+    await locationState.initialize(
+        locationServiceFactory: mockLocationServiceFactory);
 
     verify(mockLocationServiceFactory.create(
             shareLocationMode: ShareLocationMode.active,

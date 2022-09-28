@@ -30,24 +30,29 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.1,
-              vertical: MediaQuery.of(context).size.height * 0.1),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CustomWayatTitle(),
-              const CustomLoginTitle(),
-              _phoneDescription(),
-              _formPhone(),
-            ],
+    return WillPopScope(
+        onWillPop: () async {
+          await GetIt.I.get<SessionState>().logOut();
+          return true;
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.1,
+                  vertical: MediaQuery.of(context).size.height * 0.1),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CustomWayatTitle(),
+                  const CustomLoginTitle(),
+                  _phoneDescription(),
+                  _formPhone(),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Container _phoneDescription() {

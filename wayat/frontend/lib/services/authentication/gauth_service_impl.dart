@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
@@ -19,13 +21,25 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 class GoogleAuthService implements AuthService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
-  late GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email'],
-  );
-  final FirebaseAuth _auth = FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
+  late GoogleSignIn _googleSignIn;
+  final FirebaseAuth _auth =
+      FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
 
   GoogleAuthService({GoogleSignIn? gS}) {
-    if (gS != null) _googleSignIn = gS;
+    if (gS != null) {
+      _googleSignIn = gS;
+    } else {
+      if (kIsWeb) {
+        _googleSignIn = GoogleSignIn(
+          clientId: dotenv.get('WEB_CLIENT_ID'),
+          scopes: ['email'],
+        );
+      } else {
+        _googleSignIn = GoogleSignIn(
+          scopes: ['email'],
+        );
+      }
+    }
   }
 
   /// Google *sign in* process. Returns ```null``` if no account is retrieved
@@ -79,10 +93,11 @@ class GoogleAuthService implements AuthService {
     return account;
   }
 
-  /// *Sign out* the current user.
+  /// Sign out the current user.
+  /// Resets all the state after closing the firestore instance
   @override
   Future<void> signOut() async {
-    await FirebaseFirestore.instance.terminate();
+    await FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT')).terminate();
     await _auth.signOut();
     await _googleSignIn.signOut();
 

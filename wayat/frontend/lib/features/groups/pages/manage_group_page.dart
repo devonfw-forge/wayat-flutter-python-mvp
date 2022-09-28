@@ -67,7 +67,7 @@ class ManageGroupPage extends StatelessWidget {
           visible: showValidGroupController,
           child: Text(
             appLocalizations.groupValidation,
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
           ),
         );
       },

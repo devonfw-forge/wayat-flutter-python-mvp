@@ -5,10 +5,12 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 class MapStatusService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
+  ///Send [POST] request to backend to [Open GoogleMap]
   Future sendMapOpened() async {
     await httpProvider.sendPostRequest(APIContract.updateMap, {"open": true});
   }
 
+  ///Send [POST] request to backend to [Close GoogleMap]
   Future sendMapClosed() async {
     await httpProvider.sendPostRequest(APIContract.updateMap, {"open": false});
   }

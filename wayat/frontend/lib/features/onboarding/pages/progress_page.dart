@@ -57,7 +57,7 @@ class ProgressOnboardingPage extends StatelessWidget {
             flex: 1,
             child: TextButton(
                 onPressed: () {
-                  controller.finishOnBoarding(context);
+                  controller.finishOnBoarding();
                 },
                 child: Text(
                   appLocalizations.skip,
