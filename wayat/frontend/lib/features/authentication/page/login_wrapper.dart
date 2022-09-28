@@ -7,6 +7,7 @@ import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
+/// Wrapper for Login navigation
 class LoginWrapper extends StatelessWidget {
   final SessionState controller = GetIt.I.get<SessionState>();
 

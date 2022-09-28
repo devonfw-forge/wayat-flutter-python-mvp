@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Text login title
 class CustomLoginTitle extends StatelessWidget {
   const CustomLoginTitle({Key? key}) : super(key: key);
 

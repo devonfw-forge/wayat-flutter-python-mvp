@@ -10,6 +10,7 @@ import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/features/profile/controllers/phone_verification_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Phone validation page for login
 class PhoneValidationPage extends StatefulWidget {
   final PhoneVerificationController phoneController;
   PhoneValidationPage({Key? key, PhoneVerificationController? phoneController})
@@ -20,11 +21,18 @@ class PhoneValidationPage extends StatefulWidget {
   State<PhoneValidationPage> createState() => _PhoneValidationPageState();
 }
 
+/// State of Phone validation page for login
 class _PhoneValidationPageState extends State<PhoneValidationPage> {
+  /// User session information
   final userSession = GetIt.I.get<SessionState>();
+
+  /// Form key used
   final GlobalKey<FormState> _formKey = GlobalKey();
+
+  /// Message of error in phone validation
   String errorSettingPhone = "";
 
+  /// Text style of phone text field
   TextStyle _textStyle(Color color, double size) =>
       TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
 
@@ -55,6 +63,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
         ));
   }
 
+  /// Returns widget with title and description of phone number validation process
   Container _phoneDescription() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -77,6 +86,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
     );
   }
 
+  /// Returns text field with phone verification text field [_phoneTextField()] and submit button [_submitButton()]
   Form _formPhone() {
     return Form(
         key: _formKey,
@@ -95,6 +105,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
         ));
   }
 
+  /// Returns phone text field with prefix phone number field
   Widget _phoneTextField() {
     return IntlPhoneField(
       // Only numbers are allowed as input
@@ -119,6 +130,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
     );
   }
 
+  // Returns the submit phone number button
   Container _submitButton() {
     return Container(
       padding: const EdgeInsets.only(top: 30),
@@ -129,6 +141,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
     );
   }
 
+  // Updates phone number in user account or set the error message [errorSettingPHone]
   _submit() async {
     final bool updated =
         await userSession.updatePhone(widget.phoneController.phoneNumber);
