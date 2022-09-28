@@ -26,13 +26,18 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _profileAppBar(),
-        const SizedBox(height: 34.5),
-        _buildLanguageButton(),
-      ],
-    );
+    return WillPopScope(
+        onWillPop: () async {
+          widget.controller.onPressedBackButton();
+          return true;
+        },
+        child: Column(
+          children: [
+            _profileAppBar(),
+            const SizedBox(height: 34.5),
+            _buildLanguageButton(),
+          ],
+        ));
   }
 
   Row _profileAppBar() => Row(
