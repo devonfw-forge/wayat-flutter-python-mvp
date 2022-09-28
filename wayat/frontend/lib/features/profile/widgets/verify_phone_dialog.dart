@@ -27,7 +27,10 @@ class VerifyPhoneNumberDialog extends StatefulWidget {
 
 class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
     with WidgetsBindingObserver {
+  /// Initialize [errorMsg] variable
   String errorMsg = "";
+
+  /// Initialize [enteredOtp] variable
   String enteredOtp = "";
 
   @override
@@ -122,6 +125,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
                   text: appLocalizations.verify,
                   enabled: true,
                   onPressed: () async {
+                    /// Verify [enteredOtp] code
                     final verified = await controller.verifyOtp(enteredOtp);
                     if (verified) {
                       // ignore: use_build_context_synchronously
@@ -144,6 +148,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
     );
   }
 
+  /// Check entered OTP code
   Widget _getVerifyTextfields(FirebasePhoneAuthController controller) {
     return PinInputField(
       length: 6,
@@ -164,6 +169,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
             fontSize: 18));
   }
 
+  /// Resend button widget
   Widget _getVerifyResendCode(String text, controller) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,

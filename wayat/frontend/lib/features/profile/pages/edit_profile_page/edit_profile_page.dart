@@ -68,6 +68,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
+  /// Creates the form for the phone
   Form _formPhone() {
     return Form(
         key: _formKey,
