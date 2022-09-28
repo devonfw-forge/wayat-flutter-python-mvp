@@ -6,7 +6,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:ui' as ui;
 
+/// Manages the edit of profile pictures to display them correctly in the map
 class ImageService {
+  /// Downloads the image from the url and transforms it to bits in
+  /// the correct format and size
   Future<BitmapDescriptor> _getBitmapFromUrl(String url) async {
     http.Response response = await http.get(Uri.parse(url));
     Uint8List bytes = response.bodyBytes;
@@ -14,6 +17,7 @@ class ImageService {
     return BitmapDescriptor.fromBytes(resizedImage);
   }
 
+  /// Resizes the image and makes it a circle
   Future<Uint8List> _resizeImage(Uint8List bytes) async {
     ui.Codec codec = await ui.instantiateImageCodec(bytes,
         targetWidth: 100, targetHeight: 100);
@@ -37,6 +41,7 @@ class ImageService {
     return data!.buffer.asUint8List();
   }
 
+  /// Generates a Map relating each one to the corresponding url
   Future<Map<String, BitmapDescriptor>> getBitmapsFromUrl(
       List<String> urls) async {
     Map<String, BitmapDescriptor> res = {};
