@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
+/// Circled contact image with colored border
 class ContactImage extends StatelessWidget {
+  /// URL of contact image
   final String imageUrl;
 
+  /// Radius of the circle
   final double radius;
 
+  /// Linewidth of circle border
   final double lineWidth;
 
+  /// Border's color, black by default if null
   final Color? color;
 
   const ContactImage(

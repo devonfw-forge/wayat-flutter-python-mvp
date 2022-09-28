@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Searchbar used for contacts
 class SearchBar extends StatelessWidget {
+  /// Controller to listen events
   final TextEditingController controller;
+
+  /// Callback triggered on changed event. It pases an string with current content
   final Function(String)? onChanged;
+
+  /// Focus status of the widget.
   final FocusNode? focusNode;
   const SearchBar(
       {required this.controller, this.onChanged, this.focusNode, Key? key})

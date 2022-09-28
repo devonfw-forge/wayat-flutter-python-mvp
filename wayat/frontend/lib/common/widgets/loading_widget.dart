@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 
+/// Circular progress indicator showed when loading any data
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
 

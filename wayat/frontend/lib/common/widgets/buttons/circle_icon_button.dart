@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
+/// Circle button with a Material/Cupertino Icon inside and solid black border
 class CircleIconButton extends StatelessWidget {
+  /// Callback to be executed when icon is pressed
   final void Function()? onPressed;
+
+  /// Icon from material or cupertino design
   final IconData icon;
+
+  /// Background color in the button
   final Color backgroundColor;
 
   const CircleIconButton({

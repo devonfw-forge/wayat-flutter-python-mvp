@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 
+/// General purpose Switch
 class CustomSwitch extends StatefulWidget {
+  /// Whether the switch is enabled or disabled
   final bool value;
+
+  /// Callback executed when the switch changes.
+  ///
+  /// It recives the state as an argument.
   final Function(bool) onChanged;
 
   const CustomSwitch({required this.value, required this.onChanged, Key? key})
