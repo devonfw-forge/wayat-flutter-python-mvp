@@ -28,12 +28,15 @@ abstract class _ProfileState with Store {
   @observable
   Locale? locale;
 
+  ///Get [Locale] and [Language] which had saved before in
+  ///SharedPreferences (on Android) and UserDefaults (on iOS)
   Future<Locale> initializeLocale() async {
     locale = await getLocaleConstants();
     language = getLanguage(locale!.languageCode);
     return locale!;
   }
 
+  ///Return [Language] from [languageCode]
   @visibleForTesting
   Language getLanguage(String lnguageCode) {
     if (lnguageCode.contains('es')) {
@@ -54,42 +57,51 @@ abstract class _ProfileState with Store {
   _ProfileState({ProfileService? profileService})
       : _profileService = profileService ?? ProfileServiceImpl();
 
+  ///Set currentPage when page changes from Profile page to child page [newPage]
+  ///chiled pages: [EditProfile], [Preferences]
   @action
   void setCurrentPage(ProfileCurrentPages newPage) {
     currentPage = newPage;
   }
 
+  ///Update current user SessionState
   @action
   Future updateCurrentUser() async {
     GetIt.I.get<SessionState>().updateCurrentUser();
   }
 
+  ///Update user profile image from [newImage]
   Future updateUserImage(XFile newImage) async {
     await _profileService.uploadProfileImage(newImage);
     await updateCurrentUser();
   }
 
+  ///Update current user profile name from [newName]
   @action
   Future updateCurrentUserName(String newName) async {
     _profileService.updateProfileName(newName);
     GetIt.I.get<SessionState>().currentUser!.name = newName;
   }
 
+  ///Delete current user
   @action
   Future deleteCurrentUser() async {
     _profileService.deleteCurrentUser();
   }
 
+  ///Set Locale to [newLocale]
   @visibleForTesting
   void setLocale(Locale newLocale) {
     locale = newLocale;
   }
 
+  ///Set Language to [newLanguage]
   @visibleForTesting
   void setLanguage(Language newLanguage) {
     language = newLanguage;
   }
 
+  ///Change Language to different [language]
   @action
   Future changeLanguage(Language language) async {
     setLanguage(language);
