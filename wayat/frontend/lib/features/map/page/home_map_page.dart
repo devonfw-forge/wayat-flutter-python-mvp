@@ -57,12 +57,8 @@ class HomeMapPage extends StatelessWidget {
         });
   }
 
-  /// Initialize location cases
-  ///
-  /// [NoLocationServiceException] - is successfully initialized
-  /// [RejectedLocationException] - user didn't accept permitions
-  /// [BackgroundLocationException] - background location exception
-  /// [PlatformException] - platform exception
+  /// Initialize location state and check first if the location service
+  /// is enabled correctly
   Future<dynamic> initializeLocationState(context) async {
     while (true) {
       try {
