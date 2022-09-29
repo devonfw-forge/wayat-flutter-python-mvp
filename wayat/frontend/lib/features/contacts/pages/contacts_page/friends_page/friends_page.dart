@@ -16,7 +16,9 @@ import 'package:wayat/lang/app_localizations.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
+/// List view of all friends and the access to groups
 class FriendsPage extends StatelessWidget {
+  /// Business logic controller
   final FriendsController controller =
       GetIt.I.get<ContactsPageController>().friendsController;
 
@@ -40,6 +42,7 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
+  /// Returns widget with the friend's list of contact filtered by the query in searchbar
   Widget friendsList() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0, left: 15.0, right: 15.0),
@@ -76,6 +79,7 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
+  /// Returns widget with number of friends connected and groups navigation button
   Widget header() {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),

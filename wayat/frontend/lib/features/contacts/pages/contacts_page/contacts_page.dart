@@ -7,7 +7,9 @@ import 'package:wayat/features/contacts/controller/contacts_page_controller.dart
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
+/// Main view of Friends, requests and suggestions page
 class ContactsPage extends StatelessWidget {
+  /// Business logic controller
   final ContactsPageController controller =
       GetIt.I.get<ContactsPageController>();
 
@@ -40,6 +42,7 @@ class ContactsPage extends StatelessWidget {
     ));
   }
 
+  /// Returns tabBar to change between friends, requests and suggestions page
   Widget _tabBar(TabController tabController) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -65,6 +68,7 @@ class ContactsPage extends StatelessWidget {
     );
   }
 
+  /// Returns decoration for selected tab
   Decoration _tabIndicator() {
     return const ShapeDecoration(
         shape: RoundedRectangleBorder(
@@ -72,6 +76,7 @@ class ContactsPage extends StatelessWidget {
         color: Colors.black);
   }
 
+  /// Returns a widget of secondary color place under [tabIndicator]
   Widget _indicatorBackground() {
     return Container(
       margin: const EdgeInsets.only(top: 45),
