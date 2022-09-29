@@ -4,6 +4,7 @@ import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
 
+/// Main page with tabs of home, contacts and profile
 class HomePage extends StatelessWidget {
   const HomePage({
     Key? key,
