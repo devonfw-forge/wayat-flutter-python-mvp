@@ -14,48 +14,66 @@ class EditProfileController = _EditProfileController
     with _$EditProfileController;
 
 abstract class _EditProfileController with Store {
+  /// Reference to the current user
   final MyUser user = GetIt.I.get<SessionState>().currentUser!;
+
+  /// Reference to the profile state
   final ProfileState profileState = GetIt.I.get<ProfileState>();
 
+  /// Instance of the profile service
   ProfileServiceImpl profileService = ProfileServiceImpl();
 
+  /// Observable variable [name], used when updating the username
   @observable
   String? name;
 
+  /// Observable variable [currentSelectedImage], used when changing the profile picture
   @observable
   XFile? currentSelectedImage;
 
+  /// Whether the proccess of validating the phone is successful
   @observable
   bool validPhone = false;
 
+  /// Sets user name to new [newName]
   @action
   void setName(String newName) {
     name = newName;
   }
 
+  /// Sets user image to new [image]
   @action
   void setNewImage(XFile? image) {
     currentSelectedImage = image;
   }
 
+  /// Returns from the child pages [EditProfile] or [Preferences] to the parent page [Profile]
   void onPressedBackButton() {
     profileState.setCurrentPage(ProfileCurrentPages.profile);
   }
 
+  /// Saves all the updates to the user's profile
   Future<void> onPressedSaveButton(String phoneNumber) async {
+    /// Go back from EditProfile page to Profile page
     profileState.setCurrentPage(ProfileCurrentPages.profile);
+
+    /// Validate new name and call [updateCurrentUserName] to save changes
     if (name != null ? name!.replaceAll(" ", "").isNotEmpty : false) {
       await profileState.updateCurrentUserName(name!);
     }
 
+    /// Check new image is not null and call [updateUserImage] to save changes
     if (currentSelectedImage != null) {
       await profileState.updateUserImage(currentSelectedImage!);
     }
+
+    /// Check new phone number not null and call [updatePhone] to save changes
     if (phoneNumber.isNotEmpty) {
       await GetIt.I.get<SessionState>().updatePhone(phoneNumber);
     }
   }
 
+  /// Get new image from [sourse] pick it and call [setNewImage] to set changes
   Future getFromSource(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);

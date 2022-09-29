@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
+/// Button with solid infill and text
 class CustomFilledButton extends StatelessWidget {
+  /// Callback executed when the widget is pressed
   final Function onPressed;
+
+  /// Text contained in the button
   final String text;
+
+  /// Whether button must appears as enabled
   final bool enabled;
 
   const CustomFilledButton(

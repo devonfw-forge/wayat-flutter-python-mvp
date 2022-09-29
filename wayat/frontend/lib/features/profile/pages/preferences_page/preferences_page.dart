@@ -26,13 +26,18 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _profileAppBar(),
-        const SizedBox(height: 34.5),
-        _buildLanguageButton(),
-      ],
-    );
+    return WillPopScope(
+        onWillPop: () async {
+          widget.controller.onPressedBackButton();
+          return true;
+        },
+        child: Column(
+          children: [
+            _profileAppBar(),
+            const SizedBox(height: 34.5),
+            _buildLanguageButton(),
+          ],
+        ));
   }
 
   Row _profileAppBar() => Row(
@@ -121,6 +126,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
     );
   }
 
+  /// Widget that changes the language of the application
   Widget _languageButton(List<Language> itemList) {
     return Observer(builder: (context) {
       Language languageSelected =

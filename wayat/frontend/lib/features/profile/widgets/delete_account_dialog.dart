@@ -18,6 +18,9 @@ class DeleteAccountDialog extends StatelessWidget {
     return _buildDeleteAccountAlertDialog(context);
   }
 
+  /// Delete account dialog
+  ///
+  /// The user needs to press [Delete] or [Cancel] deleting account
   AlertDialog _buildDeleteAccountAlertDialog(BuildContext context) {
     return AlertDialog(
       //backgroundColor: Theme.of(context).primaryColor,

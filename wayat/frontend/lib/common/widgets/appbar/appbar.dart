@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
-
+/// AppBar with Wayat title centered
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({Key? key}) : super(key: key);
 

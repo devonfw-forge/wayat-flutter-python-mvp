@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 
+/// Message wrapped in a Card
 class MessageCard extends StatelessWidget {
+  /// Message content
   final String text;
+
+  /// Height of the card
   final double height;
 
   const MessageCard(this.text, {double? height, Key? key})
