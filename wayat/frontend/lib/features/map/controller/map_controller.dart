@@ -21,37 +21,49 @@ abstract class _MapController with Store {
   @observable
   bool sharingLocation = true;
 
+  /// Initialize current location
   @observable
   Location currentLocation = Location();
 
+  /// Initialize [allMarkers] of the contacts which show on the map
   Set<Marker> allMarkers = Set.of({});
 
+  /// Initialize [filterMarkers], which show active contacts
   @observable
   ObservableSet<Marker> filteredMarkers = ObservableSet.of({});
 
+  /// Initialize list of [contacts]
   List<ContactLocation> contacts = [];
 
+  /// Google map controller
   late GoogleMapController gMapController;
 
+  /// Initialize [searchBarText] text
   String searchBarText = "";
+
+  /// Groups, which user select. Contacts of [selectedGroup] show on the map
   Group? selectedGroup;
 
+  /// Contacts that are members of the group - [groupMembers]
   List<Contact> groupMembers = [];
 
   late Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
 
+  /// Set contact marker on the map
   void setOnMarkerPressed(
       Function(ContactLocation contact, BitmapDescriptor icon)
           onMarkerPressed) {
     this.onMarkerPressed = onMarkerPressed;
   }
 
+  /// Return all generated markers
   Future getMarkers() async {
     Set<Marker> newMarkers = await generateMarkers();
 
     setMarkers(newMarkers);
   }
 
+  /// Generate markers from contacts
   Future<Set<Marker>> generateMarkers() async {
     Map<String, BitmapDescriptor> bitmaps = await imageService
         .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
@@ -69,28 +81,33 @@ abstract class _MapController with Store {
     return newMarkers;
   }
 
+  /// Set markers from [newMarkers]
   @action
   void setMarkers(Set<Marker> newMarkers) {
     allMarkers = ObservableSet.of(newMarkers);
     filterMarkers();
   }
 
+  /// Set new contacts from [newContacts]
   @action
   void setContacts(List<ContactLocation> newContacts) {
     if (contacts != newContacts) contacts = newContacts;
   }
 
+  /// Set sharingLocation to contact
   @action
   void setSharingLocation(bool newValue) {
     sharingLocation = newValue;
   }
 
+  /// Set searchbar text and call [filterMarkers] to filter this contact
   @action
   void setSearchBarText(String newText) {
     searchBarText = newText;
     filterMarkers();
   }
 
+  /// Filter contacts of the group to show on the map
   void filterGroup(Group group) {
     if (group == selectedGroup) {
       selectedGroup = null;
@@ -102,6 +119,7 @@ abstract class _MapController with Store {
     filterMarkers();
   }
 
+  /// Add filtered markers to Set, which show on the map
   @action
   void filterMarkers() {
     Iterable<Marker> markers = allMarkers.where((element) => element
@@ -118,6 +136,7 @@ abstract class _MapController with Store {
     filteredMarkers = ObservableSet.of(markers.toSet());
   }
 
+  /// Update map camera
   void onSuggestionsTap(contact) {
     gMapController.moveCamera(
         CameraUpdate.newLatLng(LatLng(contact.latitude, contact.longitude)));
