@@ -34,11 +34,11 @@ abstract class _OnboardingController with Store {
     addAll(filteredContacts);
   }
 
-  /// Initialize onboarding state
+  /// State of the onboarding process
   @observable
   OnBoardingState onBoardingState = OnBoardingState.notStarted;
 
-  /// Initialize current onboarding page - is [initialManageContactsTip]
+  /// Current onboarding page
   @observable
   OnBoardingProgress currentPage = OnBoardingProgress.initialManageContactsTip;
 
@@ -59,7 +59,7 @@ abstract class _OnboardingController with Store {
   List<Contact> get unselectedContacts =>
       contacts.keys.where((element) => !contacts[element]!).toList();
 
-  /// If true, contact is selected, else - not
+  /// Whether contact is selected
   bool isSelected(Contact contact) {
     return selectedContacts.contains(contact);
   }
