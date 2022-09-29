@@ -11,6 +11,8 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/features/groups/widgets/group_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Main page of the groups feature. It displays the list of all the created
+/// groups and a button to create a new one.
 class GroupsPage extends StatelessWidget {
   final GroupsController controller = GetIt.I.get<GroupsController>();
 
@@ -18,8 +20,6 @@ class GroupsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.updateGroups();
-
     return WillPopScope(
         child: groupsContent(),
         onWillPop: () async {

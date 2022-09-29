@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
 
+/// [Contact] tile displayed when editing or adding members to the Group.
+///
+/// Receives the [Contact] to display, the callback when tapping the [IconButton],
+/// whether the tile is selected or unselected and the [IconData] for both the
+/// selected and unselected state.
 class CreateGroupContactTile extends StatelessWidget {
   final Contact contact;
   final Function()? iconAction;
