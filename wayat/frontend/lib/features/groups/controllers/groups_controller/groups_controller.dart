@@ -7,24 +7,38 @@ import 'package:wayat/services/utils/list_utils_service.dart';
 
 part 'groups_controller.g.dart';
 
+/// Manages the state of the groups feature, such as navigation and information fetching
 // ignore: library_private_types_in_public_api
 class GroupsController = _GroupsController with _$GroupsController;
 
 abstract class _GroupsController with Store {
+  /// Manages the communication with the server related to [Group].
   GroupsService groupsService;
 
+  /// Main constructor. Receives a [GroupService] optional parameter
+  /// for testing purposes.
   _GroupsController({GroupsService? groupsService})
       : groupsService = groupsService ?? GroupsServiceImpl();
 
+  /// The list of all of the created [Group] entities.
   @observable
   ObservableList<Group> groups = ObservableList.of([]);
 
+  /// If it is null, we will be in the [GroupsPage]. Otherwise, we will be
+  /// either in the [ViewGroupPage] or in the [ManageGroupPage].
   @observable
   Group? selectedGroup;
 
+  /// When [selectedGroup] is not null, decides whether we will be in
+  /// [ViewGroupPage] or in [ManageGroupPage].
   @observable
   bool editGroup = false;
 
+  /// Keeps the groups page list in [GroupsPage] from showing until the list
+  /// has completed updating after creating or editing a [Group].
+  ///
+  /// It is done like this because the server and connections are not fast enough
+  /// to store the [Group] picture before loading the list after editing or creating a [Group].
   @observable
   bool updatingGroup = false;
 

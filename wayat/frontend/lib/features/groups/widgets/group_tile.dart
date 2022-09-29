@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/group/group.dart';
 
+/// Displays a [Group] in the [GroupsPage].
+///
+/// Receives the [Group] to display and the callback
+/// to execute when the tile is pressed.
 class GroupTile extends StatelessWidget {
   final Group group;
   final Function()? onPressed;
