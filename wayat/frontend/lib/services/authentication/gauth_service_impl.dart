@@ -18,10 +18,15 @@ import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 
+/// Implementation of the Authentication Service using Google Authentication
 class GoogleAuthService implements AuthService {
+  /// Handles the requests to the server
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
+  /// Service to login in with Google and obtain the user's data and token
   late GoogleSignIn _googleSignIn;
+
+  /// Instance of the authentication service for Firebase
   final FirebaseAuth _auth =
       FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
 
