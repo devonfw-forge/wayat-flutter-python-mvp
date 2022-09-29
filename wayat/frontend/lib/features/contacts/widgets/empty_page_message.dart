@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 
+/// Page with a text wrapped in secondary color container at center
 class EmptyPageMessage extends StatelessWidget {
   final String message;
 

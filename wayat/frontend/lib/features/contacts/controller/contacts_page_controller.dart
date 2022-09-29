@@ -7,25 +7,44 @@ import 'package:wayat/features/contacts/controller/suggestions_controller/sugges
 
 part 'contacts_page_controller.g.dart';
 
+/// Controller containing business logic for Friends tab inside contacts page
 // ignore: library_private_types_in_public_api
 class ContactsPageController = _ContactsPageController
     with _$ContactsPageController;
 
+/// Base Controller for friends tab using MobX
 abstract class _ContactsPageController with Store {
+  /// Requests Controller to access its logic
   late RequestsController requestsController;
+
+  /// Friends Controller to access its logic
   final FriendsController friendsController;
+
+  /// Suggestions Controller to access its logic
   late SuggestionsController suggestionsController;
 
+  /// Index for friends page
   static const int friendsPageIndex = 0;
+
+  /// Index for requests page
   static const int requestsPageIndex = 1;
+
+  /// Index for suggestions page
   static const int suggestionsPageIndex = 2;
 
+  /// Time of lastUpdate of friends list
   DateTime timeFriendsUpdate = DateTime(1970);
+
+  /// Time of lastUpdate of requests list
   DateTime timeRequestsUpdate = DateTime(1970);
+
+  /// Time of lastUpdate of suggestions list
   DateTime timeSuggestionsUpdate = DateTime(1970);
 
+  /// Min time between any request of friends, requests or suggestions
   Duration maxTimeBetweenUpdates = const Duration(seconds: 3);
 
+  /// Current displayed page
   @observable
   ContactsCurrentPages currentPage = ContactsCurrentPages.contacts;
 
@@ -42,13 +61,17 @@ abstract class _ContactsPageController with Store {
             requestsController: this.requestsController);
   }
 
+  /// Text controller for searchbar
   TextEditingController searchBarController = TextEditingController();
 
+  /// Changes the value of [currentPage] and redirect to corresponing page
   @action
   void setContactsCurrentPage(ContactsCurrentPages currentPage) {
     this.currentPage = currentPage;
   }
 
+  /// Sets the value of the searchbar to the text filter for friends, requests
+  /// and suggestions page
   @action
   void setSearchBarText(String text) {
     friendsController.setTextFilter(text);
@@ -56,6 +79,8 @@ abstract class _ContactsPageController with Store {
     suggestionsController.setTextFilter(text);
   }
 
+  /// Updates the data of the selected tab if a duration of
+  /// [maxTimeBetweenUpdates] has passed
   void updateTabData(int index) {
     switch (index) {
       case friendsPageIndex:
