@@ -1,9 +1,17 @@
 import 'package:wayat/domain/contact/contact.dart';
 
+/// Location information for the contacts
 class ContactLocation extends Contact {
+  /// Coordinates latitude
   double latitude;
+
+  /// Coordinates longitude
   double longitude;
+
+  /// Complete address for the location defined by [latitude] and [longitude]
   String address;
+
+  /// Last time the location was updated
   DateTime lastUpdated;
 
   @override
