@@ -17,44 +17,54 @@ abstract class _OnboardingController with Store {
   final ContactsAddressServiceImpl importContactService;
   final ContactService contactService;
 
-  _OnboardingController({ContactsAddressServiceImpl? addressServiceImpl, ContactService? contactService})
-      : importContactService = addressServiceImpl ?? ContactsAddressServiceImpl(),
-      contactService = contactService ?? ContactServiceImpl() {
+  _OnboardingController(
+      {ContactsAddressServiceImpl? addressServiceImpl,
+      ContactService? contactService})
+      : importContactService =
+            addressServiceImpl ?? ContactsAddressServiceImpl(),
+        contactService = contactService ?? ContactServiceImpl() {
     importContacts();
   }
 
+  /// Import all contacts from user device
   void importContacts() async {
-    List<String> importedContacts =
-        await importContactService.getAllPhones();
+    List<String> importedContacts = await importContactService.getAllPhones();
     List<Contact> filteredContacts =
         await contactService.getFilteredContacts(importedContacts);
     addAll(filteredContacts);
   }
 
+  /// State of the onboarding process
   @observable
   OnBoardingState onBoardingState = OnBoardingState.notStarted;
 
+  /// Current onboarding page
   @observable
   OnBoardingProgress currentPage = OnBoardingProgress.initialManageContactsTip;
 
   @observable
   ObservableMap<Contact, bool> contacts = ObservableMap();
 
+  /// Get contacts list
   @computed
   List<Contact> get contactList => contacts.keys.toList();
 
+  /// Get selected contacts
   @computed
   List<Contact> get selectedContacts =>
       contacts.keys.where((element) => contacts[element]!).toList();
 
+  /// Get unselected contacts
   @computed
   List<Contact> get unselectedContacts =>
       contacts.keys.where((element) => !contacts[element]!).toList();
 
+  /// Whether contact is selected
   bool isSelected(Contact contact) {
     return selectedContacts.contains(contact);
   }
 
+  /// Finish onboarding and update user session state
   void finishOnBoarding() {
     contactService.sendRequests(selectedContacts);
     SessionState userSession = GetIt.I.get<SessionState>();
