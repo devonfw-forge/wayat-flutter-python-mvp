@@ -4,7 +4,9 @@ import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 
+/// Implementation of the RequestsService.
 class RequestsServiceImpl implements RequestsService {
+  /// Manages the http connections with the server.
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   @override
