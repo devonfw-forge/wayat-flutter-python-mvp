@@ -17,13 +17,19 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:collection/collection.dart';
 import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
+/// Detailed view of a Contact Profile
 // ignore: must_be_immutable
 class ContactProfilePage extends StatelessWidget {
+  /// Contact viewed in detail.
   Contact contact;
 
+  /// Name of previous page of the current one.
+  ///
   /// This is required because this page can be accessed from multiple places
   /// and the design indicates to which page the user will return to when going back
   final String navigationSource;
+
+  /// Controller including the logig business of this page
   final ContactProfileController controller;
 
   ContactProfilePage(
@@ -71,6 +77,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns an appBar with a return arrow to previous page
   Widget appBar() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
@@ -90,6 +97,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget which includes a switch to enable/disable sharing location with a contact
   Widget shareMyLocationRow() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
@@ -118,6 +126,9 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget containing username and its location and time ago
+  ///
+  /// If location it's not available return a text saying that is not sharing location
   Widget dataSection(BuildContext context, bool canBeLocated) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
@@ -175,6 +186,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Simple line divider
   Divider divider() {
     return const Divider(
       endIndent: 15,
@@ -184,6 +196,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Return a widget containing the addres location and the time ago in this location
   Column locationInfo(BuildContext context) {
     ContactLocation locatedContact = contact as ContactLocation;
     return Column(
@@ -217,6 +230,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget containing an image of current location of user or a message saying that is not sharing location
   Widget mapSection(BuildContext context, bool canBelocated) {
     return Container(
       decoration: BoxDecoration(
@@ -232,6 +246,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget containing the message that the user is not sharing location
   Widget locationNotAvailableMessage(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
@@ -248,6 +263,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns the image of google map of detailew view of contact location
   Widget googleMap(ContactLocation contact, BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.4,
