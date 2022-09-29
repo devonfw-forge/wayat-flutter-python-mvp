@@ -7,7 +7,8 @@ import 'dart:async' as _i3;
 
 import 'package:flutter_contacts/flutter_contacts.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/services/contact/flutter_contacts_handler.dart' as _i2;
+import 'package:wayat/services/contact/flutter_contacts_handler_libw.dart'
+    as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -20,11 +21,11 @@ import 'package:wayat/services/contact/flutter_contacts_handler.dart' as _i2;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-/// A class which mocks [FlutterContactsHandler].
+/// A class which mocks [FlutterContactsHandlerLibW].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockFlutterContactsHandler extends _i1.Mock
-    implements _i2.FlutterContactsHandler {
+class MockFlutterContactsHandlerLibW extends _i1.Mock
+    implements _i2.FlutterContactsHandlerLibW {
   @override
   _i3.Future<bool> requestPermission() =>
       (super.noSuchMethod(Invocation.method(#requestPermission, []),

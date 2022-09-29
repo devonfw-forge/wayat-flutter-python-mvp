@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -24,6 +25,7 @@ import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+/// Initializes the app.
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kDebugMode) {
@@ -36,17 +38,23 @@ Future main() async {
 
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");
-  
+
   await Firebase.initializeApp(
       name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
 
   await registerSingletons();
-  
+
   setTimeAgoLocales();
 
   runApp(const MyApp());
 }
 
+/// Loads the messages for the library [timeago] in the available languages for the app.
+///
+/// This messages are displayed in, for example, the [ContactDialog] that appears
+/// when tapping a user in the map, and format the date in a human friendly format.
+///
+/// For example: `2022-09-11 9:55` could translate to `five minutes ago`.
 void setTimeAgoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
   timeago.setLocaleMessages('es', timeago.EsMessages());
@@ -55,21 +63,27 @@ void setTimeAgoLocales() {
   timeago.setLocaleMessages('nl', timeago.NlMessages());
 }
 
+/// Registers all the [MobX] singletons to handle the app's shared state.
+///
+/// All of the singletons are registered using lazy initialization, to ensure
+/// that only the one's that are being used will be instantiated.
 Future registerSingletons() async {
-  GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-  GetIt.I.registerSingleton<HttpProvider>(HttpProvider());
-  GetIt.I.registerSingleton<MapState>(MapState());
-  GetIt.I.registerSingleton<SessionState>(SessionState());
-  GetIt.I.registerSingleton<HomeState>(HomeState());
-  GetIt.I.registerSingleton<ProfileState>(ProfileState());
-  GetIt.I.registerSingleton<OnboardingController>(
-    OnboardingController());
-  GetIt.I.registerSingleton<ContactsPageController>(
-    ContactsPageController());
-  GetIt.I.registerSingleton<GroupsController>(GroupsController());
-  GetIt.I.registerSingleton<UserStatusState>(UserStatusState());
-  GetIt.I.registerSingleton<LocationState>(LocationState());
+  GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
+  GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
+  GetIt.I.registerLazySingleton<MapState>(() => MapState());
+  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
+  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
+  GetIt.I.registerLazySingleton<OnboardingController>(
+      () => OnboardingController());
+  GetIt.I.registerLazySingleton<ContactsPageController>(
+      () => ContactsPageController());
+  GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
+  GetIt.I.registerLazySingleton<UserStatusState>(() => UserStatusState());
+  GetIt.I.registerLazySingleton<LocationState>(() => LocationState());
 }
+
+/// Main Application class
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -77,11 +91,16 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyApp();
 }
 
+/// Main application class' state
 class _MyApp extends State<MyApp> with WidgetsBindingObserver {
+  /// Instance of the application router, used to handle navigation declaratively
   final _appRouter = AppRouter();
 
+  /// Instance of the MapState to update when the user opens and closes the map
   final MapState mapState = GetIt.I.get<MapState>();
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
+
+  /// To avoid sending multiple `mapOpened` and `mapClosed` requests to the server concurrently
+  final Lock _lock = Lock();
 
   @override
   void initState() {
@@ -95,27 +114,38 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  /// Sends `mapOpened` to the server when the app opens and `mapClosed` when it is closed
+  ///
+  /// It handles both first startupt as well as awaking the app from minimized in Android and iOS
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-    // It will be executed if the app is opened from background, but not when it is
-    // opened for first time
-    if (state == AppLifecycleState.resumed) {
-      if (!mapState.mapOpened &&
-          GetIt.I.get<SessionState>().currentUser != null) {
-        await mapState.openMap();
+    // Lock is necessary, since this function is executed concurrently when changing states
+    _lock.synchronized(() async {
+      // It will be executed if the app is opened from background, but not when it is
+      // opened for first time
+      if (state == AppLifecycleState.resumed) {
+        if (!mapState.mapOpened &&
+            GetIt.I.get<SessionState>().currentUser != null) {
+          await mapState.openMap();
+        }
       }
-    }
-    // Other states must execute a close map event, but detach is not included,
-    // when the app is closed it can not send a request
-    else if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused) {
-      if (mapState.mapOpened) {
-        await mapState.closeMap();
+      // Other states must execute a close map event, but detach is not included,
+      // when the app is closed it can not send a request
+      else if (state == AppLifecycleState.inactive ||
+          state == AppLifecycleState.paused) {
+        if (mapState.mapOpened) {
+          await mapState.closeMap();
+        }
       }
-    }
+    });
   }
 
+  /// Builds the app widget tree.
+  ///
+  /// Obtains the language of the system, sets it up in the first start,
+  /// and then initializes the UI, internationalization singleton, and
+  /// declarative router.
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);

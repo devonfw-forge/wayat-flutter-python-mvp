@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Dialog containing a text to invite contacts to wayat
 class CustomInviteWayat extends StatelessWidget {
+  /// Callback trigered when widget is pressed
   final void Function() onCopyInvitation;
-  const CustomInviteWayat({required this.onCopyInvitation, Key? key} ) : super(key: key);
+  const CustomInviteWayat({required this.onCopyInvitation, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

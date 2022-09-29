@@ -11,6 +11,9 @@ class RestartIosDialog extends StatelessWidget {
     return _buildRestartIosDialog(context);
   }
 
+  /// Restart the app in iOS information dialog
+  ///
+  /// Information dialog for the user, that tells them about manually restarting iOS application
   AlertDialog _buildRestartIosDialog(BuildContext context) {
     return AlertDialog(
       //backgroundColor: Theme.of(context).primaryColor,

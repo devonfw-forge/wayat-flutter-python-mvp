@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -19,6 +20,7 @@ import 'profile_state_test.mocks.dart';
 
 @GenerateMocks([ProfileService, SessionState, HttpProvider])
 void main() async {
+  SharedPreferences.setMockInitialValues({});
   ProfileService mockProfileService = MockProfileService();
   SessionState mockSessionState = MockSessionState();
   setUpAll(() {

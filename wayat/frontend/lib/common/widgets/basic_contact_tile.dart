@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/domain/contact/contact.dart';
 
+/// Tile showing name and photo of the contact
 class BasicContactTile extends StatelessWidget {
+  /// Contact information which containes [Contact.name] and [Contact.imageUrl]
   final Contact contact;
 
   const BasicContactTile({required this.contact, Key? key}) : super(key: key);

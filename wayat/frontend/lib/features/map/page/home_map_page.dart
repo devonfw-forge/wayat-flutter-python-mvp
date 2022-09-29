@@ -62,6 +62,8 @@ class HomeMapPage extends StatelessWidget {
         });
   }
 
+  /// Initialize location state and check first if the location service
+  /// is enabled correctly
   Future<dynamic> initializeLocationState(context) async {
     while (true) {
       try {
@@ -78,6 +80,7 @@ class HomeMapPage extends StatelessWidget {
     }
   }
 
+  /// Show permitions dialog to the user
   Future<void> _showLocationPermissionDialog(context,
       [serviceError = false]) async {
     return showDialog<void>(
@@ -120,6 +123,7 @@ class HomeMapPage extends StatelessWidget {
     );
   }
 
+  /// Return map widget with filtered markers
   Observer _mapLayer() {
     return Observer(builder: (context) {
       prepareMapData(context);
@@ -216,10 +220,24 @@ class HomeMapPage extends StatelessWidget {
           );
   }
 
-  Widget googleMap(Set<Marker> markers) {
-    return getMapWidget(markers, controller);
+  /// Google map with current user location coordinates
+  GoogleMap googleMap(Set<Marker> markers) {
+    LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
+        locationState.currentLocation.longitude);
+
+    return GoogleMap(
+      initialCameraPosition:
+          CameraPosition(target: currentLocation, zoom: 14.5),
+      myLocationEnabled: true,
+      zoomControlsEnabled: false,
+      markers: markers,
+      onMapCreated: (googleMapController) {
+        controller.gMapController = googleMapController;
+      },
+    );
   }
 
+  /// Draggable layer with active sharing location contacts
   DraggableScrollableSheet _draggableSheetLayer() {
     return DraggableScrollableSheet(
         minChildSize: 0.13,
@@ -288,6 +306,7 @@ class HomeMapPage extends StatelessWidget {
     );
   }
 
+  /// Sharing location switch button
   Row _sharingLocationButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -310,6 +329,7 @@ class HomeMapPage extends StatelessWidget {
     );
   }
 
+  /// Show contact dialog on Tap to the icon of the contact
   void showContactDialog(
       ContactLocation contact, BitmapDescriptor icon, BuildContext context) {
     showDialog(

@@ -1,10 +1,15 @@
 import 'dart:convert';
 import 'package:wayat/domain/user/user.dart';
 
+/// Class [Contact] which inherits from User
 class Contact extends User {
+  /// Whether contact is available
   bool available;
+
+  /// Whether contact is sharing own location
   bool shareLocation;
 
+  /// Contact entity constructor
   Contact({
     required this.shareLocation,
     required this.available,
@@ -46,14 +51,13 @@ class Contact extends User {
 
   factory Contact.fromMap(Map<String, dynamic> map) {
     return Contact(
-      id: map['id'] as String,
-      available: map['available'] ?? false,
-      name: map['name'] as String,
-      email: map['email'] ?? "",
-      imageUrl: map['image_url'] as String,
-      phone: map['phone'] as String,
-      shareLocation: (map['share_location'] ?? false) as bool
-    );
+        id: map['id'] as String,
+        available: map['available'] ?? false,
+        name: map['name'] as String,
+        email: map['email'] ?? "",
+        imageUrl: map['image_url'] as String,
+        phone: map['phone'] as String,
+        shareLocation: (map['share_location'] ?? false) as bool);
   }
 
   @override

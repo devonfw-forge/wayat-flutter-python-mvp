@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -20,11 +18,17 @@ import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 
+/// Implementation of the Authentication Service using Google Authentication
 class GoogleAuthService implements AuthService {
+  /// Handles the requests to the server
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
+  /// Service to login in with Google and obtain the user's data and token
   late GoogleSignIn _googleSignIn;
-  final FirebaseAuth _auth = FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
+
+  /// Instance of the authentication service for Firebase
+  final FirebaseAuth _auth =
+      FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
 
   GoogleAuthService({GoogleSignIn? gS}) {
     if (gS != null) {
@@ -94,10 +98,11 @@ class GoogleAuthService implements AuthService {
     return account;
   }
 
-  /// *Sign out* the current user.
+  /// Sign out the current user.
+  /// Resets all the state after closing the firestore instance
   @override
   Future<void> signOut() async {
-    await FirebaseFirestore.instance.terminate();
+    await FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT')).terminate();
     await _auth.signOut();
     await _googleSignIn.signOut();
 

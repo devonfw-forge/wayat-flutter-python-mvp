@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -19,19 +20,27 @@ import 'package:wayat/services/contact/contact_service.dart';
 
 import 'friends_page_test.mocks.dart';
 
-@GenerateMocks(
-    [ContactsPageController, FriendsController, HomeState, ContactService])
+@GenerateMocks([
+  ContactsPageController,
+  FriendsController,
+  HomeState,
+  ContactService,
+  UserStatusState
+])
 void main() async {
   final FriendsController mockFriendsController = MockFriendsController();
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
   final HomeState mockHomeState = MockHomeState();
+  final MockUserStatusState mockUserStatusState = MockUserStatusState();
 
   setUpAll(() {
     HttpOverrides.global = null;
 
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
+    when(mockUserStatusState.contacts).thenReturn([]);
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     when(mockContactsPageController.friendsController)

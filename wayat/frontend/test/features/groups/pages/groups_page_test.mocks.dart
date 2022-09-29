@@ -5,7 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i10;
 
-import 'package:flutter/cupertino.dart' as _i7;
+import 'package:flutter/material.dart' as _i7;
 import 'package:image_picker/image_picker.dart' as _i11;
 import 'package:mobx/mobx.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
@@ -221,10 +221,6 @@ class MockContactsPageController extends _i1.Mock
               returnValue: _FakeFriendsController_4(
                   this, Invocation.getter(#friendsController)))
           as _i5.FriendsController);
-  @override
-  set friendsController(_i5.FriendsController? _friendsController) => super
-      .noSuchMethod(Invocation.setter(#friendsController, _friendsController),
-          returnValueForMissingStub: null);
   @override
   _i6.SuggestionsController get suggestionsController =>
       (super.noSuchMethod(Invocation.getter(#suggestionsController),
