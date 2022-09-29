@@ -3,10 +3,10 @@ import 'package:wayat/domain/user/user.dart';
 
 /// Class [Contact] which inherits from User
 class Contact extends User {
-  /// If [available] is true contact is available, if false - not
+  /// Whether contact is available
   bool available;
 
-  /// If [shareLocation] is true contact sharing own location, if false - not
+  /// Whether contact is sharing own location
   bool shareLocation;
 
   /// Contact entity constructor
