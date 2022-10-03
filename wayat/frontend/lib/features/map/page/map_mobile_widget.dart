@@ -21,6 +21,9 @@ class MapWidget extends StatelessWidget {
     LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
       locationState.currentLocation.longitude);
     return GoogleMap(
+      onTap: (_) {
+        removeFocusFromSearchBar(context);
+      },
       initialCameraPosition:
           CameraPosition(target: currentLocation, zoom: 14.5),
       myLocationEnabled: true,
@@ -30,5 +33,13 @@ class MapWidget extends StatelessWidget {
         controller.gMapController = googleMapController;
       },
     );
+  }
+
+  void removeFocusFromSearchBar(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }
