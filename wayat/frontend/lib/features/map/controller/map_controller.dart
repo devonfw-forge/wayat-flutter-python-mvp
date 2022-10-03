@@ -5,6 +5,7 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'dart:async';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 
 part 'map_controller.g.dart';
@@ -137,7 +138,9 @@ abstract class _MapController with Store {
 
   /// Update map camera
   void onSuggestionsTap(contact) {
-    gMapController.moveCamera(
+    if (!PlatformService().isWeb) {
+      gMapController.moveCamera(
         CameraUpdate.newLatLng(LatLng(contact.latitude, contact.longitude)));
+    }
   }
 }

@@ -8,6 +8,7 @@ import 'package:location/location.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/location/background_location_exception.dart';
 import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
@@ -81,7 +82,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   static Future<ShareLocationServiceImpl> create(ShareLocationMode mode,
       bool shareLocation, Function(LatLng) onLocationChangedCallback) async {
 
-    if (! kIsWeb) {
+    if (!PlatformService().isWeb) {
       await _checkLocationPermissions();
     }
 
@@ -110,7 +111,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     sendLocationToBack(initialLocation);
 
-    if(!kIsWeb) {
+    if(!PlatformService().isWeb) {
       location.enableBackgroundMode(enable: true);
     }
 

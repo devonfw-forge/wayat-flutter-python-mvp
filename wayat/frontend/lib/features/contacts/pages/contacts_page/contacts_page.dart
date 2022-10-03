@@ -7,6 +7,7 @@ import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class ContactsPage extends StatelessWidget {
   final ContactsPageController controller =
@@ -34,7 +35,7 @@ class ContactsPage extends StatelessWidget {
       routes: [
         FriendsRoute(), 
         RequestsRoute(), 
-        if (!kIsWeb) SuggestionsRoute()
+        if (!PlatformService().isWeb) SuggestionsRoute()
       ],
       builder: ((context, child, tabController) {
         controller.updateTabData(tabController.index);
@@ -63,7 +64,7 @@ class ContactsPage extends StatelessWidget {
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
-                if (!kIsWeb) Tab(text: appLocalizations.suggestionsTab)
+                if (!PlatformService().isWeb) Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],
       ),

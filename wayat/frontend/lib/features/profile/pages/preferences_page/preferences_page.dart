@@ -10,6 +10,7 @@ import 'package:wayat/features/profile/widgets/restart_ios_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/lang/language.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class PreferencesPage extends StatefulWidget {
   final EditProfileController controller;
@@ -76,13 +77,13 @@ class _PreferencesPageState extends State<PreferencesPage> {
                   await profileState.changeLanguage(changedLanguage!);
                   //Check platform:
                   //On Android restart App
-                  if (defaultTargetPlatform == TargetPlatform.android) {
+                  if (PlatformService().targetPlatform == TargetPlatform.android) {
                     Restart.restartApp();
                   } else
                   //On iOS Apple ecosysstem don't allow restarting app programmatically
                   //For now solution is to show to the user InfoDialog with recomendation
                   //manually restarting iOS App
-                  if (defaultTargetPlatform == TargetPlatform.iOS) {
+                  if (PlatformService().targetPlatform == TargetPlatform.iOS) {
                     showDialog(
                         context: context,
                         builder: (context) {

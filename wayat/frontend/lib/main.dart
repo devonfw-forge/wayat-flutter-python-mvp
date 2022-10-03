@@ -24,6 +24,7 @@ import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Initializes the app.
 Future main() async {
@@ -34,7 +35,7 @@ Future main() async {
   }
 
   // AVoid # character in url (flutter web)
-  if (kIsWeb) { setPathUrlStrategy(); }
+  if (PlatformService().isWeb) { setPathUrlStrategy(); }
 
   // Env file should be loaded before Firebase initialization
   await dotenv.load(fileName: ".env");

@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
 import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
 
@@ -15,11 +16,12 @@ class GoogleMapsService {
       {UrlLauncherLibW? urlLauncher}) async {
     UrlLauncherLibW launcher = urlLauncher ?? UrlLauncherLibW();
     late Uri uri;
-    // To test the kIsWeb condition, the access to this variable should be
+    // To test the web condition, the access to this variable should be
     // wrapped in its own class to allow for mocking
-    if (kIsWeb || defaultTargetPlatform == TargetPlatform.android) {
+    if (PlatformService().isWeb 
+      || PlatformService().targetPlatform == TargetPlatform.android) {
       uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+    } else if (PlatformService().targetPlatform == TargetPlatform.iOS) {
       //apple maps
       uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
       //google maps
@@ -82,14 +84,12 @@ class GoogleMapsService {
   }
 
   static String getApIKey() {
-    if (defaultTargetPlatform == TargetPlatform.android) {
+    if (PlatformService().targetPlatform == TargetPlatform.android) {
       return dotenv.get('ANDROID_API_KEY');
     }
-
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
+    if (PlatformService().targetPlatform == TargetPlatform.iOS) {
       return dotenv.get('IOS_API_KEY');
     }
-
     return dotenv.get('WEB_API_KEY');
   }
 }

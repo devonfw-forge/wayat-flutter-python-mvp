@@ -19,11 +19,12 @@ import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
-import 'package:wayat/features/map/page/abstract_map_widget.dart';
+import 'package:wayat/features/map/page/platform_map_widget.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/location/background_location_exception.dart';
 import 'package:wayat/services/location/no_location_service_exception.dart';
 import 'package:wayat/services/location/rejected_location_exception.dart';
@@ -49,7 +50,7 @@ class HomeMapPage extends StatelessWidget {
         future: initializeLocationState(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            if (kIsWeb) {
+            if (PlatformService().isWeb) {
               return Stack(children: [_mapLayer()],
             );
             }
@@ -221,20 +222,9 @@ class HomeMapPage extends StatelessWidget {
   }
 
   /// Google map with current user location coordinates
-  GoogleMap googleMap(Set<Marker> markers) {
-    LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
-        locationState.currentLocation.longitude);
-
-    return GoogleMap(
-      initialCameraPosition:
-          CameraPosition(target: currentLocation, zoom: 14.5),
-      myLocationEnabled: true,
-      zoomControlsEnabled: false,
-      markers: markers,
-      onMapCreated: (googleMapController) {
-        controller.gMapController = googleMapController;
-      },
-    );
+  Widget googleMap(Set<Marker> markers) {
+    return PlatformMapWidget(
+      markers: markers, controller: controller);
   }
 
   /// Draggable layer with active sharing location contacts

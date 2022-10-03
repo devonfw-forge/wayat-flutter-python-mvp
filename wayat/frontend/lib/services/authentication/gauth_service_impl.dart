@@ -17,6 +17,7 @@ import 'package:wayat/features/onboarding/controller/onboarding_controller.dart'
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Implementation of the Authentication Service using Google Authentication
 class GoogleAuthService implements AuthService {
@@ -34,7 +35,7 @@ class GoogleAuthService implements AuthService {
     if (gS != null) {
       _googleSignIn = gS;
     } else {
-      if (kIsWeb) {
+      if (PlatformService().isWeb) {
         _googleSignIn = GoogleSignIn(
           clientId: dotenv.get('WEB_CLIENT_ID'),
           scopes: ['email'],
