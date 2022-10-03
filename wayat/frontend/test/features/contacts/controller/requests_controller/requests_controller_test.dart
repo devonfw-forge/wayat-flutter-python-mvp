@@ -17,47 +17,45 @@ void main() async {
       requestsService: mockRequestServiceImpl,
       friendsController: mockFriendsController);
 
-  Map<String, List<Contact>> getRequestsResponse = {
-    "sent_requests": [
-      Contact(
-          shareLocationTo: false,
-          id: "1",
-          name: "Test 1",
-          email: "test1@mail.com",
-          imageUrl: "image1",
-          phone: "123456781"),
-      Contact(
-          shareLocationTo: false,
-          id: "2",
-          name: "Test 2",
-          email: "test2@mail.com",
-          imageUrl: "image2",
-          phone: "123456782"),
-      Contact(
-          shareLocationTo: false,
-          id: "3",
-          name: "Test 3",
-          email: "test3@mail.com",
-          imageUrl: "image3",
-          phone: "123456783"),
-    ],
-    "pending_requests": [
-      Contact(
-          shareLocationTo: false,
-          id: "4",
-          name: "Test 4",
-          email: "test4@mail.com",
-          imageUrl: "image4",
-          phone: "123456784"),
-      Contact(
-          shareLocationTo: false,
-          id: "5",
-          name: "Test 5",
-          email: "test5@mail.com",
-          imageUrl: "image5",
-          phone: "123456785"),
-    ]
-  };
+  FriendRequestRespone getRequestsResponse =
+      FriendRequestRespone(sentRequests: [
+    Contact(
+        shareLocationTo: false,
+        id: "1",
+        name: "Test 1",
+        email: "test1@mail.com",
+        imageUrl: "image1",
+        phone: "123456781"),
+    Contact(
+        shareLocationTo: false,
+        id: "2",
+        name: "Test 2",
+        email: "test2@mail.com",
+        imageUrl: "image2",
+        phone: "123456782"),
+    Contact(
+        shareLocationTo: false,
+        id: "3",
+        name: "Test 3",
+        email: "test3@mail.com",
+        imageUrl: "image3",
+        phone: "123456783"),
+  ], receivedRequests: [
+    Contact(
+        shareLocationTo: false,
+        id: "4",
+        name: "Test 4",
+        email: "test4@mail.com",
+        imageUrl: "image4",
+        phone: "123456784"),
+    Contact(
+        shareLocationTo: false,
+        id: "5",
+        name: "Test 5",
+        email: "test5@mail.com",
+        imageUrl: "image5",
+        phone: "123456785"),
+  ]);
 
   when(mockRequestServiceImpl.getRequests())
       .thenAnswer((_) => Future.value(getRequestsResponse));
