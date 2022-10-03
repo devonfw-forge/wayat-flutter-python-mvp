@@ -7,7 +7,7 @@ import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/status/lifecycle_service.dart';
 
-import 'map_status_service_test.mocks.dart';
+import 'lifecycle_service_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<HttpProvider>(), MockSpec<Response>()])
 void main() async {
@@ -25,7 +25,7 @@ void main() async {
 
     LifeCycleService lifeCycleService = LifeCycleService();
 
-    await lifeCycleService.notifyMapOpened();
+    await lifeCycleService.notifyLifeCycleState(true);
 
     verify(mockHttpProvider.sendPostRequest(
         APIContract.updateLifeCycle, {"open": true})).called(1);
@@ -39,7 +39,7 @@ void main() async {
 
     LifeCycleService lifeCycleService = LifeCycleService();
 
-    await lifeCycleService.notifyMapClosed();
+    await lifeCycleService.notifyLifeCycleState(false);
 
     verify(mockHttpProvider.sendPostRequest(
         APIContract.updateLifeCycle, {"open": false})).called(1);

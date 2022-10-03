@@ -40,11 +40,12 @@ abstract class _LifeCycleState with Store {
     timer = Timer.periodic(durationInterval, (timer) async {
       // User can log out in any moment
       if (sessionState.currentUser != null) {
-        await lifeCycleService.notifyMapOpened();
+        isAppOpened = true;
+        await lifeCycleService.notifyLifeCycleState(isAppOpened);
       }
     });
-    await lifeCycleService.notifyMapOpened();
     isAppOpened = true;
+    await lifeCycleService.notifyLifeCycleState(isAppOpened);
   }
 
   /// Sents and sends the map state to close
@@ -55,8 +56,7 @@ abstract class _LifeCycleState with Store {
     SessionState sessionState = GetIt.I.get<SessionState>();
     // First checks if the user is logged in
     if (sessionState.currentUser == null) return;
-
-    await lifeCycleService.notifyMapClosed();
     isAppOpened = false;
+    await lifeCycleService.notifyLifeCycleState(isAppOpened);
   }
 }
