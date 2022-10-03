@@ -19,7 +19,7 @@ class Contact extends User {
 
   @override
   Contact copyWith({
-    bool? shareLocation,
+    bool? shareLocationTo,
     String? id,
     String? name,
     String? email,
@@ -27,7 +27,7 @@ class Contact extends User {
     String? phone,
   }) {
     return Contact(
-      shareLocationTo: shareLocation ?? this.shareLocationTo,
+      shareLocationTo: shareLocationTo ?? this.shareLocationTo,
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,

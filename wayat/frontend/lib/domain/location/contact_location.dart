@@ -38,7 +38,7 @@ class ContactLocation extends Contact {
   @override
   ContactLocation copyWith(
       {
-      bool? shareLocation,
+      bool? shareLocationTo,
       String? id,
       String? name,
       String? email,
@@ -58,7 +58,7 @@ class ContactLocation extends Contact {
         longitude: longitude ?? this.longitude,
         address: address ?? this.address,
         lastUpdated: lastUpdated ?? this.lastUpdated,
-        shareLocationTo: shareLocation ?? this.shareLocationTo);
+        shareLocationTo: shareLocationTo ?? this.shareLocationTo);
   }
 
   @override
