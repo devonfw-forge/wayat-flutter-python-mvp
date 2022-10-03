@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
+import 'package:wayat/services/friend_requests/models/friend_request_response.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 import 'package:wayat/services/friend_requests/requests_service_impl.dart';
 import 'package:wayat/services/utils/list_utils_service.dart';
@@ -47,19 +48,19 @@ abstract class _RequestsController with Store {
   /// Update request from backend
   @action
   Future<void> updateRequests() async {
-    Map<String, List<Contact>> requests = await _service.getRequests();
+    FriendRequestRespone requests = await _service.getRequests();
 
     if (ListUtilsService.haveDifferentElements(
-        pendingRequests, requests[pendingRequestsKey]!)) {
-      pendingRequests = ObservableList.of(requests[pendingRequestsKey]!);
+        pendingRequests, requests.receivedRequests)) {
+      pendingRequests = ObservableList.of(requests.receivedRequests);
       filteredPendingRequests = ObservableList.of(pendingRequests
           .where((element) =>
               element.name.toLowerCase().contains(textFilter.toLowerCase()))
           .toList());
     }
     if (ListUtilsService.haveDifferentElements(
-        sentRequests, requests[sentRequestsKey]!)) {
-      sentRequests = ObservableList.of(requests[sentRequestsKey]!);
+        sentRequests, requests.sentRequests)) {
+      sentRequests = ObservableList.of(requests.sentRequests);
     }
   }
 
@@ -92,7 +93,7 @@ abstract class _RequestsController with Store {
   @action
   Future<void> unsendRequest(Contact contact) async {
     sentRequests.remove(contact);
-    _service.unsendRequest(contact);
+    _service.cancelRequest(contact);
   }
 
   /// Change [textFilter] to update the query of filter contacts
