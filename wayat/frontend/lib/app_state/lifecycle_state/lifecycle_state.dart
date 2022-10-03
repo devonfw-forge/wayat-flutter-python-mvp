@@ -6,29 +6,30 @@ import 'package:wayat/services/status/map_status_service.dart';
 
 part 'lifecycle_state.g.dart';
 
-/// A state of the displayed map
+/// A state of the app life cycle
 // ignore: library_private_types_in_public_api
 class LifeCycleState = _LifeCycleState with _$LifeCycleState;
 
-/// Implementation of the state of the displayed map
+/// Implementation of the state of the app life cycle
 abstract class _LifeCycleState with Store {
-  /// HTTP service of the map status
+  /// HTTP service of the app life cycle
   final LifeCycleService lifeCycleService;
 
-  /// [Timer] instance to launch periodic requests of map status every [durationInterval]
+  /// [Timer] instance to launch periodic requests of the app life status
+  /// every [durationInterval]
   Timer? timer;
 
-  /// Time between request of status map
+  /// Time between request of app life status
   Duration durationInterval = const Duration(seconds: 60);
 
-  /// Whether map is currently displayed
+  /// Whether app is currently oppened
   @observable
   bool isAppOpened = true;
 
   _LifeCycleState({LifeCycleService? mapStatusService})
       : lifeCycleService = mapStatusService ?? LifeCycleService();
 
-  /// Sets and send the state to open
+  /// Sets and sends the map state to open
   @action
   Future<void> notifyOpenMap() async {
     SessionState sessionState = GetIt.I.get<SessionState>();
@@ -46,7 +47,7 @@ abstract class _LifeCycleState with Store {
     isAppOpened = true;
   }
 
-  /// Sents and send the state to close
+  /// Sents and sends the map state to close
   @action
   Future<void> notifyCloseMap() async {
     if (timer != null && timer!.isActive) timer!.cancel();
