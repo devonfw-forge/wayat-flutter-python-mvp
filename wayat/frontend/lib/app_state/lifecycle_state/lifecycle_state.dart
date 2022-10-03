@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/services/status/map_status_service.dart';
+import 'package:wayat/services/status/lifecycle_service.dart';
 
 part 'lifecycle_state.g.dart';
 
@@ -26,8 +26,8 @@ abstract class _LifeCycleState with Store {
   @observable
   bool isAppOpened = true;
 
-  _LifeCycleState({LifeCycleService? mapStatusService})
-      : lifeCycleService = mapStatusService ?? LifeCycleService();
+  _LifeCycleState({LifeCycleService? lifeCycleService})
+      : lifeCycleService = lifeCycleService ?? LifeCycleService();
 
   /// Sets and sends the map state to open
   @action
@@ -40,10 +40,10 @@ abstract class _LifeCycleState with Store {
     timer = Timer.periodic(durationInterval, (timer) async {
       // User can log out in any moment
       if (sessionState.currentUser != null) {
-        await lifeCycleService.sendMapOpened();
+        await lifeCycleService.notifyMapOpened();
       }
     });
-    await lifeCycleService.sendMapOpened();
+    await lifeCycleService.notifyMapOpened();
     isAppOpened = true;
   }
 
@@ -56,7 +56,7 @@ abstract class _LifeCycleState with Store {
     // First checks if the user is logged in
     if (sessionState.currentUser == null) return;
 
-    await lifeCycleService.sendMapClosed();
+    await lifeCycleService.notifyMapClosed();
     isAppOpened = false;
   }
 }

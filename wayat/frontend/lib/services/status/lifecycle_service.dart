@@ -6,12 +6,14 @@ class LifeCycleService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   ///Send [POST] request to backend to [Open GoogleMap]
-  Future sendMapOpened() async {
-    await httpProvider.sendPostRequest(APIContract.updateMap, {"open": true});
+  Future notifyMapOpened() async {
+    await httpProvider
+        .sendPostRequest(APIContract.updateLifeCycle, {"open": true});
   }
 
   ///Send [POST] request to backend to [Close GoogleMap]
-  Future sendMapClosed() async {
-    await httpProvider.sendPostRequest(APIContract.updateMap, {"open": false});
+  Future notifyMapClosed() async {
+    await httpProvider
+        .sendPostRequest(APIContract.updateLifeCycle, {"open": false});
   }
 }

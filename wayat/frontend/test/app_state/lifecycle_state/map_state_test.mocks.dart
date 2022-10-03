@@ -12,7 +12,7 @@ import 'package:wayat/app_state/user_session/session_state.dart' as _i8;
 import 'package:wayat/domain/user/my_user.dart' as _i9;
 import 'package:wayat/services/authentication/auth_service.dart' as _i3;
 import 'package:wayat/services/common/http_provider/http_provider.dart' as _i2;
-import 'package:wayat/services/status/map_status_service.dart' as _i6;
+import 'package:wayat/services/status/lifecycle_service.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -104,7 +104,7 @@ class MockLifeCycleService extends _i1.Mock implements _i6.LifeCycleService {
         ),
       ) as _i2.HttpProvider);
   @override
-  _i7.Future<dynamic> sendMapOpened() => (super.noSuchMethod(
+  _i7.Future<dynamic> notifyMapOpened() => (super.noSuchMethod(
         Invocation.method(
           #sendMapOpened,
           [],
@@ -112,7 +112,7 @@ class MockLifeCycleService extends _i1.Mock implements _i6.LifeCycleService {
         returnValue: _i7.Future<dynamic>.value(),
       ) as _i7.Future<dynamic>);
   @override
-  _i7.Future<dynamic> sendMapClosed() => (super.noSuchMethod(
+  _i7.Future<dynamic> notifyMapClosed() => (super.noSuchMethod(
         Invocation.method(
           #sendMapClosed,
           [],

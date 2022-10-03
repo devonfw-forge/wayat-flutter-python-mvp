@@ -11,7 +11,7 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart' as _i8;
 import 'package:wayat/domain/user/my_user.dart' as _i2;
 import 'package:wayat/services/authentication/auth_service.dart' as _i6;
-import 'package:wayat/services/status/map_status_service.dart' as _i4;
+import 'package:wayat/services/status/lifecycle_service.dart' as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values

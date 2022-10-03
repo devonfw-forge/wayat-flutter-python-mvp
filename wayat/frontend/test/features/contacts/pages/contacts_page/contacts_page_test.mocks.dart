@@ -44,7 +44,7 @@ import 'package:wayat/services/groups/groups_service.dart' as _i15;
 import 'package:wayat/services/location/share_location_service.dart' as _i8;
 import 'package:wayat/services/location/share_location_service_factory.dart'
     as _i24;
-import 'package:wayat/services/status/map_status_service.dart' as _i13;
+import 'package:wayat/services/status/lifecycle_service.dart' as _i13;
 import 'package:wayat/services/status/user_status_service_impl.dart' as _i10;
 
 // ignore_for_file: type=lint
