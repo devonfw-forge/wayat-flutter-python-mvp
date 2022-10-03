@@ -74,8 +74,7 @@ void main() async {
       id: "123",
       members: [
         Contact(
-            shareLocation: true,
-            available: true,
+            shareLocationTo: true,
             id: "",
             name: "",
             email: "",

@@ -86,8 +86,7 @@ class UserStatusService {
         }
         Timestamp lastUpdated = e["last_updated"];
         ContactLocation located = ContactLocation(
-            available: true,
-            shareLocation: contact.shareLocation,
+            shareLocationTo: contact.shareLocationTo,
             id: contact.id,
             name: contact.name,
             email: contact.email,

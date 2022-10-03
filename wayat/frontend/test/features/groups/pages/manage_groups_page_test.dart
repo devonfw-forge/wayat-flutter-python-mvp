@@ -342,8 +342,7 @@ void main() async {
 
 Contact _contactFactory(String contactName) {
   return Contact(
-    shareLocation: true,
-    available: true,
+    shareLocationTo: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

@@ -28,16 +28,6 @@ abstract class _FriendsController with Store {
   _FriendsController({ContactService? contactService})
       : _service = contactService ?? ContactServiceImpl();
 
-  /// Returns a list of available contacts using wayat
-  @computed
-  List<Contact> get availableContacts =>
-      allContacts.where((contact) => contact.available).toList();
-
-  /// Returns a list of unavailable contacts
-  @computed
-  List<Contact> get unavailableContacts =>
-      allContacts.where((contact) => !contact.available).toList();
-
   /// Update the list all your contacts, including the ones that user just accepts or viceversa.
   @action
   Future<void> updateContacts() async {

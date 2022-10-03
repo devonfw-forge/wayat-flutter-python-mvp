@@ -19,24 +19,21 @@ void main() async {
   Map<String, List<Contact>> getRequestsResponse = {
     "sent_requests": [
       Contact(
-          shareLocation: false,
-          available: true,
+          shareLocationTo: false,
           id: "1",
           name: "Test 1",
           email: "test1@mail.com",
           imageUrl: "image1",
           phone: "123456781"),
       Contact(
-          shareLocation: false,
-          available: false,
+          shareLocationTo: false,
           id: "2",
           name: "Test 2",
           email: "test2@mail.com",
           imageUrl: "image2",
           phone: "123456782"),
       Contact(
-          shareLocation: false,
-          available: true,
+          shareLocationTo: false,
           id: "3",
           name: "Test 3",
           email: "test3@mail.com",
@@ -45,16 +42,14 @@ void main() async {
     ],
     "pending_requests": [
       Contact(
-          shareLocation: false,
-          available: true,
+          shareLocationTo: false,
           id: "4",
           name: "Test 4",
           email: "test4@mail.com",
           imageUrl: "image4",
           phone: "123456784"),
       Contact(
-          shareLocation: false,
-          available: false,
+          shareLocationTo: false,
           id: "5",
           name: "Test 5",
           email: "test5@mail.com",
@@ -81,8 +76,7 @@ void main() async {
   test('Send request to a friend', () async {
     await controller.updateRequests();
     Contact newContact = Contact(
-        shareLocation: true,
-        available: false,
+        shareLocationTo: true,
         id: "11",
         name: "New contact",
         email: "newContact@mail.com",
