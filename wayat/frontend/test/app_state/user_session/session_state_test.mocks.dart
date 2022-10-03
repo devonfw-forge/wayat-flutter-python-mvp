@@ -8,7 +8,7 @@ import 'dart:async' as _i7;
 import 'package:google_sign_in/google_sign_in.dart' as _i3;
 import 'package:mobx/mobx.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:wayat/app_state/map_state/map_state.dart' as _i8;
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart' as _i8;
 import 'package:wayat/domain/user/my_user.dart' as _i2;
 import 'package:wayat/services/authentication/auth_service.dart' as _i6;
 import 'package:wayat/services/status/map_status_service.dart' as _i4;
@@ -25,31 +25,56 @@ import 'package:wayat/services/status/map_status_service.dart' as _i4;
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeMyUser_0 extends _i1.SmartFake implements _i2.MyUser {
-  _FakeMyUser_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeMyUser_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeGoogleSignInAuthentication_1 extends _i1.SmartFake
     implements _i3.GoogleSignInAuthentication {
-  _FakeGoogleSignInAuthentication_1(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeGoogleSignInAuthentication_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
-class _FakeMapStatusService_2 extends _i1.SmartFake
-    implements _i4.MapStatusService {
-  _FakeMapStatusService_2(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+class _FakeLifeCycleService_2 extends _i1.SmartFake
+    implements _i4.LifeCycleService {
+  _FakeLifeCycleService_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeDuration_3 extends _i1.SmartFake implements Duration {
-  _FakeDuration_3(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeDuration_3(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeReactiveContext_4 extends _i1.SmartFake
     implements _i5.ReactiveContext {
-  _FakeReactiveContext_4(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeReactiveContext_4(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 /// A class which mocks [AuthService].
@@ -61,38 +86,69 @@ class MockAuthService extends _i1.Mock implements _i6.AuthService {
   }
 
   @override
-  _i7.Future<_i3.GoogleSignInAccount?> signIn() =>
-      (super.noSuchMethod(Invocation.method(#signIn, []),
-              returnValue: _i7.Future<_i3.GoogleSignInAccount?>.value())
-          as _i7.Future<_i3.GoogleSignInAccount?>);
+  _i7.Future<_i3.GoogleSignInAccount?> signIn() => (super.noSuchMethod(
+        Invocation.method(
+          #signIn,
+          [],
+        ),
+        returnValue: _i7.Future<_i3.GoogleSignInAccount?>.value(),
+      ) as _i7.Future<_i3.GoogleSignInAccount?>);
   @override
-  _i7.Future<String> getIdToken() =>
-      (super.noSuchMethod(Invocation.method(#getIdToken, []),
-          returnValue: _i7.Future<String>.value('')) as _i7.Future<String>);
+  _i7.Future<String> getIdToken() => (super.noSuchMethod(
+        Invocation.method(
+          #getIdToken,
+          [],
+        ),
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
   _i7.Future<void> signOut() => (super.noSuchMethod(
-      Invocation.method(#signOut, []),
-      returnValue: _i7.Future<void>.value(),
-      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+        Invocation.method(
+          #signOut,
+          [],
+        ),
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i7.Future<_i2.MyUser> getUserData() =>
-      (super.noSuchMethod(Invocation.method(#getUserData, []),
-              returnValue: _i7.Future<_i2.MyUser>.value(
-                  _FakeMyUser_0(this, Invocation.method(#getUserData, []))))
-          as _i7.Future<_i2.MyUser>);
+  _i7.Future<_i2.MyUser> getUserData() => (super.noSuchMethod(
+        Invocation.method(
+          #getUserData,
+          [],
+        ),
+        returnValue: _i7.Future<_i2.MyUser>.value(_FakeMyUser_0(
+          this,
+          Invocation.method(
+            #getUserData,
+            [],
+          ),
+        )),
+      ) as _i7.Future<_i2.MyUser>);
   @override
-  _i7.Future<_i3.GoogleSignInAccount?> signInSilently() =>
-      (super.noSuchMethod(Invocation.method(#signInSilently, []),
-              returnValue: _i7.Future<_i3.GoogleSignInAccount?>.value())
-          as _i7.Future<_i3.GoogleSignInAccount?>);
+  _i7.Future<_i3.GoogleSignInAccount?> signInSilently() => (super.noSuchMethod(
+        Invocation.method(
+          #signInSilently,
+          [],
+        ),
+        returnValue: _i7.Future<_i3.GoogleSignInAccount?>.value(),
+      ) as _i7.Future<_i3.GoogleSignInAccount?>);
   @override
-  _i7.Future<bool> sendPhoneNumber(String? phone) =>
-      (super.noSuchMethod(Invocation.method(#sendPhoneNumber, [phone]),
-          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
+  _i7.Future<bool> sendPhoneNumber(String? phone) => (super.noSuchMethod(
+        Invocation.method(
+          #sendPhoneNumber,
+          [phone],
+        ),
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
   @override
-  _i7.Future<bool> sendDoneOnboarding(bool? doneOnboarding) => (super
-      .noSuchMethod(Invocation.method(#sendDoneOnboarding, [doneOnboarding]),
-          returnValue: _i7.Future<bool>.value(false)) as _i7.Future<bool>);
+  _i7.Future<bool> sendDoneOnboarding(bool? doneOnboarding) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendDoneOnboarding,
+          [doneOnboarding],
+        ),
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
 }
 
 /// A class which mocks [GoogleSignInAccount].
@@ -106,81 +162,118 @@ class MockGoogleSignInAccount extends _i1.Mock
   }
 
   @override
-  String get email =>
-      (super.noSuchMethod(Invocation.getter(#email), returnValue: '')
-          as String);
+  String get email => (super.noSuchMethod(
+        Invocation.getter(#email),
+        returnValue: '',
+      ) as String);
   @override
-  String get id =>
-      (super.noSuchMethod(Invocation.getter(#id), returnValue: '') as String);
+  String get id => (super.noSuchMethod(
+        Invocation.getter(#id),
+        returnValue: '',
+      ) as String);
   @override
   _i7.Future<_i3.GoogleSignInAuthentication> get authentication =>
-      (super.noSuchMethod(Invocation.getter(#authentication),
-              returnValue: _i7.Future<_i3.GoogleSignInAuthentication>.value(
-                  _FakeGoogleSignInAuthentication_1(
-                      this, Invocation.getter(#authentication))))
-          as _i7.Future<_i3.GoogleSignInAuthentication>);
+      (super.noSuchMethod(
+        Invocation.getter(#authentication),
+        returnValue: _i7.Future<_i3.GoogleSignInAuthentication>.value(
+            _FakeGoogleSignInAuthentication_1(
+          this,
+          Invocation.getter(#authentication),
+        )),
+      ) as _i7.Future<_i3.GoogleSignInAuthentication>);
   @override
-  _i7.Future<Map<String, String>> get authHeaders =>
-      (super.noSuchMethod(Invocation.getter(#authHeaders),
-              returnValue:
-                  _i7.Future<Map<String, String>>.value(<String, String>{}))
-          as _i7.Future<Map<String, String>>);
+  _i7.Future<Map<String, String>> get authHeaders => (super.noSuchMethod(
+        Invocation.getter(#authHeaders),
+        returnValue: _i7.Future<Map<String, String>>.value(<String, String>{}),
+      ) as _i7.Future<Map<String, String>>);
   @override
   _i7.Future<void> clearAuthCache() => (super.noSuchMethod(
-      Invocation.method(#clearAuthCache, []),
-      returnValue: _i7.Future<void>.value(),
-      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+        Invocation.method(
+          #clearAuthCache,
+          [],
+        ),
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 }
 
-/// A class which mocks [MapState].
+/// A class which mocks [LifeCycleState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMapState extends _i1.Mock implements _i8.MapState {
-  MockMapState() {
+class MockLifeCycleState extends _i1.Mock implements _i8.LifeCycleState {
+  MockLifeCycleState() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.MapStatusService get mapStatusService => (super.noSuchMethod(
-      Invocation.getter(#mapStatusService),
-      returnValue: _FakeMapStatusService_2(
-          this, Invocation.getter(#mapStatusService))) as _i4.MapStatusService);
+  _i4.LifeCycleService get lifeCycleService => (super.noSuchMethod(
+        Invocation.getter(#lifeCycleService),
+        returnValue: _FakeLifeCycleService_2(
+          this,
+          Invocation.getter(#lifeCycleService),
+        ),
+      ) as _i4.LifeCycleService);
   @override
-  set timer(_i7.Timer? _timer) =>
-      super.noSuchMethod(Invocation.setter(#timer, _timer),
-          returnValueForMissingStub: null);
+  set timer(_i7.Timer? _timer) => super.noSuchMethod(
+        Invocation.setter(
+          #timer,
+          _timer,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  Duration get durationInterval =>
-      (super.noSuchMethod(Invocation.getter(#durationInterval),
-              returnValue:
-                  _FakeDuration_3(this, Invocation.getter(#durationInterval)))
-          as Duration);
+  Duration get durationInterval => (super.noSuchMethod(
+        Invocation.getter(#durationInterval),
+        returnValue: _FakeDuration_3(
+          this,
+          Invocation.getter(#durationInterval),
+        ),
+      ) as Duration);
   @override
   set durationInterval(Duration? _durationInterval) => super.noSuchMethod(
-      Invocation.setter(#durationInterval, _durationInterval),
-      returnValueForMissingStub: null);
+        Invocation.setter(
+          #durationInterval,
+          _durationInterval,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get mapOpened =>
-      (super.noSuchMethod(Invocation.getter(#mapOpened), returnValue: false)
-          as bool);
+  bool get isAppOpened => (super.noSuchMethod(
+        Invocation.getter(#isAppOpened),
+        returnValue: false,
+      ) as bool);
   @override
-  set mapOpened(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#mapOpened, value),
-          returnValueForMissingStub: null);
+  set isAppOpened(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #isAppOpened,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i5.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_4(this, Invocation.getter(#context)))
-          as _i5.ReactiveContext);
+  _i5.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_4(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i5.ReactiveContext);
   @override
-  _i7.Future<void> openMap() => (super.noSuchMethod(
-      Invocation.method(#openMap, []),
-      returnValue: _i7.Future<void>.value(),
-      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  _i7.Future<void> notifyOpenMap() => (super.noSuchMethod(
+        Invocation.method(
+          #notifyOpenMap,
+          [],
+        ),
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i7.Future<void> closeMap() => (super.noSuchMethod(
-      Invocation.method(#closeMap, []),
-      returnValue: _i7.Future<void>.value(),
-      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+  _i7.Future<void> notifyCloseMap() => (super.noSuchMethod(
+        Invocation.method(
+          #notifyCloseMap,
+          [],
+        ),
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 }

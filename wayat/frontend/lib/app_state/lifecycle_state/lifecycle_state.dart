@@ -4,16 +4,16 @@ import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/services/status/map_status_service.dart';
 
-part 'map_state.g.dart';
+part 'lifecycle_state.g.dart';
 
 /// A state of the displayed map
 // ignore: library_private_types_in_public_api
-class MapState = _MapState with _$MapState;
+class LifeCycleState = _LifeCycleState with _$LifeCycleState;
 
 /// Implementation of the state of the displayed map
-abstract class _MapState with Store {
+abstract class _LifeCycleState with Store {
   /// HTTP service of the map status
-  final MapStatusService mapStatusService;
+  final LifeCycleService lifeCycleService;
 
   /// [Timer] instance to launch periodic requests of map status every [durationInterval]
   Timer? timer;
@@ -23,14 +23,14 @@ abstract class _MapState with Store {
 
   /// Whether map is currently displayed
   @observable
-  bool mapOpened = true;
+  bool isAppOpened = true;
 
-  _MapState({MapStatusService? mapStatusService})
-      : mapStatusService = mapStatusService ?? MapStatusService();
+  _LifeCycleState({LifeCycleService? mapStatusService})
+      : lifeCycleService = mapStatusService ?? LifeCycleService();
 
   /// Sets and send the state to open
   @action
-  Future<void> openMap() async {
+  Future<void> notifyOpenMap() async {
     SessionState sessionState = GetIt.I.get<SessionState>();
     // First checks if the user is logged in
     if (sessionState.currentUser == null) return;
@@ -39,23 +39,23 @@ abstract class _MapState with Store {
     timer = Timer.periodic(durationInterval, (timer) async {
       // User can log out in any moment
       if (sessionState.currentUser != null) {
-        await mapStatusService.sendMapOpened();
+        await lifeCycleService.sendMapOpened();
       }
     });
-    await mapStatusService.sendMapOpened();
-    mapOpened = true;
+    await lifeCycleService.sendMapOpened();
+    isAppOpened = true;
   }
 
   /// Sents and send the state to close
   @action
-  Future<void> closeMap() async {
+  Future<void> notifyCloseMap() async {
     if (timer != null && timer!.isActive) timer!.cancel();
 
     SessionState sessionState = GetIt.I.get<SessionState>();
     // First checks if the user is logged in
     if (sessionState.currentUser == null) return;
 
-    await mapStatusService.sendMapClosed();
-    mapOpened = false;
+    await lifeCycleService.sendMapClosed();
+    isAppOpened = false;
   }
 }

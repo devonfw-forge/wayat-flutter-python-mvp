@@ -22,19 +22,34 @@ import 'package:wayat/services/common/http_provider/http_provider.dart' as _i3;
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeClient_0 extends _i1.SmartFake implements _i2.Client {
-  _FakeClient_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeClient_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeResponse_1 extends _i1.SmartFake implements _i2.Response {
-  _FakeResponse_1(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeResponse_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeStreamedResponse_2 extends _i1.SmartFake
     implements _i2.StreamedResponse {
-  _FakeStreamedResponse_2(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeStreamedResponse_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 /// A class which mocks [HttpProvider].
@@ -42,67 +57,153 @@ class _FakeStreamedResponse_2 extends _i1.SmartFake
 /// See the documentation for Mockito's code generation for more information.
 class MockHttpProvider extends _i1.Mock implements _i3.HttpProvider {
   @override
-  _i2.Client get client => (super.noSuchMethod(Invocation.getter(#client),
-      returnValue: _FakeClient_0(this, Invocation.getter(#client)),
-      returnValueForMissingStub:
-          _FakeClient_0(this, Invocation.getter(#client))) as _i2.Client);
+  _i2.Client get client => (super.noSuchMethod(
+        Invocation.getter(#client),
+        returnValue: _FakeClient_0(
+          this,
+          Invocation.getter(#client),
+        ),
+        returnValueForMissingStub: _FakeClient_0(
+          this,
+          Invocation.getter(#client),
+        ),
+      ) as _i2.Client);
   @override
-  String get baseUrl => (super.noSuchMethod(Invocation.getter(#baseUrl),
-      returnValue: '', returnValueForMissingStub: '') as String);
+  String get baseUrl => (super.noSuchMethod(
+        Invocation.getter(#baseUrl),
+        returnValue: '',
+        returnValueForMissingStub: '',
+      ) as String);
   @override
-  set baseUrl(String? _baseUrl) =>
-      super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
-          returnValueForMissingStub: null);
+  set baseUrl(String? _baseUrl) => super.noSuchMethod(
+        Invocation.setter(
+          #baseUrl,
+          _baseUrl,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   _i4.Future<Map<String, String>> getHeaders() => (super.noSuchMethod(
-      Invocation.method(#getHeaders, []),
-      returnValue: _i4.Future<Map<String, String>>.value(<String, String>{}),
-      returnValueForMissingStub:
-          _i4.Future<Map<String, String>>.value(<String, String>{})) as _i4
-      .Future<Map<String, String>>);
+        Invocation.method(
+          #getHeaders,
+          [],
+        ),
+        returnValue: _i4.Future<Map<String, String>>.value(<String, String>{}),
+        returnValueForMissingStub:
+            _i4.Future<Map<String, String>>.value(<String, String>{}),
+      ) as _i4.Future<Map<String, String>>);
   @override
   _i4.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
-      (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
-              returnValue:
-                  _i4.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
-              returnValueForMissingStub:
-                  _i4.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
-          as _i4.Future<Map<String, dynamic>>);
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendGetRequest,
+          [subPath],
+        ),
+        returnValue:
+            _i4.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+        returnValueForMissingStub:
+            _i4.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i4.Future<Map<String, dynamic>>);
   @override
   _i4.Future<_i2.Response> sendPostRequest(
-          String? subPath, Map<String, dynamic>? body) =>
-      (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_1(
-                  this, Invocation.method(#sendPostRequest, [subPath, body]))),
-              returnValueForMissingStub: _i4.Future<_i2.Response>.value(
-                  _FakeResponse_1(
-                      this, Invocation.method(#sendPostRequest, [subPath, body]))))
-          as _i4.Future<_i2.Response>);
+    String? subPath,
+    Map<String, dynamic>? body,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendPostRequest,
+          [
+            subPath,
+            body,
+          ],
+        ),
+        returnValue: _i4.Future<_i2.Response>.value(_FakeResponse_1(
+          this,
+          Invocation.method(
+            #sendPostRequest,
+            [
+              subPath,
+              body,
+            ],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.Response>.value(_FakeResponse_1(
+          this,
+          Invocation.method(
+            #sendPostRequest,
+            [
+              subPath,
+              body,
+            ],
+          ),
+        )),
+      ) as _i4.Future<_i2.Response>);
   @override
   _i4.Future<_i2.StreamedResponse> sendPostImageRequest(
-          String? subPath, String? filePath, String? type) =>
+    String? subPath,
+    String? filePath,
+    String? type,
+  ) =>
       (super.noSuchMethod(
-              Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
-              returnValue: _i4.Future<_i2.StreamedResponse>.value(_FakeStreamedResponse_2(
-                  this,
-                  Invocation.method(
-                      #sendPostImageRequest, [subPath, filePath, type]))),
-              returnValueForMissingStub: _i4.Future<_i2.StreamedResponse>.value(
-                  _FakeStreamedResponse_2(this, Invocation.method(#sendPostImageRequest, [subPath, filePath, type]))))
-          as _i4.Future<_i2.StreamedResponse>);
+        Invocation.method(
+          #sendPostImageRequest,
+          [
+            subPath,
+            filePath,
+            type,
+          ],
+        ),
+        returnValue:
+            _i4.Future<_i2.StreamedResponse>.value(_FakeStreamedResponse_2(
+          this,
+          Invocation.method(
+            #sendPostImageRequest,
+            [
+              subPath,
+              filePath,
+              type,
+            ],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.StreamedResponse>.value(_FakeStreamedResponse_2(
+          this,
+          Invocation.method(
+            #sendPostImageRequest,
+            [
+              subPath,
+              filePath,
+              type,
+            ],
+          ),
+        )),
+      ) as _i4.Future<_i2.StreamedResponse>);
   @override
   _i4.Future<bool> sendPutRequest(
-          String? subPath, Map<String, dynamic>? body) =>
-      (super.noSuchMethod(Invocation.method(#sendPutRequest, [subPath, body]),
-              returnValue: _i4.Future<bool>.value(false),
-              returnValueForMissingStub: _i4.Future<bool>.value(false))
-          as _i4.Future<bool>);
+    String? subPath,
+    Map<String, dynamic>? body,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendPutRequest,
+          [
+            subPath,
+            body,
+          ],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
   @override
-  _i4.Future<bool> sendDelRequest(String? subPath) =>
-      (super.noSuchMethod(Invocation.method(#sendDelRequest, [subPath]),
-              returnValue: _i4.Future<bool>.value(false),
-              returnValueForMissingStub: _i4.Future<bool>.value(false))
-          as _i4.Future<bool>);
+  _i4.Future<bool> sendDelRequest(String? subPath) => (super.noSuchMethod(
+        Invocation.method(
+          #sendDelRequest,
+          [subPath],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }
 
 /// A class which mocks [Response].
@@ -110,26 +211,39 @@ class MockHttpProvider extends _i1.Mock implements _i3.HttpProvider {
 /// See the documentation for Mockito's code generation for more information.
 class MockResponse extends _i1.Mock implements _i2.Response {
   @override
-  _i5.Uint8List get bodyBytes =>
-      (super.noSuchMethod(Invocation.getter(#bodyBytes),
-          returnValue: _i5.Uint8List(0),
-          returnValueForMissingStub: _i5.Uint8List(0)) as _i5.Uint8List);
+  _i5.Uint8List get bodyBytes => (super.noSuchMethod(
+        Invocation.getter(#bodyBytes),
+        returnValue: _i5.Uint8List(0),
+        returnValueForMissingStub: _i5.Uint8List(0),
+      ) as _i5.Uint8List);
   @override
-  String get body => (super.noSuchMethod(Invocation.getter(#body),
-      returnValue: '', returnValueForMissingStub: '') as String);
+  String get body => (super.noSuchMethod(
+        Invocation.getter(#body),
+        returnValue: '',
+        returnValueForMissingStub: '',
+      ) as String);
   @override
-  int get statusCode => (super.noSuchMethod(Invocation.getter(#statusCode),
-      returnValue: 0, returnValueForMissingStub: 0) as int);
+  int get statusCode => (super.noSuchMethod(
+        Invocation.getter(#statusCode),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
   @override
   Map<String, String> get headers => (super.noSuchMethod(
-      Invocation.getter(#headers),
-      returnValue: <String, String>{},
-      returnValueForMissingStub: <String, String>{}) as Map<String, String>);
+        Invocation.getter(#headers),
+        returnValue: <String, String>{},
+        returnValueForMissingStub: <String, String>{},
+      ) as Map<String, String>);
   @override
-  bool get isRedirect => (super.noSuchMethod(Invocation.getter(#isRedirect),
-      returnValue: false, returnValueForMissingStub: false) as bool);
+  bool get isRedirect => (super.noSuchMethod(
+        Invocation.getter(#isRedirect),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
   @override
-  bool get persistentConnection =>
-      (super.noSuchMethod(Invocation.getter(#persistentConnection),
-          returnValue: false, returnValueForMissingStub: false) as bool);
+  bool get persistentConnection => (super.noSuchMethod(
+        Invocation.getter(#persistentConnection),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
 }

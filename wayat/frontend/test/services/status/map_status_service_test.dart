@@ -23,7 +23,7 @@ void main() async {
             .sendPostRequest(APIContract.updateMap, {"open": true}))
         .thenAnswer((_) async => mockResponse);
 
-    MapStatusService mapStatusService = MapStatusService();
+    LifeCycleService mapStatusService = LifeCycleService();
 
     await mapStatusService.sendMapOpened();
 
@@ -37,7 +37,7 @@ void main() async {
             .sendPostRequest(APIContract.updateMap, {"open": false}))
         .thenAnswer((_) async => mockResponse);
 
-    MapStatusService mapStatusService = MapStatusService();
+    LifeCycleService mapStatusService = LifeCycleService();
 
     await mapStatusService.sendMapClosed();
 

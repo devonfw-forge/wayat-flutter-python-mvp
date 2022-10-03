@@ -12,9 +12,9 @@ import 'package:image_picker/image_picker.dart' as _i17;
 import 'package:mobx/mobx.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:wayat/app_state/home_state/home_state.dart' as _i22;
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart' as _i29;
 import 'package:wayat/app_state/location_state/location_state.dart' as _i24;
 import 'package:wayat/app_state/location_state/share_mode.dart' as _i28;
-import 'package:wayat/app_state/map_state/map_state.dart' as _i29;
 import 'package:wayat/app_state/user_session/session_state.dart' as _i20;
 import 'package:wayat/app_state/user_status/user_status_state.dart' as _i26;
 import 'package:wayat/domain/contact/contact.dart' as _i23;
@@ -58,104 +58,194 @@ import 'package:wayat/services/status/user_status_service_impl.dart' as _i10;
 
 class _FakeRequestsController_0 extends _i1.SmartFake
     implements _i2.RequestsController {
-  _FakeRequestsController_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeRequestsController_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeFriendsController_1 extends _i1.SmartFake
     implements _i3.FriendsController {
-  _FakeFriendsController_1(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeFriendsController_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeSuggestionsController_2 extends _i1.SmartFake
     implements _i4.SuggestionsController {
-  _FakeSuggestionsController_2(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeSuggestionsController_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeDateTime_3 extends _i1.SmartFake implements DateTime {
-  _FakeDateTime_3(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeDateTime_3(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeDuration_4 extends _i1.SmartFake implements Duration {
-  _FakeDuration_4(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeDuration_4(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeTextEditingController_5 extends _i1.SmartFake
     implements _i5.TextEditingController {
-  _FakeTextEditingController_5(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeTextEditingController_5(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeReactiveContext_6 extends _i1.SmartFake
     implements _i6.ReactiveContext {
-  _FakeReactiveContext_6(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeReactiveContext_6(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeAuthService_7 extends _i1.SmartFake implements _i7.AuthService {
-  _FakeAuthService_7(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeAuthService_7(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeShareLocationService_8 extends _i1.SmartFake
     implements _i8.ShareLocationService {
-  _FakeShareLocationService_8(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeShareLocationService_8(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeLatLng_9 extends _i1.SmartFake implements _i9.LatLng {
-  _FakeLatLng_9(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeLatLng_9(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeUserStatusService_10 extends _i1.SmartFake
     implements _i10.UserStatusService {
-  _FakeUserStatusService_10(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeUserStatusService_10(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
-class _FakeMapStatusService_11 extends _i1.SmartFake
-    implements _i11.MapStatusService {
-  _FakeMapStatusService_11(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+class _FakeLifeCycleService_11 extends _i1.SmartFake
+    implements _i11.LifeCycleService {
+  _FakeLifeCycleService_11(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeObservableList_12<T> extends _i1.SmartFake
     implements _i6.ObservableList<T> {
-  _FakeObservableList_12(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeObservableList_12(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeContactService_13 extends _i1.SmartFake
     implements _i12.ContactService {
-  _FakeContactService_13(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeContactService_13(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeClient_14 extends _i1.SmartFake implements _i13.Client {
-  _FakeClient_14(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeClient_14(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeResponse_15 extends _i1.SmartFake implements _i13.Response {
-  _FakeResponse_15(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeResponse_15(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeStreamedResponse_16 extends _i1.SmartFake
     implements _i13.StreamedResponse {
-  _FakeStreamedResponse_16(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeStreamedResponse_16(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeGroupsService_17 extends _i1.SmartFake
     implements _i14.GroupsService {
-  _FakeGroupsService_17(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeGroupsService_17(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 /// A class which mocks [ProfileService].
@@ -167,17 +257,30 @@ class MockProfileService extends _i1.Mock implements _i15.ProfileService {
   }
 
   @override
-  _i16.Future<bool> uploadProfileImage(_i17.XFile? selectedImage) => (super
-      .noSuchMethod(Invocation.method(#uploadProfileImage, [selectedImage]),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  _i16.Future<bool> uploadProfileImage(_i17.XFile? selectedImage) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #uploadProfileImage,
+          [selectedImage],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
   @override
-  _i16.Future<bool> updateProfileName(String? name) =>
-      (super.noSuchMethod(Invocation.method(#updateProfileName, [name]),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  _i16.Future<bool> updateProfileName(String? name) => (super.noSuchMethod(
+        Invocation.method(
+          #updateProfileName,
+          [name],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
   @override
-  _i16.Future<bool> deleteCurrentUser() =>
-      (super.noSuchMethod(Invocation.method(#deleteCurrentUser, []),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  _i16.Future<bool> deleteCurrentUser() => (super.noSuchMethod(
+        Invocation.method(
+          #deleteCurrentUser,
+          [],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
 }
 
 /// A class which mocks [ContactsPageController].
@@ -190,113 +293,177 @@ class MockContactsPageController extends _i1.Mock
   }
 
   @override
-  _i2.RequestsController get requestsController =>
-      (super.noSuchMethod(Invocation.getter(#requestsController),
-              returnValue: _FakeRequestsController_0(
-                  this, Invocation.getter(#requestsController)))
-          as _i2.RequestsController);
+  _i2.RequestsController get requestsController => (super.noSuchMethod(
+        Invocation.getter(#requestsController),
+        returnValue: _FakeRequestsController_0(
+          this,
+          Invocation.getter(#requestsController),
+        ),
+      ) as _i2.RequestsController);
   @override
-  set requestsController(_i2.RequestsController? _requestsController) => super
-      .noSuchMethod(Invocation.setter(#requestsController, _requestsController),
-          returnValueForMissingStub: null);
+  set requestsController(_i2.RequestsController? _requestsController) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #requestsController,
+          _requestsController,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i3.FriendsController get friendsController =>
-      (super.noSuchMethod(Invocation.getter(#friendsController),
-              returnValue: _FakeFriendsController_1(
-                  this, Invocation.getter(#friendsController)))
-          as _i3.FriendsController);
+  _i3.FriendsController get friendsController => (super.noSuchMethod(
+        Invocation.getter(#friendsController),
+        returnValue: _FakeFriendsController_1(
+          this,
+          Invocation.getter(#friendsController),
+        ),
+      ) as _i3.FriendsController);
   @override
-  _i4.SuggestionsController get suggestionsController =>
-      (super.noSuchMethod(Invocation.getter(#suggestionsController),
-              returnValue: _FakeSuggestionsController_2(
-                  this, Invocation.getter(#suggestionsController)))
-          as _i4.SuggestionsController);
+  _i4.SuggestionsController get suggestionsController => (super.noSuchMethod(
+        Invocation.getter(#suggestionsController),
+        returnValue: _FakeSuggestionsController_2(
+          this,
+          Invocation.getter(#suggestionsController),
+        ),
+      ) as _i4.SuggestionsController);
   @override
   set suggestionsController(
           _i4.SuggestionsController? _suggestionsController) =>
       super.noSuchMethod(
-          Invocation.setter(#suggestionsController, _suggestionsController),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #suggestionsController,
+          _suggestionsController,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  DateTime get timeFriendsUpdate =>
-      (super.noSuchMethod(Invocation.getter(#timeFriendsUpdate),
-              returnValue:
-                  _FakeDateTime_3(this, Invocation.getter(#timeFriendsUpdate)))
-          as DateTime);
+  DateTime get timeFriendsUpdate => (super.noSuchMethod(
+        Invocation.getter(#timeFriendsUpdate),
+        returnValue: _FakeDateTime_3(
+          this,
+          Invocation.getter(#timeFriendsUpdate),
+        ),
+      ) as DateTime);
   @override
   set timeFriendsUpdate(DateTime? _timeFriendsUpdate) => super.noSuchMethod(
-      Invocation.setter(#timeFriendsUpdate, _timeFriendsUpdate),
-      returnValueForMissingStub: null);
+        Invocation.setter(
+          #timeFriendsUpdate,
+          _timeFriendsUpdate,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  DateTime get timeRequestsUpdate =>
-      (super.noSuchMethod(Invocation.getter(#timeRequestsUpdate),
-              returnValue:
-                  _FakeDateTime_3(this, Invocation.getter(#timeRequestsUpdate)))
-          as DateTime);
+  DateTime get timeRequestsUpdate => (super.noSuchMethod(
+        Invocation.getter(#timeRequestsUpdate),
+        returnValue: _FakeDateTime_3(
+          this,
+          Invocation.getter(#timeRequestsUpdate),
+        ),
+      ) as DateTime);
   @override
   set timeRequestsUpdate(DateTime? _timeRequestsUpdate) => super.noSuchMethod(
-      Invocation.setter(#timeRequestsUpdate, _timeRequestsUpdate),
-      returnValueForMissingStub: null);
+        Invocation.setter(
+          #timeRequestsUpdate,
+          _timeRequestsUpdate,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   DateTime get timeSuggestionsUpdate => (super.noSuchMethod(
+        Invocation.getter(#timeSuggestionsUpdate),
+        returnValue: _FakeDateTime_3(
+          this,
           Invocation.getter(#timeSuggestionsUpdate),
-          returnValue:
-              _FakeDateTime_3(this, Invocation.getter(#timeSuggestionsUpdate)))
-      as DateTime);
+        ),
+      ) as DateTime);
   @override
   set timeSuggestionsUpdate(DateTime? _timeSuggestionsUpdate) =>
       super.noSuchMethod(
-          Invocation.setter(#timeSuggestionsUpdate, _timeSuggestionsUpdate),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #timeSuggestionsUpdate,
+          _timeSuggestionsUpdate,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   Duration get maxTimeBetweenUpdates => (super.noSuchMethod(
+        Invocation.getter(#maxTimeBetweenUpdates),
+        returnValue: _FakeDuration_4(
+          this,
           Invocation.getter(#maxTimeBetweenUpdates),
-          returnValue:
-              _FakeDuration_4(this, Invocation.getter(#maxTimeBetweenUpdates)))
-      as Duration);
+        ),
+      ) as Duration);
   @override
   set maxTimeBetweenUpdates(Duration? _maxTimeBetweenUpdates) =>
       super.noSuchMethod(
-          Invocation.setter(#maxTimeBetweenUpdates, _maxTimeBetweenUpdates),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #maxTimeBetweenUpdates,
+          _maxTimeBetweenUpdates,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i19.ContactsCurrentPages get currentPage =>
-      (super.noSuchMethod(Invocation.getter(#currentPage),
-              returnValue: _i19.ContactsCurrentPages.contacts)
-          as _i19.ContactsCurrentPages);
+  _i19.ContactsCurrentPages get currentPage => (super.noSuchMethod(
+        Invocation.getter(#currentPage),
+        returnValue: _i19.ContactsCurrentPages.contacts,
+      ) as _i19.ContactsCurrentPages);
   @override
-  set currentPage(_i19.ContactsCurrentPages? value) =>
-      super.noSuchMethod(Invocation.setter(#currentPage, value),
-          returnValueForMissingStub: null);
+  set currentPage(_i19.ContactsCurrentPages? value) => super.noSuchMethod(
+        Invocation.setter(
+          #currentPage,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i5.TextEditingController get searchBarController =>
-      (super.noSuchMethod(Invocation.getter(#searchBarController),
-              returnValue: _FakeTextEditingController_5(
-                  this, Invocation.getter(#searchBarController)))
-          as _i5.TextEditingController);
+  _i5.TextEditingController get searchBarController => (super.noSuchMethod(
+        Invocation.getter(#searchBarController),
+        returnValue: _FakeTextEditingController_5(
+          this,
+          Invocation.getter(#searchBarController),
+        ),
+      ) as _i5.TextEditingController);
   @override
   set searchBarController(_i5.TextEditingController? _searchBarController) =>
       super.noSuchMethod(
-          Invocation.setter(#searchBarController, _searchBarController),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #searchBarController,
+          _searchBarController,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  void setContactsCurrentPage(_i19.ContactsCurrentPages? currentPage) => super
-      .noSuchMethod(Invocation.method(#setContactsCurrentPage, [currentPage]),
-          returnValueForMissingStub: null);
+  void setContactsCurrentPage(_i19.ContactsCurrentPages? currentPage) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #setContactsCurrentPage,
+          [currentPage],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setSearchBarText(String? text) =>
-      super.noSuchMethod(Invocation.method(#setSearchBarText, [text]),
-          returnValueForMissingStub: null);
+  void setSearchBarText(String? text) => super.noSuchMethod(
+        Invocation.method(
+          #setSearchBarText,
+          [text],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void updateTabData(int? index) =>
-      super.noSuchMethod(Invocation.method(#updateTabData, [index]),
-          returnValueForMissingStub: null);
+  void updateTabData(int? index) => super.noSuchMethod(
+        Invocation.method(
+          #updateTabData,
+          [index],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [SessionState].
@@ -308,107 +475,183 @@ class MockSessionState extends _i1.Mock implements _i20.SessionState {
   }
 
   @override
-  bool get finishLoggedIn => (super
-          .noSuchMethod(Invocation.getter(#finishLoggedIn), returnValue: false)
-      as bool);
+  bool get finishLoggedIn => (super.noSuchMethod(
+        Invocation.getter(#finishLoggedIn),
+        returnValue: false,
+      ) as bool);
   @override
-  set finishLoggedIn(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#finishLoggedIn, value),
-          returnValueForMissingStub: null);
+  set finishLoggedIn(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #finishLoggedIn,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get googleSignedIn => (super
-          .noSuchMethod(Invocation.getter(#googleSignedIn), returnValue: false)
-      as bool);
+  bool get googleSignedIn => (super.noSuchMethod(
+        Invocation.getter(#googleSignedIn),
+        returnValue: false,
+      ) as bool);
   @override
-  set googleSignedIn(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#googleSignedIn, value),
-          returnValueForMissingStub: null);
+  set googleSignedIn(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #googleSignedIn,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get hasDoneOnboarding =>
-      (super.noSuchMethod(Invocation.getter(#hasDoneOnboarding),
-          returnValue: false) as bool);
+  bool get hasDoneOnboarding => (super.noSuchMethod(
+        Invocation.getter(#hasDoneOnboarding),
+        returnValue: false,
+      ) as bool);
   @override
-  set hasDoneOnboarding(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
-          returnValueForMissingStub: null);
+  set hasDoneOnboarding(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #hasDoneOnboarding,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  set currentUser(_i21.MyUser? value) =>
-      super.noSuchMethod(Invocation.setter(#currentUser, value),
-          returnValueForMissingStub: null);
+  set currentUser(_i21.MyUser? value) => super.noSuchMethod(
+        Invocation.setter(
+          #currentUser,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i7.AuthService get authService =>
-      (super.noSuchMethod(Invocation.getter(#authService),
-              returnValue:
-                  _FakeAuthService_7(this, Invocation.getter(#authService)))
-          as _i7.AuthService);
+  _i7.AuthService get authService => (super.noSuchMethod(
+        Invocation.getter(#authService),
+        returnValue: _FakeAuthService_7(
+          this,
+          Invocation.getter(#authService),
+        ),
+      ) as _i7.AuthService);
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  _i16.Future<void> doneOnBoarding() =>
-      (super.noSuchMethod(Invocation.method(#doneOnBoarding, []),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> doneOnBoarding() => (super.noSuchMethod(
+        Invocation.method(
+          #doneOnBoarding,
+          [],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  _i16.Future<void> isLogged() =>
-      (super.noSuchMethod(Invocation.method(#isLogged, []),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> isLogged() => (super.noSuchMethod(
+        Invocation.method(
+          #isLogged,
+          [],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  void setGoogleSignIn(bool? signedIn) =>
-      super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
-          returnValueForMissingStub: null);
+  void setGoogleSignIn(bool? signedIn) => super.noSuchMethod(
+        Invocation.method(
+          #setGoogleSignIn,
+          [signedIn],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   void setFinishLoggedIn(bool? finishedLoggedIn) => super.noSuchMethod(
-      Invocation.method(#setFinishLoggedIn, [finishedLoggedIn]),
-      returnValueForMissingStub: null);
+        Invocation.method(
+          #setFinishLoggedIn,
+          [finishedLoggedIn],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i16.Future<dynamic> initializeUser() =>
-      (super.noSuchMethod(Invocation.method(#initializeUser, []),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> initializeUser() => (super.noSuchMethod(
+        Invocation.method(
+          #initializeUser,
+          [],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
-  _i16.Future<dynamic> updateCurrentUser() =>
-      (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> updateCurrentUser() => (super.noSuchMethod(
+        Invocation.method(
+          #updateCurrentUser,
+          [],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
-  _i16.Future<bool> updatePhone(String? phone) =>
-      (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  _i16.Future<bool> updatePhone(String? phone) => (super.noSuchMethod(
+        Invocation.method(
+          #updatePhone,
+          [phone],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
   @override
-  _i16.Future<bool> setDoneOnBoarding() =>
-      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  _i16.Future<bool> setDoneOnBoarding() => (super.noSuchMethod(
+        Invocation.method(
+          #setDoneOnBoarding,
+          [],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
   @override
-  _i16.Future<dynamic> doLoginProcess() =>
-      (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> doLoginProcess() => (super.noSuchMethod(
+        Invocation.method(
+          #doLoginProcess,
+          [],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
-  _i16.Future<dynamic> initializeUserSession() =>
-      (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> initializeUserSession() => (super.noSuchMethod(
+        Invocation.method(
+          #initializeUserSession,
+          [],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
-  _i16.Future<void> login() =>
-      (super.noSuchMethod(Invocation.method(#login, []),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> login() => (super.noSuchMethod(
+        Invocation.method(
+          #login,
+          [],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  _i16.Future<dynamic> logOut() =>
-      (super.noSuchMethod(Invocation.method(#logOut, []),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> logOut() => (super.noSuchMethod(
+        Invocation.method(
+          #logOut,
+          [],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
-  bool isOnboardingCompleted() =>
-      (super.noSuchMethod(Invocation.method(#isOnboardingCompleted, []),
-          returnValue: false) as bool);
+  bool isOnboardingCompleted() => (super.noSuchMethod(
+        Invocation.method(
+          #isOnboardingCompleted,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
   @override
-  bool hasPhone() =>
-      (super.noSuchMethod(Invocation.method(#hasPhone, []), returnValue: false)
-          as bool);
+  bool hasPhone() => (super.noSuchMethod(
+        Invocation.method(
+          #hasPhone,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
 }
 
 /// A class which mocks [HomeState].
@@ -420,31 +663,50 @@ class MockHomeState extends _i1.Mock implements _i22.HomeState {
   }
 
   @override
-  set selectedContact(_i23.Contact? value) =>
-      super.noSuchMethod(Invocation.setter(#selectedContact, value),
-          returnValueForMissingStub: null);
+  set selectedContact(_i23.Contact? value) => super.noSuchMethod(
+        Invocation.setter(
+          #selectedContact,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  String get navigationSourceContactProfile =>
-      (super.noSuchMethod(Invocation.getter(#navigationSourceContactProfile),
-          returnValue: '') as String);
+  String get navigationSourceContactProfile => (super.noSuchMethod(
+        Invocation.getter(#navigationSourceContactProfile),
+        returnValue: '',
+      ) as String);
   @override
   set navigationSourceContactProfile(String? _navigationSourceContactProfile) =>
       super.noSuchMethod(
-          Invocation.setter(
-              #navigationSourceContactProfile, _navigationSourceContactProfile),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #navigationSourceContactProfile,
+          _navigationSourceContactProfile,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  void setSelectedContact(_i23.Contact? newContact, String? navigationSource) =>
+  void setSelectedContact(
+    _i23.Contact? newContact,
+    String? navigationSource,
+  ) =>
       super.noSuchMethod(
-          Invocation.method(
-              #setSelectedContact, [newContact, navigationSource]),
-          returnValueForMissingStub: null);
+        Invocation.method(
+          #setSelectedContact,
+          [
+            newContact,
+            navigationSource,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [LocationState].
@@ -456,63 +718,100 @@ class MockLocationState extends _i1.Mock implements _i24.LocationState {
   }
 
   @override
-  _i8.ShareLocationService get shareLocationService =>
-      (super.noSuchMethod(Invocation.getter(#shareLocationService),
-              returnValue: _FakeShareLocationService_8(
-                  this, Invocation.getter(#shareLocationService)))
-          as _i8.ShareLocationService);
+  _i8.ShareLocationService get shareLocationService => (super.noSuchMethod(
+        Invocation.getter(#shareLocationService),
+        returnValue: _FakeShareLocationService_8(
+          this,
+          Invocation.getter(#shareLocationService),
+        ),
+      ) as _i8.ShareLocationService);
   @override
   set shareLocationService(_i8.ShareLocationService? _shareLocationService) =>
       super.noSuchMethod(
-          Invocation.setter(#shareLocationService, _shareLocationService),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #shareLocationService,
+          _shareLocationService,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   _i9.LatLng get currentLocation => (super.noSuchMethod(
+        Invocation.getter(#currentLocation),
+        returnValue: _FakeLatLng_9(
+          this,
           Invocation.getter(#currentLocation),
-          returnValue: _FakeLatLng_9(this, Invocation.getter(#currentLocation)))
-      as _i9.LatLng);
+        ),
+      ) as _i9.LatLng);
   @override
-  set currentLocation(_i9.LatLng? value) =>
-      super.noSuchMethod(Invocation.setter(#currentLocation, value),
-          returnValueForMissingStub: null);
+  set currentLocation(_i9.LatLng? value) => super.noSuchMethod(
+        Invocation.setter(
+          #currentLocation,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get shareLocationEnabled =>
-      (super.noSuchMethod(Invocation.getter(#shareLocationEnabled),
-          returnValue: false) as bool);
+  bool get shareLocationEnabled => (super.noSuchMethod(
+        Invocation.getter(#shareLocationEnabled),
+        returnValue: false,
+      ) as bool);
   @override
-  set shareLocationEnabled(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#shareLocationEnabled, value),
-          returnValueForMissingStub: null);
+  set shareLocationEnabled(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #shareLocationEnabled,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   dynamic Function(_i9.LatLng) get onLocationChanged => (super.noSuchMethod(
-      Invocation.getter(#onLocationChanged),
-      returnValue: (_i9.LatLng __p0) => null) as dynamic Function(_i9.LatLng));
+        Invocation.getter(#onLocationChanged),
+        returnValue: (_i9.LatLng __p0) => null,
+      ) as dynamic Function(_i9.LatLng));
   @override
   set onLocationChanged(dynamic Function(_i9.LatLng)? _onLocationChanged) =>
       super.noSuchMethod(
-          Invocation.setter(#onLocationChanged, _onLocationChanged),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #onLocationChanged,
+          _onLocationChanged,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
   _i16.Future<dynamic> initialize(
           {_i25.ShareLocationServiceFactory? locationServiceFactory}) =>
       (super.noSuchMethod(
-          Invocation.method(#initialize, [],
-              {#locationServiceFactory: locationServiceFactory}),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+        Invocation.method(
+          #initialize,
+          [],
+          {#locationServiceFactory: locationServiceFactory},
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
   void setShareLocationEnabled(bool? shareLocation) => super.noSuchMethod(
-      Invocation.method(#setShareLocationEnabled, [shareLocation]),
-      returnValueForMissingStub: null);
+        Invocation.method(
+          #setShareLocationEnabled,
+          [shareLocation],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setCurrentLocation(_i9.LatLng? newLocation) =>
-      super.noSuchMethod(Invocation.method(#setCurrentLocation, [newLocation]),
-          returnValueForMissingStub: null);
+  void setCurrentLocation(_i9.LatLng? newLocation) => super.noSuchMethod(
+        Invocation.method(
+          #setCurrentLocation,
+          [newLocation],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [UserStatusState].
@@ -524,128 +823,187 @@ class MockUserStatusState extends _i1.Mock implements _i26.UserStatusState {
   }
 
   @override
-  _i10.UserStatusService get userStatusService =>
-      (super.noSuchMethod(Invocation.getter(#userStatusService),
-              returnValue: _FakeUserStatusService_10(
-                  this, Invocation.getter(#userStatusService)))
-          as _i10.UserStatusService);
+  _i10.UserStatusService get userStatusService => (super.noSuchMethod(
+        Invocation.getter(#userStatusService),
+        returnValue: _FakeUserStatusService_10(
+          this,
+          Invocation.getter(#userStatusService),
+        ),
+      ) as _i10.UserStatusService);
   @override
-  List<_i27.ContactLocation> get contacts =>
-      (super.noSuchMethod(Invocation.getter(#contacts),
-          returnValue: <_i27.ContactLocation>[]) as List<_i27.ContactLocation>);
+  List<_i27.ContactLocation> get contacts => (super.noSuchMethod(
+        Invocation.getter(#contacts),
+        returnValue: <_i27.ContactLocation>[],
+      ) as List<_i27.ContactLocation>);
   @override
-  set contacts(List<_i27.ContactLocation>? value) =>
-      super.noSuchMethod(Invocation.setter(#contacts, value),
-          returnValueForMissingStub: null);
+  set contacts(List<_i27.ContactLocation>? value) => super.noSuchMethod(
+        Invocation.setter(
+          #contacts,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   _i28.ShareLocationMode get locationMode => (super.noSuchMethod(
-      Invocation.getter(#locationMode),
-      returnValue: _i28.ShareLocationMode.active) as _i28.ShareLocationMode);
+        Invocation.getter(#locationMode),
+        returnValue: _i28.ShareLocationMode.active,
+      ) as _i28.ShareLocationMode);
   @override
-  set locationMode(_i28.ShareLocationMode? value) =>
-      super.noSuchMethod(Invocation.setter(#locationMode, value),
-          returnValueForMissingStub: null);
+  set locationMode(_i28.ShareLocationMode? value) => super.noSuchMethod(
+        Invocation.setter(
+          #locationMode,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   dynamic Function(List<_i27.ContactLocation>)
-      get onContactsRefUpdateCallback =>
-          (super.noSuchMethod(Invocation.getter(#onContactsRefUpdateCallback),
-                  returnValue: (List<_i27.ContactLocation> __p0) => null)
-              as dynamic Function(List<_i27.ContactLocation>));
+      get onContactsRefUpdateCallback => (super.noSuchMethod(
+            Invocation.getter(#onContactsRefUpdateCallback),
+            returnValue: (List<_i27.ContactLocation> __p0) => null,
+          ) as dynamic Function(List<_i27.ContactLocation>));
   @override
   set onContactsRefUpdateCallback(
           dynamic Function(List<_i27.ContactLocation>)?
               _onContactsRefUpdateCallback) =>
       super.noSuchMethod(
-          Invocation.setter(
-              #onContactsRefUpdateCallback, _onContactsRefUpdateCallback),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #onContactsRefUpdateCallback,
+          _onContactsRefUpdateCallback,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   dynamic Function(_i28.ShareLocationMode) get onLocationModeUpdateCallback =>
-      (super.noSuchMethod(Invocation.getter(#onLocationModeUpdateCallback),
-              returnValue: (_i28.ShareLocationMode __p0) => null)
-          as dynamic Function(_i28.ShareLocationMode));
+      (super.noSuchMethod(
+        Invocation.getter(#onLocationModeUpdateCallback),
+        returnValue: (_i28.ShareLocationMode __p0) => null,
+      ) as dynamic Function(_i28.ShareLocationMode));
   @override
   set onLocationModeUpdateCallback(
           dynamic Function(_i28.ShareLocationMode)?
               _onLocationModeUpdateCallback) =>
       super.noSuchMethod(
-          Invocation.setter(
-              #onLocationModeUpdateCallback, _onLocationModeUpdateCallback),
-          returnValueForMissingStub: null);
+        Invocation.setter(
+          #onLocationModeUpdateCallback,
+          _onLocationModeUpdateCallback,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  _i16.Future<dynamic> initializeListener() =>
-      (super.noSuchMethod(Invocation.method(#initializeListener, []),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> initializeListener() => (super.noSuchMethod(
+        Invocation.method(
+          #initializeListener,
+          [],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
   void setContactList(List<_i27.ContactLocation>? newContacts) =>
-      super.noSuchMethod(Invocation.method(#setContactList, [newContacts]),
-          returnValueForMissingStub: null);
+      super.noSuchMethod(
+        Invocation.method(
+          #setContactList,
+          [newContacts],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setLocationMode(_i28.ShareLocationMode? newMode) =>
-      super.noSuchMethod(Invocation.method(#setLocationMode, [newMode]),
-          returnValueForMissingStub: null);
+  void setLocationMode(_i28.ShareLocationMode? newMode) => super.noSuchMethod(
+        Invocation.method(
+          #setLocationMode,
+          [newMode],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
-/// A class which mocks [MapState].
+/// A class which mocks [LifeCycleState].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMapState extends _i1.Mock implements _i29.MapState {
-  MockMapState() {
+class MockLifeCycleState extends _i1.Mock implements _i29.LifeCycleState {
+  MockLifeCycleState() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i11.MapStatusService get mapStatusService =>
-      (super.noSuchMethod(Invocation.getter(#mapStatusService),
-              returnValue: _FakeMapStatusService_11(
-                  this, Invocation.getter(#mapStatusService)))
-          as _i11.MapStatusService);
+  _i11.LifeCycleService get lifeCycleService => (super.noSuchMethod(
+        Invocation.getter(#lifeCycleService),
+        returnValue: _FakeLifeCycleService_11(
+          this,
+          Invocation.getter(#lifeCycleService),
+        ),
+      ) as _i11.LifeCycleService);
   @override
-  set timer(_i16.Timer? _timer) =>
-      super.noSuchMethod(Invocation.setter(#timer, _timer),
-          returnValueForMissingStub: null);
+  set timer(_i16.Timer? _timer) => super.noSuchMethod(
+        Invocation.setter(
+          #timer,
+          _timer,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  Duration get durationInterval =>
-      (super.noSuchMethod(Invocation.getter(#durationInterval),
-              returnValue:
-                  _FakeDuration_4(this, Invocation.getter(#durationInterval)))
-          as Duration);
+  Duration get durationInterval => (super.noSuchMethod(
+        Invocation.getter(#durationInterval),
+        returnValue: _FakeDuration_4(
+          this,
+          Invocation.getter(#durationInterval),
+        ),
+      ) as Duration);
   @override
   set durationInterval(Duration? _durationInterval) => super.noSuchMethod(
-      Invocation.setter(#durationInterval, _durationInterval),
-      returnValueForMissingStub: null);
+        Invocation.setter(
+          #durationInterval,
+          _durationInterval,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get mapOpened =>
-      (super.noSuchMethod(Invocation.getter(#mapOpened), returnValue: false)
-          as bool);
+  bool get isAppOpened => (super.noSuchMethod(
+        Invocation.getter(#isAppOpened),
+        returnValue: false,
+      ) as bool);
   @override
-  set mapOpened(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#mapOpened, value),
-          returnValueForMissingStub: null);
+  set isAppOpened(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #isAppOpened,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  _i16.Future<void> openMap() =>
-      (super.noSuchMethod(Invocation.method(#openMap, []),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> notifyOpenMap() => (super.noSuchMethod(
+        Invocation.method(
+          #notifyOpenMap,
+          [],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  _i16.Future<void> closeMap() =>
-      (super.noSuchMethod(Invocation.method(#closeMap, []),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> notifyCloseMap() => (super.noSuchMethod(
+        Invocation.method(
+          #notifyCloseMap,
+          [],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
 }
 
 /// A class which mocks [FriendsController].
@@ -657,61 +1015,92 @@ class MockFriendsController extends _i1.Mock implements _i3.FriendsController {
   }
 
   @override
-  String get textFilter =>
-      (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')
-          as String);
+  String get textFilter => (super.noSuchMethod(
+        Invocation.getter(#textFilter),
+        returnValue: '',
+      ) as String);
   @override
-  set textFilter(String? _textFilter) =>
-      super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
-          returnValueForMissingStub: null);
+  set textFilter(String? _textFilter) => super.noSuchMethod(
+        Invocation.setter(
+          #textFilter,
+          _textFilter,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  List<_i23.Contact> get allContacts =>
-      (super.noSuchMethod(Invocation.getter(#allContacts),
-          returnValue: <_i23.Contact>[]) as List<_i23.Contact>);
+  List<_i23.Contact> get allContacts => (super.noSuchMethod(
+        Invocation.getter(#allContacts),
+        returnValue: <_i23.Contact>[],
+      ) as List<_i23.Contact>);
   @override
-  set allContacts(List<_i23.Contact>? _allContacts) =>
-      super.noSuchMethod(Invocation.setter(#allContacts, _allContacts),
-          returnValueForMissingStub: null);
+  set allContacts(List<_i23.Contact>? _allContacts) => super.noSuchMethod(
+        Invocation.setter(
+          #allContacts,
+          _allContacts,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ObservableList<_i23.Contact> get filteredContacts =>
-      (super.noSuchMethod(Invocation.getter(#filteredContacts),
-              returnValue: _FakeObservableList_12<_i23.Contact>(
-                  this, Invocation.getter(#filteredContacts)))
-          as _i6.ObservableList<_i23.Contact>);
+  _i6.ObservableList<_i23.Contact> get filteredContacts => (super.noSuchMethod(
+        Invocation.getter(#filteredContacts),
+        returnValue: _FakeObservableList_12<_i23.Contact>(
+          this,
+          Invocation.getter(#filteredContacts),
+        ),
+      ) as _i6.ObservableList<_i23.Contact>);
   @override
   set filteredContacts(_i6.ObservableList<_i23.Contact>? value) =>
-      super.noSuchMethod(Invocation.setter(#filteredContacts, value),
-          returnValueForMissingStub: null);
+      super.noSuchMethod(
+        Invocation.setter(
+          #filteredContacts,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  List<_i23.Contact> get availableContacts =>
-      (super.noSuchMethod(Invocation.getter(#availableContacts),
-          returnValue: <_i23.Contact>[]) as List<_i23.Contact>);
+  List<_i23.Contact> get availableContacts => (super.noSuchMethod(
+        Invocation.getter(#availableContacts),
+        returnValue: <_i23.Contact>[],
+      ) as List<_i23.Contact>);
   @override
-  List<_i23.Contact> get unavailableContacts =>
-      (super.noSuchMethod(Invocation.getter(#unavailableContacts),
-          returnValue: <_i23.Contact>[]) as List<_i23.Contact>);
+  List<_i23.Contact> get unavailableContacts => (super.noSuchMethod(
+        Invocation.getter(#unavailableContacts),
+        returnValue: <_i23.Contact>[],
+      ) as List<_i23.Contact>);
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  _i16.Future<void> updateContacts() =>
-      (super.noSuchMethod(Invocation.method(#updateContacts, []),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> updateContacts() => (super.noSuchMethod(
+        Invocation.method(
+          #updateContacts,
+          [],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  void setTextFilter(String? text) =>
-      super.noSuchMethod(Invocation.method(#setTextFilter, [text]),
-          returnValueForMissingStub: null);
+  void setTextFilter(String? text) => super.noSuchMethod(
+        Invocation.method(
+          #setTextFilter,
+          [text],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i16.Future<void> removeContact(_i23.Contact? contact) =>
-      (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> removeContact(_i23.Contact? contact) => (super.noSuchMethod(
+        Invocation.method(
+          #removeContact,
+          [contact],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
 }
 
 /// A class which mocks [RequestsController].
@@ -724,89 +1113,139 @@ class MockRequestsController extends _i1.Mock
   }
 
   @override
-  _i3.FriendsController get friendsController =>
-      (super.noSuchMethod(Invocation.getter(#friendsController),
-              returnValue: _FakeFriendsController_1(
-                  this, Invocation.getter(#friendsController)))
-          as _i3.FriendsController);
+  _i3.FriendsController get friendsController => (super.noSuchMethod(
+        Invocation.getter(#friendsController),
+        returnValue: _FakeFriendsController_1(
+          this,
+          Invocation.getter(#friendsController),
+        ),
+      ) as _i3.FriendsController);
   @override
-  String get textFilter =>
-      (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')
-          as String);
+  String get textFilter => (super.noSuchMethod(
+        Invocation.getter(#textFilter),
+        returnValue: '',
+      ) as String);
   @override
-  set textFilter(String? _textFilter) =>
-      super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
-          returnValueForMissingStub: null);
+  set textFilter(String? _textFilter) => super.noSuchMethod(
+        Invocation.setter(
+          #textFilter,
+          _textFilter,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   _i6.ObservableList<_i23.Contact> get filteredPendingRequests =>
-      (super.noSuchMethod(Invocation.getter(#filteredPendingRequests),
-              returnValue: _FakeObservableList_12<_i23.Contact>(
-                  this, Invocation.getter(#filteredPendingRequests)))
-          as _i6.ObservableList<_i23.Contact>);
+      (super.noSuchMethod(
+        Invocation.getter(#filteredPendingRequests),
+        returnValue: _FakeObservableList_12<_i23.Contact>(
+          this,
+          Invocation.getter(#filteredPendingRequests),
+        ),
+      ) as _i6.ObservableList<_i23.Contact>);
   @override
   set filteredPendingRequests(_i6.ObservableList<_i23.Contact>? value) =>
-      super.noSuchMethod(Invocation.setter(#filteredPendingRequests, value),
-          returnValueForMissingStub: null);
+      super.noSuchMethod(
+        Invocation.setter(
+          #filteredPendingRequests,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ObservableList<_i23.Contact> get pendingRequests =>
-      (super.noSuchMethod(Invocation.getter(#pendingRequests),
-              returnValue: _FakeObservableList_12<_i23.Contact>(
-                  this, Invocation.getter(#pendingRequests)))
-          as _i6.ObservableList<_i23.Contact>);
+  _i6.ObservableList<_i23.Contact> get pendingRequests => (super.noSuchMethod(
+        Invocation.getter(#pendingRequests),
+        returnValue: _FakeObservableList_12<_i23.Contact>(
+          this,
+          Invocation.getter(#pendingRequests),
+        ),
+      ) as _i6.ObservableList<_i23.Contact>);
   @override
   set pendingRequests(_i6.ObservableList<_i23.Contact>? value) =>
-      super.noSuchMethod(Invocation.setter(#pendingRequests, value),
-          returnValueForMissingStub: null);
+      super.noSuchMethod(
+        Invocation.setter(
+          #pendingRequests,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ObservableList<_i23.Contact> get sentRequests =>
-      (super.noSuchMethod(Invocation.getter(#sentRequests),
-              returnValue: _FakeObservableList_12<_i23.Contact>(
-                  this, Invocation.getter(#sentRequests)))
-          as _i6.ObservableList<_i23.Contact>);
+  _i6.ObservableList<_i23.Contact> get sentRequests => (super.noSuchMethod(
+        Invocation.getter(#sentRequests),
+        returnValue: _FakeObservableList_12<_i23.Contact>(
+          this,
+          Invocation.getter(#sentRequests),
+        ),
+      ) as _i6.ObservableList<_i23.Contact>);
   @override
   set sentRequests(_i6.ObservableList<_i23.Contact>? value) =>
-      super.noSuchMethod(Invocation.setter(#sentRequests, value),
-          returnValueForMissingStub: null);
+      super.noSuchMethod(
+        Invocation.setter(
+          #sentRequests,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  _i16.Future<void> updateRequests() =>
-      (super.noSuchMethod(Invocation.method(#updateRequests, []),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> updateRequests() => (super.noSuchMethod(
+        Invocation.method(
+          #updateRequests,
+          [],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  _i16.Future<void> sendRequest(_i23.Contact? contact) =>
-      (super.noSuchMethod(Invocation.method(#sendRequest, [contact]),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> sendRequest(_i23.Contact? contact) => (super.noSuchMethod(
+        Invocation.method(
+          #sendRequest,
+          [contact],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  _i16.Future<void> rejectRequest(_i23.Contact? contact) =>
-      (super.noSuchMethod(Invocation.method(#rejectRequest, [contact]),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> rejectRequest(_i23.Contact? contact) => (super.noSuchMethod(
+        Invocation.method(
+          #rejectRequest,
+          [contact],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  _i16.Future<void> acceptRequest(_i23.Contact? contact) =>
-      (super.noSuchMethod(Invocation.method(#acceptRequest, [contact]),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> acceptRequest(_i23.Contact? contact) => (super.noSuchMethod(
+        Invocation.method(
+          #acceptRequest,
+          [contact],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  _i16.Future<void> unsendRequest(_i23.Contact? contact) =>
-      (super.noSuchMethod(Invocation.method(#unsendRequest, [contact]),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> unsendRequest(_i23.Contact? contact) => (super.noSuchMethod(
+        Invocation.method(
+          #unsendRequest,
+          [contact],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
-  void setTextFilter(String? text) =>
-      super.noSuchMethod(Invocation.method(#setTextFilter, [text]),
-          returnValueForMissingStub: null);
+  void setTextFilter(String? text) => super.noSuchMethod(
+        Invocation.method(
+          #setTextFilter,
+          [text],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [SuggestionsController].
@@ -820,79 +1259,124 @@ class MockSuggestionsController extends _i1.Mock
 
   @override
   _i12.ContactService get contactsService => (super.noSuchMethod(
+        Invocation.getter(#contactsService),
+        returnValue: _FakeContactService_13(
+          this,
           Invocation.getter(#contactsService),
-          returnValue:
-              _FakeContactService_13(this, Invocation.getter(#contactsService)))
-      as _i12.ContactService);
+        ),
+      ) as _i12.ContactService);
   @override
-  _i3.FriendsController get friendsController =>
-      (super.noSuchMethod(Invocation.getter(#friendsController),
-              returnValue: _FakeFriendsController_1(
-                  this, Invocation.getter(#friendsController)))
-          as _i3.FriendsController);
+  _i3.FriendsController get friendsController => (super.noSuchMethod(
+        Invocation.getter(#friendsController),
+        returnValue: _FakeFriendsController_1(
+          this,
+          Invocation.getter(#friendsController),
+        ),
+      ) as _i3.FriendsController);
   @override
-  _i2.RequestsController get requestsController =>
-      (super.noSuchMethod(Invocation.getter(#requestsController),
-              returnValue: _FakeRequestsController_0(
-                  this, Invocation.getter(#requestsController)))
-          as _i2.RequestsController);
+  _i2.RequestsController get requestsController => (super.noSuchMethod(
+        Invocation.getter(#requestsController),
+        returnValue: _FakeRequestsController_0(
+          this,
+          Invocation.getter(#requestsController),
+        ),
+      ) as _i2.RequestsController);
   @override
-  String get textFilter =>
-      (super.noSuchMethod(Invocation.getter(#textFilter), returnValue: '')
-          as String);
+  String get textFilter => (super.noSuchMethod(
+        Invocation.getter(#textFilter),
+        returnValue: '',
+      ) as String);
   @override
-  set textFilter(String? _textFilter) =>
-      super.noSuchMethod(Invocation.setter(#textFilter, _textFilter),
-          returnValueForMissingStub: null);
+  set textFilter(String? _textFilter) => super.noSuchMethod(
+        Invocation.setter(
+          #textFilter,
+          _textFilter,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  List<_i23.Contact> get allSuggestions =>
-      (super.noSuchMethod(Invocation.getter(#allSuggestions),
-          returnValue: <_i23.Contact>[]) as List<_i23.Contact>);
+  List<_i23.Contact> get allSuggestions => (super.noSuchMethod(
+        Invocation.getter(#allSuggestions),
+        returnValue: <_i23.Contact>[],
+      ) as List<_i23.Contact>);
   @override
-  set allSuggestions(List<_i23.Contact>? _allSuggestions) =>
-      super.noSuchMethod(Invocation.setter(#allSuggestions, _allSuggestions),
-          returnValueForMissingStub: null);
+  set allSuggestions(List<_i23.Contact>? _allSuggestions) => super.noSuchMethod(
+        Invocation.setter(
+          #allSuggestions,
+          _allSuggestions,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   _i6.ObservableList<_i23.Contact> get filteredSuggestions =>
-      (super.noSuchMethod(Invocation.getter(#filteredSuggestions),
-              returnValue: _FakeObservableList_12<_i23.Contact>(
-                  this, Invocation.getter(#filteredSuggestions)))
-          as _i6.ObservableList<_i23.Contact>);
+      (super.noSuchMethod(
+        Invocation.getter(#filteredSuggestions),
+        returnValue: _FakeObservableList_12<_i23.Contact>(
+          this,
+          Invocation.getter(#filteredSuggestions),
+        ),
+      ) as _i6.ObservableList<_i23.Contact>);
   @override
   set filteredSuggestions(_i6.ObservableList<_i23.Contact>? value) =>
-      super.noSuchMethod(Invocation.setter(#filteredSuggestions, value),
-          returnValueForMissingStub: null);
+      super.noSuchMethod(
+        Invocation.setter(
+          #filteredSuggestions,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  _i16.Future<void> sendRequest(_i23.Contact? contact) =>
-      (super.noSuchMethod(Invocation.method(#sendRequest, [contact]),
-              returnValue: _i16.Future<void>.value(),
-              returnValueForMissingStub: _i16.Future<void>.value())
-          as _i16.Future<void>);
+  _i16.Future<void> sendRequest(_i23.Contact? contact) => (super.noSuchMethod(
+        Invocation.method(
+          #sendRequest,
+          [contact],
+        ),
+        returnValue: _i16.Future<void>.value(),
+        returnValueForMissingStub: _i16.Future<void>.value(),
+      ) as _i16.Future<void>);
   @override
   _i16.Future<dynamic> updateSuggestedContacts(
           {_i30.ContactsAddressServiceImpl? contactsAddressServiceImpl}) =>
       (super.noSuchMethod(
-          Invocation.method(#updateSuggestedContacts, [],
-              {#contactsAddressServiceImpl: contactsAddressServiceImpl}),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+        Invocation.method(
+          #updateSuggestedContacts,
+          [],
+          {#contactsAddressServiceImpl: contactsAddressServiceImpl},
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
-  void setTextFilter(String? text) =>
-      super.noSuchMethod(Invocation.method(#setTextFilter, [text]),
-          returnValueForMissingStub: null);
+  void setTextFilter(String? text) => super.noSuchMethod(
+        Invocation.method(
+          #setTextFilter,
+          [text],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i16.Future<dynamic> copyInvitation() =>
-      (super.noSuchMethod(Invocation.method(#copyInvitation, []),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> copyInvitation() => (super.noSuchMethod(
+        Invocation.method(
+          #copyInvitation,
+          [],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
-  String platformText() =>
-      (super.noSuchMethod(Invocation.method(#platformText, []), returnValue: '')
-          as String);
+  String platformText() => (super.noSuchMethod(
+        Invocation.method(
+          #platformText,
+          [],
+        ),
+        returnValue: '',
+      ) as String);
 }
 
 /// A class which mocks [HttpProvider].
@@ -904,56 +1388,119 @@ class MockHttpProvider extends _i1.Mock implements _i31.HttpProvider {
   }
 
   @override
-  _i13.Client get client => (super.noSuchMethod(Invocation.getter(#client),
-          returnValue: _FakeClient_14(this, Invocation.getter(#client)))
-      as _i13.Client);
+  _i13.Client get client => (super.noSuchMethod(
+        Invocation.getter(#client),
+        returnValue: _FakeClient_14(
+          this,
+          Invocation.getter(#client),
+        ),
+      ) as _i13.Client);
   @override
-  String get baseUrl =>
-      (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
-          as String);
+  String get baseUrl => (super.noSuchMethod(
+        Invocation.getter(#baseUrl),
+        returnValue: '',
+      ) as String);
   @override
-  set baseUrl(String? _baseUrl) =>
-      super.noSuchMethod(Invocation.setter(#baseUrl, _baseUrl),
-          returnValueForMissingStub: null);
+  set baseUrl(String? _baseUrl) => super.noSuchMethod(
+        Invocation.setter(
+          #baseUrl,
+          _baseUrl,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i16.Future<Map<String, String>> getHeaders() =>
-      (super.noSuchMethod(Invocation.method(#getHeaders, []),
-              returnValue:
-                  _i16.Future<Map<String, String>>.value(<String, String>{}))
-          as _i16.Future<Map<String, String>>);
+  _i16.Future<Map<String, String>> getHeaders() => (super.noSuchMethod(
+        Invocation.method(
+          #getHeaders,
+          [],
+        ),
+        returnValue: _i16.Future<Map<String, String>>.value(<String, String>{}),
+      ) as _i16.Future<Map<String, String>>);
   @override
   _i16.Future<Map<String, dynamic>> sendGetRequest(String? subPath) =>
-      (super.noSuchMethod(Invocation.method(#sendGetRequest, [subPath]),
-              returnValue:
-                  _i16.Future<Map<String, dynamic>>.value(<String, dynamic>{}))
-          as _i16.Future<Map<String, dynamic>>);
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendGetRequest,
+          [subPath],
+        ),
+        returnValue:
+            _i16.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i16.Future<Map<String, dynamic>>);
   @override
   _i16.Future<_i13.Response> sendPostRequest(
-          String? subPath, Map<String, dynamic>? body) =>
-      (super.noSuchMethod(Invocation.method(#sendPostRequest, [subPath, body]),
-              returnValue: _i16.Future<_i13.Response>.value(_FakeResponse_15(
-                  this, Invocation.method(#sendPostRequest, [subPath, body]))))
-          as _i16.Future<_i13.Response>);
+    String? subPath,
+    Map<String, dynamic>? body,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendPostRequest,
+          [
+            subPath,
+            body,
+          ],
+        ),
+        returnValue: _i16.Future<_i13.Response>.value(_FakeResponse_15(
+          this,
+          Invocation.method(
+            #sendPostRequest,
+            [
+              subPath,
+              body,
+            ],
+          ),
+        )),
+      ) as _i16.Future<_i13.Response>);
   @override
   _i16.Future<_i13.StreamedResponse> sendPostImageRequest(
-          String? subPath, String? filePath, String? type) =>
+    String? subPath,
+    String? filePath,
+    String? type,
+  ) =>
       (super.noSuchMethod(
-              Invocation.method(#sendPostImageRequest, [subPath, filePath, type]),
-              returnValue: _i16.Future<_i13.StreamedResponse>.value(
-                  _FakeStreamedResponse_16(
-                      this,
-                      Invocation.method(
-                          #sendPostImageRequest, [subPath, filePath, type]))))
-          as _i16.Future<_i13.StreamedResponse>);
+        Invocation.method(
+          #sendPostImageRequest,
+          [
+            subPath,
+            filePath,
+            type,
+          ],
+        ),
+        returnValue:
+            _i16.Future<_i13.StreamedResponse>.value(_FakeStreamedResponse_16(
+          this,
+          Invocation.method(
+            #sendPostImageRequest,
+            [
+              subPath,
+              filePath,
+              type,
+            ],
+          ),
+        )),
+      ) as _i16.Future<_i13.StreamedResponse>);
   @override
   _i16.Future<bool> sendPutRequest(
-          String? subPath, Map<String, dynamic>? body) =>
-      (super.noSuchMethod(Invocation.method(#sendPutRequest, [subPath, body]),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+    String? subPath,
+    Map<String, dynamic>? body,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendPutRequest,
+          [
+            subPath,
+            body,
+          ],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
   @override
-  _i16.Future<bool> sendDelRequest(String? subPath) =>
-      (super.noSuchMethod(Invocation.method(#sendDelRequest, [subPath]),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  _i16.Future<bool> sendDelRequest(String? subPath) => (super.noSuchMethod(
+        Invocation.method(
+          #sendDelRequest,
+          [subPath],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
 }
 
 /// A class which mocks [GroupsController].
@@ -966,75 +1513,139 @@ class MockGroupsController extends _i1.Mock implements _i32.GroupsController {
 
   @override
   _i14.GroupsService get groupsService => (super.noSuchMethod(
+        Invocation.getter(#groupsService),
+        returnValue: _FakeGroupsService_17(
+          this,
           Invocation.getter(#groupsService),
-          returnValue:
-              _FakeGroupsService_17(this, Invocation.getter(#groupsService)))
-      as _i14.GroupsService);
+        ),
+      ) as _i14.GroupsService);
   @override
-  set groupsService(_i14.GroupsService? _groupsService) =>
-      super.noSuchMethod(Invocation.setter(#groupsService, _groupsService),
-          returnValueForMissingStub: null);
+  set groupsService(_i14.GroupsService? _groupsService) => super.noSuchMethod(
+        Invocation.setter(
+          #groupsService,
+          _groupsService,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   _i6.ObservableList<_i33.Group> get groups => (super.noSuchMethod(
-      Invocation.getter(#groups),
-      returnValue: _FakeObservableList_12<_i33.Group>(
-          this, Invocation.getter(#groups))) as _i6.ObservableList<_i33.Group>);
+        Invocation.getter(#groups),
+        returnValue: _FakeObservableList_12<_i33.Group>(
+          this,
+          Invocation.getter(#groups),
+        ),
+      ) as _i6.ObservableList<_i33.Group>);
   @override
-  set groups(_i6.ObservableList<_i33.Group>? value) =>
-      super.noSuchMethod(Invocation.setter(#groups, value),
-          returnValueForMissingStub: null);
+  set groups(_i6.ObservableList<_i33.Group>? value) => super.noSuchMethod(
+        Invocation.setter(
+          #groups,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  set selectedGroup(_i33.Group? value) =>
-      super.noSuchMethod(Invocation.setter(#selectedGroup, value),
-          returnValueForMissingStub: null);
+  set selectedGroup(_i33.Group? value) => super.noSuchMethod(
+        Invocation.setter(
+          #selectedGroup,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get editGroup =>
-      (super.noSuchMethod(Invocation.getter(#editGroup), returnValue: false)
-          as bool);
+  bool get editGroup => (super.noSuchMethod(
+        Invocation.getter(#editGroup),
+        returnValue: false,
+      ) as bool);
   @override
-  set editGroup(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#editGroup, value),
-          returnValueForMissingStub: null);
+  set editGroup(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #editGroup,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get updatingGroup =>
-      (super.noSuchMethod(Invocation.getter(#updatingGroup), returnValue: false)
-          as bool);
+  bool get updatingGroup => (super.noSuchMethod(
+        Invocation.getter(#updatingGroup),
+        returnValue: false,
+      ) as bool);
   @override
-  set updatingGroup(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#updatingGroup, value),
-          returnValueForMissingStub: null);
+  set updatingGroup(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #updatingGroup,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_6(this, Invocation.getter(#context)))
-          as _i6.ReactiveContext);
+  _i6.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_6(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i6.ReactiveContext);
   @override
-  _i16.Future<bool> updateGroups() =>
-      (super.noSuchMethod(Invocation.method(#updateGroups, []),
-          returnValue: _i16.Future<bool>.value(false)) as _i16.Future<bool>);
+  _i16.Future<bool> updateGroups() => (super.noSuchMethod(
+        Invocation.method(
+          #updateGroups,
+          [],
+        ),
+        returnValue: _i16.Future<bool>.value(false),
+      ) as _i16.Future<bool>);
   @override
-  void setGroups(List<_i33.Group>? groups) =>
-      super.noSuchMethod(Invocation.method(#setGroups, [groups]),
-          returnValueForMissingStub: null);
+  void setGroups(List<_i33.Group>? groups) => super.noSuchMethod(
+        Invocation.method(
+          #setGroups,
+          [groups],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i16.Future<dynamic> createGroup(_i33.Group? group, _i17.XFile? picture) =>
-      (super.noSuchMethod(Invocation.method(#createGroup, [group, picture]),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> createGroup(
+    _i33.Group? group,
+    _i17.XFile? picture,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createGroup,
+          [
+            group,
+            picture,
+          ],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
   @override
-  void setSelectedGroup(_i33.Group? group) =>
-      super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
-          returnValueForMissingStub: null);
+  void setSelectedGroup(_i33.Group? group) => super.noSuchMethod(
+        Invocation.method(
+          #setSelectedGroup,
+          [group],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setEditGroup(bool? editValue) =>
-      super.noSuchMethod(Invocation.method(#setEditGroup, [editValue]),
-          returnValueForMissingStub: null);
+  void setEditGroup(bool? editValue) => super.noSuchMethod(
+        Invocation.method(
+          #setEditGroup,
+          [editValue],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setUpdatingGroup(bool? updatingGroup) =>
-      super.noSuchMethod(Invocation.method(#setUpdatingGroup, [updatingGroup]),
-          returnValueForMissingStub: null);
+  void setUpdatingGroup(bool? updatingGroup) => super.noSuchMethod(
+        Invocation.method(
+          #setUpdatingGroup,
+          [updatingGroup],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i16.Future<dynamic> deleteGroup(String? groupId) =>
-      (super.noSuchMethod(Invocation.method(#deleteGroup, [groupId]),
-          returnValue: _i16.Future<dynamic>.value()) as _i16.Future<dynamic>);
+  _i16.Future<dynamic> deleteGroup(String? groupId) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteGroup,
+          [groupId],
+        ),
+        returnValue: _i16.Future<dynamic>.value(),
+      ) as _i16.Future<dynamic>);
 }

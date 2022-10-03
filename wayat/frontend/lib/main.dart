@@ -10,7 +10,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
@@ -66,7 +66,7 @@ void setTimeAgoLocales() {
 Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
-  GetIt.I.registerLazySingleton<MapState>(() => MapState());
+  GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
   GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
   GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
@@ -93,7 +93,7 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
   final _appRouter = AppRouter();
 
   /// Instance of the MapState to update when the user opens and closes the map
-  final MapState mapState = GetIt.I.get<MapState>();
+  final LifeCycleState mapState = GetIt.I.get<LifeCycleState>();
 
   /// To avoid sending multiple `mapOpened` and `mapClosed` requests to the server concurrently
   final Lock _lock = Lock();
@@ -121,17 +121,17 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
       // It will be executed if the app is opened from background, but not when it is
       // opened for first time
       if (state == AppLifecycleState.resumed) {
-        if (!mapState.mapOpened &&
+        if (!mapState.isAppOpened &&
             GetIt.I.get<SessionState>().currentUser != null) {
-          await mapState.openMap();
+          await mapState.notifyOpenMap();
         }
       }
       // Other states must execute a close map event, but detach is not included,
       // when the app is closed it can not send a request
       else if (state == AppLifecycleState.inactive ||
           state == AppLifecycleState.paused) {
-        if (mapState.mapOpened) {
-          await mapState.closeMap();
+        if (mapState.isAppOpened) {
+          await mapState.notifyCloseMap();
         }
       }
     });

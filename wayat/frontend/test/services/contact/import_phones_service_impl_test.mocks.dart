@@ -27,16 +27,22 @@ import 'package:wayat/services/contact/flutter_contacts_handler_libw.dart'
 class MockFlutterContactsHandlerLibW extends _i1.Mock
     implements _i2.FlutterContactsHandlerLibW {
   @override
-  _i3.Future<bool> requestPermission() =>
-      (super.noSuchMethod(Invocation.method(#requestPermission, []),
-              returnValue: _i3.Future<bool>.value(false),
-              returnValueForMissingStub: _i3.Future<bool>.value(false))
-          as _i3.Future<bool>);
+  _i3.Future<bool> requestPermission() => (super.noSuchMethod(
+        Invocation.method(
+          #requestPermission,
+          [],
+        ),
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
   @override
-  _i3.Future<List<_i4.Contact>> getContacts() =>
-      (super.noSuchMethod(Invocation.method(#getContacts, []),
-              returnValue: _i3.Future<List<_i4.Contact>>.value(<_i4.Contact>[]),
-              returnValueForMissingStub:
-                  _i3.Future<List<_i4.Contact>>.value(<_i4.Contact>[]))
-          as _i3.Future<List<_i4.Contact>>);
+  _i3.Future<List<_i4.Contact>> getContacts() => (super.noSuchMethod(
+        Invocation.method(
+          #getContacts,
+          [],
+        ),
+        returnValue: _i3.Future<List<_i4.Contact>>.value(<_i4.Contact>[]),
+        returnValueForMissingStub:
+            _i3.Future<List<_i4.Contact>>.value(<_i4.Contact>[]),
+      ) as _i3.Future<List<_i4.Contact>>);
 }

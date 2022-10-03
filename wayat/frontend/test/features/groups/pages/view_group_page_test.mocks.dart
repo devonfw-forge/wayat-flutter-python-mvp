@@ -25,20 +25,35 @@ import 'package:wayat/services/groups/groups_service.dart' as _i2;
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeGroupsService_0 extends _i1.SmartFake implements _i2.GroupsService {
-  _FakeGroupsService_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeGroupsService_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeObservableList_1<T> extends _i1.SmartFake
     implements _i3.ObservableList<T> {
-  _FakeObservableList_1(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeObservableList_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeReactiveContext_2 extends _i1.SmartFake
     implements _i3.ReactiveContext {
-  _FakeReactiveContext_2(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeReactiveContext_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 /// A class which mocks [GroupsController].
@@ -50,76 +65,140 @@ class MockGroupsController extends _i1.Mock implements _i4.GroupsController {
   }
 
   @override
-  _i2.GroupsService get groupsService =>
-      (super.noSuchMethod(Invocation.getter(#groupsService),
-              returnValue:
-                  _FakeGroupsService_0(this, Invocation.getter(#groupsService)))
-          as _i2.GroupsService);
+  _i2.GroupsService get groupsService => (super.noSuchMethod(
+        Invocation.getter(#groupsService),
+        returnValue: _FakeGroupsService_0(
+          this,
+          Invocation.getter(#groupsService),
+        ),
+      ) as _i2.GroupsService);
   @override
-  set groupsService(_i2.GroupsService? _groupsService) =>
-      super.noSuchMethod(Invocation.setter(#groupsService, _groupsService),
-          returnValueForMissingStub: null);
+  set groupsService(_i2.GroupsService? _groupsService) => super.noSuchMethod(
+        Invocation.setter(
+          #groupsService,
+          _groupsService,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   _i3.ObservableList<_i5.Group> get groups => (super.noSuchMethod(
-      Invocation.getter(#groups),
-      returnValue: _FakeObservableList_1<_i5.Group>(
-          this, Invocation.getter(#groups))) as _i3.ObservableList<_i5.Group>);
+        Invocation.getter(#groups),
+        returnValue: _FakeObservableList_1<_i5.Group>(
+          this,
+          Invocation.getter(#groups),
+        ),
+      ) as _i3.ObservableList<_i5.Group>);
   @override
-  set groups(_i3.ObservableList<_i5.Group>? value) =>
-      super.noSuchMethod(Invocation.setter(#groups, value),
-          returnValueForMissingStub: null);
+  set groups(_i3.ObservableList<_i5.Group>? value) => super.noSuchMethod(
+        Invocation.setter(
+          #groups,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  set selectedGroup(_i5.Group? value) =>
-      super.noSuchMethod(Invocation.setter(#selectedGroup, value),
-          returnValueForMissingStub: null);
+  set selectedGroup(_i5.Group? value) => super.noSuchMethod(
+        Invocation.setter(
+          #selectedGroup,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get editGroup =>
-      (super.noSuchMethod(Invocation.getter(#editGroup), returnValue: false)
-          as bool);
+  bool get editGroup => (super.noSuchMethod(
+        Invocation.getter(#editGroup),
+        returnValue: false,
+      ) as bool);
   @override
-  set editGroup(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#editGroup, value),
-          returnValueForMissingStub: null);
+  set editGroup(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #editGroup,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get updatingGroup =>
-      (super.noSuchMethod(Invocation.getter(#updatingGroup), returnValue: false)
-          as bool);
+  bool get updatingGroup => (super.noSuchMethod(
+        Invocation.getter(#updatingGroup),
+        returnValue: false,
+      ) as bool);
   @override
-  set updatingGroup(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#updatingGroup, value),
-          returnValueForMissingStub: null);
+  set updatingGroup(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #updatingGroup,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i3.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_2(this, Invocation.getter(#context)))
-          as _i3.ReactiveContext);
+  _i3.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_2(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i3.ReactiveContext);
   @override
-  _i6.Future<bool> updateGroups() =>
-      (super.noSuchMethod(Invocation.method(#updateGroups, []),
-          returnValue: _i6.Future<bool>.value(false)) as _i6.Future<bool>);
+  _i6.Future<bool> updateGroups() => (super.noSuchMethod(
+        Invocation.method(
+          #updateGroups,
+          [],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
   @override
-  void setGroups(List<_i5.Group>? groups) =>
-      super.noSuchMethod(Invocation.method(#setGroups, [groups]),
-          returnValueForMissingStub: null);
+  void setGroups(List<_i5.Group>? groups) => super.noSuchMethod(
+        Invocation.method(
+          #setGroups,
+          [groups],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.Future<dynamic> createGroup(_i5.Group? group, _i7.XFile? picture) =>
-      (super.noSuchMethod(Invocation.method(#createGroup, [group, picture]),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<dynamic> createGroup(
+    _i5.Group? group,
+    _i7.XFile? picture,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createGroup,
+          [
+            group,
+            picture,
+          ],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
   @override
-  void setSelectedGroup(_i5.Group? group) =>
-      super.noSuchMethod(Invocation.method(#setSelectedGroup, [group]),
-          returnValueForMissingStub: null);
+  void setSelectedGroup(_i5.Group? group) => super.noSuchMethod(
+        Invocation.method(
+          #setSelectedGroup,
+          [group],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setEditGroup(bool? editValue) =>
-      super.noSuchMethod(Invocation.method(#setEditGroup, [editValue]),
-          returnValueForMissingStub: null);
+  void setEditGroup(bool? editValue) => super.noSuchMethod(
+        Invocation.method(
+          #setEditGroup,
+          [editValue],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setUpdatingGroup(bool? updatingGroup) =>
-      super.noSuchMethod(Invocation.method(#setUpdatingGroup, [updatingGroup]),
-          returnValueForMissingStub: null);
+  void setUpdatingGroup(bool? updatingGroup) => super.noSuchMethod(
+        Invocation.method(
+          #setUpdatingGroup,
+          [updatingGroup],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.Future<dynamic> deleteGroup(String? groupId) =>
-      (super.noSuchMethod(Invocation.method(#deleteGroup, [groupId]),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<dynamic> deleteGroup(String? groupId) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteGroup,
+          [groupId],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
 }

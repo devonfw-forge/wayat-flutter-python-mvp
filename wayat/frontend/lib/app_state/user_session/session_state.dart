@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/authentication/gauth_service_impl.dart';
@@ -159,8 +159,8 @@ abstract class _SessionState with Store {
   /// undoing changes in the login state and calling the
   /// [authService] [signOut].
   Future logOut() async {
-    final MapState mapState = GetIt.I.get<MapState>();
-    await mapState.closeMap();
+    final LifeCycleState mapState = GetIt.I.get<LifeCycleState>();
+    await mapState.notifyCloseMap();
     finishLoggedIn = false;
     googleSignedIn = false;
     hasDoneOnboarding = false;

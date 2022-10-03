@@ -29,25 +29,39 @@ class MockContactService extends _i1.Mock implements _i2.ContactService {
   }
 
   @override
-  _i3.Future<List<_i4.Contact>> getAll() =>
-      (super.noSuchMethod(Invocation.method(#getAll, []),
-              returnValue: _i3.Future<List<_i4.Contact>>.value(<_i4.Contact>[]))
-          as _i3.Future<List<_i4.Contact>>);
+  _i3.Future<List<_i4.Contact>> getAll() => (super.noSuchMethod(
+        Invocation.method(
+          #getAll,
+          [],
+        ),
+        returnValue: _i3.Future<List<_i4.Contact>>.value(<_i4.Contact>[]),
+      ) as _i3.Future<List<_i4.Contact>>);
   @override
   _i3.Future<void> sendRequests(List<_i4.Contact>? contacts) =>
-      (super.noSuchMethod(Invocation.method(#sendRequests, [contacts]),
-              returnValue: _i3.Future<void>.value(),
-              returnValueForMissingStub: _i3.Future<void>.value())
-          as _i3.Future<void>);
+      (super.noSuchMethod(
+        Invocation.method(
+          #sendRequests,
+          [contacts],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
   _i3.Future<List<_i4.Contact>> getFilteredContacts(
           List<String>? importedContacts) =>
       (super.noSuchMethod(
-              Invocation.method(#getFilteredContacts, [importedContacts]),
-              returnValue: _i3.Future<List<_i4.Contact>>.value(<_i4.Contact>[]))
-          as _i3.Future<List<_i4.Contact>>);
+        Invocation.method(
+          #getFilteredContacts,
+          [importedContacts],
+        ),
+        returnValue: _i3.Future<List<_i4.Contact>>.value(<_i4.Contact>[]),
+      ) as _i3.Future<List<_i4.Contact>>);
   @override
-  _i3.Future<bool> removeContact(_i4.Contact? contact) =>
-      (super.noSuchMethod(Invocation.method(#removeContact, [contact]),
-          returnValue: _i3.Future<bool>.value(false)) as _i3.Future<bool>);
+  _i3.Future<bool> removeContact(_i4.Contact? contact) => (super.noSuchMethod(
+        Invocation.method(
+          #removeContact,
+          [contact],
+        ),
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 }

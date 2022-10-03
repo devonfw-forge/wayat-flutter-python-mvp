@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
@@ -13,7 +13,7 @@ import 'package:wayat/services/status/map_status_service.dart';
 
 import 'map_state_test.mocks.dart';
 
-@GenerateMocks([MapStatusService, SessionState, HttpProvider])
+@GenerateMocks([LifeCycleService, SessionState, HttpProvider])
 void main() async {
   final MockSessionState mockSessionState = MockSessionState();
 
@@ -24,103 +24,110 @@ void main() async {
   });
 
   test("Map State initial state is correct", () {
-    MapStatusService mockMapStatusService = MockMapStatusService();
-    MapState mapState = MapState(mapStatusService: mockMapStatusService);
+    LifeCycleService mockMapStatusService = MockLifeCycleService();
+    LifeCycleState mapState =
+        LifeCycleState(mapStatusService: mockMapStatusService);
 
     expect(mapState.timer, null);
     expect(mapState.durationInterval, const Duration(seconds: 60));
-    expect(mapState.mapOpened, true);
+    expect(mapState.isAppOpened, true);
   });
 
   test("Open map is not sent if there is no user", () {
-    MapStatusService mockMapStatusService = MockMapStatusService();
-    MapState mapState = MapState(mapStatusService: mockMapStatusService);
+    LifeCycleService mockMapStatusService = MockLifeCycleService();
+    LifeCycleState mapState =
+        LifeCycleState(mapStatusService: mockMapStatusService);
     when(mockSessionState.currentUser).thenReturn(null);
 
-    mapState.openMap();
+    mapState.notifyOpenMap();
 
     verifyNever(mockMapStatusService.sendMapOpened());
   });
 
   test("Open map is sent if there is user", () {
-    MapStatusService mockMapStatusService = MockMapStatusService();
-    MapState mapState = MapState(mapStatusService: mockMapStatusService);
+    LifeCycleService mockMapStatusService = MockLifeCycleService();
+    LifeCycleState mapState =
+        LifeCycleState(mapStatusService: mockMapStatusService);
     when(mockSessionState.currentUser).thenReturn(_generateMyUser());
     when(mockMapStatusService.sendMapOpened())
         .thenAnswer((_) => Future.value(null));
 
-    mapState.openMap();
+    mapState.notifyOpenMap();
 
     verify(mockMapStatusService.sendMapOpened()).called(1);
-    expect(mapState.mapOpened, true);
+    expect(mapState.isAppOpened, true);
   });
 
   test("Periodic open map calls are made", () async {
-    MapStatusService mockMapStatusService = MockMapStatusService();
-    MapState mapState = MapState(mapStatusService: mockMapStatusService);
+    LifeCycleService mockMapStatusService = MockLifeCycleService();
+    LifeCycleState mapState =
+        LifeCycleState(mapStatusService: mockMapStatusService);
     mapState.durationInterval = const Duration(seconds: 2);
     when(mockSessionState.currentUser).thenReturn(_generateMyUser());
     when(mockMapStatusService.sendMapOpened())
         .thenAnswer((_) => Future.value(null));
 
-    mapState.openMap();
+    mapState.notifyOpenMap();
 
     await Future.delayed(const Duration(seconds: 2), () {});
 
     verify(mockMapStatusService.sendMapOpened()).called(2);
-    expect(mapState.mapOpened, true);
+    expect(mapState.isAppOpened, true);
   });
 
   test("Timer cancels if active when close map is called", () {
-    MapStatusService mockMapStatusService = MockMapStatusService();
-    MapState mapState = MapState(mapStatusService: mockMapStatusService);
+    LifeCycleService mockMapStatusService = MockLifeCycleService();
+    LifeCycleState mapState =
+        LifeCycleState(mapStatusService: mockMapStatusService);
     when(mockSessionState.currentUser).thenReturn(null);
 
     mapState.timer = Timer(mapState.durationInterval, () {});
 
     expect(mapState.timer!.isActive, true);
 
-    mapState.closeMap();
+    mapState.notifyCloseMap();
 
     expect(mapState.timer!.isActive, false);
   });
 
   test("The map is not closed if there is no user", () {
-    MapStatusService mockMapStatusService = MockMapStatusService();
-    MapState mapState = MapState(mapStatusService: mockMapStatusService);
+    LifeCycleService mockMapStatusService = MockLifeCycleService();
+    LifeCycleState mapState =
+        LifeCycleState(mapStatusService: mockMapStatusService);
     when(mockSessionState.currentUser).thenReturn(null);
 
     mapState.timer = Timer(mapState.durationInterval, () {});
 
-    mapState.closeMap();
+    mapState.notifyCloseMap();
 
     verifyNever(mockMapStatusService.sendMapClosed());
   });
 
   test("The map is closed if there is a user", () async {
-    MapStatusService mockMapStatusService = MockMapStatusService();
+    LifeCycleService mockMapStatusService = MockLifeCycleService();
     when(mockSessionState.currentUser).thenReturn(_generateMyUser());
     when(mockMapStatusService.sendMapOpened())
         .thenAnswer((_) => Future.value(null));
     when(mockMapStatusService.sendMapClosed())
         .thenAnswer((_) => Future.value(null));
 
-    MapState mapState = MapState(mapStatusService: mockMapStatusService);
+    LifeCycleState mapState =
+        LifeCycleState(mapStatusService: mockMapStatusService);
 
-    await mapState.openMap();
+    await mapState.notifyOpenMap();
 
-    expect(mapState.mapOpened, true);
+    expect(mapState.isAppOpened, true);
 
-    await mapState.closeMap();
+    await mapState.notifyCloseMap();
 
-    expect(mapState.mapOpened, false);
+    expect(mapState.isAppOpened, false);
     verify(mockMapStatusService.sendMapClosed()).called(1);
   });
 
   test("MapState can be created without controller", () async {
     await dotenv.load(fileName: ".env");
     // ignore: unused_local_variable
-    MapState mapState = MapState();
+    LifeCycleState mapState = LifeCycleState();
   });
 }
 

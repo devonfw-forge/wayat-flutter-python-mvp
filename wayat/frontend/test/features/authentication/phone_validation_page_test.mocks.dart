@@ -27,19 +27,34 @@ import 'package:wayat/services/authentication/auth_service.dart' as _i2;
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeAuthService_0 extends _i1.SmartFake implements _i2.AuthService {
-  _FakeAuthService_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeAuthService_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeReactiveContext_1 extends _i1.SmartFake
     implements _i3.ReactiveContext {
-  _FakeReactiveContext_1(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeReactiveContext_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 class _FakeMyUser_2 extends _i1.SmartFake implements _i4.MyUser {
-  _FakeMyUser_2(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+  _FakeMyUser_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
 }
 
 /// A class which mocks [SessionState].
@@ -51,103 +66,183 @@ class MockSessionState extends _i1.Mock implements _i5.SessionState {
   }
 
   @override
-  bool get finishLoggedIn => (super
-          .noSuchMethod(Invocation.getter(#finishLoggedIn), returnValue: false)
-      as bool);
+  bool get finishLoggedIn => (super.noSuchMethod(
+        Invocation.getter(#finishLoggedIn),
+        returnValue: false,
+      ) as bool);
   @override
-  set finishLoggedIn(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#finishLoggedIn, value),
-          returnValueForMissingStub: null);
+  set finishLoggedIn(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #finishLoggedIn,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get googleSignedIn => (super
-          .noSuchMethod(Invocation.getter(#googleSignedIn), returnValue: false)
-      as bool);
+  bool get googleSignedIn => (super.noSuchMethod(
+        Invocation.getter(#googleSignedIn),
+        returnValue: false,
+      ) as bool);
   @override
-  set googleSignedIn(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#googleSignedIn, value),
-          returnValueForMissingStub: null);
+  set googleSignedIn(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #googleSignedIn,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get hasDoneOnboarding =>
-      (super.noSuchMethod(Invocation.getter(#hasDoneOnboarding),
-          returnValue: false) as bool);
+  bool get hasDoneOnboarding => (super.noSuchMethod(
+        Invocation.getter(#hasDoneOnboarding),
+        returnValue: false,
+      ) as bool);
   @override
-  set hasDoneOnboarding(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#hasDoneOnboarding, value),
-          returnValueForMissingStub: null);
+  set hasDoneOnboarding(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #hasDoneOnboarding,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  set currentUser(_i4.MyUser? value) =>
-      super.noSuchMethod(Invocation.setter(#currentUser, value),
-          returnValueForMissingStub: null);
+  set currentUser(_i4.MyUser? value) => super.noSuchMethod(
+        Invocation.setter(
+          #currentUser,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i2.AuthService get authService =>
-      (super.noSuchMethod(Invocation.getter(#authService),
-              returnValue:
-                  _FakeAuthService_0(this, Invocation.getter(#authService)))
-          as _i2.AuthService);
+  _i2.AuthService get authService => (super.noSuchMethod(
+        Invocation.getter(#authService),
+        returnValue: _FakeAuthService_0(
+          this,
+          Invocation.getter(#authService),
+        ),
+      ) as _i2.AuthService);
   @override
-  _i3.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_1(this, Invocation.getter(#context)))
-          as _i3.ReactiveContext);
+  _i3.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_1(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i3.ReactiveContext);
   @override
   _i6.Future<void> doneOnBoarding() => (super.noSuchMethod(
-      Invocation.method(#doneOnBoarding, []),
-      returnValue: _i6.Future<void>.value(),
-      returnValueForMissingStub: _i6.Future<void>.value()) as _i6.Future<void>);
+        Invocation.method(
+          #doneOnBoarding,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
   @override
   _i6.Future<void> isLogged() => (super.noSuchMethod(
-      Invocation.method(#isLogged, []),
-      returnValue: _i6.Future<void>.value(),
-      returnValueForMissingStub: _i6.Future<void>.value()) as _i6.Future<void>);
+        Invocation.method(
+          #isLogged,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
   @override
-  void setGoogleSignIn(bool? signedIn) =>
-      super.noSuchMethod(Invocation.method(#setGoogleSignIn, [signedIn]),
-          returnValueForMissingStub: null);
+  void setGoogleSignIn(bool? signedIn) => super.noSuchMethod(
+        Invocation.method(
+          #setGoogleSignIn,
+          [signedIn],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   void setFinishLoggedIn(bool? finishedLoggedIn) => super.noSuchMethod(
-      Invocation.method(#setFinishLoggedIn, [finishedLoggedIn]),
-      returnValueForMissingStub: null);
+        Invocation.method(
+          #setFinishLoggedIn,
+          [finishedLoggedIn],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i6.Future<dynamic> initializeUser() =>
-      (super.noSuchMethod(Invocation.method(#initializeUser, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<dynamic> initializeUser() => (super.noSuchMethod(
+        Invocation.method(
+          #initializeUser,
+          [],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
   @override
-  _i6.Future<dynamic> updateCurrentUser() =>
-      (super.noSuchMethod(Invocation.method(#updateCurrentUser, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<dynamic> updateCurrentUser() => (super.noSuchMethod(
+        Invocation.method(
+          #updateCurrentUser,
+          [],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
   @override
-  _i6.Future<bool> updatePhone(String? phone) =>
-      (super.noSuchMethod(Invocation.method(#updatePhone, [phone]),
-          returnValue: _i6.Future<bool>.value(false)) as _i6.Future<bool>);
+  _i6.Future<bool> updatePhone(String? phone) => (super.noSuchMethod(
+        Invocation.method(
+          #updatePhone,
+          [phone],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
   @override
-  _i6.Future<bool> setDoneOnBoarding() =>
-      (super.noSuchMethod(Invocation.method(#setDoneOnBoarding, []),
-          returnValue: _i6.Future<bool>.value(false)) as _i6.Future<bool>);
+  _i6.Future<bool> setDoneOnBoarding() => (super.noSuchMethod(
+        Invocation.method(
+          #setDoneOnBoarding,
+          [],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
   @override
-  _i6.Future<dynamic> doLoginProcess() =>
-      (super.noSuchMethod(Invocation.method(#doLoginProcess, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<dynamic> doLoginProcess() => (super.noSuchMethod(
+        Invocation.method(
+          #doLoginProcess,
+          [],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
   @override
-  _i6.Future<dynamic> initializeUserSession() =>
-      (super.noSuchMethod(Invocation.method(#initializeUserSession, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<dynamic> initializeUserSession() => (super.noSuchMethod(
+        Invocation.method(
+          #initializeUserSession,
+          [],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
   @override
-  _i6.Future<void> login() => (super.noSuchMethod(Invocation.method(#login, []),
-      returnValue: _i6.Future<void>.value(),
-      returnValueForMissingStub: _i6.Future<void>.value()) as _i6.Future<void>);
+  _i6.Future<void> login() => (super.noSuchMethod(
+        Invocation.method(
+          #login,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
   @override
-  _i6.Future<dynamic> logOut() =>
-      (super.noSuchMethod(Invocation.method(#logOut, []),
-          returnValue: _i6.Future<dynamic>.value()) as _i6.Future<dynamic>);
+  _i6.Future<dynamic> logOut() => (super.noSuchMethod(
+        Invocation.method(
+          #logOut,
+          [],
+        ),
+        returnValue: _i6.Future<dynamic>.value(),
+      ) as _i6.Future<dynamic>);
   @override
-  bool isOnboardingCompleted() =>
-      (super.noSuchMethod(Invocation.method(#isOnboardingCompleted, []),
-          returnValue: false) as bool);
+  bool isOnboardingCompleted() => (super.noSuchMethod(
+        Invocation.method(
+          #isOnboardingCompleted,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
   @override
-  bool hasPhone() =>
-      (super.noSuchMethod(Invocation.method(#hasPhone, []), returnValue: false)
-          as bool);
+  bool hasPhone() => (super.noSuchMethod(
+        Invocation.method(
+          #hasPhone,
+          [],
+        ),
+        returnValue: false,
+      ) as bool);
 }
 
 /// A class which mocks [PhoneVerificationController].
@@ -160,67 +255,120 @@ class MockPhoneVerificationController extends _i1.Mock
   }
 
   @override
-  _i4.MyUser get user => (super.noSuchMethod(Invocation.getter(#user),
-          returnValue: _FakeMyUser_2(this, Invocation.getter(#user)))
-      as _i4.MyUser);
+  _i4.MyUser get user => (super.noSuchMethod(
+        Invocation.getter(#user),
+        returnValue: _FakeMyUser_2(
+          this,
+          Invocation.getter(#user),
+        ),
+      ) as _i4.MyUser);
   @override
-  String get phoneNumber =>
-      (super.noSuchMethod(Invocation.getter(#phoneNumber), returnValue: '')
-          as String);
+  String get phoneNumber => (super.noSuchMethod(
+        Invocation.getter(#phoneNumber),
+        returnValue: '',
+      ) as String);
   @override
-  set phoneNumber(String? value) =>
-      super.noSuchMethod(Invocation.setter(#phoneNumber, value),
-          returnValueForMissingStub: null);
+  set phoneNumber(String? value) => super.noSuchMethod(
+        Invocation.setter(
+          #phoneNumber,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  String get errorPhoneVerificationMsg =>
-      (super.noSuchMethod(Invocation.getter(#errorPhoneVerificationMsg),
-          returnValue: '') as String);
+  String get errorPhoneVerificationMsg => (super.noSuchMethod(
+        Invocation.getter(#errorPhoneVerificationMsg),
+        returnValue: '',
+      ) as String);
   @override
-  set errorPhoneVerificationMsg(String? value) =>
-      super.noSuchMethod(Invocation.setter(#errorPhoneVerificationMsg, value),
-          returnValueForMissingStub: null);
+  set errorPhoneVerificationMsg(String? value) => super.noSuchMethod(
+        Invocation.setter(
+          #errorPhoneVerificationMsg,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  String get errorPhoneFormat =>
-      (super.noSuchMethod(Invocation.getter(#errorPhoneFormat), returnValue: '')
-          as String);
+  String get errorPhoneFormat => (super.noSuchMethod(
+        Invocation.getter(#errorPhoneFormat),
+        returnValue: '',
+      ) as String);
   @override
-  set errorPhoneFormat(String? value) =>
-      super.noSuchMethod(Invocation.setter(#errorPhoneFormat, value),
-          returnValueForMissingStub: null);
+  set errorPhoneFormat(String? value) => super.noSuchMethod(
+        Invocation.setter(
+          #errorPhoneFormat,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  bool get validPhone =>
-      (super.noSuchMethod(Invocation.getter(#validPhone), returnValue: false)
-          as bool);
+  bool get validPhone => (super.noSuchMethod(
+        Invocation.getter(#validPhone),
+        returnValue: false,
+      ) as bool);
   @override
-  set validPhone(bool? value) =>
-      super.noSuchMethod(Invocation.setter(#validPhone, value),
-          returnValueForMissingStub: null);
+  set validPhone(bool? value) => super.noSuchMethod(
+        Invocation.setter(
+          #validPhone,
+          value,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  _i3.ReactiveContext get context =>
-      (super.noSuchMethod(Invocation.getter(#context),
-              returnValue:
-                  _FakeReactiveContext_1(this, Invocation.getter(#context)))
-          as _i3.ReactiveContext);
+  _i3.ReactiveContext get context => (super.noSuchMethod(
+        Invocation.getter(#context),
+        returnValue: _FakeReactiveContext_1(
+          this,
+          Invocation.getter(#context),
+        ),
+      ) as _i3.ReactiveContext);
   @override
-  void setNewPhoneNumber(String? phone) =>
-      super.noSuchMethod(Invocation.method(#setNewPhoneNumber, [phone]),
-          returnValueForMissingStub: null);
+  void setNewPhoneNumber(String? phone) => super.noSuchMethod(
+        Invocation.method(
+          #setNewPhoneNumber,
+          [phone],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setValidPhoneNumber(String? phone) =>
-      super.noSuchMethod(Invocation.method(#setValidPhoneNumber, [phone]),
-          returnValueForMissingStub: null);
+  void setValidPhoneNumber(String? phone) => super.noSuchMethod(
+        Invocation.method(
+          #setValidPhoneNumber,
+          [phone],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  void setErrorPhoneMsg(String? msg) =>
-      super.noSuchMethod(Invocation.method(#setErrorPhoneMsg, [msg]),
-          returnValueForMissingStub: null);
+  void setErrorPhoneMsg(String? msg) => super.noSuchMethod(
+        Invocation.method(
+          #setErrorPhoneMsg,
+          [msg],
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
-  String validatePhoneNumber(dynamic textValue) =>
-      (super.noSuchMethod(Invocation.method(#validatePhoneNumber, [textValue]),
-          returnValue: '') as String);
+  String validatePhoneNumber(dynamic textValue) => (super.noSuchMethod(
+        Invocation.method(
+          #validatePhoneNumber,
+          [textValue],
+        ),
+        returnValue: '',
+      ) as String);
   @override
-  void onChangePhoneNumber(_i8.PhoneNumber? phone,
-          _i9.GlobalKey<_i9.FormState>? formKey, _i9.BuildContext? context) =>
+  void onChangePhoneNumber(
+    _i8.PhoneNumber? phone,
+    _i9.GlobalKey<_i9.FormState>? formKey,
+    _i9.BuildContext? context,
+  ) =>
       super.noSuchMethod(
-          Invocation.method(#onChangePhoneNumber, [phone, formKey, context]),
-          returnValueForMissingStub: null);
+        Invocation.method(
+          #onChangePhoneNumber,
+          [
+            phone,
+            formKey,
+            context,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
