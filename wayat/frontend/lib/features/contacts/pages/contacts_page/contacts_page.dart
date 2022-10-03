@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -30,7 +31,11 @@ class ContactsPage extends StatelessWidget {
   Expanded contactsPageContent() {
     return Expanded(
         child: AutoTabsRouter.tabBar(
-      routes: [FriendsRoute(), RequestsRoute(), SuggestionsRoute()],
+      routes: [
+        FriendsRoute(), 
+        RequestsRoute(), 
+        if (!kIsWeb) SuggestionsRoute()
+      ],
       builder: ((context, child, tabController) {
         controller.updateTabData(tabController.index);
         return Column(
@@ -58,7 +63,7 @@ class ContactsPage extends StatelessWidget {
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
-                Tab(text: appLocalizations.suggestionsTab)
+                if (!kIsWeb) Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],
       ),
