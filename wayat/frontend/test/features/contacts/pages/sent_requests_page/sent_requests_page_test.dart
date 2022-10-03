@@ -132,7 +132,7 @@ void main() async {
     RequestsController requestsController = RequestsController(
         friendsController: MockFriendsController(),
         requestsService: mockRequestsService);
-    when(mockRequestsService.unsendRequest(contact))
+    when(mockRequestsService.cancelRequest(contact))
         .thenAnswer((_) => Future.value(true));
     when(mockContactsPageController.requestsController)
         .thenReturn(requestsController);

@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
+import 'package:wayat/services/friend_requests/models/friend_request_response.dart';
 import 'package:wayat/services/friend_requests/requests_service_impl.dart';
 
 import 'requests_controller_test.mocks.dart';

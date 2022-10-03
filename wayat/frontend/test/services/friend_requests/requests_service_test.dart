@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/friend_requests/models/friend_request_response.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 import 'package:wayat/services/friend_requests/requests_service_impl.dart';
 import 'package:http/http.dart' as http;
@@ -89,12 +90,13 @@ void main() async {
 
     RequestsService requestsService = RequestsServiceImpl();
 
-    Map<String, List<Contact>> result = await requestsService.getRequests();
+    FriendRequestRespone result = await requestsService.getRequests();
 
-    expect(result, {
-      "pending_requests": pendingRequestsContacts,
-      "sent_requests": sentRequestsContacts
-    });
+    expect(
+        result,
+        FriendRequestRespone(
+            sentRequests: sentRequestsContacts,
+            receivedRequests: pendingRequestsContacts));
   });
 
   test("SendRequests calls the correct endpoint with correct data", () async {
@@ -191,7 +193,7 @@ void main() async {
 
     RequestsService requestsService = RequestsServiceImpl();
 
-    bool result = await requestsService.unsendRequest(contact);
+    bool result = await requestsService.cancelRequest(contact);
 
     expect(result, true);
     verify(mockHttpProvider
