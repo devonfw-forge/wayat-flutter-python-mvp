@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
- <key>NSPhotoLibraryUsageDescription</key>
+ 	<key>NSPhotoLibraryUsageDescription</key>
     <string>Need to upload image</string>
     <key>NSCameraUsageDescription</key>
     <string>Need to upload image</string>
@@ -13,6 +13,10 @@
 		<string>googlechromes</string>
 		<string>comgooglemaps-x-callback://</string>
 	</array>
+    <key>method</key>
+    <string>app-store</string>
+    <key>uploadSymbols</key>
+    <true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -79,12 +83,18 @@
 		<string>MKDirectionsModeTaxi</string>
 		<string>MKDirectionsModeTrain</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Need to upload image</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Reason we need access to the contact list</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need to upload image</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need to upload image</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
