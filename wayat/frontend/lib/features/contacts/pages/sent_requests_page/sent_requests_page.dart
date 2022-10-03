@@ -9,7 +9,9 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Request sent to other user screen
 class SentRequestsPage extends StatelessWidget {
+  /// Business logic controller
   final RequestsController controller =
       GetIt.I.get<ContactsPageController>().requestsController;
 
@@ -39,6 +41,7 @@ class SentRequestsPage extends StatelessWidget {
     );
   }
 
+  /// Returns widget with the sent request list of contact filtered by the query in searchbar
   Widget sentRequestsList() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0, left: 15.0, right: 15.0),
@@ -72,6 +75,8 @@ class SentRequestsPage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget containing an arrow to navigate to previous page
+  /// and the title
   Widget header() {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),

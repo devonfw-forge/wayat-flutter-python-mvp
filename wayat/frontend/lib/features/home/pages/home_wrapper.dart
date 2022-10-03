@@ -6,6 +6,7 @@ import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
+/// Main navigator using AutoRoute
 class HomeWrapper extends StatelessWidget {
   final HomeState homeState = GetIt.I.get<HomeState>();
 

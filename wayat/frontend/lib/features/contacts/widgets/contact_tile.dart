@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/domain/contact/contact.dart';
 
+/// Contact tile showing contact profile image, and optional text button or icon
+///  button
 class ContactTile extends StatelessWidget {
+  /// Data of contact
   final Contact contact;
+
+  /// Text button shown in tile
   final TextButton? textAction;
+
+  /// Icon button shown in tile
   final IconButton? iconAction;
+
+  /// Callback triggered when tile is pressed
   final void Function()? onTilePressed;
 
   const ContactTile(

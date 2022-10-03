@@ -12,7 +12,9 @@ import 'package:wayat/features/contacts/widgets/empty_page_message.dart';
 import 'package:wayat/features/contacts/widgets/navigation_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// List view of all requests and the access to sent requests
 class RequestsPage extends StatelessWidget {
+  /// Business logic controller
   final RequestsController controller =
       GetIt.I.get<ContactsPageController>().requestsController;
 
@@ -34,6 +36,7 @@ class RequestsPage extends StatelessWidget {
     );
   }
 
+  /// Returns widget with the request list to be accepted
   Widget requestsList() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0, left: 15.0, right: 15.0),
@@ -72,6 +75,7 @@ class RequestsPage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget with friends requests number and sent navigation button
   Widget header() {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
