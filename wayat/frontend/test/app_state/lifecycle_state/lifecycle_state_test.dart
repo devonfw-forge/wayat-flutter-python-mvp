@@ -9,7 +9,7 @@ import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-import 'package:wayat/services/status/lifecycle_service.dart';
+import 'package:wayat/services/lifecycle/lifecycle_service.dart';
 
 import 'lifecycle_state_test.mocks.dart';
 
@@ -39,7 +39,7 @@ void main() async {
         LifeCycleState(lifeCycleService: mockLifeCycleService);
     when(mockSessionState.currentUser).thenReturn(null);
 
-    lifeCycleState.notifyOpenMap();
+    lifeCycleState.notifyAppOpenned();
 
     verifyNever(mockLifeCycleService.notifyLifeCycleState(true));
   });
@@ -52,7 +52,7 @@ void main() async {
     when(mockLifeCycleService.notifyLifeCycleState(true))
         .thenAnswer((_) => Future.value(null));
 
-    lifeCycleState.notifyOpenMap();
+    lifeCycleState.notifyAppOpenned();
 
     verify(mockLifeCycleService.notifyLifeCycleState(true)).called(1);
     expect(lifeCycleState.isAppOpened, true);
@@ -67,7 +67,7 @@ void main() async {
     when(mockLifeCycleService.notifyLifeCycleState(true))
         .thenAnswer((_) => Future.value(null));
 
-    lifeCycleState.notifyOpenMap();
+    lifeCycleState.notifyAppOpenned();
 
     await Future.delayed(const Duration(seconds: 2), () {});
 
@@ -85,7 +85,7 @@ void main() async {
 
     expect(lifeCycleState.timer!.isActive, true);
 
-    lifeCycleState.notifyCloseMap();
+    lifeCycleState.notifyAppClosed();
 
     expect(lifeCycleState.timer!.isActive, false);
   });
@@ -98,7 +98,7 @@ void main() async {
 
     lifeCycleState.timer = Timer(lifeCycleState.durationInterval, () {});
 
-    lifeCycleState.notifyCloseMap();
+    lifeCycleState.notifyAppClosed();
 
     verifyNever(mockLifeCycleService.notifyLifeCycleState(false));
   });
@@ -114,11 +114,11 @@ void main() async {
     LifeCycleState lifeCycleState =
         LifeCycleState(lifeCycleService: mockLifeCycleService);
 
-    await lifeCycleState.notifyOpenMap();
+    await lifeCycleState.notifyAppOpenned();
 
     expect(lifeCycleState.isAppOpened, true);
 
-    await lifeCycleState.notifyCloseMap();
+    await lifeCycleState.notifyAppClosed();
 
     expect(lifeCycleState.isAppOpened, false);
     verify(mockLifeCycleService.notifyLifeCycleState(false)).called(1);

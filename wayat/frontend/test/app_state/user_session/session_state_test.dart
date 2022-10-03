@@ -345,7 +345,7 @@ void main() async {
   test("LogOut calls signOut in Authentication service", () async {
     final MockLifeCycleState mockLifeCycleState = MockLifeCycleState();
     GetIt.I.registerLazySingleton<LifeCycleState>(() => mockLifeCycleState);
-    when(mockLifeCycleState.notifyCloseMap()).thenAnswer((_) => Future.value());
+    when(mockLifeCycleState.notifyAppClosed()).thenAnswer((_) => Future.value());
 
     AuthService mockAuthService = MockAuthService();
     when(mockAuthService.signOut()).thenAnswer((_) => Future.value(null));

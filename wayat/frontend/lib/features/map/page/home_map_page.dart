@@ -48,7 +48,7 @@ class HomeMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     controllerGroups.updateGroups();
-    GetIt.I.get<LifeCycleState>().notifyOpenMap();
+    GetIt.I.get<LifeCycleState>().notifyAppOpenned();
     controller.setOnMarkerPressed(
         (contact, icon) => showContactDialog(contact, icon, context));
 

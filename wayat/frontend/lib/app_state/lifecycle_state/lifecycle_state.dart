@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/services/status/lifecycle_service.dart';
+import 'package:wayat/services/lifecycle/lifecycle_service.dart';
 
 part 'lifecycle_state.g.dart';
 
@@ -29,9 +29,9 @@ abstract class _LifeCycleState with Store {
   _LifeCycleState({LifeCycleService? lifeCycleService})
       : lifeCycleService = lifeCycleService ?? LifeCycleService();
 
-  /// Sets and sends the map state to open
+  /// Sets and sends the app state to open
   @action
-  Future<void> notifyOpenMap() async {
+  Future<void> notifyAppOpenned() async {
     SessionState sessionState = GetIt.I.get<SessionState>();
     // First checks if the user is logged in
     if (sessionState.currentUser == null) return;
@@ -48,9 +48,9 @@ abstract class _LifeCycleState with Store {
     await lifeCycleService.notifyLifeCycleState(isAppOpened);
   }
 
-  /// Sents and sends the map state to close
+  /// Sets and sends the app state to close
   @action
-  Future<void> notifyCloseMap() async {
+  Future<void> notifyAppClosed() async {
     if (timer != null && timer!.isActive) timer!.cancel();
 
     SessionState sessionState = GetIt.I.get<SessionState>();

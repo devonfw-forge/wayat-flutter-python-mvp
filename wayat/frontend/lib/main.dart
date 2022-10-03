@@ -123,7 +123,7 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
       if (state == AppLifecycleState.resumed) {
         if (!mapState.isAppOpened &&
             GetIt.I.get<SessionState>().currentUser != null) {
-          await mapState.notifyOpenMap();
+          await mapState.notifyAppOpenned();
         }
       }
       // Other states must execute a close map event, but detach is not included,
@@ -131,7 +131,7 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
       else if (state == AppLifecycleState.inactive ||
           state == AppLifecycleState.paused) {
         if (mapState.isAppOpened) {
-          await mapState.notifyCloseMap();
+          await mapState.notifyAppClosed();
         }
       }
     });

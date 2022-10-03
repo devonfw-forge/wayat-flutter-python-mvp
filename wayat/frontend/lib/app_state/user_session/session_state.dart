@@ -160,7 +160,7 @@ abstract class _SessionState with Store {
   /// [authService] [signOut].
   Future logOut() async {
     final LifeCycleState lifeCycleState = GetIt.I.get<LifeCycleState>();
-    await lifeCycleState.notifyCloseMap();
+    await lifeCycleState.notifyAppClosed();
     finishLoggedIn = false;
     googleSignedIn = false;
     hasDoneOnboarding = false;

@@ -5,7 +5,7 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 class LifeCycleService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
-  ///Send [POST] request to backend to [Open GoogleMap]
+  /// Send [POST] request to backend that map is openned
   Future notifyLifeCycleState(bool isOpened) async {
     await httpProvider
         .sendPostRequest(APIContract.updateLifeCycle, {"open": isOpened});
