@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -28,7 +28,7 @@ import 'search_bar_test.mocks.dart';
 @GenerateMocks([
   LocationState,
   UserStatusState,
-  MapState,
+  LifeCycleState,
   MapController,
   ImageService,
   GroupsController
@@ -36,17 +36,17 @@ import 'search_bar_test.mocks.dart';
 void main() async {
   late LocationState mockLocationState;
   late UserStatusState mockUserStatusState;
-  late MapState mockMapState;
+  late LifeCycleState mockMapState;
 
   setUpAll(() {
     mockLocationState = MockLocationState();
     mockUserStatusState = MockUserStatusState();
-    mockMapState = MockMapState();
+    mockMapState = MockLifeCycleState();
     final GroupsController mockGroupsController = MockGroupsController();
 
     GetIt.I.registerSingleton<LocationState>(mockLocationState);
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
 

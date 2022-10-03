@@ -8,7 +8,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
@@ -38,7 +38,7 @@ import 'profile_integration_test.mocks.dart';
   HomeState,
   LocationState,
   UserStatusState,
-  MapState,
+  LifeCycleState,
   FriendsController,
   RequestsController,
   SuggestionsController,
@@ -54,7 +54,7 @@ void main() async {
   final HomeState mockHomeState = MockHomeState();
   final LocationState mockLocationState = MockLocationState();
   final UserStatusState mockUserStatusState = MockUserStatusState();
-  final MapState mockMapState = MockMapState();
+  final LifeCycleState mockMapState = MockLifeCycleState();
   final FriendsController mockFriendsController = MockFriendsController();
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
@@ -113,7 +113,7 @@ void main() async {
     GetIt.I.registerSingleton<LocationState>(mockLocationState);
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
     GetIt.I.registerSingleton<ProfileState>(profileState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
