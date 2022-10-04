@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
@@ -72,7 +72,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
-  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
+  GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());
   GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
