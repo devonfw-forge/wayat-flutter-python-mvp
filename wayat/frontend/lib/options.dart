@@ -17,10 +17,11 @@ import 'package:wayat/common/app_config/env_model.dart';
 /// ```
 class CustomFirebaseOptions {
   static FirebaseOptions get currentPlatformOptions {
-    if (PlatformService().isWeb) {
+    PlatformService platformService = PlatformService(); 
+    if (platformService.isWeb) {
       return web;
     }
-    switch (PlatformService().targetPlatform) {
+    switch (platformService.targetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
