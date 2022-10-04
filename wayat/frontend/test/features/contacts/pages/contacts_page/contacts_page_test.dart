@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
@@ -30,7 +30,7 @@ import 'contacts_page_test.mocks.dart';
 @GenerateMocks([
   ContactsPageController,
   SessionState,
-  HomeState,
+  HomeNavState,
   ShareLocationState,
   ReceiveLocationState,
   LocationListener,
@@ -47,7 +47,7 @@ void main() async {
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
   final SessionState mockSessionState = MockSessionState();
-  final HomeState mockHomeState = MockHomeState();
+  final HomeNavState mockHomeState = MockHomeNavState();
   final ShareLocationState mockLocationState = MockShareLocationState();
   final ReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
@@ -92,7 +92,7 @@ void main() async {
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/common/widgets/buttons/circle_icon_button.dart';
 import 'package:wayat/common/widgets/switch.dart';
@@ -56,7 +56,7 @@ class ContactProfilePage extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        GetIt.I.get<HomeState>().setSelectedContact(null, "");
+        GetIt.I.get<HomeNavState>().setSelectedContact(null, "");
         return true;
       },
       child: Scaffold(
@@ -86,7 +86,7 @@ class ContactProfilePage extends StatelessWidget {
         children: [
           IconButton(
               onPressed: () {
-                GetIt.I.get<HomeState>().setSelectedContact(null, "");
+                GetIt.I.get<HomeNavState>().setSelectedContact(null, "");
               },
               icon: const Icon(Icons.arrow_back)),
           Text(

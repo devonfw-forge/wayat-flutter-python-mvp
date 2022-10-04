@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/contact/contact.dart';
@@ -24,7 +24,7 @@ import 'friends_page_test.mocks.dart';
 @GenerateMocks([
   ContactsPageController,
   FriendsController,
-  HomeState,
+  HomeNavState,
   ContactService,
   LocationListener,
   ReceiveLocationState
@@ -33,7 +33,7 @@ void main() async {
   final FriendsController mockFriendsController = MockFriendsController();
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final HomeState mockHomeState = MockHomeState();
+  final HomeNavState mockHomeState = MockHomeNavState();
   final ReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
   final MockLocationListener mockLocationListener = MockLocationListener();
@@ -42,7 +42,7 @@ void main() async {
     HttpOverrides.global = null;
 
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     when(mockLocationListener.receiveLocationState)
         .thenReturn(mockReceiveLocationState);

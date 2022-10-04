@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
@@ -111,7 +111,7 @@ class GoogleAuthService implements AuthService {
     GetIt.I.resetLazySingleton<LocationListener>();
     GetIt.I.resetLazySingleton<ProfileState>();
     GetIt.I.resetLazySingleton<LifeCycleState>();
-    GetIt.I.resetLazySingleton<HomeState>();
+    GetIt.I.resetLazySingleton<HomeNavState>();
     GetIt.I.resetLazySingleton<HttpProvider>();
   }
 
