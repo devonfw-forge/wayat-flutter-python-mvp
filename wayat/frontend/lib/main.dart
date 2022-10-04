@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -22,6 +23,7 @@ import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Initializes the app.
 Future main() async {
@@ -30,6 +32,9 @@ Future main() async {
     log("DEBUG MODE: Using HttpOverrides");
     HttpOverrides.global = HttpDebugOverride();
   }
+
+  // AVoid # character in url (flutter web)
+  if (PlatformService().isWeb) { setPathUrlStrategy(); }
 
   // Env file should be loaded before Firebase initialization
   await EnvModel.loadEnvFile();

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +62,7 @@ class LocationListenerService {
           _lastContactRefs = firestoreData.contactRefs;
         }
       },
-      //onError: (error) => debugPrint("[ERROR] Listen failed: $error"),
+      onError: (error) => log("[ERROR] Firestore listen failed: $error"),
     );
   }
 
