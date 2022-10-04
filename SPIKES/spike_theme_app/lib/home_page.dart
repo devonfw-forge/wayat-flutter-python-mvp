@@ -20,17 +20,17 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Padding(
+            children: [
+              const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text('Theme'),
               ),
               ThemeSwitcher(),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text('Primary Color'),
               ),
-              PrimaryColorSwitcher(),
+              const PrimaryColorSwitcher(),
             ],
           ),
         ),

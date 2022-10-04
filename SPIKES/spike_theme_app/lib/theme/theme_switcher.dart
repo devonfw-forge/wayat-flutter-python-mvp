@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:spike_theme_app/theme/app_theme.dart';
-import 'package:spike_theme_app/theme/theme_provider.dart';
+import 'package:spike_theme_app/theme/controller/theme_state.dart';
 
 class ThemeSwitcher extends StatelessWidget {
-  const ThemeSwitcher({super.key});
+  ThemeSwitcher({Key? key}) : super(key: key);
 
   static const double _containerWidth = 450.0;
+  final ThemeState themeState = GetIt.I.get<ThemeState>();
 
   @override
   Widget build(BuildContext context) {
-    final getIt = GetIt.I.get<ThemeProvider>();
+    final getIt = GetIt.I.get<ThemeState>();
     return SizedBox(
       height: (_containerWidth - (17 * 2) - (10 * 2)) / 3,
       child: GridView.count(

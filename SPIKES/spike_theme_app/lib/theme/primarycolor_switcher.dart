@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:spike_theme_app/theme/app_colors.dart';
-import 'package:spike_theme_app/theme/theme_provider.dart';
+import 'package:spike_theme_app/theme/controller/theme_state.dart';
 
 class PrimaryColorSwitcher extends StatelessWidget {
   const PrimaryColorSwitcher({super.key});
@@ -10,7 +10,7 @@ class PrimaryColorSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final getIt = GetIt.I.get<ThemeProvider>();
+    final getIt = GetIt.I.get<ThemeState>();
     return SizedBox(
       height: (_containerWidth - (17 * 2) - (10 * 2)) / 3,
       child: GridView.count(
