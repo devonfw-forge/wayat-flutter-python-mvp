@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -14,8 +13,13 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class PreferencesPage extends StatefulWidget {
   final EditProfileController controller;
-  PreferencesPage({super.key, controller})
-      : controller = controller ?? EditProfileController();
+  final PlatformService platformService;
+
+  PreferencesPage({super.key, 
+    EditProfileController? controller,
+    PlatformService? platformService}) : 
+      controller = controller ?? EditProfileController(),
+      platformService = platformService ?? PlatformService();
 
   @override
   State<PreferencesPage> createState() => _PreferencesPageState();
@@ -41,8 +45,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
         ));
   }
 
-  Row _profileAppBar([PlatformService? platformService]) {
-    platformService ??= PlatformService();
+  Row _profileAppBar() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,13 +82,13 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 await profileState.changeLanguage(changedLanguage!);
                 //Check platform:
                 //On Android restart App
-                if (platformService!.targetPlatform == TargetPlatform.android) {
+                if (widget.platformService.targetPlatform == TargetPlatform.android) {
                   Restart.restartApp();
                 } else
                 //On iOS Apple ecosysstem don't allow restarting app programmatically
                 //For now solution is to show to the user InfoDialog with recomendation
                 //manually restarting iOS App
-                if (platformService.targetPlatform == TargetPlatform.iOS) {
+                if (widget.platformService.targetPlatform == TargetPlatform.iOS) {
                   showDialog(
                       context: context,
                       builder: (context) {
