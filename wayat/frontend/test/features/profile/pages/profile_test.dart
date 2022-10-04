@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/common/widgets/switch.dart';
@@ -18,11 +19,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'profile_test.mocks.dart';
 
-@GenerateMocks([SessionState, ProfileState, LocationState])
+@GenerateMocks(
+    [SessionState, ProfileState, ShareLocationState, LocationListener])
 void main() async {
   final MockSessionState mockSessionState = MockSessionState();
   final MockProfileState mockProfileState = MockProfileState();
-  final MockLocationState mockLocationState = MockLocationState();
+  final MockShareLocationState mockLocationState = MockShareLocationState();
+  final MockLocationListener mockLocationListener = MockLocationListener();
   late MyUser user;
 
   setUpAll(() {
@@ -39,9 +42,11 @@ void main() async {
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
     when(mockSessionState.currentUser).thenAnswer((_) => user);
 
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    when(mockLocationState.shareLocationEnabled).thenAnswer((_) => false);
+    GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
+    when(mockLocationState.shareLocationEnabled).thenReturn(false);
+    when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
   });
 
   Widget createApp(Widget body) {

@@ -7,9 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
@@ -23,14 +22,13 @@ import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/services/location/background_location_exception.dart';
-import 'package:wayat/services/location/no_location_service_exception.dart';
-import 'package:wayat/services/location/rejected_location_exception.dart';
+import 'package:wayat/services/share_location/background_location_exception.dart';
+import 'package:wayat/services/share_location/no_location_service_exception.dart';
+import 'package:wayat/services/share_location/rejected_location_exception.dart';
 
 class HomeMapPage extends StatelessWidget {
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
-  final LocationState locationState = GetIt.I.get<LocationState>();
-  final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
+  final LocationListener statusState = GetIt.I.get<LocationListener>();
   final MapController controller;
 
   HomeMapPage({MapController? controller, Key? key})
@@ -62,7 +60,9 @@ class HomeMapPage extends StatelessWidget {
   Future<dynamic> initializeLocationState(context) async {
     while (true) {
       try {
-        return await locationState.initialize();
+        await statusState.shareLocationState.initialize();
+        await statusState.initialize();
+        return;
       } on NoLocationServiceException {
         await _showLocationPermissionDialog(context, true);
       } on RejectedLocationException {
@@ -136,7 +136,7 @@ class HomeMapPage extends StatelessWidget {
   }
 
   void prepareMapData(BuildContext context) {
-    List<ContactLocation> contacts = userStatusState.contacts;
+    List<ContactLocation> contacts = statusState.receiveLocationState.contacts;
     if (contacts != controller.contacts) {
       controller.setContacts(contacts);
       controller.getMarkers();
@@ -217,8 +217,9 @@ class HomeMapPage extends StatelessWidget {
 
   /// Google map with current user location coordinates
   GoogleMap googleMap(Set<Marker> markers) {
-    LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
-        locationState.currentLocation.longitude);
+    LatLng currentLocation = LatLng(
+        statusState.shareLocationState.currentLocation.latitude,
+        statusState.shareLocationState.currentLocation.longitude);
 
     return GoogleMap(
       initialCameraPosition:
@@ -278,7 +279,8 @@ class HomeMapPage extends StatelessWidget {
 
   Widget mapListView() {
     return Observer(builder: (context) {
-      List<ContactLocation> contacts = userStatusState.contacts;
+      List<ContactLocation> contacts =
+          statusState.receiveLocationState.contacts;
       return ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -312,11 +314,11 @@ class HomeMapPage extends StatelessWidget {
               fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
         ),
         Observer(builder: (context) {
-          bool enabled = locationState.shareLocationEnabled;
+          bool enabled = statusState.shareLocationState.shareLocationEnabled;
           return CustomSwitch(
             value: enabled,
             onChanged: (newValue) {
-              locationState.setShareLocationEnabled(newValue);
+              statusState.shareLocationState.setShareLocationEnabled(newValue);
             },
           );
         })

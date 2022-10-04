@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/common/widgets/switch.dart';
@@ -15,7 +16,8 @@ class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
 
   final ProfileState profileState = GetIt.I.get<ProfileState>();
-  final LocationState locationState = GetIt.I.get<LocationState>();
+  final ShareLocationState shareLocationState =
+      GetIt.I.get<LocationListener>().shareLocationState;
   final SessionState userSession = GetIt.I.get<SessionState>();
 
   @override
@@ -176,9 +178,9 @@ class ProfilePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomSwitch(
               key: const Key("sw_en_prof"),
-              value: locationState.shareLocationEnabled,
+              value: shareLocationState.shareLocationEnabled,
               onChanged: (newValue) {
-                locationState.setShareLocationEnabled(newValue);
+                shareLocationState.setShareLocationEnabled(newValue);
               },
             ),
           );

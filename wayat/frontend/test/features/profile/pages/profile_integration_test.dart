@@ -7,11 +7,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
 import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -36,8 +37,9 @@ import 'profile_integration_test.mocks.dart';
   ContactsPageController,
   SessionState,
   HomeState,
-  LocationState,
-  UserStatusState,
+  ShareLocationState,
+  ReceiveLocationState,
+  LocationListener,
   MapState,
   FriendsController,
   RequestsController,
@@ -48,12 +50,14 @@ import 'profile_integration_test.mocks.dart';
 void main() async {
   late MyUser user;
 
+  final ReceiveLocationState mockReceiveLocationState =
+      MockReceiveLocationState();
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
   final SessionState mockSessionState = MockSessionState();
   final HomeState mockHomeState = MockHomeState();
-  final LocationState mockLocationState = MockLocationState();
-  final UserStatusState mockUserStatusState = MockUserStatusState();
+  final ShareLocationState mockLocationState = MockShareLocationState();
+  final LocationListener mockLocationListener = MockLocationListener();
   final MapState mockMapState = MockMapState();
   final FriendsController mockFriendsController = MockFriendsController();
   final RequestsController mockRequestsController = MockRequestsController();
@@ -89,7 +93,10 @@ void main() async {
         .thenReturn(mockSuggestionsController);
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
-    when(mockUserStatusState.contacts).thenReturn([]);
+    when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
+    when(mockLocationListener.receiveLocationState)
+        .thenReturn(mockReceiveLocationState);
+    when(mockReceiveLocationState.contacts).thenReturn([]);
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
@@ -110,8 +117,8 @@ void main() async {
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
     GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
+    GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<ProfileState>(profileState);
     GetIt.I.registerSingleton<MapState>(mockMapState);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());

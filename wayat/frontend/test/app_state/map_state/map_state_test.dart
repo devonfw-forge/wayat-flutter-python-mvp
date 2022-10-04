@@ -9,7 +9,7 @@ import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-import 'package:wayat/services/status/map_status_service.dart';
+import 'package:wayat/services/location_listener/map_status_service.dart';
 
 import 'map_state_test.mocks.dart';
 

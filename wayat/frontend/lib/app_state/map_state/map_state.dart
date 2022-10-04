@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/services/status/map_status_service.dart';
+import 'package:wayat/services/location_listener/map_status_service.dart';
 
 part 'map_state.g.dart';
 

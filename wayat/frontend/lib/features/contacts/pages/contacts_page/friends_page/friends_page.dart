@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -55,8 +55,10 @@ class FriendsPage extends StatelessWidget {
             itemCount: contacts.length,
             itemBuilder: (context, index) => ContactTile(
                   onTilePressed: () {
-                    List<ContactLocation> contactsStatus =
-                        GetIt.I.get<UserStatusState>().contacts;
+                    List<ContactLocation> contactsStatus = GetIt.I
+                        .get<LocationListener>()
+                        .receiveLocationState
+                        .contacts;
                     ContactLocation? currentContact =
                         contactsStatus.firstWhereOrNull(
                             (element) => element.id == contacts[index].id);
