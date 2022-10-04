@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:spike_theme_app/theme/app_colors.dart';
 import 'package:spike_theme_app/home_page.dart';
@@ -37,23 +38,25 @@ class _App extends State<App> with WidgetsBindingObserver {
 
     return FutureBuilder(
       builder: (context, snapshot) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          themeMode: getIt.selectedThemeMode,
-          theme: ThemeData(
-            brightness: Brightness.light,
-            primarySwatch:
-                AppColors.getMaterialColorFromColor(getIt.selectedPrimaryColor),
-            primaryColor: getIt.selectedPrimaryColor,
-          ),
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch:
-                AppColors.getMaterialColorFromColor(getIt.selectedPrimaryColor),
-            primaryColor: getIt.selectedPrimaryColor,
-          ),
-          home: const HomePage(),
-        );
+        return Observer(builder: (_) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: getIt.selectedThemeMode,
+            theme: ThemeData(
+              brightness: Brightness.light,
+              primarySwatch: AppColors.getMaterialColorFromColor(
+                  getIt.selectedPrimaryColor),
+              primaryColor: getIt.selectedPrimaryColor,
+            ),
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              primarySwatch: AppColors.getMaterialColorFromColor(
+                  getIt.selectedPrimaryColor),
+              primaryColor: getIt.selectedPrimaryColor,
+            ),
+            home: const HomePage(),
+          );
+        });
       },
     );
   }
