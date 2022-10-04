@@ -9,7 +9,7 @@ part 'location_listener.g.dart';
 // ignore: library_private_types_in_public_api
 class LocationListener = _LocationListener with _$LocationListener;
 
-/// Manages the Status of the User.
+/// Manages the location status of the User.
 ///
 /// The user status is defined by the contacts sharing location with them and
 /// the location mode (active or passive).
