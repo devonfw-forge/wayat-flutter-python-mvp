@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
@@ -40,7 +40,7 @@ import 'home_map_page_test.mocks.dart';
   ReceiveLocationState,
   LocationListener,
   ProfileState,
-  MapState,
+  LifeCycleState,
   FriendsController,
   RequestsController,
   SuggestionsController,
@@ -57,7 +57,7 @@ void main() async {
       MockReceiveLocationState();
   final LocationListener mockLocationListener = MockLocationListener();
   final ProfileState mockProfileState = MockProfileState();
-  final MapState mockMapState = MockMapState();
+  final LifeCycleState mockMapState = MockLifeCycleState();
   final FriendsController mockFriendsController = MockFriendsController();
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
@@ -78,8 +78,7 @@ void main() async {
       id: "123",
       members: [
         Contact(
-            shareLocation: true,
-            available: true,
+            shareLocationTo: true,
             id: "",
             name: "",
             email: "",
@@ -131,7 +130,7 @@ void main() async {
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 

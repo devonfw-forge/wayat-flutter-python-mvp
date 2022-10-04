@@ -42,7 +42,7 @@ class ContactProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.setShareLocationToContact(contact.shareLocation, contact);
+    controller.setShareLocationToContact(contact.shareLocationTo, contact);
     ContactLocation? contactLocated = GetIt.I
         .get<LocationListener>()
         .receiveLocationState

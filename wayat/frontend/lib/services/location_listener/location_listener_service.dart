@@ -86,8 +86,7 @@ class LocationListenerService {
           address = appLocalizations.errorAddress;
         }
         ContactLocation located = ContactLocation(
-            available: true,
-            shareLocation: contact.shareLocation,
+            shareLocationTo: contact.shareLocationTo,
             id: contact.id,
             name: contact.name,
             email: contact.email,

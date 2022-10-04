@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
@@ -40,7 +40,7 @@ class HomeMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     controllerGroups.updateGroups();
-    GetIt.I.get<MapState>().openMap();
+    GetIt.I.get<LifeCycleState>().notifyAppOpenned();
     controller.setOnMarkerPressed(
         (contact, icon) => showContactDialog(contact, icon, context));
 

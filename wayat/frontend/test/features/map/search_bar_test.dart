@@ -6,10 +6,10 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -30,7 +30,7 @@ import 'search_bar_test.mocks.dart';
   ShareLocationState,
   ReceiveLocationState,
   LocationListener,
-  MapState,
+  LifeCycleState,
   MapController,
   ImageService,
   GroupsController
@@ -38,20 +38,19 @@ import 'search_bar_test.mocks.dart';
 void main() async {
   late ShareLocationState mockLocationState;
   late LocationListener mockLocationListener;
-  late MapState mockMapState;
   late ReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
+  late LifeCycleState mockMapState;
 
   setUpAll(() {
-    mockLocationState = MockShareLocationState();
     mockLocationListener = MockLocationListener();
-    mockMapState = MockMapState();
+    mockLocationState = MockShareLocationState();
     mockReceiveLocationState = MockReceiveLocationState();
+    mockMapState = MockLifeCycleState();
     final GroupsController mockGroupsController = MockGroupsController();
 
-    GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
+    GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
 
@@ -262,8 +261,7 @@ ImageService _prepareMockImageService(List<ContactLocation> contacts) {
 
 ContactLocation _locatedContactFactory(String contactName) {
   return ContactLocation(
-      available: true,
-      shareLocation: true,
+      shareLocationTo: true,
       id: "id1",
       name: contactName,
       email: "Contact email",

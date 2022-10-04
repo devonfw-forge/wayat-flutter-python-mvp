@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -110,7 +110,7 @@ class GoogleAuthService implements AuthService {
     GetIt.I.resetLazySingleton<ContactsPageController>();
     GetIt.I.resetLazySingleton<LocationListener>();
     GetIt.I.resetLazySingleton<ProfileState>();
-    GetIt.I.resetLazySingleton<MapState>();
+    GetIt.I.resetLazySingleton<LifeCycleState>();
     GetIt.I.resetLazySingleton<HomeState>();
     GetIt.I.resetLazySingleton<HttpProvider>();
   }
