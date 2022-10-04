@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:spike_theme_app/primarycolor_switcher.dart';
-import 'package:spike_theme_app/theme_switcher.dart';
+import 'package:spike_theme_app/theme/primarycolor_switcher.dart';
+import 'package:spike_theme_app/theme/theme_switcher.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
