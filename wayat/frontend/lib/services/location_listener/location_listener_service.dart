@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/common/models/env_model.dart';
 import 'package:wayat/domain/contact/contact.dart';
@@ -10,11 +9,14 @@ import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
+import 'package:wayat/services/location_listener/firestore_model/contact_ref_model.dart';
+import 'package:wayat/services/location_listener/firestore_model/firestore_data_model.dart';
+import 'package:wayat/services/utils/list_utils_service.dart';
 
-class UserStatusService {
+class LocationListenerService {
   final FirebaseFirestore db;
 
-  UserStatusService({FirebaseFirestore? db})
+  LocationListenerService({FirebaseFirestore? db})
     : db = db ?? FirebaseFirestore.instanceFor(
       app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
 
@@ -24,7 +26,7 @@ class UserStatusService {
   ///SetUp listener of contactLocation mode update from status
   Future setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
-      required Function(ShareLocationMode) onLocationModeUpdate}) async {
+      required Function(bool) onLocationModeUpdate}) async {
     if (GetIt.I.get<SessionState>().currentUser == null) {
       return;
     }
@@ -32,9 +34,10 @@ class UserStatusService {
         .collection("status")
         .doc(GetIt.I.get<SessionState>().currentUser!.id);
 
-    Map<String, dynamic> firestoreData = (await docRef.get()).data()!;
-    _lastActive = firestoreData["active"] as bool;
-    _lastContactRefs = firestoreData["contact_refs"] as List;
+    FirestoreDataModel firestoreData =
+        FirestoreDataModel.fromMap((await docRef.get()).data()!);
+    _lastActive = firestoreData.active;
+    _lastContactRefs = firestoreData.contactRefs;
     // Update locationMode before listening
     onLocationModeUpdate(getLocationModeFromStatus(firestoreData));
     // Update contactRef before listenings
@@ -43,27 +46,27 @@ class UserStatusService {
     // Subscribe to changes in the currentUser status document
     docRef.snapshots().listen(
       (event) async {
-        if ((event.data()!["active"] as bool) != _lastActive) {
-          onLocationModeUpdate(getLocationModeFromStatus(event.data()!));
-          _lastActive = event.data()!["active"] as bool;
+        FirestoreDataModel updatedData =
+            FirestoreDataModel.fromMap(event.data()!);
+
+        if ((updatedData.active) != _lastActive) {
+          onLocationModeUpdate(getLocationModeFromStatus(updatedData));
+          _lastActive = updatedData.active;
         }
-        if ((event.data()!["contact_refs"] as List) != _lastContactRefs) {
-          onContactsRefUpdate(await getContactRefsFromStatus(event.data()!));
-          _lastContactRefs = firestoreData["contact_refs"] as List;
+        if (ListUtilsService.haveDifferentElements(
+            updatedData.contactRefs, _lastContactRefs)) {
+          onContactsRefUpdate(await getContactRefsFromStatus(updatedData));
+          _lastContactRefs = firestoreData.contactRefs;
         }
       },
       //onError: (error) => debugPrint("[ERROR] Listen failed: $error"),
     );
   }
 
-  ///Return active or passive location mode from Firestore status
+  /// Return active or passive location mode from Firestore status
   @visibleForTesting
-  ShareLocationMode getLocationModeFromStatus(
-      Map<String, dynamic> firestoreData) {
-    if (firestoreData["active"] as bool) {
-      return ShareLocationMode.active;
-    }
-    return ShareLocationMode.passive;
+  bool getLocationModeFromStatus(FirestoreDataModel firestoreData) {
+    return firestoreData.active;
   }
 
   ///Return [ContactLocation]
@@ -71,22 +74,19 @@ class UserStatusService {
   ///Get contact uid, location, address and last updated data
   @visibleForTesting
   Future<List<ContactLocation>> getContactRefsFromStatus(
-      Map<String, dynamic> firestoreData,
+      FirestoreDataModel firestoreData,
       {ContactService? contactService}) async {
     ContactService service = contactService ?? ContactServiceImpl();
     List<Contact> contacts = await service.getAll();
 
-    List contactRefs = firestoreData["contact_refs"] as List;
+    List<ContactRefModel> contactRefs = firestoreData.contactRefs;
     if (contactRefs.isNotEmpty) {
       List<ContactLocation> contactLocations = contactRefs.map((e) {
-        Contact contact =
-            contacts.firstWhere((contact) => contact.id == e["uid"]);
-        GeoPoint loc = e["location"];
-        String address = e["address"] ?? "ERROR_ADDRESS";
+        Contact contact = contacts.firstWhere((contact) => contact.id == e.uid);
+        String address = e.address ?? "ERROR_ADDRESS";
         if (address == "ERROR_ADDRESS") {
           address = appLocalizations.errorAddress;
         }
-        Timestamp lastUpdated = e["last_updated"];
         ContactLocation located = ContactLocation(
             shareLocationTo: contact.shareLocationTo,
             id: contact.id,
@@ -94,10 +94,10 @@ class UserStatusService {
             email: contact.email,
             imageUrl: contact.imageUrl,
             phone: contact.phone,
-            latitude: loc.latitude,
-            longitude: loc.longitude,
+            latitude: e.location.latitude,
+            longitude: e.location.longitude,
             address: address,
-            lastUpdated: lastUpdated.toDate());
+            lastUpdated: e.lastUpdated.toDate());
         return located;
       }).toList();
       return contactLocations;
