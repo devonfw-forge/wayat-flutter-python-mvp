@@ -43,11 +43,11 @@ abstract class _ContactProfileController with Store {
   @action
   Future<void> setShareLocationToContact(
       bool shareLocationToContact, Contact contact) async {
-    if (shareLocationToContact != contact.shareLocation) {
+    if (shareLocationToContact != contact.shareLocationTo) {
       httpProvider.sendPostRequest('${APIContract.contacts}/${contact.id}',
           {'share_location': shareLocationToContact});
     }
     this.shareLocationToContact = shareLocationToContact;
-    contact.shareLocation = shareLocationToContact;
+    contact.shareLocationTo = shareLocationToContact;
   }
 }

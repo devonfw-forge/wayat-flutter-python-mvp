@@ -1,4 +1,5 @@
 import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/services/friend_requests/models/friend_request_response.dart';
 
 /// Manages the communication with the server related with friend requests.
 abstract class RequestsService {
@@ -6,7 +7,7 @@ abstract class RequestsService {
   ///
   /// The Map will have two Lists of [Contact], one for sent requests with the
   /// key `sent_requests`, and the received requests with `pending_requests`.
-  Future<Map<String, List<Contact>>> getRequests();
+  Future<FriendRequestRespone> getRequests();
 
   /// Accepts the received request from [contact].
   Future<bool> acceptRequest(Contact contact);
@@ -21,5 +22,5 @@ abstract class RequestsService {
   Future<bool> sendRequests(List<Contact> contacts);
 
   /// Cancels a previously sent request to [contact].
-  Future<bool> unsendRequest(Contact contact);
+  Future<bool> cancelRequest(Contact contact);
 }

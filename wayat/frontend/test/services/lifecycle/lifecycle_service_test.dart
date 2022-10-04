@@ -5,9 +5,9 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-import 'package:wayat/services/status/map_status_service.dart';
+import 'package:wayat/services/lifecycle/lifecycle_service.dart';
 
-import 'map_status_service_test.mocks.dart';
+import 'lifecycle_service_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<HttpProvider>(), MockSpec<Response>()])
 void main() async {
@@ -20,28 +20,28 @@ void main() async {
   test("sendMapOpened calls the correct endpoint", () async {
     Response mockResponse = MockResponse();
     when(mockHttpProvider
-            .sendPostRequest(APIContract.updateMap, {"open": true}))
+            .sendPostRequest(APIContract.updateLifeCycle, {"open": true}))
         .thenAnswer((_) async => mockResponse);
 
-    MapStatusService mapStatusService = MapStatusService();
+    LifeCycleService lifeCycleService = LifeCycleService();
 
-    await mapStatusService.sendMapOpened();
+    await lifeCycleService.notifyLifeCycleState(true);
 
-    verify(mockHttpProvider
-        .sendPostRequest(APIContract.updateMap, {"open": true})).called(1);
+    verify(mockHttpProvider.sendPostRequest(
+        APIContract.updateLifeCycle, {"open": true})).called(1);
   });
 
   test("sendMapClosed calls the correct endpoint", () async {
     Response mockResponse = MockResponse();
     when(mockHttpProvider
-            .sendPostRequest(APIContract.updateMap, {"open": false}))
+            .sendPostRequest(APIContract.updateLifeCycle, {"open": false}))
         .thenAnswer((_) async => mockResponse);
 
-    MapStatusService mapStatusService = MapStatusService();
+    LifeCycleService lifeCycleService = LifeCycleService();
 
-    await mapStatusService.sendMapClosed();
+    await lifeCycleService.notifyLifeCycleState(false);
 
-    verify(mockHttpProvider
-        .sendPostRequest(APIContract.updateMap, {"open": false})).called(1);
+    verify(mockHttpProvider.sendPostRequest(
+        APIContract.updateLifeCycle, {"open": false})).called(1);
   });
 }

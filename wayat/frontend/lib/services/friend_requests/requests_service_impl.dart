@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/friend_requests/models/friend_request_response.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 
 /// Implementation of the RequestsService.
@@ -10,21 +11,11 @@ class RequestsServiceImpl implements RequestsService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   @override
-  Future<Map<String, List<Contact>>> getRequests() async {
+  Future<FriendRequestRespone> getRequests() async {
     Map<String, dynamic> friendRequests =
         await httpProvider.sendGetRequest(APIContract.friendRequests);
 
-    List<Contact> pendingRequests =
-        (friendRequests["pending_requests"] as List).map((e) {
-      return Contact.fromMap(e);
-    }).toList();
-
-    List<Contact> sentRequests =
-        (friendRequests["sent_requests"] as List).map((e) {
-      return Contact.fromMap(e);
-    }).toList();
-
-    return {"pending_requests": pendingRequests, "sent_requests": sentRequests};
+    return FriendRequestRespone.fromMap(friendRequests);
   }
 
   @override
@@ -65,7 +56,7 @@ class RequestsServiceImpl implements RequestsService {
   }
 
   @override
-  Future<bool> unsendRequest(Contact contact) async {
+  Future<bool> cancelRequest(Contact contact) async {
     return await httpProvider
         .sendDelRequest("${APIContract.sentFriendRequests}/${contact.id}");
   }

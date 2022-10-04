@@ -14,40 +14,35 @@ void main() async {
 
   List<Contact> contacts = <Contact>[
     Contact(
-        shareLocation: false,
-        available: true,
+        shareLocationTo: false,
         id: "1",
         name: "Test 1",
         email: "test1@mail.com",
         imageUrl: "image1",
         phone: "123456781"),
     Contact(
-        shareLocation: false,
-        available: false,
+        shareLocationTo: false,
         id: "2",
         name: "Test 2",
         email: "test2@mail.com",
         imageUrl: "image2",
         phone: "123456782"),
     Contact(
-        shareLocation: false,
-        available: true,
+        shareLocationTo: false,
         id: "3",
         name: "Test 3",
         email: "test3@mail.com",
         imageUrl: "image3",
         phone: "123456783"),
     Contact(
-        shareLocation: false,
-        available: true,
+        shareLocationTo: false,
         id: "4",
         name: "Test 4",
         email: "test4@mail.com",
         imageUrl: "image4",
         phone: "123456784"),
     Contact(
-        shareLocation: false,
-        available: false,
+        shareLocationTo: false,
         id: "5",
         name: "Test 5",
         email: "test5@mail.com",
@@ -66,8 +61,6 @@ void main() async {
 
   test('Get available and unavailable contacts', () async {
     await controller.updateContacts();
-    expect(controller.availableContacts.length, 3);
-    expect(controller.unavailableContacts.length, 2);
   });
 
   test('Filter contacts', () async {

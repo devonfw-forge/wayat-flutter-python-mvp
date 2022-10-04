@@ -5,6 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/friend_requests/models/friend_request_response.dart';
 import 'package:wayat/services/friend_requests/requests_service.dart';
 import 'package:wayat/services/friend_requests/requests_service_impl.dart';
 import 'package:http/http.dart' as http;
@@ -47,16 +48,14 @@ void main() async {
 
   List<Contact> sentRequestsContacts = [
     Contact(
-        shareLocation: true,
-        available: false,
+        shareLocationTo: true,
         id: 'TESTID12345',
         name: 'Test User',
         email: '',
         imageUrl: "https://example.com/image1",
         phone: "+34123456789"),
     Contact(
-        shareLocation: true,
-        available: false,
+        shareLocationTo: true,
         id: 'TESTID123456',
         name: 'Test User Second',
         email: '',
@@ -66,16 +65,14 @@ void main() async {
 
   List<Contact> pendingRequestsContacts = [
     Contact(
-        shareLocation: true,
-        available: false,
+        shareLocationTo: true,
         id: 'TESTID1234567',
         name: 'Test User Third',
         email: '',
         imageUrl: "https://example.com/image3",
         phone: "+34987654321"),
     Contact(
-        shareLocation: true,
-        available: false,
+        shareLocationTo: true,
         id: 'TESTID12345678',
         name: 'Test User Fourth',
         email: '',
@@ -93,12 +90,13 @@ void main() async {
 
     RequestsService requestsService = RequestsServiceImpl();
 
-    Map<String, List<Contact>> result = await requestsService.getRequests();
+    FriendRequestRespone result = await requestsService.getRequests();
 
-    expect(result, {
-      "pending_requests": pendingRequestsContacts,
-      "sent_requests": sentRequestsContacts
-    });
+    expect(
+        result,
+        FriendRequestRespone(
+            sentRequests: sentRequestsContacts,
+            receivedRequests: pendingRequestsContacts));
   });
 
   test("SendRequests calls the correct endpoint with correct data", () async {
@@ -195,7 +193,7 @@ void main() async {
 
     RequestsService requestsService = RequestsServiceImpl();
 
-    bool result = await requestsService.unsendRequest(contact);
+    bool result = await requestsService.cancelRequest(contact);
 
     expect(result, true);
     verify(mockHttpProvider
