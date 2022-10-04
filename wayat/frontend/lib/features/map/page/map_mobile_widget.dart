@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 
 
@@ -17,9 +18,9 @@ class MapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocationState locationState = GetIt.I.get<LocationState>();
-    LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
-      locationState.currentLocation.longitude);
+    ShareLocationState shareLocationState = GetIt.I.get<LocationListener>().shareLocationState;
+    LatLng currentLocation = LatLng(shareLocationState.currentLocation.latitude,
+      shareLocationState.currentLocation.longitude);
     return GoogleMap(
       onTap: (_) {
         removeFocusFromSearchBar(context);
