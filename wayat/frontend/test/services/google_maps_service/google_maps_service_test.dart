@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/common/models/env_model.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/services/google_maps_service/address_response/address.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_component.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';

@@ -11,8 +11,8 @@ import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/common/controllers/app_config_controller.dart';
-import 'package:wayat/common/models/env_model.dart';
+import 'package:wayat/common/app_config/app_config_controller.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
@@ -22,7 +22,6 @@ import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-
 
 /// Initializes the app.
 Future main() async {
@@ -36,13 +35,12 @@ Future main() async {
   await EnvModel.loadEnvFile();
 
   await Firebase.initializeApp(
-    name: EnvModel.FIREBASE_APP_NAME, 
-    options: CustomFirebaseOptions.currentPlatformOptions
-  );
+      name: EnvModel.FIREBASE_APP_NAME,
+      options: CustomFirebaseOptions.currentPlatformOptions);
 
   await registerSingletons();
 
-  AppConfigCOntroller().setTimeAgoLocales();
+  AppConfigController().setTimeAgoLocales();
 
   runApp(const Wayat());
 }

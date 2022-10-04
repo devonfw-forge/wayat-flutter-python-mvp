@@ -7,12 +7,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
-import 'package:wayat/common/models/env_model.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
 import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
 
 class GoogleMapsService {
-
   static Future openMaps(double lat, double lng,
       {UrlLauncherLibW? urlLauncher}) async {
     UrlLauncherLibW launcher = urlLauncher ?? UrlLauncherLibW();

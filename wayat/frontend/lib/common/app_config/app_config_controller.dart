@@ -1,7 +1,6 @@
 import 'package:timeago/timeago.dart' as timeago;
 
-class AppConfigCOntroller {
-
+class AppConfigController {
   /// Loads the messages for the library [timeago] in the available languages for the app.
   ///
   /// This messages are displayed in, for example, the [ContactDialog] that appears
@@ -15,5 +14,4 @@ class AppConfigCOntroller {
     timeago.setLocaleMessages('de', timeago.DeMessages());
     timeago.setLocaleMessages('nl', timeago.NlMessages());
   }
-  
 }

@@ -6,7 +6,7 @@ import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
-import 'package:wayat/common/models/env_model.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -27,8 +27,7 @@ class GoogleAuthService implements AuthService {
 
   /// Instance of the authentication service for Firebase
   final FirebaseAuth _auth =
-    FirebaseAuth.instanceFor(
-      app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
+      FirebaseAuth.instanceFor(app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
 
   GoogleAuthService({GoogleSignIn? gS}) {
     if (gS != null) {
@@ -103,7 +102,8 @@ class GoogleAuthService implements AuthService {
   @override
   Future<void> signOut() async {
     await FirebaseFirestore.instanceFor(
-      app: Firebase.app(EnvModel.FIREBASE_APP_NAME)).terminate();
+            app: Firebase.app(EnvModel.FIREBASE_APP_NAME))
+        .terminate();
     await _auth.signOut();
     await _googleSignIn.signOut();
 
