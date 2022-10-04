@@ -7,10 +7,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:wayat/common/models/env_model.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
 import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
 
 class GoogleMapsService {
+
   static Future openMaps(double lat, double lng,
       {UrlLauncherLibW? urlLauncher}) async {
     UrlLauncherLibW launcher = urlLauncher ?? UrlLauncherLibW();
@@ -55,7 +57,7 @@ class GoogleMapsService {
 
   static String getStaticMapImageFromCoords(LatLng coords) {
     String apiKey = getApIKey();
-    String secret = dotenv.get("MAPS_STATIC_SECRET").replaceAll("\"", "");
+    String secret = EnvModel.MAPS_STATIC_SECRET;
     secret = base64.normalize(secret);
 
     Uri url = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
@@ -83,13 +85,13 @@ class GoogleMapsService {
 
   static String getApIKey() {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return dotenv.get('ANDROID_API_KEY');
+      return EnvModel.ANDROID_API_KEY;
     }
 
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return dotenv.get('IOS_API_KEY');
+      return EnvModel.IOS_API_KEY;
     }
 
-    return dotenv.get('WEB_API_KEY');
+    return EnvModel.WEB_API_KEY;
   }
 }

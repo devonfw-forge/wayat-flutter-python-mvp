@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/common/models/env_model.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -14,7 +15,8 @@ class UserStatusService {
   final FirebaseFirestore db;
 
   UserStatusService({FirebaseFirestore? db})
-      : db = db ?? FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT'));
+    : db = db ?? FirebaseFirestore.instanceFor(
+      app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
 
   late bool _lastActive;
   late List _lastContactRefs;
