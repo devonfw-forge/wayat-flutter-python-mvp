@@ -35,7 +35,7 @@ abstract class _ShareLocationState with Store {
 
   /// Whether the user is currently sending their location to the server
   @observable
-  bool shareLocationEnabled = false;
+  bool shareLocationEnabled = GetIt.I.get<SessionState>().currentUser!.shareLocationEnabled;
 
   /// Callback that will be called when the service detects that it needs
   /// to update the user's location
@@ -49,9 +49,6 @@ abstract class _ShareLocationState with Store {
       {ShareLocationServiceFactory? locationServiceFactory}) async {
     ShareLocationServiceFactory shareLocationServiceFactory =
         locationServiceFactory ?? ShareLocationServiceFactory();
-
-    shareLocationEnabled =
-      GetIt.I.get<SessionState>().currentUser!.shareLocationEnabled;
     
     shareLocationService = await shareLocationServiceFactory.create(
         activeShareMode: activeShareMode,
