@@ -6,12 +6,12 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -23,21 +23,23 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'contacts_page_test.mocks.dart';
 
 @GenerateMocks([
   ContactsPageController,
   SessionState,
-  HomeState,
-  LocationState,
-  UserStatusState,
+  HomeNavState,
+  ShareLocationState,
+  ReceiveLocationState,
+  LocationListener,
   ProfileState,
   LifeCycleState,
   FriendsController,
   RequestsController,
   SuggestionsController,
-  GroupsController
+  GroupsController,
 ])
 void main() async {
   HttpOverrides.global = null;
@@ -45,9 +47,11 @@ void main() async {
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
   final SessionState mockSessionState = MockSessionState();
-  final HomeState mockHomeState = MockHomeState();
-  final LocationState mockLocationState = MockLocationState();
-  final UserStatusState mockUserStatusState = MockUserStatusState();
+  final HomeNavState mockHomeState = MockHomeNavState();
+  final ShareLocationState mockLocationState = MockShareLocationState();
+  final ReceiveLocationState mockReceiveLocationState =
+      MockReceiveLocationState();
+  final LocationListener mockLocationListener = MockLocationListener();
   final ProfileState mockProfileState = MockProfileState();
   final LifeCycleState mockMapState = MockLifeCycleState();
   final FriendsController mockFriendsController = MockFriendsController();
@@ -75,7 +79,10 @@ void main() async {
         .thenReturn(mockSuggestionsController);
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
-    when(mockUserStatusState.contacts).thenReturn([]);
+    when(mockLocationListener.receiveLocationState)
+        .thenReturn(mockReceiveLocationState);
+    when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
+    when(mockReceiveLocationState.contacts).thenReturn([]);
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
     when(mockGroupsController.groups)
@@ -85,9 +92,9 @@ void main() async {
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
+    GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);

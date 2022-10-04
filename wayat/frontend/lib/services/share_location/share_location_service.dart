@@ -1,5 +1,4 @@
 import 'package:location/location.dart';
-import 'package:wayat/app_state/location_state/share_mode.dart';
 
 /// Service that manages the user's current location and
 /// sends it to the server when the proper conditions and
@@ -19,7 +18,7 @@ abstract class ShareLocationService {
 
   /// Sets the mode ACTIVE or PASSIVE
   /// If we become ACTIVE, update the location automatically
-  void setShareLocationMode(ShareLocationMode shareLocationMode);
+  void setActiveShareMode(bool activeShareMode);
 
   /// Sets sharing the location TRUE or FALSE
   /// If start sharing the location, update it

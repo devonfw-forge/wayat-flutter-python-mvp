@@ -6,12 +6,13 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -34,24 +35,27 @@ import 'home_map_page_test.mocks.dart';
 @GenerateMocks([
   ContactsPageController,
   SessionState,
-  HomeState,
-  LocationState,
-  UserStatusState,
+  HomeNavState,
+  ShareLocationState,
+  ReceiveLocationState,
+  LocationListener,
   ProfileState,
   LifeCycleState,
   FriendsController,
   RequestsController,
   SuggestionsController,
   GroupsController,
-  MapController
+  MapController,
 ])
 void main() async {
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final HomeState mockHomeState = MockHomeState();
+  final HomeNavState mockHomeState = MockHomeNavState();
   final SessionState mockSessionState = MockSessionState();
-  final LocationState mockLocationState = MockLocationState();
-  final UserStatusState mockUserStatusState = MockUserStatusState();
+  final ShareLocationState mockLocationState = MockShareLocationState();
+  final ReceiveLocationState mockReceiveLocationState =
+      MockReceiveLocationState();
+  final LocationListener mockLocationListener = MockLocationListener();
   final ProfileState mockProfileState = MockProfileState();
   final LifeCycleState mockMapState = MockLifeCycleState();
   final FriendsController mockFriendsController = MockFriendsController();
@@ -105,7 +109,10 @@ void main() async {
         .thenReturn(mockSuggestionsController);
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
-    when(mockUserStatusState.contacts).thenReturn([]);
+    when(mockLocationListener.receiveLocationState)
+        .thenReturn(mockReceiveLocationState);
+    when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
+    when(mockReceiveLocationState.contacts).thenReturn([]);
     when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
     when(mockSessionState.currentUser).thenReturn(user);
     when(mockGroupsController.updateGroups())
@@ -118,10 +125,10 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
+    GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
@@ -143,8 +150,8 @@ void main() async {
   }
 
   testWidgets('Slider Groups without groups', (tester) async {
-    final HomeState homeState = HomeState();
-    GetIt.I.registerSingleton<HomeState>(homeState);
+    final HomeNavState homeState = HomeNavState();
+    GetIt.I.registerSingleton<HomeNavState>(homeState);
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
 
@@ -161,8 +168,8 @@ void main() async {
   });
 
   testWidgets('Slider Groups with groups', (tester) async {
-    final HomeState homeState = HomeState();
-    GetIt.I.registerSingleton<HomeState>(homeState);
+    final HomeNavState homeState = HomeNavState();
+    GetIt.I.registerSingleton<HomeNavState>(homeState);
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
 

@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 
 void main() async {
   test("Initial Home State is correct", () {
-    HomeState homeState = HomeState();
+    HomeNavState homeState = HomeNavState();
     expect(homeState.selectedContact, null);
     expect(homeState.navigationSourceContactProfile, "");
   });
   test("Set selected contacts test", () {
-    HomeState homeState = HomeState();
+    HomeNavState homeState = HomeNavState();
     Contact oldContact = _contactFactory("Old Contact");
     Contact newContact = _contactFactory("New contact");
     String oldSource = "old source";

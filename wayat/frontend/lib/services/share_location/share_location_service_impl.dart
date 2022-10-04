@@ -1,16 +1,16 @@
 import 'dart:developer';
+import 'dart:isolate';
 
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-import 'package:wayat/services/location/background_location_exception.dart';
-import 'package:wayat/services/location/no_location_service_exception.dart';
-import 'package:wayat/services/location/rejected_location_exception.dart';
-import 'package:wayat/services/location/share_location_service.dart';
+import 'package:wayat/services/share_location/background_location_exception.dart';
+import 'package:wayat/services/share_location/no_location_service_exception.dart';
+import 'package:wayat/services/share_location/rejected_location_exception.dart';
+import 'package:wayat/services/share_location/share_location_service.dart';
 import 'dart:math' show cos, sqrt, asin;
 import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
@@ -19,19 +19,18 @@ import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 class ShareLocationServiceImpl extends ShareLocationService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
-  final Duration passiveMinTime = const Duration(minutes: 15);
-
   /// 1 kilometer of distance
   final int passiveMinDistance = 1000;
-  final Duration activeMinTime = const Duration();
+  final Duration passiveMinTime = const Duration(minutes: 15);
 
   /// 50 meters of distance
   final int activeMinDistance = 50;
+  final Duration activeMinTime = const Duration();
 
   late Location location;
   late PermissionStatus locationPermissions;
   late LocationData currentLocation;
-  late ShareLocationMode shareLocationMode;
+  late bool activeShareMode;
   late DateTime lastShared;
   late bool shareLocationEnabled;
   late Function(LatLng) changeLocationStateCallback;
@@ -41,8 +40,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// Throw a [RejectedLocationException] if the user
   /// rejects location permissions. Throws a [NoLocationServiceException]
   /// if the call to ```Location.requestService()``` results in an error
-  static Future<ShareLocationServiceImpl> create(ShareLocationMode mode,
-      bool shareLocation, Function(LatLng) onLocationChangedCallback) async {
+  static Future<ShareLocationServiceImpl> create(bool mode, bool shareLocation,
+      Function(LatLng) onLocationChangedCallback) async {
     Location location = Location();
 
     // First, enable device location
@@ -87,14 +86,11 @@ class ShareLocationServiceImpl extends ShareLocationService {
   ///
   /// It needs to be divided in private and public static factory to be able to
   /// make the necessary async calls in the public version
-  ShareLocationServiceImpl._create(
-      LocationData initialLocation,
-      ShareLocationMode mode,
-      bool shareLocation,
-      Function(LatLng) onLocationChangedCallback)
+  ShareLocationServiceImpl._create(LocationData initialLocation, bool mode,
+      bool shareLocation, Function(LatLng) onLocationChangedCallback)
       : super.create() {
     location = Location.instance;
-    shareLocationMode = mode;
+    activeShareMode = mode;
     lastShared = DateTime.now();
     currentLocation = initialLocation;
     shareLocationEnabled = shareLocation;
@@ -116,7 +112,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   void manageLocationChange(LocationData newLocation) {
     double movedDistance = calculateDistance(newLocation);
     // Passive mode
-    if (shareLocationMode == ShareLocationMode.passive) {
+    if (!activeShareMode) {
       DateTime now = DateTime.now();
       if (lastShared.difference(now).abs() < passiveMinTime &&
           movedDistance < passiveMinDistance) {
@@ -154,11 +150,11 @@ class ShareLocationServiceImpl extends ShareLocationService {
   }
 
   @override
-  void setShareLocationMode(ShareLocationMode shareLocationMode) {
-    if (shareLocationMode == ShareLocationMode.active) {
+  void setActiveShareMode(bool activeShareMode) {
+    if (activeShareMode) {
       sendForcedLocationUpdate();
     }
-    this.shareLocationMode = shareLocationMode;
+    this.activeShareMode = activeShareMode;
   }
 
   /// Sends the current location to back without needing the conditions

@@ -1,13 +1,13 @@
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
 
-part 'home_state.g.dart';
+part 'home_nav_state.g.dart';
 
 // ignore: library_private_types_in_public_api
-class HomeState = _HomeState with _$HomeState;
+class HomeNavState = _HomeNavState with _$HomeNavState;
 
 /// Controls whether the [HomePage] or the [ContactProfilePage] is showed
-abstract class _HomeState with Store {
+abstract class _HomeNavState with Store {
   /// If this is not null, the [ContactProfilePage] will be showed
   @observable
   Contact? selectedContact;
