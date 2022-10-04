@@ -5,8 +5,7 @@ void main() {
   late ContactLocation contactLocation;
   setUp(() {
     contactLocation = ContactLocation(
-        available: true,
-        shareLocation: true,
+        shareLocationTo: true,
         id: "1",
         name: "test_name",
         email: "test@mail.com",
@@ -19,7 +18,6 @@ void main() {
   });
 
   test("Checking attributes", () {
-    expect(contactLocation.available, true);
     expect(contactLocation.id, "1");
     expect(contactLocation.name, "test_name");
     expect(contactLocation.email, "test@mail.com");
@@ -33,7 +31,6 @@ void main() {
 
   test("Checking copy method", () {
     ContactLocation contactLocationCopy = contactLocation.copyWith();
-    expect(contactLocationCopy.available, true);
     expect(contactLocationCopy.id, "1");
     expect(contactLocationCopy.name, "test_name");
     expect(contactLocationCopy.email, "test@mail.com");
@@ -45,7 +42,6 @@ void main() {
     expect(contactLocation.longitude, -56.23);
 
     contactLocationCopy = contactLocation.copyWith(
-        available: false,
         id: "2",
         name: "test2_name",
         email: "test2@mail.com",
@@ -56,7 +52,6 @@ void main() {
         latitude: -34.24,
         longitude: 23.23);
 
-    expect(contactLocationCopy.available, false);
     expect(contactLocationCopy.id, "2");
     expect(contactLocationCopy.name, "test2_name");
     expect(contactLocationCopy.email, "test2@mail.com");
@@ -71,7 +66,6 @@ void main() {
   test("Checking toMap conversion", () {
     List<String> attributes = [
       "id",
-      "available",
       "name",
       "email",
       "image_url",
@@ -87,7 +81,6 @@ void main() {
       expect(contactLocationMap.containsKey(key), true);
     }
     expect(contactLocationMap["id"] == contactLocation.id, true);
-    expect(contactLocationMap["available"] == contactLocation.available, true);
     expect(contactLocationMap["name"] == contactLocation.name, true);
     expect(contactLocationMap["email"] == contactLocation.email, true);
     expect(contactLocationMap["image_url"] == contactLocation.imageUrl, true);

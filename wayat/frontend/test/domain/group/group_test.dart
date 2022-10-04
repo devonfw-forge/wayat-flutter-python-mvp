@@ -6,8 +6,7 @@ import 'package:wayat/domain/group/group.dart';
 
 void main() {
   Contact testContact = Contact(
-      shareLocation: true,
-      available: true,
+      shareLocationTo: true,
       id: "id",
       name: "name",
       email: "mail@mail.com",
@@ -51,7 +50,7 @@ void main() {
 
   test("Check String conversion", () {
     expect(group.toString(),
-        "Group(id: id, members: [Contact(id: id, available: true, name: name, email: mail@mail.com, imageUrl: https://example.com/contact, phone: +34123456789, shareLocation: true)], name: name, imageUrl: https://example.com/group)");
+        "Group(id: id, members: [Contact(id: id, name: name, email: mail@mail.com, imageUrl: https://example.com/contact, phone: +34123456789, shareLocation: true)], name: name, imageUrl: https://example.com/group)");
   });
 
   test("Checking toMap conversion", () {
