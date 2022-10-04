@@ -4,8 +4,18 @@ import 'dart:convert';
 import 'package:wayat/services/location_listener/firestore_model/contact_ref_model.dart';
 import 'package:wayat/services/utils/list_utils_service.dart';
 
+/// Represents the status object present in Firestore for "realtime" location
+/// updates of the user's contacts.
 class FirestoreDataModel {
+  /// Whether the user should share their location actively (more updates) or passively.
+  ///
+  /// This depends on whether the current user is being seen by other
+  /// contacts in their respective maps.
   final bool active;
+
+  /// The list of positional data for the contacts currently sharing their location.
+  ///
+  /// For more information look at the [ContactRefModel] class.
   final List<ContactRefModel> contactRefs;
 
   FirestoreDataModel({

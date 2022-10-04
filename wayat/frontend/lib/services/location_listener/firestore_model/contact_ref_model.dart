@@ -3,10 +3,26 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Represents the additional data provided in firestore to locate a contact
+/// from the user.
+///
+/// It is used to map the data provided from Firestore and then create a
+/// [ContactLocation] by joining the data present in this model with
+/// the [Contact] list of the user
 class ContactRefModel {
+  /// The user id. Uses this name instead of just `id` to be more exact with the
+  /// representation in Firestore.
   final String uid;
+
+  /// Current coordinates of the contact in the Firestore format.
   final GeoPoint location;
+
+  /// Current address of the contact.
+  ///
+  /// Can be the address, `null` or the error code `ERROR_ADDRESS`.
   final String? address;
+
+  /// When this location information was last updated.
   final Timestamp lastUpdated;
 
   ContactRefModel({
