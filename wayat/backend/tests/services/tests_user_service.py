@@ -174,6 +174,50 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         assert ex == True
 
+    async def test_add_contacts_should_add_new_ones_and_accept_pending(self):
+        def mocking_get_user(uid: str):
+            if uid == "test":
+                return test_entity
+            if uid == "test-friend-1":
+                return test_entity_1
+            if uid == "test-friend-2":
+                return test_entity_2
+            else:
+                raise ResourceNotFoundException
+
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity = UserEntity(
+            document_id=test_data.uid,
+            name=test_data.name,
+            email=test_data.email,
+            phone=test_data.phone,
+            image_url=test_data.picture,
+            pending_requests=["test-friend-1"]
+        )
+
+        test_friend_1 = FirebaseAuthenticatedUser(uid="test-friend-1", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity_1 = UserEntity(
+            document_id=test_friend_1.uid,
+            name=test_friend_1.name,
+            email=test_friend_1.email,
+            phone=test_friend_1.phone,
+            image_url=test_friend_1.picture
+        )
+
+        test_friend_2 = FirebaseAuthenticatedUser(uid="test-friend-2", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity_2 = UserEntity(
+            document_id=test_friend_2.uid,
+            name=test_friend_2.name,
+            email=test_friend_2.email,
+            phone=test_friend_2.phone,
+            image_url=test_friend_2.picture
+        )
+        self.user_service.respond_friend_request = MagicMock(self.user_service.respond_friend_request)
+        self.mock_user_repo.get_or_throw.side_effect = mocking_get_user
+        await self.user_service.add_contacts(uid=test_data.uid, users=["test-friend-1", "test-friend-2"])
+        self.mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity_2.document_id])
+        self.user_service.respond_friend_request.assert_called_with(test_data.uid, test_friend_1.uid, True)
+
     async def test_get_pending_friend_requests_should_return_ok(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
         test_pending_data = FirebaseAuthenticatedUser(uid="test-pending", email="test@email.es", roles=[],

@@ -105,11 +105,23 @@ class UserService:
         found_contacts: set[str] = {e.id for e in contacts}
 
         self_user = await self._user_repository.get_or_throw(uid)
+        pending_requests = self_user.pending_requests
         existing_contacts: set[str] = set(self_user.contacts)
 
         new_contacts = found_contacts.difference(existing_contacts)
+
+        # If found new contacts
         if new_contacts:
-            await self._user_repository.create_friend_request(uid, list(new_contacts))
+            # Check new contacts in pending requests
+            new_contacts_pending = new_contacts.intersection(set(pending_requests))
+            if new_contacts_pending:
+                # If exists remove from new contacts list the ones pending
+                new_contacts = new_contacts.difference(new_contacts_pending)
+                # Accept all pending requests in the new contact list
+                await asyncio.gather(*[self.respond_friend_request(uid, c, True) for c in new_contacts_pending])
+            # If still there are new contacts send requests
+            if new_contacts:
+                await self._user_repository.create_friend_request(uid, list(new_contacts))
 
     async def get_user_contacts(self, uid: str) -> Tuple[List[UserDTO], List[str]]:
         user_contacts, contacts_sharing = await self._user_repository.get_contacts(uid)
