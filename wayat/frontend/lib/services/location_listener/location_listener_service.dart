@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -18,7 +19,9 @@ class LocationListenerService {
   final FirebaseFirestore db;
 
   LocationListenerService({FirebaseFirestore? db})
-      : db = db ?? FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT'));
+      : db = db ??
+            FirebaseFirestore.instanceFor(
+                app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
 
   late bool _lastActive;
   late List _lastContactRefs;

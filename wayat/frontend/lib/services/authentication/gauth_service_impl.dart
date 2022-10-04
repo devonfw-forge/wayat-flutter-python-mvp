@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +28,7 @@ class GoogleAuthService implements AuthService {
 
   /// Instance of the authentication service for Firebase
   final FirebaseAuth _auth =
-      FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
+      FirebaseAuth.instanceFor(app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
 
   GoogleAuthService({GoogleSignIn? gS}) {
     if (gS != null) {
@@ -36,7 +36,7 @@ class GoogleAuthService implements AuthService {
     } else {
       if (PlatformService().isWeb) {
         _googleSignIn = GoogleSignIn(
-          clientId: dotenv.get('WEB_CLIENT_ID'),
+          clientId: EnvModel.WEB_CLIENT_ID,
           scopes: ['email'],
         );
       } else {
@@ -102,7 +102,9 @@ class GoogleAuthService implements AuthService {
   /// Resets all the state after closing the firestore instance
   @override
   Future<void> signOut() async {
-    await FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT')).terminate();
+    await FirebaseFirestore.instanceFor(
+            app: Firebase.app(EnvModel.FIREBASE_APP_NAME))
+        .terminate();
     await _auth.signOut();
     await _googleSignIn.signOut();
 
