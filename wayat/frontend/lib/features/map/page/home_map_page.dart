@@ -26,7 +26,9 @@ import 'package:wayat/services/share_location/background_location_exception.dart
 import 'package:wayat/services/share_location/no_location_service_exception.dart';
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
 
+/// Main page of wayat. Is the one displayed when the [BottomNavigationBar] is in wayat.
 class HomeMapPage extends StatelessWidget {
+  /// Used to show the [Group] list below the search bar.
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationListener statusState = GetIt.I.get<LocationListener>();
   final MapController controller;
@@ -46,13 +48,25 @@ class HomeMapPage extends StatelessWidget {
         future: initializeLocationState(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return Stack(
-              children: [_mapLayer(), _draggableSheetLayer()],
-            );
+            return GestureDetector(
+                onTap: () {
+                  removeFocusFromSearchBar(context);
+                },
+                child: Stack(
+                  children: [_mapLayer(), _draggableSheetLayer()],
+                ));
           } else {
             return const LoadingWidget();
           }
         });
+  }
+
+  void removeFocusFromSearchBar(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 
   /// Initialize location state and check first if the location service
@@ -129,7 +143,7 @@ class HomeMapPage extends StatelessWidget {
           const SizedBox(height: 5),
           groupsSlider(),
           const SizedBox(height: 5),
-          Expanded(child: googleMap(markers)),
+          Expanded(child: googleMap(markers, context)),
         ],
       );
     });
@@ -216,12 +230,15 @@ class HomeMapPage extends StatelessWidget {
   }
 
   /// Google map with current user location coordinates
-  GoogleMap googleMap(Set<Marker> markers) {
+  GoogleMap googleMap(Set<Marker> markers, BuildContext context) {
     LatLng currentLocation = LatLng(
         statusState.shareLocationState.currentLocation.latitude,
         statusState.shareLocationState.currentLocation.longitude);
 
     return GoogleMap(
+      onTap: (_) {
+        removeFocusFromSearchBar(context);
+      },
       initialCameraPosition:
           CameraPosition(target: currentLocation, zoom: 14.5),
       myLocationEnabled: true,
