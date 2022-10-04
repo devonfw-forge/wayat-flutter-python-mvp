@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/user_status/user_status_state.dart';
 import 'package:wayat/common/widgets/buttons/circle_icon_button.dart';
 import 'package:wayat/domain/contact/contact.dart';
@@ -24,7 +24,7 @@ import 'package:wayat/common/widgets/switch.dart';
 import 'contact_profile_test.mocks.dart';
 
 @GenerateMocks(
-    [UserStatusState, ContactProfileController, HomeState, HttpProvider])
+    [UserStatusState, ContactProfileController, HomeNavState, HttpProvider])
 void main() async {
   // Constants for the test contacts creation
   const String contactName = "Contact Name";
@@ -32,7 +32,7 @@ void main() async {
   DateTime lastUpdated = DateTime(2000, 12, 21);
 
   late UserStatusState mockUserStatusState;
-  late HomeState mockHomeState;
+  late HomeNavState mockHomeState;
   late ContactProfileController mockContactProfileController;
   late HttpProvider mockHttpProvider;
 
@@ -68,11 +68,11 @@ void main() async {
   setUpAll(() {
     dotenv.load();
     mockUserStatusState = MockUserStatusState();
-    mockHomeState = MockHomeState();
+    mockHomeState = MockHomeNavState();
     mockHttpProvider = MockHttpProvider();
 
     GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
 
