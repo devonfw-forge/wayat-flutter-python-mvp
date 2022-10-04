@@ -1,1 +1,0 @@
-enum ShareLocationMode { active, passive }

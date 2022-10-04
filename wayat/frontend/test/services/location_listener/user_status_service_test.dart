@@ -4,14 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/location_state/share_mode.dart';
 import 'package:wayat/app_state/user_session/session_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/contact/contact_service.dart';
-import 'package:wayat/services/status/user_status_service_impl.dart';
+import 'package:wayat/services/location_listener/firestore_model/contact_ref_model.dart';
+import 'package:wayat/services/location_listener/firestore_model/firestore_data_model.dart';
+import 'package:wayat/services/location_listener/location_listener_service.dart';
 import 'package:wayat/services/utils/list_utils_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -30,13 +31,14 @@ void main() async {
   });
 
   test("getLocationModeFromStatus is correct", () {
-    Map<String, dynamic> data = {"active": true};
-    UserStatusService statusService = UserStatusService(db: mockFirestore);
-    expect(statusService.getLocationModeFromStatus(data),
-        ShareLocationMode.active);
-    data["active"] = false;
-    expect(statusService.getLocationModeFromStatus(data),
-        ShareLocationMode.passive);
+    FirestoreDataModel data = FirestoreDataModel(active: true, contactRefs: []);
+    LocationListenerService statusService =
+        LocationListenerService(db: mockFirestore);
+    expect(statusService.getLocationModeFromStatus(data), true);
+
+    FirestoreDataModel data2 =
+        FirestoreDataModel(active: false, contactRefs: []);
+    expect(statusService.getLocationModeFromStatus(data2), false);
   });
 
   test("getContactRefsFromStatus returns correct contacts", () async {
@@ -46,20 +48,20 @@ void main() async {
     List<ContactLocation> locatedContacts = _generateContacts(ids);
     List<Contact> contacts =
         locatedContacts.map((e) => Contact.fromMap(e.toMap())).toList();
-    Map<String, dynamic> data = {
-      "contact_refs": locatedContacts
-          .map((contact) => {
-                "uid": contact.id,
-                "location": GeoPoint(contact.latitude, contact.longitude),
-                "address": contact.address,
-                "last_updated": Timestamp.fromDate(contact.lastUpdated)
-              })
-          .toList()
-    };
+    FirestoreDataModel data = FirestoreDataModel(
+        active: true,
+        contactRefs: locatedContacts
+            .map((contact) => ContactRefModel(
+                uid: contact.id,
+                location: GeoPoint(contact.latitude, contact.longitude),
+                address: contact.address,
+                lastUpdated: Timestamp.fromDate(contact.lastUpdated)))
+            .toList());
 
     when(mockContactService.getAll()).thenAnswer((_) async => contacts);
 
-    UserStatusService statusService = UserStatusService(db: mockFirestore);
+    LocationListenerService statusService =
+        LocationListenerService(db: mockFirestore);
 
     List<ContactLocation> res = await statusService
         .getContactRefsFromStatus(data, contactService: mockContactService);
@@ -75,20 +77,20 @@ void main() async {
     List<ContactLocation> locatedContacts = _generateContacts(ids);
     List<Contact> contacts =
         locatedContacts.map((e) => Contact.fromMap(e.toMap())).toList();
-    Map<String, dynamic> data = {
-      "contact_refs": locatedContacts
-          .map((contact) => {
-                "uid": contact.id,
-                "location": GeoPoint(contact.latitude, contact.longitude),
-                "address": contact.address,
-                "last_updated": Timestamp.fromDate(contact.lastUpdated)
-              })
-          .toList()
-    };
+    FirestoreDataModel data = FirestoreDataModel(
+        active: true,
+        contactRefs: locatedContacts
+            .map((contact) => ContactRefModel(
+                uid: contact.id,
+                location: GeoPoint(contact.latitude, contact.longitude),
+                address: contact.address,
+                lastUpdated: Timestamp.fromDate(contact.lastUpdated)))
+            .toList());
 
     when(mockContactService.getAll()).thenAnswer((_) async => contacts);
 
-    UserStatusService statusService = UserStatusService(db: mockFirestore);
+    LocationListenerService statusService =
+        LocationListenerService(db: mockFirestore);
 
     List<ContactLocation> res = await statusService
         .getContactRefsFromStatus(data, contactService: mockContactService);
@@ -108,20 +110,20 @@ void main() async {
     locatedContacts.first.address = "ERROR_ADDRESS";
     List<Contact> contacts =
         locatedContacts.map((e) => Contact.fromMap(e.toMap())).toList();
-    Map<String, dynamic> data = {
-      "contact_refs": locatedContacts
-          .map((contact) => {
-                "uid": contact.id,
-                "location": GeoPoint(contact.latitude, contact.longitude),
-                "address": (contact.id == "id1") ? contact.address : null,
-                "last_updated": Timestamp.fromDate(contact.lastUpdated)
-              })
-          .toList()
-    };
+    FirestoreDataModel data = FirestoreDataModel(
+        active: true,
+        contactRefs: locatedContacts
+            .map((contact) => ContactRefModel(
+                uid: contact.id,
+                location: GeoPoint(contact.latitude, contact.longitude),
+                address: (contact.id == "id1") ? contact.address : null,
+                lastUpdated: Timestamp.fromDate(contact.lastUpdated)))
+            .toList());
 
     when(mockContactService.getAll()).thenAnswer((_) async => contacts);
 
-    UserStatusService statusService = UserStatusService(db: mockFirestore);
+    LocationListenerService statusService =
+        LocationListenerService(db: mockFirestore);
 
     List<ContactLocation> res = await statusService
         .getContactRefsFromStatus(data, contactService: mockContactService);

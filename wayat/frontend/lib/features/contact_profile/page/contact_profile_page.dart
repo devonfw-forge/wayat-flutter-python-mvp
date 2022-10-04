@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
@@ -44,7 +44,8 @@ class ContactProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     controller.setShareLocationToContact(contact.shareLocationTo, contact);
     ContactLocation? contactLocated = GetIt.I
-        .get<UserStatusState>()
+        .get<LocationListener>()
+        .receiveLocationState
         .contacts
         .where((element) => element.id == contact.id)
         .firstOrNull;
