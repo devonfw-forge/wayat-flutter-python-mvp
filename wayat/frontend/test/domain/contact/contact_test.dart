@@ -7,8 +7,7 @@ void main() {
   late Contact contact;
   setUp(() {
     contact = Contact(
-        shareLocation: true,
-        available: true,
+        shareLocationTo: true,
         id: "1",
         name: "test_name",
         email: "test@mail.com",
@@ -17,7 +16,6 @@ void main() {
   });
 
   test("Checking attributes", () {
-    expect(contact.available, true);
     expect(contact.id, "1");
     expect(contact.name, "test_name");
     expect(contact.email, "test@mail.com");
@@ -27,7 +25,6 @@ void main() {
 
   test("Checking copy method", () {
     Contact contactCopy = contact.copyWith();
-    expect(contactCopy.available, true);
     expect(contactCopy.id, "1");
     expect(contactCopy.name, "test_name");
     expect(contactCopy.email, "test@mail.com");
@@ -35,14 +32,12 @@ void main() {
     expect(contactCopy.phone, "600600600");
 
     contactCopy = contact.copyWith(
-        available: false,
         id: "2",
         name: "test2_name",
         email: "test2@mail.com",
         imageUrl: "url://image2",
         phone: "123456789");
 
-    expect(contactCopy.available, false);
     expect(contactCopy.id, "2");
     expect(contactCopy.name, "test2_name");
     expect(contactCopy.email, "test2@mail.com");
@@ -52,13 +47,12 @@ void main() {
 
   test("Checking string conversion", () {
     expect(contact.toString(),
-        "Contact(id: 1, available: true, name: test_name, email: test@mail.com, imageUrl: url://image, phone: 600600600, shareLocation: true)");
+        "Contact(id: 1, name: test_name, email: test@mail.com, imageUrl: url://image, phone: 600600600, shareLocation: true)");
   });
 
   test("Checking toMap conversion", () {
     List<String> attributes = [
       "id",
-      "available",
       "name",
       "email",
       "image_url",
@@ -70,7 +64,6 @@ void main() {
       expect(contactMap.containsKey(key), true);
     }
     expect(contactMap["id"] == contact.id, true);
-    expect(contactMap["available"] == contact.available, true);
     expect(contactMap["name"] == contact.name, true);
     expect(contactMap["email"] == contact.email, true);
     expect(contactMap["image_url"] == contact.imageUrl, true);

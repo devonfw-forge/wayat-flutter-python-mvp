@@ -140,8 +140,7 @@ void main() async {
 
   Contact contactFactory() {
     return Contact(
-      available: true,
-      shareLocation: true,
+      shareLocationTo: true,
       id: "2",
       name: "test",
       email: "Contact email",
