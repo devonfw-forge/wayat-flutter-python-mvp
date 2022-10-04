@@ -16,8 +16,14 @@ class MapController = _MapController with _$MapController;
 abstract class _MapController with Store {
   ImageService imageService;
 
-  _MapController({ImageService? imageService})
-      : imageService = imageService ?? ImageService();
+  final PlatformService platformService;
+
+  _MapController({
+    ImageService? imageService,
+    PlatformService? platformService
+    }) : 
+    imageService = imageService ?? ImageService(),
+    platformService = platformService ?? PlatformService();
 
   @observable
   bool sharingLocation = true;
@@ -138,7 +144,7 @@ abstract class _MapController with Store {
 
   /// Update map camera
   void onSuggestionsTap(contact) {
-    if (!PlatformService().isWeb) {
+    if (!platformService.isWeb) {
       gMapController.moveCamera(
         CameraUpdate.newLatLng(LatLng(contact.latitude, contact.longitude)));
     }

@@ -33,10 +33,16 @@ class HomeMapPage extends StatelessWidget {
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationListener statusState = GetIt.I.get<LocationListener>();
   final MapController controller;
+  final PlatformService platformService;
 
-  HomeMapPage({MapController? controller, Key? key})
-      : controller = controller ?? MapController(),
-        super(key: key);
+  HomeMapPage({
+    MapController? controller, 
+    PlatformService? platformService, 
+    Key? key
+  }) : 
+    controller = controller ?? MapController(),
+    platformService = platformService ?? PlatformService(),
+    super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +62,7 @@ class HomeMapPage extends StatelessWidget {
                 child: Stack(
                   children: [
                     _mapLayer(), 
-                    if (!PlatformService().isWeb) _draggableSheetLayer()
+                    if (!platformService.isWeb) _draggableSheetLayer()
                   ],
                 ));
           } else {

@@ -15,7 +15,11 @@ class ContactsPage extends StatelessWidget {
   final ContactsPageController controller =
       GetIt.I.get<ContactsPageController>();
 
-  ContactsPage({Key? key}) : super(key: key);
+  final PlatformService platformService;
+
+  ContactsPage({PlatformService? platformService, Key? key}) : 
+    platformService = platformService ?? PlatformService(), 
+    super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class ContactsPage extends StatelessWidget {
       routes: [
         FriendsRoute(), 
         RequestsRoute(), 
-        if (!PlatformService().isWeb) SuggestionsRoute()
+        if (!platformService.isWeb) SuggestionsRoute()
       ],
       builder: ((context, child, tabController) {
         controller.updateTabData(tabController.index);
@@ -67,7 +71,7 @@ class ContactsPage extends StatelessWidget {
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
-                if (!PlatformService().isWeb) Tab(text: appLocalizations.suggestionsTab)
+                if (!platformService.isWeb) Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],
       ),

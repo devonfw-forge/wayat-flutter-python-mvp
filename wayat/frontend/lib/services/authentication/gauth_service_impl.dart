@@ -30,11 +30,12 @@ class GoogleAuthService implements AuthService {
   final FirebaseAuth _auth =
       FirebaseAuth.instanceFor(app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
 
-  GoogleAuthService({GoogleSignIn? gS}) {
+  GoogleAuthService({GoogleSignIn? gS, PlatformService? platformService}) {
     if (gS != null) {
       _googleSignIn = gS;
     } else {
-      if (PlatformService().isWeb) {
+      platformService ??= PlatformService();
+      if (platformService.isWeb) {
         _googleSignIn = GoogleSignIn(
           clientId: EnvModel.WEB_CLIENT_ID,
           scopes: ['email'],

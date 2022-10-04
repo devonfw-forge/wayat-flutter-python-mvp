@@ -1,7 +1,5 @@
 import 'dart:developer';
-import 'dart:isolate';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -79,16 +77,18 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// rejects location permissions. Throws a [NoLocationServiceException]
   /// if the call to ```Location.requestService()``` results in an error
   static Future<ShareLocationServiceImpl> create(bool mode, bool shareLocation,
-      Function(LatLng) onLocationChangedCallback) async {
+      Function(LatLng) onLocationChangedCallback,
+      [PlatformService? platformService]) async {
 
-    if (!PlatformService().isWeb) {
+    platformService ??= PlatformService();
+    if (!platformService.isWeb) {
       await _checkLocationPermissions();
     }
 
     LocationData initialLocation = await Location().getLocation();
 
     return ShareLocationServiceImpl._create(
-        initialLocation, mode, shareLocation, onLocationChangedCallback);
+        initialLocation, mode, shareLocation, onLocationChangedCallback, platformService);
   }
 
   /// Private factory for the location service
@@ -96,7 +96,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// It needs to be divided in private and public static factory to be able to
   /// make the necessary async calls in the public version
   ShareLocationServiceImpl._create(LocationData initialLocation, bool mode,
-      bool shareLocation, Function(LatLng) onLocationChangedCallback)
+      bool shareLocation, Function(LatLng) onLocationChangedCallback,
+      [PlatformService? platformService])
       : super.create() {
     location = Location.instance;
     activeShareMode = mode;
@@ -107,7 +108,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     sendLocationToBack(initialLocation);
 
-    if(!PlatformService().isWeb) {
+    platformService ??= PlatformService();
+    if(!platformService.isWeb) {
       location.enableBackgroundMode(enable: true);
     }
 

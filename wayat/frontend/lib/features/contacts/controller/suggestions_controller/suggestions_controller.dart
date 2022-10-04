@@ -103,11 +103,12 @@ abstract class _SuggestionsController with Store {
   ///
   /// Returns an empty text for platforms not included in Android or IOS
   @visibleForTesting
-  String platformText() {
-    if (PlatformService().targetPlatform == TargetPlatform.android) {
+  String platformText([PlatformService? platformService]) {
+    platformService ??= PlatformService();
+    if (platformService.targetPlatform == TargetPlatform.android) {
       return appLocalizations.invitationTextAndroid;
     }
-    if (PlatformService().targetPlatform == TargetPlatform.iOS) {
+    if (platformService.targetPlatform == TargetPlatform.iOS) {
       return appLocalizations.invitationTextIOS;
     }
     return '';

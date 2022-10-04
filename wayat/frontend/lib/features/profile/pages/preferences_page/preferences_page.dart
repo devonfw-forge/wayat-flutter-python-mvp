@@ -41,71 +41,74 @@ class _PreferencesPageState extends State<PreferencesPage> {
         ));
   }
 
-  Row _profileAppBar() => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                InkWell(
-                    onTap: () {
-                      // Route to Profile main page
-                      widget.controller.onPressedBackButton();
-                    },
-                    child: const Icon(Icons.arrow_back,
-                        color: Colors.black87, size: 24)),
-                Padding(
-                  padding: const EdgeInsets.only(left: 14),
-                  child: Text(
-                    appLocalizations.profile,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                        fontSize: 19),
-                  ),
+  Row _profileAppBar([PlatformService? platformService]) {
+    platformService ??= PlatformService();
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              InkWell(
+                  onTap: () {
+                    // Route to Profile main page
+                    widget.controller.onPressedBackButton();
+                  },
+                  child: const Icon(Icons.arrow_back,
+                      color: Colors.black87, size: 24)),
+              Padding(
+                padding: const EdgeInsets.only(left: 14),
+                child: Text(
+                  appLocalizations.profile,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                      fontSize: 19),
                 ),
-              ],
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 14),
+          child: TextButton(
+            onPressed: () async {
+              if (changedLanguage != profileState.language) {
+                await profileState.changeLanguage(changedLanguage!);
+                //Check platform:
+                //On Android restart App
+                if (platformService!.targetPlatform == TargetPlatform.android) {
+                  Restart.restartApp();
+                } else
+                //On iOS Apple ecosysstem don't allow restarting app programmatically
+                //For now solution is to show to the user InfoDialog with recomendation
+                //manually restarting iOS App
+                if (platformService.targetPlatform == TargetPlatform.iOS) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const RestartIosDialog();
+                      });
+                }
+              } else {
+                widget.controller.onPressedBackButton();
+              }
+            },
+            child: Text(
+              appLocalizations.save,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: ColorTheme.primaryColor,
+                  fontSize: 16),
+              textAlign: TextAlign.right,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 14),
-            child: TextButton(
-              onPressed: () async {
-                if (changedLanguage != profileState.language) {
-                  await profileState.changeLanguage(changedLanguage!);
-                  //Check platform:
-                  //On Android restart App
-                  if (PlatformService().targetPlatform == TargetPlatform.android) {
-                    Restart.restartApp();
-                  } else
-                  //On iOS Apple ecosysstem don't allow restarting app programmatically
-                  //For now solution is to show to the user InfoDialog with recomendation
-                  //manually restarting iOS App
-                  if (PlatformService().targetPlatform == TargetPlatform.iOS) {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const RestartIosDialog();
-                        });
-                  }
-                } else {
-                  widget.controller.onPressedBackButton();
-                }
-              },
-              child: Text(
-                appLocalizations.save,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: ColorTheme.primaryColor,
-                    fontSize: 16),
-                textAlign: TextAlign.right,
-              ),
-            ),
-          )
-        ],
-      );
+        )
+      ],
+    );
+  }
 
   Padding _buildLanguageButton() {
     final List<Language> itemList = Language.languageList();
