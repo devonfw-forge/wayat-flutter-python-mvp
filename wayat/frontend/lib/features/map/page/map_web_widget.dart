@@ -7,8 +7,8 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as FlutterGMap;
 // ignore: depend_on_referenced_packages, library_prefixes
 import 'package:google_maps/google_maps.dart' as WebGMap;
-import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'dart:ui' as ui;
 import 'package:wayat/features/map/controller/map_controller.dart';
@@ -29,7 +29,7 @@ class MapWidget extends StatelessWidget {
       String htmlId = "gmap${markers.hashCode}";
       // ignore: undefined_prefixed_name
       ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-        LocationState locationState = GetIt.I.get<LocationState>();
+        ShareLocationState locationState = GetIt.I.get<LocationListener>().shareLocationState;
         WebGMap.LatLng currentLocation = WebGMap.LatLng(locationState.currentLocation.latitude,
             locationState.currentLocation.longitude);
         if (currentLocation.lat != 0 && currentLocation.lng != 0) {}
@@ -48,7 +48,7 @@ class MapWidget extends StatelessWidget {
           ..style.height = "100%"
           ..style.border = 'none';
         WebGMap.GMap map = WebGMap.GMap(elem, mapOptions);
-        for (ContactLocation contact in GetIt.I.get<UserStatusState>().contacts) {
+        for (ContactLocation contact in GetIt.I.get<LocationListener>().receiveLocationState.contacts) {
           WebGMap.Icon icon = WebGMap.Icon()
             ..url=contact.imageUrl.toString()
             ..scaledSize=WebGMap.Size(40,40);
