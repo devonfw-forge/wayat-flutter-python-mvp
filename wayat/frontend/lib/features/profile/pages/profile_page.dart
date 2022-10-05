@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
   final ProfileState profileState = GetIt.I.get<ProfileState>();
   final ShareLocationState shareLocationState =
       GetIt.I.get<LocationListener>().shareLocationState;
-  final SessionState userSession = GetIt.I.get<SessionState>();
+  final UserState userState = GetIt.I.get<UserState>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,8 @@ class ProfilePage extends StatelessWidget {
         _buildProfileImage(),
         const SizedBox(height: 16),
         Observer(builder: (_) {
-          if (userSession.currentUser == null) return const Text("");
-          String name = userSession.currentUser!.name;
+          if (userState.currentUser == null) return const Text("");
+          String name = userState.currentUser!.name;
           return Text(
             name,
             textAlign: TextAlign.center,
@@ -62,8 +62,8 @@ class ProfilePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Observer(builder: (context) {
-          if (userSession.currentUser == null) return Container();
-          MyUser myUser = userSession.currentUser!;
+          if (userState.currentUser == null) return Container();
+          MyUser myUser = userState.currentUser!;
           return Container(
             key: const Key("profile_image"),
             width: 120.0,
@@ -141,7 +141,7 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.logOut,
             onTap: () {
-              userSession.logOut();
+              userState.logOut();
             }),
         const SizedBox(height: 24),
         CustomCard(

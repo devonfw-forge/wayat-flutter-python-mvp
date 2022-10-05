@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -30,12 +30,11 @@ class LocationListenerService {
   Future setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(bool) onLocationModeUpdate}) async {
-    if (GetIt.I.get<SessionState>().currentUser == null) {
+    if (GetIt.I.get<UserState>().currentUser == null) {
       return;
     }
-    final docRef = db
-        .collection("status")
-        .doc(GetIt.I.get<SessionState>().currentUser!.id);
+    final docRef =
+        db.collection("status").doc(GetIt.I.get<UserState>().currentUser!.id);
 
     FirestoreDataModel firestoreData =
         FirestoreDataModel.fromMap((await docRef.get()).data()!);

@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/share_location/share_location_service.dart';
@@ -20,16 +20,16 @@ import 'location_listener_test.mocks.dart';
   ReceiveLocationState,
   ShareLocationService,
   FirebaseFirestore,
-  SessionState
+  UserState
 ])
 void main() async {
   ShareLocationState mockLocationState = MockShareLocationState();
-  SessionState mockSessionState = MockSessionState();
+  UserState mockUserState = MockUserState();
   setUpAll(() {
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
 
-    when(mockSessionState.currentUser).thenReturn(_userFactory());
+    when(mockUserState.currentUser).thenReturn(_userFactory());
   });
   test("Initial state is correct", () {
     LocationListener locationListener = LocationListener(
@@ -50,24 +50,6 @@ void main() async {
 
     expect(locationListener.receiveLocationState.contacts, newContactList);
   });
-
-/*   test("Set Location mode is correct", () {
-    LocationListener mockLocationListenerService = MockLocationListenerService();
-    ShareLocationService mockShareLocationService = MockShareLocationService();
-    StatusState locationListener = StatusState(
-        locationListenerService: mockLocationListenerService,
-        shareLocationState: mockLocationState);
-    mockLocationState.shareLocationService = MockShareLocationService();
-    when(mockLocationState.shareLocationService)
-        .thenReturn(mockShareLocationService);
-    when(mockShareLocationService.setActiveShareMode(false)).thenReturn(null);
-
-    expect(locationListener.shareLocationState.activeShareMode, true);
-
-    locationListener.shareLocationState.setActiveShareMode(false);
-
-    expect(locationListener.shareLocationState.activeShareMode, false);
-  }); */
 
   test("Initialize listener sets up the service listener", () {
     LocationListenerService mockLocationListenerService =

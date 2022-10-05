@@ -5,7 +5,7 @@ import 'package:location/location.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/share_location/share_location_service.dart';
@@ -16,21 +16,21 @@ import 'share_location_state_test.mocks.dart';
 @GenerateMocks([
   ShareLocationService,
   LocationListener,
-  SessionState,
+  UserState,
   ShareLocationServiceFactory,
   ShareLocationState
 ])
 void main() async {
   ShareLocationService mockShareLocationService = MockShareLocationService();
   LocationListener mockLocationListener = MockLocationListener();
-  SessionState mockSessionState = MockSessionState();
+  UserState mockUserState = MockUserState();
   ShareLocationState mockShareLocationState = MockShareLocationState();
   MyUser testUser = _generateMyUser(true);
 
   setUpAll(() {
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    when(mockSessionState.currentUser).thenReturn(testUser);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
+    when(mockUserState.currentUser).thenReturn(testUser);
     when(mockLocationListener.shareLocationState)
         .thenReturn(mockShareLocationState);
   });

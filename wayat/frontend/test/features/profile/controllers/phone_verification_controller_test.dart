@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/phone_verification_controller.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +14,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'phone_verification_controller_test.mocks.dart';
 
-@GenerateMocks([SessionState])
+@GenerateMocks([UserState])
 void main() async {
   late PhoneVerificationController phoneVerificationController;
-  final MockSessionState mockSessionState = MockSessionState();
+  final MockUserState mockUserState = MockUserState();
   MyUser fakeUser = MyUser(
       id: "id",
       name: "test",
@@ -27,10 +27,10 @@ void main() async {
       onboardingCompleted: true,
       shareLocationEnabled: true);
 
-  GetIt.I.registerSingleton<SessionState>(mockSessionState);
+  GetIt.I.registerSingleton<UserState>(mockUserState);
   GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   setUp(() {
-    when(mockSessionState.currentUser).thenReturn(fakeUser);
+    when(mockUserState.currentUser).thenReturn(fakeUser);
     phoneVerificationController = PhoneVerificationController();
   });
 
@@ -82,7 +82,7 @@ void main() async {
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                 ],
                 decoration: InputDecoration(
-                    labelText: mockSessionState.currentUser?.phone.substring(3),
+                    labelText: mockUserState.currentUser?.phone.substring(3),
                     errorText:
                         phoneVerificationController.errorPhoneFormat.isNotEmpty
                             ? phoneVerificationController.errorPhoneFormat

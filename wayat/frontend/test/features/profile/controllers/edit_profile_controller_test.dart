@@ -6,7 +6,7 @@ import 'package:intl_phone_field/phone_number.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/features/profile/controllers/phone_verification_controller.dart';
@@ -17,10 +17,10 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'edit_profile_controller_test.mocks.dart';
 
-@GenerateMocks([ProfileState, SessionState, HttpProvider])
+@GenerateMocks([ProfileState, UserState, HttpProvider])
 void main() async {
   final MockProfileState mockProfileState = MockProfileState();
-  final MockSessionState mockSessionState = MockSessionState();
+  final MockUserState mockUserState = MockUserState();
   final MockHttpProvider mockHttpProvider = MockHttpProvider();
   MyUser fakeUser = MyUser(
       id: "id",
@@ -34,11 +34,11 @@ void main() async {
   setUpAll(() async {
     // await dotenv.load(fileName: ".env");
 
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
-    when(mockSessionState.currentUser).thenReturn(fakeUser);
+    when(mockUserState.currentUser).thenReturn(fakeUser);
   });
 
   Widget createApp() {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/features/profile/widgets/restart_ios_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -13,7 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'restart_ios_dialog_test.mocks.dart';
 
-@GenerateMocks([SessionState, ProfileState])
+@GenerateMocks([UserState, ProfileState])
 void main() async {
   final MockProfileState mockProfileState = MockProfileState();
 

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
 /// Wrapper to redirect the user to the correct screen when starting the app.
@@ -15,15 +15,15 @@ import 'package:wayat/navigation/app_router.gr.dart';
 /// Lastly, if the user has logged previously, but has not completed the OnBoarding,
 /// they will be redirected to the OnBoarding page.
 class RootWrapper extends StatelessWidget {
-  final SessionState userSession = GetIt.I.get<SessionState>();
+  final UserState userState = GetIt.I.get<UserState>();
 
   RootWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      bool loggedIn = userSession.finishLoggedIn;
-      bool doneOnBoarding = userSession.hasDoneOnboarding;
+      bool loggedIn = userState.finishLoggedIn;
+      bool doneOnBoarding = userState.hasDoneOnboarding;
       return AutoRouter.declarative(
           routes: (_) => [
                 if (loggedIn)

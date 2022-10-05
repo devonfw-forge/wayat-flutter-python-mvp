@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/services/lifecycle/lifecycle_service.dart';
 
 part 'lifecycle_state.g.dart';
@@ -32,7 +32,7 @@ abstract class _LifeCycleState with Store {
   /// Sets and sends the app state to open
   @action
   Future<void> notifyAppOpenned() async {
-    SessionState sessionState = GetIt.I.get<SessionState>();
+    UserState sessionState = GetIt.I.get<UserState>();
     // First checks if the user is logged in
     if (sessionState.currentUser == null) return;
 
@@ -53,7 +53,7 @@ abstract class _LifeCycleState with Store {
   Future<void> notifyAppClosed() async {
     if (timer != null && timer!.isActive) timer!.cancel();
 
-    SessionState sessionState = GetIt.I.get<SessionState>();
+    UserState sessionState = GetIt.I.get<UserState>();
     // First checks if the user is logged in
     if (sessionState.currentUser == null) return;
     isAppOpened = false;

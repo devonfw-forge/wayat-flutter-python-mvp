@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
@@ -16,7 +16,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'phone_validation_page_test.mocks.dart';
 
-@GenerateMocks([SessionState, PhoneVerificationController])
+@GenerateMocks([UserState, PhoneVerificationController])
 void main() async {
   MockPhoneVerificationController controller =
       MockPhoneVerificationController();
@@ -25,7 +25,7 @@ void main() async {
   when(controller.validPhone).thenReturn(false);
 
   setUpAll(() {
-    GetIt.I.registerSingleton<SessionState>(MockSessionState());
+    GetIt.I.registerSingleton<UserState>(MockUserState());
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   });
 

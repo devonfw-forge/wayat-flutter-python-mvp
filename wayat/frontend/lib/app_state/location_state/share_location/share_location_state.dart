@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/services/share_location/share_location_service.dart';
 import 'package:wayat/services/share_location/share_location_service_factory.dart';
 
@@ -35,7 +35,8 @@ abstract class _ShareLocationState with Store {
 
   /// Whether the user is currently sending their location to the server
   @observable
-  bool shareLocationEnabled = GetIt.I.get<SessionState>().currentUser!.shareLocationEnabled;
+  bool shareLocationEnabled =
+      GetIt.I.get<UserState>().currentUser!.shareLocationEnabled;
 
   /// Callback that will be called when the service detects that it needs
   /// to update the user's location
@@ -49,7 +50,7 @@ abstract class _ShareLocationState with Store {
       {ShareLocationServiceFactory? locationServiceFactory}) async {
     ShareLocationServiceFactory shareLocationServiceFactory =
         locationServiceFactory ?? ShareLocationServiceFactory();
-    
+
     shareLocationService = await shareLocationServiceFactory.create(
         activeShareMode: activeShareMode,
         shareLocationEnabled: shareLocationEnabled,

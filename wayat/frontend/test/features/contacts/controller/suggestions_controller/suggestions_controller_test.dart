@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -35,11 +35,11 @@ Widget createApp() {
   FriendsController,
   RequestsController,
   ContactsAddressServiceImpl,
-  SessionState
+  UserState
 ])
 void main() async {
-  MockSessionState mockSessionState = MockSessionState();
-  GetIt.I.registerSingleton<SessionState>(mockSessionState);
+  MockUserState mockUserState = MockUserState();
+  GetIt.I.registerSingleton<UserState>(mockUserState);
   GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   MockContactService mockContactService = MockContactService();
   MockFriendsController mockFriendsController = MockFriendsController();
@@ -115,7 +115,7 @@ void main() async {
       .thenReturn(mobx.ObservableList.of([]));
 
   // Mock current user
-  when(mockSessionState.currentUser).thenReturn(myUser);
+  when(mockUserState.currentUser).thenReturn(myUser);
 
   //Mock filter contacts in Addres Book that have an account
   when(mockContactService.getFilteredContacts(any))
