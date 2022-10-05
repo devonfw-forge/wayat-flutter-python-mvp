@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 part 'my_user.g.dart';
 
 /// Current data of logged user
+// ignore: library_private_types_in_public_api
 class MyUser = _MyUser with _$MyUser;
 
 abstract class _MyUser with Store {

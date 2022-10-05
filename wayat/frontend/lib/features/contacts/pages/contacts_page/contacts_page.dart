@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -17,9 +16,9 @@ class ContactsPage extends StatelessWidget {
 
   final PlatformService platformService;
 
-  ContactsPage({PlatformService? platformService, Key? key}) : 
-    platformService = platformService ?? PlatformService(), 
-    super(key: key);
+  ContactsPage({PlatformService? platformService, Key? key})
+      : platformService = platformService ?? PlatformService(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +38,8 @@ class ContactsPage extends StatelessWidget {
     return Expanded(
         child: AutoTabsRouter.tabBar(
       routes: [
-        FriendsRoute(), 
-        RequestsRoute(), 
+        FriendsRoute(),
+        RequestsRoute(),
         if (!platformService.isWeb) SuggestionsRoute()
       ],
       builder: ((context, child, tabController) {
@@ -71,7 +70,8 @@ class ContactsPage extends StatelessWidget {
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
-                if (!platformService.isWeb) Tab(text: appLocalizations.suggestionsTab)
+                if (!platformService.isWeb)
+                  Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],
       ),

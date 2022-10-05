@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:wayat/app_state/user_state/user_state.dart';
@@ -37,7 +37,6 @@ class HttpProvider {
 
   /// Sends a `GET` request to `baseUrl`/`subPath`.
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
-    debugPrint("DEBUG get for $subPath");
     final headers = await getHeaders();
     http.Response resultJson =
         await client.get(Uri.parse("$baseUrl/$subPath"), headers: headers);
@@ -50,7 +49,6 @@ class HttpProvider {
     String subPath,
     Map<String, dynamic> body,
   ) async {
-    debugPrint("DEBUG post for $subPath");
     http.Response response = await client.post(Uri.parse("$baseUrl/$subPath"),
         headers: await getHeaders(), body: jsonEncode(body));
     return response;

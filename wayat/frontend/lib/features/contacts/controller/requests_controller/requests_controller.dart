@@ -17,12 +17,6 @@ abstract class _RequestsController with Store {
   /// Service providing request information of current user.
   final RequestsService _service;
 
-  /// Key to access pending Request in request response
-  static const String pendingRequestsKey = "pending_requests";
-
-  /// Key to access sent Request in request response
-  static const String sentRequestsKey = "sent_requests";
-
   /// Friends controller to update the list of friends
   final FriendsController friendsController;
 

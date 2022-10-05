@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wayat/domain/user/my_user.dart';
 
@@ -24,17 +22,5 @@ void main() {
     expect(myUser.phone, "600600600");
     expect(myUser.onboardingCompleted, true);
     expect(myUser.shareLocationEnabled, false);
-  });
-
-  test("Checking toMap conversion", () {
-    List<String> attributes = [
-      "id",
-      "name",
-      "email",
-      "image_url",
-      "phone",
-      "onboarding_completed",
-      "share_location"
-    ];
   });
 }
