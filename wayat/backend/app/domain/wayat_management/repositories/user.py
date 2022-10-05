@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, List, Tuple
 from fastapi import Depends
 from google.cloud import firestore
@@ -36,7 +36,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         return entity
 
     async def find_by_phone(self, *, phones: list[str]):
-        return [item async for item in self.where("phone", 'in', phones)]
+        return [item async for item in self.where_in_list("phone", phones)]
 
     async def get_contacts(self, uid: str) -> Tuple[list[UserEntity], list[str]]:
         """

@@ -1,6 +1,6 @@
 import json
 from functools import lru_cache
-from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator
+from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator, List, Tuple
 
 from fastapi import Depends
 from google.cloud.firestore import (
@@ -128,22 +128,23 @@ class BaseFirestoreRepository(Generic[ModelType]):
         if not_defined_values:
             raise ValueError(f"Tried to update fields {not_defined_values} which are not present in the model")
 
-    async def where(self, field: str, operation: str, value: Any) -> AsyncGenerator[ModelType, None]:
+    async def where_in_list(self, field: str, value_list: Any, other_filters: List[Tuple[str, str, any]] = None) \
+            -> AsyncGenerator[ModelType, None]:
         all_generators = []
 
         def find(sublist: list[Any]):
-            stream = self._get_collection_reference().where(field, operation, sublist).stream()
+            query = self._get_collection_reference().where(field, "in", sublist)
+            for f in other_filters:
+                query = query.where(f[0], f[1], f[2])
+            stream = query.stream()
             return stream  # .stream() returns AsyncGenerator in the async client
 
-        if operation == 'in':
-            residual = len(value) % 10
-            num_iterations = len(value) // 10
-            if residual > 0:
-                num_iterations += 1
-            for i in range(0, num_iterations):
-                all_generators.append(find(value[i * 10:(i + 1) * 10]))
-        else:
-            all_generators = find(value)
+        residual = len(value_list) % 10
+        num_iterations = len(value_list) // 10
+        if residual > 0:
+            num_iterations += 1
+        for i in range(0, num_iterations):
+            all_generators.append(find(value_list[i * 10:(i + 1) * 10]))
 
         for generator in all_generators:
             async for item in generator:  # type: ignore
