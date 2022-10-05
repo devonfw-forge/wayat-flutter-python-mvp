@@ -11,7 +11,7 @@ import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -35,7 +35,7 @@ import 'profile_integration_test.mocks.dart';
 @GenerateMocks([
   ProfileService,
   ContactsPageController,
-  SessionState,
+  UserState,
   HomeState,
   ShareLocationState,
   ReceiveLocationState,
@@ -54,7 +54,7 @@ void main() async {
       MockReceiveLocationState();
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final SessionState mockSessionState = MockSessionState();
+  final UserState mockUserState = MockUserState();
   final HomeState mockHomeState = MockHomeState();
   final ShareLocationState mockLocationState = MockShareLocationState();
   final LocationListener mockLocationListener = MockLocationListener();
@@ -73,10 +73,10 @@ void main() async {
     await dotenv.load(fileName: ".env");
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockSessionState.finishLoggedIn).thenReturn(true);
-    when(mockSessionState.hasDoneOnboarding).thenReturn(true);
-    when(mockSessionState.currentUser).thenAnswer((_) => user);
-    when(mockSessionState.updateCurrentUser())
+    when(mockUserState.finishLoggedIn).thenReturn(true);
+    when(mockUserState.hasDoneOnboarding).thenReturn(true);
+    when(mockUserState.currentUser).thenAnswer((_) => user);
+    when(mockUserState.updateCurrentUser())
         .thenAnswer((_) => Future.value(null));
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
@@ -115,7 +115,7 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<HomeState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
@@ -204,7 +204,7 @@ void main() async {
   testWidgets('Integration test for enable/disable sharing location',
       (tester) async {
     when(mockLocationState.shareLocationEnabled).thenReturn(true);
-    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
+    when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     when(mockLocationState.setShareLocationEnabled(false)).thenReturn(null);
     await navigateToProfilePage(tester);
 
@@ -226,7 +226,7 @@ void main() async {
   });
 
   testWidgets('Integration test for LogOut', (tester) async {
-    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
+    when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     await navigateToProfilePage(tester);
 
     // Check the profile page is displayed
@@ -252,6 +252,6 @@ void main() async {
 
     await tester.tap(logOutButton);
 
-    verify(mockSessionState.logOut()).called(1);
+    verify(mockUserState.logOut()).called(1);
   });
 }

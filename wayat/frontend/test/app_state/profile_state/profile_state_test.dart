@@ -9,7 +9,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/language.dart';
@@ -18,13 +18,13 @@ import 'package:wayat/services/profile/profile_service.dart';
 
 import 'profile_state_test.mocks.dart';
 
-@GenerateMocks([ProfileService, SessionState, HttpProvider])
+@GenerateMocks([ProfileService, UserState, HttpProvider])
 void main() async {
   SharedPreferences.setMockInitialValues({});
   ProfileService mockProfileService = MockProfileService();
-  SessionState mockSessionState = MockSessionState();
+  UserState mockUserState = MockUserState();
   setUpAll(() {
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
   });
   test("Initial State is correct", () {
@@ -43,7 +43,7 @@ void main() async {
   });
 
   test("UpdateCurrentUser calls update in session state", () async {
-    when(mockSessionState.updateCurrentUser())
+    when(mockUserState.updateCurrentUser())
         .thenAnswer((_) => Future.value(null));
 
     ProfileState profileState =
@@ -51,13 +51,13 @@ void main() async {
 
     await profileState.updateCurrentUser();
 
-    verify(mockSessionState.updateCurrentUser()).called(1);
+    verify(mockUserState.updateCurrentUser()).called(1);
   });
 
   test("UpdateUserImage updates the image and, after, the user", () async {
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
 
-    when(mockSessionState.updateCurrentUser())
+    when(mockUserState.updateCurrentUser())
         .thenAnswer((_) => Future.value(null));
 
     ProfileState profileState =
@@ -67,7 +67,7 @@ void main() async {
 
     await profileState.updateUserImage(emptyFile);
 
-    verify(mockSessionState.updateCurrentUser()).called(1);
+    verify(mockUserState.updateCurrentUser()).called(1);
     verify(mockProfileService.uploadProfileImage(emptyFile)).called(1);
   });
 
@@ -78,18 +78,18 @@ void main() async {
     String oldName = "Old name";
     MyUser testUser = _generateMyUser(oldName);
 
-    when(mockSessionState.currentUser).thenReturn(testUser);
+    when(mockUserState.currentUser).thenReturn(testUser);
 
     ProfileState profileState =
         ProfileState(profileService: mockProfileService);
     when(mockProfileService.updateProfileName(newName))
         .thenAnswer((_) => Future.value(true));
 
-    expect(mockSessionState.currentUser!.name, oldName);
+    expect(mockUserState.currentUser!.name, oldName);
 
     await profileState.updateCurrentUserName(newName);
 
-    expect(mockSessionState.currentUser!.name, newName);
+    expect(mockUserState.currentUser!.name, newName);
     verify(mockProfileService.updateProfileName(newName)).called(1);
   });
 

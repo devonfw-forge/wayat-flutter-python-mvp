@@ -30,5 +30,5 @@ abstract class AuthService {
   /// Sends to the server that the user has done the onBoarding process
   ///
   /// Returns whether the request was succesful
-  Future<bool> sendDoneOnboarding(bool doneOnboarding);
+  Future<void> sendDoneOnboarding();
 }

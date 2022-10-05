@@ -10,7 +10,7 @@ import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
@@ -29,7 +29,7 @@ import 'contacts_page_test.mocks.dart';
 
 @GenerateMocks([
   ContactsPageController,
-  SessionState,
+  UserState,
   HomeState,
   ShareLocationState,
   ReceiveLocationState,
@@ -46,7 +46,7 @@ void main() async {
 
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final SessionState mockSessionState = MockSessionState();
+  final UserState mockUserState = MockUserState();
   final HomeState mockHomeState = MockHomeState();
   final ShareLocationState mockLocationState = MockShareLocationState();
   final ReceiveLocationState mockReceiveLocationState =
@@ -63,8 +63,8 @@ void main() async {
   setUpAll(() {
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockSessionState.finishLoggedIn).thenReturn(true);
-    when(mockSessionState.hasDoneOnboarding).thenReturn(true);
+    when(mockUserState.finishLoggedIn).thenReturn(true);
+    when(mockUserState.hasDoneOnboarding).thenReturn(true);
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
@@ -91,7 +91,7 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<HomeState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);

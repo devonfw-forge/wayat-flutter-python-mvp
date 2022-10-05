@@ -1,70 +1,44 @@
-import 'dart:convert';
-import 'package:wayat/domain/user/user.dart';
+import 'package:mobx/mobx.dart';
+part 'my_user.g.dart';
 
 /// Current data of logged user
-class MyUser extends User {
+class MyUser = _MyUser with _$MyUser;
+
+abstract class _MyUser with Store {
+  /// Unique id of user
+  String id;
+
+  /// Current username
+  @observable
+  String name;
+
+  /// email
+  String email;
+
+  /// URL to the user image
+  @observable
+  String imageUrl;
+
+  /// User phone number
+  @observable
+  String phone;
+
   /// Whether user finished the onboarding
+  @observable
   bool onboardingCompleted;
 
   /// Whether user is sharing its location
+  @observable
   bool shareLocationEnabled;
 
-  MyUser({
-    required super.id,
-    required super.name,
-    required super.email,
-    required super.imageUrl,
-    required super.phone,
-    required this.onboardingCompleted,
-    required this.shareLocationEnabled,
-  });
-
-  @override
-  MyUser copyWith(
-      {String? id,
-      String? name,
-      String? email,
-      String? imageUrl,
-      String? phone,
-      bool? onboardingCompleted,
-      bool? shareLocationEnabled}) {
-    return MyUser(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      imageUrl: imageUrl ?? this.imageUrl,
-      phone: phone ?? this.phone,
-      onboardingCompleted: onboardingCompleted ?? this.onboardingCompleted,
-      shareLocationEnabled: shareLocationEnabled ?? this.shareLocationEnabled,
-    );
-  }
-
-  @override
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'email': email,
-      'image_url': imageUrl,
-      'phone': phone,
-      'onboarding_completed': onboardingCompleted,
-      'share_location': shareLocationEnabled
-    };
-  }
-
-  factory MyUser.fromMap(Map<String, dynamic> map) {
-    return MyUser(
-        id: map['id'] as String,
-        name: map['name'] as String,
-        email: map['email'] as String,
-        imageUrl: map['image_url'] as String,
-        phone: map['phone'] ?? "",
-        onboardingCompleted: map['onboarding_completed'] as bool,
-        shareLocationEnabled: map['share_location'] as bool);
-  }
-
-  factory MyUser.fromJson(String source) =>
-      MyUser.fromMap(json.decode(source) as Map<String, dynamic>);
+  _MyUser(
+      {required this.id,
+      required this.name,
+      required this.email,
+      required this.imageUrl,
+      required this.phone,
+      required this.onboardingCompleted,
+      required this.shareLocationEnabled});
 
   @override
   bool operator ==(covariant MyUser other) {

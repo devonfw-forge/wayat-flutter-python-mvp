@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -15,9 +15,9 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'preferences_page_test.mocks.dart';
 
-@GenerateMocks([SessionState, ProfileState, HttpProvider])
+@GenerateMocks([UserState, ProfileState, HttpProvider])
 void main() async {
-  final MockSessionState mockSessionState = MockSessionState();
+  final MockUserState mockUserState = MockUserState();
   final MockProfileState mockProfileState = MockProfileState();
   late MyUser user;
 
@@ -48,8 +48,8 @@ void main() async {
         onboardingCompleted: true,
         shareLocationEnabled: true);
 
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    when(mockSessionState.currentUser).thenReturn(user);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
+    when(mockUserState.currentUser).thenReturn(user);
     when(mockProfileState.changeLanguage(items[3]))
         .thenAnswer((_) async => null);
     when(mockProfileState.language).thenReturn(items[2]);

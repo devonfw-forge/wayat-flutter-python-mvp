@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -63,7 +63,7 @@ abstract class _SuggestionsController with Store {
         contactsAddressServiceImpl ?? ContactsAddressServiceImpl();
     List<String> adBookContacts =
         await contactsAddressServiceLibW.getAllPhones();
-    MyUser me = GetIt.I.get<SessionState>().currentUser!;
+    MyUser me = GetIt.I.get<UserState>().currentUser!;
     await requestsController.updateRequests();
     List<Contact> newSuggestions =
         (await contactsService.getFilteredContacts(adBookContacts))

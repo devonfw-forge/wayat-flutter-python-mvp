@@ -10,7 +10,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/home_state/home_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
@@ -66,7 +66,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
-  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+  GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
   GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<OnboardingController>(
@@ -120,7 +120,7 @@ class _MyApp extends State<MyApp> with WidgetsBindingObserver {
       // opened for first time
       if (state == AppLifecycleState.resumed) {
         if (!mapState.isAppOpened &&
-            GetIt.I.get<SessionState>().currentUser != null) {
+            GetIt.I.get<UserState>().currentUser != null) {
           await mapState.notifyAppOpenned();
         }
       }

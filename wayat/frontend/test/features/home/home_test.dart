@@ -11,7 +11,7 @@ import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -38,7 +38,7 @@ import 'home_test.mocks.dart';
 
 @GenerateMocks([
   ContactsPageController,
-  SessionState,
+  UserState,
   HomeState,
   ShareLocationState,
   ReceiveLocationState,
@@ -56,7 +56,7 @@ void main() async {
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
   final HomeState mockHomeState = MockHomeState();
-  final SessionState mockSessionState = MockSessionState();
+  final UserState mockUserState = MockUserState();
   final ShareLocationState mockLocationState = MockShareLocationState();
   final ReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
@@ -89,7 +89,7 @@ void main() async {
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);
@@ -100,8 +100,8 @@ void main() async {
 
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockSessionState.finishLoggedIn).thenReturn(true);
-    when(mockSessionState.hasDoneOnboarding).thenReturn(true);
+    when(mockUserState.finishLoggedIn).thenReturn(true);
+    when(mockUserState.hasDoneOnboarding).thenReturn(true);
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
@@ -121,7 +121,7 @@ void main() async {
     when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
     when(mockReceiveLocationState.contacts).thenReturn([]);
     when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
-    when(mockSessionState.currentUser).thenReturn(user);
+    when(mockUserState.currentUser).thenReturn(user);
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
     when(mockGroupsController.groups)

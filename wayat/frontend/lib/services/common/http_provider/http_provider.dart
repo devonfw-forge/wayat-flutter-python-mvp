@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 // ignore: depend_on_referenced_packages, implementation_imports
 import 'package:http_parser/src/media_type.dart';
@@ -28,7 +28,7 @@ class HttpProvider {
   /// Returns the necessary content and authentication headers for all server requests.
   @visibleForTesting
   Future<Map<String, String>> getHeaders() async {
-    AuthService authService = GetIt.I.get<SessionState>().authService;
+    AuthService authService = GetIt.I.get<UserState>().authService;
     return {
       "Content-Type": ContentType.json.toString(),
       "Authorization": "Bearer ${await authService.getIdToken()}"
@@ -37,6 +37,7 @@ class HttpProvider {
 
   /// Sends a `GET` request to `baseUrl`/`subPath`.
   Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
+    debugPrint("DEBUG get for $subPath");
     final headers = await getHeaders();
     http.Response resultJson =
         await client.get(Uri.parse("$baseUrl/$subPath"), headers: headers);
@@ -49,6 +50,7 @@ class HttpProvider {
     String subPath,
     Map<String, dynamic> body,
   ) async {
+    debugPrint("DEBUG post for $subPath");
     http.Response response = await client.post(Uri.parse("$baseUrl/$subPath"),
         headers: await getHeaders(), body: jsonEncode(body));
     return response;
@@ -68,7 +70,7 @@ class HttpProvider {
         contentType: MediaType.parse(type),
         filename: 'upload_file_${filePath.hashCode}.$type');
     request.headers["Authorization"] =
-        "Bearer ${await GetIt.I.get<SessionState>().authService.getIdToken()}";
+        "Bearer ${await GetIt.I.get<UserState>().authService.getIdToken()}";
     request.files.add(httpImage);
     return await client.send(request);
   }

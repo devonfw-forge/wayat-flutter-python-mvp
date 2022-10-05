@@ -11,6 +11,7 @@ import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wayat/domain/user/my_user_factory.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
@@ -71,7 +72,7 @@ class GoogleAuthService implements AuthService {
   Future<MyUser> getUserData() async {
     final Map<String, dynamic> user =
         await httpProvider.sendGetRequest(APIContract.userProfile);
-    return MyUser.fromMap(user);
+    return MyUserFactory.fromMap(user);
   }
 
   /// Refresh the **account id token**
@@ -125,8 +126,8 @@ class GoogleAuthService implements AuthService {
   }
 
   @override
-  Future<bool> sendDoneOnboarding(bool doneOnboarding) async {
-    return (await httpProvider.sendPostRequest(
+  Future<void> sendDoneOnboarding() async {
+    (await httpProvider.sendPostRequest(
                     APIContract.userProfile, {"onboarding_completed": true}))
                 .statusCode /
             10 ==

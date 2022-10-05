@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/language.dart';
@@ -72,7 +72,7 @@ abstract class _ProfileState with Store {
   /// Update current user SessionState if user image or user name was changed
   @action
   Future updateCurrentUser() async {
-    GetIt.I.get<SessionState>().updateCurrentUser();
+    GetIt.I.get<UserState>().updateCurrentUser();
   }
 
   /// Update user profile image from [newImage]
@@ -85,7 +85,7 @@ abstract class _ProfileState with Store {
   @action
   Future updateCurrentUserName(String newName) async {
     _profileService.updateProfileName(newName);
-    GetIt.I.get<SessionState>().currentUser!.name = newName;
+    GetIt.I.get<UserState>().currentUser!.name = newName;
   }
 
   /// Delete current user

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
@@ -24,7 +24,7 @@ class PhoneValidationPage extends StatefulWidget {
 /// State of Phone validation page for login
 class _PhoneValidationPageState extends State<PhoneValidationPage> {
   /// User session information
-  final userSession = GetIt.I.get<SessionState>();
+  final userState = GetIt.I.get<UserState>();
 
   /// Form key used
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -40,7 +40,7 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          await GetIt.I.get<SessionState>().logOut();
+          await GetIt.I.get<UserState>().logOut();
           return true;
         },
         child: Scaffold(
@@ -144,13 +144,10 @@ class _PhoneValidationPageState extends State<PhoneValidationPage> {
   // Updates phone number in user account or set the error message [errorSettingPHone]
   _submit() async {
     final bool updated =
-        await userSession.updatePhone(widget.phoneController.phoneNumber);
+        await userState.updatePhone(widget.phoneController.phoneNumber);
 
-    if (updated && widget.phoneController.validPhone) {
-      userSession.setFinishLoggedIn(true);
-    } else {
-      errorSettingPhone = appLocalizations.phoneUsed;
-      setState(() {});
+    if (!updated) {
+      setState(() => errorSettingPhone = appLocalizations.phoneUsed);
     }
   }
 }
