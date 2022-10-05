@@ -76,6 +76,8 @@ dependencies:
   # Platfor app dependencies
   restart_app: ^1.1.0+1
   app_settings: ^4.1.8
+  # Fix url in web
+  url_strategy: ^0.2.0
   # Synchronization
   synchronized: ^3.0.0+3
 

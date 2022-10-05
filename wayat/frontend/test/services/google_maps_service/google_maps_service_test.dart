@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/services/google_maps_service/address_response/address.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_component.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
@@ -94,7 +95,7 @@ void main() async {
 
     http.Client mockHttpClient = MockClient();
     LatLng coords = const LatLng(1, 1);
-    String mapsKey = dotenv.get("ANDROID_API_KEY");
+    String mapsKey = EnvModel.ANDROID_API_KEY;
     Uri url = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
         {"latlng": "${coords.latitude},${coords.longitude}", "key": mapsKey});
 
@@ -117,7 +118,7 @@ void main() async {
 
     http.Client mockHttpClient = MockClient();
     LatLng coords = const LatLng(1, 1);
-    String mapsKey = dotenv.get("ANDROID_API_KEY");
+    String mapsKey = EnvModel.ANDROID_API_KEY;
     Uri url = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
         {"latlng": "${coords.latitude},${coords.longitude}", "key": mapsKey});
 
@@ -138,7 +139,7 @@ void main() async {
 
     http.Client mockHttpClient = MockClient();
     LatLng coords = const LatLng(1, 1);
-    String mapsKey = dotenv.get("ANDROID_API_KEY");
+    String mapsKey = EnvModel.ANDROID_API_KEY;
     Uri url = Uri.https("maps.googleapis.com", "/maps/api/geocode/json",
         {"latlng": "${coords.latitude},${coords.longitude}", "key": mapsKey});
 
@@ -153,9 +154,9 @@ void main() async {
   });
 
   test("GetAPIKey returns a well signed url", () async {
-    String androidKey = dotenv.get('ANDROID_API_KEY');
-    String iosKey = dotenv.get('IOS_API_KEY');
-    String webKey = dotenv.get('WEB_API_KEY');
+    String androidKey = EnvModel.ANDROID_API_KEY;
+    String iosKey = EnvModel.IOS_API_KEY;
+    String webKey = EnvModel.WEB_API_KEY;
 
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
     expect(GoogleMapsService.getApIKey(), androidKey);

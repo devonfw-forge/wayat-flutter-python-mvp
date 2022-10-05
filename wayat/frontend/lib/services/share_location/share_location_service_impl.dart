@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:isolate';
 
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -7,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/share_location/background_location_exception.dart';
 import 'package:wayat/services/share_location/no_location_service_exception.dart';
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
@@ -35,13 +35,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late bool shareLocationEnabled;
   late Function(LatLng) changeLocationStateCallback;
 
-  /// Creates a ShareLocationService.
-  ///
-  /// Throw a [RejectedLocationException] if the user
-  /// rejects location permissions. Throws a [NoLocationServiceException]
-  /// if the call to ```Location.requestService()``` results in an error
-  static Future<ShareLocationServiceImpl> create(bool mode, bool shareLocation,
-      Function(LatLng) onLocationChangedCallback) async {
+  static Future<void> _checkLocationPermissions() async {
     Location location = Location();
 
     // First, enable device location
@@ -75,11 +69,26 @@ class ShareLocationServiceImpl extends ShareLocationService {
         rethrow;
       }
     }
+  }
 
-    LocationData initialLocation = await location.getLocation();
+  /// Creates a ShareLocationService.
+  ///
+  /// Throw a [RejectedLocationException] if the user
+  /// rejects location permissions. Throws a [NoLocationServiceException]
+  /// if the call to ```Location.requestService()``` results in an error
+  static Future<ShareLocationServiceImpl> create(bool mode, bool shareLocation,
+      Function(LatLng) onLocationChangedCallback,
+      [PlatformService? platformService]) async {
+
+    platformService ??= PlatformService();
+    if (!platformService.isWeb) {
+      await _checkLocationPermissions();
+    }
+
+    LocationData initialLocation = await Location().getLocation();
 
     return ShareLocationServiceImpl._create(
-        initialLocation, mode, shareLocation, onLocationChangedCallback);
+        initialLocation, mode, shareLocation, onLocationChangedCallback, platformService);
   }
 
   /// Private factory for the location service
@@ -87,7 +96,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// It needs to be divided in private and public static factory to be able to
   /// make the necessary async calls in the public version
   ShareLocationServiceImpl._create(LocationData initialLocation, bool mode,
-      bool shareLocation, Function(LatLng) onLocationChangedCallback)
+      bool shareLocation, Function(LatLng) onLocationChangedCallback,
+      [PlatformService? platformService])
       : super.create() {
     location = Location.instance;
     activeShareMode = mode;
@@ -98,7 +108,10 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     sendLocationToBack(initialLocation);
 
-    location.enableBackgroundMode(enable: true);
+    platformService ??= PlatformService();
+    if(!platformService.isWeb) {
+      location.enableBackgroundMode(enable: true);
+    }
 
     location.onLocationChanged.listen((LocationData newLocation) {
       if (shareLocationEnabled) {

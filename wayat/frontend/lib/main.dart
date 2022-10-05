@@ -6,22 +6,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/common/app_config/app_config_controller.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Initializes the app.
 Future main() async {
@@ -31,31 +33,23 @@ Future main() async {
     HttpOverrides.global = HttpDebugOverride();
   }
 
+  // AVoid # character in url (flutter web)
+  if (PlatformService().isWeb) {
+    setPathUrlStrategy();
+  }
+
   // Env file should be loaded before Firebase initialization
-  await dotenv.load(fileName: ".env");
+  await EnvModel.loadEnvFile();
 
   await Firebase.initializeApp(
-      name: "WAYAT", options: CustomFirebaseOptions.currentPlatformOptions);
+      name: EnvModel.FIREBASE_APP_NAME,
+      options: CustomFirebaseOptions.currentPlatformOptions);
 
   await registerSingletons();
 
-  setTimeAgoLocales();
+  AppConfigController().setTimeAgoLocales();
 
-  runApp(const MyApp());
-}
-
-/// Loads the messages for the library [timeago] in the available languages for the app.
-///
-/// This messages are displayed in, for example, the [ContactDialog] that appears
-/// when tapping a user in the map, and format the date in a human friendly format.
-///
-/// For example: `2022-09-11 9:55` could translate to `five minutes ago`.
-void setTimeAgoLocales() {
-  timeago.setLocaleMessages('en', timeago.EnMessages());
-  timeago.setLocaleMessages('es', timeago.EsMessages());
-  timeago.setLocaleMessages('fr', timeago.FrMessages());
-  timeago.setLocaleMessages('de', timeago.DeMessages());
-  timeago.setLocaleMessages('nl', timeago.NlMessages());
+  runApp(const Wayat());
 }
 
 /// Registers all the [MobX] singletons to handle the app's shared state.
@@ -67,7 +61,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
-  GetIt.I.registerLazySingleton<HomeState>(() => HomeState());
+  GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());
   GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
@@ -78,15 +72,15 @@ Future registerSingletons() async {
 }
 
 /// Main Application class
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Wayat extends StatefulWidget {
+  const Wayat({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyApp();
+  State<Wayat> createState() => _Wayat();
 }
 
 /// Main application class' state
-class _MyApp extends State<MyApp> with WidgetsBindingObserver {
+class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// Instance of the application router, used to handle navigation declaratively
   final _appRouter = AppRouter();
 

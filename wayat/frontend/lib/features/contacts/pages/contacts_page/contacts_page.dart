@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -6,6 +7,7 @@ import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Main view of Friends, requests and suggestions page
 class ContactsPage extends StatelessWidget {
@@ -13,7 +15,11 @@ class ContactsPage extends StatelessWidget {
   final ContactsPageController controller =
       GetIt.I.get<ContactsPageController>();
 
-  ContactsPage({Key? key}) : super(key: key);
+  final PlatformService platformService;
+
+  ContactsPage({PlatformService? platformService, Key? key}) : 
+    platformService = platformService ?? PlatformService(), 
+    super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +38,11 @@ class ContactsPage extends StatelessWidget {
   Expanded contactsPageContent() {
     return Expanded(
         child: AutoTabsRouter.tabBar(
-      routes: [FriendsRoute(), RequestsRoute(), SuggestionsRoute()],
+      routes: [
+        FriendsRoute(), 
+        RequestsRoute(), 
+        if (!platformService.isWeb) SuggestionsRoute()
+      ],
       builder: ((context, child, tabController) {
         controller.updateTabData(tabController.index);
         return Column(
@@ -61,7 +71,7 @@ class ContactsPage extends StatelessWidget {
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
-                Tab(text: appLocalizations.suggestionsTab)
+                if (!platformService.isWeb) Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],
       ),

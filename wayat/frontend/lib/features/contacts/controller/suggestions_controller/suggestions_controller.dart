@@ -8,6 +8,7 @@ import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/contact/import_phones_service_impl.dart';
@@ -102,11 +103,12 @@ abstract class _SuggestionsController with Store {
   ///
   /// Returns an empty text for platforms not included in Android or IOS
   @visibleForTesting
-  String platformText() {
-    if (defaultTargetPlatform == TargetPlatform.android) {
+  String platformText([PlatformService? platformService]) {
+    platformService ??= PlatformService();
+    if (platformService.targetPlatform == TargetPlatform.android) {
       return appLocalizations.invitationTextAndroid;
     }
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
+    if (platformService.targetPlatform == TargetPlatform.iOS) {
       return appLocalizations.invitationTextIOS;
     }
     return '';

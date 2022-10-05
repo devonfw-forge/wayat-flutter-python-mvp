@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/common/widgets/buttons/circle_icon_button.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -47,7 +47,7 @@ class ContactDialog extends StatelessWidget {
                 onPressed: () {
                   //This imperative pop is to close the contact dialog
                   Navigator.pop(context);
-                  GetIt.I.get<HomeState>().setSelectedContact(contact, "wayat");
+                  GetIt.I.get<HomeNavState>().setSelectedContact(contact, "wayat");
                 },
                 enabled: true),
             const SizedBox(

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +17,12 @@ import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
+import 'package:wayat/features/map/page/platform_map_widget.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/share_location/background_location_exception.dart';
 import 'package:wayat/services/share_location/no_location_service_exception.dart';
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
@@ -32,10 +33,16 @@ class HomeMapPage extends StatelessWidget {
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationListener statusState = GetIt.I.get<LocationListener>();
   final MapController controller;
+  final PlatformService platformService;
 
-  HomeMapPage({MapController? controller, Key? key})
-      : controller = controller ?? MapController(),
-        super(key: key);
+  HomeMapPage({
+    MapController? controller, 
+    PlatformService? platformService, 
+    Key? key
+  }) : 
+    controller = controller ?? MapController(),
+    platformService = platformService ?? PlatformService(),
+    super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +60,10 @@ class HomeMapPage extends StatelessWidget {
                   removeFocusFromSearchBar(context);
                 },
                 child: Stack(
-                  children: [_mapLayer(), _draggableSheetLayer()],
+                  children: [
+                    _mapLayer(), 
+                    if (!platformService.isWeb) _draggableSheetLayer()
+                  ],
                 ));
           } else {
             return const LoadingWidget();
@@ -143,7 +153,7 @@ class HomeMapPage extends StatelessWidget {
           const SizedBox(height: 5),
           groupsSlider(),
           const SizedBox(height: 5),
-          Expanded(child: googleMap(markers, context)),
+          Expanded(child: googleMap(markers)),
         ],
       );
     });
@@ -230,24 +240,9 @@ class HomeMapPage extends StatelessWidget {
   }
 
   /// Google map with current user location coordinates
-  GoogleMap googleMap(Set<Marker> markers, BuildContext context) {
-    LatLng currentLocation = LatLng(
-        statusState.shareLocationState.currentLocation.latitude,
-        statusState.shareLocationState.currentLocation.longitude);
-
-    return GoogleMap(
-      onTap: (_) {
-        removeFocusFromSearchBar(context);
-      },
-      initialCameraPosition:
-          CameraPosition(target: currentLocation, zoom: 14.5),
-      myLocationEnabled: true,
-      zoomControlsEnabled: false,
-      markers: markers,
-      onMapCreated: (googleMapController) {
-        controller.gMapController = googleMapController;
-      },
-    );
+  Widget googleMap(Set<Marker> markers) {
+    return PlatformMapWidget(
+      markers: markers, controller: controller);
   }
 
   /// Draggable layer with active sharing location contacts
