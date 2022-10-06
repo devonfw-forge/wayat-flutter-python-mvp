@@ -8,8 +8,9 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/app_config_controller.dart';
@@ -62,7 +63,8 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());
-  GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
+  GetIt.I.registerLazySingleton<ProfileController>(() => ProfileController());
+  GetIt.I.registerLazySingleton<AppConfigState>(() => AppConfigState());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
   GetIt.I.registerLazySingleton<ContactsPageController>(
@@ -139,7 +141,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     return FutureBuilder(
-        future: GetIt.I.get<ProfileState>().initializeLocale(),
+        future: GetIt.I.get<AppConfigState>().initializeLocale(),
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,

@@ -8,7 +8,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
@@ -34,7 +34,7 @@ import 'contacts_page_test.mocks.dart';
   ShareLocationState,
   ReceiveLocationState,
   LocationListener,
-  ProfileState,
+  ProfileController,
   LifeCycleState,
   FriendsController,
   RequestsController,
@@ -46,19 +46,20 @@ void main() async {
 
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final UserState mockUserState = MockUserState();
-  final HomeNavState mockHomeState = MockHomeNavState();
-  final ShareLocationState mockLocationState = MockShareLocationState();
-  final ReceiveLocationState mockReceiveLocationState =
+  final MockUserState mockUserState = MockUserState();
+  final MockHomeNavState mockHomeState = MockHomeNavState();
+  final MockShareLocationState mockLocationState = MockShareLocationState();
+  final MockReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
-  final LocationListener mockLocationListener = MockLocationListener();
-  final ProfileState mockProfileState = MockProfileState();
-  final LifeCycleState mockMapState = MockLifeCycleState();
-  final FriendsController mockFriendsController = MockFriendsController();
-  final RequestsController mockRequestsController = MockRequestsController();
-  final SuggestionsController mockSuggestionsController =
+  final MockLocationListener mockLocationListener = MockLocationListener();
+  final MockProfileController mockProfileController = MockProfileController();
+  final MockLifeCycleState mockMapState = MockLifeCycleState();
+  final MockFriendsController mockFriendsController = MockFriendsController();
+  final MockRequestsController mockRequestsController =
+      MockRequestsController();
+  final MockSuggestionsController mockSuggestionsController =
       MockSuggestionsController();
-  final GroupsController mockGroupsController = MockGroupsController();
+  final MockGroupsController mockGroupsController = MockGroupsController();
 
   setUpAll(() {
     when(mockContactsPageController.searchBarController)
@@ -95,7 +96,7 @@ void main() async {
     GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
