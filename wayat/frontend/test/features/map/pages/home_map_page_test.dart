@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/features/map/page/map_page_lib/mobile_map_widget.dart';
+import 'package:wayat/features/map/page/map_page_lib/web_desktop_map_widget.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
@@ -183,5 +187,44 @@ void main() async {
             of: find.byKey(const Key("groupSlider")),
             matching: find.byType(ContactImage)),
         findsOneWidget);
+  });
+
+  testWidgets("Slider changes value on status state", (tester) async {
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[myGroup].asObservable());
+
+    await tester.pumpWidget(createApp());
+    await tester.pumpAndSettle();
+
+    expect(mockLocationState.shareLocationEnabled, false);
+
+    await tester.tap(find.byType(CustomSwitch));
+    await tester.pumpAndSettle();
+
+    verify(mockLocationState.setShareLocationEnabled(true)).called(1);
+  });
+
+  testWidgets("In mobile it uses the Mobile Map widget", (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[myGroup].asObservable());
+
+    await tester.pumpWidget(createApp());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MobileMapWidget), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets("In desktop it uses the Desktop Map widget", (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[myGroup].asObservable());
+
+    await tester.pumpWidget(createApp());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(WebDesktopMapWidget), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
   });
 }
