@@ -159,6 +159,25 @@ class MapService:
             *[self._update_contact_status(c, force) for c in contacts_with_map_open]
         )
 
+    @overload
+    async def _set_active(self, *, uid: str, active: bool):
+        ...
+
+    @overload
+    async def _set_active(self, *, uids: List[str], active: bool):
+        ...
+
+    async def _set_active(self, *, uid: str = None, uids: List[str] = None, active: bool):
+        if uid is not None:
+            await self._status_repository.set_active(uid, active)
+            await self._user_repository.set_active(uid, active)
+        elif uids is not None:
+            if len(uids) > 0:
+                await self._status_repository.set_active_batch(uid_list=uids, value=active)
+                await self._user_repository.set_active_batch(uid_list=uids, value=active)
+        else:
+            raise ValueError("Either uid or uids should not be None. Invalid parameters")
+
     async def _update_contact_status(self, contact: UserEntity, force: bool):
         if force or self._needs_update(contact.last_status_update):
             await self.regenerate_map_status(user=contact)
