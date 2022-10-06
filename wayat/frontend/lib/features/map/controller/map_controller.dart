@@ -60,7 +60,7 @@ abstract class _MapController with Store {
   /// Contacts that are members of the group - [groupMembers]
   List<Contact> groupMembers = [];
 
-  late Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
+  late void Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
 
   /// Set contact marker on the map
   void setOnMarkerPressed(
@@ -81,20 +81,20 @@ abstract class _MapController with Store {
         .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
     Set<PlatformMarker> newMarkers = 
       contacts.map<PlatformMarker>(
-          (ContactLocation contact) {
-            if (platformService.isDesktopOrWeb) {
-            return WebDesktopMarker(
-                contactLocation: contact,
-                onTap: () => onMarkerPressed(
-                  contact, bitmaps[contact.imageUrl]!),
-              );
-            }
-            return MobileMarker(
+        (ContactLocation contact) {
+          if (platformService.isDesktopOrWeb) {
+          return WebDesktopMarker(
               contactLocation: contact,
-              icon: bitmaps[contact.imageUrl] ?? BitmapDescriptor.defaultMarker,
-              onTap: () => onMarkerPressed(contact, bitmaps[contact.imageUrl]!)
+              onTap: () => onMarkerPressed(
+                contact, bitmaps[contact.imageUrl]!),
             );
-          }).toSet();
+          }
+          return MobileMarker(
+            contactLocation: contact,
+            icon: bitmaps[contact.imageUrl] ?? BitmapDescriptor.defaultMarker,
+            onTap: () => onMarkerPressed(contact, bitmaps[contact.imageUrl]!)
+          );
+        }).toSet();
     return newMarkers;
   }
 

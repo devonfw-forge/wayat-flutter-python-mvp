@@ -18,15 +18,16 @@ class WebDesktopMarker extends PlatformMarker<Marker> {
   }) : 
     imageService = imageService ?? ImageService(),
     marker = Marker(
+      width: 45,
+      height: 45,
       point: LatLng(
         contactLocation.latitude, contactLocation.longitude),
       builder: (context) {
         return GestureDetector(
           onTap: onTap,
           child: Container(
-            width: 45,
-            height: 45,
             decoration: BoxDecoration(
+              color: Colors.black,
               shape: BoxShape.circle,
               image: DecorationImage(
                 image: Image.network(contactLocation.imageUrl).image
