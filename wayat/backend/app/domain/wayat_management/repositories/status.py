@@ -21,12 +21,7 @@ class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
             "contact_refs_members": [contact.uid for contact in contact_refs]
         })
 
-    async def set_active(self, uid: str, value: bool, read_first=True):
-        # TODO: Validate if read_first=True
-        if read_first:
-            current_status = await self.get_or_throw(uid)
-            if current_status.active == value:
-                return
+    async def set_active(self, uid: str, value: bool):
         await self.update(document_id=uid, data={"active": value})
 
     async def set_active_batch(self, uid_list: list[str], value: bool):

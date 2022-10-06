@@ -45,5 +45,6 @@ class UserEntity(BaseFirebaseModel):
     # Internal variables
     onboarding_completed: bool = False
     map_open: bool = False
+    active: bool = False
     map_valid_until: datetime = Field(default_factory=get_current_time)
     last_status_update: datetime = Field(default_factory=get_current_time)

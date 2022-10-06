@@ -83,7 +83,13 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         else:
             return user_entity.location, user_entity.location_shared_with
 
-    async def find_contacts_using_app(self, uid: str) -> list[UserEntity]:
+    async def set_active(self, uid: str, value: bool):
+        await self.update(document_id=uid, data={"active": value})
+
+    async def set_active_batch(self, uid_list: list[str], value: bool):
+        await self.update_batch(uid_list=uid_list, update={"active": value})
+
+    async def find_contacts_using_app(self, uid: str) -> Tuple[list[UserEntity], UserEntity]:
         """
            Returns the list of contacts of a user with the app active (have updated their location in the last x mins)
            :param uid: self user
