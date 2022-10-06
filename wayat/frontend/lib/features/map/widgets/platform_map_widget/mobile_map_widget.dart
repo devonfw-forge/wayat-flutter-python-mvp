@@ -3,8 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/features/map/controller/map_controller_lib/mobile_map_controller.dart';
-import 'package:wayat/features/map/page/map_page_lib/platform_map_widget.dart';
+import 'package:wayat/features/map/controller/platform_map_controller/mobile_map_controller.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/platform_map_widget.dart';
 
 /// Android and IOS google maps widget
 class MobileMapWidget extends PlatformMapWidget {
