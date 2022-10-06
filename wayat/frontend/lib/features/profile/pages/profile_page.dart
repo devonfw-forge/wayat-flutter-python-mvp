@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
@@ -15,7 +15,7 @@ import 'package:wayat/lang/app_localizations.dart';
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
 
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
+  final ProfileController profileController = GetIt.I.get<ProfileController>();
   final ShareLocationState shareLocationState =
       GetIt.I.get<LocationListener>().shareLocationState;
   final UserState userState = GetIt.I.get<UserState>();
@@ -109,13 +109,13 @@ class ProfilePage extends StatelessWidget {
         CustomCard(
             text: appLocalizations.editProfile,
             onTap: () {
-              profileState.setCurrentPage(ProfileCurrentPages.editProfile);
+              profileController.currentPage = ProfileCurrentPages.editProfile;
             }),
         const SizedBox(height: 24),
         CustomCard(
             text: appLocalizations.preferences,
             onTap: () {
-              profileState.setCurrentPage(ProfileCurrentPages.preference);
+              profileController.currentPage = ProfileCurrentPages.preference;
             }),
       ],
     );

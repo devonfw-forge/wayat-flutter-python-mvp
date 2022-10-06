@@ -76,19 +76,17 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// Throw a [RejectedLocationException] if the user
   /// rejects location permissions. Throws a [NoLocationServiceException]
   /// if the call to ```Location.requestService()``` results in an error
-  static Future<ShareLocationServiceImpl> create(bool mode, bool shareLocation,
-      Function(LatLng) onLocationChangedCallback,
+  static Future<ShareLocationServiceImpl> create(
+      bool mode, bool shareLocation, Function(LatLng) onLocationChangedCallback,
       [PlatformService? platformService]) async {
-
     platformService ??= PlatformService();
     if (!platformService.isWeb) {
       await _checkLocationPermissions();
     }
-
     LocationData initialLocation = await Location().getLocation();
 
-    return ShareLocationServiceImpl._create(
-        initialLocation, mode, shareLocation, onLocationChangedCallback, platformService);
+    return ShareLocationServiceImpl._create(initialLocation, mode,
+        shareLocation, onLocationChangedCallback, platformService);
   }
 
   /// Private factory for the location service
@@ -111,13 +109,13 @@ class ShareLocationServiceImpl extends ShareLocationService {
     platformService ??= PlatformService();
     if (platformService.isMobile) {
       location.enableBackgroundMode(enable: true);
-    }
 
-    location.onLocationChanged.listen((LocationData newLocation) {
-      if (shareLocationEnabled) {
-        manageLocationChange(newLocation);
-      }
-    });
+      location.onLocationChanged.listen((LocationData newLocation) {
+        if (shareLocationEnabled) {
+          manageLocationChange(newLocation);
+        }
+      });
+    }
   }
 
   /// Checks all the conditions to send location to backend,

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -5,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
@@ -17,9 +19,9 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'edit_profile_controller_test.mocks.dart';
 
-@GenerateMocks([ProfileState, UserState, HttpProvider])
+@GenerateMocks([ProfileController, UserState, HttpProvider])
 void main() async {
-  final MockProfileState mockProfileState = MockProfileState();
+  final MockProfileController mockProfileController = MockProfileController();
   final MockUserState mockUserState = MockUserState();
   final MockHttpProvider mockHttpProvider = MockHttpProvider();
   MyUser fakeUser = MyUser(
@@ -35,7 +37,7 @@ void main() async {
     // await dotenv.load(fileName: ".env");
 
     GetIt.I.registerSingleton<UserState>(mockUserState);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
     when(mockUserState.currentUser).thenReturn(fakeUser);
@@ -84,5 +86,24 @@ void main() async {
     expect(phoneController.validatePhoneNumber(samePhone),
         appLocalizations.phoneDifferent);
     expect(phoneController.validatePhoneNumber(correctPhone), "");
+  });
+
+  test("Saving information calls correct methods of user state", () async {
+    EditProfileController controller = EditProfileController();
+    String newName = "newUserName";
+    XFile newUserImage = XFile.fromData(Uint8List.fromList([]));
+    String newPhoneNumber = "543675436784";
+
+    controller.name = newName;
+    controller.currentSelectedImage = newUserImage;
+
+    when(mockUserState.updatePhone(newPhoneNumber))
+        .thenAnswer((_) => Future.value(true));
+
+    await controller.onPressedSaveButton(newPhoneNumber);
+
+    verify(mockUserState.updateUserName(any)).called(1);
+    verify(mockUserState.updateImage(any)).called(1);
+    verify(mockUserState.updatePhone(any)).called(1);
   });
 }

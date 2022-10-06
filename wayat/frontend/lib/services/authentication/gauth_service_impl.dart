@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -112,11 +113,12 @@ class GoogleAuthService implements AuthService {
     // ResetSingleton instances to reset any information for the current user
     GetIt.I.resetLazySingleton<OnboardingController>();
     GetIt.I.resetLazySingleton<ContactsPageController>();
-    GetIt.I.resetLazySingleton<LocationListener>();
-    GetIt.I.resetLazySingleton<ProfileState>();
+    GetIt.I.resetLazySingleton<ProfileController>();
     GetIt.I.resetLazySingleton<LifeCycleState>();
     GetIt.I.resetLazySingleton<HomeNavState>();
     GetIt.I.resetLazySingleton<HttpProvider>();
+    GetIt.I.resetLazySingleton<GroupsController>();
+    GetIt.I.resetLazySingleton<LocationListener>();
   }
 
   @override

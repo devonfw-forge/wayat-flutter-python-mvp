@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -31,7 +30,6 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final MyUser user = GetIt.I.get<UserState>().currentUser!;
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   TextStyle _textStyle(Color color, double size) =>

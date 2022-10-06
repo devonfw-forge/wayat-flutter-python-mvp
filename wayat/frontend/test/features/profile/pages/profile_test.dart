@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
@@ -19,10 +19,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'profile_test.mocks.dart';
 
-@GenerateMocks([UserState, ProfileState, ShareLocationState, LocationListener])
+@GenerateMocks(
+    [UserState, ProfileController, ShareLocationState, LocationListener])
 void main() async {
   final MockUserState mockUserState = MockUserState();
-  final MockProfileState mockProfileState = MockProfileState();
+  final MockProfileController mockProfileController = MockProfileController();
   final MockShareLocationState mockLocationState = MockShareLocationState();
   final MockLocationListener mockLocationListener = MockLocationListener();
   late MyUser user;
@@ -42,7 +43,7 @@ void main() async {
     when(mockUserState.currentUser).thenAnswer((_) => user);
 
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     when(mockLocationState.shareLocationEnabled).thenReturn(false);
     when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
