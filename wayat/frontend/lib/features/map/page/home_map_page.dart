@@ -257,8 +257,6 @@ class HomeMapPage extends StatelessWidget {
                       colors: [
                     Colors.grey.shade100,
                     Colors.grey.shade50,
-                    //Colors.grey[100]!,
-                    //Colors.grey[50]!,
                   ])),
               padding: const EdgeInsets.symmetric(horizontal: 15),
               width: 350,
