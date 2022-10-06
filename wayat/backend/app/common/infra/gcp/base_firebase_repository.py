@@ -123,6 +123,17 @@ class BaseFirestoreRepository(Generic[ModelType]):
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
 
+    async def update_batch(self, *, uid_list: List[str], update: dict):
+        chunk_max_size = 500
+        chunks = [uid_list[i:i + chunk_max_size] for i in range(0, len(uid_list), chunk_max_size)]
+        for chunk in chunks:
+            batch = self._client.batch()
+            for uid in chunk:
+                ref = self._get_document_reference(uid)
+                batch.update(ref, update)
+            await batch.commit()
+
+
     def _validate_update(self, update: dict):
         not_defined_values = set(update.keys()).difference(self._model.__fields__.keys())
         if not_defined_values:

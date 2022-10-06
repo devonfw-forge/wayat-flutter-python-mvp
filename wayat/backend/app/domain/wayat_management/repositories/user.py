@@ -95,7 +95,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             ("location.last_updated", ">=",
              get_current_time() - timedelta(seconds=self._map_settings.max_time_without_update))  # Updated recently
         ])
-        return [item async for item in contacts_using_app]
+        return [item async for item in contacts_using_app], user
 
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})
