@@ -239,12 +239,31 @@ class HomeMapPage extends StatelessWidget {
   }
 
   /// Google map with current user location coordinates
-  PlatformMapWidget map(Set<Marker> markers) {
-    if (platformService.isMobile) {
-      return MobileMapWidget(markers: markers, controller: controller);
-    } else {
-      return WebDesktopMapWidget(markers: markers, controller: controller);
-    }
+  Widget map(Set<Marker> markers) {
+    PlatformMapWidget mapWidget = (platformService.isMobile)
+        ? MobileMapWidget(markers: markers, controller: controller)
+        : WebDesktopMapWidget(markers: markers, controller: controller);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (platformService.wideUi || platformService.isDesktopOrWeb)
+          Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: AlignmentDirectional.topCenter,
+                      end: AlignmentDirectional.bottomCenter,
+                      colors: [
+                    Colors.grey.shade100,
+                    Colors.grey.shade50,
+                  ])),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              width: 350,
+              child: mapListView()),
+        Expanded(child: mapWidget),
+      ],
+    );
   }
 
   /// Draggable layer with active sharing location contacts
@@ -298,8 +317,16 @@ class HomeMapPage extends StatelessWidget {
       return ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemBuilder: (context, index) =>
-              ContactMapListTile(contact: contacts[index]),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: (index == contacts.length - 1)
+                  ? const EdgeInsets.only(bottom: 10.0)
+                  : (index == 0)
+                      ? const EdgeInsets.only(top: 20.0)
+                      : const EdgeInsets.all(0),
+              child: ContactMapListTile(contact: contacts[index]),
+            );
+          },
           separatorBuilder: (_, __) => const Divider(
                 color: Colors.black26,
               ),
