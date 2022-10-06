@@ -5,7 +5,7 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'dart:async';
 import 'package:wayat/domain/location/contact_location.dart';
-import 'package:wayat/features/map/controller/map_controller_lib/platform_map_controller.dart';
+import 'package:wayat/features/map/controller/platform_map_controller/platform_map_controller.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 

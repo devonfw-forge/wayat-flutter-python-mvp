@@ -5,8 +5,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/domain/location/contact_location.dart';
-import 'package:wayat/features/map/controller/map_controller_lib/web_desktop_map_controller.dart';
-import 'package:wayat/features/map/page/map_page_lib/platform_map_widget.dart';
+import 'package:wayat/features/map/controller/platform_map_controller/web_desktop_map_controller.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/platform_map_widget.dart';
 
 /// Web and desktop flutter maps widget
 class WebDesktopMapWidget extends PlatformMapWidget {
@@ -29,7 +29,7 @@ class WebDesktopMapWidget extends PlatformMapWidget {
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'com.capgemini2.wayat',
+          userAgentPackageName: 'com.capgemini.wayat',
         ),
         MarkerLayer(
           markers: _generateMarkers(),
