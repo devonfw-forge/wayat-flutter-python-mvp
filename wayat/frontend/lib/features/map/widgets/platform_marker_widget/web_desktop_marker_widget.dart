@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+// ignore: library_prefixes
+import 'package:flutter_map/flutter_map.dart' as FlutterMap;
+// ignore: library_prefixes
+import 'package:latlong2/latlong.dart' as LatLong;
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/map/widgets/platform_marker_widget/platform_marker_widget.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 
 /// Flutter map marker widget
-class WebDesktopMarker extends PlatformMarker<Marker> {
+class WebDesktopMarker extends PlatformMarker<FlutterMap.Marker> {
   final ImageService imageService;
 
-  final Marker marker;
+  final FlutterMap.Marker marker;
 
   WebDesktopMarker({
     required ContactLocation contactLocation,
@@ -17,10 +19,10 @@ class WebDesktopMarker extends PlatformMarker<Marker> {
     ImageService? imageService
   }) : 
     imageService = imageService ?? ImageService(),
-    marker = Marker(
+    marker = FlutterMap.Marker(
       width: 45,
       height: 45,
-      point: LatLng(
+      point: LatLong.LatLng(
         contactLocation.latitude, contactLocation.longitude),
       builder: (context) {
         return GestureDetector(
@@ -42,7 +44,7 @@ class WebDesktopMarker extends PlatformMarker<Marker> {
     );
   
   @override
-  Marker get() {
+  FlutterMap.Marker get() {
     return marker;
   }
 }
