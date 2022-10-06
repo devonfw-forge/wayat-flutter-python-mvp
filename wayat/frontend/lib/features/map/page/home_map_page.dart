@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+//import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
@@ -17,7 +17,9 @@ import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
-import 'package:wayat/features/map/page/platform_map_widget.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/mobile_map_widget.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/web_desktop_map_widget.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/platform_map_widget.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
@@ -35,19 +37,16 @@ class HomeMapPage extends StatelessWidget {
   final MapController controller;
   final PlatformService platformService;
 
-  HomeMapPage({
-    MapController? controller, 
-    PlatformService? platformService, 
-    Key? key
-  }) : 
-    controller = controller ?? MapController(),
-    platformService = platformService ?? PlatformService(),
-    super(key: key);
+  HomeMapPage(
+      {MapController? controller, PlatformService? platformService, Key? key})
+      : controller = controller ?? MapController(),
+        platformService = platformService ?? PlatformService(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     controllerGroups.updateGroups();
-    GetIt.I.get<LifeCycleState>().notifyAppOpenned();
+    //GetIt.I.get<LifeCycleState>().notifyAppOpenned();
     controller.setOnMarkerPressed(
         (contact, icon) => showContactDialog(contact, icon, context));
 
@@ -61,7 +60,7 @@ class HomeMapPage extends StatelessWidget {
                 },
                 child: Stack(
                   children: [
-                    _mapLayer(), 
+                    _mapLayer(),
                     if (!platformService.isWeb) _draggableSheetLayer()
                   ],
                 ));
@@ -81,7 +80,7 @@ class HomeMapPage extends StatelessWidget {
 
   /// Initialize location state and check first if the location service
   /// is enabled correctly
-  Future<dynamic> initializeLocationState(context) async {
+  Future<void> initializeLocationState(context) async {
     while (true) {
       try {
         await statusState.shareLocationState.initialize();
@@ -153,7 +152,7 @@ class HomeMapPage extends StatelessWidget {
           const SizedBox(height: 5),
           groupsSlider(),
           const SizedBox(height: 5),
-          Expanded(child: googleMap(markers)),
+          Expanded(child: map(markers)),
         ],
       );
     });
@@ -240,9 +239,31 @@ class HomeMapPage extends StatelessWidget {
   }
 
   /// Google map with current user location coordinates
-  Widget googleMap(Set<Marker> markers) {
-    return PlatformMapWidget(
-      markers: markers, controller: controller);
+  Widget map(Set<Marker> markers) {
+    PlatformMapWidget mapWidget = (platformService.isMobile)
+        ? MobileMapWidget(markers: markers, controller: controller)
+        : WebDesktopMapWidget(markers: markers, controller: controller);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (platformService.wideUi || platformService.isDesktopOrWeb)
+          Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: AlignmentDirectional.topCenter,
+                      end: AlignmentDirectional.bottomCenter,
+                      colors: [
+                    Colors.grey.shade100,
+                    Colors.grey.shade50,
+                  ])),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              width: 350,
+              child: mapListView()),
+        Expanded(child: mapWidget),
+      ],
+    );
   }
 
   /// Draggable layer with active sharing location contacts
@@ -296,8 +317,16 @@ class HomeMapPage extends StatelessWidget {
       return ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemBuilder: (context, index) =>
-              ContactMapListTile(contact: contacts[index]),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: (index == 0)
+                  ? const EdgeInsets.only(top: 20.0)
+                  : (index == contacts.length - 1)
+                      ? const EdgeInsets.only(bottom: 10.0)
+                      : const EdgeInsets.all(0),
+              child: ContactMapListTile(contact: contacts[index]),
+            );
+          },
           separatorBuilder: (_, __) => const Divider(
                 color: Colors.black26,
               ),

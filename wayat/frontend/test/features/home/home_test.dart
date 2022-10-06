@@ -225,5 +225,27 @@ void main() async {
 
       expect(find.byType(ProfilePage), findsOneWidget);
     });
+
+    testWidgets("With a wide ui it uses a side navigation rail",
+        (tester) async {
+      await tester.pumpWidget(createApp());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(NavigationRail), findsOneWidget);
+    });
+
+    testWidgets("With a tall ui it uses a bottom navigation bar",
+        (tester) async {
+      tester.binding.window.physicalSizeTestValue = const Size(450, 540);
+      tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+      // resets the screen to its original size after the test end
+      await tester.pumpWidget(createApp());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+
+      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+    });
   });
 }
