@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
@@ -9,7 +9,7 @@ import 'package:wayat/lang/app_localizations.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   final UserState userState = GetIt.I.get<UserState>();
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
+  final ProfileController profileController = GetIt.I.get<ProfileController>();
 
   DeleteAccountDialog({Key? key}) : super(key: key);
 
@@ -50,7 +50,7 @@ class DeleteAccountDialog extends StatelessWidget {
                 onPressed: () {
                   AutoRouter.of(context).pop();
                   userState.logOut();
-                  profileState.deleteCurrentUser();
+                  userState.deleteUser();
                 }),
             CustomTextButton(
                 text: appLocalizations.cancel,

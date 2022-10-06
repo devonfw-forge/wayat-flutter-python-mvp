@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -15,10 +15,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'delete_account_dialog_test.mocks.dart';
 
-@GenerateMocks([UserState, ProfileState])
+@GenerateMocks([UserState, ProfileController])
 void main() async {
   final MockUserState mockUserState = MockUserState();
-  final MockProfileState mockProfileState = MockProfileState();
+  final MockProfileController mockProfileController = MockProfileController();
   late MyUser user;
 
   setUpAll(() {
@@ -34,7 +34,7 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<UserState>(mockUserState);
     when(mockUserState.currentUser).thenAnswer((_) => user);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
   });
 
   Widget createApp(Widget body) {
