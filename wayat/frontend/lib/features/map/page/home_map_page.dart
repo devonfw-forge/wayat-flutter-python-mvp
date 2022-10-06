@@ -320,10 +320,10 @@ class HomeMapPage extends StatelessWidget {
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return Padding(
-              padding: (index == contacts.length - 1)
-                  ? const EdgeInsets.only(bottom: 10.0)
-                  : (index == 0)
-                      ? const EdgeInsets.only(top: 20.0)
+              padding: (index == 0)
+                  ? const EdgeInsets.only(top: 20.0)
+                  : (index == contacts.length - 1)
+                      ? const EdgeInsets.only(bottom: 10.0)
                       : const EdgeInsets.all(0),
               child: ContactMapListTile(contact: contacts[index]),
             );
