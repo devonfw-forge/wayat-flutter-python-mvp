@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/app_config_state/app_config_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
@@ -15,10 +16,16 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'preferences_page_test.mocks.dart';
 
-@GenerateMocks([UserState, ProfileState, HttpProvider])
+@GenerateMocks([
+  UserState,
+  ProfileController,
+  HttpProvider,
+  AppConfigState,
+])
 void main() async {
   final MockUserState mockUserState = MockUserState();
-  final MockProfileState mockProfileState = MockProfileState();
+  final MockProfileController mockProfileController = MockProfileController();
+  final MockAppConfigState mockAppConfigState = MockAppConfigState();
   late MyUser user;
 
   List<Language> items = [
@@ -50,12 +57,11 @@ void main() async {
 
     GetIt.I.registerSingleton<UserState>(mockUserState);
     when(mockUserState.currentUser).thenReturn(user);
-    when(mockProfileState.changeLanguage(items[3]))
-        .thenAnswer((_) async => null);
-    when(mockProfileState.language).thenReturn(items[2]);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
+    GetIt.I.registerSingleton<AppConfigState>(mockAppConfigState);
+    when(mockAppConfigState.language).thenReturn(null);
   });
 
   Widget createApp(Widget body) {
