@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+//import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
@@ -29,7 +29,6 @@ import 'package:wayat/services/share_location/background_location_exception.dart
 import 'package:wayat/services/share_location/no_location_service_exception.dart';
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
 
-
 /// Main page of wayat. Is the one displayed when the [BottomNavigationBar] is in wayat.
 class HomeMapPage extends StatelessWidget {
   /// Used to show the [Group] list below the search bar.
@@ -38,19 +37,16 @@ class HomeMapPage extends StatelessWidget {
   final MapController controller;
   final PlatformService platformService;
 
-  HomeMapPage({
-    MapController? controller, 
-    PlatformService? platformService, 
-    Key? key
-  }) : 
-    controller = controller ?? MapController(),
-    platformService = platformService ?? PlatformService(),
-    super(key: key);
+  HomeMapPage(
+      {MapController? controller, PlatformService? platformService, Key? key})
+      : controller = controller ?? MapController(),
+        platformService = platformService ?? PlatformService(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     controllerGroups.updateGroups();
-    GetIt.I.get<LifeCycleState>().notifyAppOpenned();
+    //GetIt.I.get<LifeCycleState>().notifyAppOpenned();
     controller.setOnMarkerPressed(
         (contact, icon) => showContactDialog(contact, icon, context));
 
@@ -64,7 +60,7 @@ class HomeMapPage extends StatelessWidget {
                 },
                 child: Stack(
                   children: [
-                    _mapLayer(), 
+                    _mapLayer(),
                     if (!platformService.isWeb) _draggableSheetLayer()
                   ],
                 ));
@@ -84,7 +80,7 @@ class HomeMapPage extends StatelessWidget {
 
   /// Initialize location state and check first if the location service
   /// is enabled correctly
-  Future<dynamic> initializeLocationState(context) async {
+  Future<void> initializeLocationState(context) async {
     while (true) {
       try {
         await statusState.shareLocationState.initialize();
@@ -156,7 +152,7 @@ class HomeMapPage extends StatelessWidget {
           const SizedBox(height: 5),
           groupsSlider(),
           const SizedBox(height: 5),
-          Expanded(child: googleMap(markers)),
+          Expanded(child: map(markers)),
         ],
       );
     });
@@ -243,14 +239,11 @@ class HomeMapPage extends StatelessWidget {
   }
 
   /// Google map with current user location coordinates
-  PlatformMapWidget googleMap(Set<Marker> markers) {
+  PlatformMapWidget map(Set<Marker> markers) {
     if (platformService.isMobile) {
-      return MobileMapWidget(
-        markers: markers, controller: controller);
-    }
-    else {
-      return WebDesktopMapWidget(
-        markers: markers, controller: controller);
+      return MobileMapWidget(markers: markers, controller: controller);
+    } else {
+      return WebDesktopMapWidget(markers: markers, controller: controller);
     }
   }
 

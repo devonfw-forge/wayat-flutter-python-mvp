@@ -6,23 +6,17 @@ import 'package:wayat/app_state/location_state/share_location/share_location_sta
 import 'package:wayat/features/map/controller/map_controller_lib/mobile_map_controller.dart';
 import 'package:wayat/features/map/page/map_page_lib/platform_map_widget.dart';
 
-
 /// Android and IOS google maps widget
 class MobileMapWidget extends PlatformMapWidget {
-  const MobileMapWidget({
-    required markers, 
-    required controller, 
-    Key? key}) : super(
-      markers: markers, 
-      controller: controller, 
-      key: key
-    );
+  const MobileMapWidget({required markers, required controller, Key? key})
+      : super(markers: markers, controller: controller, key: key);
 
   @override
   Widget build(BuildContext context) {
-    ShareLocationState shareLocationState = GetIt.I.get<LocationListener>().shareLocationState;
+    ShareLocationState shareLocationState =
+        GetIt.I.get<LocationListener>().shareLocationState;
     LatLng currentLocation = LatLng(shareLocationState.currentLocation.latitude,
-      shareLocationState.currentLocation.longitude);
+        shareLocationState.currentLocation.longitude);
     return GoogleMap(
       onTap: (_) {
         removeFocusFromSearchBar(context);
@@ -33,8 +27,8 @@ class MobileMapWidget extends PlatformMapWidget {
       zoomControlsEnabled: false,
       markers: markers,
       onMapCreated: (googleMapController) {
-        controller.platformMapController = MobileMapController();
-        controller.platformMapController.updateController(googleMapController);
+        controller.platformMapController =
+            MobileMapController(googleMapController);
       },
     );
   }

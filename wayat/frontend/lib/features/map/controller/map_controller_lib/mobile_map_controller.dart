@@ -1,23 +1,15 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/features/map/controller/map_controller_lib/platform_map_controller.dart';
 
-class MobileMapController extends PlatformMapController {
-  late GoogleMapController googleMapController;
+/// Concrete implementation of [PlatformMapController] for Google maps using [GoogleMapController]
+class MobileMapController extends PlatformMapController<GoogleMapController> {
+  final GoogleMapController googleMapController;
+
+  MobileMapController(this.googleMapController);
 
   @override
-  void updateController(dynamic controller) {
-    googleMapController = controller;
-  }
-  
-  @override
   void move(double latitude, double longitude) {
-    googleMapController.moveCamera(
-      CameraUpdate.newLatLng(
-        LatLng(
-          latitude, 
-          longitude
-        )
-      )
-    );
+    googleMapController
+        .moveCamera(CameraUpdate.newLatLng(LatLng(latitude, longitude)));
   }
 }
