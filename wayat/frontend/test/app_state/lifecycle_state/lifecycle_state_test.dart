@@ -6,20 +6,20 @@ import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/lifecycle/lifecycle_service.dart';
 
 import 'lifecycle_state_test.mocks.dart';
 
-@GenerateMocks([LifeCycleService, SessionState, HttpProvider])
+@GenerateMocks([LifeCycleService, UserState, HttpProvider])
 void main() async {
-  final MockSessionState mockSessionState = MockSessionState();
+  final MockUserState mockUserState = MockUserState();
 
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
   });
 
@@ -37,7 +37,7 @@ void main() async {
     LifeCycleService mockLifeCycleService = MockLifeCycleService();
     LifeCycleState lifeCycleState =
         LifeCycleState(lifeCycleService: mockLifeCycleService);
-    when(mockSessionState.currentUser).thenReturn(null);
+    when(mockUserState.currentUser).thenReturn(null);
 
     lifeCycleState.notifyAppOpenned();
 
@@ -48,7 +48,7 @@ void main() async {
     LifeCycleService mockLifeCycleService = MockLifeCycleService();
     LifeCycleState lifeCycleState =
         LifeCycleState(lifeCycleService: mockLifeCycleService);
-    when(mockSessionState.currentUser).thenReturn(_generateMyUser());
+    when(mockUserState.currentUser).thenReturn(_generateMyUser());
     when(mockLifeCycleService.notifyLifeCycleState(true))
         .thenAnswer((_) => Future.value(null));
 
@@ -63,7 +63,7 @@ void main() async {
     LifeCycleState lifeCycleState =
         LifeCycleState(lifeCycleService: mockLifeCycleService);
     lifeCycleState.durationInterval = const Duration(seconds: 2);
-    when(mockSessionState.currentUser).thenReturn(_generateMyUser());
+    when(mockUserState.currentUser).thenReturn(_generateMyUser());
     when(mockLifeCycleService.notifyLifeCycleState(true))
         .thenAnswer((_) => Future.value(null));
 
@@ -79,7 +79,7 @@ void main() async {
     LifeCycleService mockLifeCycleService = MockLifeCycleService();
     LifeCycleState lifeCycleState =
         LifeCycleState(lifeCycleService: mockLifeCycleService);
-    when(mockSessionState.currentUser).thenReturn(null);
+    when(mockUserState.currentUser).thenReturn(null);
 
     lifeCycleState.timer = Timer(lifeCycleState.durationInterval, () {});
 
@@ -94,7 +94,7 @@ void main() async {
     LifeCycleService mockLifeCycleService = MockLifeCycleService();
     LifeCycleState lifeCycleState =
         LifeCycleState(lifeCycleService: mockLifeCycleService);
-    when(mockSessionState.currentUser).thenReturn(null);
+    when(mockUserState.currentUser).thenReturn(null);
 
     lifeCycleState.timer = Timer(lifeCycleState.durationInterval, () {});
 
@@ -105,7 +105,7 @@ void main() async {
 
   test("The map is closed if there is a user", () async {
     LifeCycleService mockLifeCycleService = MockLifeCycleService();
-    when(mockSessionState.currentUser).thenReturn(_generateMyUser());
+    when(mockUserState.currentUser).thenReturn(_generateMyUser());
     when(mockLifeCycleService.notifyLifeCycleState(true))
         .thenAnswer((_) => Future.value(null));
     when(mockLifeCycleService.notifyLifeCycleState(false))

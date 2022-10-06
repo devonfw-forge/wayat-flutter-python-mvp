@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -17,9 +17,9 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'edit_profile_test.mocks.dart';
 
-@GenerateMocks([SessionState, ProfileState, HttpProvider])
+@GenerateMocks([UserState, ProfileState, HttpProvider])
 void main() async {
-  final MockSessionState mockSessionState = MockSessionState();
+  final MockUserState mockUserState = MockUserState();
   final MockProfileState mockProfileState = MockProfileState();
 
   late MyUser user;
@@ -36,9 +36,9 @@ void main() async {
         onboardingCompleted: true,
         shareLocationEnabled: true);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    when(mockSessionState.currentUser).thenAnswer((_) => user);
-    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
+    GetIt.I.registerSingleton<UserState>(mockUserState);
+    when(mockUserState.currentUser).thenAnswer((_) => user);
+    when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     when(mockProfileState.deleteCurrentUser())
         .thenAnswer((_) => Future.value());
     GetIt.I.registerSingleton<ProfileState>(mockProfileState);

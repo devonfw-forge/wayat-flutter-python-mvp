@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_state.dart';
@@ -67,8 +67,9 @@ abstract class _OnboardingController with Store {
   /// Finish onboarding and update user session state
   void finishOnBoarding() {
     contactService.sendRequests(selectedContacts);
-    SessionState userSession = GetIt.I.get<SessionState>();
-    userSession.doneOnBoarding();
+    UserState userState = GetIt.I.get<UserState>();
+    userState.authService.sendDoneOnboarding();
+    userState.currentUser!.onboardingCompleted = true;
   }
 
   @action

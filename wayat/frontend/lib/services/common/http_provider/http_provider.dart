@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 // ignore: depend_on_referenced_packages, implementation_imports
@@ -29,7 +28,7 @@ class HttpProvider {
   /// Returns the necessary content and authentication headers for all server requests.
   @visibleForTesting
   Future<Map<String, String>> getHeaders() async {
-    AuthService authService = GetIt.I.get<SessionState>().authService;
+    AuthService authService = GetIt.I.get<UserState>().authService;
     return {
       "Content-Type": ContentType.json.toString(),
       "Authorization": "Bearer ${await authService.getIdToken()}"
@@ -69,7 +68,7 @@ class HttpProvider {
         contentType: MediaType.parse(type),
         filename: 'upload_file_${filePath.hashCode}.$type');
     request.headers["Authorization"] =
-        "Bearer ${await GetIt.I.get<SessionState>().authService.getIdToken()}";
+        "Bearer ${await GetIt.I.get<UserState>().authService.getIdToken()}";
     request.files.add(httpImage);
     return await client.send(request);
   }

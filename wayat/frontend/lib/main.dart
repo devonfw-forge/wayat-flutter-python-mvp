@@ -11,7 +11,7 @@ import 'package:synchronized/synchronized.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/app_config_controller.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
@@ -34,7 +34,9 @@ Future main() async {
   }
 
   // AVoid # character in url (flutter web)
-  if (PlatformService().isWeb) { setPathUrlStrategy(); }
+  if (PlatformService().isWeb) {
+    setPathUrlStrategy();
+  }
 
   // Env file should be loaded before Firebase initialization
   await EnvModel.loadEnvFile();
@@ -58,7 +60,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
-  GetIt.I.registerLazySingleton<SessionState>(() => SessionState());
+  GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());
   GetIt.I.registerLazySingleton<ProfileState>(() => ProfileState());
   GetIt.I.registerLazySingleton<OnboardingController>(
@@ -112,7 +114,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
       // opened for first time
       if (state == AppLifecycleState.resumed) {
         if (!mapState.isAppOpened &&
-            GetIt.I.get<SessionState>().currentUser != null) {
+            GetIt.I.get<UserState>().currentUser != null) {
           await mapState.notifyAppOpenned();
         }
       }

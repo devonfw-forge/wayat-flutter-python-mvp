@@ -6,20 +6,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'http_provider_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<http.Client>(),
-  MockSpec<AuthService>(),
-  MockSpec<SessionState>()
-])
+@GenerateNiceMocks(
+    [MockSpec<http.Client>(), MockSpec<AuthService>(), MockSpec<UserState>()])
 void main() async {
-  SessionState mockSessionState = MockSessionState();
+  UserState mockUserState = MockUserState();
   AuthService mockAuthService = MockAuthService();
   late String baseUrl;
 
@@ -27,10 +24,10 @@ void main() async {
     await dotenv.load();
     baseUrl = EnvModel.BASE_URL;
 
-    when(mockSessionState.authService).thenReturn(mockAuthService);
+    when(mockUserState.authService).thenReturn(mockAuthService);
     when(mockAuthService.getIdToken())
         .thenAnswer((realInvocation) => Future.value("idtoken"));
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
   });
 
   test("GetHeaders is correct", () async {

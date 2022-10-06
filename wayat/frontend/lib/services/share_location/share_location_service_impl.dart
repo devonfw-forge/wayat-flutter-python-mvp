@@ -109,7 +109,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
     sendLocationToBack(initialLocation);
 
     platformService ??= PlatformService();
-    if(!platformService.isWeb) {
+    if (platformService.isMobile) {
       location.enableBackgroundMode(enable: true);
     }
 

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
@@ -13,20 +13,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'progress_page_test.mocks.dart';
 
-@GenerateMocks([
-  SessionState,
-  OnboardingController
-])
+@GenerateMocks([UserState, OnboardingController])
 void main() {
-  late OnboardingController controller;
+  MockOnboardingController controller = MockOnboardingController();
 
   setUpAll(() {
-    GetIt.I.registerSingleton<SessionState>(MockSessionState());
-    GetIt.I.registerSingleton<OnboardingController>(MockOnboardingController());
+    GetIt.I.registerSingleton<UserState>(MockUserState());
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    controller = GetIt.I.get<OnboardingController>();
-    when(controller.currentPage).thenReturn(OnBoardingProgress.initialManageContactsTip);
+    GetIt.I.registerSingleton<OnboardingController>(controller);
+    when(controller.currentPage)
+        .thenReturn(OnBoardingProgress.initialManageContactsTip);
     when(controller.moveBack()).thenAnswer((_) => false);
+    when(controller.finishOnBoarding()).thenReturn(null);
   });
 
   Widget createApp(Widget body) {
@@ -48,12 +46,12 @@ void main() {
     expect(find.text(appLocalizations.skip), findsOneWidget);
   });
 
-  // testWidgets('OnBoarding skip function', (tester) async {
-  //   await tester.pumpWidget(createApp(ProgressOnboardingPage()));
-  //   await tester.tap(find.byType(IconButton));
-  //   await tester.pumpAndSettle();
-  //   verify(controller.finishOnBoarding()).called(1);
-  // });
+  testWidgets('OnBoarding skip function', (tester) async {
+    await tester.pumpWidget(createApp(ProgressOnboardingPage()));
+    await tester.tap(find.text(appLocalizations.skip));
+    await tester.pumpAndSettle();
+    verify(controller.finishOnBoarding()).called(1);
+  });
 
   testWidgets('Onboarding has a back button', (tester) async {
     await tester.pumpWidget(createApp(ProgressOnboardingPage()));

@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/services/profile/profile_service_impl.dart';
@@ -15,7 +15,7 @@ class EditProfileController = _EditProfileController
 
 abstract class _EditProfileController with Store {
   /// Reference to the current user
-  final MyUser user = GetIt.I.get<SessionState>().currentUser!;
+  final MyUser user = GetIt.I.get<UserState>().currentUser!;
 
   /// Reference to the profile state
   final ProfileState profileState = GetIt.I.get<ProfileState>();
@@ -69,7 +69,7 @@ abstract class _EditProfileController with Store {
 
     /// Check new phone number not null and call [updatePhone] to save changes
     if (phoneNumber.isNotEmpty) {
-      await GetIt.I.get<SessionState>().updatePhone(phoneNumber);
+      await GetIt.I.get<UserState>().updatePhone(phoneNumber);
     }
   }
 

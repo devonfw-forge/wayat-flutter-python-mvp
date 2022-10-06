@@ -20,14 +20,18 @@ class GoogleMapsService {
     late Uri uri;
     // To test the web condition, the access to this variable should be
     // wrapped in its own class to allow for mocking
-    if (platformService.isWeb 
-      || platformService.targetPlatform == TargetPlatform.android) {
+    if (!platformService.isWeb 
+      && platformService.targetPlatform == TargetPlatform.android) {
       uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-    } else if (platformService.targetPlatform == TargetPlatform.iOS) {
+    }
+    else if (!platformService.isWeb 
+      && platformService.targetPlatform == TargetPlatform.iOS) {
       //apple maps
       uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
-      //google maps
-      //uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
+    }
+    else {
+      // google maps
+      uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
     }
     if (await launcher.canLaunchUrl(uri)) {
       await launcher.launchUrl(uri);

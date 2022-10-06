@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/widgets/verify_phone_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -16,7 +16,7 @@ class PhoneVerificationController = _PhoneVerificationController
 /// Controller used to validate the phone number
 abstract class _PhoneVerificationController with Store {
   /// Gets current user
-  final MyUser user = GetIt.I.get<SessionState>().currentUser!;
+  final MyUser user = GetIt.I.get<UserState>().currentUser!;
 
   /// Stores the user's phone number
   @observable

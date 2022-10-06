@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 /// Contains the state of [LoginPage]
 class _LoginPageState extends State<LoginPage> {
   /// User session singleton info
-  final SessionState userSession = GetIt.I.get<SessionState>();
+  final UserState userState = GetIt.I.get<UserState>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _signInButton() {
     return InkWell(
       onTap: () async {
-        await userSession.login();
+        await userState.login();
       },
       child: Ink(
         decoration: BoxDecoration(
