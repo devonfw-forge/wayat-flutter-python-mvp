@@ -5,7 +5,9 @@ from typing import Optional, List, Tuple
 from fastapi import Depends
 from google.cloud import firestore
 from google.cloud.firestore import AsyncClient, AsyncTransaction
+from google.cloud.firestore_v1.field_path import FieldPath
 
+from app.business.wayat_management.services.map import MapSettings, get_map_settings
 from app.common.base.base_entity import new_uuid
 from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.wayat_management.utils import get_current_time
@@ -15,8 +17,10 @@ logger = logging.getLogger(__name__)
 
 
 class UserRepository(BaseFirestoreRepository[UserEntity]):
-    def __init__(self, client: AsyncClient = Depends(get_async_client)):
+    def __init__(self, client: AsyncClient = Depends(get_async_client),
+                 map_settings: MapSettings = Depends(get_map_settings)):
         super(UserRepository, self).__init__(collection_path="users", model=UserEntity, client=client)
+        self._map_settings = map_settings
 
     async def create(self, *,
                      uid: str,
@@ -79,23 +83,19 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         else:
             return user_entity.location, user_entity.location_shared_with
 
-    async def find_contacts_with_map_open(self, uid: str, in_shared_list: bool = True) -> list[UserEntity]:
-        result_stream = (
-            self._get_collection_reference()
-            .where("contacts", "array_contains", uid)
-            .where("map_open", "==", True)
-            .where("map_valid_until", ">", get_current_time())
-            .stream()
-        )
-        all_models = [self._model(document_id=result.id, **result.to_dict())
-                      async for result in result_stream]  # type: ignore
-        if in_shared_list is True:
-            user = await self.get_or_throw(document_id=uid)
-            shared_list = user.location_shared_with
-            models = [el for el in all_models if el.document_id in shared_list]
-        else:
-            models = all_models
-        return models
+    async def find_contacts_using_app(self, uid: str) -> list[UserEntity]:
+        """
+           Returns the list of contacts of a user with the app active (have updated their location in the last x mins)
+           :param uid: self user
+           :return: list of contacts with which the user is sharing and have the app active
+        """
+        user = await self.get_or_throw(document_id=uid)
+        shared_list = user.location_shared_with
+        contacts_using_app = self.where_in_list(FieldPath.document_id(), shared_list, [
+            ("location.last_updated", ">=",
+             get_current_time() - timedelta(seconds=self._map_settings.max_time_without_update))  # Updated recently
+        ])
+        return [item async for item in contacts_using_app]
 
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})
