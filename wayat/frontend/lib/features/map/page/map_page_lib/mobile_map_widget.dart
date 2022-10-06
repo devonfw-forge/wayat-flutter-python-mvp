@@ -3,18 +3,20 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/features/map/controller/map_controller.dart';
+import 'package:wayat/features/map/controller/map_controller_lib/mobile_map_controller.dart';
+import 'package:wayat/features/map/page/map_page_lib/platform_map_widget.dart';
 
 
 /// Android and IOS google maps widget
-class MapWidget extends StatelessWidget {
-  final Set<Marker> markers;
-  final MapController controller;
-
-  const MapWidget({
-    required this.markers, 
-    required this.controller, 
-    Key? key}) : super(key: key);
+class MobileMapWidget extends PlatformMapWidget {
+  const MobileMapWidget({
+    required markers, 
+    required controller, 
+    Key? key}) : super(
+      markers: markers, 
+      controller: controller, 
+      key: key
+    );
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +33,14 @@ class MapWidget extends StatelessWidget {
       zoomControlsEnabled: false,
       markers: markers,
       onMapCreated: (googleMapController) {
-        controller.gMapController = googleMapController;
+        controller.platformMapController = MobileMapController();
+        controller.platformMapController.updateController(googleMapController);
       },
     );
   }
 
   void removeFocusFromSearchBar(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
-
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
     }

@@ -17,7 +17,9 @@ import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
-import 'package:wayat/features/map/page/platform_map_widget.dart';
+import 'package:wayat/features/map/page/map_page_lib/mobile_map_widget.dart';
+import 'package:wayat/features/map/page/map_page_lib/web_desktop_map_widget.dart';
+import 'package:wayat/features/map/page/map_page_lib/platform_map_widget.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
@@ -26,6 +28,7 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/share_location/background_location_exception.dart';
 import 'package:wayat/services/share_location/no_location_service_exception.dart';
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
+
 
 /// Main page of wayat. Is the one displayed when the [BottomNavigationBar] is in wayat.
 class HomeMapPage extends StatelessWidget {
@@ -240,9 +243,15 @@ class HomeMapPage extends StatelessWidget {
   }
 
   /// Google map with current user location coordinates
-  Widget googleMap(Set<Marker> markers) {
-    return PlatformMapWidget(
-      markers: markers, controller: controller);
+  PlatformMapWidget googleMap(Set<Marker> markers) {
+    if (platformService.isMobile) {
+      return MobileMapWidget(
+        markers: markers, controller: controller);
+    }
+    else {
+      return WebDesktopMapWidget(
+        markers: markers, controller: controller);
+    }
   }
 
   /// Draggable layer with active sharing location contacts

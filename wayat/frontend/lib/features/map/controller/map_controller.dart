@@ -5,6 +5,7 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'dart:async';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/features/map/controller/map_controller_lib/platform_map_controller.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 
@@ -42,8 +43,10 @@ abstract class _MapController with Store {
   /// Initialize list of [contacts]
   List<ContactLocation> contacts = [];
 
-  /// Google map controller
-  late GoogleMapController gMapController;
+  /// Platform map controller.
+  /// 
+  /// A generic controller for the diferent map's controllers
+  late PlatformMapController platformMapController;
 
   /// Initialize [searchBarText] text
   String searchBarText = "";
@@ -66,7 +69,6 @@ abstract class _MapController with Store {
   /// Return all generated markers
   Future getMarkers() async {
     Set<Marker> newMarkers = await generateMarkers();
-
     setMarkers(newMarkers);
   }
 
@@ -144,9 +146,7 @@ abstract class _MapController with Store {
 
   /// Update map camera
   void onSuggestionsTap(contact) {
-    if (!platformService.isWeb) {
-      gMapController.moveCamera(
-        CameraUpdate.newLatLng(LatLng(contact.latitude, contact.longitude)));
-    }
+    platformMapController.move(
+      contact.latitude, contact.longitude);
   }
 }
