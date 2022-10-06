@@ -2,7 +2,7 @@ import asyncio
 import logging
 from datetime import datetime, timedelta
 from functools import lru_cache
-from typing import overload, Optional
+from typing import overload, Optional, List
 
 from fastapi import Depends
 from pydantic import BaseSettings
