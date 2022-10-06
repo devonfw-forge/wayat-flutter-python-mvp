@@ -4,10 +4,7 @@ import 'package:wayat/lang/language.dart';
 import 'package:wayat/lang/language_constants.dart';
 part 'app_config_state.g.dart';
 
-/// Manages all the states for the authenticated user related
-/// functionality.
-///
-/// Also, it wraps the authentication service.
+/// Manages all preferences and configuration for the App UI
 // ignore: library_private_types_in_public_api
 class AppConfigState = _AppConfigState with _$AppConfigState;
 
