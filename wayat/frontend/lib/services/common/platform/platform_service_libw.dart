@@ -5,6 +5,10 @@ import 'package:flutter/foundation.dart';
 class PlatformService {
   // Whether is web environment
   bool get isWeb => kIsWeb;
+  
+  // Whether is mobile environment
+  bool get isMobile => defaultTargetPlatform == TargetPlatform.android
+    || defaultTargetPlatform == TargetPlatform.iOS;
 
   // Whether is mobile environment
   bool get isMobile =>
