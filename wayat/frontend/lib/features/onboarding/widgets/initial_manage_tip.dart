@@ -4,6 +4,7 @@ import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/lang/app_localizations.dart';
+// import 'package:flutter/foundation.dart' show kIsWeb;
 
 class InitialManageContactsTip extends StatelessWidget {
   final OnboardingController controller = GetIt.I.get<OnboardingController>();
@@ -16,10 +17,15 @@ class InitialManageContactsTip extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextIconButton(
-            onPressed: () => {
-                  controller
-                      .progressTo(OnBoardingProgress.importAddressBookContacts)
-                },
+            onPressed: () {
+              // if (kIsWeb) {
+              //   return controller
+              //       .progressTo(OnBoardingProgress.sendRequests);
+              // } else {
+                return controller
+                    .progressTo(OnBoardingProgress.importAddressBookContacts);
+              // }
+            },
             icon: Icons.edit,
             text: appLocalizations.manageContacts),
         const SizedBox(
