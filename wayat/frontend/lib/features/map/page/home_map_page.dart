@@ -22,6 +22,7 @@ import 'package:wayat/features/map/widgets/platform_map_widget/web_desktop_map_w
 import 'package:wayat/features/map/widgets/platform_map_widget/platform_map_widget.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
+import 'package:wayat/features/map/widgets/platform_marker_widget/platform_marker_widget.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
@@ -145,7 +146,7 @@ class HomeMapPage extends StatelessWidget {
   Observer _mapLayer() {
     return Observer(builder: (context) {
       prepareMapData(context);
-      Set<Marker> markers = controller.filteredMarkers;
+      Set<PlatformMarker> markers = controller.filteredMarkers;
       return Column(
         children: [
           searchBar(),
@@ -239,7 +240,7 @@ class HomeMapPage extends StatelessWidget {
   }
 
   /// Google map with current user location coordinates
-  Widget map(Set<Marker> markers) {
+  Widget map(Set<PlatformMarker> markers) {
     PlatformMapWidget mapWidget = (platformService.isMobile)
         ? MobileMapWidget(markers: markers, controller: controller)
         : WebDesktopMapWidget(markers: markers, controller: controller);

@@ -7,9 +7,7 @@ abstract class PlatformMarker<T> {
   final String name;
 
   PlatformMarker({
-    required ContactLocation contactLocation, 
-    required double latitude, 
-    required double longitude,
+    required ContactLocation contactLocation,
     required void Function() onTap,
   }) : 
     id = contactLocation.id,
