@@ -105,7 +105,7 @@ class MapService:
             raise ValueError("Either uid or user_entity should not be None. Invalid parameters")
         await self.regenerate_map_status(user=user_to_update)
         if force_contacts_active:
-            await self._status_repository.set_active_batch(uid_list=user_to_update.contacts, value=True)
+            await self._set_active(uids=user_to_update.contacts, active=True)
 
     @overload
     async def regenerate_map_status(self, *, uid: str):
