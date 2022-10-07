@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,6 +27,9 @@ class LocationListenerService {
   late bool _lastActive;
   late List _lastContactRefs;
 
+  /// Subscription for the listener to status doc in Firestore
+  late StreamSubscription listenerSubscription;
+
   ///SetUp listener of contactLocation mode update from status
   Future setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
@@ -35,7 +39,6 @@ class LocationListenerService {
     }
     final docRef =
         db.collection("status").doc(GetIt.I.get<UserState>().currentUser!.id);
-
     FirestoreDataModel firestoreData =
         FirestoreDataModel.fromMap((await docRef.get()).data()!);
     _lastActive = firestoreData.active;
@@ -46,7 +49,7 @@ class LocationListenerService {
     onContactsRefUpdate(await getContactRefsFromStatus(firestoreData));
 
     // Subscribe to changes in the currentUser status document
-    docRef.snapshots().listen(
+    listenerSubscription = docRef.snapshots().listen(
       (event) async {
         FirestoreDataModel updatedData =
             FirestoreDataModel.fromMap(event.data()!);
@@ -63,6 +66,11 @@ class LocationListenerService {
       },
       onError: (error) => log("[ERROR] Firestore listen failed: $error"),
     );
+  }
+
+  /// Closes current listener to Firestore
+  void cancelListenerSubscription() {
+    listenerSubscription.cancel();
   }
 
   /// Return active or passive location mode from Firestore status

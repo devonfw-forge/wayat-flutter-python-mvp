@@ -56,4 +56,12 @@ abstract class _LocationListener with Store {
         onContactsRefUpdate: onContactsRefUpdateCallback,
         onLocationModeUpdate: onLocationModeUpdateCallback);
   }
+
+  /// Closes the listener in [locationListenerService].
+  ///
+  /// This is done to avoid having a listener connection error after doing
+  /// a signOut from Firebase.
+  void closeListener() {
+    locationListenerService.cancelListenerSubscription();
+  }
 }
