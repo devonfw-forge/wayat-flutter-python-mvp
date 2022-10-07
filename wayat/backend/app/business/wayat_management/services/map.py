@@ -147,7 +147,8 @@ class MapService:
             return None
 
     async def update_contacts_status(self, uid: str, latitude: float, longitude: float, force=False):
-        contacts_using_app, self_user = await self._user_repository.find_contacts_using_app(uid)
+        contacts_using_app, self_user = await self._user_repository.\
+            find_contacts_using_app(uid, self._max_time_since_last_update)
         contacts_in_range_using_app = [
             c for c in contacts_using_app if self._in_range(latitude, longitude, c.location)
         ]

@@ -7,7 +7,6 @@ from google.cloud import firestore
 from google.cloud.firestore import AsyncClient, AsyncTransaction
 from google.cloud.firestore_v1.field_path import FieldPath
 
-from app.business.wayat_management.services.map import MapSettings, get_map_settings
 from app.common.base.base_entity import new_uuid
 from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.wayat_management.utils import get_current_time
@@ -17,10 +16,8 @@ logger = logging.getLogger(__name__)
 
 
 class UserRepository(BaseFirestoreRepository[UserEntity]):
-    def __init__(self, client: AsyncClient = Depends(get_async_client),
-                 map_settings: MapSettings = Depends(get_map_settings)):
+    def __init__(self, client: AsyncClient = Depends(get_async_client)):
         super(UserRepository, self).__init__(collection_path="users", model=UserEntity, client=client)
-        self._map_settings = map_settings
 
     async def create(self, *,
                      uid: str,
@@ -71,7 +68,8 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         Returns the location of a User. If force=False (default), this Location will be None if the User has the
         share_location property set to False.
 
-        :param force: whether to ignore share_location or not :param uid: the UID of the User
+        :param force: whether to ignore share_location or not
+        :param uid: the UID of the User
         :return: the Location of the User, or None if it's not available
         and the list of contacts with which the user is sharing
         """
@@ -89,17 +87,19 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def set_active_batch(self, uid_list: list[str], value: bool):
         await self.update_batch(uid_list=uid_list, update={"active": value})
 
-    async def find_contacts_using_app(self, uid: str) -> Tuple[list[UserEntity], UserEntity]:
+    async def find_contacts_using_app(self, uid: str, max_time_without_update: int) -> \
+            Tuple[list[UserEntity], UserEntity]:
         """
-           Returns the list of contacts of a user with the app active (have updated their location in the last x mins)
-           :param uid: self user
-           :return: list of contacts with which the user is sharing and have the app active
+            Returns the list of contacts of a user with the app active (have updated their location in the last x mins)
+            :param uid: self user
+            :param max_time_without_update: max time without an updated sent by the contact
+            :return: list of contacts with which the user is sharing and have the app active
         """
         user = await self.get_or_throw(document_id=uid)
         shared_list = user.location_shared_with
         contacts_using_app = self.where_in_list(FieldPath.document_id(), shared_list, [
             ("location.last_updated", ">=",
-             get_current_time() - timedelta(seconds=self._map_settings.max_time_without_update))  # Updated recently
+             get_current_time() - timedelta(seconds=max_time_without_update))  # Updated recently
         ])
         return [item async for item in contacts_using_app], user
 
