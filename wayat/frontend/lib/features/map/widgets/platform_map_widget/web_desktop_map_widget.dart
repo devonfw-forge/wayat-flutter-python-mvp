@@ -9,13 +9,14 @@ import 'package:wayat/features/map/widgets/platform_map_widget/platform_map_widg
 
 /// Web and desktop flutter maps widget
 class WebDesktopMapWidget extends PlatformMapWidget {
-  const WebDesktopMapWidget({required markers, required controller, Key? key})
+  final ShareLocationState shareLocationState =
+      GetIt.I.get<LocationListener>().shareLocationState;
+
+  WebDesktopMapWidget({required markers, required controller, Key? key})
       : super(markers: markers, controller: controller, key: key);
 
   @override
   Widget build(BuildContext context) {
-    ShareLocationState shareLocationState =
-        GetIt.I.get<LocationListener>().shareLocationState;
     MapController mapController = MapController();
     controller.platformMapController = WebDesktopMapController(mapController);
     return FlutterMap(
@@ -38,17 +39,19 @@ class WebDesktopMapWidget extends PlatformMapWidget {
   }
 
   List<Marker> _generateMarkers(latitude, longitude) {
-    List<Marker> newMarkers = markers.map(
-      (e) => e.get() as Marker).toList();
-    newMarkers.add(Marker(
-      point: LatLng(latitude, longitude),
-      builder: (context) {
-        return const Icon(
-          Icons.circle,
-          color: Color.fromARGB(159, 29, 158, 250),
-        );
-      },
-    ));
+    List<Marker> newMarkers = markers.map((e) => e.get() as Marker).toList();
+
+    if (shareLocationState.hasWebPermissions) {
+      newMarkers.add(Marker(
+        point: LatLng(latitude, longitude),
+        builder: (context) {
+          return const Icon(
+            Icons.circle,
+            color: Color.fromARGB(159, 29, 158, 250),
+          );
+        },
+      ));
+    }
     return newMarkers;
   }
 }
