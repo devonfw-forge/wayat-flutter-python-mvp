@@ -33,7 +33,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late bool activeShareMode;
   late DateTime lastShared;
   late bool shareLocationEnabled;
-  late PermissionStatus? webLocationPermissions;
   late Function(LatLng) changeLocationStateCallback;
 
   static Future<void> _checkLocationPermissions() async {
@@ -81,60 +80,33 @@ class ShareLocationServiceImpl extends ShareLocationService {
       bool mode, bool shareLocation, Function(LatLng) onLocationChangedCallback,
       [PlatformService? platformService]) async {
     platformService ??= PlatformService();
-    Location location = Location();
-    PermissionStatus? webPermissionStatus;
-
     if (!platformService.isWeb) {
       await _checkLocationPermissions();
-    } else {
-      webPermissionStatus = await location.requestPermission();
     }
-    LocationData? initialLocation;
-    if (!(platformService.isWeb &&
-        webPermissionStatus == PermissionStatus.deniedForever)) {
-      initialLocation = await location.getLocation();
-    } else {
-      initialLocation =
-          LocationData.fromMap({"latitude": 48.864716, "longitude": 2.349014});
-    }
+    LocationData initialLocation = await Location().getLocation();
 
-    return ShareLocationServiceImpl._create(
-        initialLocation,
-        mode,
-        shareLocation,
-        onLocationChangedCallback,
-        webPermissionStatus,
-        platformService);
+    return ShareLocationServiceImpl._create(initialLocation, mode,
+        shareLocation, onLocationChangedCallback, platformService);
   }
 
   /// Private factory for the location service
   ///
   /// It needs to be divided in private and public static factory to be able to
   /// make the necessary async calls in the public version
-  ShareLocationServiceImpl._create(
-      LocationData initialLocation,
-      bool mode,
-      bool shareLocation,
-      Function(LatLng) onLocationChangedCallback,
-      PermissionStatus? webPermissionStatus,
+  ShareLocationServiceImpl._create(LocationData initialLocation, bool mode,
+      bool shareLocation, Function(LatLng) onLocationChangedCallback,
       [PlatformService? platformService])
       : super.create() {
-    platformService ??= PlatformService();
-
     location = Location.instance;
     activeShareMode = mode;
     lastShared = DateTime.now();
     currentLocation = initialLocation;
     shareLocationEnabled = shareLocation;
     changeLocationStateCallback = onLocationChangedCallback;
-    webLocationPermissions = webPermissionStatus;
 
-    // If we are not in web with denegated location permissions
-    if (!(platformService.isWeb &&
-        webPermissionStatus != PermissionStatus.deniedForever)) {
-      sendLocationToBack(initialLocation);
-    }
+    sendLocationToBack(initialLocation);
 
+    platformService ??= PlatformService();
     if (platformService.isMobile) {
       location.enableBackgroundMode(enable: true);
 
@@ -194,13 +166,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
       sendForcedLocationUpdate();
     }
     this.activeShareMode = activeShareMode;
-  }
-
-  @override
-  bool isWebLocationEnabled() {
-    return webLocationPermissions != null &&
-        webLocationPermissions != PermissionStatus.denied &&
-        webLocationPermissions != PermissionStatus.deniedForever;
   }
 
   /// Sends the current location to back without needing the conditions
