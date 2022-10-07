@@ -25,9 +25,17 @@ class ContactDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           side: const BorderSide(color: Colors.black, width: 1)),
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [mapSection(context), dataSection(context)],
+        child: Container(
+          constraints: const BoxConstraints(
+            minWidth: 70,
+            minHeight: 70,
+            maxWidth: 400,
+            maxHeight: 800,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [mapSection(context), dataSection(context)],
+          ),
         ),
       ),
     );
@@ -160,7 +168,7 @@ class ContactDialog extends StatelessWidget {
           children: [
             Image.network(
               GoogleMapsService.getStaticMapImageFromCoords(
-                  LatLng(contact.latitude, contact.longitude)),
+                  LatLng(contact.latitude, contact.longitude))
             ),
             CircleAvatar(
               backgroundImage: NetworkImage(contact.imageUrl),
