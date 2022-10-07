@@ -25,7 +25,7 @@ class MobileMapWidget extends PlatformMapWidget {
           CameraPosition(target: currentLocation, zoom: 14.5),
       myLocationEnabled: true,
       zoomControlsEnabled: false,
-      markers: markers,
+      markers: markers.map((e) => e.get() as Marker).toSet(),
       onMapCreated: (googleMapController) {
         controller.platformMapController =
             MobileMapController(googleMapController);
