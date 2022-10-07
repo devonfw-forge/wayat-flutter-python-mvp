@@ -17,7 +17,8 @@ class ContactsAddressServiceImpl {
       List<Contact> contacts = await contactsHandler.getContacts();
       return contacts
           .expand((contact) => contact.phones.map((e) => e.number))
-          .map((e) => e.toString())
+          // Delete repeated contacts
+          .toSet()
           .toList();
     }
     return [];
