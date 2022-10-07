@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
+import 'package:wayat/app_state/notification_state/notification_state.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
@@ -25,6 +27,7 @@ import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 /// Initializes the app.
 Future main() async {
@@ -71,6 +74,7 @@ Future registerSingletons() async {
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
   GetIt.I.registerLazySingleton<LocationListener>(() => LocationListener());
+  GetIt.I.registerLazySingleton<NotificationState>(() => NotificationState());
 }
 
 /// Main Application class
@@ -92,10 +96,33 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// To avoid sending multiple `mapOpened` and `mapClosed` requests to the server concurrently
   final Lock _lock = Lock();
 
+  ///FirebaseMassaging token
+  Stream<String> _tokenStream = const Stream<String>.empty();
+  String _token = '';
+
+  void setToken(String token) {
+    print('-----------------------------------------FCM TokenToken: $token');
+    setState(() {
+      _token = token;
+    });
+  }
+
+  void getToken() {
+    FirebaseMessaging.instance.getToken().then((token) {
+      print('-----------------------------------------FCM TokenToken: $token');
+    });
+    _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
+    _tokenStream.listen(setToken);
+  }
+
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
+    GetIt.I.get<NotificationState>().registerNotification();
+    GetIt.I.get<NotificationState>().messagingTerminatedAppListener();
+    GetIt.I.get<NotificationState>().messagingBackgroundAppListener();
+    getToken();
+    super.initState();
   }
 
   @override
@@ -143,7 +170,8 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
     return FutureBuilder(
         future: GetIt.I.get<AppConfigState>().initializeLocale(),
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-          return MaterialApp.router(
+          return OverlaySupport(
+              child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -166,7 +194,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
             },
             routerDelegate: _appRouter.delegate(),
             routeInformationParser: _appRouter.defaultRouteParser(),
-          );
+          ));
         });
   }
 }
