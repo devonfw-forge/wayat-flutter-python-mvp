@@ -33,6 +33,9 @@ abstract class _ShareLocationState with Store {
   @observable
   bool activeShareMode = true;
 
+  @computed
+  bool get hasWebPermissions => shareLocationService.isWebLocationEnabled();
+
   /// Whether the user is currently sending their location to the server
   @observable
   bool shareLocationEnabled =
