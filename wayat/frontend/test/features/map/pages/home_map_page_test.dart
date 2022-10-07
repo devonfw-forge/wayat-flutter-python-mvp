@@ -12,7 +12,7 @@ import 'package:wayat/features/map/widgets/platform_map_widget/mobile_map_widget
 import 'package:wayat/features/map/widgets/platform_map_widget/web_desktop_map_widget.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
@@ -43,7 +43,7 @@ import 'home_map_page_test.mocks.dart';
   ShareLocationState,
   ReceiveLocationState,
   LocationListener,
-  ProfileState,
+  ProfileController,
   LifeCycleState,
   FriendsController,
   RequestsController,
@@ -60,7 +60,7 @@ void main() async {
   final ReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
   final LocationListener mockLocationListener = MockLocationListener();
-  final ProfileState mockProfileState = MockProfileState();
+  final ProfileController mockProfileController = MockProfileController();
   final LifeCycleState mockMapState = MockLifeCycleState();
   final FriendsController mockFriendsController = MockFriendsController();
   final RequestsController mockRequestsController = MockRequestsController();
@@ -117,7 +117,8 @@ void main() async {
         .thenReturn(mockReceiveLocationState);
     when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
     when(mockReceiveLocationState.contacts).thenReturn([]);
-    when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
+    when(mockProfileController.currentPage)
+        .thenReturn(ProfileCurrentPages.profile);
     when(mockUserState.currentUser).thenReturn(user);
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
@@ -133,7 +134,7 @@ void main() async {
     GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });

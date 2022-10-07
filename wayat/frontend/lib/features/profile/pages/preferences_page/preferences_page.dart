@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:restart_app/restart_app.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/features/profile/widgets/restart_ios_dialog.dart';
@@ -15,19 +15,20 @@ class PreferencesPage extends StatefulWidget {
   final EditProfileController controller;
   final PlatformService platformService;
 
-  PreferencesPage({super.key, 
-    EditProfileController? controller,
-    PlatformService? platformService}) : 
-      controller = controller ?? EditProfileController(),
-      platformService = platformService ?? PlatformService();
+  PreferencesPage(
+      {super.key,
+      EditProfileController? controller,
+      PlatformService? platformService})
+      : controller = controller ?? EditProfileController(),
+        platformService = platformService ?? PlatformService();
 
   @override
   State<PreferencesPage> createState() => _PreferencesPageState();
 }
 
 class _PreferencesPageState extends State<PreferencesPage> {
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
-  late Language? changedLanguage = profileState.language;
+  final AppConfigState appConfigState = GetIt.I.get<AppConfigState>();
+  late Language? changedLanguage = appConfigState.language;
 
   @override
   Widget build(BuildContext context) {
@@ -78,17 +79,19 @@ class _PreferencesPageState extends State<PreferencesPage> {
           padding: const EdgeInsets.only(right: 14),
           child: TextButton(
             onPressed: () async {
-              if (changedLanguage != profileState.language) {
-                await profileState.changeLanguage(changedLanguage!);
+              if (changedLanguage != appConfigState.language) {
+                await appConfigState.changeLanguage(changedLanguage!);
                 //Check platform:
                 //On Android restart App
-                if (widget.platformService.targetPlatform == TargetPlatform.android) {
+                if (widget.platformService.targetPlatform ==
+                    TargetPlatform.android) {
                   Restart.restartApp();
                 } else
                 //On iOS Apple ecosysstem don't allow restarting app programmatically
                 //For now solution is to show to the user InfoDialog with recomendation
                 //manually restarting iOS App
-                if (widget.platformService.targetPlatform == TargetPlatform.iOS) {
+                if (widget.platformService.targetPlatform ==
+                    TargetPlatform.iOS) {
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -137,7 +140,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   Widget _languageButton(List<Language> itemList) {
     return Observer(builder: (context) {
       Language languageSelected =
-          profileState.language ?? Language('English', 'en');
+          appConfigState.language ?? Language('English', 'en');
       return DropdownButton<Language>(
         value: (changedLanguage == null) ? languageSelected : changedLanguage,
         borderRadius: BorderRadius.circular(10),
