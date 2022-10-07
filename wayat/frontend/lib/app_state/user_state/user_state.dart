@@ -57,6 +57,7 @@ abstract class _UserState with Store {
 
   /// Shows the graphical interface to login an user and
   /// proceeds with the login process.
+  @action
   Future<void> login() async {
     googleAccount = await authService.signIn();
     // googleAccount will be null if the user cancels the google authentication
@@ -68,12 +69,16 @@ abstract class _UserState with Store {
   /// Log out process. This includes closing the map,
   /// undoing changes in the login state and calling the
   /// [authService] [signOut].
+  @action
   Future<void> logOut() async {
     final LifeCycleState lifeCycleState = GetIt.I.get<LifeCycleState>();
     await lifeCycleState.notifyAppClosed();
 
     await authService.signOut();
+    // This needs to be after [signOut] to not navigate to the login page
+    // before doing the sign out completely
     currentUser = null;
+    googleAccount = null;
   }
 
   /// Checks if login process can be done without a

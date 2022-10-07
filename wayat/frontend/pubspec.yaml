@@ -41,7 +41,7 @@ dependencies:
   # Handles logic to import address books contacts
   flutter_contacts: ^1.1.5
   # Google Sign In
-  google_sign_in: ^5.4.0
+  google_sign_in: ^5.4.2
   # Http request for backend
   http: ^0.13.4
   # Decoding Token ID
