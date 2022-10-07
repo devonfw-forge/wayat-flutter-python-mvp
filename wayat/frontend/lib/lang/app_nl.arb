@@ -107,8 +107,8 @@
 
     "@_INVITATION":{},
     "inviteContacts": "Nodig contacten uit voor Wayat.",
-    "invitationTextAndroid": "https://play.google.com/store/apps/details?id=com.pinterest&gl=ES",
-    "invitationTextIOS": "https://apps.apple.com/es/app/pinterest/id429047995",
+    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
+    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
     "invitationText": "Uitnodigingstekst",
     "invitationCopied": "Gekopieerd naar uw klembord.",
 
