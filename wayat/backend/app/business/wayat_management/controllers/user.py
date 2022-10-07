@@ -9,7 +9,7 @@ from app.business.wayat_management.models.user import (
     UpdateUserRequest,
     FindByPhoneRequest,
     UpdatePreferencesRequest,
-    dto_to_user_with_phone_response, ListUsersWithPhoneResponse,
+    dto_to_user_with_phone_response, ListUsersWithPhoneResponse, SetNotificationsTokenRequest,
 )
 from app.business.wayat_management.services.map import MapService
 from app.business.wayat_management.services.user import UserService
@@ -97,3 +97,11 @@ async def update_preferences(request: UpdatePreferencesRequest,
         # on all the maps of the user friend which "should be updated"
         logger.debug(f"Updating maps of {user.uid} friends")
         await map_service.update_contacts_status(uid=user.uid, force=True)
+
+
+@router.post("/push-notifications", description="Set the user push notifications token")
+async def set_notifications_token(request: SetNotificationsTokenRequest,
+                                  user_service: UserService = Depends(UserService),
+                                  user: FirebaseAuthenticatedUser = Depends(get_user())):
+    logger.debug(f"Updating user push notifications token for {user.uid}")
+    await user_service.set_notifications_token(user.uid, request.token)
