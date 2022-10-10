@@ -17,8 +17,9 @@ class SuggestionsDialog extends StatelessWidget {
     return Dialog(
       elevation: 0,
       insetPadding: const EdgeInsets.symmetric(horizontal: 15),
-      alignment: AlignmentDirectional.topCenter,
+      alignment: AlignmentDirectional.topStart,
       child: Container(
+        constraints: const BoxConstraints(maxWidth: 675),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
           border: Border.all(color: ColorTheme.secondaryColor),

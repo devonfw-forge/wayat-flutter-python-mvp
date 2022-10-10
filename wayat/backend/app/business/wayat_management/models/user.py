@@ -27,6 +27,10 @@ class UpdatePreferencesRequest(BaseModel):
     share_location: Optional[bool]
 
 
+class SetNotificationsTokenRequest(BaseModel):
+    token: str
+
+
 class UserDTO(UpdateUserRequest):
     email: str
     id: str
