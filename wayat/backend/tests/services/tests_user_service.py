@@ -330,6 +330,13 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             self_uid=test_user, friend_uid=test_friend, accept=accept
         )
 
+    async def test_set_push_token_request_should_call_repo(self):
+        # Call to be tested
+        await self.user_service.set_notifications_token("test", "token")
+
+        # Asserts
+        self.mock_user_repo.add_notifications_token.assert_called_with(user_id="test", token="token")
+
     async def test_delete_friend_should_update_groups(self):
         test_friend = "friend"
         user, group_name, members, picture = "testuser", "groupname", [test_friend, "other_friend"], \

@@ -11,9 +11,13 @@ import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/features/profile/widgets/delete_account_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class ProfilePage extends StatelessWidget {
-  ProfilePage({Key? key}) : super(key: key);
+  final PlatformService platformService;
+  ProfilePage({PlatformService? platformService, Key? key})
+      : platformService = platformService ?? PlatformService(),
+        super(key: key);
 
   final ProfileController profileController = GetIt.I.get<ProfileController>();
   final ShareLocationState shareLocationState =
@@ -22,38 +26,50 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(appLocalizations.profile,
-              textAlign: TextAlign.left,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          if (platformService.isMobile)
+            Container(
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(appLocalizations.profile,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                          fontSize: 16))),
+            ),
+          const SizedBox(height: 16),
+          _buildProfileImage(),
+          const SizedBox(height: 16),
+          Observer(builder: (_) {
+            if (userState.currentUser == null) return const Text("");
+            String name = userState.currentUser!.name;
+            return Text(
+              name,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.black87,
-                  fontSize: 16)),
-        ),
-        const SizedBox(height: 16),
-        _buildProfileImage(),
-        const SizedBox(height: 16),
-        Observer(builder: (_) {
-          if (userState.currentUser == null) return const Text("");
-          String name = userState.currentUser!.name;
-          return Text(
-            name,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-                fontSize: 22),
-          );
-        }),
-        const SizedBox(height: 32),
-        _buildShareLocationPart(),
-        const Divider(),
-        const SizedBox(height: 20),
-        _buildAccountPart(context),
-      ],
+                  fontSize: 22),
+            );
+          }),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
+              children: [
+                const SizedBox(height: 32),
+                _buildShareLocationPart(),
+                const Divider(),
+                const SizedBox(height: 20),
+                _buildAccountPart(context),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -9,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
@@ -71,6 +72,8 @@ Future registerSingletons() async {
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
   GetIt.I.registerLazySingleton<LocationListener>(() => LocationListener());
+  GetIt.I.registerLazySingleton<PhoneVerificationController>(
+      () => PhoneVerificationController());
 }
 
 /// Main Application class

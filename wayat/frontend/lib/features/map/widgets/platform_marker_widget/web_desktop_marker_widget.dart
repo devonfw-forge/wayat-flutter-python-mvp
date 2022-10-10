@@ -1,48 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+// ignore: library_prefixes
+import 'package:flutter_map/flutter_map.dart' as FlutterMap;
+// ignore: library_prefixes
+import 'package:latlong2/latlong.dart' as LatLong;
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/map/widgets/platform_marker_widget/platform_marker_widget.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 
-/// Google map marker widget
-abstract class WebDesktopMarker extends PlatformMarker<Marker> {
+/// Flutter map marker widget
+class WebDesktopMarker extends PlatformMarker<FlutterMap.Marker> {
   final ImageService imageService;
 
-  final Marker marker;
+  final FlutterMap.Marker marker;
 
   WebDesktopMarker({
-    required ContactLocation contactLocation, 
-    required double latitude, 
-    required double longitude,
+    required ContactLocation contactLocation,
     required void Function() onTap,
-    required String imageUrl,
     ImageService? imageService
   }) : 
     imageService = imageService ?? ImageService(),
-    marker = Marker(point: LatLng(latitude, longitude),
+    marker = FlutterMap.Marker(
+      width: 45,
+      height: 45,
+      point: LatLong.LatLng(
+        contactLocation.latitude, contactLocation.longitude),
       builder: (context) {
         return GestureDetector(
           onTap: onTap,
           child: Container(
             decoration: BoxDecoration(
+              color: Colors.black,
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: Image.network(imageUrl).image
+                image: Image.network(contactLocation.imageUrl).image
               )
             )
           ),
         );
       },
     ), super(
-      contactLocation: contactLocation, 
-      latitude: latitude, 
-      longitude: longitude,
+      contactLocation: contactLocation,
       onTap: onTap
     );
   
   @override
-  Marker get() {
+  FlutterMap.Marker get() {
     return marker;
   }
 }

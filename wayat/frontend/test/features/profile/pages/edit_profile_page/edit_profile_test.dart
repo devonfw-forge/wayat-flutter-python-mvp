@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -17,10 +18,16 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'edit_profile_test.mocks.dart';
 
-@GenerateMocks([UserState, ProfileController, HttpProvider])
+@GenerateMocks(
+    [UserState, ProfileController, HttpProvider, PhoneVerificationController])
 void main() async {
   final MockUserState mockUserState = MockUserState();
   final MockProfileController mockProfileController = MockProfileController();
+  final MockPhoneVerificationController mockPhoneVerifController =
+      MockPhoneVerificationController();
+
+  when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
+  when(mockPhoneVerifController.isValidPhone).thenReturn(false);
 
   late MyUser user;
 
@@ -41,6 +48,8 @@ void main() async {
     when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
+    GetIt.I.registerSingleton<PhoneVerificationController>(
+        mockPhoneVerifController);
   });
 
   Widget createApp(Widget body) {
