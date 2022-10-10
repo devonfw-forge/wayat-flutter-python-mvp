@@ -31,10 +31,6 @@ abstract class _EditProfileController with Store {
   @observable
   XFile? currentSelectedImage;
 
-  /// Whether the proccess of validating the phone is successful
-  @observable
-  bool validPhone = false;
-
   /// Sets user name to new [newName]
   @action
   void setName(String newName) {
@@ -53,7 +49,7 @@ abstract class _EditProfileController with Store {
   }
 
   /// Saves all the updates to the user's profile
-  Future<void> onPressedSaveButton(String phoneNumber) async {
+  Future<void> onPressedSaveButton() async {
     /// Go back from EditProfile page to Profile page
     profileController.currentPage = ProfileCurrentPages.profile;
 
@@ -65,11 +61,6 @@ abstract class _EditProfileController with Store {
     /// Check new image is not null and call [updateUserImage] to save changes
     if (currentSelectedImage != null) {
       await userState.updateImage(currentSelectedImage!);
-    }
-
-    /// Check new phone number not null and call [updatePhone] to save changes
-    if (phoneNumber.isNotEmpty) {
-      await userState.updatePhone(phoneNumber);
     }
   }
 
