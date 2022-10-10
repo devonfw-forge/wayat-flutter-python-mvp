@@ -3,7 +3,7 @@ import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
-import 'package:wayat/common/widgets/phoneVerificationField/verify_phone_dialog_controller.dart';
+import 'package:wayat/common/widgets/phone_verification/verify_phone_dialog_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';

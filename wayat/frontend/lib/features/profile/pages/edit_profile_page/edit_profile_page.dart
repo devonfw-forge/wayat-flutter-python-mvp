@@ -5,7 +5,7 @@ import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
-import 'package:wayat/common/widgets/phoneVerificationField/phone_verification_field.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_field.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io' as io;

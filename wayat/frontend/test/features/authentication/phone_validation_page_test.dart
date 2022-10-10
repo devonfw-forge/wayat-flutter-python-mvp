@@ -9,7 +9,7 @@ import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
-import 'package:wayat/common/widgets/phoneVerificationField/phone_verification_controller.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:mockito/annotations.dart';

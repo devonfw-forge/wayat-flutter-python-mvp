@@ -4,7 +4,7 @@ import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/common/widgets/phoneVerificationField/verify_phone_dialog.dart';
+import 'package:wayat/common/widgets/phone_verification/verify_phone_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:mobx/mobx.dart';
 

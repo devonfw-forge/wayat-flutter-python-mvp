@@ -7,7 +7,7 @@ import 'package:intl_phone_field/phone_number.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/common/widgets/phoneVerificationField/phone_verification_controller.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 class PhoneVerificationField extends StatelessWidget {

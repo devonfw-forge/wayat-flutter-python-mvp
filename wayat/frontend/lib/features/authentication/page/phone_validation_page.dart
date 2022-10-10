@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
-import 'package:wayat/common/widgets/phoneVerificationField/phone_verification_field.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_field.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
 /// Phone validation page for login
