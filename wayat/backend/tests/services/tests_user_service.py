@@ -303,7 +303,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             name="test",
             phone="+34-TEST",
         )
-        self.mock_user_repo.get_contacts.return_value = ([test_entity], [])
+        self.mock_user_repo.get_contacts.return_value = ([test_entity], test_entity)
 
         # Call to be tested
         user_dtos, _ = await self.user_service.get_user_contacts("uid")

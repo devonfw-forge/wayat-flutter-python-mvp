@@ -150,7 +150,8 @@ class MapService:
         contacts, self_user = await self._user_repository.get_contacts(uid)
         contacts_in_range = [c for c in contacts if self._in_range(latitude, longitude, c.location)]
         contacts_map_open = [c for c in contacts if c.map_open is True and c.map_valid_until >= get_current_time()]
-        contacts_map_open_in_range = list(set(contacts_in_range).intersection(set(contacts_map_open)))
+        contacts_map_open_in_range = list(set([c.document_id for c in contacts_in_range]).intersection(
+            set([c.document_id for c in contacts_map_open])))
         # Update my active status if at least one friend is looking at me
         active_value = len(contacts_map_open_in_range) != 0
         if active_value != self_user.active:
