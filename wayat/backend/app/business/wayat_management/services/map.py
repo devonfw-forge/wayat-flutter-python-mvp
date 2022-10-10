@@ -147,27 +147,19 @@ class MapService:
             return None
 
     async def update_contacts_status(self, uid: str, latitude: float, longitude: float, force=False):
-        contacts_using_app, self_user = await self._user_repository.\
-            find_contacts_using_app(uid, self._max_time_since_last_update)
-        contacts_in_range_using_app = [
-            c for c in contacts_using_app if self._in_range(latitude, longitude, c.location)
-        ]
-        contacts_with_map_open = [c for c in contacts_using_app if c.map_open is True
-                                  and c.map_valid_until >= get_current_time()]
-        contacts_with_map_open_in_range = [c for c in contacts_with_map_open if
-                                           self._in_range(latitude, longitude, c.location)]
+        contacts, self_user = await self._user_repository.get_contacts(uid)
+        contacts_in_range = [c for c in contacts if self._in_range(latitude, longitude, c.location)]
+        contacts_map_open = [c for c in contacts if c.map_open is True and c.map_valid_until >= get_current_time()]
+        contacts_map_open_in_range = list(set(contacts_in_range).intersection(set(contacts_map_open)))
         # Update my active status if at least one friend is looking at me
-        active_value = len(contacts_with_map_open_in_range) != 0
+        active_value = len(contacts_map_open_in_range) != 0
         if active_value != self_user.active:
             # Update my active status if changed only
             await self._set_active(uid=self_user.document_id, active=active_value)
-
-        await self._set_active(uids=[c.document_id for c in contacts_in_range_using_app if not c.active], active=True)
-
+        # Set active all contacts in range which are not already active
+        await self._set_active(uids=[c.document_id for c in contacts_in_range if not c.active], active=True)
         # Update all maps that point at me
-        await asyncio.gather(
-            *[self._update_contact_status(c, force) for c in contacts_with_map_open]
-        )
+        await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open])
 
     @overload
     async def _set_active(self, *, uid: str, active: bool):
