@@ -30,14 +30,17 @@ class ProfilePage extends StatelessWidget {
       child: Column(
         children: [
           if (platformService.isMobile)
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(appLocalizations.profile,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                        fontSize: 16))),
+            Container(
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(appLocalizations.profile,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                          fontSize: 16))),
+            ),
           const SizedBox(height: 16),
           _buildProfileImage(),
           const SizedBox(height: 16),
