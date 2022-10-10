@@ -26,7 +26,8 @@ class ContactTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double nameSpace = (textAction != null) ? 0.4 : 0.65;
+    final double nameSpace =
+        (textAction != null || iconAction != null) ? 0.4 : 0.65;
 
     return InkWell(
       onTap: onTilePressed,
