@@ -61,7 +61,7 @@ dependencies:
   # Firebase dependencies
   firebase_core: ^1.20.0
   cloud_firestore: ^3.4.6
-  firebase_auth: ^3.7.0
+  firebase_auth: ^3.11.2
   image_picker: ^0.8.5+3
   # Phone verification
   firebase_phone_auth_handler: ^1.0.6

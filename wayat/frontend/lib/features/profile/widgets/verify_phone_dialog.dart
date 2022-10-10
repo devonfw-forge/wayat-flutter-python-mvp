@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/features/profile/controllers/verify_phone_dialog_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
@@ -61,7 +63,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           recaptchaVerifierForWebProvider: (isWeb) {
             if (isWeb) {
               return RecaptchaVerifier(
-                  auth: FirebaseAuthPlatform.instance);
+                  auth: FirebaseAuthPlatform.instanceFor(app: Firebase.app(EnvModel.FIREBASE_APP_NAME), pluginConstants: {} ));
             }
           },
           phoneNumber: widget.phoneNumber,
