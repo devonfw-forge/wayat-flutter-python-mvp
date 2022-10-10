@@ -221,6 +221,7 @@ void main() async {
     debugDefaultTargetPlatformOverride = TargetPlatform.windows;
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
+    when(mockLocationState.hasWebPermissions).thenReturn(true);
 
     await tester.pumpWidget(createApp());
     await tester.pumpAndSettle();
