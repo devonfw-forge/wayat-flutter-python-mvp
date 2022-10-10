@@ -22,6 +22,7 @@ class SearchBar extends StatelessWidget {
       alignment: AlignmentDirectional.center,
       padding: const EdgeInsets.only(left: 15.0, right: 10.0),
       height: 60,
+      constraints: const BoxConstraints(maxWidth: 700),
       child: TextField(
         focusNode: focusNode,
         onChanged: onChanged,
