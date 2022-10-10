@@ -48,9 +48,10 @@ class ContactsPage extends StatelessWidget {
           children: [
             _tabBar(tabController),
             Expanded(
-                child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 800),
-                    child: child))
+              child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: child),
+            ),
           ],
         );
       }),
