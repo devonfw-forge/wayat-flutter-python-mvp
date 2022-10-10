@@ -45,7 +45,13 @@ class ContactsPage extends StatelessWidget {
       builder: ((context, child, tabController) {
         controller.updateTabData(tabController.index);
         return Column(
-          children: [_tabBar(tabController), Expanded(child: child)],
+          children: [
+            _tabBar(tabController),
+            Expanded(
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: child))
+          ],
         );
       }),
     ));
@@ -59,6 +65,8 @@ class ContactsPage extends StatelessWidget {
         children: [
           _indicatorBackground(),
           TabBar(
+              isScrollable:
+                  platformService.isDesktopOrWeb || platformService.wideUi,
               unselectedLabelStyle: const TextStyle(
                   fontWeight: FontWeight.normal, color: Colors.black45),
               labelStyle:
