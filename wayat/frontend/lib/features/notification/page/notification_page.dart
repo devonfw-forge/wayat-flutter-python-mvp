@@ -11,8 +11,9 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  var _notificationInfo = GetIt.I.get<NotificationState>().notificationInfo;
-  var _totalNotifications = GetIt.I.get<NotificationState>().totalNotifications;
+  final _notificationInfo = GetIt.I.get<NotificationState>().notificationInfo;
+  final _totalNotifications =
+      GetIt.I.get<NotificationState>().totalNotifications;
 
   /// Show notification title and body
   Widget buildNotification() {

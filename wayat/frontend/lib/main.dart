@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
@@ -27,7 +28,7 @@ import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
-import 'package:overlay_support/overlay_support.dart';
+import 'package:wayat/services/notification/mock/notification_service_impl.dart';
 
 /// Initializes the app.
 Future main() async {
@@ -98,18 +99,21 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
 
   ///FirebaseMassaging token
   Stream<String> _tokenStream = const Stream<String>.empty();
-  String _token = '';
 
   void setToken(String token) {
     print('-----------------------------------------FCM TokenToken: $token');
     setState(() {
-      _token = token;
+      NotificationServiceImpl().sendCurrentUserToken(token);
+      print(
+          '-----------------------------------------Send refreshed token to backend');
     });
   }
 
   void getToken() {
     FirebaseMessaging.instance.getToken().then((token) {
       print('-----------------------------------------FCM TokenToken: $token');
+      if (token != null) NotificationServiceImpl().sendCurrentUserToken(token);
+      print('-----------------------------------------Send token to backend');
     });
     _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     _tokenStream.listen(setToken);
@@ -118,10 +122,10 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    getToken();
     GetIt.I.get<NotificationState>().registerNotification();
     GetIt.I.get<NotificationState>().messagingTerminatedAppListener();
     GetIt.I.get<NotificationState>().messagingBackgroundAppListener();
-    getToken();
     super.initState();
   }
 

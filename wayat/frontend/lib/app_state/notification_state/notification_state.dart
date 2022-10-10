@@ -1,12 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
-import 'package:wayat/services/common/api_contract/api_contract.dart';
-import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 part 'notification_state.g.dart';
 
@@ -17,7 +15,7 @@ class NotificationState = _NotificationState with _$NotificationState;
 /// Implementation of the state of the notifications, when contacts send or accept friend request
 abstract class _NotificationState with Store {
   FirebaseMessaging messagingInstance = FirebaseMessaging.instance;
-  final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
+  PlatformService platformService = PlatformService();
 
   @observable
   int totalNotifications = 0;
@@ -51,17 +49,46 @@ abstract class _NotificationState with Store {
 
   /// Return notification with [newMessage]
   PushNotification pushNotification(RemoteMessage newMessage) {
+    if (platformService.isWeb) {
+      // TODO: implement web notification
+    }
+
+    if (platformService.targetPlatform == TargetPlatform.android) {
+      return PushNotification(
+          title: newMessage.notification?.title,
+          body: newMessage.notification?.body,
+          dataTitle: newMessage.data['title'],
+          dataBody: newMessage.data['body']);
+    }
+
+    if (platformService.targetPlatform == TargetPlatform.iOS) {
+      return PushNotification(
+        title: newMessage.data['aps']['alert']['title'],
+        body: newMessage.data['aps']['alert']['title'],
+        dataTitle: newMessage.data['aps']['alert']['title'],
+        dataBody: newMessage.data['aps']['alert']['body'],
+      );
+    }
     return PushNotification(
-      title: newMessage.notification?.title,
-      body: newMessage.notification?.body,
-      dataTitle: newMessage.data['title'],
-      dataBody: newMessage.data['body'],
+      title: 'No title',
+      body: 'No body',
+      dataTitle: 'No title data',
+      dataBody: 'No body data',
     );
+  }
+
+  /// For handling notification when the app is open
+  @action
+  messagingAppListener() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      notificationInfo = pushNotification(message);
+      totalNotifications++;
+    });
   }
 
   // For handling notification when the app is in terminated state
   @action
-  void messagingTerminatedAppListener() async {
+  messagingTerminatedAppListener() async {
     RemoteMessage? initialMessage = await messagingInstance.getInitialMessage();
     if (initialMessage != null) {
       notificationInfo = pushNotification(initialMessage);
@@ -71,14 +98,15 @@ abstract class _NotificationState with Store {
 
   /// For handling notification when the app is in background
   /// but not terminated
-  void messagingBackgroundAppListener() {
+  @action
+  messagingBackgroundAppListener() {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       notificationInfo = pushNotification(message);
       totalNotifications++;
     });
   }
 
-  void showNotification() {
+  showNotification() {
     showSimpleNotification(
       Text(notificationInfo!.title!),
       leading: NotificationBadge(totalNotifications: totalNotifications),
@@ -88,8 +116,9 @@ abstract class _NotificationState with Store {
     );
   }
 
-  void registerNotification() async {
-    getPermission();
+  @action
+  registerNotification() async {
+    await getPermission();
 
     if (authorizationStatus) {
       FirebaseMessaging.onMessage.listen((RemoteMessage newMessage) {
@@ -104,14 +133,5 @@ abstract class _NotificationState with Store {
     } else {
       debugPrint('User declined or has not accepted permission');
     }
-  }
-
-  Future<bool> sendToken(String token) async {
-    bool done = (await httpProvider.sendPostRequest(
-                    APIContract.pushNotification, {"token": token}))
-                .statusCode /
-            10 ==
-        20;
-    return done;
   }
 }
