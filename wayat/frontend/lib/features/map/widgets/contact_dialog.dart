@@ -55,7 +55,9 @@ class ContactDialog extends StatelessWidget {
                 onPressed: () {
                   //This imperative pop is to close the contact dialog
                   Navigator.pop(context);
-                  GetIt.I.get<HomeNavState>().setSelectedContact(contact, "wayat");
+                  GetIt.I
+                      .get<HomeNavState>()
+                      .setSelectedContact(contact, "wayat");
                 },
                 enabled: true),
             const SizedBox(
@@ -166,9 +168,12 @@ class ContactDialog extends StatelessWidget {
         child: Stack(
           alignment: AlignmentDirectional.center,
           children: [
-            Image.network(
-              GoogleMapsService.getStaticMapImageFromCoords(
-                  LatLng(contact.latitude, contact.longitude))
+            Positioned.fill(
+              child: Image.network(
+                GoogleMapsService.getStaticMapImageFromCoords(
+                    LatLng(contact.latitude, contact.longitude)),
+                fit: BoxFit.fitHeight,
+              ),
             ),
             CircleAvatar(
               backgroundImage: NetworkImage(contact.imageUrl),
