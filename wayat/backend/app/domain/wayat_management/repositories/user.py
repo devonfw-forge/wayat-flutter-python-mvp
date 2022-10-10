@@ -87,22 +87,6 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def set_active_batch(self, uid_list: list[str], value: bool):
         await self.update_batch(uid_list=uid_list, update={"active": value})
 
-    async def find_contacts_using_app(self, uid: str, max_time_without_update: int) -> \
-            Tuple[list[UserEntity], UserEntity]:
-        """
-            Returns the list of contacts of a user with the app active (have updated their location in the last x mins)
-            :param uid: self user
-            :param max_time_without_update: max time without an updated sent by the contact
-            :return: list of contacts with which the user is sharing and have the app active
-        """
-        user = await self.get_or_throw(document_id=uid)
-        shared_list = user.location_shared_with
-        contacts_using_app = self.where_in_list(FieldPath.document_id(), shared_list, [
-            ("location.last_updated", ">=",
-             get_current_time() - timedelta(seconds=max_time_without_update))  # Updated recently
-        ])
-        return [item async for item in contacts_using_app], user
-
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})
 
