@@ -32,8 +32,7 @@ abstract class _PhoneVerificationController with Store {
       errorPhoneVerification == null &&
       phoneNumber != null &&
       phoneNumber!.completeNumber !=
-          GetIt.I.get<UserState>().currentUser!.phone; // &&
-  // phoneNumber!.completeNumber.isNotEmpty;
+          GetIt.I.get<UserState>().currentUser!.phone;
 
   /// Validates the new phone number in [textValue]
   ///
