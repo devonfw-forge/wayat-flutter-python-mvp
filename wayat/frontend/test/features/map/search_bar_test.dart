@@ -17,6 +17,7 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/features/map/widgets/platform_marker_widget/mobile_marker_widget.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/features/map/widgets/suggestions_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -233,7 +234,12 @@ void main() async {
         .thenAnswer((realInvocation) => Future.value(null));
     when(mockController.contacts).thenReturn([contact]);
     when(mockController.filteredMarkers).thenReturn(
-        ObservableSet.of({const Marker(markerId: MarkerId("TestA"))}));
+        ObservableSet.of({
+          MobileMarker(
+            contactLocation: _locatedContactFactory("test"),
+            onTap: () {},
+            icon: BitmapDescriptor.defaultMarker
+          )}));
 
     when(mockController.onSuggestionsTap(contact))
         .thenAnswer((_) => Future.value(null));

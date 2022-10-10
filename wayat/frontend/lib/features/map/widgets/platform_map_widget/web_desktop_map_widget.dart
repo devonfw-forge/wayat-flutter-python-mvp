@@ -4,13 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/map/controller/platform_map_controller/web_desktop_map_controller.dart';
 import 'package:wayat/features/map/widgets/platform_map_widget/platform_map_widget.dart';
 
 /// Web and desktop flutter maps widget
 class WebDesktopMapWidget extends PlatformMapWidget {
-  final ShareLocationState locationState =
+  final ShareLocationState shareLocationState =
       GetIt.I.get<LocationListener>().shareLocationState;
 
   WebDesktopMapWidget({required markers, required controller, Key? key})
@@ -23,8 +22,8 @@ class WebDesktopMapWidget extends PlatformMapWidget {
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
-          center: LatLng(locationState.currentLocation.latitude,
-              locationState.currentLocation.longitude),
+          center: LatLng(shareLocationState.currentLocation.latitude,
+              shareLocationState.currentLocation.longitude),
           zoom: 14.5),
       children: [
         TileLayer(
@@ -32,36 +31,24 @@ class WebDesktopMapWidget extends PlatformMapWidget {
           userAgentPackageName: 'com.capgemini.wayat',
         ),
         MarkerLayer(
-          markers: _generateMarkers(),
+          markers: _generateMarkers(shareLocationState.currentLocation.latitude,
+              shareLocationState.currentLocation.longitude),
         )
       ],
     );
   }
 
-  List<Marker> _generateMarkers() {
-    List<Marker> newMarkers = [];
-    newMarkers.add(Marker(
-      point: LatLng(locationState.currentLocation.latitude,
-          locationState.currentLocation.longitude),
-      builder: (context) {
-        return const Icon(
-          Icons.circle,
-          color: Color.fromARGB(159, 29, 158, 250),
-        );
-      },
-    ));
-    for (ContactLocation contact
-        in GetIt.I.get<LocationListener>().receiveLocationState.contacts) {
+  List<Marker> _generateMarkers(latitude, longitude) {
+    List<Marker> newMarkers = markers.map((e) => e.get() as Marker).toList();
+
+    if (shareLocationState.hasWebPermissions) {
       newMarkers.add(Marker(
-        width: 45,
-        height: 45,
-        point: LatLng(contact.latitude, contact.longitude),
+        point: LatLng(latitude, longitude),
         builder: (context) {
-          return Container(
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: Image.network(contact.imageUrl).image)));
+          return const Icon(
+            Icons.circle,
+            color: Color.fromARGB(159, 29, 158, 250),
+          );
         },
       ));
     }

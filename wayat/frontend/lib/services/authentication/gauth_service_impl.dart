@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
@@ -27,6 +26,13 @@ class GoogleAuthService implements AuthService {
 
   /// Service to login in with Google and obtain the user's data and token
   late GoogleSignIn _googleSignIn;
+
+  /// Whether the user has signed out from this account in this current session.
+  ///
+  /// This is necessary because the method [signInSilently] can reAuthenticate
+  /// even with the argument reAuthenticate to `true` (which is in fact, the default).
+  /// This is even mentioned in the documentation for said method.
+  bool hasSignedOut = false;
 
   /// Instance of the authentication service for Firebase
   final FirebaseAuth _auth =
@@ -89,7 +95,12 @@ class GoogleAuthService implements AuthService {
 
   @override
   Future<GoogleSignInAccount?> signInSilently() async {
-    final GoogleSignInAccount? account = await _googleSignIn.signInSilently();
+    if (hasSignedOut) {
+      hasSignedOut = false;
+      return null;
+    }
+    final GoogleSignInAccount? account =
+        await _googleSignIn.signInSilently(reAuthenticate: false);
     if (account == null) return null;
     GoogleSignInAuthentication gauth = await account.authentication;
     AuthCredential credential = GoogleAuthProvider.credential(
@@ -105,13 +116,13 @@ class GoogleAuthService implements AuthService {
   /// Resets all the state after closing the firestore instance
   @override
   Future<void> signOut() async {
-    await FirebaseFirestore.instanceFor(
-            app: Firebase.app(EnvModel.FIREBASE_APP_NAME))
-        .terminate();
+    GetIt.I.get<LocationListener>().closeListener();
     await _auth.signOut();
-    await _googleSignIn.signOut();
+    await _googleSignIn.disconnect();
+    hasSignedOut = true;
 
     // ResetSingleton instances to reset any information for the current user
+    //The only one not being reseted is LangSingleton
     GetIt.I.resetLazySingleton<PhoneVerificationController>();
     GetIt.I.resetLazySingleton<OnboardingController>();
     GetIt.I.resetLazySingleton<ContactsPageController>();

@@ -218,9 +218,11 @@ void main() async {
   });
 
   testWidgets("In desktop it uses the Desktop Map widget", (tester) async {
+    when(mockLocationState.hasWebPermissions).thenReturn(true);
     debugDefaultTargetPlatformOverride = TargetPlatform.windows;
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
+    when(mockLocationState.hasWebPermissions).thenReturn(true);
 
     await tester.pumpWidget(createApp());
     await tester.pumpAndSettle();

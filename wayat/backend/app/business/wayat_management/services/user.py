@@ -305,3 +305,6 @@ class UserService:
 
     async def update_contact_prefs(self, user_id, contact_id, *, share_location: bool):
         await self._user_repository.update_sharing_preferences(user_id, contact_id, share_location)
+
+    async def set_notifications_token(self, user_id: str, token: str):
+        await self._user_repository.add_notifications_token(user_id=user_id, token=token)
