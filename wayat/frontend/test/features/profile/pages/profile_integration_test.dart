@@ -153,8 +153,7 @@ void main() async {
     await navigateToProfilePage(tester);
 
     // Check the profile page is displayed
-    expect(
-        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+    expect(find.text(appLocalizations.profile), findsWidgets);
 
     // Emulate a tap on the edit profile button
     await tester.tap(find.descendant(
@@ -171,8 +170,7 @@ void main() async {
     await tester.pumpAndSettle();
 
     // Check the profile page is displayed
-    expect(
-        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+    expect(find.text(appLocalizations.profile), findsWidgets);
 
     // Emulate a tap on the edit profile button
     await tester.tap(find.descendant(
@@ -211,8 +209,7 @@ void main() async {
     await navigateToProfilePage(tester);
 
     // Check the profile page is displayed
-    expect(
-        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+    expect(find.text(appLocalizations.profile), findsWidgets);
 
     // Check if switch is displayed
     Finder switchF = find.byKey(const Key("sw_en_prof"));
@@ -232,8 +229,7 @@ void main() async {
     await navigateToProfilePage(tester);
 
     // Check the profile page is displayed
-    expect(
-        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+    expect(find.text(appLocalizations.profile), findsWidgets);
 
     // Emulate a tap on the logOut profile button
     Finder logOutButton = find.descendant(
