@@ -13,25 +13,23 @@ import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
 
 class GoogleMapsService {
   static Future openMaps(double lat, double lng,
-      {UrlLauncherLibW? urlLauncher, 
-      PlatformService? platformService}) async {
+      {UrlLauncherLibW? urlLauncher, PlatformService? platformService}) async {
     UrlLauncherLibW launcher = urlLauncher ?? UrlLauncherLibW();
     platformService ??= PlatformService();
     late Uri uri;
     // To test the web condition, the access to this variable should be
     // wrapped in its own class to allow for mocking
-    if (!platformService.isWeb 
-      && platformService.targetPlatform == TargetPlatform.android) {
+    if (!platformService.isWeb &&
+        platformService.targetPlatform == TargetPlatform.android) {
       uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-    }
-    else if (!platformService.isWeb 
-      && platformService.targetPlatform == TargetPlatform.iOS) {
+    } else if (!platformService.isWeb &&
+        platformService.targetPlatform == TargetPlatform.iOS) {
       //apple maps
       uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
-    }
-    else {
+    } else {
       // google maps
-      uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
+      uri = Uri.parse(
+          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
     }
     if (await launcher.canLaunchUrl(uri)) {
       await launcher.launchUrl(uri);
@@ -68,7 +66,7 @@ class GoogleMapsService {
 
     Uri url = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "size": "400x400",
+      "size": "500x500",
       "zoom": "16",
       "key": apiKey,
     });
@@ -81,7 +79,7 @@ class GoogleMapsService {
 
     Uri signedUrl = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "size": "400x400",
+      "size": "500x500",
       "zoom": "16",
       "key": apiKey,
     });
