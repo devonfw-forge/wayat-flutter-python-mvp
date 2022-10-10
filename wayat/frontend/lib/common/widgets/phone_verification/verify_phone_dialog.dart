@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:wayat/features/profile/controllers/verify_phone_dialog_controller.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/common/widgets/phone_verification/verify_phone_dialog_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
@@ -9,13 +11,13 @@ import 'package:wayat/features/profile/widgets/pin_input_field.dart';
 
 class VerifyPhoneNumberDialog extends StatefulWidget {
   final String phoneNumber;
-  final Function callbackPhone;
+  final Function(String)? callbackController;
   final VerifyPhoneDialogController controller;
 
   VerifyPhoneNumberDialog(
       {Key? key,
       required this.phoneNumber,
-      required this.callbackPhone,
+      this.callbackController,
       controller})
       : controller = controller ?? VerifyPhoneDialogController(),
         super(key: key);
@@ -32,6 +34,8 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
 
   /// Initialize [enteredOtp] variable
   String enteredOtp = "";
+
+  final UserState userState = GetIt.I.get<UserState>();
 
   @override
   void initState() {
@@ -63,8 +67,14 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           onCodeSent: () {},
           onLoginSuccess:
               (UserCredential userCredential, bool autoVerified) async {
-            widget.callbackPhone(widget.phoneNumber);
-            AutoRouter.of(context).pop();
+            bool isUpdated = await userState.updatePhone(widget.phoneNumber);
+            if (isUpdated) {
+              userState.currentUser!.phone = widget.phoneNumber;
+            } else {
+              if (widget.callbackController != null) {
+                widget.callbackController!(appLocalizations.phoneUsed);
+              }
+            }
           },
           onLoginFailed:
               (FirebaseAuthException authException, StackTrace? stackTrace) {
