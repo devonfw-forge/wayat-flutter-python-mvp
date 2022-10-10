@@ -81,8 +81,12 @@ abstract class _NotificationState with Store {
   @action
   messagingAppListener() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      debugPrint(
+          'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+
       notificationInfo = pushNotification(message);
       totalNotifications++;
+      if (notificationInfo != null) showNotification();
     });
   }
 
@@ -91,6 +95,9 @@ abstract class _NotificationState with Store {
   messagingTerminatedAppListener() async {
     RemoteMessage? initialMessage = await messagingInstance.getInitialMessage();
     if (initialMessage != null) {
+      debugPrint(
+          'Message title: ${initialMessage.notification?.title}, body: ${initialMessage.notification?.body}, data: ${initialMessage.data}');
+
       notificationInfo = pushNotification(initialMessage);
       totalNotifications++;
     }
@@ -101,6 +108,9 @@ abstract class _NotificationState with Store {
   @action
   messagingBackgroundAppListener() {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      debugPrint(
+          'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+
       notificationInfo = pushNotification(message);
       totalNotifications++;
     });
@@ -121,15 +131,7 @@ abstract class _NotificationState with Store {
     await getPermission();
 
     if (authorizationStatus) {
-      FirebaseMessaging.onMessage.listen((RemoteMessage newMessage) {
-        debugPrint(
-            'Message title: ${newMessage.notification?.title}, body: ${newMessage.notification?.body}, data: ${newMessage.data}');
-
-        notificationInfo = pushNotification(newMessage);
-        totalNotifications++;
-
-        if (notificationInfo != null) showNotification();
-      });
+      messagingAppListener();
     } else {
       debugPrint('User declined or has not accepted permission');
     }

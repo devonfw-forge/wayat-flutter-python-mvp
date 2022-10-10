@@ -101,19 +101,14 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   Stream<String> _tokenStream = const Stream<String>.empty();
 
   void setToken(String token) {
-    print('-----------------------------------------FCM TokenToken: $token');
     setState(() {
       NotificationServiceImpl().sendCurrentUserToken(token);
-      print(
-          '-----------------------------------------Send refreshed token to backend');
     });
   }
 
   void getToken() {
     FirebaseMessaging.instance.getToken().then((token) {
-      print('-----------------------------------------FCM TokenToken: $token');
       if (token != null) NotificationServiceImpl().sendCurrentUserToken(token);
-      print('-----------------------------------------Send token to backend');
     });
     _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     _tokenStream.listen(setToken);
