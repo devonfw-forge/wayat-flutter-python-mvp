@@ -185,11 +185,11 @@ class MapService:
             await self.regenerate_map_status(user=contact)
 
     def _needs_update(self, last_updated: datetime):
-        return (datetime.now(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
+        return (get_current_time(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
 
     def _should_show(self, location: Optional[Location]):
         if location is not None:
-            return (datetime.now(location.last_updated.tzinfo) - location.last_updated).seconds \
+            return (get_current_time(location.last_updated.tzinfo) - location.last_updated).seconds \
                    < self._max_time_since_last_update
         else:
             return False
