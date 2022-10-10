@@ -229,3 +229,10 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             }
         await self.update(document_id=user_id, data=update)
 
+    async def add_notifications_token(self, *, user_id: str, token: str):
+        update = {
+            "notifications_tokens": firestore.ArrayUnion([token]),
+        }
+        await self.update(document_id=user_id, data=update)
+
+
