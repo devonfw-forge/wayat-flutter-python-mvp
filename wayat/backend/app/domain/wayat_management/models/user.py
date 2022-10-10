@@ -37,6 +37,7 @@ class UserEntity(BaseFirebaseModel):
     pending_requests: list[str] = Field(default_factory=list)
     location: Optional[Location]
     groups: list[GroupInfo] = Field(default_factory=list)
+    notifications_tokens: list[str] = Field(default_factory=list)
 
     # Privacy settings
     share_location: bool = True
