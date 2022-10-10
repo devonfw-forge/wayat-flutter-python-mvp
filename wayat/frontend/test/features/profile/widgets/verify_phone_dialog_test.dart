@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/profile/widgets/pin_input_field.dart';
-import 'package:wayat/features/profile/widgets/verify_phone_dialog.dart';
+import 'package:wayat/common/widgets/phoneVerificationField/verify_phone_dialog.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:mockito/annotations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -40,7 +40,7 @@ void main() async {
       (tester) async {
     await tester.pumpWidget(createApp(VerifyPhoneNumberDialog(
       phoneNumber: '+34600947886',
-      callbackPhone: () {},
+      // callbackPhone: () {},
     )));
     await tester.pump(const Duration(seconds: 1));
     expect(find.byType(PinInputField), findsOneWidget);

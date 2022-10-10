@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
+import 'package:wayat/common/widgets/phoneVerificationField/phone_verification_controller.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/features/profile/controllers/profile_controller.dart';
@@ -111,6 +112,7 @@ class GoogleAuthService implements AuthService {
     await _googleSignIn.signOut();
 
     // ResetSingleton instances to reset any information for the current user
+    GetIt.I.resetLazySingleton<PhoneVerificationController>();
     GetIt.I.resetLazySingleton<OnboardingController>();
     GetIt.I.resetLazySingleton<ContactsPageController>();
     GetIt.I.resetLazySingleton<ProfileController>();

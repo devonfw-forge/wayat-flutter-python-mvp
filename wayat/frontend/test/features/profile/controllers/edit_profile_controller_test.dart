@@ -11,7 +11,7 @@ import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
-import 'package:wayat/features/profile/controllers/phone_verification_controller.dart';
+import 'package:wayat/common/widgets/phoneVerificationField/phone_verification_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
