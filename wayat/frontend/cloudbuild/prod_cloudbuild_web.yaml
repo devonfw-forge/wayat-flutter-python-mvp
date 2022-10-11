@@ -1,0 +1,65 @@
+# [START Wayat Frontend Build]
+steps:
+  # Cleaning:
+  - id: "Cleaning project"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - clean
+    dir: wayat/frontend
+  # Dependencies:
+  - id: "Getting env file"
+    name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp
+      - 'gs://wayat_prod_secrets/.env'
+      - .
+    dir: wayat/frontend/
+  # Packages:
+  - id: "Getting packages"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - pub
+      - get
+    dir: wayat/frontend
+  # Generated files:
+  - id: "Generating extra files"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - pub
+      - run
+      - build_runner
+      - build
+      - --delete-conflicting-outputs
+    dir: wayat/frontend
+  # Testing:
+  - id: "Running Tests"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - test
+    dir: wayat/frontend
+  # Release build:
+  - id: "Generating web version"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - build
+      - web
+      - --web-renderer
+      - canvaskit
+      - --dart-define=BROWSER_IMAGE_DECODING_ENABLED=false
+    dir: wayat/frontend
+  # Creating required packages:
+  - id: "Merging build"
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', '-r', '/workspace/wayat/frontend/build/web', '/workspace/wayat/frontend/web-deploy/']
+  # Creating tar file:
+  - id: "Creating tar build"
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['tar', '-czf', '/workspace/wayat/frontend/wayat_web', '/workspace/wayat/frontend/web-deploy']
+  # Upload build:
+  - id: "Uploading APK"
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', '/workspace/wayat/frontend/wayat_web', 'gs://wayat_prod_release_web/wayat_$SHORT_SHA.tar.gz']
+timeout: "900s"
+options: 
+  machineType: 'E2_HIGHCPU_8'
+# [END Wayat Frontend Build]
