@@ -33,13 +33,17 @@ class GroupsPage extends StatelessWidget {
   Widget groupsContent() {
     return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          header(),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: header()),
           const SizedBox(
             height: 15,
           ),
-          groupList()
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: groupList())
         ],
       ),
     );

@@ -56,8 +56,9 @@ class CreateGroupContactTile extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * nameSpace,
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * nameSpace),
                   child: Text(
                     contact.name,
                     overflow: TextOverflow.ellipsis,
