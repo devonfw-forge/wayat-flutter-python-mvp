@@ -48,8 +48,6 @@ async def delete_contact(contact_id: str, user: FirebaseAuthenticatedUser = Depe
     await map_service.force_status_update(uid=contact_id, force_contacts_active=False)
 
 
-
-
 @router.get("/requests", description="Returns pending sent and received friendship requests",
             response_model=PendingFriendsRequestsResponse)
 async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user()),
