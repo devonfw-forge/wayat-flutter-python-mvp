@@ -22,12 +22,9 @@ abstract class _MapController with Store {
 
   final PlatformService platformService;
 
-  _MapController({
-    ImageService? imageService,
-    PlatformService? platformService
-    }) : 
-    imageService = imageService ?? ImageService(),
-    platformService = platformService ?? PlatformService();
+  _MapController({ImageService? imageService, PlatformService? platformService})
+      : imageService = imageService ?? ImageService(),
+        platformService = platformService ?? PlatformService();
 
   @observable
   bool sharingLocation = true;
@@ -47,7 +44,7 @@ abstract class _MapController with Store {
   List<ContactLocation> contacts = [];
 
   /// Platform map controller.
-  /// 
+  ///
   /// A generic controller for the diferent map's controllers
   late PlatformMapController platformMapController;
 
@@ -60,7 +57,8 @@ abstract class _MapController with Store {
   /// Contacts that are members of the group - [groupMembers]
   List<Contact> groupMembers = [];
 
-  late void Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
+  late void Function(ContactLocation contact, BitmapDescriptor icon)
+      onMarkerPressed;
 
   /// Set contact marker on the map
   void setOnMarkerPressed(
@@ -79,22 +77,19 @@ abstract class _MapController with Store {
   Future<Set<PlatformMarker>> generateMarkers() async {
     Map<String, BitmapDescriptor> bitmaps = await imageService
         .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
-    Set<PlatformMarker> newMarkers = 
-      contacts.map<PlatformMarker>(
-        (ContactLocation contact) {
-          if (platformService.isDesktopOrWeb) {
-          return WebDesktopMarker(
-              contactLocation: contact,
-              onTap: () => onMarkerPressed(
-                contact, bitmaps[contact.imageUrl]!),
-            );
-          }
-          return MobileMarker(
-            contactLocation: contact,
-            icon: bitmaps[contact.imageUrl] ?? BitmapDescriptor.defaultMarker,
-            onTap: () => onMarkerPressed(contact, bitmaps[contact.imageUrl]!)
-          );
-        }).toSet();
+    Set<PlatformMarker> newMarkers =
+        contacts.map<PlatformMarker>((ContactLocation contact) {
+      if (platformService.isDesktopOrWeb) {
+        return WebDesktopMarker(
+          contactLocation: contact,
+          onTap: () => onMarkerPressed(contact, bitmaps[contact.imageUrl]!),
+        );
+      }
+      return MobileMarker(
+          contactLocation: contact,
+          icon: bitmaps[contact.imageUrl] ?? BitmapDescriptor.defaultMarker,
+          onTap: () => onMarkerPressed(contact, bitmaps[contact.imageUrl]!));
+    }).toSet();
     return newMarkers;
   }
 
@@ -139,21 +134,18 @@ abstract class _MapController with Store {
   /// Add filtered markers to Set, which show on the map
   @action
   void filterMarkers() {
-    Iterable<PlatformMarker> markers = allMarkers.where((marker) => marker
-        .name
-        .toLowerCase()
-        .contains(searchBarText.toLowerCase()));
-    if (groupMembers.isNotEmpty) {
+    Iterable<PlatformMarker> markers = allMarkers.where((marker) =>
+        marker.name.toLowerCase().contains(searchBarText.toLowerCase()));
+    if (selectedGroup != null) {
       final groupMembersId = groupMembers.map((e) => e.id.toLowerCase());
-      markers = markers.where((marker) => groupMembersId
-          .contains(marker.id.toLowerCase()));
+      markers = markers
+          .where((marker) => groupMembersId.contains(marker.id.toLowerCase()));
     }
     filteredMarkers = ObservableSet.of(markers.toSet());
   }
 
   /// Update map camera
   void onSuggestionsTap(contact) {
-    platformMapController.move(
-      contact.latitude, contact.longitude);
+    platformMapController.move(contact.latitude, contact.longitude);
   }
 }
