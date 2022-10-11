@@ -96,11 +96,13 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
     async def test_get_user_that_exists_should_return_it(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_prefix = "+TEST"
         test_entity = UserEntity(
             document_id=test_data.uid,
             name=test_data.name,
             email=test_data.email,
             phone=test_data.phone,
+            phone_prefix=test_prefix,
             image_url=test_data.picture
         )
 
@@ -116,18 +118,21 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         assert not is_new_user
         assert result_dto == self.user_service.map_to_dto(test_entity)
+        assert result_dto.phone_prefix == test_prefix
 
     async def test_update_user_should_only_accept_valid_params(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
 
         test_update_valid = {
             "name": test_data.name,
-            "phone": test_data.phone
+            "phone": test_data.phone,
+            "phone_prefix": "+34"
         }
 
         test_update_with_invalid_keys = {
             "name": test_data.name,
             "phone": test_data.phone,
+            "phone_prefix": "+34",
             "invalid": "test"
         }
 
