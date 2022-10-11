@@ -1,16 +1,13 @@
-import asyncio
 import datetime
-import functools
-import json
 import mimetypes
 from functools import lru_cache
-from typing import BinaryIO, ParamSpec, TypeVar, Callable, Awaitable
+from typing import BinaryIO
 
 from google.cloud.storage import Client, Bucket
 from pydantic import BaseSettings
 
 from app.common.core.configuration import load_env_file_on_settings
-from app.common.infra.gcp.firebase import get_account_info
+from app.common.infra.gcp.utils import run_in_executor, get_account_info
 from app.domain.wayat_management.utils import get_current_time
 
 
@@ -37,21 +34,6 @@ def _get_storage_client():
     if _storage_client is None:
         _storage_client = Client.from_service_account_info(get_account_info())
     return _storage_client
-
-
-P = ParamSpec("P")
-R = TypeVar("R")
-
-
-def run_in_executor(f: Callable[P, R]) -> Callable[P, Awaitable[R]]:
-    async def async_f(*args: P.args, **kwargs: P.kwargs):
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(
-            executor=None,
-            func=functools.partial(f, *args, **kwargs)
-        )
-
-    return async_f
 
 
 class CloudStorage:
