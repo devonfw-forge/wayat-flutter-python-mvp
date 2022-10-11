@@ -34,7 +34,7 @@ import 'package:wayat/features/root/root_wrapper.dart';
 /// All pages must follow the naming convention `*Page`, to be renamed as `*Route` by the
 /// [AutoRoute] library using automatic code generation.
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
-  AutoRoute(page: RootWrapper, path: "root", initial: true, children: [
+  AutoRoute(page: RootWrapper, path: "", initial: true, children: [
     AutoRoute(page: OnBoardingWrapper, path: "onboarding", children: [
       AutoRoute(page: OnBoardingPage, path: "allowed-contacts"),
       CustomRoute(
@@ -42,11 +42,11 @@ import 'package:wayat/features/root/root_wrapper.dart';
           path: "add-contacts",
           transitionsBuilder: TransitionsBuilders.slideLeft)
     ]),
-    AutoRoute(page: HomeWrapper, path: "wayat", children: [
+    AutoRoute(page: HomeWrapper, path: "", children: [
       AutoRoute(page: HomePage, path: "home", children: [
         AutoRoute(page: HomeMapPage, path: "map"),
         AutoRoute(page: ContactsWrapper, path: "contacts", children: [
-          AutoRoute(page: ContactsPage, path: "view", children: [
+          AutoRoute(page: ContactsPage, path: "", children: [
             AutoRoute(page: FriendsPage, path: "friends"),
             AutoRoute(page: RequestsPage, path: "pending-requests"),
             AutoRoute(page: SuggestionsPage, path: "suggestions")
@@ -60,7 +60,7 @@ import 'package:wayat/features/root/root_wrapper.dart';
               path: "groups",
               transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
               children: [
-                AutoRoute(page: GroupsPage, path: "group-list"),
+                AutoRoute(page: GroupsPage, path: ""),
                 AutoRoute(page: ManageGroupPage, path: "manage-group"),
                 AutoRoute(page: ViewGroupPage, path: "group"),
                 AutoRoute(
@@ -69,15 +69,15 @@ import 'package:wayat/features/root/root_wrapper.dart';
                     name: "LoadingGroupRoute")
               ]),
         ]),
-        AutoRoute(page: ProfileWrapper, path: "user", children: [
-          AutoRoute(page: ProfilePage, path: "profile"),
+        AutoRoute(page: ProfileWrapper, path: "profile", children: [
+          AutoRoute(page: ProfilePage, path: ""),
           AutoRoute(page: EditProfilePage, path: "manage-profile"),
           AutoRoute(page: PreferencesPage, path: "app-preferences"),
         ]),
       ]),
-      AutoRoute(page: ContactProfilePage, path: "contact-profile")
+      AutoRoute(page: ContactProfilePage, path: "contact")
     ]),
-    AutoRoute(page: LoginWrapper, path: "authentication", children: [
+    AutoRoute(page: LoginWrapper, path: "", children: [
       AutoRoute(page: LoginPage, path: "login"),
       AutoRoute(page: PhoneValidationPage, path: "phone-validation"),
       AutoRoute(page: LoadingPage, path: "loading")
