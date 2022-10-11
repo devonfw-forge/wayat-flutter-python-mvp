@@ -34,47 +34,53 @@ import 'package:wayat/features/root/root_wrapper.dart';
 /// All pages must follow the naming convention `*Page`, to be renamed as `*Route` by the
 /// [AutoRoute] library using automatic code generation.
 @MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: <AutoRoute>[
-  AutoRoute(page: RootWrapper, initial: true, children: [
-    AutoRoute(page: OnBoardingWrapper, children: [
-      AutoRoute(page: OnBoardingPage),
+  AutoRoute(page: RootWrapper, path: "root", initial: true, children: [
+    AutoRoute(page: OnBoardingWrapper, path: "onboarding", children: [
+      AutoRoute(page: OnBoardingPage, path: "allowed-contacts"),
       CustomRoute(
           page: ProgressOnboardingPage,
+          path: "add-contacts",
           transitionsBuilder: TransitionsBuilders.slideLeft)
     ]),
-    AutoRoute(page: HomeWrapper, children: [
-      AutoRoute(page: HomePage, children: [
-        AutoRoute(page: HomeMapPage),
-        AutoRoute(page: ContactsWrapper, children: [
-          AutoRoute(page: ContactsPage, children: [
-            AutoRoute(page: FriendsPage),
-            AutoRoute(page: RequestsPage),
-            AutoRoute(page: SuggestionsPage)
+    AutoRoute(page: HomeWrapper, path: "wayat", children: [
+      AutoRoute(page: HomePage, path: "home", children: [
+        AutoRoute(page: HomeMapPage, path: "map"),
+        AutoRoute(page: ContactsWrapper, path: "contacts", children: [
+          AutoRoute(page: ContactsPage, path: "view", children: [
+            AutoRoute(page: FriendsPage, path: "friends"),
+            AutoRoute(page: RequestsPage, path: "pending-requests"),
+            AutoRoute(page: SuggestionsPage, path: "suggestions")
           ]),
           CustomRoute(
               page: SentRequestsPage,
+              path: "sent-requests",
               transitionsBuilder: TransitionsBuilders.slideLeftWithFade),
           CustomRoute(
               page: GroupsWrapper,
+              path: "groups",
               transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
               children: [
-                AutoRoute(page: GroupsPage),
-                AutoRoute(page: ManageGroupPage),
-                AutoRoute(page: ViewGroupPage),
-                AutoRoute(page: LoadingPage, name: "LoadingGroupRoute")
+                AutoRoute(page: GroupsPage, path: "group-list"),
+                AutoRoute(page: ManageGroupPage, path: "manage-group"),
+                AutoRoute(page: ViewGroupPage, path: "group"),
+                AutoRoute(
+                    page: LoadingPage,
+                    path: "loading",
+                    name: "LoadingGroupRoute")
               ]),
         ]),
-        AutoRoute(page: ProfileWrapper, children: [
-          AutoRoute(page: ProfilePage),
-          AutoRoute(page: EditProfilePage),
-          AutoRoute(page: PreferencesPage),
+        AutoRoute(page: ProfileWrapper, path: "user", children: [
+          AutoRoute(page: ProfilePage, path: "profile"),
+          AutoRoute(page: EditProfilePage, path: "manage-profile"),
+          AutoRoute(page: PreferencesPage, path: "app-preferences"),
         ]),
       ]),
-      AutoRoute(page: ContactProfilePage)
+      AutoRoute(page: ContactProfilePage, path: "contact-profile")
     ]),
-    AutoRoute(page: LoginWrapper, children: [
-      AutoRoute(page: LoginPage),
-      AutoRoute(page: PhoneValidationPage),
-      AutoRoute(page: LoadingPage)
+    AutoRoute(page: LoginWrapper, path: "authentication", children: [
+      AutoRoute(page: LoginPage, path: "login"),
+      AutoRoute(page: PhoneValidationPage, path: "phone-validation"),
+      AutoRoute(page: LoadingPage, path: "loading")
     ]),
   ]),
 ])
