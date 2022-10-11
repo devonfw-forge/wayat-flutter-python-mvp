@@ -10,6 +10,7 @@ from requests import RequestException, Response
 from app.business.wayat_management.models.group import GroupDTO, UsersListType
 from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
+from app.common.infra.gcp.cloud_messaging import CloudMessaging
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.utils import resize_image
 from app.domain.wayat_management.models.user import UserEntity, GroupInfo
@@ -25,10 +26,12 @@ class UserService:
                  user_repository: UserRepository = Depends(),
                  status_repository: StatusRepository = Depends(),
                  file_repository: FileStorage = Depends(),
+                 notifications: CloudMessaging = Depends(),
                  storage_settings: StorageSettings = Depends(get_storage_settings)):
         self._user_repository = user_repository
         self._status_repository = status_repository
         self._file_repository = file_repository
+        self._notifications_service = notifications
         self.DEFAULT_PICTURE = storage_settings.default_picture
         self.DEFAULT_GROUP_PICTURE = storage_settings.default_picture
         self.THUMBNAIL_SIZE = storage_settings.thumbnail_size
@@ -121,7 +124,7 @@ class UserService:
                 await asyncio.gather(*[self.respond_friend_request(uid, c, True) for c in new_contacts_pending])
             # If still there are new contacts send requests
             if new_contacts:
-                await self._user_repository.create_friend_request(uid, list(new_contacts))
+                await self._send_friend_request(self_user, list(new_contacts))
 
     async def get_user_contacts(self, uid: str) -> Tuple[List[UserDTO], List[str]]:
         user_contacts, self_user = await self._user_repository.get_contacts(uid)
@@ -157,6 +160,13 @@ class UserService:
         Responds a friend request by either accepting or denying it
         """
         await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
+        if accept is True:
+            # TODO Send Notification
+            pass
+
+    async def _send_friend_request(self, self_user, new_contacts: list[str]):
+        # TODO Send Notification
+        await self._user_repository.create_friend_request(self_user.document_id, new_contacts)
 
     @staticmethod
     def _remove_contact_from_all_groups(contact_id: str, groups: list[GroupInfo]):
