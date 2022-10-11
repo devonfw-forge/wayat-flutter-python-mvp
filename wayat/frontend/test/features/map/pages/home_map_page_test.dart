@@ -191,6 +191,8 @@ void main() async {
   });
 
   testWidgets("Slider changes value on status state", (tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(450, 540);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
 
@@ -203,6 +205,7 @@ void main() async {
     await tester.pumpAndSettle();
 
     verify(mockLocationState.setShareLocationEnabled(true)).called(1);
+    addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
   });
 
   testWidgets("In mobile it uses the Mobile Map widget", (tester) async {
