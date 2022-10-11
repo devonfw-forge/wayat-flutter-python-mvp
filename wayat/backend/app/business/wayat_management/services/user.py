@@ -5,6 +5,7 @@ from typing import BinaryIO, Optional, Tuple, List
 
 import requests
 from fastapi import Depends
+from firebase_admin.messaging import Notification
 from requests import RequestException, Response
 
 from app.business.wayat_management.models.group import GroupDTO, UsersListType
@@ -121,10 +122,10 @@ class UserService:
                 # If exists remove from new contacts list the ones pending
                 new_contacts = new_contacts.difference(new_contacts_pending)
                 # Accept all pending requests in the new contact list
-                await asyncio.gather(*[self.respond_friend_request(uid, c, True) for c in new_contacts_pending])
+                await asyncio.gather(*[self.respond_friend_request(self_user, c, True) for c in new_contacts_pending])
             # If still there are new contacts send requests
             if new_contacts:
-                await self._send_friend_request(self_user, list(new_contacts))
+                await self._send_friend_request(self_user, list(new_contacts), contacts)
 
     async def get_user_contacts(self, uid: str) -> Tuple[List[UserDTO], List[str]]:
         user_contacts, self_user = await self._user_repository.get_contacts(uid)
@@ -155,18 +156,30 @@ class UserService:
         """
         await self._user_repository.cancel_friend_request(sender_id=uid, receiver_id=contact_id)
 
-    async def respond_friend_request(self, user_uid: str, friend_uid: str, accept: bool):
+    async def respond_friend_request(self, self_user: UserEntity, friend_uid: str, accept: bool):
         """
         Responds a friend request by either accepting or denying it
         """
-        await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
+        await self._user_repository.respond_friend_request(self_uid=self_user.document_id,
+                                                           friend_uid=friend_uid, accept=accept)
         if accept is True:
-            # TODO Send Notification
-            pass
+            # TODO: Validate notification
+            friend = await self._user_repository.get_or_throw(friend_uid)
+            if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
+                notification = Notification(title=f"{self_user.name} has accepted your friend request")
+                await self._notifications_service.send_notification(tokens=friend.notifications_tokens,
+                                                                    notification=notification)
 
-    async def _send_friend_request(self, self_user, new_contacts: list[str]):
-        # TODO Send Notification
+    async def _send_friend_request(self, self_user, new_contacts: list[str], contacts: Optional[List[UserDTO]]):
+        # TODO Validate Send Notification
         await self._user_repository.create_friend_request(self_user.document_id, new_contacts)
+        for c in new_contacts:
+            found_friend = [el for el in contacts if el.id == c]
+            friend = found_friend[0] if len(found_friend) == 1 else await self._user_repository.get_or_throw(c)
+            if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
+                notification = Notification(title=f"{self_user.name} sent you a friend request")
+                await self._notifications_service.send_notification(tokens=friend.notifications_tokens,
+                                                                    notification=notification)
 
     @staticmethod
     def _remove_contact_from_all_groups(contact_id: str, groups: list[GroupInfo]):
