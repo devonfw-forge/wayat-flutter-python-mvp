@@ -76,6 +76,8 @@ steps:
         gcr.io/poc-cloudnative-capgemini/wayat-flutter-frontend-web:$COMMIT_SHA
       - '--region'
       - europe-southwest1
+      - '--port'
+      - 80
     entrypoint: gcloud
 images:
   - >-
