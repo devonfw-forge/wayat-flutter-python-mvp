@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
@@ -64,9 +65,9 @@ abstract class _NotificationState with Store {
     if (platformService.targetPlatform == TargetPlatform.iOS) {
       return PushNotification(
         title: newMessage.data['aps']['alert']['title'],
-        body: newMessage.data['aps']['alert']['title'],
-        dataTitle: newMessage.data['aps']['alert']['title'],
-        dataBody: newMessage.data['aps']['alert']['body'],
+        body: newMessage.data['aps']['alert']['body'],
+        dataTitle: newMessage.data['aps']['alert']['dataTitle'],
+        dataBody: newMessage.data['aps']['alert']['dataBody'],
       );
     }
     return PushNotification(
@@ -118,10 +119,29 @@ abstract class _NotificationState with Store {
 
   showNotification() {
     showSimpleNotification(
-      Text(notificationInfo!.title!),
-      leading: NotificationBadge(totalNotifications: totalNotifications),
-      subtitle: Text(notificationInfo!.body!),
-      background: Colors.cyan.shade700,
+      Text(notificationInfo?.title ?? 'No notification title'),
+      subtitle: Text(notificationInfo?.body ?? 'No notification body'),
+      background: Colors.white,
+      foreground: Colors.black,
+      leading: NotificationBadge(
+          contactIconUrl: notificationInfo?.dataBody ??
+              'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'),
+      trailing: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(1000.0),
+            side: const BorderSide(color: Colors.black, width: 1),
+          ),
+        ),
+        onPressed: (() {
+          //TODO: hide notification
+          //Navigator.of(context).dispose();
+        }),
+        child: const Text('Dismiss',
+            style: TextStyle(fontSize: 14, color: ColorTheme.primaryColor)),
+      ),
       duration: const Duration(seconds: 3),
     );
   }

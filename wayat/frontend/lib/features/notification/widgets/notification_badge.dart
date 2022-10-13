@@ -2,27 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 
 class NotificationBadge extends StatelessWidget {
-  final int totalNotifications;
-  const NotificationBadge({Key? key, required this.totalNotifications})
+  final String contactIconUrl;
+  const NotificationBadge({Key? key, required this.contactIconUrl})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 40.0,
-      height: 40.0,
-      decoration: const BoxDecoration(
+      width: 50.0,
+      height: 50.0,
+      key: const Key("contact_icon"),
+      decoration: BoxDecoration(
         color: ColorTheme.primaryColor,
         shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            '$totalNotifications',
-            style: const TextStyle(color: Colors.black, fontSize: 20),
-          ),
-        ),
+        image: DecorationImage(
+            image: NetworkImage(contactIconUrl), fit: BoxFit.cover),
       ),
     );
   }
