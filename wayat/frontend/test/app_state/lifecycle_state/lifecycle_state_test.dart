@@ -137,6 +137,7 @@ MyUser _generateMyUser() {
       name: "name",
       email: "name@mail.com",
       imageUrl: "https://example.com",
+      phonePrefix: "+34",
       phone: "123",
       onboardingCompleted: true,
       shareLocationEnabled: true);

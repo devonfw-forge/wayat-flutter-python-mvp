@@ -55,6 +55,7 @@ void main() async {
       name: "test_name",
       email: "test@mail.com",
       imageUrl: "url://image",
+      phonePrefix: "+34",
       phone: "600600600",
       onboardingCompleted: true,
       shareLocationEnabled: false);
