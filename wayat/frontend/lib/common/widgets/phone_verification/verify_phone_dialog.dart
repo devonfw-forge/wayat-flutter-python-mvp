@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/phone_verification/verify_phone_dialog_controller.dart';
@@ -62,6 +65,16 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
     return SafeArea(
       child: FirebasePhoneAuthProvider(
         child: FirebasePhoneAuthHandler(
+          recaptchaVerifierForWebProvider: (isWeb) {
+            if (isWeb) {
+              return RecaptchaVerifier(
+                  auth: FirebaseAuthPlatform.instanceFor(
+                      app: Firebase.app(EnvModel.FIREBASE_APP_NAME),
+                      pluginConstants: {}));
+            } else {
+              return null;
+            }
+          },
           phoneNumber: widget.phoneNumber.completeNumber,
           signOutOnSuccessfulVerification: false,
           linkWithExistingUser: false,

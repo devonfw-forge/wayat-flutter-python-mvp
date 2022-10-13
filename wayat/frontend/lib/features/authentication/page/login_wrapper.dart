@@ -6,6 +6,7 @@ import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Wrapper for Login navigation
 class LoginWrapper extends StatelessWidget {
@@ -23,18 +24,25 @@ class LoginWrapper extends StatelessWidget {
           builder: (_, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               bool isLogged = snapshot.data as bool;
-              if (isLogged) {
-                controller.initializeCurrentUser();
-              }
-              return AutoRouter.declarative(
-                  routes: (_) => [
-                        if (!isLogged)
-                          const LoginRoute()
-                        else if (currentUser != null && currentUser.phone == "")
-                          PhoneValidationRoute()
-                        else
-                          const LoadingRoute()
-                      ]);
+              return FutureBuilder(
+                  future: controller.initializeCurrentUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return AutoRouter.declarative(
+                          routes: (_) => [
+                                if (!isLogged)
+                                  const LoginRoute()
+                                else if (currentUser != null &&
+                                    currentUser.phone == "" &&
+                                    !PlatformService().isWeb)
+                                  PhoneValidationRoute()
+                                else
+                                  CannotLoginRoute()
+                              ]);
+                    } else {
+                      return const LoadingWidget();
+                    }
+                  });
             } else {
               return const LoadingWidget();
             }
