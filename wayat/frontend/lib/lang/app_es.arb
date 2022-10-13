@@ -133,5 +133,11 @@
     "groupValidation": "Debes seleccionar al menos dos contactos",
 
     "locationPermission": "Permiso de ubicación",
-    "locationPermissionNotGranted": "Permiso de ubicación no otorgado, acepte los permisos de ubicación para todo el tiempo. Selecciónelo en la sección de configuración"
+    "locationPermissionNotGranted": "Permiso de ubicación no otorgado, acepte los permisos de ubicación para todo el tiempo. Selecciónelo en la sección de configuración",
+
+    "cannotLoginMessage": "Tu cuenta no está asociada a un número de teléfono validado.\n\nPara acceder a wayat web:\n\n 1. Instala wayat en tu teléfono\n2. Configura tu cuenta\n3. Inicia sesión de nuevo desde la web",
+    "goToGitHubReleases": "Ir a la página de lanzamientos de GitHub",
+    "goToGitHubReleasesUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/",
+    "downloadWayat": "Descargar wayat",
+    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk"
 }
