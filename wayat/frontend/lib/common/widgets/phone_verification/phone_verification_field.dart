@@ -39,14 +39,15 @@ class PhoneVerificationField extends StatelessWidget {
                   ],
                   decoration: InputDecoration(
                       // Current number phone without prefix
-                      labelText:
-                          user.phone.isNotEmpty ? user.phone.substring(3) : "",
+                      labelText: user.phone.isNotEmpty
+                          ? user.phone.substring(user.phonePrefix.length)
+                          : "",
                       // Error message showed when the phoneNumber is complete
                       errorText: controller.errorPhoneVerification,
                       labelStyle: textStyle(Colors.black87, 16),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10))),
-                  initialCountryCode: 'ES',
+                  initialCountryCode: controller.getISOCode(),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (PhoneNumber? newTextValue) =>
                       controller.validatePhoneNumber(newTextValue),

@@ -133,5 +133,11 @@
     "groupValidation": "You must select at least two contacts",
 
     "locationPermission": "Location permission",
-    "locationPermissionNotGranted": "Location permission not granted, please accept location permissions for all the time. Select it in the settings section"
+    "locationPermissionNotGranted": "Location permission not granted, please accept location permissions for all the time. Select it in the settings section",
+
+    "cannotLoginMessage": "Your account does not have a validated phone number.\n\nTo access wayat from the web:\n\n 1. Install wayat on your phone\n2. Set up your account from the app\n3. Log in again from the web",
+    "goToGitHubReleases": "Go to GitHub releases page",
+    "goToGitHubReleasesUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/",
+    "downloadWayat": "Download wayat",
+    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk"
 } 

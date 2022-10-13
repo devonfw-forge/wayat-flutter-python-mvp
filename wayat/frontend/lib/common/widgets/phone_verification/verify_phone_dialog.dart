@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/phone_verification/verify_phone_dialog_controller.dart';
@@ -8,10 +11,11 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
 import 'package:wayat/features/profile/widgets/pin_input_field.dart';
+import 'package:intl_phone_field/phone_number.dart' as intl_phone;
 
 class VerifyPhoneNumberDialog extends StatefulWidget {
-  final String phoneNumber;
-  final Function(String)? callbackController;
+  final intl_phone.PhoneNumber phoneNumber;
+  final Function(String?)? callbackController;
   final VerifyPhoneDialogController controller;
 
   VerifyPhoneNumberDialog(
@@ -61,15 +65,31 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
     return SafeArea(
       child: FirebasePhoneAuthProvider(
         child: FirebasePhoneAuthHandler(
-          phoneNumber: widget.phoneNumber,
+          recaptchaVerifierForWebProvider: (isWeb) {
+            if (isWeb) {
+              return RecaptchaVerifier(
+                  auth: FirebaseAuthPlatform.instanceFor(
+                      app: Firebase.app(EnvModel.FIREBASE_APP_NAME),
+                      pluginConstants: {}));
+            } else {
+              return null;
+            }
+          },
+          phoneNumber: widget.phoneNumber.completeNumber,
           signOutOnSuccessfulVerification: false,
           linkWithExistingUser: false,
           onCodeSent: () {},
           onLoginSuccess:
               (UserCredential userCredential, bool autoVerified) async {
-            bool isUpdated = await userState.updatePhone(widget.phoneNumber);
+            bool isUpdated = await userState.updatePhone(
+                widget.phoneNumber.countryCode,
+                widget.phoneNumber.completeNumber);
             if (isUpdated) {
-              userState.currentUser!.phone = widget.phoneNumber;
+              userState.currentUser!.phone = widget.phoneNumber.completeNumber;
+              userState.currentUser!.phonePrefix =
+                  widget.phoneNumber.countryCode;
+              // ignore: use_build_context_synchronously
+              AutoRouter.of(context).pop();
             } else {
               if (widget.callbackController != null) {
                 widget.callbackController!(appLocalizations.phoneUsed);
@@ -110,8 +130,8 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _getVerifyPhoneText(
-                appLocalizations.verifyPhoneText, widget.phoneNumber),
+            _getVerifyPhoneText(appLocalizations.verifyPhoneText,
+                widget.phoneNumber.completeNumber),
             const SizedBox(height: 32),
             _getVerifyTextfields(controller),
             const SizedBox(height: 32),
@@ -136,11 +156,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
                   enabled: true,
                   onPressed: () async {
                     /// Verify [enteredOtp] code
-                    final verified = await controller.verifyOtp(enteredOtp);
-                    if (verified) {
-                      // ignore: use_build_context_synchronously
-                      AutoRouter.of(context).pop();
-                    }
+                    await controller.verifyOtp(enteredOtp);
                   }),
               CustomTextButton(
                   text: appLocalizations.cancel,

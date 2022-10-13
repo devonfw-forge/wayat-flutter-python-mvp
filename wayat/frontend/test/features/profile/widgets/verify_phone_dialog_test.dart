@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/profile/widgets/pin_input_field.dart';
 import 'package:wayat/common/widgets/phone_verification/verify_phone_dialog.dart';
@@ -39,7 +40,8 @@ void main() async {
   testWidgets('Verification dialog widget has correct AlertDialog',
       (tester) async {
     await tester.pumpWidget(createApp(VerifyPhoneNumberDialog(
-      phoneNumber: '+34600947886',
+      phoneNumber: PhoneNumber(
+          countryCode: "+34", countryISOCode: "ES", number: "123456789"),
       // callbackPhone: () {},
     )));
     await tester.pump(const Duration(seconds: 1));

@@ -110,12 +110,14 @@ void main() async {
         .thenAnswer((_) => <Group>[].asObservable());
     when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
     when(mockPhoneVerifController.isValidPhone).thenReturn(false);
+    when(mockPhoneVerifController.getISOCode()).thenReturn("ES");
 
     user = MyUser(
         id: "2",
         name: "test",
         email: "test@capg.com",
         imageUrl: "http://example.com",
+        phonePrefix: "+34",
         phone: "123456789",
         onboardingCompleted: true,
         shareLocationEnabled: true);
