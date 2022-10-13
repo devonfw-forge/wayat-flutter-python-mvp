@@ -37,7 +37,7 @@ class LoginWrapper extends StatelessWidget {
                                     !PlatformService().isWeb)
                                   PhoneValidationRoute()
                                 else
-                                  const CannotLoginRoute()
+                                  CannotLoginRoute()
                               ]);
                     } else {
                       return const LoadingWidget();

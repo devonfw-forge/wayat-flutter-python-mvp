@@ -6,7 +6,10 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
 
 class CannotLoginPage extends StatelessWidget {
-  const CannotLoginPage({super.key});
+  final UrlLauncherLibW urlLauncherLibW;
+
+  CannotLoginPage({UrlLauncherLibW? urlLauncher, super.key})
+      : urlLauncherLibW = urlLauncher ?? UrlLauncherLibW();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class CannotLoginPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 600,
+            constraints: const BoxConstraints(maxWidth: 600),
             alignment: AlignmentDirectional.center,
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
@@ -27,7 +30,7 @@ class CannotLoginPage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Your account does not have a validated phone number.\n\nTo access wayat from the web:\n\n 1. Install wayat on your phone\n2. Set up your account from the app\n3. Log in again from the web",
+                  appLocalizations.cannotLoginMessage,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18,
@@ -37,14 +40,14 @@ class CannotLoginPage extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Wrap(
+                  alignment: WrapAlignment.center,
                   children: [
                     CustomTextIconButton(
                       text: appLocalizations.goToGitHubReleases,
                       icon: Icons.link,
                       onPressed: () {
-                        UrlLauncherLibW().launchUrl(
+                        urlLauncherLibW.launchUrl(
                             Uri.parse(appLocalizations.goToGitHubReleasesUrl));
                       },
                     ),
@@ -52,7 +55,7 @@ class CannotLoginPage extends StatelessWidget {
                       text: appLocalizations.downloadWayat,
                       icon: Icons.download_sharp,
                       onPressed: () {
-                        UrlLauncherLibW().launchUrl(
+                        urlLauncherLibW.launchUrl(
                             Uri.parse(appLocalizations.downloadWayatUrl));
                       },
                     ),
