@@ -25,7 +25,7 @@ void main() async {
       email: "test@capg.com",
       imageUrl: "http://example.com",
       phonePrefix: "+34",
-      phone: "123456789",
+      phone: "+34123456789",
       onboardingCompleted: true,
       shareLocationEnabled: true);
 
@@ -37,6 +37,7 @@ void main() async {
 
   when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
   when(mockPhoneVerifController.isValidPhone).thenReturn(false);
+  when(mockPhoneVerifController.getISOCode()).thenReturn("ES");
 
   setUpAll(() {
     GetIt.I.registerSingleton<UserState>(mockUserState);

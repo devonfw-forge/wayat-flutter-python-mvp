@@ -28,6 +28,7 @@ void main() async {
 
   when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
   when(mockPhoneVerifController.isValidPhone).thenReturn(false);
+  when(mockPhoneVerifController.getISOCode()).thenReturn("ES");
 
   late MyUser user;
 

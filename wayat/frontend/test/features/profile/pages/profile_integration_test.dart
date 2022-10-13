@@ -110,6 +110,7 @@ void main() async {
         .thenAnswer((_) => <Group>[].asObservable());
     when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
     when(mockPhoneVerifController.isValidPhone).thenReturn(false);
+    when(mockPhoneVerifController.getISOCode()).thenReturn("ES");
 
     user = MyUser(
         id: "2",
