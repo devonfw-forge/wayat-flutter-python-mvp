@@ -6,6 +6,7 @@ import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 part 'notification_state.g.dart';
 
@@ -18,6 +19,17 @@ abstract class _NotificationState with Store {
   FirebaseMessaging messagingInstance = FirebaseMessaging.instance;
   PlatformService platformService = PlatformService();
 
+  /// Create the channel on the device (if a channel with an id already exists, it will be updated)
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  /// Create a new AndroidNotificationChannel instance
+  static const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title// description
+    importance: Importance.max,
+  );
+
   @observable
   int totalNotifications = 0;
 
@@ -27,16 +39,16 @@ abstract class _NotificationState with Store {
   @observable
   bool authorizationStatus = false;
 
-  ///Get permitions from the user
+  ///Get permitions from the user Apple & Web
   @action
   Future<void> getPermission() async {
     NotificationSettings settings = await messagingInstance.requestPermission(
       alert: true,
-      announcement: false,
+      announcement: true,
       badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: true,
       sound: true,
     );
 
@@ -44,7 +56,6 @@ abstract class _NotificationState with Store {
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       authorizationStatus = true;
     }
-
     print('User granted permission: ${settings.authorizationStatus}');
   }
 
@@ -82,8 +93,27 @@ abstract class _NotificationState with Store {
   @action
   messagingAppListener() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      // If `onMessage` is triggered with a notification, construct our own
+      // local notification to show to users using the created channel.
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                icon: android.smallIcon,
+                // other properties...
+              ),
+            ));
+      }
+
       debugPrint(
-          'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
+          '----------------------------------------------------------Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
 
       notificationInfo = pushNotification(message);
       totalNotifications++;
@@ -148,12 +178,24 @@ abstract class _NotificationState with Store {
 
   @action
   registerNotification() async {
+    /// Check permissions
     await getPermission();
-
     if (authorizationStatus) {
       messagingAppListener();
     } else {
       debugPrint('User declined or has not accepted permission');
     }
+
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
   }
 }

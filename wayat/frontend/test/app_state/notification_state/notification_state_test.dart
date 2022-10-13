@@ -6,7 +6,7 @@ import 'package:wayat/app_state/notification_state/notification_state.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/services/notification/mock/notification_service.dart';
 
-import '../../features/notification/pages/notification_page_test.mocks.dart';
+import '../../features/notification/widgets/dynamic_dialog_test.mocks.dart';
 import 'notification_state_test.mocks.dart';
 
 @GenerateMocks([
