@@ -77,7 +77,7 @@ steps:
       - '--region'
       - europe-southwest1
       - '--port'
-      - 80
+      - '80'
     entrypoint: gcloud
 images:
   - >-
