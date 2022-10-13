@@ -1,15 +1,15 @@
 import io
-from datetime import datetime, timezone
+from datetime import datetime, timezone, tzinfo
 from math import radians, cos, sin, asin, sqrt
-from typing import BinaryIO
+from typing import BinaryIO, Optional
 
 from PIL import Image
 
 EARTH_RADIUS_KM = 6371.001  # Average radius of earth in kilometers. Determines return value units.
 
 
-def get_current_time():
-    return datetime.now(timezone.utc)
+def get_current_time(zone: Optional[tzinfo] = None):
+    return datetime.now(timezone.utc if not zone else zone)
 
 
 def haversine_distance(lat1, lon1, lat2, lon2):

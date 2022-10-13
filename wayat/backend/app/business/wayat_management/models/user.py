@@ -10,6 +10,7 @@ class UserID(BaseModel):
 class UpdateUserRequest(BaseModel):
     name: Optional[str]
     phone: Optional[str]
+    phone_prefix: Optional[str]
     onboarding_completed: Optional[bool]
     share_location: Optional[bool]
 
@@ -47,6 +48,7 @@ class UserProfileResponse(UserDTO):
 
 class UserWithPhoneResponse(UserID):
     phone: str
+    phone_prefix: Optional[str]
     name: str
     image_url: str
 
@@ -78,4 +80,5 @@ class UpdateContactPreferencesRequest(BaseModel):
 
 
 def dto_to_user_with_phone_response(u: UserDTO):
-    return UserWithPhoneResponse(id=u.id, phone=u.phone, name=u.name, image_url=u.image_url)
+    return UserWithPhoneResponse(id=u.id, phone=u.phone, phone_prefix=u.phone_prefix, name=u.name,
+                                 image_url=u.image_url)

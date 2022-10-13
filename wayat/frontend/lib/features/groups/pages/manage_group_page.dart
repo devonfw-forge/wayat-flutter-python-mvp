@@ -37,22 +37,25 @@ class ManageGroupPage extends StatelessWidget {
       children: [
         header(),
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                groupPictureSection(context),
-                const SizedBox(
-                  height: 5,
-                ),
-                groupName(),
-                addParticipantsSection(context),
-                participantsSection(context),
-                showInfoValidGroup(),
-                const SizedBox(
-                  height: 10,
-                )
-              ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  groupPictureSection(context),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  groupName(),
+                  addParticipantsSection(context),
+                  participantsSection(context),
+                  showInfoValidGroup(),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
             ),
           ),
         ),

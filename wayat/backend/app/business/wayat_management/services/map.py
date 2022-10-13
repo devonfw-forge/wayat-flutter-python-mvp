@@ -2,7 +2,7 @@ import asyncio
 import logging
 from datetime import datetime, timedelta
 from functools import lru_cache
-from typing import overload, Optional
+from typing import overload, Optional, List
 
 from fastapi import Depends
 from pydantic import BaseSettings
@@ -105,7 +105,7 @@ class MapService:
             raise ValueError("Either uid or user_entity should not be None. Invalid parameters")
         await self.regenerate_map_status(user=user_to_update)
         if force_contacts_active:
-            await self._status_repository.set_active_batch(uid_list=user_to_update.contacts, value=True)
+            await self._set_active(uids=user_to_update.contacts, active=True)
 
     @overload
     async def regenerate_map_status(self, *, uid: str):
@@ -146,29 +146,51 @@ class MapService:
         else:
             return None
 
-    async def update_contacts_status(self, uid: str, latitude: float = None, longitude: float = None, force=False):
-        contacts_with_map_open = await self._user_repository.find_contacts_with_map_open(uid)
-        if latitude is not None and longitude is not None:
-            contacts_in_range = [c for c in contacts_with_map_open if self._in_range(latitude, longitude, c.location)]
-            # Update my active status if at least one friend is looking at me
-            active_value = len(contacts_in_range) != 0
-            await self._status_repository.set_active(uid, active_value)
-
+    async def update_contacts_status(self, uid: str, latitude: float, longitude: float, force=False):
+        contacts, self_user = await self._user_repository.get_contacts(uid)
+        contacts_in_range = [c for c in contacts if self._in_range(latitude, longitude, c.location)]
+        contacts_map_open = [c for c in contacts if c.map_open is True and c.map_valid_until >= get_current_time()]
+        contacts_map_open_in_range = list(set([c.document_id for c in contacts_in_range]).intersection(
+            set([c.document_id for c in contacts_map_open])))
+        # Update my active status if at least one friend is looking at me
+        active_value = len(contacts_map_open_in_range) != 0
+        if active_value != self_user.active:
+            # Update my active status if changed only
+            await self._set_active(uid=self_user.document_id, active=active_value)
+        # Set active all contacts in range which are not already active
+        await self._set_active(uids=[c.document_id for c in contacts_in_range if not c.active], active=True)
         # Update all maps that point at me
-        await asyncio.gather(
-            *[self._update_contact_status(c, force) for c in contacts_with_map_open]
-        )
+        await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open])
+
+    @overload
+    async def _set_active(self, *, uid: str, active: bool):
+        ...
+
+    @overload
+    async def _set_active(self, *, uids: List[str], active: bool):
+        ...
+
+    async def _set_active(self, *, uid: str = None, uids: List[str] = None, active: bool):
+        if uid is not None:
+            await self._status_repository.set_active(uid, active)
+            await self._user_repository.set_active(uid, active)
+        elif uids is not None:
+            if len(uids) > 0:
+                await self._status_repository.set_active_batch(uid_list=uids, value=active)
+                await self._user_repository.set_active_batch(uid_list=uids, value=active)
+        else:
+            raise ValueError("Either uid or uids should not be None. Invalid parameters")
 
     async def _update_contact_status(self, contact: UserEntity, force: bool):
         if force or self._needs_update(contact.last_status_update):
             await self.regenerate_map_status(user=contact)
 
     def _needs_update(self, last_updated: datetime):
-        return (datetime.now(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
+        return (get_current_time(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
 
     def _should_show(self, location: Optional[Location]):
         if location is not None:
-            return (datetime.now(location.last_updated.tzinfo) - location.last_updated).seconds \
+            return (get_current_time(location.last_updated.tzinfo) - location.last_updated).seconds \
                    < self._max_time_since_last_update
         else:
             return False

@@ -62,7 +62,9 @@ class HomeMapPage extends StatelessWidget {
                 child: Stack(
                   children: [
                     _mapLayer(),
-                    if (!platformService.isWeb) _draggableSheetLayer()
+                    if (!platformService.isDesktopOrWeb &&
+                        !platformService.wideUi)
+                      _draggableSheetLayer()
                   ],
                 ));
           } else {

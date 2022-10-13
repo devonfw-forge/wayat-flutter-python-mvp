@@ -1,10 +1,11 @@
 import asyncio
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, List, Tuple
 from fastapi import Depends
 from google.cloud import firestore
 from google.cloud.firestore import AsyncClient, AsyncTransaction
+from google.cloud.firestore_v1.field_path import FieldPath
 
 from app.common.base.base_entity import new_uuid
 from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
@@ -36,19 +37,18 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         return entity
 
     async def find_by_phone(self, *, phones: list[str]):
-        return [item async for item in self.where("phone", 'in', phones)]
+        return [item async for item in self.where_in_list("phone", phones)]
 
-    async def get_contacts(self, uid: str) -> Tuple[list[UserEntity], list[str]]:
+    async def get_contacts(self, uid: str) -> Tuple[list[UserEntity], UserEntity]:
         """
-        Returns the list of contacts (UserEntity) and the list of ids of users with which the user is sharing location
-
+        Returns the list of contacts (UserEntity) and the main user
         :param uid: the UID of the User
         :return: the list of contacts and the list of ids with which the user is sharing the location
         """
         self_user = await self.get_or_throw(uid)
         coroutines = [self.get_or_throw(u) for u in self_user.contacts]
         contacts_entities: list[UserEntity] = await asyncio.gather(*coroutines)  # type: ignore
-        return contacts_entities, self_user.location_shared_with
+        return contacts_entities, self_user
 
     async def update_user_location(self, uid: str, latitude: float, longitude: float, address: str) -> None:
         location: Location = Location(
@@ -67,7 +67,8 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         Returns the location of a User. If force=False (default), this Location will be None if the User has the
         share_location property set to False.
 
-        :param force: whether to ignore share_location or not :param uid: the UID of the User
+        :param force: whether to ignore share_location or not
+        :param uid: the UID of the User
         :return: the Location of the User, or None if it's not available
         and the list of contacts with which the user is sharing
         """
@@ -79,23 +80,11 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         else:
             return user_entity.location, user_entity.location_shared_with
 
-    async def find_contacts_with_map_open(self, uid: str, in_shared_list: bool = True) -> list[UserEntity]:
-        result_stream = (
-            self._get_collection_reference()
-            .where("contacts", "array_contains", uid)
-            .where("map_open", "==", True)
-            .where("map_valid_until", ">", get_current_time())
-            .stream()
-        )
-        all_models = [self._model(document_id=result.id, **result.to_dict())
-                      async for result in result_stream]  # type: ignore
-        if in_shared_list is True:
-            user = await self.get_or_throw(document_id=uid)
-            shared_list = user.location_shared_with
-            models = [el for el in all_models if el.document_id in shared_list]
-        else:
-            models = all_models
-        return models
+    async def set_active(self, uid: str, value: bool):
+        await self.update(document_id=uid, data={"active": value})
+
+    async def set_active_batch(self, uid_list: list[str], value: bool):
+        await self.update_batch(uid_list=uid_list, update={"active": value})
 
     async def update_last_status(self, uid: str):
         await self.update(document_id=uid, data={"last_status_update": get_current_time()})

@@ -1,4 +1,4 @@
-# wayat
+# Wayat
 
 Client side of the Wayat project.
 
