@@ -106,12 +106,16 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   void setToken(String token) {
     setState(() {
       NotificationServiceImpl().sendCurrentUserToken(token);
+      print(
+          '-----------------------------------------Send refreshed token to backend: $token');
     });
   }
 
   void getToken() {
     FirebaseMessaging.instance.getToken().then((token) {
       if (token != null) NotificationServiceImpl().sendCurrentUserToken(token);
+      print(
+          '-----------------------------------------Send token to backend: $token');
     });
     _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     _tokenStream.listen(setToken);
@@ -120,10 +124,10 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    getToken();
     GetIt.I.get<NotificationState>().registerNotification();
     GetIt.I.get<NotificationState>().messagingTerminatedAppListener();
     GetIt.I.get<NotificationState>().messagingBackgroundAppListener();
+    getToken();
     super.initState();
   }
 
