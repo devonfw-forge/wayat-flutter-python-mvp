@@ -28,6 +28,7 @@ void main() async {
         name: "testCurrentUser",
         email: "testCurrentUser@capg.com",
         imageUrl: "http://example.com",
+        phonePrefix: "+34",
         phone: "777777777",
         onboardingCompleted: true,
         shareLocationEnabled: true);

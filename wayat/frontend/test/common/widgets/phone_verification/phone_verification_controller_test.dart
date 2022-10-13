@@ -27,6 +27,7 @@ void main() async {
       email: "name@mail.com",
       imageUrl: "https://example.com",
       phone: "+34666666666",
+      phonePrefix: "+34",
       onboardingCompleted: true,
       shareLocationEnabled: true);
 
@@ -98,5 +99,28 @@ void main() async {
     expect(phoneController.validatePhoneNumber(samePhone),
         appLocalizations.phoneDifferent);
     expect(phoneController.validatePhoneNumber(correctPhone), null);
+  });
+
+  testWidgets('Check validation of phone number', (tester) async {
+    await tester.pumpWidget(createApp());
+    PhoneVerificationController phoneController = PhoneVerificationController();
+
+    // Check spanish prefix with or without sign
+    fakeUser.phonePrefix = "+34";
+    expect(phoneController.getISOCode(), "ES");
+    fakeUser.phonePrefix = "34";
+    expect(phoneController.getISOCode(), "ES");
+
+    // Check canadian prefix with or without sign
+    fakeUser.phonePrefix = "+1";
+    expect(phoneController.getISOCode(), "CA");
+    fakeUser.phonePrefix = "1";
+    expect(phoneController.getISOCode(), "CA");
+
+    // Check that if prefix is empty it returns the first country in alphabetical order (AF)
+    fakeUser.phonePrefix = "";
+    expect(phoneController.getISOCode(), "AF");
+    fakeUser.phonePrefix = "+";
+    expect(phoneController.getISOCode(), "AF");
   });
 }

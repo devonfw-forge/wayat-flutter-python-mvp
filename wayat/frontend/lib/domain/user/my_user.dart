@@ -22,6 +22,10 @@ abstract class _MyUser with Store {
 
   /// User phone number
   @observable
+  String phonePrefix;
+
+  /// User phone number
+  @observable
   String phone;
 
   /// Whether user finished the onboarding
@@ -37,6 +41,7 @@ abstract class _MyUser with Store {
       required this.name,
       required this.email,
       required this.imageUrl,
+      required this.phonePrefix,
       required this.phone,
       required this.onboardingCompleted,
       required this.shareLocationEnabled});

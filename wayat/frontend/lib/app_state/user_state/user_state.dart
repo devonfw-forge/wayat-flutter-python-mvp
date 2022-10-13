@@ -103,8 +103,8 @@ abstract class _UserState with Store {
   /// Returns `true` if the `phone` has benn successfully
   /// updated.
   @action
-  Future<bool> updatePhone(String phone) async {
-    bool done = await authService.sendPhoneNumber(phone);
+  Future<bool> updatePhone(String prefix, String phone) async {
+    bool done = await authService.sendPhoneNumber(prefix, phone);
     if (done) currentUser!.phone = phone;
     return done;
   }
