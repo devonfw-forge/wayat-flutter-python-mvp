@@ -4,7 +4,6 @@ import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/lang/app_localizations.dart';
-// import 'package:flutter/foundation.dart' show kIsWeb;
 
 class InitialManageContactsTip extends StatelessWidget {
   final OnboardingController controller = GetIt.I.get<OnboardingController>();
