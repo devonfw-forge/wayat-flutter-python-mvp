@@ -78,6 +78,7 @@ steps:
       - europe-southwest1
       - '--port'
       - '80'
+      - '--allow-unauthenticated'
     entrypoint: gcloud
 images:
   - >-
