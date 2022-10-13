@@ -25,7 +25,7 @@ abstract class AuthService {
   /// Sends the phone number to the server to be verified.
   ///
   /// Returns whether the request was succesful
-  Future<bool> sendPhoneNumber(String phone);
+  Future<bool> sendPhoneNumber(String prefix, String phone);
 
   /// Sends to the server that the user has done the onBoarding process
   ///

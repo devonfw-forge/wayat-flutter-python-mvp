@@ -112,8 +112,9 @@ void main() async {
   });
 
   test("UpdatePhone changes user's phone and notifies the server", () async {
+    String newPrefix = "+789";
     String newPhone = "${myUser.phone}1234";
-    when(mockAuthService.sendPhoneNumber(newPhone))
+    when(mockAuthService.sendPhoneNumber(newPrefix, newPhone))
         .thenAnswer((_) => Future.value(true));
 
     userState.currentUser = myUser;
@@ -121,11 +122,11 @@ void main() async {
     // Checks that MyUser is correctly set with phone number
     expect(userState.currentUser!.phone, myUser.phone);
 
-    await userState.updatePhone(newPhone);
+    await userState.updatePhone(newPrefix, newPhone);
 
     expect(userState.currentUser!.phone, newPhone);
 
-    verify(mockAuthService.sendPhoneNumber(newPhone)).called(1);
+    verify(mockAuthService.sendPhoneNumber(newPrefix, newPhone)).called(1);
   });
 
   test("Update image of user calls profile service method", () async {
@@ -161,6 +162,7 @@ MyUser _generateMyUser(String name) {
       name: name,
       email: "name@mail.com",
       imageUrl: "https://example.com",
+      phonePrefix: "+34",
       phone: "123",
       onboardingCompleted: false,
       shareLocationEnabled: true);

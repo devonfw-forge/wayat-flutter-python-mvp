@@ -64,8 +64,8 @@ abstract class _PhoneVerificationController with Store {
       showDialog(
         context: context,
         builder: (context) => VerifyPhoneNumberDialog(
-          phoneNumber: phoneNumber!.completeNumber,
-          callbackController: (String error) {
+          phoneNumber: phoneNumber!,
+          callbackController: (String? error) {
             errorPhoneVerification = error;
             phoneNumber = null;
           },
@@ -74,5 +74,14 @@ abstract class _PhoneVerificationController with Store {
     }
     // Removes the keyboard
     FocusScope.of(context).unfocus();
+  }
+
+  String getISOCode() {
+    return countries
+        .firstWhere(
+            (element) =>
+                element.dialCode == user.phonePrefix.replaceAll("+", ""),
+            orElse: () => countries[0])
+        .code;
   }
 }

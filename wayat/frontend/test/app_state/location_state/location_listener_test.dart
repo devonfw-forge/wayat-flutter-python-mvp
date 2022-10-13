@@ -128,6 +128,7 @@ MyUser _userFactory() {
     shareLocationEnabled: true,
     email: "Contact email",
     imageUrl: "https://example.com/image",
+    phonePrefix: "+34",
     phone: "123",
   );
 }
