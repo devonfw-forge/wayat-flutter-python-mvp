@@ -9,7 +9,8 @@ void main() {
         name: "test_name",
         email: "test@mail.com",
         imageUrl: "url://image",
-        phone: "600600600",
+        phone: "+34600600600",
+        phonePrefix: "+34",
         onboardingCompleted: true,
         shareLocationEnabled: false);
   });
@@ -20,6 +21,7 @@ void main() {
     expect(myUser.email, "test@mail.com");
     expect(myUser.imageUrl, "url://image");
     expect(myUser.phone, "600600600");
+    expect(myUser.phonePrefix, "+34");
     expect(myUser.onboardingCompleted, true);
     expect(myUser.shareLocationEnabled, false);
   });
