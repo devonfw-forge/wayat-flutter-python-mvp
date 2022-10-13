@@ -10,6 +10,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
+import 'package:wayat/navigation/app_go_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
@@ -143,6 +144,8 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
 
+    AppGoRouter appGoRouter = AppGoRouter();
+
     return FutureBuilder(
         future: GetIt.I.get<AppConfigState>().initializeLocale(),
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
@@ -167,8 +170,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
               }
               return const Locale("en", "US");
             },
-            routerDelegate: _appRouter.delegate(),
-            routeInformationParser: _appRouter.defaultRouteParser(),
+            routerConfig: appGoRouter.router,
           );
         });
   }

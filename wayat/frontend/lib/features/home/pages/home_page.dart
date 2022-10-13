@@ -32,9 +32,10 @@ class HomePage extends StatelessWidget {
 
         return Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: 
-              (platformService.wideUi || platformService.isDesktopOrWeb) ? null : const PreferredSize(
-              preferredSize: Size.fromHeight(40), child: CustomAppBar()),
+          appBar: (platformService.wideUi || platformService.isDesktopOrWeb)
+              ? null
+              : const PreferredSize(
+                  preferredSize: Size.fromHeight(40), child: CustomAppBar()),
           body: Row(children: [
             if (platformService.wideUi || platformService.isDesktopOrWeb)
               NavigationRail(

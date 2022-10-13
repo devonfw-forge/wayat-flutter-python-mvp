@@ -83,7 +83,8 @@ dependencies:
   # Flutter map
   flutter_map: ^3.0.0
   latlong2: ^0.8.1
-
+  # new experimental navigation
+  go_router: ^5.0.5
 
 dev_dependencies:
   flutter_test:
@@ -99,8 +100,6 @@ dev_dependencies:
   # Dialogs
   speech_balloon: ^0.0.4
   remove_from_coverage: 2.0.0
-
-
 
 flutter:
   # Flag to generate internationalization files
