@@ -55,6 +55,8 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         }
 
     async def test_update_location_should_update_location_in_repository(self):
+        self.map_service.update_contacts_status = MagicMock(self.map_service.update_contacts_status)
+
         # Call to test
         await self.map_service.update_location("uid_1", 0.1, 0.2, "Gulf of Guinea")
 
@@ -63,8 +65,9 @@ class MapServiceTests(IsolatedAsyncioTestCase):
 
     async def test_update_location_when_no_map_open_should_not_set_active(self):
         # Mocking
-        self.mock_user_repo.find_contacts_with_map_open.return_value = []
+        self.mock_user_repo.get_contacts.return_value = ([], self.mock_entities["user_1"])
         uid = self.mock_entities["user_1"].document_id
+        self.mock_entities["user_1"].active = True
 
         # Call to be tested
         await self.map_service.update_location(
@@ -85,7 +88,8 @@ class MapServiceTests(IsolatedAsyncioTestCase):
             value=GeoPoint.validate_geopoint((0, 0.03)),
             address="Gulf of Guinea",
         )
-        self.mock_user_repo.find_contacts_with_map_open.return_value = [self.mock_entities["user_2"]]
+        self.mock_entities["user_1"].active = True
+        self.mock_user_repo.get_contacts.return_value = ([self.mock_entities["user_2"]], self.mock_entities["user_1"])
         uid = self.mock_entities["user_1"].document_id
 
         # Call to be tested
@@ -107,7 +111,11 @@ class MapServiceTests(IsolatedAsyncioTestCase):
             value=GeoPoint.validate_geopoint((0, 0.01)),
             address="Gulf of Guinea",
         )
-        self.mock_user_repo.find_contacts_with_map_open.return_value = [self.mock_entities["user_2"]]
+        self.mock_entities["user_2"].map_open = True
+        self.mock_entities["user_2"].map_valid_until = datetime.now(timezone.utc) + timedelta(minutes=10)
+        self.mock_entities["user_1"].active = False
+        self.mock_user_repo.get_contacts.return_value = ([self.mock_entities["user_2"]],
+                                                                        self.mock_entities["user_1"])
         uid = self.mock_entities["user_1"].document_id
 
         # Call to be tested
@@ -121,7 +129,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         # Asserts
         self.mock_status_repo.set_active.assert_called_with(uid, True)
 
-    @patch("app.business.wayat_management.services.map.datetime")
+    @patch("app.business.wayat_management.services.map.get_current_time")
     async def test_update_location_should_update_all_contacts_with_map_open(self, datetime_mock):
         # Mocks
         # User2 and User3 have the map open
@@ -144,19 +152,24 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         # Mock the last_status_update field so that both contacts are updated
         now_timestamp = datetime(2022, 8, 16, 12, 0, 0, tzinfo=timezone.utc)
         old_enough_timestamp = now_timestamp - timedelta(seconds=(self.map_settings.update_threshold + 1))
+        future_timestamp = now_timestamp + timedelta(minutes=10)
         self.mock_entities["user_2"].last_status_update = old_enough_timestamp
         self.mock_entities["user_3"].last_status_update = old_enough_timestamp
+        self.mock_entities["user_2"].map_open = True
+        self.mock_entities["user_3"].map_open = True
+        self.mock_entities["user_2"].map_valid_until = future_timestamp
+        self.mock_entities["user_3"].map_valid_until = future_timestamp
         self.mock_entities["user_1"].location.last_updated = now_timestamp
         self.mock_entities["user_2"].location.last_updated = now_timestamp
         self.mock_entities["user_3"].location.last_updated = now_timestamp
-        datetime_mock.now.return_value = now_timestamp
+        datetime_mock.return_value = now_timestamp
 
         def mocking_get_user_location(user_id: str):
             return self.mock_entities[user_id].location, self.mock_entities[user_id].location_shared_with
 
         # Mock the user repo
-        self.mock_user_repo.find_contacts_with_map_open.return_value = [self.mock_entities["user_2"],
-                                                                        self.mock_entities["user_3"]]
+        self.mock_user_repo.get_contacts.return_value = ([self.mock_entities["user_2"], self.mock_entities["user_3"]],
+                                                         self.mock_entities["user_1"])
         self.mock_user_repo.get_user_location.side_effect = mocking_get_user_location
 
         uid = self.mock_entities["user_1"].document_id

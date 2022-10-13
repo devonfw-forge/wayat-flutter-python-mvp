@@ -28,13 +28,17 @@ class SentRequestsPage extends StatelessWidget {
       },
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            header(),
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: header()),
             const SizedBox(
               height: 10,
             ),
-            sentRequestsList()
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: sentRequestsList())
           ],
         ),
       ),

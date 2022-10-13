@@ -124,8 +124,8 @@ class UserService:
                 await self._user_repository.create_friend_request(uid, list(new_contacts))
 
     async def get_user_contacts(self, uid: str) -> Tuple[List[UserDTO], List[str]]:
-        user_contacts, contacts_sharing = await self._user_repository.get_contacts(uid)
-        return list(map(self.map_to_dto, user_contacts)), contacts_sharing
+        user_contacts, self_user = await self._user_repository.get_contacts(uid)
+        return list(map(self.map_to_dto, user_contacts)), self_user.location_shared_with
 
     async def get_contact(self, uid: str) -> UserDTO:
         """

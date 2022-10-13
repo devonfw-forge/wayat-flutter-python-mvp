@@ -1,6 +1,6 @@
 import json
 from functools import lru_cache
-from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator
+from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator, List, Tuple
 
 from fastapi import Depends
 from google.cloud.firestore import (
@@ -123,27 +123,39 @@ class BaseFirestoreRepository(Generic[ModelType]):
         else:
             raise ValueError("Either model or (document_id, data) must be passed as argument")
 
+    async def update_batch(self, *, uid_list: List[str], update: dict):
+        chunk_max_size = 500
+        chunks = [uid_list[i:i + chunk_max_size] for i in range(0, len(uid_list), chunk_max_size)]
+        for chunk in chunks:
+            batch = self._client.batch()
+            for uid in chunk:
+                ref = self._get_document_reference(uid)
+                batch.update(ref, update)
+            await batch.commit()
+
+
     def _validate_update(self, update: dict):
         not_defined_values = set(update.keys()).difference(self._model.__fields__.keys())
         if not_defined_values:
             raise ValueError(f"Tried to update fields {not_defined_values} which are not present in the model")
 
-    async def where(self, field: str, operation: str, value: Any) -> AsyncGenerator[ModelType, None]:
+    async def where_in_list(self, field: str, value_list: Any, other_filters: List[Tuple[str, str, any]] = None) \
+            -> AsyncGenerator[ModelType, None]:
         all_generators = []
 
         def find(sublist: list[Any]):
-            stream = self._get_collection_reference().where(field, operation, sublist).stream()
+            query = self._get_collection_reference().where(field, "in", sublist)
+            for f in other_filters:
+                query = query.where(f[0], f[1], f[2])
+            stream = query.stream()
             return stream  # .stream() returns AsyncGenerator in the async client
 
-        if operation == 'in':
-            residual = len(value) % 10
-            num_iterations = len(value) // 10
-            if residual > 0:
-                num_iterations += 1
-            for i in range(0, num_iterations):
-                all_generators.append(find(value[i * 10:(i + 1) * 10]))
-        else:
-            all_generators = find(value)
+        residual = len(value_list) % 10
+        num_iterations = len(value_list) // 10
+        if residual > 0:
+            num_iterations += 1
+        for i in range(0, num_iterations):
+            all_generators.append(find(value_list[i * 10:(i + 1) * 10]))
 
         for generator in all_generators:
             async for item in generator:  # type: ignore
