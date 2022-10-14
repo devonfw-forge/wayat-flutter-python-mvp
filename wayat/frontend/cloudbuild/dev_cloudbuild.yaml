@@ -42,12 +42,6 @@ steps:
       - pub
       - get
     dir: wayat/frontend
-  # Testing:
-  - id: "Running Tests"
-    name: gcr.io/$PROJECT_ID/flutter:stable
-    args:
-      - test
-    dir: wayat/frontend
   # Generated files:
   - id: "Generating extra files"
     name: gcr.io/$PROJECT_ID/flutter:stable
@@ -57,6 +51,12 @@ steps:
       - build_runner
       - build
       - --delete-conflicting-outputs
+    dir: wayat/frontend
+  # Testing:
+  - id: "Running Tests"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - test
     dir: wayat/frontend
   # Release build:
   - id: "Generating APK"
