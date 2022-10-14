@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
@@ -149,8 +148,7 @@ abstract class _NotificationState with Store {
       debugPrint('User declined or has not accepted permission');
     }
 
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
+    await messagingInstance.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
@@ -222,6 +220,7 @@ abstract class _NotificationState with Store {
     if (initialMessage != null) {
       notificationInfo = pushNotification(initialMessage);
       totalNotifications++;
+      notificationDetails();
     }
   }
 
@@ -232,6 +231,7 @@ abstract class _NotificationState with Store {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       notificationInfo = pushNotification(message);
       totalNotifications++;
+      notificationDetails();
     });
   }
 

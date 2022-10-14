@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
@@ -12,6 +13,7 @@ void main() async {
   });
 
   test("initialize locale", () async {
+    SharedPreferences.setMockInitialValues({});
     (await SharedPreferences.getInstance()).setString("languageCode", "en");
     await appConfigState.initializeLocale();
     expect(appConfigState.language, Language("English", "en"));
@@ -26,6 +28,7 @@ void main() async {
   });
 
   test("change language", () async {
+    SharedPreferences.setMockInitialValues({});
     Locale testLocale = const Locale("en", "US");
     appConfigState.locale = testLocale;
     Language testLanguage = Language("en", "US");

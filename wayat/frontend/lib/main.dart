@@ -29,7 +29,6 @@ import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
-import 'package:wayat/services/notification/mock/notification_service_impl.dart';
 
 /// Initializes the app.
 Future main() async {
