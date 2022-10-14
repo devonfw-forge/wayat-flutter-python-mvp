@@ -4,9 +4,9 @@ from enum import Enum
 from pydantic import ValidationError
 
 from app.common.core.configuration import load_env_file_on_settings
-from app.common.infra.gcp.firebase import FirebaseSettings, get_firebase_settings, FirebaseService
+from app.common.infra.gcp.firebase import FirebaseSettings, FirebaseService
 from app.common.core.identity_provider import IdentityProvider
-from app.common.infra.keycloak import KeycloakSettings, get_keycloak_settings, KeycloakService
+from app.common.infra.keycloak import KeycloakSettings, KeycloakService
 
 
 logger = logging.getLogger(__name__)

@@ -7,7 +7,7 @@ from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoin
 from starlette.requests import Request
 from starlette.responses import Response
 
-from app.common.infra.gcp.firebase import get_account_info
+from app.common.infra.gcp.utils import get_account_info
 
 cloud_trace_context = contextvars.ContextVar('cloud_trace_context', default='')
 TRACE_HEADER = 'X-Cloud-Trace-Context'
