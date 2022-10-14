@@ -1,24 +1,70 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/requests_page/requests_page.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/suggestions_page/suggestions_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Main view of Friends, requests and suggestions page
-class ContactsPage extends StatelessWidget {
-  /// Business logic controller
-  final ContactsPageController controller =
-      GetIt.I.get<ContactsPageController>();
+class ContactsPage extends StatefulWidget {
+  final String tab;
 
   final PlatformService platformService;
 
-  ContactsPage({PlatformService? platformService, Key? key})
+  ContactsPage(this.tab, {PlatformService? platformService, Key? key})
       : platformService = platformService ?? PlatformService(),
         super(key: key);
+
+  @override
+  State<ContactsPage> createState() => _ContactsPageState();
+}
+
+class _ContactsPageState extends State<ContactsPage>
+    with SingleTickerProviderStateMixin {
+  /// Business logic controller
+  final ContactsPageController controller =
+      GetIt.I.get<ContactsPageController>();
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+        length: (widget.platformService.isWeb) ? 2 : 3, vsync: this);
+  }
+
+  @override
+  void didUpdateWidget(covariant ContactsPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    switch (widget.tab) {
+      case 'friends':
+        {
+          _tabController.index = 0;
+          break;
+        }
+      case 'requests':
+        {
+          _tabController.index = 1;
+          break;
+        }
+      case 'suggestions':
+        {
+          _tabController.index = 2;
+          break;
+        }
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,27 +80,21 @@ class ContactsPage extends StatelessWidget {
     );
   }
 
-  Expanded contactsPageContent() {
+  Widget contactsPageContent() {
     return Expanded(
-        child: AutoTabsRouter.tabBar(
-      routes: [
-        FriendsRoute(),
-        RequestsRoute(),
-        if (!platformService.isWeb) SuggestionsRoute()
+        child: Column(
+      children: [
+        _tabBar(_tabController),
+        Expanded(
+          child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: TabBarView(controller: _tabController, children: [
+                FriendsPage(),
+                RequestsPage(),
+                if (!widget.platformService.isWeb) SuggestionsPage()
+              ])),
+        ),
       ],
-      builder: ((context, child, tabController) {
-        controller.updateTabData(tabController.index);
-        return Column(
-          children: [
-            _tabBar(tabController),
-            Expanded(
-              child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: child),
-            ),
-          ],
-        );
-      }),
     ));
   }
 
@@ -66,8 +106,8 @@ class ContactsPage extends StatelessWidget {
         children: [
           _indicatorBackground(),
           TabBar(
-              isScrollable:
-                  platformService.isDesktopOrWeb || platformService.wideUi,
+              isScrollable: widget.platformService.isDesktopOrWeb ||
+                  widget.platformService.wideUi,
               unselectedLabelStyle: const TextStyle(
                   fontWeight: FontWeight.normal, color: Colors.black45),
               labelStyle:
@@ -79,7 +119,7 @@ class ContactsPage extends StatelessWidget {
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
-                if (!platformService.isWeb)
+                if (!widget.platformService.isWeb)
                   Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],

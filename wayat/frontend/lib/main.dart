@@ -4,25 +4,24 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:url_strategy/url_strategy.dart';
+import 'package:get_it/get_it.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
-import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
-import 'package:wayat/navigation/app_go_router.dart';
-import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/app_config_controller.dart';
 import 'package:wayat/common/app_config/env_model.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
-import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/navigation/app_go_router.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
@@ -88,7 +87,6 @@ class Wayat extends StatefulWidget {
 /// Main application class' state
 class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// Instance of the application router, used to handle navigation declaratively
-  final _appRouter = AppRouter();
 
   /// Instance of the MapState to update when the user opens and closes the map
   final LifeCycleState mapState = GetIt.I.get<LifeCycleState>();

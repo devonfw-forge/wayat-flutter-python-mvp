@@ -7,6 +7,7 @@ import 'package:wayat/lang/app_localizations.dart';
 
 /// Page that shows google authetication
 class LoginPage extends StatefulWidget {
+  //final Function() onLoginSuccess;
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -46,6 +47,9 @@ class _LoginPageState extends State<LoginPage> {
     return InkWell(
       onTap: () async {
         await userState.login();
+        if (userState.currentUser != null) {
+          widget.onLoginSuccess();
+        }
       },
       child: Ink(
         decoration: BoxDecoration(

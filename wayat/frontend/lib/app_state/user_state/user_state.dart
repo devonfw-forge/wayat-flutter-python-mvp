@@ -62,7 +62,7 @@ abstract class _UserState with Store {
     googleAccount = await authService.signIn();
     // googleAccount will be null if the user cancels the google authentication
     if (googleAccount != null) {
-      initializeCurrentUser();
+      await initializeCurrentUser();
     }
   }
 
