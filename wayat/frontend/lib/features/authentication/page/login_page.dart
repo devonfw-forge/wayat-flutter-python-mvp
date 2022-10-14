@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
@@ -7,7 +8,6 @@ import 'package:wayat/lang/app_localizations.dart';
 
 /// Page that shows google authetication
 class LoginPage extends StatefulWidget {
-  //final Function() onLoginSuccess;
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const CustomWayatTitle(),
                 const CustomLoginTitle(),
-                _signInButton()
+                _signInButton(() => context.go("/map"))
               ],
             ),
           ),
@@ -43,12 +43,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   /// Returns a sign in button and a google image
-  Widget _signInButton() {
+  Widget _signInButton(void Function() onTap) {
     return InkWell(
       onTap: () async {
         await userState.login();
         if (userState.currentUser != null) {
-          widget.onLoginSuccess();
+          onTap();
         }
       },
       child: Ink(

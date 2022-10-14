@@ -9,6 +9,8 @@ import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
 import 'package:wayat/features/home/pages/home_go_page.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
+import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
+import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
 
 class AppGoRouter {
@@ -17,21 +19,16 @@ class AppGoRouter {
   UserState userState = GetIt.I.get<UserState>();
 
   late final GoRouter router = GoRouter(
+    initialLocation: "/login",
     errorBuilder: (context, state) => const ErrorPage(),
-    // redirect: (context, state) async {
-    //   if (!await userState.isLogged()) {
-    //     return '/login';
-    //   }
-    //   return state.location;
-    // },
     debugLogDiagnostics: true,
     routes: [
       // Makes map the default page if you enter just the domain name
-      GoRoute(path: '/', redirect: (_, __) => '/map'),
+      // GoRoute(path: '/', redirect: (_, __) => '/map'),
       GoRoute(
           path: '/login',
           builder: (BuildContext context, GoRouterState state) {
-            return LoginPage(() => context.go("/map"));
+            return const LoginPage();
           }),
       // Main screen navigation
       GoRoute(
@@ -48,20 +45,47 @@ class AppGoRouter {
       GoRoute(
           path: '/profile',
           pageBuilder: (context, state) => FadeTransitionPage(
-              key: _scaffoldKey,
-              child: HomeGoPage(
-                selectedSection: HomeTab.profile,
-                child: ProfilePage(),
-              ))),
+                key: _scaffoldKey,
+                child: HomeGoPage(
+                  selectedSection: HomeTab.profile,
+                  child: ProfilePage(),
+                ),
+              ),
+          routes: [
+            GoRoute(
+              path: "edit",
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: HomeGoPage(
+                    selectedSection: HomeTab.profile,
+                    child: EditProfilePage(),
+                  ),
+                );
+              },
+            ),
+            GoRoute(
+              path: "preferences",
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: HomeGoPage(
+                    selectedSection: HomeTab.profile,
+                    child: PreferencesPage(),
+                  ),
+                );
+              },
+            )
+          ]),
       GoRoute(path: '/contacts', redirect: (_, __) => '/contacts/friends'),
       GoRoute(
           path: '/contacts/:kind(friends|requests|suggestions)',
-          pageBuilder: (context, state) => FadeTransitionPage(
-              key: _scaffoldKey,
-              child: HomeGoPage(
-                selectedSection: HomeTab.contacts,
-                child: ContactsPage(state.params['kind']!),
-              ))),
+          pageBuilder: (context, state) {
+            return FadeTransitionPage(
+                key: _scaffoldKey,
+                child: HomeGoPage(
+                  selectedSection: HomeTab.contacts,
+                  child: ContactsPage(state.params['kind'] ?? "friends"),
+                ));
+          }),
       GoRoute(
           path: '/phone-validation',
           builder: (BuildContext context, GoRouterState state) {
