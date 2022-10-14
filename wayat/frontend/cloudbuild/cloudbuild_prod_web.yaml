@@ -1,0 +1,89 @@
+# [START Wayat Frontend Build]
+steps:
+  # Cleaning:
+  - id: "Cleaning project"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - clean
+    dir: wayat/frontend
+  # Dependencies:
+  - id: "Getting env file"
+    name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp
+      - 'gs://wayat_prod_secrets/.env'
+      - .
+    dir: wayat/frontend/
+  # Packages:
+  - id: "Getting packages"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - pub
+      - get
+    dir: wayat/frontend
+  # Generated files:
+  - id: "Generating extra files"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - pub
+      - run
+      - build_runner
+      - build
+      - --delete-conflicting-outputs
+    dir: wayat/frontend
+  # Testing:
+  - id: "Running Tests"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - test
+    dir: wayat/frontend
+  # Release build:
+  - id: "Generating web version"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - build
+      - web
+      - --web-renderer
+      - canvaskit
+      - --dart-define=BROWSER_IMAGE_DECODING_ENABLED=false
+    dir: wayat/frontend
+  # Release build image:
+  - id: "Generating docker image"
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - >-
+        gcr.io/wayat-prod-capgemini/wayat-flutter-frontend-web:$COMMIT_SHA
+      - .
+    dir: wayat/frontend
+  # Pushing release build image:
+  - id: "Pushing docker image"
+    name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - >-
+        gcr.io/wayat-prod-capgemini/wayat-flutter-frontend-web:$COMMIT_SHA
+  # Running release build image:
+  - id: "Running docker image"
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    args:
+      - run
+      - deploy
+      - wayat-web
+      - '--image'
+      - >-
+        gcr.io/wayat-prod-capgemini/wayat-flutter-frontend-web:$COMMIT_SHA
+      - '--region'
+      - europe-southwest1
+      - '--port'
+      - '80'
+      - '--allow-unauthenticated'
+    entrypoint: gcloud
+images:
+  - >-
+    gcr.io/wayat-prod-capgemini/wayat-flutter-frontend-web:$COMMIT_SHA
+timeout: "900s"
+options: 
+  machineType: 'E2_HIGHCPU_8'
+# [END Wayat Frontend Build]
