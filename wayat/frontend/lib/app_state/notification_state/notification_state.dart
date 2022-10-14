@@ -76,13 +76,8 @@ abstract class _NotificationState with Store {
   );
 
   Future<NotificationDetails> notificationDetails() async {
-    final details =
-        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-    if (details != null && details.didNotificationLaunchApp) {}
-
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidNotificationDetails, iOS: iosNotificationDetails);
-
     return platformChannelSpecifics;
   }
 
