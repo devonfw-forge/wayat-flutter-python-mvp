@@ -24,21 +24,28 @@ class LoginWrapper extends StatelessWidget {
           builder: (_, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               bool isLogged = snapshot.data as bool;
+              // This is done in this way because if the user is logged
+              // and we don't ensure that the UI waits until the user data arrives,
+              // it would show the CannotLoginRoute for a brief period, before
+              // entering the app.
+              Future future = (isLogged)
+                ? controller.initializeCurrentUser()
+                : Future.delayed(Duration.zero).then((value) => null);
               return FutureBuilder(
-                  future: controller.initializeCurrentUser(),
+                  future: future,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return AutoRouter.declarative(
-                          routes: (_) => [
-                                if (!isLogged)
-                                  const LoginRoute()
-                                else if (currentUser != null &&
-                                    currentUser.phone == "" &&
-                                    !PlatformService().isWeb)
-                                  PhoneValidationRoute()
-                                else
-                                  CannotLoginRoute()
-                              ]);
+                        routes: (_) => [
+                          if (!isLogged)
+                            const LoginRoute()
+                          else if (currentUser != null &&
+                              currentUser.phone == "" &&
+                              !PlatformService().isWeb)
+                            PhoneValidationRoute()
+                          else
+                            CannotLoginRoute()
+                        ]);
                     } else {
                       return const LoadingWidget();
                     }
