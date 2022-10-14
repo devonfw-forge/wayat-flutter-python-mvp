@@ -6,9 +6,9 @@ import 'package:wayat/app_state/notification_state/notification_state.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/services/notification/notification_service.dart';
 
-@GenerateMocks([
-  NotificationService,
-])
+import 'notification_state_test.mocks.dart';
+
+@GenerateMocks([NotificationService, NotificationState])
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   final MockNotificationState mockNotificationState = MockNotificationState();
