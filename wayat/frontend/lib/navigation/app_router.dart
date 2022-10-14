@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:wayat/features/authentication/page/cannot_login_page.dart';
 import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/login_wrapper.dart';
@@ -80,7 +81,8 @@ import 'package:wayat/features/root/root_wrapper.dart';
     AutoRoute(page: LoginWrapper, path: "", children: [
       AutoRoute(page: LoginPage, path: "login"),
       AutoRoute(page: PhoneValidationPage, path: "phone-validation"),
-      AutoRoute(page: LoadingPage, path: "loading")
+      AutoRoute(page: LoadingPage, path: "loading"),
+      AutoRoute(page: CannotLoginPage, path: "login-error")
     ]),
   ]),
 ])
