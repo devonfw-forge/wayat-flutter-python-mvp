@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 
+/// Notification badge which user get in the top of screen when the app is open and active
 class NotificationBadge extends StatelessWidget {
-  
-  const NotificationBadge({Key? key})
-      : super(key: key);
+  const NotificationBadge({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +15,10 @@ class NotificationBadge extends StatelessWidget {
         color: ColorTheme.primaryColor,
         shape: BoxShape.circle,
         image: DecorationImage(
-          image: const Image(image: AssetImage('assets/images/wayat_icon.png')).image,
-          fit: BoxFit.cover
-        ),
+            image:
+                const Image(image: AssetImage('assets/images/wayat_icon.png'))
+                    .image,
+            fit: BoxFit.cover),
       ),
     );
   }

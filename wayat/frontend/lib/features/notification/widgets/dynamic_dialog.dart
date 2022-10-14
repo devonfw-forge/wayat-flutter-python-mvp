@@ -3,12 +3,13 @@
 import 'package:flutter/material.dart';
 
 class DynamicDialog extends StatefulWidget {
-  final title;
-  final body;
+  final String title;
+  final String body;
 
-  DynamicDialog({super.key, this.title, this.body});
+  const DynamicDialog({super.key, required this.title, required this.body});
 
   @override
+  // ignore: library_private_types_in_public_api
   _DynamicDialogState createState() => _DynamicDialogState();
 }
 

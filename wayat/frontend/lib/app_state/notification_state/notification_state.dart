@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
@@ -79,9 +78,7 @@ abstract class _NotificationState with Store {
   Future<NotificationDetails> notificationDetails() async {
     final details =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-    if (details != null && details.didNotificationLaunchApp) {
-      print(details.notificationResponse?.payload);
-    }
+    if (details != null && details.didNotificationLaunchApp) {}
 
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidNotificationDetails, iOS: iosNotificationDetails);
@@ -163,16 +160,12 @@ abstract class _NotificationState with Store {
   /// Set token if refreshed
   void setToken(String token) {
     NotificationServiceImpl().sendCurrentUserToken(token);
-    print(
-        '-----------------------------------------Send refreshed token to backend: $token');
   }
 
   /// Get FCM token
   void getToken() {
     messagingInstance.getToken().then((token) {
       if (token != null) setToken(token);
-      print(
-          '-----------------------------------------Send token to backend: $token');
     });
     _tokenStream = messagingInstance.onTokenRefresh;
     _tokenStream.listen(setToken);
@@ -186,9 +179,8 @@ abstract class _NotificationState with Store {
 
     if (platformService.targetPlatform == TargetPlatform.android) {
       return PushNotification(
-        title: newMessage.notification!.title ?? "",
-        body: newMessage.notification!.body ?? ""
-      );
+          title: newMessage.notification!.title ?? "",
+          body: newMessage.notification!.body ?? "");
     }
 
     if (platformService.targetPlatform == TargetPlatform.iOS) {
@@ -197,10 +189,7 @@ abstract class _NotificationState with Store {
         body: newMessage.data['aps']['alert']['body'],
       );
     }
-    return PushNotification(
-      title: 'No title',
-      body: 'No body'
-    );
+    return PushNotification(title: 'No title', body: 'No body');
   }
 
   /// For handling notification when the app is open
@@ -240,24 +229,8 @@ abstract class _NotificationState with Store {
       subtitle: Text(notificationInfo?.body ?? 'No notification body'),
       background: Colors.white,
       foreground: Colors.black,
-      leading: NotificationBadge(),
-      trailing: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(1000.0),
-            side: const BorderSide(color: Colors.black, width: 1),
-          ),
-        ),
-        onPressed: (() {
-          //TODO: hide notification
-          //Navigator.of(context).dispose();
-        }),
-        child: const Text('Dismiss',
-            style: TextStyle(fontSize: 14, color: ColorTheme.primaryColor)),
-      ),
-      duration: const Duration(seconds: 5),
+      leading: const NotificationBadge(),
     );
+    const Duration(seconds: 10);
   }
 }

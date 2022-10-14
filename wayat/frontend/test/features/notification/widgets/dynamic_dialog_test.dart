@@ -37,7 +37,7 @@ void main() async {
   }
 
   testWidgets('Dynamic dialog is correct', (tester) async {
-    await tester.pumpWidget(createApp(DynamicDialog(
+    await tester.pumpWidget(createApp(const DynamicDialog(
       title: 'Test Notification Title',
       body: 'Test Notification Body',
     )));
