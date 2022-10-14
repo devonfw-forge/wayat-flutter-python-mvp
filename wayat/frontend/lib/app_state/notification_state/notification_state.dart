@@ -126,15 +126,13 @@ abstract class _NotificationState with Store {
   /// Register notification when app is launched
   @action
   registerNotification() async {
-    /// Request permissions
+    // Request permissions
     await isAndroidPermissionGranted();
     await requestPermissions();
 
-    /// Check is user accept permissions
+    // Check is user accept permissions
     if (authorizationStatus) {
       messagingAppListener();
-
-      /// get and
       getToken();
     } else {
       debugPrint('User declined or has not accepted permission');
