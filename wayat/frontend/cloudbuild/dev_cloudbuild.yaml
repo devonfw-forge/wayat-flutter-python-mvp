@@ -42,6 +42,12 @@ steps:
       - pub
       - get
     dir: wayat/frontend
+  # Testing:
+  - id: "Running Tests"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - test
+    dir: wayat/frontend
   # Generated files:
   - id: "Generating extra files"
     name: gcr.io/$PROJECT_ID/flutter:stable
