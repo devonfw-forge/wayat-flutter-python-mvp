@@ -1,5 +1,5 @@
 import logging
-from typing import overload
+from typing import overload, Optional
 
 from fastapi import Depends
 import firebase_admin
@@ -45,7 +45,8 @@ class CloudMessaging:
     async def send_notification(self, *, tokens: list[str], data: dict[str, str]):
         ...
 
-    async def send_notification(self, *, tokens: list[str], notification: Notification, data: dict[str, str]):
+    async def send_notification(self, *, tokens: list[str], notification: Optional[Notification] = None,
+                                data: Optional[dict[str, str]] = None):
         # Overload handling
         if notification is not None:
             return await self._send_notification(tokens, notification)
