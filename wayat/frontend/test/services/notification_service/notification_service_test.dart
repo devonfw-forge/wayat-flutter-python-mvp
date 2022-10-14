@@ -5,8 +5,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-import 'package:wayat/services/notification/mock/notification_service.dart';
-import 'package:wayat/services/notification/mock/notification_service_impl.dart';
+import 'package:wayat/services/notification/notification_service.dart';
+import 'package:wayat/services/notification/notification_service_impl.dart';
 
 import 'notification_service_test.mocks.dart';
 

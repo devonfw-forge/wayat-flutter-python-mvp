@@ -7,7 +7,7 @@ import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:wayat/services/notification/mock/notification_service_impl.dart';
+import 'package:wayat/services/notification/notification_service_impl.dart';
 
 part 'notification_state.g.dart';
 
@@ -173,10 +173,6 @@ abstract class _NotificationState with Store {
 
   /// Return notification with [newMessage]
   PushNotification pushNotification(RemoteMessage newMessage) {
-    if (platformService.isWeb) {
-      // TODO: implement web notification
-    }
-
     if (platformService.targetPlatform == TargetPlatform.android) {
       return PushNotification(
           title: newMessage.notification!.title ?? "",

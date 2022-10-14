@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
-import 'package:wayat/services/notification/mock/notification_service.dart';
+import 'package:wayat/services/notification/notification_service.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 class NotificationServiceImpl implements NotificationService {

@@ -4,9 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/notification_state/notification_state.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
-import 'package:wayat/services/notification/mock/notification_service.dart';
-
-import '../../features/notification/widgets/dynamic_dialog_test.mocks.dart';
+import 'package:wayat/services/notification/notification_service.dart';
 
 @GenerateMocks([
   NotificationService,
