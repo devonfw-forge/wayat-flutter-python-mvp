@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -75,9 +73,11 @@ Future registerSingletons() async {
       () => ContactsPageController());
   GetIt.I.registerLazySingleton<GroupsController>(() => GroupsController());
   GetIt.I.registerLazySingleton<LocationListener>(() => LocationListener());
-  GetIt.I.registerLazySingleton<NotificationState>(() => NotificationState());
   GetIt.I.registerLazySingleton<PhoneVerificationController>(
       () => PhoneVerificationController());
+  if (PlatformService().isMobile) {
+    GetIt.I.registerLazySingleton<NotificationState>(() => NotificationState());
+  }
 }
 
 /// Main Application class
@@ -99,12 +99,17 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// To avoid sending multiple `mapOpened` and `mapClosed` requests to the server concurrently
   final Lock _lock = Lock();
 
+  /// Called when this object is inserted into the tree.
+  /// 
+  /// It should be changed as an [async] function or return a [Future] object.
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    GetIt.I.get<NotificationState>().registerNotification();
-    GetIt.I.get<NotificationState>().messagingTerminatedAppListener();
-    GetIt.I.get<NotificationState>().messagingBackgroundAppListener();
+    if (PlatformService().isMobile) {
+      GetIt.I.get<NotificationState>().registerNotification();
+      GetIt.I.get<NotificationState>().messagingTerminatedAppListener();
+      GetIt.I.get<NotificationState>().messagingBackgroundAppListener();
+    }
     super.initState();
   }
 

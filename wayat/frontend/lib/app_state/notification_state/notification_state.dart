@@ -204,7 +204,6 @@ abstract class _NotificationState with Store {
   }
 
   /// For handling notification when the app is open
-  @action
   messagingAppListener() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       notificationInfo = pushNotification(message);
