@@ -186,8 +186,8 @@ abstract class _NotificationState with Store {
 
     if (platformService.targetPlatform == TargetPlatform.android) {
       return PushNotification(
-        title: newMessage.notification?.title,
-        body: newMessage.notification?.body,
+        title: newMessage.notification!.title ?? "",
+        body: newMessage.notification!.body ?? ""
       );
     }
 
@@ -199,7 +199,7 @@ abstract class _NotificationState with Store {
     }
     return PushNotification(
       title: 'No title',
-      body: 'No body',
+      body: 'No body'
     );
   }
 
@@ -240,9 +240,7 @@ abstract class _NotificationState with Store {
       subtitle: Text(notificationInfo?.body ?? 'No notification body'),
       background: Colors.white,
       foreground: Colors.black,
-      leading: NotificationBadge(
-          contactIconUrl: notificationInfo?.dataBody ??
-              'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'),
+      leading: NotificationBadge(),
       trailing: OutlinedButton(
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.white,

@@ -20,10 +20,9 @@ void main() async {
   setUp(() {
     mockNotificationService = MockNotificationService();
     PushNotification pushNotification = PushNotification(
-        title: 'Test Notification Title',
-        body: 'Test Notification Body',
-        dataTitle: 'Test Notification dataTitle',
-        dataBody: 'Test Notification dataBody');
+      title: 'Test Notification Title',
+      body: 'Test Notification Body'
+    );
     GetIt.I.registerSingleton<NotificationState>(mockNotificationState);
     when(mockNotificationState.notificationInfo).thenReturn(pushNotification);
     when(mockNotificationState.totalNotifications).thenReturn(0);

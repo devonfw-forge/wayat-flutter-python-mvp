@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wayat/common/theme/colors.dart';
 
 class NotificationBadge extends StatelessWidget {
-  final String contactIconUrl;
-  const NotificationBadge({Key? key, required this.contactIconUrl})
+  
+  const NotificationBadge({Key? key})
       : super(key: key);
 
   @override
@@ -16,7 +16,9 @@ class NotificationBadge extends StatelessWidget {
         color: ColorTheme.primaryColor,
         shape: BoxShape.circle,
         image: DecorationImage(
-            image: NetworkImage(contactIconUrl), fit: BoxFit.cover),
+          image: const Image(image: AssetImage('assets/images/wayat_icon.png')).image,
+          fit: BoxFit.cover
+        ),
       ),
     );
   }

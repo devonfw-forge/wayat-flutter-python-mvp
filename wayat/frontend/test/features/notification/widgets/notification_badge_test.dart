@@ -20,10 +20,7 @@ void main() async {
   }
 
   testWidgets('Contact image', (tester) async {
-    await tester.pumpWidget(createApp(const NotificationBadge(
-      contactIconUrl:
-          'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif',
-    )));
+    await tester.pumpWidget(createApp(const NotificationBadge()));
     expect(find.byKey(const Key("contact_icon")), findsOneWidget);
   });
 }

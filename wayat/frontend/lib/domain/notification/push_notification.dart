@@ -1,13 +1,9 @@
 class PushNotification {
-  PushNotification({
-    this.title,
-    this.body,
-    this.dataTitle,
-    this.dataBody,
-  });
+  final String title;
+  final String body;
 
-  String? title;
-  String? body;
-  String? dataTitle;
-  String? dataBody;
+  PushNotification({
+    required this.title,
+    required this.body
+  });
 }
