@@ -1,10 +1,12 @@
 import 'package:auto_route_example/mock/product.dart';
+import 'package:auto_route_example/state/app_state.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class ItemPage extends StatelessWidget {
-  final Product product;
+  final Product product = GetIt.I.get<AppState>().selectedProduct!;
 
-  const ItemPage({Key? key, required this.product}) : super(key: key);
+  ItemPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

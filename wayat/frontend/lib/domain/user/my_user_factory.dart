@@ -8,6 +8,7 @@ class MyUserFactory {
         email: myUserMap['email'] as String,
         imageUrl: myUserMap['image_url'] as String,
         phone: myUserMap['phone'] ?? "",
+        phonePrefix: myUserMap['phone_prefix'] ?? "",
         onboardingCompleted: myUserMap['onboarding_completed'] as bool,
         shareLocationEnabled: myUserMap['share_location'] as bool);
   }

@@ -107,7 +107,7 @@ class _PinInputFieldState extends State<PinInputField> {
         onCompleted: widget.onSubmit,
         pinAnimationType: PinAnimationType.scale,
         androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
-        autofocus: true,
+        // autofocus: true,
         closeKeyboardWhenCompleted: true,
         pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
       ),

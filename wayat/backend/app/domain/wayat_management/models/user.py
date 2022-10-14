@@ -30,6 +30,7 @@ class UserEntity(BaseFirebaseModel):
     name: Optional[str]
     email: str
     phone: Optional[str]
+    phone_prefix: Optional[str]
     image_ref: Optional[str]
     contacts: list[str] = Field(default_factory=list)
     location_shared_with: list[str] = Field(default_factory=list)

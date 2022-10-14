@@ -135,9 +135,9 @@ class GoogleAuthService implements AuthService {
   }
 
   @override
-  Future<bool> sendPhoneNumber(String phone) async {
-    return (await httpProvider
-                    .sendPostRequest(APIContract.userProfile, {"phone": phone}))
+  Future<bool> sendPhoneNumber(String prefix, String phone) async {
+    return (await httpProvider.sendPostRequest(APIContract.userProfile,
+                    {"phone": phone, "phone_prefix": prefix}))
                 .statusCode /
             10 ==
         20;

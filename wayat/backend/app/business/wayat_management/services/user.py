@@ -45,6 +45,7 @@ class UserService:
             name=entity.name,
             email=entity.email,
             phone=entity.phone,
+            phone_prefix=entity.phone_prefix,
             image_url=self._file_repository.generate_signed_url(entity.image_ref),
             do_not_disturb=entity.do_not_disturb,
             share_location=entity.share_location,
@@ -86,7 +87,8 @@ class UserService:
                           **kwargs
                           ):
         # Filter only valid keys
-        valid_keys = {"name", "phone", "onboarding_completed", "share_location", "do_not_disturb"} & kwargs.keys()
+        valid_keys = {"name", "phone", "phone_prefix", "onboarding_completed",
+                      "share_location", "do_not_disturb"} & kwargs.keys()
         update_data = {key: kwargs[key] for key in valid_keys}
 
         # Update required fields only

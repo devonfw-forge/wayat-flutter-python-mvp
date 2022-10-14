@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Wrapper to redirect the user to the correct screen when starting the app.
 ///
@@ -27,7 +28,10 @@ class RootWrapper extends StatelessWidget {
       return AutoRouter.declarative(
           routes: (_) => [
                 if (loggedIn)
-                  if (!doneOnBoarding) OnBoardingWrapper() else HomeWrapper()
+                  if (!doneOnBoarding && !PlatformService().isWeb)
+                    OnBoardingWrapper()
+                  else
+                    HomeWrapper()
                 else
                   LoginWrapper()
               ]);
