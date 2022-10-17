@@ -75,9 +75,10 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         user_entity = await self.get_or_throw(uid)
         if user_entity.location is None:  # if not available, return None
             return None, user_entity.location_shared_with
+        elif not force and not user_entity.share_location:  # if not forcing, decide on not(share_location)
+            return None, user_entity.location_shared_with
         else:
-            return user_entity.location if user_entity.share_location or force else None, \
-                   user_entity.location_shared_with
+            return user_entity.location, user_entity.location_shared_with
 
     async def set_active(self, uid: str, value: bool):
         await self.update(document_id=uid, data={"active": value})
