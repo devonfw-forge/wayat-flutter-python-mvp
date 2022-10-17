@@ -62,6 +62,7 @@ dependencies:
   firebase_core: ^1.20.0
   cloud_firestore: ^3.4.6
   firebase_auth: ^3.11.2
+  firebase_messaging: ^13.1.0
   image_picker: ^0.8.5+3
   # Phone verification
   firebase_phone_auth_handler: ^1.0.6
@@ -83,6 +84,8 @@ dependencies:
   # Flutter map
   flutter_map: ^3.0.0
   latlong2: ^0.8.1
+  flutter_local_notifications: ^12.0.0
+  overlay_support: ^2.0.1
   # Auth phone
   firebase_auth_platform_interface: ^6.1.10
 
@@ -101,8 +104,6 @@ dev_dependencies:
   # Dialogs
   speech_balloon: ^0.0.4
   remove_from_coverage: 2.0.0
-
-
 
 flutter:
   # Flag to generate internationalization files

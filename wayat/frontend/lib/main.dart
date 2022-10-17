@@ -1,14 +1,15 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
+import 'package:wayat/app_state/notification_state/notification_state.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/features/profile/controllers/profile_controller.dart';
@@ -74,6 +75,9 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LocationListener>(() => LocationListener());
   GetIt.I.registerLazySingleton<PhoneVerificationController>(
       () => PhoneVerificationController());
+  if (PlatformService().isMobile) {
+    GetIt.I.registerLazySingleton<NotificationState>(() => NotificationState());
+  }
 }
 
 /// Main Application class
@@ -95,10 +99,18 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// To avoid sending multiple `mapOpened` and `mapClosed` requests to the server concurrently
   final Lock _lock = Lock();
 
+  /// Called when this object is inserted into the tree.
+  /// 
+  /// It should be changed as an [async] function or return a [Future] object.
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
+    if (PlatformService().isMobile) {
+      GetIt.I.get<NotificationState>().registerNotification();
+      GetIt.I.get<NotificationState>().messagingTerminatedAppListener();
+      GetIt.I.get<NotificationState>().messagingBackgroundAppListener();
+    }
+    super.initState();
   }
 
   @override
@@ -146,7 +158,8 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
     return FutureBuilder(
         future: GetIt.I.get<AppConfigState>().initializeLocale(),
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
-          return MaterialApp.router(
+          return OverlaySupport(
+              child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -169,7 +182,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
             },
             routerDelegate: _appRouter.delegate(),
             routeInformationParser: _appRouter.defaultRouteParser(),
-          );
+          ));
         });
   }
 }
