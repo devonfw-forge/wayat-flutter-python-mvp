@@ -20,8 +20,9 @@ class ItemListPage extends StatelessWidget {
                           icon: const Icon(Icons.info_rounded),
                           splashRadius: 20,
                           onPressed: () {
-                            context.go("/first/itemslist/item",
-                                extra: appState.allProducts[index]);
+                            context.go(
+                              "/first/itemslist/$index",
+                            );
                           }),
                       title: Text(appState.allProducts[index].name),
                       trailing: Text("${appState.allProducts[index].price}€"),
