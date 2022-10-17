@@ -22,6 +22,18 @@ class AppGoRouter {
     initialLocation: "/login",
     errorBuilder: (context, state) => const ErrorPage(),
     debugLogDiagnostics: true,
+    redirect: (context, state) async {
+      if (await userState.isLogged()) {
+        if (userState.currentUser == null) {
+          await userState.initializeCurrentUser();
+        }
+      } else {
+        if (state.location != '/login') {
+          return '/login';
+        }
+      }
+      return null;
+    },
     routes: [
       // Makes map the default page if you enter just the domain name
       // GoRoute(path: '/', redirect: (_, __) => '/map'),

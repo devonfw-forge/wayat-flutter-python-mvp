@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,17 +36,20 @@ Future main() async {
     HttpOverrides.global = HttpDebugOverride();
   }
 
-  // AVoid # character in url (flutter web)
-  if (PlatformService().isWeb) {
-    setPathUrlStrategy();
-  }
-
   // Env file should be loaded before Firebase initialization
   await EnvModel.loadEnvFile();
 
   await Firebase.initializeApp(
       name: EnvModel.FIREBASE_APP_NAME,
       options: CustomFirebaseOptions.currentPlatformOptions);
+
+  // AVoid # character in url (flutter web)
+  if (PlatformService().isWeb) {
+    setPathUrlStrategy();
+    await FirebaseAuth.instanceFor(
+      app: Firebase.app(EnvModel.FIREBASE_APP_NAME),
+    ).idTokenChanges().first;
+  }
 
   await registerSingletons();
 
