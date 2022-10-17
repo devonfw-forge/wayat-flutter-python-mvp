@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
 import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
+// ignore: depend_on_referenced_packages
+import 'package:adaptive_breakpoints/adaptive_breakpoints.dart';
 
 /// Main page with tabs of home, contacts and profile
 ///
@@ -42,6 +44,20 @@ class HomeGoPage extends StatelessWidget {
         }
       },
       destinations: scaffoldDestinations,
+      navigationTypeResolver: navigationTypeResolver,
     ));
   }
+
+  NavigationType navigationTypeResolver(BuildContext context) {
+    if (_isLargeScreen(context) || _isMediumScreen(context)) {
+      return NavigationType.rail;
+    } else {
+      return NavigationType.bottom;
+    }
+  }
+
+  bool _isLargeScreen(BuildContext context) =>
+      getWindowType(context) >= AdaptiveWindowType.large;
+  bool _isMediumScreen(BuildContext context) =>
+      getWindowType(context) == AdaptiveWindowType.medium;
 }
