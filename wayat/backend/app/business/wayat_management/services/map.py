@@ -149,19 +149,38 @@ class MapService:
     async def update_contacts_status(self, uid: str, latitude: float = None, longitude: float = None, force=False):
         contacts, self_user = await self._user_repository.get_contacts(uid)
         contacts_map_open = [c for c in contacts if c.map_open is True and c.map_valid_until >= get_current_time()]
-        if latitude is not None and longitude is not None:
-            contacts_in_range = [c for c in contacts if self._in_range(latitude, longitude, c.location)]
-            contacts_map_open_in_range = list(set([c.document_id for c in contacts_in_range]).intersection(
-                set([c.document_id for c in contacts_map_open])))
-            # Update my active status if at least one friend is looking at me
-            active_value = len(contacts_map_open_in_range) != 0
-            if active_value != self_user.active:
-                # Update my active status if changed only
-                await self._set_active(uid=self_user.document_id, active=active_value)
-            # Set active all contacts in range which are not already active
-            await self._set_active(uids=[c.document_id for c in contacts_in_range if not c.active], active=True)
+        contacts_map_open_self_share_location = [c for c in contacts_map_open
+                                                 if c.document_id in self_user.location_shared_with]
+        if latitude is None or longitude is None:
+            longitude = self_user.location.value.longitude
+            latitude = self_user.location.value.latitude
+
+        contacts_in_range = [c for c in contacts if self._in_range(latitude, longitude, c.location)]
+
+        # Update my active status if at least one friend is looking at me
+        contacts_self_sharing_location_with_and_map_open_in_range = list(
+            set(
+                [c.document_id for c in contacts_in_range]
+            ).intersection(set(
+                [c.document_id for c in contacts_map_open_self_share_location]
+            ))
+        )
+        active_value = len(contacts_self_sharing_location_with_and_map_open_in_range) != 0
+        if active_value != self_user.active:  # Update my active status if changed only
+            await self._set_active(uid=self_user.document_id, active=active_value)
+
+        # Set active all contacts in range and sharing location with me which are not already active
+        contacts_sharing_location_with_me = [c for c in contacts if self_user.document_id in c.location_shared_with]
+        contacts_in_range_and_sharing_location_with_me_not_active = list(
+            set(
+                [c.document_id for c in contacts_in_range if c.active is False]
+            ).intersection(set(
+                [c.document_id for c in contacts_sharing_location_with_me]
+            ))
+        )
+        await self._set_active(uids=contacts_in_range_and_sharing_location_with_me_not_active, active=True)
         # Update all maps that point at me
-        await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open])
+        await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open_self_share_location])
 
     @overload
     async def _set_active(self, *, uid: str, active: bool):
