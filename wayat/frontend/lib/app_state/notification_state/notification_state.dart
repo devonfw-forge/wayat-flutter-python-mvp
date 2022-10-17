@@ -21,12 +21,6 @@ abstract class _NotificationState with Store {
   PlatformService platformService = PlatformService();
 
   @observable
-  int totalNotifications = 0;
-
-  @observable
-  PushNotification? notificationInfo;
-
-  @observable
   bool authorizationStatus = false;
 
   @observable
@@ -75,7 +69,8 @@ abstract class _NotificationState with Store {
     badgeNumber: null,
   );
 
-  Future<NotificationDetails> notificationDetails() async {
+  Future<NotificationDetails> notificationDetails(
+      PushNotification notificationInfo) async {
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidNotificationDetails, iOS: iosNotificationDetails);
     return platformChannelSpecifics;
@@ -97,8 +92,8 @@ abstract class _NotificationState with Store {
     if (Platform.isIOS || Platform.isMacOS) {
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
+              IOSFlutterLocalNotificationsPlugin>()!
+          .requestPermissions(
             alert: true,
             badge: true,
             sound: true,
@@ -106,8 +101,8 @@ abstract class _NotificationState with Store {
           );
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              MacOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
+              MacOSFlutterLocalNotificationsPlugin>()!
+          .requestPermissions(
             alert: true,
             badge: true,
             sound: true,
@@ -133,7 +128,7 @@ abstract class _NotificationState with Store {
     // Check is user accept permissions
     if (authorizationStatus) {
       messagingAppListener();
-      getToken();
+      await getToken();
     } else {
       debugPrint('User declined or has not accepted permission');
     }
@@ -156,10 +151,9 @@ abstract class _NotificationState with Store {
   }
 
   /// Get FCM token
-  void getToken() {
-    messagingInstance.getToken().then((token) {
-      if (token != null) setToken(token);
-    });
+  Future<void> getToken() async {
+    String? token = await messagingInstance.getToken();
+    if (token != null) setToken(token);
     _tokenStream = messagingInstance.onTokenRefresh;
     _tokenStream.listen(setToken);
   }
@@ -168,8 +162,8 @@ abstract class _NotificationState with Store {
   PushNotification pushNotification(RemoteMessage newMessage) {
     if (platformService.targetPlatform == TargetPlatform.android) {
       return PushNotification(
-          title: newMessage.notification!.title ?? "",
-          body: newMessage.notification!.body ?? "");
+          title: newMessage.notification!.title ?? 'No notification title',
+          body: newMessage.notification!.body ?? '');
     }
 
     if (platformService.targetPlatform == TargetPlatform.iOS) {
@@ -178,15 +172,14 @@ abstract class _NotificationState with Store {
         body: newMessage.data['aps']['alert']['body'],
       );
     }
-    return PushNotification(title: 'No title', body: 'No body');
+    return PushNotification(title: 'No title', body: '');
   }
 
   /// For handling notification when the app is open
   messagingAppListener() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      notificationInfo = pushNotification(message);
-      totalNotifications++;
-      if (notificationInfo != null) showNotification();
+      PushNotification notificationInfo = pushNotification(message);
+      showNotification(notificationInfo);
     });
   }
 
@@ -195,9 +188,8 @@ abstract class _NotificationState with Store {
   messagingTerminatedAppListener() async {
     RemoteMessage? initialMessage = await messagingInstance.getInitialMessage();
     if (initialMessage != null) {
-      notificationInfo = pushNotification(initialMessage);
-      totalNotifications++;
-      notificationDetails();
+      PushNotification notificationInfo = pushNotification(initialMessage);
+      notificationDetails(notificationInfo);
     }
   }
 
@@ -206,16 +198,15 @@ abstract class _NotificationState with Store {
   @action
   messagingBackgroundAppListener() async {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      notificationInfo = pushNotification(message);
-      totalNotifications++;
-      notificationDetails();
+      PushNotification notificationInfo = pushNotification(message);
+      notificationDetails(notificationInfo);
     });
   }
 
-  showNotification() {
+  showNotification(PushNotification notificationInfo) {
     showSimpleNotification(
-      Text(notificationInfo?.title ?? 'No notification title'),
-      subtitle: Text(notificationInfo?.body ?? 'No notification body'),
+      Text(notificationInfo.title),
+      subtitle: Text(notificationInfo.body),
       background: Colors.white,
       foreground: Colors.black,
       leading: const NotificationBadge(),
