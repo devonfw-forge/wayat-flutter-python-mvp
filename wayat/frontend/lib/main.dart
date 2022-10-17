@@ -152,6 +152,15 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
         future: GetIt.I.get<AppConfigState>().initializeLocale(),
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
           return MaterialApp.router(
+            theme: ThemeData(
+                navigationRailTheme: const NavigationRailThemeData(
+                    selectedIconTheme: IconThemeData(color: Colors.white),
+                    unselectedIconTheme: IconThemeData(color: Colors.white54),
+                    backgroundColor: Colors.black),
+                bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                    selectedItemColor: Colors.white,
+                    unselectedItemColor: Colors.white54,
+                    backgroundColor: Colors.black)),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

@@ -12,6 +12,7 @@ import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class AppGoRouter {
   final ValueKey<String> _scaffoldKey =
@@ -88,6 +89,14 @@ class AppGoRouter {
             )
           ]),
       GoRoute(path: '/contacts', redirect: (_, __) => '/contacts/friends'),
+      GoRoute(
+          path: '/contacts/suggestions',
+          redirect: (context, state) {
+            if (PlatformService().isDesktopOrWeb) {
+              return '/contacts/friends';
+            }
+            return null;
+          }),
       GoRoute(
           path: '/contacts/:kind(friends|requests|suggestions)',
           pageBuilder: (context, state) {

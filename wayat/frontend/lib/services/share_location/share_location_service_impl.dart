@@ -4,10 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/share_location/background_location_exception.dart';
+import 'package:wayat/services/share_location/last_web_location.dart';
 import 'package:wayat/services/share_location/no_location_service_exception.dart';
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
 import 'package:wayat/services/share_location/share_location_service.dart';
@@ -83,19 +85,45 @@ class ShareLocationServiceImpl extends ShareLocationService {
     platformService ??= PlatformService();
     Location location = Location();
     PermissionStatus? webPermissionStatus;
-
-    if (!platformService.isWeb) {
-      await _checkLocationPermissions();
-    } else {
-      webPermissionStatus = await location.requestPermission();
-    }
     LocationData? initialLocation;
-    if (!(platformService.isWeb &&
-        webPermissionStatus == PermissionStatus.deniedForever)) {
-      initialLocation = await location.getLocation();
+
+    if (platformService.isWeb) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool validCache = false;
+      LastWebLocation? webLocationCache;
+
+      String? lastWebLocationJson = prefs.getString("last_web_location");
+      if (lastWebLocationJson != null) {
+        webLocationCache = LastWebLocation.fromJson(lastWebLocationJson);
+        if (DateTime.now()
+                .difference(webLocationCache.updatedDateTime)
+                .inMinutes <
+            30) {
+          validCache = true;
+        }
+      }
+
+      if (!validCache) {
+        webPermissionStatus = await location.requestPermission();
+        if (webPermissionStatus != PermissionStatus.deniedForever) {
+          initialLocation = await location.getLocation();
+          prefs.setString(
+              "last_web_location",
+              LastWebLocation(
+                      lastLocation: initialLocation,
+                      updatedDateTime: DateTime.now())
+                  .toJson());
+        } else {
+          initialLocation = LocationData.fromMap(
+              {"latitude": 48.864716, "longitude": 2.349014});
+        }
+      } else {
+        initialLocation = webLocationCache!.lastLocation;
+        webPermissionStatus = PermissionStatus.granted;
+      }
     } else {
-      initialLocation =
-          LocationData.fromMap({"latitude": 48.864716, "longitude": 2.349014});
+      await _checkLocationPermissions();
+      initialLocation = await location.getLocation();
     }
 
     return ShareLocationServiceImpl._create(

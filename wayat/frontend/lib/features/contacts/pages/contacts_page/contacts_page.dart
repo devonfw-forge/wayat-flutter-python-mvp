@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
@@ -84,7 +85,7 @@ class _ContactsPageState extends State<ContactsPage>
     return Expanded(
         child: Column(
       children: [
-        _tabBar(_tabController),
+        _tabBar(context, _tabController),
         Expanded(
           child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 800),
@@ -99,7 +100,7 @@ class _ContactsPageState extends State<ContactsPage>
   }
 
   /// Returns tabBar to change between friends, requests and suggestions page
-  Widget _tabBar(TabController tabController) {
+  Widget _tabBar(BuildContext context, TabController tabController) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Stack(
@@ -116,6 +117,25 @@ class _ContactsPageState extends State<ContactsPage>
               indicator: _tabIndicator(),
               labelColor: Colors.black87,
               controller: tabController,
+              onTap: (index) {
+                switch (index) {
+                  case 0:
+                    {
+                      context.go('/contacts/friends');
+                      break;
+                    }
+                  case 1:
+                    {
+                      context.go('/contacts/requests');
+                      break;
+                    }
+                  case 2:
+                    {
+                      context.go('/contacts/suggestions');
+                      break;
+                    }
+                }
+              },
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
