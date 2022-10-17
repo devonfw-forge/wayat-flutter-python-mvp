@@ -5,7 +5,8 @@ from pydantic import BaseModel
 
 from app.common import get_user
 from app.common.core.identity_provider import User
-from app.common.infra.gcp.firebase import get_account_info, get_firebase_settings, FirebaseSettings
+from app.common.infra.gcp.firebase import FirebaseSettings
+from app.common.infra.gcp.utils import get_firebase_settings
 
 logger = logging.getLogger(__name__)
 

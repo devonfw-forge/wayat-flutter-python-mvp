@@ -6,7 +6,7 @@ from fastapi import Depends
 from google.cloud.storage import Client
 from app.common.core.configuration import load_env_file_on_settings
 from app.common.infra.gcp.cloud_storage import BaseStorageSettings, CloudStorage
-from app.common.infra.gcp.firebase import get_account_info
+from app.common.infra.gcp.utils import get_account_info
 
 
 class StorageSettings(BaseStorageSettings):

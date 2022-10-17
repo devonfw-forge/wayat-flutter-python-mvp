@@ -67,7 +67,7 @@ async def get_friend_requests(user: FirebaseAuthenticatedUser = Depends(get_user
 async def handle_friend_request(r: HandleFriendRequestRequest, user: FirebaseAuthenticatedUser = Depends(get_user()),
                                 user_service: UserService = Depends(UserService),
                                 map_service: MapService = Depends(MapService)):
-    await user_service.respond_friend_request(user_uid=user.uid, friend_uid=r.uid, accept=r.accept)
+    await user_service.respond_friend_request(self_user_uid=user.uid, friend_uid=r.uid, accept=r.accept)
     if r.accept is True:  # If accepted a friend request refresh maps
         await map_service.force_status_update(uid=user.uid)
         await map_service.force_status_update(uid=r.uid)
