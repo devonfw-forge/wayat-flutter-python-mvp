@@ -151,7 +151,8 @@ class MapService:
         contacts, self_user = await self._user_repository.get_contacts(uid)
         contacts_map_open = [c for c in contacts if c.map_open is True and c.map_valid_until >= get_current_time()]
         contacts_map_open_self_share_location = [c for c in contacts_map_open
-                                                 if c.document_id in self_user.location_shared_with]
+                                                 if c.document_id in self_user.location_shared_with
+                                                 and self_user.share_location]
         # Update all maps that point at me
         logger.info("Updating maps pointing at me")
         await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open_self_share_location])
@@ -178,7 +179,8 @@ class MapService:
             await self._set_active(uid=self_user.document_id, active=active_value)
 
         # Set active all contacts in range and sharing location with me which are not already active
-        contacts_sharing_location_with_me = [c for c in contacts if self_user.document_id in c.location_shared_with]
+        contacts_sharing_location_with_me = [c for c in contacts if self_user.document_id in c.location_shared_with
+                                             and c.share_location]
         contacts_in_range_and_sharing_location_with_me_not_active = list(
             set(
                 [c.document_id for c in contacts_in_range if c.active is False]
@@ -200,11 +202,11 @@ class MapService:
 
     async def _set_active(self, *, uid: str = None, uids: List[str] = None, active: bool):
         if uid is not None:
-            logger.info(f"Setting active {uid}")
+            logger.info(f"Setting active {uid} {active}")
             await self._status_repository.set_active(uid, active)
             await self._user_repository.set_active(uid, active)
         elif uids is not None:
-            logger.info(f"Setting active {uids}")
+            logger.info(f"Setting active {uids} {active}")
             if len(uids) > 0:
                 await self._status_repository.set_active_batch(uid_list=uids, value=active)
                 await self._user_repository.set_active_batch(uid_list=uids, value=active)
