@@ -34,7 +34,7 @@ import 'package:wayat/services/share_location/rejected_location_exception.dart';
 class HomeMapPage extends StatelessWidget {
   /// Used to show the [Group] list below the search bar.
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
-  final LocationListener statusState = GetIt.I.get<LocationListener>();
+  final LocationListener locationListener = GetIt.I.get<LocationListener>();
   final MapController controller;
   final PlatformService platformService;
 
@@ -86,8 +86,8 @@ class HomeMapPage extends StatelessWidget {
   Future<void> initializeLocationState(context) async {
     while (true) {
       try {
-        await statusState.shareLocationState.initialize();
-        await statusState.initialize();
+        await locationListener.shareLocationState.initialize();
+        await locationListener.initialize();
         return;
       } on NoLocationServiceException {
         await _showLocationPermissionDialog(context, true);
@@ -162,7 +162,8 @@ class HomeMapPage extends StatelessWidget {
   }
 
   void prepareMapData(BuildContext context) {
-    List<ContactLocation> contacts = statusState.receiveLocationState.contacts;
+    List<ContactLocation> contacts =
+        locationListener.receiveLocationState.contacts;
     if (contacts != controller.contacts) {
       controller.setContacts(contacts);
       controller.getMarkers();
@@ -316,7 +317,7 @@ class HomeMapPage extends StatelessWidget {
   Widget mapListView() {
     return Observer(builder: (context) {
       List<ContactLocation> contacts =
-          statusState.receiveLocationState.contacts;
+          locationListener.receiveLocationState.contacts;
       return ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -358,11 +359,13 @@ class HomeMapPage extends StatelessWidget {
               fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
         ),
         Observer(builder: (context) {
-          bool enabled = statusState.shareLocationState.shareLocationEnabled;
+          bool enabled =
+              locationListener.shareLocationState.shareLocationEnabled;
           return CustomSwitch(
             value: enabled,
             onChanged: (newValue) {
-              statusState.shareLocationState.setShareLocationEnabled(newValue);
+              locationListener.shareLocationState
+                  .setShareLocationEnabled(newValue);
             },
           );
         })
