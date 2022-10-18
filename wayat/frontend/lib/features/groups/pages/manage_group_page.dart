@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/common/widgets/buttons/custom_outlined_button_icon.dart';
@@ -12,7 +10,6 @@ import 'package:wayat/common/widgets/custom_textfield.dart';
 import 'package:wayat/common/widgets/message_card.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
-import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:wayat/features/groups/widgets/create_group_contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';

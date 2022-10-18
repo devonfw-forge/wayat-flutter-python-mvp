@@ -72,10 +72,12 @@ class GroupsPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15.0, vertical: 5),
                           child: GroupTile(
-                            group: groups[index],
-                            onPressed: () =>
-                                controller.setSelectedGroup(groups[index]),
-                          ),
+                              group: groups[index],
+                              onPressed: () {
+                                controller.setSelectedGroup(groups[index]);
+                                context
+                                    .go('/contacts/groups/${groups[index].id}');
+                              }),
                         );
                       });
             });

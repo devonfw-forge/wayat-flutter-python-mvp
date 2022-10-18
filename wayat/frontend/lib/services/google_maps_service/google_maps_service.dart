@@ -29,7 +29,7 @@ class GoogleMapsService {
     } else {
       // google maps
       uri = Uri.parse(
-          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
+          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=walking");
     }
     if (await launcher.canLaunchUrl(uri)) {
       await launcher.launchUrl(uri);

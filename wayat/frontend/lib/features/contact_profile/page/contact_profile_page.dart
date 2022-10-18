@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -56,7 +57,7 @@ class ContactProfilePage extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        GetIt.I.get<HomeNavState>().setSelectedContact(null, "");
+        goBack(context);
         return true;
       },
       child: Scaffold(
@@ -66,7 +67,7 @@ class ContactProfilePage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              appBar(),
+              appBar(context),
               mapSection(context, canBeLocated),
               ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 800),
@@ -83,23 +84,26 @@ class ContactProfilePage extends StatelessWidget {
   }
 
   /// Returns an appBar with a return arrow to previous page
-  Widget appBar() {
+  Widget appBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
       child: Row(
         children: [
           IconButton(
-              onPressed: () {
-                GetIt.I.get<HomeNavState>().setSelectedContact(null, "");
-              },
+              onPressed: () => goBack(context),
               icon: const Icon(Icons.arrow_back)),
           Text(
-            navigationSource,
+            (navigationSource == '/contacts/friends') ? 'Contacts' : 'wayat',
             style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
           )
         ],
       ),
     );
+  }
+
+  void goBack(BuildContext context) {
+    GetIt.I.get<HomeNavState>().setSelectedContact(null);
+    context.go(navigationSource);
   }
 
   /// Returns a widget which includes a switch to enable/disable sharing location with a contact

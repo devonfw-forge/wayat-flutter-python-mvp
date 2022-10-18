@@ -36,6 +36,7 @@ class _ContactsPageState extends State<ContactsPage>
     super.initState();
     _tabController = TabController(
         length: (widget.platformService.isWeb) ? 2 : 3, vsync: this);
+    controller.updateTabData(_tabController.index);
   }
 
   @override
@@ -59,6 +60,7 @@ class _ContactsPageState extends State<ContactsPage>
           break;
         }
     }
+    controller.updateTabData(_tabController.index);
   }
 
   @override

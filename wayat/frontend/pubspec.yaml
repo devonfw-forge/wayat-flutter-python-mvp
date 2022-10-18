@@ -85,7 +85,7 @@ dependencies:
   flutter_map: ^3.0.0
   latlong2: ^0.8.1
   # new experimental navigation
-  go_router: ^5.0.5
+  go_router: ^5.1.0
   flutter_local_notifications: ^12.0.0
   overlay_support: ^2.0.1
   # Auth phone

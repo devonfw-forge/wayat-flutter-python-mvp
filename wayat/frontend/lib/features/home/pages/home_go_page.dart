@@ -1,6 +1,7 @@
 import 'package:adaptive_navigation/adaptive_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
 import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
@@ -27,26 +28,30 @@ class HomeGoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: (platformService.wideUi || platformService.isDesktopOrWeb)
+            ? null
+            : const PreferredSize(
+                preferredSize: Size.fromHeight(40), child: CustomAppBar()),
         body: AdaptiveNavigationScaffold(
-      body: child,
-      selectedIndex: selectedSection.index,
-      onDestinationSelected: (int index) {
-        switch (HomeTab.values[index]) {
-          case HomeTab.map:
-            context.go("/map");
-            break;
-          case HomeTab.contacts:
-            context.go("/contacts");
-            break;
-          case HomeTab.profile:
-            context.go("/profile");
-            break;
-        }
-      },
-      extendBody: true,
-      destinations: scaffoldDestinations,
-      navigationTypeResolver: navigationTypeResolver,
-    ));
+          body: child,
+          selectedIndex: selectedSection.index,
+          onDestinationSelected: (int index) {
+            switch (HomeTab.values[index]) {
+              case HomeTab.map:
+                context.go("/map");
+                break;
+              case HomeTab.contacts:
+                context.go("/contacts");
+                break;
+              case HomeTab.profile:
+                context.go("/profile");
+                break;
+            }
+          },
+          extendBody: true,
+          destinations: scaffoldDestinations,
+          navigationTypeResolver: navigationTypeResolver,
+        ));
   }
 
   NavigationType navigationTypeResolver(BuildContext context) {

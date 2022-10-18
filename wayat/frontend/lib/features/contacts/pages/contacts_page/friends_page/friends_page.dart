@@ -9,7 +9,6 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/contacts/widgets/contacts_section_title.dart';
 import 'package:wayat/features/contacts/widgets/navigation_button.dart';
@@ -64,8 +63,11 @@ class FriendsPage extends StatelessWidget {
                         contactsStatus.firstWhereOrNull(
                             (element) => element.id == contacts[index].id);
                     Contact selectedContact = currentContact ?? contacts[index];
-                    GetIt.I.get<HomeNavState>().setSelectedContact(
-                        selectedContact, appLocalizations.contacts);
+                    GetIt.I
+                        .get<HomeNavState>()
+                        .setSelectedContact(selectedContact);
+                    context.go('/contact/${selectedContact.id}',
+                        extra: "/contacts/friends");
                   },
                   contact: contacts[index],
                   iconAction: IconButton(

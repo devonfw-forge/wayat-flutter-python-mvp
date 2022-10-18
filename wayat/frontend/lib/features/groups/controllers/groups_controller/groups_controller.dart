@@ -1,3 +1,5 @@
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -54,6 +56,14 @@ abstract class _GroupsController with Store {
       return true;
     }
     return false;
+  }
+
+  Future<void> prepareStateForIdPage(String groupId) async {
+    if (selectedGroup != null && selectedGroup?.id == groupId) {
+      return;
+    }
+    await updateGroups();
+    selectedGroup = groups.firstWhereOrNull((element) => element.id == groupId);
   }
 
   @action

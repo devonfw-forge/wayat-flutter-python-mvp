@@ -1,10 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:synchronized/synchronized.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/app_state/notification_state/notification_state.dart';
@@ -100,15 +103,16 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   final Lock _lock = Lock();
 
   /// Called when this object is inserted into the tree.
-  /// 
+  ///
   /// It should be changed as an [async] function or return a [Future] object.
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     if (PlatformService().isMobile) {
-      GetIt.I.get<NotificationState>().registerNotification();
-      GetIt.I.get<NotificationState>().messagingTerminatedAppListener();
-      GetIt.I.get<NotificationState>().messagingBackgroundAppListener();
+      NotificationState notificationState = GetIt.I.get<NotificationState>();
+      notificationState.registerNotification();
+      notificationState.messagingTerminatedAppListener();
+      notificationState.messagingBackgroundAppListener();
     }
     super.initState();
   }
@@ -192,7 +196,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
               return const Locale("en", "US");
             },
             routerConfig: appGoRouter.router,
-          );
+          ));
         });
   }
 }
