@@ -138,7 +138,7 @@ class MapService:
         )
 
     async def _create_contact_ref(self, contact_uid: str, self_user: UserEntity) -> ContactRefInfo | None:
-        contact_location, sharing_with = await self._user_repository.get_user_location(contact_uid)
+        contact_location, sharing_with = await self._user_repository.get_user_location(contact_uid, use_cache=True)
         if contact_location is not None and \
                 self._should_show(contact_location) and \
                 self_user.document_id in sharing_with:
