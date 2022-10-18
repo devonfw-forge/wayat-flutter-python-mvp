@@ -24,6 +24,16 @@ void main() async {
   late UserState userState;
   late MockAuthService mockAuthService;
   late MockProfileService mockProfileService;
+  late MockLifeCycleState mockLifeCycleState;
+
+  setUpAll(() {
+    mockLifeCycleState = MockLifeCycleState();
+    GetIt.I.registerSingleton<LifeCycleState>(mockLifeCycleState);
+    when(mockLifeCycleState.notifyAppOpenned())
+        .thenAnswer((_) => Future.value());
+    when(mockLifeCycleState.notifyAppClosed())
+        .thenAnswer((_) => Future.value());
+  });
 
   setUp(() {
     mockAuthService = MockAuthService();
@@ -99,11 +109,6 @@ void main() async {
   });
 
   test("LogOut calls signOut in Authentication service", () async {
-    final MockLifeCycleState mockLifeCycleState = MockLifeCycleState();
-    GetIt.I.registerLazySingleton<LifeCycleState>(() => mockLifeCycleState);
-    when(mockLifeCycleState.notifyAppClosed())
-        .thenAnswer((_) => Future.value());
-
     when(mockAuthService.signOut()).thenAnswer((_) => Future.value(null));
 
     await userState.logOut();
