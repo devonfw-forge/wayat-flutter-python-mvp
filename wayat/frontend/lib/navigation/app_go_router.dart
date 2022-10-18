@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
@@ -100,14 +101,7 @@ class AppGoRouter {
           ]),
       GoRoute(
         path: '/contact/:id',
-        redirect: (context, state) async {
-          HomeNavState homeNavState = GetIt.I.get<HomeNavState>();
-          await homeNavState.handleNavigation(state.params['id']!);
-          if (homeNavState.selectedContact == null) {
-            return '/not-found';
-          }
-          return null;
-        },
+        redirect: (context, state) async => await contactProfileGuard(state),
         pageBuilder: (context, state) {
           return FadeTransitionPage(
               key: _profileScaffoldKey,
@@ -155,23 +149,30 @@ class AppGoRouter {
                     )),
             GoRoute(
                 path: ':id',
-                redirect: (context, state) async {
-                  GroupsController groupsController =
-                      GetIt.I.get<GroupsController>();
-                  await groupsController
-                      .prepareStateForIdPage(state.params['id']!);
-                  if (groupsController.selectedGroup == null) {
-                    return '/not-found';
-                  }
-                  return null;
-                },
+                redirect: (context, state) async => await groupsGuard(state),
                 pageBuilder: (context, state) {
                   return NoTransitionPage(
                       child: HomeGoPage(
                     selectedSection: HomeTab.contacts,
                     child: ViewGroupPage(),
                   ));
-                })
+                },
+                routes: [
+                  GoRoute(
+                      path: 'edit',
+                      redirect: (context, state) async =>
+                          await groupsGuard(state),
+                      pageBuilder: (context, state) => NoTransitionPage(
+                            child: HomeGoPage(
+                              selectedSection: HomeTab.contacts,
+                              child: ManageGroupPage(
+                                group: GetIt.I
+                                    .get<GroupsController>()
+                                    .selectedGroup,
+                              ),
+                            ),
+                          )),
+                ])
           ]),
       GoRoute(
           path: '/phone-validation',
@@ -185,6 +186,24 @@ class AppGoRouter {
           }),
     ],
   );
+
+  Future<String?> contactProfileGuard(GoRouterState state) async {
+    HomeNavState homeNavState = GetIt.I.get<HomeNavState>();
+    await homeNavState.contactProfileGuard(state.params['id']!);
+    if (homeNavState.selectedContact == null) {
+      return '/not-found';
+    }
+    return null;
+  }
+
+  Future<String?> groupsGuard(GoRouterState state) async {
+    GroupsController groupsController = GetIt.I.get<GroupsController>();
+    await groupsController.groupsGuard(state.params['id']!);
+    if (groupsController.selectedGroup == null) {
+      return '/not-found';
+    }
+    return null;
+  }
 }
 
 class ErrorPage extends StatelessWidget {

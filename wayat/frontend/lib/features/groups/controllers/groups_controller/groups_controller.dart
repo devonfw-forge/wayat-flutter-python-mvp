@@ -31,11 +31,6 @@ abstract class _GroupsController with Store {
   @observable
   Group? selectedGroup;
 
-  /// When [selectedGroup] is not null, decides whether we will be in
-  /// [ViewGroupPage] or in [ManageGroupPage].
-  @observable
-  bool editGroup = false;
-
   /// Keeps the groups page list in [GroupsPage] from showing until the list
   /// has completed updating after creating or editing a [Group].
   ///
@@ -58,7 +53,7 @@ abstract class _GroupsController with Store {
     return false;
   }
 
-  Future<void> prepareStateForIdPage(String groupId) async {
+  Future<void> groupsGuard(String groupId) async {
     if (selectedGroup != null && selectedGroup?.id == groupId) {
       return;
     }
@@ -77,11 +72,6 @@ abstract class _GroupsController with Store {
 
   void setSelectedGroup(Group? group) {
     selectedGroup = group;
-  }
-
-  @action
-  void setEditGroup(bool editValue) {
-    editGroup = editValue;
   }
 
   @action

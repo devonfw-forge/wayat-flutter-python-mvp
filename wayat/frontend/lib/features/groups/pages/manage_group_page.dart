@@ -99,11 +99,6 @@ class ManageGroupPage extends StatelessWidget {
         CustomTextButton(
             text: appLocalizations.save,
             onPressed: () {
-              /*
-                I find this approach better but I have not found a way to correctly
-                mock the argument for doActionAndUpdateGroups
-                groupsController.doActionAndUpdateGroups(
-                    () async => await controller.saveGroup()); */
               controller.saveGroup().then((value) {
                 if (!controller.showValidationGroup) {
                   goBack(context);
@@ -369,6 +364,10 @@ class ManageGroupPage extends StatelessWidget {
 
   /// Modifies the state to redirect to the [GroupsPage]
   void goBack(BuildContext context) {
-    context.go("/contacts/groups");
+    if (controller.group.id == "") {
+      context.go("/contacts/groups");
+    } else {
+      context.go("/contacts/groups/${controller.group.id}");
+    }
   }
 }

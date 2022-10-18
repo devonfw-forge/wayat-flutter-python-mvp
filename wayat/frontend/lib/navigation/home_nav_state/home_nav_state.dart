@@ -25,7 +25,7 @@ abstract class _HomeNavState with Store {
     selectedContact = newContact;
   }
 
-  Future<void> handleNavigation(String id) async {
+  Future<void> contactProfileGuard(String id) async {
     if (selectedContact != null && selectedContact?.id == id) {
       return;
     }
