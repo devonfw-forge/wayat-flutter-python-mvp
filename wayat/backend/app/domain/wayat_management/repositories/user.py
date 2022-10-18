@@ -43,7 +43,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         """
         Returns the list of contacts (UserEntity) and the main user
         :param uid: the UID of the User
-        :return: the list of contacts and the list of ids with which the user is sharing the location
+        :return: the list of contacts and self user entity
         """
         self_user = await self.get_or_throw(uid)
         coroutines = [self.get_or_throw(u) for u in self_user.contacts]
