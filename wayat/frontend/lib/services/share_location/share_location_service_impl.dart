@@ -190,7 +190,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   @override
   void setActiveShareMode(bool activeShareMode) {
-    if (activeShareMode) {
+    if (activeShareMode && shareLocationEnabled) {
       sendForcedLocationUpdate();
     }
     this.activeShareMode = activeShareMode;
