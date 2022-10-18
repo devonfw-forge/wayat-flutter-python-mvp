@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -32,7 +33,7 @@ class FriendsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          header(),
+          header(context),
           const SizedBox(
             height: 10,
           ),
@@ -82,7 +83,7 @@ class FriendsPage extends StatelessWidget {
   }
 
   /// Returns widget with number of friends connected and groups navigation button
-  Widget header() {
+  Widget header(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
       child: Row(
@@ -95,9 +96,7 @@ class FriendsPage extends StatelessWidget {
             );
           }),
           NavigationButton(
-              onTap: () => GetIt.I
-                  .get<ContactsPageController>()
-                  .setContactsCurrentPage(ContactsCurrentPages.groups),
+              onTap: () => context.go('/contacts/groups'),
               text: appLocalizations.groupsTitle)
         ],
       ),

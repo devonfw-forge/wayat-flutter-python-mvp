@@ -6,6 +6,8 @@ import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
+import 'package:wayat/features/groups/pages/groups_page.dart';
+import 'package:wayat/features/groups/pages/manage_group_page.dart';
 import 'package:wayat/features/home/pages/home_go_page.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
@@ -107,6 +109,37 @@ class AppGoRouter {
                   child: ContactsPage(state.params['kind'] ?? "friends"),
                 ));
           }),
+      GoRoute(
+          path: '/contacts/groups',
+          pageBuilder: (context, state) {
+            return FadeTransitionPage(
+                key: _scaffoldKey,
+                child: HomeGoPage(
+                  selectedSection: HomeTab.contacts,
+                  child: GroupsPage(),
+                ));
+          },
+          routes: [
+            GoRoute(
+                path: ':id',
+                pageBuilder: (context, state) {
+                  return FadeTransitionPage(
+                      key: _scaffoldKey,
+                      child: HomeGoPage(
+                        selectedSection: HomeTab.contacts,
+                        child: GroupsPage(),
+                      ));
+                })
+          ]),
+      GoRoute(
+          path: '/contacts/groups/create',
+          pageBuilder: (context, state) => FadeTransitionPage(
+                key: _scaffoldKey,
+                child: HomeGoPage(
+                  selectedSection: HomeTab.contacts,
+                  child: ManageGroupPage(),
+                ),
+              )),
       GoRoute(
           path: '/phone-validation',
           builder: (BuildContext context, GoRouterState state) {

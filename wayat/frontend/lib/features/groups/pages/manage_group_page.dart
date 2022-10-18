@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/common/widgets/buttons/custom_outlined_button_icon.dart';
 import 'package:wayat/common/widgets/buttons/custom_text_button.dart';
@@ -27,7 +29,7 @@ class ManageGroupPage extends StatelessWidget {
     return WillPopScope(
         child: manageGroupContent(context),
         onWillPop: () async {
-          goBack();
+          goBack(context);
           return true;
         });
   }
@@ -35,7 +37,7 @@ class ManageGroupPage extends StatelessWidget {
   Widget manageGroupContent(BuildContext context) {
     return Column(
       children: [
-        header(),
+        header(context),
         Expanded(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 800),
@@ -80,14 +82,14 @@ class ManageGroupPage extends StatelessWidget {
   }
 
   /// Header that shows the back button and the "Save" button
-  Widget header() {
+  Widget header(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
             IconButton(
-              onPressed: goBack,
+              onPressed: () => goBack(context),
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
@@ -99,20 +101,17 @@ class ManageGroupPage extends StatelessWidget {
         ),
         CustomTextButton(
             text: appLocalizations.save,
-            onPressed: () async {
-              GroupsController groupsController =
-                  GetIt.I.get<GroupsController>();
+            onPressed: () {
               /*
                 I find this approach better but I have not found a way to correctly
                 mock the argument for doActionAndUpdateGroups
                 groupsController.doActionAndUpdateGroups(
                     () async => await controller.saveGroup()); */
-              await controller.saveGroup();
-              if (!controller.showValidationGroup) {
-                groupsController.setUpdatingGroup(true);
-                groupsController.setUpdatingGroup(false);
-                goBack();
-              }
+              controller.saveGroup().then((value) {
+                if (!controller.showValidationGroup) {
+                  goBack(context);
+                }
+              });
             }),
       ],
     );
@@ -372,9 +371,7 @@ class ManageGroupPage extends StatelessWidget {
   }
 
   /// Modifies the state to redirect to the [GroupsPage]
-  void goBack() {
-    GroupsController groupsController = GetIt.I.get<GroupsController>();
-    groupsController.setEditGroup(false);
-    groupsController.setSelectedGroup(null);
+  void goBack(BuildContext context) {
+    context.go("/contacts/groups");
   }
 }

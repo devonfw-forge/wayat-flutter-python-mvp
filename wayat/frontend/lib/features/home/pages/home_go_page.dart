@@ -43,6 +43,7 @@ class HomeGoPage extends StatelessWidget {
             break;
         }
       },
+      extendBody: true,
       destinations: scaffoldDestinations,
       navigationTypeResolver: navigationTypeResolver,
     ));

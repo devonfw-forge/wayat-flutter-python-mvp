@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/common/widgets/buttons/custom_text_button.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/common/widgets/message_card.dart';
 import 'package:wayat/domain/group/group.dart';
-import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/widgets/group_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -21,23 +20,21 @@ class GroupsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        child: groupsContent(),
+        child: groupsContent(context),
         onWillPop: () async {
-          GetIt.I
-              .get<ContactsPageController>()
-              .setContactsCurrentPage(ContactsCurrentPages.contacts);
+          context.go('/contacts/friends');
           return true;
         });
   }
 
-  Widget groupsContent() {
+  Widget groupsContent(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 800),
-              child: header()),
+              child: header(context)),
           const SizedBox(
             height: 15,
           ),
@@ -88,7 +85,7 @@ class GroupsPage extends StatelessWidget {
         });
   }
 
-  Widget header() {
+  Widget header(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
       child: Row(
@@ -100,9 +97,7 @@ class GroupsPage extends StatelessWidget {
                   icon: const Icon(Icons.keyboard_arrow_down),
                   splashRadius: 20,
                   padding: EdgeInsets.zero,
-                  onPressed: () => GetIt.I
-                      .get<ContactsPageController>()
-                      .setContactsCurrentPage(ContactsCurrentPages.contacts)),
+                  onPressed: () => context.go('/contacts/friends')),
               Text(
                 appLocalizations.groupsTitle,
                 style: const TextStyle(
@@ -113,7 +108,7 @@ class GroupsPage extends StatelessWidget {
             ],
           ),
           CustomTextButton(
-            onPressed: () => controller.setSelectedGroup(Group.empty()),
+            onPressed: () => context.go('/contacts/groups/create'),
             text: appLocalizations.createGroup,
           )
         ],
