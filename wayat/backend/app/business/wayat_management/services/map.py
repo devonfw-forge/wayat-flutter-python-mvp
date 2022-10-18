@@ -109,14 +109,15 @@ class MapService:
             await self._set_active(uids=user_to_update.contacts, active=True)
 
     @overload
-    async def regenerate_map_status(self, *, uid: str):
+    async def regenerate_map_status(self, *, uid: str, cache: Optional[dict[str, UserEntity]] = None):
         ...
 
     @overload
-    async def regenerate_map_status(self, *, user: UserEntity):
+    async def regenerate_map_status(self, *, user: UserEntity, cache: Optional[dict[str, UserEntity]] = None):
         ...
 
-    async def regenerate_map_status(self, *, uid: str | None = None, user: UserEntity | None = None):
+    async def regenerate_map_status(self, *, uid: str | None = None, user: UserEntity | None = None,
+                                    cache: Optional[dict[str, UserEntity]] = None):
         # Overload handling
         if user is not None:
             user_to_update = user
@@ -129,7 +130,7 @@ class MapService:
 
         # Implementation
         new_contact_refs = await asyncio.gather(
-            *[self._create_contact_ref(contact_uid, user_to_update) for contact_uid in user_to_update.contacts],
+            *[self._create_contact_ref(contact_uid, user_to_update, cache) for contact_uid in user_to_update.contacts],
         )  # type: list[ContactRefInfo]
         logger.info(f"Updating contact ref for {user_to_update.name} - {user_to_update.document_id}")
         await asyncio.gather(
@@ -137,8 +138,9 @@ class MapService:
             self._user_repository.update_last_status(uid),
         )
 
-    async def _create_contact_ref(self, contact_uid: str, self_user: UserEntity) -> ContactRefInfo | None:
-        contact_location, sharing_with = await self._user_repository.get_user_location(contact_uid, use_cache=True)
+    async def _create_contact_ref(self, contact_uid: str, self_user: UserEntity,
+                                  cache: Optional[dict[str, UserEntity]] = None) -> ContactRefInfo | None:
+        contact_location, sharing_with = await self._user_repository.get_user_location(contact_uid, cache=cache)
         if contact_location is not None and \
                 self._should_show(contact_location) and \
                 self_user.document_id in sharing_with:
@@ -155,7 +157,9 @@ class MapService:
                                                  and self_user.share_location]
         # Update all maps that point at me
         logger.info("Updating maps pointing at me")
-        await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open_self_share_location])
+        cache = dict()
+        await asyncio.gather(*[self._update_contact_status(c, force, cache)
+                               for c in contacts_map_open_self_share_location])
 
         if latitude is None or longitude is None:
             longitude = self_user.location.value.longitude
@@ -213,10 +217,11 @@ class MapService:
         else:
             raise ValueError("Either uid or uids should not be None. Invalid parameters")
 
-    async def _update_contact_status(self, contact: UserEntity, force: bool):
+    async def _update_contact_status(self, contact: UserEntity, force: bool,
+                                     cache: Optional[dict[str, UserEntity]] = None):
         if force or self._needs_update(contact.last_status_update):
             logger.info(f"Updating contact status for {contact.document_id} - {force}")
-            await self.regenerate_map_status(user=contact)
+            await self.regenerate_map_status(user=contact, cache=cache)
 
     def _needs_update(self, last_updated: datetime):
         return (get_current_time(last_updated.tzinfo) - last_updated).seconds > self._update_threshold
@@ -237,6 +242,7 @@ class MapService:
         return distance < self._distance_threshold
 
     async def regenerate_maps_containing_user(self, uid: str):
-        coroutines = [self.regenerate_map_status(uid=contact_uid)
+        cache = dict()
+        coroutines = [self.regenerate_map_status(uid=contact_uid, cache=cache)
                       for contact_uid in await self._status_repository.find_maps_containing_user(uid)]
         await asyncio.gather(*coroutines)
