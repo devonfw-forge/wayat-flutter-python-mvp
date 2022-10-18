@@ -1,3 +1,4 @@
+export 'package:go_router_example/pages/error_screen.dart';
 export 'package:go_router_example/pages/bottom_menu_page.dart';
 export 'package:go_router_example/pages/bottom_menu_second_page.dart';
 export 'package:go_router_example/pages/home_page.dart';
