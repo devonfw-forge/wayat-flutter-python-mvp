@@ -37,6 +37,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late bool shareLocationEnabled;
   late PermissionStatus? webLocationPermissions;
   late Function(LatLng) changeLocationStateCallback;
+  late PlatformService platformService;
 
   static Future<void> _checkLocationPermissions() async {
     Location location = Location();
@@ -147,7 +148,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
       PermissionStatus? webPermissionStatus,
       [PlatformService? platformService])
       : super.create() {
-    platformService ??= PlatformService();
+    this.platformService = platformService ?? PlatformService();
 
     location = Location.instance;
     activeShareMode = mode;
@@ -158,12 +159,12 @@ class ShareLocationServiceImpl extends ShareLocationService {
     webLocationPermissions = webPermissionStatus;
 
     // If we are not in web with denegated location permissions
-    if (!(platformService.isWeb &&
+    if (!(this.platformService.isWeb &&
         webPermissionStatus != PermissionStatus.deniedForever)) {
       sendLocationToBack(initialLocation);
     }
 
-    if (platformService.isMobile) {
+    if (this.platformService.isMobile) {
       location.enableBackgroundMode(enable: true);
 
       location.onLocationChanged.listen((LocationData newLocation) {
@@ -218,7 +219,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   @override
   void setActiveShareMode(bool activeShareMode) {
-    if (activeShareMode) {
+    if (activeShareMode && shareLocationEnabled && !platformService.isWeb) {
       sendForcedLocationUpdate();
     }
     this.activeShareMode = activeShareMode;

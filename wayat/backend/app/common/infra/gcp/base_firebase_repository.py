@@ -13,8 +13,7 @@ from google.cloud.firestore_v1 import AsyncTransaction
 from pydantic import BaseModel
 
 from app.common.exceptions.runtime import ResourceNotFoundException
-from app.common.infra import get_firebase_settings
-from app.common.infra.gcp.firebase import get_account_info
+from app.common.infra.gcp.utils import get_account_info
 
 
 class GeoPoint(_GeoPoint):
