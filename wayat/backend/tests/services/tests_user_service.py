@@ -9,6 +9,7 @@ from requests import RequestException
 from app.business.wayat_management.services.user import UserService
 from app.common.exceptions.http import NotFoundException
 from app.common.exceptions.runtime import ResourceNotFoundException
+from app.common.infra.gcp.cloud_messaging import CloudMessaging
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity, GroupInfo
 from app.domain.wayat_management.repositories.files import FileStorage, StorageSettings
@@ -48,6 +49,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo = MagicMock(UserRepository)
         self.mock_status_repo = MagicMock(StatusRepository)
         self.mock_file_repository = MagicMock(FileStorage)
+        self.mock_file_cloud_messaging = MagicMock(CloudMessaging)
         self.mock_file_repository.generate_signed_url.return_value = "created_url"
         self.storage_settings = MagicMock(StorageSettings)
         self.storage_settings.default_picture = "images/test_default"
@@ -58,6 +60,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             self.mock_user_repo,
             self.mock_status_repo,
             self.mock_file_repository,
+            self.mock_file_cloud_messaging,
             self.storage_settings
         )
 
@@ -96,11 +99,13 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
     async def test_get_user_that_exists_should_return_it(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_prefix = "+TEST"
         test_entity = UserEntity(
             document_id=test_data.uid,
             name=test_data.name,
             email=test_data.email,
             phone=test_data.phone,
+            phone_prefix=test_prefix,
             image_url=test_data.picture
         )
 
@@ -116,18 +121,21 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         assert not is_new_user
         assert result_dto == self.user_service.map_to_dto(test_entity)
+        assert result_dto.phone_prefix == test_prefix
 
     async def test_update_user_should_only_accept_valid_params(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
 
         test_update_valid = {
             "name": test_data.name,
-            "phone": test_data.phone
+            "phone": test_data.phone,
+            "phone_prefix": "+34"
         }
 
         test_update_with_invalid_keys = {
             "name": test_data.name,
             "phone": test_data.phone,
+            "phone_prefix": "+34",
             "invalid": "test"
         }
 
@@ -173,6 +181,50 @@ class UserServiceTests(IsolatedAsyncioTestCase):
 
         # Asserts
         assert ex == True
+
+    async def test_add_contacts_should_add_new_ones_and_accept_pending(self):
+        def mocking_get_user(uid: str):
+            if uid == "test":
+                return test_entity
+            if uid == "test-friend-1":
+                return test_entity_1
+            if uid == "test-friend-2":
+                return test_entity_2
+            else:
+                raise ResourceNotFoundException
+
+        test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity = UserEntity(
+            document_id=test_data.uid,
+            name=test_data.name,
+            email=test_data.email,
+            phone=test_data.phone,
+            image_url=test_data.picture,
+            pending_requests=["test-friend-1"]
+        )
+
+        test_friend_1 = FirebaseAuthenticatedUser(uid="test-friend-1", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity_1 = UserEntity(
+            document_id=test_friend_1.uid,
+            name=test_friend_1.name,
+            email=test_friend_1.email,
+            phone=test_friend_1.phone,
+            image_url=test_friend_1.picture
+        )
+
+        test_friend_2 = FirebaseAuthenticatedUser(uid="test-friend-2", email="test@email.es", roles=[], picture="test", name="test")
+        test_entity_2 = UserEntity(
+            document_id=test_friend_2.uid,
+            name=test_friend_2.name,
+            email=test_friend_2.email,
+            phone=test_friend_2.phone,
+            image_url=test_friend_2.picture
+        )
+        self.user_service.respond_friend_request = MagicMock(self.user_service.respond_friend_request)
+        self.mock_user_repo.get_or_throw.side_effect = mocking_get_user
+        await self.user_service.add_contacts(uid=test_data.uid, users=["test-friend-1", "test-friend-2"])
+        self.mock_user_repo.create_friend_request.assert_called_with(test_data.uid, [test_entity_2.document_id])
+        self.user_service.respond_friend_request.assert_called_with(test_data.uid, test_friend_1.uid, True)
 
     async def test_get_pending_friend_requests_should_return_ok(self):
         test_data = FirebaseAuthenticatedUser(uid="test", email="test@email.es", roles=[], picture="test", name="test")
@@ -259,7 +311,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             name="test",
             phone="+34-TEST",
         )
-        self.mock_user_repo.get_contacts.return_value = ([test_entity], [])
+        self.mock_user_repo.get_contacts.return_value = ([test_entity], test_entity)
 
         # Call to be tested
         user_dtos, _ = await self.user_service.get_user_contacts("uid")
@@ -279,12 +331,19 @@ class UserServiceTests(IsolatedAsyncioTestCase):
     async def test_handle_friend_request_should_call_repo(self):
         test_user, test_friend, accept = "user", "friend", True
         # Call to be tested
-        await self.user_service.respond_friend_request(user_uid=test_user, friend_uid=test_friend, accept=accept)
+        await self.user_service.respond_friend_request(self_user_uid=test_user, friend_uid=test_friend, accept=accept)
 
         # Asserts
         self.mock_user_repo.respond_friend_request.assert_called_with(
             self_uid=test_user, friend_uid=test_friend, accept=accept
         )
+
+    async def test_set_push_token_request_should_call_repo(self):
+        # Call to be tested
+        await self.user_service.set_notifications_token("test", "token")
+
+        # Asserts
+        self.mock_user_repo.add_notifications_token.assert_called_with(user_id="test", token="token")
 
     async def test_delete_friend_should_update_groups(self):
         test_friend = "friend"

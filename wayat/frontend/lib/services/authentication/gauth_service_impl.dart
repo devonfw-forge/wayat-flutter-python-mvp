@@ -1,37 +1,51 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wayat/domain/user/my_user_factory.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
+/// Implementation of the Authentication Service using Google Authentication
 class GoogleAuthService implements AuthService {
+  /// Handles the requests to the server
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
+  /// Service to login in with Google and obtain the user's data and token
   late GoogleSignIn _googleSignIn;
-  final FirebaseAuth _auth =
-      FirebaseAuth.instanceFor(app: Firebase.app('WAYAT'));
 
-  GoogleAuthService({GoogleSignIn? gS}) {
+  /// Whether the user has signed out from this account in this current session.
+  ///
+  /// This is necessary because the method [signInSilently] can reAuthenticate
+  /// even with the argument reAuthenticate to `true` (which is in fact, the default).
+  /// This is even mentioned in the documentation for said method.
+  bool hasSignedOut = false;
+
+  /// Instance of the authentication service for Firebase
+  final FirebaseAuth _auth =
+      FirebaseAuth.instanceFor(app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
+
+  GoogleAuthService({GoogleSignIn? gS, PlatformService? platformService}) {
     if (gS != null) {
       _googleSignIn = gS;
     } else {
-      if (kIsWeb) {
+      platformService ??= PlatformService();
+      if (platformService.isWeb) {
         _googleSignIn = GoogleSignIn(
-          clientId: dotenv.get('WEB_CLIENT_ID'),
+          clientId: EnvModel.WEB_CLIENT_ID,
           scopes: ['email'],
         );
       } else {
@@ -67,7 +81,7 @@ class GoogleAuthService implements AuthService {
   Future<MyUser> getUserData() async {
     final Map<String, dynamic> user =
         await httpProvider.sendGetRequest(APIContract.userProfile);
-    return MyUser.fromMap(user);
+    return MyUserFactory.fromMap(user);
   }
 
   /// Refresh the **account id token**
@@ -81,7 +95,12 @@ class GoogleAuthService implements AuthService {
 
   @override
   Future<GoogleSignInAccount?> signInSilently() async {
-    final GoogleSignInAccount? account = await _googleSignIn.signInSilently();
+    if (hasSignedOut) {
+      hasSignedOut = false;
+      return null;
+    }
+    final GoogleSignInAccount? account =
+        await _googleSignIn.signInSilently(reAuthenticate: false);
     if (account == null) return null;
     GoogleSignInAuthentication gauth = await account.authentication;
     AuthCredential credential = GoogleAuthProvider.credential(
@@ -97,33 +116,36 @@ class GoogleAuthService implements AuthService {
   /// Resets all the state after closing the firestore instance
   @override
   Future<void> signOut() async {
-    await FirebaseFirestore.instanceFor(app: Firebase.app('WAYAT')).terminate();
+    GetIt.I.get<LocationListener>().closeListener();
     await _auth.signOut();
-    await _googleSignIn.signOut();
+    await _googleSignIn.disconnect();
+    hasSignedOut = true;
 
     // ResetSingleton instances to reset any information for the current user
+    //The only one not being reseted is LangSingleton
+    GetIt.I.resetLazySingleton<PhoneVerificationController>();
     GetIt.I.resetLazySingleton<OnboardingController>();
     GetIt.I.resetLazySingleton<ContactsPageController>();
-    GetIt.I.resetLazySingleton<UserStatusState>();
-    GetIt.I.resetLazySingleton<LocationState>();
-    GetIt.I.resetLazySingleton<ProfileState>();
-    GetIt.I.resetLazySingleton<MapState>();
-    GetIt.I.resetLazySingleton<HomeState>();
+    GetIt.I.resetLazySingleton<ProfileController>();
+    GetIt.I.resetLazySingleton<LifeCycleState>();
+    GetIt.I.resetLazySingleton<HomeNavState>();
     GetIt.I.resetLazySingleton<HttpProvider>();
+    GetIt.I.resetLazySingleton<GroupsController>();
+    GetIt.I.resetLazySingleton<LocationListener>();
   }
 
   @override
-  Future<bool> sendPhoneNumber(String phone) async {
-    return (await httpProvider
-                    .sendPostRequest(APIContract.userProfile, {"phone": phone}))
+  Future<bool> sendPhoneNumber(String prefix, String phone) async {
+    return (await httpProvider.sendPostRequest(APIContract.userProfile,
+                    {"phone": phone, "phone_prefix": prefix}))
                 .statusCode /
             10 ==
         20;
   }
 
   @override
-  Future<bool> sendDoneOnboarding(bool doneOnboarding) async {
-    return (await httpProvider.sendPostRequest(
+  Future<void> sendDoneOnboarding() async {
+    (await httpProvider.sendPostRequest(
                     APIContract.userProfile, {"onboarding_completed": true}))
                 .statusCode /
             10 ==

@@ -1,40 +1,17 @@
-import json
-from functools import lru_cache
 from typing import Optional
 
 from fastapi import Depends, FastAPI
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from pydantic import BaseSettings
 
-from app.common.core.configuration import load_env_file_on_settings
 from app.common.core.identity_provider import IdentityProvider, User
 from app.common.exceptions.http import BearerAuthenticationNeededException, InvalidFirebaseAuthenticationException, \
     UnauthorizedException
+from app.common.infra.gcp.utils import FirebaseSettings
 
 
 class FirebaseAuthenticatedUser(User):
     picture: Optional[str]
     name: Optional[str]
-
-
-class FirebaseSettings(BaseSettings):
-    credentials_file: str
-    api_key: str
-
-    class Config:
-        env_prefix = "FIREBASE_"
-        env_file = "TEST.env"
-
-
-@lru_cache
-def get_account_info():
-    with open(get_firebase_settings().credentials_file) as f:
-        return json.load(f)
-
-
-@lru_cache
-def get_firebase_settings() -> FirebaseSettings:
-    return load_env_file_on_settings(FirebaseSettings)
 
 
 class FirebaseService(IdentityProvider):

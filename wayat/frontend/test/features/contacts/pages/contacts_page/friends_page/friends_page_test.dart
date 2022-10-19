@@ -5,8 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
+import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -23,24 +24,29 @@ import 'friends_page_test.mocks.dart';
 @GenerateMocks([
   ContactsPageController,
   FriendsController,
-  HomeState,
+  HomeNavState,
   ContactService,
-  UserStatusState
+  LocationListener,
+  ReceiveLocationState
 ])
 void main() async {
   final FriendsController mockFriendsController = MockFriendsController();
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final HomeState mockHomeState = MockHomeState();
-  final MockUserStatusState mockUserStatusState = MockUserStatusState();
+  final HomeNavState mockHomeState = MockHomeNavState();
+  final ReceiveLocationState mockReceiveLocationState =
+      MockReceiveLocationState();
+  final MockLocationListener mockLocationListener = MockLocationListener();
 
   setUpAll(() {
     HttpOverrides.global = null;
 
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    when(mockUserStatusState.contacts).thenReturn([]);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
+    when(mockLocationListener.receiveLocationState)
+        .thenReturn(mockReceiveLocationState);
+    when(mockReceiveLocationState.contacts).thenReturn([]);
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     when(mockContactsPageController.friendsController)
@@ -172,8 +178,7 @@ void main() async {
 
 Contact _contactFactory(String contactName) {
   return Contact(
-    available: true,
-    shareLocation: true,
+    shareLocationTo: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

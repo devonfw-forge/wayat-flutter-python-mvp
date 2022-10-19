@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
-import 'package:wayat/features/profile/controllers/phone_verification_controller.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_field.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io' as io;
+
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class EditProfilePage extends StatefulWidget {
   final EditProfileController controller;
-  final PhoneVerificationController phoneController;
+
+  final PlatformService platformService;
 
   EditProfilePage(
       {Key? key,
       EditProfileController? controller,
-      PhoneVerificationController? phoneController})
+      PlatformService? platformService})
       : controller = controller ?? EditProfileController(),
-        phoneController = phoneController ?? PhoneVerificationController(),
+        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
@@ -30,9 +29,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  final MyUser user = GetIt.I.get<SessionState>().currentUser!;
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final MyUser user = GetIt.I.get<UserState>().currentUser!;
 
   TextStyle _textStyle(Color color, double size) =>
       TextStyle(fontWeight: FontWeight.w500, color: color, fontSize: size);
@@ -55,28 +52,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(height: 32),
               _nameTextField(),
               const SizedBox(height: 34.5),
-              Observer(builder: (_) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: _formPhone(),
-                );
-              }),
+              PhoneVerificationField(),
             ],
           ),
         ),
       ),
     );
-  }
-
-  /// Creates the form for the phone
-  Form _formPhone() {
-    return Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            _phoneTextField(),
-          ],
-        ));
   }
 
   Widget _profileAppBar() {
@@ -95,7 +76,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   iconSize: 25,
                   onPressed: () {
                     widget.controller.onPressedBackButton();
-                    widget.phoneController.setNewPhoneNumber("");
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
@@ -109,8 +89,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           Observer(
             builder: (_) => TextButton(
-              onPressed: () async => await widget.controller
-                  .onPressedSaveButton(widget.phoneController.phoneNumber),
+              onPressed: () async =>
+                  await widget.controller.onPressedSaveButton(),
               child: Text(
                 appLocalizations.save,
                 style: _textStyle(ColorTheme.primaryColor, 16),
@@ -133,11 +113,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: (widget.controller.currentSelectedImage != null)
-                    ? FileImage(io.File(
-                            widget.controller.currentSelectedImage!.path))
-                        as ImageProvider
+                    ? Image.memory(widget.controller.currentSelectedImageBytes!)
+                        .image
                     : NetworkImage(
-                        GetIt.I.get<SessionState>().currentUser!.imageUrl),
+                        GetIt.I.get<UserState>().currentUser!.imageUrl),
                 fit: BoxFit.cover,
               ),
               borderRadius: const BorderRadius.all(Radius.circular(100.0)),
@@ -150,9 +129,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
         },
       ),
       InkWell(
-        onTap: () => showModalBottomSheet(
-            context: context,
-            builder: (builder) => _getImageFromCameraOrGallary()),
+        onTap: () {
+          if (widget.platformService.isWeb) {
+            widget.controller.getFromSource(ImageSource.gallery);
+          } else {
+            showModalBottomSheet(
+                context: context,
+                builder: (builder) => _getImageFromCameraOrGallary());
+          }
+        },
         child: const CircleAvatar(
             backgroundColor: Colors.black,
             radius: 28,
@@ -195,37 +180,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           )),
         ]),
       );
-
-  Observer _phoneTextField() {
-    return Observer(
-      builder: (_) {
-        return IntlPhoneField(
-          // Only numbers are allowed as input
-          keyboardType: TextInputType.number,
-          invalidNumberMessage: appLocalizations.invalidPhoneNumber,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-          ],
-          decoration: InputDecoration(
-              labelText: user.phone.substring(3),
-              errorText: widget.phoneController.errorPhoneFormat.isNotEmpty
-                  ? widget.phoneController.errorPhoneFormat
-                  : null,
-              labelStyle: _textStyle(Colors.black87, 16),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-          initialCountryCode: 'ES',
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (newTextValue) =>
-              widget.phoneController.validatePhoneNumber(newTextValue),
-          onChanged: (phone) {
-            widget.phoneController
-                .onChangePhoneNumber(phone, _formKey, context);
-          },
-        );
-      },
-    );
-  }
 
   Widget _getImageFromCameraOrGallary() {
     return Observer(

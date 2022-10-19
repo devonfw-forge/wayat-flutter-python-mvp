@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -14,11 +13,21 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:wayat/features/groups/widgets/create_group_contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
+/// Page that provides functionality to edit and create new [Group] entities.
 class ManageGroupPage extends StatelessWidget {
   final ManageGroupController controller;
-  ManageGroupPage({ManageGroupController? controller, Group? group, Key? key})
+
+  final PlatformService platformService;
+
+  ManageGroupPage(
+      {ManageGroupController? controller,
+      PlatformService? platformService,
+      Group? group,
+      Key? key})
       : controller = controller ?? ManageGroupController(group: group),
+        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
@@ -36,22 +45,25 @@ class ManageGroupPage extends StatelessWidget {
       children: [
         header(),
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                groupPictureSection(context),
-                const SizedBox(
-                  height: 5,
-                ),
-                groupName(),
-                addParticipantsSection(context),
-                participantsSection(context),
-                showInfoValidGroup(),
-                const SizedBox(
-                  height: 10,
-                )
-              ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  groupPictureSection(context),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  groupName(),
+                  addParticipantsSection(context),
+                  participantsSection(context),
+                  showInfoValidGroup(),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -59,6 +71,7 @@ class ManageGroupPage extends StatelessWidget {
     );
   }
 
+  /// Shows an error message if the group has less than `2` users.
   Widget showInfoValidGroup() {
     return Observer(
       builder: (context) {
@@ -74,6 +87,7 @@ class ManageGroupPage extends StatelessWidget {
     );
   }
 
+  /// Header that shows the back button and the "Save" button
   Widget header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,9 +139,13 @@ class ManageGroupPage extends StatelessWidget {
           splashColor: Colors.white,
           radius: 40,
           onTap: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (builder) => openSelectImageSheet(context));
+            if (platformService.isWeb) {
+              controller.getFromSource(ImageSource.gallery);
+            } else {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (builder) => openSelectImageSheet(context));
+            }
           },
           child: const CircleAvatar(
             backgroundColor: Colors.black87,
@@ -157,7 +175,11 @@ class ManageGroupPage extends StatelessWidget {
               imageProvider = NetworkImage(imageUrl);
             }
           } else {
-            imageProvider = FileImage(File(picture.path));
+            if (platformService.isWeb) {
+              imageProvider = NetworkImage(picture.path);
+            } else {
+              imageProvider = FileImage(File(picture.path));
+            }
           }
 
           return CircleAvatar(
@@ -185,6 +207,8 @@ class ManageGroupPage extends StatelessWidget {
     );
   }
 
+  /// Shows the button to add participants and below the List of currently
+  /// added contacts to the [Group].
   Widget addParticipantsSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,6 +245,8 @@ class ManageGroupPage extends StatelessWidget {
     );
   }
 
+  /// Bottom sheet that displays all of the user's contacts and allows
+  /// them to add or remove participants to the [Group].
   void showFriendsBottomSheet(BuildContext context) {
     showModalBottomSheet(
         barrierColor: Colors.transparent,
@@ -319,6 +345,7 @@ class ManageGroupPage extends StatelessWidget {
     });
   }
 
+  /// Bottom sheet that contains options to select an image from the gallery or camera
   Widget openSelectImageSheet(BuildContext context) {
     return Container(
         height: MediaQuery.of(context).size.height * 0.15,
@@ -360,6 +387,7 @@ class ManageGroupPage extends StatelessWidget {
         ]));
   }
 
+  /// Modifies the state to redirect to the [GroupsPage]
   void goBack() {
     GroupsController groupsController = GetIt.I.get<GroupsController>();
     groupsController.setEditGroup(false);

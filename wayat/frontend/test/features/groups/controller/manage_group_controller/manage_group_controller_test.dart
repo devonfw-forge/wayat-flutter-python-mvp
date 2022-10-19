@@ -69,14 +69,14 @@ void main() async {
     expect(manageGroupController.selectedContacts, []);
   });
 
-  test("SetSelectedFile works correctly", () {
+  test("SetSelectedFile works correctly", () async {
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
 
     ManageGroupController manageGroupController =
-        ManageGroupController(groupsService: mockGroupsService);
+      ManageGroupController(groupsService: mockGroupsService);
 
     expect(manageGroupController.selectedFile, null);
-    manageGroupController.setSelectedFile(emptyFile);
+    await manageGroupController.setSelectedFile(emptyFile);
     expect(manageGroupController.selectedFile, emptyFile);
   });
 
@@ -142,8 +142,7 @@ void main() async {
 
 Contact _contactFactory(String contactName) {
   return Contact(
-    shareLocation: true,
-    available: true,
+    shareLocationTo: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

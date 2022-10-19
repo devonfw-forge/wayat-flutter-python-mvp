@@ -5,8 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -17,10 +18,17 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'edit_profile_test.mocks.dart';
 
-@GenerateMocks([SessionState, ProfileState, HttpProvider])
+@GenerateMocks(
+    [UserState, ProfileController, HttpProvider, PhoneVerificationController])
 void main() async {
-  final MockSessionState mockSessionState = MockSessionState();
-  final MockProfileState mockProfileState = MockProfileState();
+  final MockUserState mockUserState = MockUserState();
+  final MockProfileController mockProfileController = MockProfileController();
+  final MockPhoneVerificationController mockPhoneVerifController =
+      MockPhoneVerificationController();
+
+  when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
+  when(mockPhoneVerifController.isValidPhone).thenReturn(false);
+  when(mockPhoneVerifController.getISOCode()).thenReturn("ES");
 
   late MyUser user;
 
@@ -32,17 +40,18 @@ void main() async {
         name: "test",
         email: "test@capg.com",
         imageUrl: "http://example.com",
+        phonePrefix: "+34",
         phone: "123456789",
         onboardingCompleted: true,
         shareLocationEnabled: true);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    when(mockSessionState.currentUser).thenAnswer((_) => user);
-    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
-    when(mockProfileState.deleteCurrentUser())
-        .thenAnswer((_) => Future.value());
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
+    when(mockUserState.currentUser).thenAnswer((_) => user);
+    when(mockUserState.logOut()).thenAnswer((_) => Future.value());
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
+    GetIt.I.registerSingleton<PhoneVerificationController>(
+        mockPhoneVerifController);
   });
 
   Widget createApp(Widget body) {

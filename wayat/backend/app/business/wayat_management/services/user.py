@@ -5,11 +5,13 @@ from typing import BinaryIO, Optional, Tuple, List
 
 import requests
 from fastapi import Depends
+from firebase_admin.messaging import Notification
 from requests import RequestException, Response
 
 from app.business.wayat_management.models.group import GroupDTO, UsersListType
 from app.business.wayat_management.models.user import UserDTO
 from app.common.exceptions.http import NotFoundException
+from app.common.infra.gcp.cloud_messaging import CloudMessaging
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.utils import resize_image
 from app.domain.wayat_management.models.user import UserEntity, GroupInfo
@@ -25,10 +27,12 @@ class UserService:
                  user_repository: UserRepository = Depends(),
                  status_repository: StatusRepository = Depends(),
                  file_repository: FileStorage = Depends(),
+                 notifications: CloudMessaging = Depends(),
                  storage_settings: StorageSettings = Depends(get_storage_settings)):
         self._user_repository = user_repository
         self._status_repository = status_repository
         self._file_repository = file_repository
+        self._notifications_service = notifications
         self.DEFAULT_PICTURE = storage_settings.default_picture
         self.DEFAULT_GROUP_PICTURE = storage_settings.default_picture
         self.THUMBNAIL_SIZE = storage_settings.thumbnail_size
@@ -41,6 +45,7 @@ class UserService:
             name=entity.name,
             email=entity.email,
             phone=entity.phone,
+            phone_prefix=entity.phone_prefix,
             image_url=self._file_repository.generate_signed_url(entity.image_ref),
             do_not_disturb=entity.do_not_disturb,
             share_location=entity.share_location,
@@ -82,7 +87,8 @@ class UserService:
                           **kwargs
                           ):
         # Filter only valid keys
-        valid_keys = {"name", "phone", "onboarding_completed", "share_location", "do_not_disturb"} & kwargs.keys()
+        valid_keys = {"name", "phone", "phone_prefix", "onboarding_completed",
+                      "share_location", "do_not_disturb"} & kwargs.keys()
         update_data = {key: kwargs[key] for key in valid_keys}
 
         # Update required fields only
@@ -101,19 +107,32 @@ class UserService:
 
     async def add_contacts(self, *, uid: str, users: list[str]):
         # Check new users existence
-        contacts = await self.get_contacts(users)
-        found_contacts: set[str] = {e.id for e in contacts}
+        contacts = await self._get_contacts_entities(users)
+        found_contacts: set[str] = {e.document_id for e in contacts}
 
         self_user = await self._user_repository.get_or_throw(uid)
+        pending_requests = self_user.pending_requests
         existing_contacts: set[str] = set(self_user.contacts)
 
         new_contacts = found_contacts.difference(existing_contacts)
+
+        # If found new contacts
         if new_contacts:
-            await self._user_repository.create_friend_request(uid, list(new_contacts))
+            # Check new contacts in pending requests
+            new_contacts_pending = new_contacts.intersection(set(pending_requests))
+            if new_contacts_pending:
+                # If exists remove from new contacts list the ones pending
+                new_contacts = new_contacts.difference(new_contacts_pending)
+                # Accept all pending requests in the new contact list
+                await asyncio.gather(*[self.respond_friend_request(self_user.document_id, c, True)
+                                       for c in new_contacts_pending])
+            # If still there are new contacts send requests
+            if new_contacts:
+                await self._send_friend_request(self_user, list(new_contacts), contacts)
 
     async def get_user_contacts(self, uid: str) -> Tuple[List[UserDTO], List[str]]:
-        user_contacts, contacts_sharing = await self._user_repository.get_contacts(uid)
-        return list(map(self.map_to_dto, user_contacts)), contacts_sharing
+        user_contacts, self_user = await self._user_repository.get_contacts(uid)
+        return list(map(self.map_to_dto, user_contacts)), self_user.location_shared_with
 
     async def get_contact(self, uid: str) -> UserDTO:
         """
@@ -126,6 +145,10 @@ class UserService:
         coroutines = [self.get_contact(u) for u in uids]
         contacts_dtos: list[UserDTO] = await asyncio.gather(*coroutines)
         return contacts_dtos
+
+    async def _get_contacts_entities(self, uids: list[str]) -> list[UserEntity]:
+        coroutines = [self._user_repository.get_or_throw(u) for u in uids]
+        return await asyncio.gather(*coroutines)
 
     async def get_pending_friend_requests(self, uid) -> tuple[list[UserDTO], list[UserDTO]]:
         """
@@ -140,11 +163,31 @@ class UserService:
         """
         await self._user_repository.cancel_friend_request(sender_id=uid, receiver_id=contact_id)
 
-    async def respond_friend_request(self, user_uid: str, friend_uid: str, accept: bool):
+    async def respond_friend_request(self, self_user_uid: str, friend_uid: str, accept: bool):
         """
         Responds a friend request by either accepting or denying it
         """
-        await self._user_repository.respond_friend_request(self_uid=user_uid, friend_uid=friend_uid, accept=accept)
+        await self._user_repository.respond_friend_request(self_uid=self_user_uid,
+                                                           friend_uid=friend_uid, accept=accept)
+        if accept is True:
+            # TODO: Validate notification
+            self_user = await self._user_repository.get_or_throw(self_user_uid)
+            friend = await self._user_repository.get_or_throw(friend_uid)
+            if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
+                notification = Notification(title=f"{self_user.name} has accepted your friend request")
+                await self._notifications_service.send_notification(tokens=friend.notifications_tokens,
+                                                                    notification=notification)
+
+    async def _send_friend_request(self, self_user, new_contacts: list[str], contacts: Optional[List[UserEntity]]):
+        # TODO Validate Send Notification
+        await self._user_repository.create_friend_request(self_user.document_id, new_contacts)
+        for c in new_contacts:
+            found_friend = [el for el in contacts if el.document_id == c] if contacts is not None else []
+            friend = found_friend[0] if len(found_friend) == 1 else await self._user_repository.get_or_throw(c)
+            if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
+                notification = Notification(title=f"{self_user.name} sent you a friend request")
+                await self._notifications_service.send_notification(tokens=friend.notifications_tokens,
+                                                                    notification=notification)
 
     @staticmethod
     def _remove_contact_from_all_groups(contact_id: str, groups: list[GroupInfo]):
@@ -257,7 +300,7 @@ class UserService:
         loop = asyncio.get_event_loop()
 
         def sync_process() -> tuple[Response, str]:
-            res = requests.get(url)
+            res = requests.get(url)  # type: ignore
             if res.status_code != 200:
                 raise RequestException
             ext = mimetypes.guess_extension(res.headers['Content-Type'])
@@ -293,3 +336,6 @@ class UserService:
 
     async def update_contact_prefs(self, user_id, contact_id, *, share_location: bool):
         await self._user_repository.update_sharing_preferences(user_id, contact_id, share_location)
+
+    async def set_notifications_token(self, user_id: str, token: str):
+        await self._user_repository.add_notifications_token(user_id=user_id, token=token)

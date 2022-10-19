@@ -1,17 +1,22 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/mobile_map_widget.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/web_desktop_map_widget.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
+import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -33,27 +38,30 @@ import 'home_map_page_test.mocks.dart';
 
 @GenerateMocks([
   ContactsPageController,
-  SessionState,
-  HomeState,
-  LocationState,
-  UserStatusState,
-  ProfileState,
-  MapState,
+  UserState,
+  HomeNavState,
+  ShareLocationState,
+  ReceiveLocationState,
+  LocationListener,
+  ProfileController,
+  LifeCycleState,
   FriendsController,
   RequestsController,
   SuggestionsController,
   GroupsController,
-  MapController
+  MapController,
 ])
 void main() async {
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final HomeState mockHomeState = MockHomeState();
-  final SessionState mockSessionState = MockSessionState();
-  final LocationState mockLocationState = MockLocationState();
-  final UserStatusState mockUserStatusState = MockUserStatusState();
-  final ProfileState mockProfileState = MockProfileState();
-  final MapState mockMapState = MockMapState();
+  final UserState mockUserState = MockUserState();
+  final HomeNavState mockHomeState = MockHomeNavState();
+  final ShareLocationState mockLocationState = MockShareLocationState();
+  final ReceiveLocationState mockReceiveLocationState =
+      MockReceiveLocationState();
+  final LocationListener mockLocationListener = MockLocationListener();
+  final ProfileController mockProfileController = MockProfileController();
+  final LifeCycleState mockMapState = MockLifeCycleState();
   final FriendsController mockFriendsController = MockFriendsController();
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
@@ -66,6 +74,7 @@ void main() async {
       name: "test",
       email: "test@capg.com",
       imageUrl: "http://example.com",
+      phonePrefix: "+34",
       phone: "123456789",
       onboardingCompleted: true,
       shareLocationEnabled: true);
@@ -74,8 +83,7 @@ void main() async {
       id: "123",
       members: [
         Contact(
-            shareLocation: true,
-            available: true,
+            shareLocationTo: true,
             id: "",
             name: "",
             email: "",
@@ -90,8 +98,8 @@ void main() async {
 
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockSessionState.finishLoggedIn).thenReturn(true);
-    when(mockSessionState.hasDoneOnboarding).thenReturn(true);
+    when(mockUserState.finishLoggedIn).thenReturn(true);
+    when(mockUserState.hasDoneOnboarding).thenReturn(true);
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
@@ -106,9 +114,13 @@ void main() async {
         .thenReturn(mockSuggestionsController);
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
-    when(mockUserStatusState.contacts).thenReturn([]);
-    when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
-    when(mockSessionState.currentUser).thenReturn(user);
+    when(mockLocationListener.receiveLocationState)
+        .thenReturn(mockReceiveLocationState);
+    when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
+    when(mockReceiveLocationState.contacts).thenReturn([]);
+    when(mockProfileController.currentPage)
+        .thenReturn(ProfileCurrentPages.profile);
+    when(mockUserState.currentUser).thenReturn(user);
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
     when(mockMapController.filterGroup(myGroup))
@@ -119,12 +131,12 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
+    GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
+    GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
@@ -144,8 +156,8 @@ void main() async {
   }
 
   testWidgets('Slider Groups without groups', (tester) async {
-    final HomeState homeState = HomeState();
-    GetIt.I.registerSingleton<HomeState>(homeState);
+    final HomeNavState homeState = HomeNavState();
+    GetIt.I.registerSingleton<HomeNavState>(homeState);
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
 
@@ -162,8 +174,8 @@ void main() async {
   });
 
   testWidgets('Slider Groups with groups', (tester) async {
-    final HomeState homeState = HomeState();
-    GetIt.I.registerSingleton<HomeState>(homeState);
+    final HomeNavState homeState = HomeNavState();
+    GetIt.I.registerSingleton<HomeNavState>(homeState);
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
 
@@ -177,5 +189,49 @@ void main() async {
             of: find.byKey(const Key("groupSlider")),
             matching: find.byType(ContactImage)),
         findsOneWidget);
+  });
+
+  testWidgets("Slider changes value on status state", (tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(450, 540);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[myGroup].asObservable());
+
+    await tester.pumpWidget(createApp());
+    await tester.pumpAndSettle();
+
+    expect(mockLocationState.shareLocationEnabled, false);
+
+    await tester.tap(find.byType(CustomSwitch));
+    await tester.pumpAndSettle();
+
+    verify(mockLocationState.setShareLocationEnabled(true)).called(1);
+    addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+  });
+
+  testWidgets("In mobile it uses the Mobile Map widget", (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[myGroup].asObservable());
+
+    await tester.pumpWidget(createApp());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MobileMapWidget), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets("In desktop it uses the Desktop Map widget", (tester) async {
+    when(mockLocationState.hasWebPermissions).thenReturn(true);
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+    when(mockGroupsController.groups)
+        .thenAnswer((_) => <Group>[myGroup].asObservable());
+    when(mockLocationState.hasWebPermissions).thenReturn(true);
+
+    await tester.pumpWidget(createApp());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(WebDesktopMapWidget), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
   });
 }

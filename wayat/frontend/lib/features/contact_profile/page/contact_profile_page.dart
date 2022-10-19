@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/common/widgets/buttons/circle_icon_button.dart';
 import 'package:wayat/common/widgets/switch.dart';
@@ -17,13 +17,19 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:collection/collection.dart';
 import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
+/// Detailed view of a Contact Profile
 // ignore: must_be_immutable
 class ContactProfilePage extends StatelessWidget {
+  /// Contact viewed in detail.
   Contact contact;
 
+  /// Name of previous page of the current one.
+  ///
   /// This is required because this page can be accessed from multiple places
   /// and the design indicates to which page the user will return to when going back
   final String navigationSource;
+
+  /// Controller including the logig business of this page
   final ContactProfileController controller;
 
   ContactProfilePage(
@@ -36,9 +42,10 @@ class ContactProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.setShareLocationToContact(contact.shareLocation, contact);
+    controller.setShareLocationToContact(contact.shareLocationTo, contact);
     ContactLocation? contactLocated = GetIt.I
-        .get<UserStatusState>()
+        .get<LocationListener>()
+        .receiveLocationState
         .contacts
         .where((element) => element.id == contact.id)
         .firstOrNull;
@@ -49,7 +56,7 @@ class ContactProfilePage extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        GetIt.I.get<HomeState>().setSelectedContact(null, "");
+        GetIt.I.get<HomeNavState>().setSelectedContact(null, "");
         return true;
       },
       child: Scaffold(
@@ -61,9 +68,13 @@ class ContactProfilePage extends StatelessWidget {
             children: [
               appBar(),
               mapSection(context, canBeLocated),
-              dataSection(context, canBeLocated),
+              ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: dataSection(context, canBeLocated)),
               divider(),
-              shareMyLocationRow()
+              ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: shareMyLocationRow())
             ],
           ),
         ),
@@ -71,6 +82,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns an appBar with a return arrow to previous page
   Widget appBar() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
@@ -78,7 +90,7 @@ class ContactProfilePage extends StatelessWidget {
         children: [
           IconButton(
               onPressed: () {
-                GetIt.I.get<HomeState>().setSelectedContact(null, "");
+                GetIt.I.get<HomeNavState>().setSelectedContact(null, "");
               },
               icon: const Icon(Icons.arrow_back)),
           Text(
@@ -90,6 +102,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget which includes a switch to enable/disable sharing location with a contact
   Widget shareMyLocationRow() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
@@ -118,6 +131,9 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget containing username and its location and time ago
+  ///
+  /// If location it's not available return a text saying that is not sharing location
   Widget dataSection(BuildContext context, bool canBeLocated) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
@@ -175,6 +191,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Simple line divider
   Divider divider() {
     return const Divider(
       endIndent: 15,
@@ -184,6 +201,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Return a widget containing the addres location and the time ago in this location
   Column locationInfo(BuildContext context) {
     ContactLocation locatedContact = contact as ContactLocation;
     return Column(
@@ -217,6 +235,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget containing an image of current location of user or a message saying that is not sharing location
   Widget mapSection(BuildContext context, bool canBelocated) {
     return Container(
       decoration: BoxDecoration(
@@ -232,6 +251,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns a widget containing the message that the user is not sharing location
   Widget locationNotAvailableMessage(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
@@ -248,6 +268,7 @@ class ContactProfilePage extends StatelessWidget {
     );
   }
 
+  /// Returns the image of google map of detailew view of contact location
   Widget googleMap(ContactLocation contact, BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.4,

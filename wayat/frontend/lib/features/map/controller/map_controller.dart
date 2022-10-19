@@ -5,6 +5,11 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'dart:async';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/features/map/controller/platform_map_controller/platform_map_controller.dart';
+import 'package:wayat/features/map/widgets/platform_marker_widget/mobile_marker_widget.dart';
+import 'package:wayat/features/map/widgets/platform_marker_widget/platform_marker_widget.dart';
+import 'package:wayat/features/map/widgets/platform_marker_widget/web_desktop_marker_widget.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 
 part 'map_controller.g.dart';
@@ -15,82 +20,106 @@ class MapController = _MapController with _$MapController;
 abstract class _MapController with Store {
   ImageService imageService;
 
-  _MapController({ImageService? imageService})
-      : imageService = imageService ?? ImageService();
+  final PlatformService platformService;
+
+  _MapController({ImageService? imageService, PlatformService? platformService})
+      : imageService = imageService ?? ImageService(),
+        platformService = platformService ?? PlatformService();
 
   @observable
   bool sharingLocation = true;
 
+  /// Initialize current location
   @observable
   Location currentLocation = Location();
 
-  Set<Marker> allMarkers = Set.of({});
+  /// Initialize [allMarkers] of the contacts which show on the map
+  Set<PlatformMarker> allMarkers = Set.of({});
 
+  /// Initialize [filterMarkers], which show active contacts
   @observable
-  ObservableSet<Marker> filteredMarkers = ObservableSet.of({});
+  ObservableSet<PlatformMarker> filteredMarkers = ObservableSet.of({});
 
+  /// Initialize list of [contacts]
   List<ContactLocation> contacts = [];
 
-  late GoogleMapController gMapController;
+  /// Platform map controller.
+  ///
+  /// A generic controller for the diferent map's controllers
+  late PlatformMapController platformMapController;
 
+  /// Initialize [searchBarText] text
   String searchBarText = "";
+
+  /// Groups, which user select. Contacts of [selectedGroup] show on the map
   Group? selectedGroup;
 
+  /// Contacts that are members of the group - [groupMembers]
   List<Contact> groupMembers = [];
 
-  late Function(ContactLocation contact, BitmapDescriptor icon) onMarkerPressed;
+  late void Function(ContactLocation contact, BitmapDescriptor icon)
+      onMarkerPressed;
 
+  /// Set contact marker on the map
   void setOnMarkerPressed(
       Function(ContactLocation contact, BitmapDescriptor icon)
           onMarkerPressed) {
     this.onMarkerPressed = onMarkerPressed;
   }
 
+  /// Return all generated markers
   Future getMarkers() async {
-    Set<Marker> newMarkers = await generateMarkers();
-
+    Set<PlatformMarker> newMarkers = await generateMarkers();
     setMarkers(newMarkers);
   }
 
-  Future<Set<Marker>> generateMarkers() async {
+  /// Generate markers from contacts
+  Future<Set<PlatformMarker>> generateMarkers() async {
     Map<String, BitmapDescriptor> bitmaps = await imageService
         .getBitmapsFromUrl(contacts.map((e) => e.imageUrl).toList());
-
-    Set<Marker> newMarkers = contacts
-        .map(
-          (e) => Marker(
-              markerId:
-                  MarkerId("${e.id}¿?${e.name}¿?${e.longitude}${e.latitude}"),
-              position: LatLng(e.latitude, e.longitude),
-              icon: bitmaps[e.imageUrl] ?? BitmapDescriptor.defaultMarker,
-              onTap: () => onMarkerPressed(e, bitmaps[e.imageUrl]!)),
-        )
-        .toSet();
+    Set<PlatformMarker> newMarkers =
+        contacts.map<PlatformMarker>((ContactLocation contact) {
+      if (platformService.isDesktopOrWeb) {
+        return WebDesktopMarker(
+          contactLocation: contact,
+          onTap: () => onMarkerPressed(contact, bitmaps[contact.imageUrl]!),
+        );
+      }
+      return MobileMarker(
+          contactLocation: contact,
+          icon: bitmaps[contact.imageUrl] ?? BitmapDescriptor.defaultMarker,
+          onTap: () => onMarkerPressed(contact, bitmaps[contact.imageUrl]!));
+    }).toSet();
     return newMarkers;
   }
 
+  /// Set markers from [newMarkers]
   @action
-  void setMarkers(Set<Marker> newMarkers) {
+  void setMarkers(Set<PlatformMarker> newMarkers) {
     allMarkers = ObservableSet.of(newMarkers);
     filterMarkers();
   }
 
+  /// Set new contacts from [newContacts]
   @action
   void setContacts(List<ContactLocation> newContacts) {
     if (contacts != newContacts) contacts = newContacts;
   }
 
+  /// Set sharingLocation to contact
   @action
   void setSharingLocation(bool newValue) {
     sharingLocation = newValue;
   }
 
+  /// Set searchbar text and call [filterMarkers] to filter this contact
   @action
   void setSearchBarText(String newText) {
     searchBarText = newText;
     filterMarkers();
   }
 
+  /// Filter contacts of the group to show on the map
   void filterGroup(Group group) {
     if (group == selectedGroup) {
       selectedGroup = null;
@@ -102,24 +131,21 @@ abstract class _MapController with Store {
     filterMarkers();
   }
 
+  /// Add filtered markers to Set, which show on the map
   @action
   void filterMarkers() {
-    Iterable<Marker> markers = allMarkers.where((element) => element
-        .markerId.value
-        .toLowerCase()
-        .split("¿?")[1]
-        .contains(searchBarText.toLowerCase()));
-    if (groupMembers.isNotEmpty) {
+    Iterable<PlatformMarker> markers = allMarkers.where((marker) =>
+        marker.name.toLowerCase().contains(searchBarText.toLowerCase()));
+    if (selectedGroup != null) {
       final groupMembersId = groupMembers.map((e) => e.id.toLowerCase());
-      markers = markers.where((element) => groupMembersId
-          .contains(element.markerId.value.toLowerCase().split("¿?")[0]));
+      markers = markers
+          .where((marker) => groupMembersId.contains(marker.id.toLowerCase()));
     }
-
     filteredMarkers = ObservableSet.of(markers.toSet());
   }
 
+  /// Update map camera
   void onSuggestionsTap(contact) {
-    gMapController.moveCamera(
-        CameraUpdate.newLatLng(LatLng(contact.latitude, contact.longitude)));
+    platformMapController.move(contact.latitude, contact.longitude);
   }
 }

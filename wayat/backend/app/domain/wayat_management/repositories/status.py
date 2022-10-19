@@ -1,11 +1,11 @@
 from typing import AsyncIterable
 
 from fastapi import Depends
-from google.cloud.firestore import DocumentSnapshot
+from google.cloud.firestore import DocumentSnapshot  # type: ignore
 
 from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.wayat_management.models.status import AppStatusEntity, ContactRefInfo
-from google.cloud.firestore import AsyncClient
+from google.cloud.firestore import AsyncClient # type: ignore
 
 
 class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
@@ -21,23 +21,11 @@ class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):
             "contact_refs_members": [contact.uid for contact in contact_refs]
         })
 
-    async def set_active(self, uid: str, value: bool, read_first=True):
-        # TODO: Validate if read_first=True
-        if read_first:
-            current_status = await self.get_or_throw(uid)
-            if current_status.active == value:
-                return
+    async def set_active(self, uid: str, value: bool):
         await self.update(document_id=uid, data={"active": value})
 
     async def set_active_batch(self, uid_list: list[str], value: bool):
-        chunk_max_size = 500
-        chunks = [uid_list[i:i + chunk_max_size] for i in range(0, len(uid_list), chunk_max_size)]
-        for chunk in chunks:
-            batch = self._client.batch()
-            for uid in chunk:
-                ref = self._get_document_reference(uid)
-                batch.update(ref, {"active": value})
-            await batch.commit()
+        await self.update_batch(uid_list=uid_list, update={"active": value})
 
     async def find_maps_containing_user(self, uid: str) -> list[str]:
         """

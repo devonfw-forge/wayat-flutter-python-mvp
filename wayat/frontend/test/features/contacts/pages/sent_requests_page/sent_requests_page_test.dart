@@ -132,7 +132,7 @@ void main() async {
     RequestsController requestsController = RequestsController(
         friendsController: MockFriendsController(),
         requestsService: mockRequestsService);
-    when(mockRequestsService.unsendRequest(contact))
+    when(mockRequestsService.cancelRequest(contact))
         .thenAnswer((_) => Future.value(true));
     when(mockContactsPageController.requestsController)
         .thenReturn(requestsController);
@@ -153,8 +153,7 @@ void main() async {
 
 Contact _contactFactory(String contactName) {
   return Contact(
-    available: true,
-    shareLocation: true,
+    shareLocationTo: true,
     id: "id $contactName",
     name: contactName,
     email: "Contact email",

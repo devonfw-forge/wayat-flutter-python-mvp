@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+/// Button showing a text and arrow to right
 class NavigationButton extends StatelessWidget {
+  /// Callback triggered when tapping on button
   final Function()? onTap;
+
+  /// Text displayed besides arrow icon
   final String text;
 
   const NavigationButton({required this.onTap, required this.text, Key? key})

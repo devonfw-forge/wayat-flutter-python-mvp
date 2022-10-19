@@ -6,6 +6,8 @@ import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
+/// Wrapper that defines the groups page to display depending on [selectedGroup],
+/// [editGroup] and [updatingGroup]
 class GroupsWrapper extends StatelessWidget {
   final GroupsController controller = GetIt.I.get<GroupsController>();
 

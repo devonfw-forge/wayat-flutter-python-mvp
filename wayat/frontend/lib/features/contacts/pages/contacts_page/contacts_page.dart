@@ -6,12 +6,19 @@ import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
+/// Main view of Friends, requests and suggestions page
 class ContactsPage extends StatelessWidget {
+  /// Business logic controller
   final ContactsPageController controller =
       GetIt.I.get<ContactsPageController>();
 
-  ContactsPage({Key? key}) : super(key: key);
+  final PlatformService platformService;
+
+  ContactsPage({PlatformService? platformService, Key? key})
+      : platformService = platformService ?? PlatformService(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +37,28 @@ class ContactsPage extends StatelessWidget {
   Expanded contactsPageContent() {
     return Expanded(
         child: AutoTabsRouter.tabBar(
-      routes: [FriendsRoute(), RequestsRoute(), SuggestionsRoute()],
+      routes: [
+        FriendsRoute(),
+        RequestsRoute(),
+        if (!platformService.isWeb) SuggestionsRoute()
+      ],
       builder: ((context, child, tabController) {
         controller.updateTabData(tabController.index);
         return Column(
-          children: [_tabBar(tabController), Expanded(child: child)],
+          children: [
+            _tabBar(tabController),
+            Expanded(
+              child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: child),
+            ),
+          ],
         );
       }),
     ));
   }
 
+  /// Returns tabBar to change between friends, requests and suggestions page
   Widget _tabBar(TabController tabController) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -47,6 +66,8 @@ class ContactsPage extends StatelessWidget {
         children: [
           _indicatorBackground(),
           TabBar(
+              isScrollable:
+                  platformService.isDesktopOrWeb || platformService.wideUi,
               unselectedLabelStyle: const TextStyle(
                   fontWeight: FontWeight.normal, color: Colors.black45),
               labelStyle:
@@ -58,13 +79,15 @@ class ContactsPage extends StatelessWidget {
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
-                Tab(text: appLocalizations.suggestionsTab)
+                if (!platformService.isWeb)
+                  Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],
       ),
     );
   }
 
+  /// Returns decoration for selected tab
   Decoration _tabIndicator() {
     return const ShapeDecoration(
         shape: RoundedRectangleBorder(
@@ -72,6 +95,7 @@ class ContactsPage extends StatelessWidget {
         color: Colors.black);
   }
 
+  /// Returns a widget of secondary color place under [tabIndicator]
   Widget _indicatorBackground() {
     return Container(
       margin: const EdgeInsets.only(top: 45),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
@@ -13,14 +13,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'login_page_test.mocks.dart';
 
-@GenerateMocks([SessionState])
+@GenerateMocks([UserState])
 void main() async {
-  late SessionState userSession;
+  late UserState userState;
 
   setUpAll(() {
-    GetIt.I.registerSingleton<SessionState>(MockSessionState());
+    GetIt.I.registerSingleton<UserState>(MockUserState());
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    userSession = GetIt.I.get<SessionState>();
+    userState = GetIt.I.get<UserState>();
   });
 
   Widget createApp(Widget body) {
@@ -58,12 +58,12 @@ void main() async {
 
   group('Login page changes the session state', () {
     testWidgets('Login submit button changes session state', (tester) async {
-      when(userSession.login()).thenAnswer((_) => Future<void>.value());
+      when(userState.login()).thenAnswer((_) => Future<void>.value());
 
       await tester.pumpWidget(createApp(const LoginPage()));
       await tester.tap(find.byType(InkWell));
       await tester.pumpAndSettle();
-      verify(await userSession.login()).called(1);
+      verify(await userState.login()).called(1);
     });
   });
 }

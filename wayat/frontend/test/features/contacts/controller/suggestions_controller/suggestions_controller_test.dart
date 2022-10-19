@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -35,11 +35,11 @@ Widget createApp() {
   FriendsController,
   RequestsController,
   ContactsAddressServiceImpl,
-  SessionState
+  UserState
 ])
 void main() async {
-  MockSessionState mockSessionState = MockSessionState();
-  GetIt.I.registerSingleton<SessionState>(mockSessionState);
+  MockUserState mockUserState = MockUserState();
+  GetIt.I.registerSingleton<UserState>(mockUserState);
   GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   MockContactService mockContactService = MockContactService();
   MockFriendsController mockFriendsController = MockFriendsController();
@@ -55,46 +55,42 @@ void main() async {
       name: "test_name",
       email: "test@mail.com",
       imageUrl: "url://image",
+      phonePrefix: "+34",
       phone: "600600600",
       onboardingCompleted: true,
       shareLocationEnabled: false);
 
   List<Contact> contacts = <Contact>[
     Contact(
-        shareLocation: false,
-        available: true,
+        shareLocationTo: false,
         id: "1",
         name: "test_name 1",
         email: "test@mail.com",
         imageUrl: "url://image",
         phone: "600600600"),
     Contact(
-        shareLocation: false,
-        available: false,
+        shareLocationTo: false,
         id: "2",
         name: "Test 2",
         email: "test2@mail.com",
         imageUrl: "image2",
         phone: "123456782"),
     Contact(
-        shareLocation: false,
-        available: true,
+        shareLocationTo: false,
         id: "3",
         name: "Test 3",
         email: "test3@mail.com",
         imageUrl: "image3",
         phone: "123456783"),
     Contact(
-        shareLocation: false,
-        available: true,
+        shareLocationTo: false,
         id: "4",
         name: "Test 4",
         email: "test4@mail.com",
         imageUrl: "image4",
         phone: "123456784"),
     Contact(
-        shareLocation: false,
-        available: false,
+        shareLocationTo: false,
         id: "5",
         name: "Test 5",
         email: "test5@mail.com",
@@ -120,7 +116,7 @@ void main() async {
       .thenReturn(mobx.ObservableList.of([]));
 
   // Mock current user
-  when(mockSessionState.currentUser).thenReturn(myUser);
+  when(mockUserState.currentUser).thenReturn(myUser);
 
   //Mock filter contacts in Addres Book that have an account
   when(mockContactService.getFilteredContacts(any))

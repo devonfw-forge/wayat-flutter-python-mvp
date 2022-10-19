@@ -1,8 +1,8 @@
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/domain/user/my_user.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/services/profile/profile_service_impl.dart';
 import 'package:mobx/mobx.dart';
@@ -15,10 +15,11 @@ class EditProfileController = _EditProfileController
 
 abstract class _EditProfileController with Store {
   /// Reference to the current user
-  final MyUser user = GetIt.I.get<SessionState>().currentUser!;
+
+  final UserState userState = GetIt.I.get<UserState>();
 
   /// Reference to the profile state
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
+  final ProfileController profileController = GetIt.I.get<ProfileController>();
 
   /// Instance of the profile service
   ProfileServiceImpl profileService = ProfileServiceImpl();
@@ -30,10 +31,8 @@ abstract class _EditProfileController with Store {
   /// Observable variable [currentSelectedImage], used when changing the profile picture
   @observable
   XFile? currentSelectedImage;
-
-  /// Whether the proccess of validating the phone is successful
-  @observable
-  bool validPhone = false;
+  
+  Uint8List? currentSelectedImageBytes;
 
   /// Sets user name to new [newName]
   @action
@@ -43,33 +42,29 @@ abstract class _EditProfileController with Store {
 
   /// Sets user image to new [image]
   @action
-  void setNewImage(XFile? image) {
+  Future<void> setNewImage(XFile? image) async {
+    currentSelectedImageBytes = await image!.readAsBytes();
     currentSelectedImage = image;
   }
 
   /// Returns from the child pages [EditProfile] or [Preferences] to the parent page [Profile]
   void onPressedBackButton() {
-    profileState.setCurrentPage(ProfileCurrentPages.profile);
+    profileController.currentPage = ProfileCurrentPages.profile;
   }
 
   /// Saves all the updates to the user's profile
-  Future<void> onPressedSaveButton(String phoneNumber) async {
+  Future<void> onPressedSaveButton() async {
     /// Go back from EditProfile page to Profile page
-    profileState.setCurrentPage(ProfileCurrentPages.profile);
+    profileController.currentPage = ProfileCurrentPages.profile;
 
     /// Validate new name and call [updateCurrentUserName] to save changes
     if (name != null ? name!.replaceAll(" ", "").isNotEmpty : false) {
-      await profileState.updateCurrentUserName(name!);
+      await userState.updateUserName(name!);
     }
 
     /// Check new image is not null and call [updateUserImage] to save changes
     if (currentSelectedImage != null) {
-      await profileState.updateUserImage(currentSelectedImage!);
-    }
-
-    /// Check new phone number not null and call [updatePhone] to save changes
-    if (phoneNumber.isNotEmpty) {
-      await GetIt.I.get<SessionState>().updatePhone(phoneNumber);
+      await userState.updateImage(currentSelectedImage!);
     }
   }
 
@@ -77,6 +72,6 @@ abstract class _EditProfileController with Store {
   Future getFromSource(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
-    setNewImage(newImage);
+    await setNewImage(newImage);
   }
 }

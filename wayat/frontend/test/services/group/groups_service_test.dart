@@ -37,8 +37,7 @@ void main() async {
 
   test("GetAll converts from List of IDs to List of Contacts", () async {
     Contact contact = Contact(
-        shareLocation: true,
-        available: true,
+        shareLocationTo: true,
         id: "id",
         name: "name",
         email: "email",
@@ -79,12 +78,11 @@ void main() async {
         .thenAnswer((_) => http.ByteStream.fromBytes(utf8.encode("newId")));
 
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
-    String filePath = emptyFile.path;
+    Future<Uint8List> fileBytes = emptyFile.readAsBytes();
     String fileType = "";
 
     Contact contact = Contact(
-        shareLocation: true,
-        available: true,
+        shareLocationTo: true,
         id: "id",
         name: "name",
         email: "email",
@@ -99,7 +97,7 @@ void main() async {
     })).thenAnswer((_) => Future.value(mockResponse));
 
     when(mockHttpProvider.sendPostImageRequest(
-            "${APIContract.groupPicture}/newId", filePath, fileType))
+            "${APIContract.groupPicture}/newId", await fileBytes, fileType))
         .thenAnswer((_) => Future.value(mockResponseImage));
 
     GroupsService groupsService = GroupsServiceImpl();
@@ -111,7 +109,7 @@ void main() async {
       "members": ["id"]
     })).called(1);
     verify(mockHttpProvider.sendPostImageRequest(
-            "${APIContract.groupPicture}/newId", filePath, fileType))
+            "${APIContract.groupPicture}/newId", await fileBytes, fileType))
         .called(1);
   });
 
@@ -124,12 +122,11 @@ void main() async {
         .thenAnswer((_) => http.ByteStream.fromBytes(utf8.encode("newId")));
 
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
-    String filePath = emptyFile.path;
+    Future<Uint8List> fileBytes = emptyFile.readAsBytes();
     String fileType = "";
 
     Contact contact = Contact(
-        shareLocation: true,
-        available: true,
+        shareLocationTo: true,
         id: "id",
         name: "name",
         email: "email",
@@ -144,7 +141,7 @@ void main() async {
     })).thenAnswer((_) => Future.value(mockResponse));
 
     when(mockHttpProvider.sendPostImageRequest(
-            "${APIContract.groupPicture}/newId", filePath, fileType))
+            "${APIContract.groupPicture}/newId", await fileBytes, fileType))
         .thenAnswer((_) => Future.value(mockResponseImage));
 
     GroupsService groupsService = GroupsServiceImpl();
@@ -156,7 +153,7 @@ void main() async {
       "members": ["id"]
     })).called(1);
     verifyNever(mockHttpProvider.sendPostImageRequest(
-        "${APIContract.groupPicture}/newId", filePath, fileType));
+        "${APIContract.groupPicture}/newId", await fileBytes, fileType));
   });
 
   test("Update calls the correct endpoint with the correct data", () async {
@@ -165,12 +162,11 @@ void main() async {
         .thenAnswer((_) => http.ByteStream.fromBytes(utf8.encode("id")));
 
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
-    String filePath = emptyFile.path;
+    Uint8List fileBytes = await emptyFile.readAsBytes();
     String fileType = "";
 
     Contact contact = Contact(
-        shareLocation: true,
-        available: true,
+        shareLocationTo: true,
         id: "id",
         name: "name",
         email: "email",
@@ -185,7 +181,7 @@ void main() async {
     })).thenAnswer((_) => Future.value(true));
 
     when(mockHttpProvider.sendPostImageRequest(
-            "${APIContract.groupPicture}/id", filePath, fileType))
+            "${APIContract.groupPicture}/id", fileBytes, fileType))
         .thenAnswer((_) => Future.value(mockResponseImage));
 
     GroupsService groupsService = GroupsServiceImpl();
@@ -198,7 +194,7 @@ void main() async {
       "members": [contact.id]
     })).called(1);
     verify(mockHttpProvider.sendPostImageRequest(
-            "${APIContract.groupPicture}/id", filePath, fileType))
+            "${APIContract.groupPicture}/id", fileBytes, fileType))
         .called(1);
   });
 
@@ -208,12 +204,11 @@ void main() async {
         .thenAnswer((_) => http.ByteStream.fromBytes(utf8.encode("id")));
 
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
-    String filePath = emptyFile.path;
+    Uint8List fileBytes = await emptyFile.readAsBytes();
     String fileType = "";
 
     Contact contact = Contact(
-        shareLocation: true,
-        available: true,
+        shareLocationTo: true,
         id: "id",
         name: "name",
         email: "email",
@@ -228,7 +223,7 @@ void main() async {
     })).thenAnswer((_) => Future.value(true));
 
     when(mockHttpProvider.sendPostImageRequest(
-            "${APIContract.groupPicture}/id", filePath, fileType))
+            "${APIContract.groupPicture}/id", fileBytes, fileType))
         .thenAnswer((_) => Future.value(mockResponseImage));
 
     GroupsService groupsService = GroupsServiceImpl();
@@ -241,7 +236,7 @@ void main() async {
       "members": [contact.id]
     })).called(1);
     verifyNever(mockHttpProvider.sendPostImageRequest(
-        "${APIContract.groupPicture}/id", filePath, fileType));
+        "${APIContract.groupPicture}/id", fileBytes, fileType));
   });
 
   test("If the group udpate fails, we don't send the picture", () async {
@@ -250,12 +245,11 @@ void main() async {
         .thenAnswer((_) => http.ByteStream.fromBytes(utf8.encode("id")));
 
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
-    String filePath = emptyFile.path;
+    Uint8List fileBytes = await emptyFile.readAsBytes();
     String fileType = "";
 
     Contact contact = Contact(
-        shareLocation: true,
-        available: true,
+        shareLocationTo: true,
         id: "id",
         name: "name",
         email: "email",
@@ -270,7 +264,7 @@ void main() async {
     })).thenAnswer((_) => Future.value(false));
 
     when(mockHttpProvider.sendPostImageRequest(
-            "${APIContract.groupPicture}/id", filePath, fileType))
+            "${APIContract.groupPicture}/id", fileBytes, fileType))
         .thenAnswer((_) => Future.value(mockResponseImage));
 
     GroupsService groupsService = GroupsServiceImpl();
@@ -283,7 +277,7 @@ void main() async {
       "members": [contact.id]
     })).called(1);
     verifyNever(mockHttpProvider.sendPostImageRequest(
-        "${APIContract.groupPicture}/id", filePath, fileType));
+        "${APIContract.groupPicture}/id", fileBytes, fileType));
   });
 
   test("Delete calls the correct endpoint", () async {

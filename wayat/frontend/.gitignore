@@ -2,6 +2,12 @@
 windows/
 linux/
 macos/
+web-deploy/web
+
+# Temporary files
+*.g.dart
+*.gr.dart
+*.mocks.dart
 
 # Environment variables
 *.env

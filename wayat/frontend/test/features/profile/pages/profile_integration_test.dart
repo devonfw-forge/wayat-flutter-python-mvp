@@ -6,12 +6,14 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -34,46 +36,54 @@ import 'profile_integration_test.mocks.dart';
 @GenerateMocks([
   ProfileService,
   ContactsPageController,
-  SessionState,
-  HomeState,
-  LocationState,
-  UserStatusState,
-  MapState,
+  UserState,
+  HomeNavState,
+  ShareLocationState,
+  ReceiveLocationState,
+  LocationListener,
+  LifeCycleState,
   FriendsController,
   RequestsController,
   SuggestionsController,
   HttpProvider,
-  GroupsController
+  GroupsController,
+  PhoneVerificationController
 ])
 void main() async {
   late MyUser user;
 
+  final ReceiveLocationState mockReceiveLocationState =
+      MockReceiveLocationState();
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final SessionState mockSessionState = MockSessionState();
-  final HomeState mockHomeState = MockHomeState();
-  final LocationState mockLocationState = MockLocationState();
-  final UserStatusState mockUserStatusState = MockUserStatusState();
-  final MapState mockMapState = MockMapState();
-  final FriendsController mockFriendsController = MockFriendsController();
-  final RequestsController mockRequestsController = MockRequestsController();
-  final SuggestionsController mockSuggestionsController =
+  final MockUserState mockUserState = MockUserState();
+  final MockHomeNavState mockHomeState = MockHomeNavState();
+  final MockShareLocationState mockLocationState = MockShareLocationState();
+  final MockLocationListener mockLocationListener = MockLocationListener();
+  final MockLifeCycleState mockMapState = MockLifeCycleState();
+  final MockFriendsController mockFriendsController = MockFriendsController();
+  final MockRequestsController mockRequestsController =
+      MockRequestsController();
+  final MockSuggestionsController mockSuggestionsController =
       MockSuggestionsController();
-  final ProfileService mockProfileService = MockProfileService();
-  final ProfileState profileState =
-      ProfileState(profileService: mockProfileService);
-  final GroupsController mockGroupsController = MockGroupsController();
+  final MockProfileService mockProfileService = MockProfileService();
+  final ProfileController profileController = ProfileController();
+  final MockGroupsController mockGroupsController = MockGroupsController();
+  final MockPhoneVerificationController mockPhoneVerifController =
+      MockPhoneVerificationController();
 
   setUpAll(() async {
     HttpOverrides.global = null;
     await dotenv.load(fileName: ".env");
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockSessionState.finishLoggedIn).thenReturn(true);
-    when(mockSessionState.hasDoneOnboarding).thenReturn(true);
-    when(mockSessionState.currentUser).thenAnswer((_) => user);
-    when(mockSessionState.updateCurrentUser())
-        .thenAnswer((_) => Future.value(null));
+    when(mockUserState.finishLoggedIn).thenReturn(true);
+    when(mockUserState.hasDoneOnboarding).thenReturn(true);
+    when(mockUserState.currentUser).thenAnswer((_) => user);
+    when(mockUserState.updateUserName("newUsername")).thenAnswer((_) {
+      user.name = "newUsername";
+      return Future.value(null);
+    });
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
     when(mockProfileService.updateProfileName("newUsername"))
@@ -89,18 +99,25 @@ void main() async {
         .thenReturn(mockSuggestionsController);
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
-    when(mockUserStatusState.contacts).thenReturn([]);
+    when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
+    when(mockLocationListener.receiveLocationState)
+        .thenReturn(mockReceiveLocationState);
+    when(mockReceiveLocationState.contacts).thenReturn([]);
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
+    when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
+    when(mockPhoneVerifController.isValidPhone).thenReturn(false);
+    when(mockPhoneVerifController.getISOCode()).thenReturn("ES");
 
     user = MyUser(
         id: "2",
         name: "test",
         email: "test@capg.com",
         imageUrl: "http://example.com",
+        phonePrefix: "+34",
         phone: "123456789",
         onboardingCompleted: true,
         shareLocationEnabled: true);
@@ -108,14 +125,16 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<ProfileState>(profileState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
+    GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
+    GetIt.I.registerSingleton<ProfileController>(profileController);
+    GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
+    GetIt.I.registerSingleton<PhoneVerificationController>(
+        mockPhoneVerifController);
   });
 
   Widget createApp() {
@@ -144,8 +163,7 @@ void main() async {
     await navigateToProfilePage(tester);
 
     // Check the profile page is displayed
-    expect(
-        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+    expect(find.text(appLocalizations.profile), findsWidgets);
 
     // Emulate a tap on the edit profile button
     await tester.tap(find.descendant(
@@ -162,8 +180,7 @@ void main() async {
     await tester.pumpAndSettle();
 
     // Check the profile page is displayed
-    expect(
-        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+    expect(find.text(appLocalizations.profile), findsWidgets);
 
     // Emulate a tap on the edit profile button
     await tester.tap(find.descendant(
@@ -197,13 +214,12 @@ void main() async {
   testWidgets('Integration test for enable/disable sharing location',
       (tester) async {
     when(mockLocationState.shareLocationEnabled).thenReturn(true);
-    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
+    when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     when(mockLocationState.setShareLocationEnabled(false)).thenReturn(null);
     await navigateToProfilePage(tester);
 
     // Check the profile page is displayed
-    expect(
-        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+    expect(find.text(appLocalizations.profile), findsWidgets);
 
     // Check if switch is displayed
     Finder switchF = find.byKey(const Key("sw_en_prof"));
@@ -219,12 +235,11 @@ void main() async {
   });
 
   testWidgets('Integration test for LogOut', (tester) async {
-    when(mockSessionState.logOut()).thenAnswer((_) => Future.value());
+    when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     await navigateToProfilePage(tester);
 
     // Check the profile page is displayed
-    expect(
-        find.widgetWithText(ListView, appLocalizations.profile), findsWidgets);
+    expect(find.text(appLocalizations.profile), findsWidgets);
 
     // Emulate a tap on the logOut profile button
     Finder logOutButton = find.descendant(
@@ -245,6 +260,6 @@ void main() async {
 
     await tester.tap(logOutButton);
 
-    verify(mockSessionState.logOut()).called(1);
+    verify(mockUserState.logOut()).called(1);
   });
 }

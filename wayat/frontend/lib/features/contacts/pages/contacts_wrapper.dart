@@ -6,7 +6,9 @@ import 'package:wayat/features/contacts/controller/contacts_page_controller.dart
 import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/navigation/app_router.gr.dart';
 
+/// Main navigation using autoroute for contacts screen
 class ContactsWrapper extends StatelessWidget {
+  /// Business logic controller
   final ContactsPageController controller =
       GetIt.I.get<ContactsPageController>();
 
@@ -25,6 +27,7 @@ class ContactsWrapper extends StatelessWidget {
     });
   }
 
+  /// Returns the route selected in [currentPage]
   PageRouteInfo<dynamic> getCurrentRoute(ContactsCurrentPages currentPage) {
     switch (currentPage) {
       case ContactsCurrentPages.contacts:

@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'package:wayat/domain/user/user.dart';
 
+/// Class [Contact] which inherits from User
 class Contact extends User {
-  bool available;
-  bool shareLocation;
 
+  /// Whether contact is sharing own location
+  bool shareLocationTo;
+
+  /// Contact entity constructor
   Contact({
-    required this.shareLocation,
-    required this.available,
+    required this.shareLocationTo,
     required super.id,
     required super.name,
     required super.email,
@@ -17,8 +19,7 @@ class Contact extends User {
 
   @override
   Contact copyWith({
-    bool? shareLocation,
-    bool? available,
+    bool? shareLocationTo,
     String? id,
     String? name,
     String? email,
@@ -26,8 +27,7 @@ class Contact extends User {
     String? phone,
   }) {
     return Contact(
-      shareLocation: shareLocation ?? this.shareLocation,
-      available: available ?? this.available,
+      shareLocationTo: shareLocationTo ?? this.shareLocationTo,
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -39,21 +39,18 @@ class Contact extends User {
   @override
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = super.toMap();
-    map['available'] = available;
-    map['share_location'] = shareLocation;
+    map['share_location'] = shareLocationTo;
     return map;
   }
 
   factory Contact.fromMap(Map<String, dynamic> map) {
     return Contact(
-      id: map['id'] as String,
-      available: map['available'] ?? false,
-      name: map['name'] as String,
-      email: map['email'] ?? "",
-      imageUrl: map['image_url'] as String,
-      phone: map['phone'] as String,
-      shareLocation: (map['share_location'] ?? false) as bool
-    );
+        id: map['id'] as String,
+        name: map['name'] as String,
+        email: map['email'] ?? "",
+        imageUrl: map['image_url'] as String,
+        phone: map['phone'] as String,
+        shareLocationTo: (map['share_location'] ?? false) as bool);
   }
 
   @override
@@ -64,7 +61,7 @@ class Contact extends User {
 
   @override
   String toString() {
-    return 'Contact(id: $id, available: $available, name: $name, email: $email, imageUrl: $imageUrl, phone: $phone, shareLocation: $shareLocation)';
+    return 'Contact(id: $id, name: $name, email: $email, imageUrl: $imageUrl, phone: $phone, shareLocation: $shareLocationTo)';
   }
 
   @override
@@ -75,6 +72,6 @@ class Contact extends User {
 
   @override
   int get hashCode {
-    return available.hashCode ^ shareLocation.hashCode ^ super.hashCode;
+    return shareLocationTo.hashCode ^ super.hashCode;
   }
 }

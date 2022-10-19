@@ -16,10 +16,8 @@ class InitialManageContactsTip extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextIconButton(
-            onPressed: () => {
-                  controller
-                      .progressTo(OnBoardingProgress.importAddressBookContacts)
-                },
+            onPressed: () => controller
+                .progressTo(OnBoardingProgress.importAddressBookContacts),
             icon: Icons.edit,
             text: appLocalizations.manageContacts),
         const SizedBox(

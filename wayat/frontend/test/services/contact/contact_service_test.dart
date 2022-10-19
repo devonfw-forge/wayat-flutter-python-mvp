@@ -35,16 +35,14 @@ void main() async {
   };
   List<Contact> contactList = [
     Contact(
-        shareLocation: true,
-        available: false,
+        shareLocationTo: true,
         id: 'TESTID12345',
         name: 'User Cap',
         email: '',
         imageUrl: "https://example.com/image1",
         phone: "+34123456789"),
     Contact(
-        shareLocation: true,
-        available: false,
+        shareLocationTo: true,
         id: 'TESTID123456',
         name: 'User Cap 2',
         email: '',

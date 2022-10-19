@@ -6,9 +6,10 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -16,6 +17,7 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/features/map/widgets/platform_marker_widget/mobile_marker_widget.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/features/map/widgets/suggestions_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
@@ -26,27 +28,30 @@ import 'package:wayat/services/image_service/image_service.dart';
 import 'search_bar_test.mocks.dart';
 
 @GenerateMocks([
-  LocationState,
-  UserStatusState,
-  MapState,
+  ShareLocationState,
+  ReceiveLocationState,
+  LocationListener,
+  LifeCycleState,
   MapController,
   ImageService,
   GroupsController
 ], customMocks: [])
 void main() async {
-  late LocationState mockLocationState;
-  late UserStatusState mockUserStatusState;
-  late MapState mockMapState;
+  late ShareLocationState mockLocationState;
+  late LocationListener mockLocationListener;
+  late ReceiveLocationState mockReceiveLocationState =
+      MockReceiveLocationState();
+  late LifeCycleState mockMapState;
 
   setUpAll(() {
-    mockLocationState = MockLocationState();
-    mockUserStatusState = MockUserStatusState();
-    mockMapState = MockMapState();
+    mockLocationListener = MockLocationListener();
+    mockLocationState = MockShareLocationState();
+    mockReceiveLocationState = MockReceiveLocationState();
+    mockMapState = MockLifeCycleState();
     final GroupsController mockGroupsController = MockGroupsController();
 
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
 
@@ -60,6 +65,9 @@ void main() async {
         .thenAnswer((_) => Future.value(true));
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
+    when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
+    when(mockLocationListener.receiveLocationState)
+        .thenReturn(mockReceiveLocationState);
   });
 
   Widget createApp(Widget body) {
@@ -77,7 +85,7 @@ void main() async {
   }
 
   testWidgets("The search bar appears correctly", (tester) async {
-    when(mockUserStatusState.contacts).thenReturn([]);
+    when(mockReceiveLocationState.contacts).thenReturn([]);
 
     await tester.pumpWidget(createApp(HomeMapPage()));
     await tester.pump();
@@ -90,7 +98,7 @@ void main() async {
   testWidgets("Get markers is called", (tester) async {
     List<ContactLocation> contacts =
         _generateLocatedContacts(["TestA", "TestB", "TestC", "TestD"]);
-    when(mockUserStatusState.contacts).thenReturn(contacts);
+    when(mockReceiveLocationState.contacts).thenReturn(contacts);
     MapController controller = MockMapController();
     when(controller.contacts).thenReturn([]);
     when(controller.filteredMarkers).thenReturn(ObservableSet());
@@ -105,7 +113,7 @@ void main() async {
   testWidgets("Contacts correspond to markers", (tester) async {
     List<ContactLocation> contacts =
         _generateLocatedContacts(["TestA", "TestB", "TestC", "TestD"]);
-    when(mockUserStatusState.contacts).thenReturn(contacts);
+    when(mockReceiveLocationState.contacts).thenReturn(contacts);
 
     ImageService imageService = _prepareMockImageService(contacts);
 
@@ -121,7 +129,7 @@ void main() async {
   testWidgets("Markers are filtered with the search bar", (tester) async {
     List<ContactLocation> contacts =
         _generateLocatedContacts(["TestA", "TestB", "TestC", "TestD"]);
-    when(mockUserStatusState.contacts).thenReturn(contacts);
+    when(mockReceiveLocationState.contacts).thenReturn(contacts);
 
     ImageService imageService = _prepareMockImageService(contacts);
 
@@ -148,7 +156,7 @@ void main() async {
   testWidgets("Autocomplete dialog appears", (tester) async {
     List<ContactLocation> contacts =
         _generateLocatedContacts(["TestA", "TestB", "TestC", "TestD"]);
-    when(mockUserStatusState.contacts).thenReturn(contacts);
+    when(mockReceiveLocationState.contacts).thenReturn(contacts);
 
     ImageService imageService = _prepareMockImageService(contacts);
 
@@ -167,7 +175,7 @@ void main() async {
       (tester) async {
     List<ContactLocation> contacts = _generateLocatedContacts(
         ["TestA", "TestB", "TestC", "TestD", "TestCD"]);
-    when(mockUserStatusState.contacts).thenReturn(contacts);
+    when(mockReceiveLocationState.contacts).thenReturn(contacts);
 
     ImageService imageService = _prepareMockImageService(contacts);
 
@@ -195,7 +203,7 @@ void main() async {
   testWidgets("Suggestions are built correctly", (tester) async {
     List<ContactLocation> contacts = _generateLocatedContacts(
         ["TestA", "TestB", "TestC", "TestD", "TestCD"]);
-    when(mockUserStatusState.contacts).thenReturn(contacts);
+    when(mockReceiveLocationState.contacts).thenReturn(contacts);
 
     ImageService imageService = _prepareMockImageService(contacts);
 
@@ -218,7 +226,7 @@ void main() async {
   testWidgets("Can tap on a suggestion", (tester) async {
     ContactLocation contact = _locatedContactFactory("TestA");
 
-    when(mockUserStatusState.contacts).thenReturn([contact]);
+    when(mockReceiveLocationState.contacts).thenReturn([contact]);
 
     MapController mockController = MockMapController();
 
@@ -226,7 +234,12 @@ void main() async {
         .thenAnswer((realInvocation) => Future.value(null));
     when(mockController.contacts).thenReturn([contact]);
     when(mockController.filteredMarkers).thenReturn(
-        ObservableSet.of({const Marker(markerId: MarkerId("TestA"))}));
+        ObservableSet.of({
+          MobileMarker(
+            contactLocation: _locatedContactFactory("test"),
+            onTap: () {},
+            icon: BitmapDescriptor.defaultMarker
+          )}));
 
     when(mockController.onSuggestionsTap(contact))
         .thenAnswer((_) => Future.value(null));
@@ -254,8 +267,7 @@ ImageService _prepareMockImageService(List<ContactLocation> contacts) {
 
 ContactLocation _locatedContactFactory(String contactName) {
   return ContactLocation(
-      available: true,
-      shareLocation: true,
+      shareLocationTo: true,
       id: "id1",
       name: contactName,
       email: "Contact email",

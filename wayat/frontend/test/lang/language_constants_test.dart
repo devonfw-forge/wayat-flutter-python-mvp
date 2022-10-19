@@ -7,28 +7,28 @@ void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
   test("Generate Locale correctly", () {
-    expect(locale('en'), const Locale("en", "US"));
+    expect(LanguageConstants.locale('en'), const Locale("en", "US"));
 
-    expect(locale('es'), const Locale("es", "ES"));
+    expect(LanguageConstants.locale('es'), const Locale("es", "ES"));
 
-    expect(locale('fr'), const Locale("fr", "FR"));
+    expect(LanguageConstants.locale('fr'), const Locale("fr", "FR"));
 
-    expect(locale('de'), const Locale("de", "DE"));
+    expect(LanguageConstants.locale('de'), const Locale("de", "DE"));
 
-    expect(locale('nl'), const Locale("nl", "NL"));
+    expect(LanguageConstants.locale('nl'), const Locale("nl", "NL"));
 
-    expect(locale('unkown'), const Locale("en", "US"));
+    expect(LanguageConstants.locale('unkown'), const Locale("en", "US"));
   });
 
   test("setLocaleConstants save the language on sharePreferences", () async {
-    await setLocaleConstants('es');
+    await LanguageConstants.setLocaleConstants('es');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     expect(prefs.getString('languageCode'), 'es');
   });
 
   test("getLocaleConstants get the language of sharePreferences", () async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Locale getLocale = await getLocaleConstants();
+    Locale getLocale = await LanguageConstants.getLocaleConstants();
     expect(prefs.getString('languageCode'), getLocale.languageCode);
   });
 }

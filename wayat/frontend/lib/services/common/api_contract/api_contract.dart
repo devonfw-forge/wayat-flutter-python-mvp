@@ -64,5 +64,11 @@ class APIContract {
   static const String updateLocation = "map/update-location";
 
   /// [POST] Notifies if your map is open or closed
-  static const String updateMap = "map/update-map";
+  static const String updateLifeCycle = "map/update-map";
+
+  /*
+   * ============ NOTIFICATION ============ *
+   */
+  /// [POST] Updates your location
+  static const String pushNotification = "/users/push-notifications";
 }

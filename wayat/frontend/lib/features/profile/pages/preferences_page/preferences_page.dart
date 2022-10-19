@@ -1,28 +1,34 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:restart_app/restart_app.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
+import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/features/profile/widgets/restart_ios_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/lang/language.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class PreferencesPage extends StatefulWidget {
   final EditProfileController controller;
-  PreferencesPage({super.key, controller})
-      : controller = controller ?? EditProfileController();
+  final PlatformService platformService;
+
+  PreferencesPage(
+      {super.key,
+      EditProfileController? controller,
+      PlatformService? platformService})
+      : controller = controller ?? EditProfileController(),
+        platformService = platformService ?? PlatformService();
 
   @override
   State<PreferencesPage> createState() => _PreferencesPageState();
 }
 
 class _PreferencesPageState extends State<PreferencesPage> {
-  final ProfileState profileState = GetIt.I.get<ProfileState>();
-  late Language? changedLanguage = profileState.language;
+  final AppConfigState appConfigState = GetIt.I.get<AppConfigState>();
+  late Language? changedLanguage = appConfigState.language;
 
   @override
   Widget build(BuildContext context) {
@@ -40,71 +46,75 @@ class _PreferencesPageState extends State<PreferencesPage> {
         ));
   }
 
-  Row _profileAppBar() => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                InkWell(
-                    onTap: () {
-                      // Route to Profile main page
-                      widget.controller.onPressedBackButton();
-                    },
-                    child: const Icon(Icons.arrow_back,
-                        color: Colors.black87, size: 24)),
-                Padding(
-                  padding: const EdgeInsets.only(left: 14),
-                  child: Text(
-                    appLocalizations.profile,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                        fontSize: 19),
-                  ),
+  Row _profileAppBar() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              InkWell(
+                  onTap: () {
+                    // Route to Profile main page
+                    widget.controller.onPressedBackButton();
+                  },
+                  child: const Icon(Icons.arrow_back,
+                      color: Colors.black87, size: 24)),
+              Padding(
+                padding: const EdgeInsets.only(left: 14),
+                child: Text(
+                  appLocalizations.profile,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                      fontSize: 19),
                 ),
-              ],
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 14),
+          child: TextButton(
+            onPressed: () async {
+              if (changedLanguage != appConfigState.language) {
+                await appConfigState.changeLanguage(changedLanguage!);
+                //Check platform:
+                //On Android restart App
+                if (widget.platformService.targetPlatform ==
+                    TargetPlatform.android) {
+                  Restart.restartApp();
+                } else
+                //On iOS Apple ecosysstem don't allow restarting app programmatically
+                //For now solution is to show to the user InfoDialog with recomendation
+                //manually restarting iOS App
+                if (widget.platformService.targetPlatform ==
+                    TargetPlatform.iOS) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const RestartIosDialog();
+                      });
+                }
+              } else {
+                widget.controller.onPressedBackButton();
+              }
+            },
+            child: Text(
+              appLocalizations.save,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: ColorTheme.primaryColor,
+                  fontSize: 16),
+              textAlign: TextAlign.right,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 14),
-            child: TextButton(
-              onPressed: () async {
-                if (changedLanguage != profileState.language) {
-                  await profileState.changeLanguage(changedLanguage!);
-                  //Check platform:
-                  //On Android restart App
-                  if (defaultTargetPlatform == TargetPlatform.android) {
-                    Restart.restartApp();
-                  } else
-                  //On iOS Apple ecosysstem don't allow restarting app programmatically
-                  //For now solution is to show to the user InfoDialog with recomendation
-                  //manually restarting iOS App
-                  if (defaultTargetPlatform == TargetPlatform.iOS) {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const RestartIosDialog();
-                        });
-                  }
-                } else {
-                  widget.controller.onPressedBackButton();
-                }
-              },
-              child: Text(
-                appLocalizations.save,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: ColorTheme.primaryColor,
-                    fontSize: 16),
-                textAlign: TextAlign.right,
-              ),
-            ),
-          )
-        ],
-      );
+        )
+      ],
+    );
+  }
 
   Padding _buildLanguageButton() {
     final List<Language> itemList = Language.languageList();
@@ -130,7 +140,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   Widget _languageButton(List<Language> itemList) {
     return Observer(builder: (context) {
       Language languageSelected =
-          profileState.language ?? Language('English', 'en');
+          appConfigState.language ?? Language('English', 'en');
       return DropdownButton<Language>(
         value: (changedLanguage == null) ? languageSelected : changedLanguage,
         borderRadius: BorderRadius.circular(10),

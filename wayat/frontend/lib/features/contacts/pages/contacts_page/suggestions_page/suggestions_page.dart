@@ -10,7 +10,10 @@ import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/contacts/widgets/contacts_section_title.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// List view of all suggested friends and the access to groups and a dialog to
+/// copy an invitation text
 class SuggestionsPage extends StatelessWidget {
+  /// Business logic controller
   final SuggestionsController suggestionsController =
       GetIt.I.get<ContactsPageController>().suggestionsController;
 
@@ -40,6 +43,7 @@ class SuggestionsPage extends StatelessWidget {
     );
   }
 
+  /// Returns widget with the suggested contacts list filtered by the query in searchbar
   Widget suggestionsList() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0, left: 15.0, right: 15.0),
@@ -66,6 +70,7 @@ class SuggestionsPage extends StatelessWidget {
     );
   }
 
+  /// Returns widget with title Add Your Contacts
   Widget header() {
     return Padding(
         padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),

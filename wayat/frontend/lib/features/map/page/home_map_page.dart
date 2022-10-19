@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+//import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
 import 'package:wayat/common/widgets/search_bar.dart';
@@ -19,28 +17,37 @@ import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/common/widgets/loading_widget.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/mobile_map_widget.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/web_desktop_map_widget.dart';
+import 'package:wayat/features/map/widgets/platform_map_widget/platform_map_widget.dart';
 import 'package:wayat/features/map/widgets/contact_dialog.dart';
 import 'package:wayat/features/map/widgets/contact_map_list_tile.dart';
+import 'package:wayat/features/map/widgets/platform_marker_widget/platform_marker_widget.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/services/location/background_location_exception.dart';
-import 'package:wayat/services/location/no_location_service_exception.dart';
-import 'package:wayat/services/location/rejected_location_exception.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
+import 'package:wayat/services/share_location/background_location_exception.dart';
+import 'package:wayat/services/share_location/no_location_service_exception.dart';
+import 'package:wayat/services/share_location/rejected_location_exception.dart';
 
+/// Main page of wayat. Is the one displayed when the [BottomNavigationBar] is in wayat.
 class HomeMapPage extends StatelessWidget {
+  /// Used to show the [Group] list below the search bar.
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
-  final LocationState locationState = GetIt.I.get<LocationState>();
-  final UserStatusState userStatusState = GetIt.I.get<UserStatusState>();
+  final LocationListener locationListener = GetIt.I.get<LocationListener>();
   final MapController controller;
+  final PlatformService platformService;
 
-  HomeMapPage({MapController? controller, Key? key})
+  HomeMapPage(
+      {MapController? controller, PlatformService? platformService, Key? key})
       : controller = controller ?? MapController(),
+        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     controllerGroups.updateGroups();
-    GetIt.I.get<MapState>().openMap();
+    //GetIt.I.get<LifeCycleState>().notifyAppOpenned();
     controller.setOnMarkerPressed(
         (contact, icon) => showContactDialog(contact, icon, context));
 
@@ -48,19 +55,40 @@ class HomeMapPage extends StatelessWidget {
         future: initializeLocationState(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return Stack(
-              children: [_mapLayer(), _draggableSheetLayer()],
-            );
+            return GestureDetector(
+                onTap: () {
+                  removeFocusFromSearchBar(context);
+                },
+                child: Stack(
+                  children: [
+                    _mapLayer(),
+                    if (!platformService.isDesktopOrWeb &&
+                        !platformService.wideUi)
+                      _draggableSheetLayer()
+                  ],
+                ));
           } else {
             return const LoadingWidget();
           }
         });
   }
 
-  Future<dynamic> initializeLocationState(context) async {
+  void removeFocusFromSearchBar(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
+  /// Initialize location state and check first if the location service
+  /// is enabled correctly
+  Future<void> initializeLocationState(context) async {
     while (true) {
       try {
-        return await locationState.initialize();
+        await locationListener.shareLocationState.initialize();
+        await locationListener.initialize();
+        return;
       } on NoLocationServiceException {
         await _showLocationPermissionDialog(context, true);
       } on RejectedLocationException {
@@ -73,6 +101,7 @@ class HomeMapPage extends StatelessWidget {
     }
   }
 
+  /// Show permitions dialog to the user
   Future<void> _showLocationPermissionDialog(context,
       [serviceError = false]) async {
     return showDialog<void>(
@@ -115,24 +144,26 @@ class HomeMapPage extends StatelessWidget {
     );
   }
 
+  /// Return map widget with filtered markers
   Observer _mapLayer() {
     return Observer(builder: (context) {
       prepareMapData(context);
-      Set<Marker> markers = controller.filteredMarkers;
+      Set<PlatformMarker> markers = controller.filteredMarkers;
       return Column(
         children: [
           searchBar(),
           const SizedBox(height: 5),
           groupsSlider(),
           const SizedBox(height: 5),
-          Expanded(child: googleMap(markers)),
+          Expanded(child: map(markers)),
         ],
       );
     });
   }
 
   void prepareMapData(BuildContext context) {
-    List<ContactLocation> contacts = userStatusState.contacts;
+    List<ContactLocation> contacts =
+        locationListener.receiveLocationState.contacts;
     if (contacts != controller.contacts) {
       controller.setContacts(contacts);
       controller.getMarkers();
@@ -211,22 +242,35 @@ class HomeMapPage extends StatelessWidget {
           );
   }
 
-  GoogleMap googleMap(Set<Marker> markers) {
-    LatLng currentLocation = LatLng(locationState.currentLocation.latitude,
-        locationState.currentLocation.longitude);
+  /// Google map with current user location coordinates
+  Widget map(Set<PlatformMarker> markers) {
+    PlatformMapWidget mapWidget = (platformService.isMobile)
+        ? MobileMapWidget(markers: markers, controller: controller)
+        : WebDesktopMapWidget(markers: markers, controller: controller);
 
-    return GoogleMap(
-      initialCameraPosition:
-          CameraPosition(target: currentLocation, zoom: 14.5),
-      myLocationEnabled: true,
-      zoomControlsEnabled: false,
-      markers: markers,
-      onMapCreated: (googleMapController) {
-        controller.gMapController = googleMapController;
-      },
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (platformService.wideUi || platformService.isDesktopOrWeb)
+          Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: AlignmentDirectional.topCenter,
+                      end: AlignmentDirectional.bottomCenter,
+                      colors: [
+                    Colors.grey.shade100,
+                    Colors.grey.shade50,
+                  ])),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              width: 350,
+              child: mapListView()),
+        Expanded(child: mapWidget),
+      ],
     );
   }
 
+  /// Draggable layer with active sharing location contacts
   DraggableScrollableSheet _draggableSheetLayer() {
     return DraggableScrollableSheet(
         minChildSize: 0.13,
@@ -272,12 +316,21 @@ class HomeMapPage extends StatelessWidget {
 
   Widget mapListView() {
     return Observer(builder: (context) {
-      List<ContactLocation> contacts = userStatusState.contacts;
+      List<ContactLocation> contacts =
+          locationListener.receiveLocationState.contacts;
       return ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemBuilder: (context, index) =>
-              ContactMapListTile(contact: contacts[index]),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: (index == 0)
+                  ? const EdgeInsets.only(top: 20.0)
+                  : (index == contacts.length - 1)
+                      ? const EdgeInsets.only(bottom: 10.0)
+                      : const EdgeInsets.all(0),
+              child: ContactMapListTile(contact: contacts[index]),
+            );
+          },
           separatorBuilder: (_, __) => const Divider(
                 color: Colors.black26,
               ),
@@ -295,6 +348,7 @@ class HomeMapPage extends StatelessWidget {
     );
   }
 
+  /// Sharing location switch button
   Row _sharingLocationButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -305,11 +359,13 @@ class HomeMapPage extends StatelessWidget {
               fontWeight: FontWeight.w500, color: Colors.black87, fontSize: 18),
         ),
         Observer(builder: (context) {
-          bool enabled = locationState.shareLocationEnabled;
+          bool enabled =
+              locationListener.shareLocationState.shareLocationEnabled;
           return CustomSwitch(
             value: enabled,
             onChanged: (newValue) {
-              locationState.setShareLocationEnabled(newValue);
+              locationListener.shareLocationState
+                  .setShareLocationEnabled(newValue);
             },
           );
         })
@@ -317,6 +373,7 @@ class HomeMapPage extends StatelessWidget {
     );
   }
 
+  /// Show contact dialog on Tap to the icon of the contact
   void showContactDialog(
       ContactLocation contact, BitmapDescriptor icon, BuildContext context) {
     showDialog(

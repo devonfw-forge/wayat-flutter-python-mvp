@@ -6,6 +6,11 @@ import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
 
+/// Detailed view of the [Group], accessible normally by tapping on a [GroupTile]
+///
+/// Gives access to the [ManageGroupPage] to edit the selectedGroup and
+/// to the option to delete it.
+///
 // ignore: must_be_immutable
 class ViewGroupPage extends StatelessWidget {
   final GroupsController groupsController = GetIt.I.get<GroupsController>();
@@ -111,6 +116,7 @@ class ViewGroupPage extends StatelessWidget {
     );
   }
 
+  /// Menu that gives the options to edit and delete [selectedGroup]
   Widget popUpMenu() {
     const int editGroup = 0;
     const int deleteGroup = 1;

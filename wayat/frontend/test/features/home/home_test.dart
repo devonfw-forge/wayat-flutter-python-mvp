@@ -6,12 +6,13 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/home_state/home_state.dart';
-import 'package:wayat/app_state/location_state/location_state.dart';
-import 'package:wayat/app_state/map_state/map_state.dart';
-import 'package:wayat/app_state/profile_state/profile_state.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
-import 'package:wayat/app_state/user_status/user_status_state.dart';
+import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
+import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+import 'package:wayat/features/profile/controllers/profile_controller.dart';
+import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
+import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -37,12 +38,13 @@ import 'home_test.mocks.dart';
 
 @GenerateMocks([
   ContactsPageController,
-  SessionState,
-  HomeState,
-  LocationState,
-  UserStatusState,
-  ProfileState,
-  MapState,
+  UserState,
+  HomeNavState,
+  ShareLocationState,
+  ReceiveLocationState,
+  LocationListener,
+  ProfileController,
+  LifeCycleState,
   FriendsController,
   RequestsController,
   SuggestionsController,
@@ -53,12 +55,14 @@ import 'home_test.mocks.dart';
 void main() async {
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
-  final HomeState mockHomeState = MockHomeState();
-  final SessionState mockSessionState = MockSessionState();
-  final LocationState mockLocationState = MockLocationState();
-  final UserStatusState mockUserStatusState = MockUserStatusState();
-  final ProfileState mockProfileState = MockProfileState();
-  final MapState mockMapState = MockMapState();
+  final UserState mockUserState = MockUserState();
+  final HomeNavState mockHomeState = MockHomeNavState();
+  final ShareLocationState mockLocationState = MockShareLocationState();
+  final ReceiveLocationState mockReceiveLocationState =
+      MockReceiveLocationState();
+  final LocationListener mockLocationListener = MockLocationListener();
+  final ProfileController mockProfileController = MockProfileController();
+  final LifeCycleState mockMapState = MockLifeCycleState();
   final FriendsController mockFriendsController = MockFriendsController();
   final RequestsController mockRequestsController = MockRequestsController();
   final SuggestionsController mockSuggestionsController =
@@ -73,6 +77,7 @@ void main() async {
       email: "test@capg.com",
       imageUrl: "http://example.com",
       phone: "123456789",
+      phonePrefix: "+34",
       onboardingCompleted: true,
       shareLocationEnabled: true);
 
@@ -84,20 +89,20 @@ void main() async {
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
-    GetIt.I.registerSingleton<LocationState>(mockLocationState);
-    GetIt.I.registerSingleton<UserStatusState>(mockUserStatusState);
-    GetIt.I.registerSingleton<ProfileState>(mockProfileState);
-    GetIt.I.registerSingleton<MapState>(mockMapState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
+    GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
+    GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
+    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
+    GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
 
     mockContactProfileController = MockContactProfileController();
 
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockSessionState.finishLoggedIn).thenReturn(true);
-    when(mockSessionState.hasDoneOnboarding).thenReturn(true);
+    when(mockUserState.finishLoggedIn).thenReturn(true);
+    when(mockUserState.hasDoneOnboarding).thenReturn(true);
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
@@ -112,9 +117,13 @@ void main() async {
         .thenReturn(mockSuggestionsController);
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
-    when(mockUserStatusState.contacts).thenReturn([]);
-    when(mockProfileState.currentPage).thenReturn(ProfileCurrentPages.profile);
-    when(mockSessionState.currentUser).thenReturn(user);
+    when(mockLocationListener.receiveLocationState)
+        .thenReturn(mockReceiveLocationState);
+    when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
+    when(mockReceiveLocationState.contacts).thenReturn([]);
+    when(mockProfileController.currentPage)
+        .thenReturn(ProfileCurrentPages.profile);
+    when(mockUserState.currentUser).thenReturn(user);
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
     when(mockGroupsController.groups)
@@ -140,8 +149,7 @@ void main() async {
 
   Contact contactFactory() {
     return Contact(
-      available: true,
-      shareLocation: true,
+      shareLocationTo: true,
       id: "2",
       name: "test",
       email: "Contact email",
@@ -151,8 +159,8 @@ void main() async {
   }
 
   testWidgets('Home wrapper test', (tester) async {
-    final HomeState homeState = HomeState();
-    GetIt.I.registerSingleton<HomeState>(homeState);
+    final HomeNavState homeState = HomeNavState();
+    GetIt.I.registerSingleton<HomeNavState>(homeState);
 
     await tester.pumpWidget(createApp());
     await tester.pumpAndSettle();
@@ -169,7 +177,7 @@ void main() async {
     expect(find.byType(ContactProfilePage), findsOneWidget);
 
     // Reinstanced due to the next tests will fail if not
-    GetIt.I.registerSingleton<HomeState>(mockHomeState);
+    GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
   });
 
   group('Contacts redirection', () {
@@ -217,6 +225,28 @@ void main() async {
       await navigateToProfilePage(tester);
 
       expect(find.byType(ProfilePage), findsOneWidget);
+    });
+
+    testWidgets("With a wide ui it uses a side navigation rail",
+        (tester) async {
+      await tester.pumpWidget(createApp());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(NavigationRail), findsOneWidget);
+    });
+
+    testWidgets("With a tall ui it uses a bottom navigation bar",
+        (tester) async {
+      tester.binding.window.physicalSizeTestValue = const Size(450, 540);
+      tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+      // resets the screen to its original size after the test end
+      await tester.pumpWidget(createApp());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+
+      addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
     });
   });
 }

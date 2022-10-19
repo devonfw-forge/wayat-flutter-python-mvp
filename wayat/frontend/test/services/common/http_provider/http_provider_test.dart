@@ -1,35 +1,34 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/app_state/user_session/session_state.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'http_provider_test.mocks.dart';
 
-@GenerateNiceMocks([
-  MockSpec<http.Client>(),
-  MockSpec<AuthService>(),
-  MockSpec<SessionState>()
-])
+@GenerateNiceMocks(
+    [MockSpec<http.Client>(), MockSpec<AuthService>(), MockSpec<UserState>()])
 void main() async {
-  SessionState mockSessionState = MockSessionState();
+  UserState mockUserState = MockUserState();
   AuthService mockAuthService = MockAuthService();
   late String baseUrl;
 
   setUpAll(() async {
     await dotenv.load();
-    baseUrl = dotenv.get('BASE_URL');
+    baseUrl = EnvModel.BASE_URL;
 
-    when(mockSessionState.authService).thenReturn(mockAuthService);
+    when(mockUserState.authService).thenReturn(mockAuthService);
     when(mockAuthService.getIdToken())
         .thenAnswer((realInvocation) => Future.value("idtoken"));
-    GetIt.I.registerSingleton<SessionState>(mockSessionState);
+    GetIt.I.registerSingleton<UserState>(mockUserState);
   });
 
   test("GetHeaders is correct", () async {
@@ -145,13 +144,14 @@ void main() async {
   });
 
   test("sendPostImageRequest is correct", () async {
-    String filePath = "test_resources/wayat_icon.png";
+    Uint8List imageTestBytes =
+        await File("test_resources/wayat_icon.png").readAsBytes();
     http.Client mockClient = MockClient();
 
     HttpProvider httpProvider = HttpProvider(client: mockClient);
 
     http.StreamedResponse providerResponse = await httpProvider
-        .sendPostImageRequest("subPath", filePath, "image/png");
+        .sendPostImageRequest("subPath", imageTestBytes, "image/png");
 
     expect(providerResponse, isA<http.StreamedResponse>());
   });

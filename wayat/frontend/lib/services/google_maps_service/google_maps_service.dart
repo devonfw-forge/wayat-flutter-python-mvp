@@ -4,26 +4,32 @@ import 'dart:io';
 // ignore: depend_on_referenced_packages
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
 import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
 
 class GoogleMapsService {
   static Future openMaps(double lat, double lng,
-      {UrlLauncherLibW? urlLauncher}) async {
+      {UrlLauncherLibW? urlLauncher, PlatformService? platformService}) async {
     UrlLauncherLibW launcher = urlLauncher ?? UrlLauncherLibW();
+    platformService ??= PlatformService();
     late Uri uri;
-    // To test the kIsWeb condition, the access to this variable should be
+    // To test the web condition, the access to this variable should be
     // wrapped in its own class to allow for mocking
-    if (kIsWeb || defaultTargetPlatform == TargetPlatform.android) {
+    if (!platformService.isWeb &&
+        platformService.targetPlatform == TargetPlatform.android) {
       uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+    } else if (!platformService.isWeb &&
+        platformService.targetPlatform == TargetPlatform.iOS) {
       //apple maps
       uri = Uri.parse("http://maps.apple.com/?daddr=$lat,$lng");
-      //google maps
-      //uri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
+    } else {
+      // google maps
+      uri = Uri.parse(
+          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
     }
     if (await launcher.canLaunchUrl(uri)) {
       await launcher.launchUrl(uri);
@@ -55,12 +61,12 @@ class GoogleMapsService {
 
   static String getStaticMapImageFromCoords(LatLng coords) {
     String apiKey = getApIKey();
-    String secret = dotenv.get("MAPS_STATIC_SECRET").replaceAll("\"", "");
+    String secret = EnvModel.MAPS_STATIC_SECRET;
     secret = base64.normalize(secret);
 
     Uri url = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "size": "400x400",
+      "size": "500x500",
       "zoom": "16",
       "key": apiKey,
     });
@@ -73,7 +79,7 @@ class GoogleMapsService {
 
     Uri signedUrl = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "size": "400x400",
+      "size": "500x500",
       "zoom": "16",
       "key": apiKey,
     });
@@ -81,15 +87,14 @@ class GoogleMapsService {
     return "$signedUrl&signature=$signatureInBase64";
   }
 
-  static String getApIKey() {
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return dotenv.get('ANDROID_API_KEY');
+  static String getApIKey([PlatformService? platformService]) {
+    platformService ??= PlatformService();
+    if (platformService.targetPlatform == TargetPlatform.android) {
+      return EnvModel.ANDROID_API_KEY;
     }
-
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return dotenv.get('IOS_API_KEY');
+    if (platformService.targetPlatform == TargetPlatform.iOS) {
+      return EnvModel.IOS_API_KEY;
     }
-
-    return dotenv.get('WEB_API_KEY');
+    return EnvModel.WEB_API_KEY;
   }
 }

@@ -1,9 +1,17 @@
 import 'package:wayat/domain/contact/contact.dart';
 
+/// Location information for the contacts
 class ContactLocation extends Contact {
+  /// Coordinates latitude
   double latitude;
+
+  /// Coordinates longitude
   double longitude;
+
+  /// Complete address for the location defined by [latitude] and [longitude]
   String address;
+
+  /// Last time the location was updated
   DateTime lastUpdated;
 
   @override
@@ -15,13 +23,13 @@ class ContactLocation extends Contact {
       lastUpdated.hashCode;
 
   ContactLocation(
-      {required super.available,
+      {
       required super.id,
       required super.name,
       required super.email,
       required super.imageUrl,
       required super.phone,
-      required super.shareLocation,
+      required super.shareLocationTo,
       required this.latitude,
       required this.longitude,
       required this.address,
@@ -29,8 +37,8 @@ class ContactLocation extends Contact {
 
   @override
   ContactLocation copyWith(
-      {bool? available,
-      bool? shareLocation,
+      {
+      bool? shareLocationTo,
       String? id,
       String? name,
       String? email,
@@ -41,7 +49,6 @@ class ContactLocation extends Contact {
       String? address,
       DateTime? lastUpdated}) {
     return ContactLocation(
-        available: available ?? this.available,
         id: id ?? this.id,
         name: name ?? this.name,
         email: email ?? this.email,
@@ -51,7 +58,7 @@ class ContactLocation extends Contact {
         longitude: longitude ?? this.longitude,
         address: address ?? this.address,
         lastUpdated: lastUpdated ?? this.lastUpdated,
-        shareLocation: shareLocation ?? this.shareLocation);
+        shareLocationTo: shareLocationTo ?? this.shareLocationTo);
   }
 
   @override
@@ -69,8 +76,7 @@ class ContactLocation extends Contact {
 
   factory ContactLocation.fromMap(Map<String, dynamic> map) {
     return ContactLocation(
-        available: map['available'] as bool,
-        shareLocation: (map['share_location'] ?? false) as bool,
+        shareLocationTo: (map['share_location'] ?? false) as bool,
         id: map['id'] as String,
         name: map['name'] as String,
         email: map['email'] as String,

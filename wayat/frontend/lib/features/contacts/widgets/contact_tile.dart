@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:wayat/domain/contact/contact.dart';
 
+/// Contact tile showing contact profile image, and optional text button or icon
+///  button
 class ContactTile extends StatelessWidget {
+  /// Data of contact
   final Contact contact;
+
+  /// Text button shown in tile
   final TextButton? textAction;
+
+  /// Icon button shown in tile
   final IconButton? iconAction;
+
+  /// Callback triggered when tile is pressed
   final void Function()? onTilePressed;
 
   const ContactTile(
@@ -17,7 +26,8 @@ class ContactTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double nameSpace = (textAction != null) ? 0.4 : 0.65;
+    final double nameSpace =
+        (textAction != null || iconAction != null) ? 0.4 : 0.65;
 
     return InkWell(
       onTap: onTilePressed,
@@ -44,8 +54,9 @@ class ContactTile extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * nameSpace,
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * nameSpace),
                   child: Text(
                     contact.name,
                     overflow: TextOverflow.ellipsis,
