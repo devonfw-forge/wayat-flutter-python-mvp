@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
-import 'package:wayat/navigation/app_go_router.dart';
+import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
@@ -135,7 +135,7 @@ void main() async {
   });
 
   Widget createApp() {
-    final appRouter = AppGoRouter();
+    final appRouter = AppRouter();
 
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,

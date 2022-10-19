@@ -16,9 +16,9 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/features/groups/pages/groups_page.dart';
 import 'package:wayat/features/groups/pages/manage_group_page.dart';
 import 'package:wayat/features/groups/pages/view_group_page.dart';
-import 'package:wayat/features/home/pages/home_go_page.dart';
+import 'package:wayat/features/home/pages/home_page.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
-import 'package:wayat/features/map/page/home_map_page.dart';
+import 'package:wayat/features/map/page/map_page.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
@@ -27,7 +27,7 @@ import 'package:wayat/features/profile/pages/profile_page.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
-class AppGoRouter {
+class AppRouter {
   final ValueKey<String> _scaffoldKey =
       const ValueKey<String>('wayat_scaffold');
   final ValueKey<String> _profileScaffoldKey =
@@ -216,6 +216,24 @@ class AppGoRouter {
   FutureOr<String?> onboardingGuard(context, state) =>
       (platformService.isWeb) ? '/' : null;
 
+  Future<String?> contactProfileGuard(GoRouterState state) async {
+    HomeNavState homeNavState = GetIt.I.get<HomeNavState>();
+    await homeNavState.contactProfileGuard(state.params['id']!);
+    if (homeNavState.selectedContact == null) {
+      return '/not-found';
+    }
+    return null;
+  }
+
+  Future<String?> groupsGuard(GoRouterState state) async {
+    GroupsController groupsController = GetIt.I.get<GroupsController>();
+    await groupsController.groupsGuard(state.params['id']!);
+    if (groupsController.selectedGroup == null) {
+      return '/not-found';
+    }
+    return null;
+  }
+
   FutureOr<String?> authenticationGuard(context, state) async {
     if (await userState.isLogged()) {
       log("USER LOGGED");
@@ -255,24 +273,6 @@ class AppGoRouter {
       }
     }
     log("RETURNING NULL");
-    return null;
-  }
-
-  Future<String?> contactProfileGuard(GoRouterState state) async {
-    HomeNavState homeNavState = GetIt.I.get<HomeNavState>();
-    await homeNavState.contactProfileGuard(state.params['id']!);
-    if (homeNavState.selectedContact == null) {
-      return '/not-found';
-    }
-    return null;
-  }
-
-  Future<String?> groupsGuard(GoRouterState state) async {
-    GroupsController groupsController = GetIt.I.get<GroupsController>();
-    await groupsController.groupsGuard(state.params['id']!);
-    if (groupsController.selectedGroup == null) {
-      return '/not-found';
-    }
     return null;
   }
 }

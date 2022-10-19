@@ -22,7 +22,7 @@ import 'package:wayat/features/contacts/controller/contacts_page_controller.dart
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:wayat/navigation/app_go_router.dart';
+import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
@@ -157,7 +157,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
 
-    AppGoRouter appGoRouter = AppGoRouter();
+    AppRouter appRouter = AppRouter();
 
     return FutureBuilder(
         future: GetIt.I.get<AppConfigState>().initializeLocale(),
@@ -193,7 +193,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
               }
               return const Locale("en", "US");
             },
-            routerConfig: appGoRouter.router,
+            routerConfig: appRouter.router,
           ));
         });
   }
