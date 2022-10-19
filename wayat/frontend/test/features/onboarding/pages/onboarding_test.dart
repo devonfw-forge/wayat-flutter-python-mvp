@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
@@ -16,26 +17,31 @@ import 'onboarding_test.mocks.dart';
 
 @GenerateMocks([UserState, OnboardingController])
 void main() {
-  late OnboardingController controller;
+  final MockOnboardingController controller = MockOnboardingController();
 
   setUpAll(() {
     GetIt.I.registerSingleton<UserState>(MockUserState());
-    GetIt.I.registerSingleton<OnboardingController>(MockOnboardingController());
+    GetIt.I.registerSingleton<OnboardingController>(controller);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    controller = GetIt.I.get<OnboardingController>();
   });
 
   Widget createApp(Widget body) {
-    return MaterialApp(
+    final router = GoRouter(initialLocation: "/", routes: [
+      GoRoute(
+        path: "/",
+        builder: (context, state) => Scaffold(
+          body: body,
+        ),
+      ),
+    ]);
+    return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateTitle: (context) {
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
-      home: Scaffold(
-        body: body,
-      ),
+      routerConfig: router,
     );
   }
 
