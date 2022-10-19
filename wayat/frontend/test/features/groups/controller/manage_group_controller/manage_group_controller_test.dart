@@ -69,14 +69,14 @@ void main() async {
     expect(manageGroupController.selectedContacts, []);
   });
 
-  test("SetSelectedFile works correctly", () {
+  test("SetSelectedFile works correctly", () async {
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
 
     ManageGroupController manageGroupController =
-        ManageGroupController(groupsService: mockGroupsService);
+      ManageGroupController(groupsService: mockGroupsService);
 
     expect(manageGroupController.selectedFile, null);
-    manageGroupController.setSelectedFile(emptyFile);
+    await manageGroupController.setSelectedFile(emptyFile);
     expect(manageGroupController.selectedFile, emptyFile);
   });
 
