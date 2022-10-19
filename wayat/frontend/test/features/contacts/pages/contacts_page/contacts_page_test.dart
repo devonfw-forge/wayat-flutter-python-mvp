@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
 import 'package:wayat/navigation/app_go_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
@@ -98,9 +100,15 @@ void main() async {
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget createApp() {
-    final AppGoRouter appRouter = AppGoRouter();
-
+  Widget createApp(Widget body) {
+    final router = GoRouter(initialLocation: "/", routes: [
+      GoRoute(
+        path: "/",
+        builder: (context, state) => Scaffold(
+          body: body,
+        ),
+      ),
+    ]);
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -108,19 +116,12 @@ void main() async {
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
-      routerConfig: appRouter.router,
+      routerConfig: router,
     );
   }
 
-  Future navigateToContactsPage(WidgetTester tester) async {
-    await tester.pumpWidget(createApp());
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.contacts_outlined));
-    await tester.pumpAndSettle();
-  }
-
   testWidgets("The search bar appears correctly", (tester) async {
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(createApp(ContactsPage("friends")));
     const Key searchBarKey = Key("ContactsSearchBar");
 
     expect(find.byKey(searchBarKey), findsOneWidget);
@@ -136,7 +137,7 @@ void main() async {
   });
 
   testWidgets("The tab bar appears correctly", (tester) async {
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(createApp(ContactsPage("friends")));
 
     expect(find.byType(TabBar), findsOneWidget);
     expect(find.byType(Tab), findsNWidgets(3));
@@ -161,7 +162,7 @@ void main() async {
       (tester) async {
     const Key searchBarKey = Key("ContactsSearchBar");
     when(mockContactsPageController.setSearchBarText("Input")).thenReturn(null);
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(createApp(ContactsPage("friends")));
     await tester.enterText(find.byKey(searchBarKey), "Input");
     verify(mockContactsPageController.setSearchBarText("Input")).called(1);
   });
