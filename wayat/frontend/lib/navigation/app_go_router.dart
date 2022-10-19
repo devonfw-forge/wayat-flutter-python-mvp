@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
@@ -164,7 +165,7 @@ class AppGoRouter {
             )
           ]),
       GoRoute(
-          path: '/phone-validation',
+          path: '/phone-verification',
           builder: (BuildContext context, GoRouterState state) {
             return PhoneValidationPage();
           }),
@@ -188,13 +189,19 @@ class AppGoRouter {
         log("INITIALIZING CURRENT USER");
         await userState.initializeCurrentUser();
       }
-      if (platformService.isDesktopOrWeb &&
-          userState.currentUser!.phone.isEmpty) {
-        log("RETURNING PHONE-VERIFICATION-MISSING");
-        if (state.location == '/phone-verification-missing') {
-          return null;
+      if (userState.currentUser!.phone.isEmpty) {
+        if (platformService.isDesktopOrWeb) {
+          log("RETURNING PHONE-VERIFICATION-MISSING");
+          if (state.location == '/phone-verification-missing') {
+            return null;
+          }
+          return '/phone-verification-missing';
+        } else {
+          if (state.location == '/phone-verification') {
+            return null;
+          }
+          return '/phone-verification';
         }
-        return '/phone-verification-missing';
       }
       if (state.location == '/') {
         log("RETURNING MAP");

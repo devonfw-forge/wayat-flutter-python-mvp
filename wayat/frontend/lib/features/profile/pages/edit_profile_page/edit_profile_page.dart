@@ -90,8 +90,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           Observer(
             builder: (_) => TextButton(
-              onPressed: () async =>
-                  await widget.controller.onPressedSaveButton(),
+              onPressed: () {
+                widget.controller
+                    .onPressedSaveButton()
+                    .then((_) => context.go('/profile'));
+              },
               child: Text(
                 appLocalizations.save,
                 style: _textStyle(ColorTheme.primaryColor, 16),

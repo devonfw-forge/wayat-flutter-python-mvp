@@ -81,6 +81,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           onCodeSent: () {},
           onLoginSuccess:
               (UserCredential userCredential, bool autoVerified) async {
+            String? error;
             bool isUpdated = await userState.updatePhone(
                 widget.phoneNumber.countryCode,
                 widget.phoneNumber.completeNumber);
@@ -88,12 +89,11 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
               userState.currentUser!.phone = widget.phoneNumber.completeNumber;
               userState.currentUser!.phonePrefix =
                   widget.phoneNumber.countryCode;
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).pop();
             } else {
-              if (widget.callbackController != null) {
-                widget.callbackController!(appLocalizations.phoneUsed);
-              }
+              error = appLocalizations.phoneUsed;
+            }
+            if (widget.callbackController != null) {
+              widget.callbackController!(error);
             }
           },
           onLoginFailed:

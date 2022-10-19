@@ -33,6 +33,7 @@ class HomeGoPage extends StatelessWidget {
             : const PreferredSize(
                 preferredSize: Size.fromHeight(40), child: CustomAppBar()),
         body: AdaptiveNavigationScaffold(
+          resizeToAvoidBottomInset: false,
           body: child,
           selectedIndex: selectedSection.index,
           onDestinationSelected: (int index) {
