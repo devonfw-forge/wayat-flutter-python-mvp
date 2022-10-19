@@ -10,7 +10,6 @@ import 'package:wayat/common/widgets/buttons/custom_text_button.dart';
 import 'package:wayat/common/widgets/message_card.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/pages/groups_page.dart';
 import 'package:wayat/features/groups/widgets/group_tile.dart';
@@ -62,23 +61,6 @@ void main() async {
     expect(find.widgetWithText(CustomTextButton, appLocalizations.createGroup),
         findsOneWidget);
     expect(find.text(appLocalizations.groupsTitle), findsOneWidget);
-  });
-
-  testWidgets("Tapping on the arrow goes back", (tester) async {
-    when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
-    when(mockContactsPageController
-            .setContactsCurrentPage(ContactsCurrentPages.contacts))
-        .thenReturn(null);
-    await tester.pumpWidget(createApp(GroupsPage()));
-    await tester.pumpAndSettle();
-
-    await tester
-        .tap(find.widgetWithIcon(IconButton, Icons.keyboard_arrow_down));
-    await tester.pumpAndSettle();
-
-    verify(mockContactsPageController
-            .setContactsCurrentPage(ContactsCurrentPages.contacts))
-        .called(1);
   });
 
   testWidgets("Tapping on create group moves to manage group screen",

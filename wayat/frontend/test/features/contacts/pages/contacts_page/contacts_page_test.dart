@@ -16,7 +16,6 @@ import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
@@ -63,14 +62,10 @@ void main() async {
   setUpAll(() {
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockUserState.finishLoggedIn).thenReturn(true);
-    when(mockUserState.hasDoneOnboarding).thenReturn(true);
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
     when(mockLocationState.shareLocationEnabled).thenReturn(false);
-    when(mockContactsPageController.currentPage)
-        .thenReturn(ContactsCurrentPages.contacts);
     when(mockContactsPageController.friendsController)
         .thenReturn(mockFriendsController);
     when(mockContactsPageController.requestsController)

@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/requests_page/requests_page.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
@@ -92,21 +91,12 @@ void main() async {
       (tester) async {
     when(mockRequestsController.filteredPendingRequests)
         .thenReturn(mobx.ObservableList.of([]));
-    when(mockContactsPageController
-            .setContactsCurrentPage(ContactsCurrentPages.sentRequests))
-        .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(createApp(RequestsPage()));
     await tester.pumpAndSettle();
 
     expect(find.text(appLocalizations.sentButtonNavigation), findsOneWidget);
     expect(find.byIcon(Icons.chevron_right), findsOneWidget);
-
-    await tester.tap(find.text(appLocalizations.sentButtonNavigation));
-
-    verify(mockContactsPageController
-            .setContactsCurrentPage(ContactsCurrentPages.sentRequests))
-        .called(1);
   });
 
   testWidgets("Tapping Accept in a contact tile accepts the request",

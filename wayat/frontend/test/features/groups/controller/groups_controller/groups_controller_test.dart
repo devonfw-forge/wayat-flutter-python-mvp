@@ -106,21 +106,6 @@ void main() async {
     expect(groupsController.selectedGroup, group);
   });
 
-  test("SetUpdatingGroup is correct", () {
-    GroupsController groupsController =
-        GroupsController(groupsService: mockGroupsService);
-
-    expect(groupsController.updatingGroup, false);
-
-    groupsController.setUpdatingGroup(true);
-
-    expect(groupsController.updatingGroup, true);
-
-    groupsController.setUpdatingGroup(false);
-
-    expect(groupsController.updatingGroup, false);
-  });
-
   test("DeleteGroup calls the right service method", () {
     String groupId = "id";
     when(mockGroupsService.delete(groupId))
