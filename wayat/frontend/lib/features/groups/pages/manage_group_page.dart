@@ -13,12 +13,19 @@ import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:wayat/features/groups/widgets/create_group_contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Page that provides functionality to edit and create new [Group] entities.
 class ManageGroupPage extends StatelessWidget {
   final ManageGroupController controller;
-  ManageGroupPage({ManageGroupController? controller, Group? group, Key? key})
+  final PlatformService platformService;
+  ManageGroupPage(
+      {ManageGroupController? controller,
+      Group? group,
+      PlatformService? platformService,
+      Key? key})
       : controller = controller ?? ManageGroupController(group: group),
+        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
@@ -154,7 +161,11 @@ class ManageGroupPage extends StatelessWidget {
               imageProvider = NetworkImage(imageUrl);
             }
           } else {
-            imageProvider = FileImage(File(picture.path));
+            if (platformService.isWeb) {
+              imageProvider = NetworkImage(picture.path);
+            } else {
+              imageProvider = FileImage(File(picture.path));
+            }
           }
 
           return CircleAvatar(

@@ -89,7 +89,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
               userState.currentUser!.phonePrefix =
                   widget.phoneNumber.countryCode;
               // ignore: use_build_context_synchronously
-              AutoRouter.of(context).pop();
+              Navigator.of(context).pop();
             } else {
               if (widget.callbackController != null) {
                 widget.callbackController!(appLocalizations.phoneUsed);
@@ -119,7 +119,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(appLocalizations.verifyPhoneTitle),
           IconButton(
-              onPressed: () => AutoRouter.of(context).pop(),
+              onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(Icons.close))
         ]),
         titleTextStyle: const TextStyle(
@@ -161,7 +161,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
               CustomTextButton(
                   text: appLocalizations.cancel,
                   onPressed: () {
-                    AutoRouter.of(context).pop();
+                    Navigator.of(context).pop();
                   }),
             ],
           ),

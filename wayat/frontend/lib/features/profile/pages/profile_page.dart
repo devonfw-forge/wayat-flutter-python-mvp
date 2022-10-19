@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
@@ -19,7 +18,6 @@ class ProfilePage extends StatelessWidget {
       : platformService = platformService ?? PlatformService(),
         super(key: key);
 
-  final ProfileController profileController = GetIt.I.get<ProfileController>();
   final ShareLocationState shareLocationState =
       GetIt.I.get<LocationListener>().shareLocationState;
   final UserState userState = GetIt.I.get<UserState>();
@@ -155,6 +153,7 @@ class ProfilePage extends StatelessWidget {
             text: appLocalizations.logOut,
             onTap: () {
               userState.logOut();
+              context.go('/login');
             }),
         const SizedBox(height: 24),
         CustomCard(

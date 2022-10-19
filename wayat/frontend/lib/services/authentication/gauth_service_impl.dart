@@ -4,7 +4,6 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -126,7 +125,6 @@ class GoogleAuthService implements AuthService {
     GetIt.I.resetLazySingleton<PhoneVerificationController>();
     GetIt.I.resetLazySingleton<OnboardingController>();
     GetIt.I.resetLazySingleton<ContactsPageController>();
-    GetIt.I.resetLazySingleton<ProfileController>();
     GetIt.I.resetLazySingleton<LifeCycleState>();
     GetIt.I.resetLazySingleton<HomeNavState>();
     GetIt.I.resetLazySingleton<HttpProvider>();

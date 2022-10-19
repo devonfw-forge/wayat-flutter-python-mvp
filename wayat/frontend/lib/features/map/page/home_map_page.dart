@@ -121,7 +121,7 @@ class HomeMapPage extends StatelessWidget {
             TextButton(
               child: Text(appLocalizations.retry),
               onPressed: () async {
-                await AutoRouter.of(context).pop();
+                Navigator.of(context).pop();
                 // Open settings does not stop current app execution
                 if (serviceError) {
                   // Open settings in location section

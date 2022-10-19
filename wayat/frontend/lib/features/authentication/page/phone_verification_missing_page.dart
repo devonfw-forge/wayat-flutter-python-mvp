@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
 
-class CannotLoginPage extends StatelessWidget {
+class PhoneVerificationMissingPage extends StatelessWidget {
   final UrlLauncherLibW urlLauncherLibW;
 
-  CannotLoginPage({UrlLauncherLibW? urlLauncher, super.key})
+  PhoneVerificationMissingPage({UrlLauncherLibW? urlLauncher, super.key})
       : urlLauncherLibW = urlLauncher ?? UrlLauncherLibW();
 
   @override
@@ -60,6 +63,19 @@ class CannotLoginPage extends StatelessWidget {
                       },
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomTextIconButton(
+                  text: appLocalizations.logOut,
+                  icon: Icons.exit_to_app,
+                  onPressed: () async {
+                    await GetIt.I
+                        .get<UserState>()
+                        .logOut()
+                        .then((value) => context.go('/login'));
+                  },
                 ),
               ],
             ),

@@ -41,7 +41,7 @@ class RestartIosDialog extends StatelessWidget {
                 text: 'Ok',
                 enabled: true,
                 onPressed: () {
-                  AutoRouter.of(context).pop();
+                  Navigator.of(context).pop();
                 }),
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -34,7 +35,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          widget.controller.onPressedBackButton();
+          context.go('/profile');
           return true;
         },
         child: Column(
@@ -58,7 +59,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
               InkWell(
                   onTap: () {
                     // Route to Profile main page
-                    widget.controller.onPressedBackButton();
+                    context.go('/profile');
                   },
                   child: const Icon(Icons.arrow_back,
                       color: Colors.black87, size: 24)),
@@ -99,7 +100,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                       });
                 }
               } else {
-                widget.controller.onPressedBackButton();
+                context.go('/profile');
               }
             },
             child: Text(

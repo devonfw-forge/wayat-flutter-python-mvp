@@ -28,7 +28,7 @@ class LocationListenerService {
   late List _lastContactRefs;
 
   /// Subscription for the listener to status doc in Firestore
-  late StreamSubscription listenerSubscription;
+  StreamSubscription? listenerSubscription;
 
   ///SetUp listener of contactLocation mode update from status
   Future setUpListener(
@@ -70,7 +70,9 @@ class LocationListenerService {
 
   /// Closes current listener to Firestore
   void cancelListenerSubscription() {
-    listenerSubscription.cancel();
+    if (listenerSubscription != null) {
+      listenerSubscription!.cancel();
+    }
   }
 
   /// Return active or passive location mode from Firestore status

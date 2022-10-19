@@ -1,11 +1,13 @@
+import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
-import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
+import 'package:wayat/features/authentication/page/phone_verification_missing_page.dart';
 import 'package:wayat/features/contact_profile/page/contact_profile_page.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
@@ -27,25 +29,12 @@ class AppGoRouter {
   final ValueKey<String> _profileScaffoldKey =
       const ValueKey<String>('contact_profile_scaffold');
   UserState userState = GetIt.I.get<UserState>();
+  PlatformService platformService = PlatformService();
 
   late final GoRouter router = GoRouter(
     errorBuilder: (context, state) => const ErrorPage(),
     debugLogDiagnostics: true,
-    redirect: (context, state) async {
-      if (await userState.isLogged()) {
-        if (userState.currentUser == null) {
-          await userState.initializeCurrentUser();
-        }
-        if (state.location == '/') {
-          return '/map';
-        }
-      } else {
-        if (state.location != '/login') {
-          return '/login';
-        }
-      }
-      return null;
-    },
+    redirect: authenticationGuard,
     routes: [
       // Makes map the default page if you enter just the domain name
       GoRoute(path: '/', redirect: (_, __) => '/map'),
@@ -66,39 +55,6 @@ class AppGoRouter {
               ),
             );
           }),
-      GoRoute(
-          path: '/profile',
-          pageBuilder: (context, state) => FadeTransitionPage(
-                key: _scaffoldKey,
-                child: HomeGoPage(
-                  selectedSection: HomeTab.profile,
-                  child: ProfilePage(),
-                ),
-              ),
-          routes: [
-            GoRoute(
-              path: "edit",
-              pageBuilder: (context, state) {
-                return NoTransitionPage(
-                  child: HomeGoPage(
-                    selectedSection: HomeTab.profile,
-                    child: EditProfilePage(),
-                  ),
-                );
-              },
-            ),
-            GoRoute(
-              path: "preferences",
-              pageBuilder: (context, state) {
-                return NoTransitionPage(
-                  child: HomeGoPage(
-                    selectedSection: HomeTab.profile,
-                    child: PreferencesPage(),
-                  ),
-                );
-              },
-            )
-          ]),
       GoRoute(
         path: '/contact/:id',
         redirect: (context, state) async => await contactProfileGuard(state),
@@ -175,6 +131,39 @@ class AppGoRouter {
                 ])
           ]),
       GoRoute(
+          path: '/profile',
+          pageBuilder: (context, state) => FadeTransitionPage(
+                key: _scaffoldKey,
+                child: HomeGoPage(
+                  selectedSection: HomeTab.profile,
+                  child: ProfilePage(),
+                ),
+              ),
+          routes: [
+            GoRoute(
+              path: "edit",
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: HomeGoPage(
+                    selectedSection: HomeTab.profile,
+                    child: EditProfilePage(),
+                  ),
+                );
+              },
+            ),
+            GoRoute(
+              path: "preferences",
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: HomeGoPage(
+                    selectedSection: HomeTab.profile,
+                    child: PreferencesPage(),
+                  ),
+                );
+              },
+            )
+          ]),
+      GoRoute(
           path: '/phone-validation',
           builder: (BuildContext context, GoRouterState state) {
             return PhoneValidationPage();
@@ -184,8 +173,43 @@ class AppGoRouter {
           builder: (BuildContext context, GoRouterState state) {
             return const LoadingPage();
           }),
+      GoRoute(
+          path: '/phone-verification-missing',
+          builder: (BuildContext context, GoRouterState state) {
+            return PhoneVerificationMissingPage();
+          }),
     ],
   );
+
+  FutureOr<String?> authenticationGuard(context, state) async {
+    if (await userState.isLogged()) {
+      log("USER LOGGED");
+      if (userState.currentUser == null) {
+        log("INITIALIZING CURRENT USER");
+        await userState.initializeCurrentUser();
+      }
+      if (platformService.isDesktopOrWeb &&
+          userState.currentUser!.phone.isEmpty) {
+        log("RETURNING PHONE-VERIFICATION-MISSING");
+        if (state.location == '/phone-verification-missing') {
+          return null;
+        }
+        return '/phone-verification-missing';
+      }
+      if (state.location == '/') {
+        log("RETURNING MAP");
+        return '/map';
+      }
+    } else {
+      log("USER NOT LOGGED");
+      if (state.location != '/login') {
+        log("RETURNING LOGIN");
+        return '/login';
+      }
+    }
+    log("RETURNING NULL");
+    return null;
+  }
 
   Future<String?> contactProfileGuard(GoRouterState state) async {
     HomeNavState homeNavState = GetIt.I.get<HomeNavState>();

@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
-import 'package:wayat/features/authentication/page/cannot_login_page.dart';
+import 'package:wayat/features/authentication/page/phone_verification_missing_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/google_maps_service/url_launcher_libw.dart';
@@ -33,7 +33,7 @@ void main() async {
   });
 
   testWidgets("The contents of the page are correct", (tester) async {
-    await tester.pumpWidget(createApp(CannotLoginPage()));
+    await tester.pumpWidget(createApp(PhoneVerificationMissingPage()));
 
     expect(
         find.widgetWithText(
@@ -54,7 +54,7 @@ void main() async {
             .launchUrl(Uri.parse(appLocalizations.downloadWayatUrl)))
         .thenAnswer((_) async => true);
 
-    await tester.pumpWidget(createApp(CannotLoginPage(
+    await tester.pumpWidget(createApp(PhoneVerificationMissingPage(
       urlLauncher: mockUrlLauncherLibW,
     )));
 
@@ -73,7 +73,7 @@ void main() async {
             .launchUrl(Uri.parse(appLocalizations.goToGitHubReleasesUrl)))
         .thenAnswer((_) async => true);
 
-    await tester.pumpWidget(createApp(CannotLoginPage(
+    await tester.pumpWidget(createApp(PhoneVerificationMissingPage(
       urlLauncher: mockUrlLauncherLibW,
     )));
 

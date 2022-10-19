@@ -13,7 +13,6 @@ import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/app_state/notification_state/notification_state.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
@@ -69,7 +68,6 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());
-  GetIt.I.registerLazySingleton<ProfileController>(() => ProfileController());
   GetIt.I.registerLazySingleton<AppConfigState>(() => AppConfigState());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
