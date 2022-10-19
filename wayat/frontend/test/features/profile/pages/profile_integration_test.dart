@@ -3,11 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
-import 'package:wayat/navigation/app_go_router.dart';
+import 'package:wayat/features/home/pages/home_go_page.dart';
+import 'package:wayat/features/home/pages/home_tabs.dart';
+import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
+import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
+import 'package:wayat/features/profile/pages/profile_page.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
@@ -135,8 +140,40 @@ void main() async {
   });
 
   Widget createApp() {
-    final appRouter = AppGoRouter();
-
+    final router = GoRouter(initialLocation: "/profile", routes: [
+      GoRoute(
+          path: '/profile',
+          pageBuilder: (context, state) => NoTransitionPage(
+                child: HomeGoPage(
+                  selectedSection: HomeTab.profile,
+                  child: ProfilePage(),
+                ),
+              ),
+          routes: [
+            GoRoute(
+              path: "edit",
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: HomeGoPage(
+                    selectedSection: HomeTab.profile,
+                    child: EditProfilePage(),
+                  ),
+                );
+              },
+            ),
+            GoRoute(
+              path: "preferences",
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: HomeGoPage(
+                    selectedSection: HomeTab.profile,
+                    child: PreferencesPage(),
+                  ),
+                );
+              },
+            )
+          ]),
+    ]);
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -144,19 +181,12 @@ void main() async {
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
-      routerConfig: appRouter.router,
+      routerConfig: router,
     );
   }
 
-  Future navigateToProfilePage(WidgetTester tester) async {
-    await tester.pumpWidget(createApp());
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.person_outline));
-    await tester.pumpAndSettle();
-  }
-
   testWidgets('Integration test for change username', (tester) async {
-    await navigateToProfilePage(tester);
+    await tester.pumpWidget(createApp());
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);
@@ -212,7 +242,7 @@ void main() async {
     when(mockLocationState.shareLocationEnabled).thenReturn(true);
     when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     when(mockLocationState.setShareLocationEnabled(false)).thenReturn(null);
-    await navigateToProfilePage(tester);
+    await tester.pumpWidget(createApp());
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);
@@ -232,7 +262,7 @@ void main() async {
 
   testWidgets('Integration test for LogOut', (tester) async {
     when(mockUserState.logOut()).thenAnswer((_) => Future.value());
-    await navigateToProfilePage(tester);
+    await tester.pumpWidget(createApp());
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);
