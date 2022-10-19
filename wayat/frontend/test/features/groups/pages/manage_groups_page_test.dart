@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -50,6 +51,7 @@ void main() async {
     when(mockManageGroupController.selectedContacts)
         .thenReturn(mobx.ObservableList.of([]));
     when(mockManageGroupController.selectedFile).thenReturn(null);
+    when(mockManageGroupController.selectedFileBytes).thenReturn(null);
     when(mockManageGroupController.showValidationGroup).thenReturn(false);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
@@ -127,11 +129,13 @@ void main() async {
     XFile mockPicture = MockXFile();
     when(mockPicture.path).thenReturn("");
     when(mockManageGroupController.group).thenReturn(Group.empty());
+
     await tester.pumpWidget(
         createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
-
+    
     when(mockManageGroupController.selectedFile).thenReturn(null);
+    when(mockManageGroupController.selectedFileBytes).thenReturn(null);
 
     expect(find.byIcon(Icons.person_outline), findsOneWidget);
     expect(

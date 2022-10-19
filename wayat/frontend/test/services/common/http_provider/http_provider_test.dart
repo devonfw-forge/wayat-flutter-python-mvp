@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -143,13 +145,13 @@ void main() async {
   });
 
   test("sendPostImageRequest is correct", () async {
-    String filePath = "test_resources/wayat_icon.png";
+    Uint8List imageTestBytes = await File("test_resources/wayat_icon.png").readAsBytes();
     http.Client mockClient = MockClient();
 
     HttpProvider httpProvider = HttpProvider(client: mockClient);
 
     http.StreamedResponse providerResponse = await httpProvider
-        .sendPostImageRequest("subPath", filePath, "image/png");
+        .sendPostImageRequest("subPath", imageTestBytes, "image/png");
 
     expect(providerResponse, isA<http.StreamedResponse>());
   });

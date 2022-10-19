@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -14,13 +15,23 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:wayat/features/groups/widgets/create_group_contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Page that provides functionality to edit and create new [Group] entities.
 class ManageGroupPage extends StatelessWidget {
   final ManageGroupController controller;
-  ManageGroupPage({ManageGroupController? controller, Group? group, Key? key})
-      : controller = controller ?? ManageGroupController(group: group),
-        super(key: key);
+
+  final PlatformService platformService;
+  
+  ManageGroupPage({
+    ManageGroupController? controller, 
+    PlatformService? platformService,
+    Group? group, 
+    Key? key
+  }) : 
+    controller = controller ?? ManageGroupController(group: group),
+    platformService = platformService ?? PlatformService(),
+    super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +142,15 @@ class ManageGroupPage extends StatelessWidget {
           splashColor: Colors.white,
           radius: 40,
           onTap: () {
-            showModalBottomSheet(
+            if (platformService.isWeb) {
+              controller.getFromSource(ImageSource.gallery);
+            }
+            else {
+              showModalBottomSheet(
                 context: context,
-                builder: (builder) => openSelectImageSheet(context));
+                builder: (builder) => openSelectImageSheet(context)
+              );
+            }
           },
           child: const CircleAvatar(
             backgroundColor: Colors.black87,
@@ -163,7 +180,11 @@ class ManageGroupPage extends StatelessWidget {
               imageProvider = NetworkImage(imageUrl);
             }
           } else {
-            imageProvider = FileImage(File(picture.path));
+            if (platformService.isWeb) {
+              imageProvider = NetworkImage(picture.path);
+            } else {
+              imageProvider = FileImage(File(picture.path));
+            }
           }
 
           return CircleAvatar(
