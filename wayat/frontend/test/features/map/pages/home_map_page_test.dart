@@ -153,6 +153,7 @@ void main() async {
     when(mockGroupsController.groups).thenReturn(<Group>[].asObservable());
 
     await tester.pumpWidget(createApp(MapPage()));
+    await tester.pumpAndSettle();
 
     expect(
         find.descendant(
@@ -166,13 +167,13 @@ void main() async {
         .thenReturn(<Group>[myGroup].asObservable());
 
     await tester.pumpWidget(createApp(MapPage()));
+    await tester.pumpAndSettle();
 
-    expect(find.byKey(const Key("groupSlider")), findsOneWidget);
-    // expect(
-    //     find.descendant(
-    //         of: find.byKey(const Key("groupSlider")),
-    //         matching: find.byType(ContactImage)),
-    //     findsOneWidget);
+    expect(
+        find.descendant(
+            of: find.byKey(const Key("groupSlider")),
+            matching: find.byType(ContactImage)),
+        findsOneWidget);
   });
 
   testWidgets("Slider changes value on status state", (tester) async {
