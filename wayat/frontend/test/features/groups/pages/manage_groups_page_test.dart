@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -58,16 +59,22 @@ void main() async {
   });
 
   Widget createApp(Widget body) {
-    return MaterialApp(
+    final router = GoRouter(initialLocation: "/", routes: [
+      GoRoute(
+        path: "/",
+        builder: (context, state) => Scaffold(
+          body: body,
+        ),
+      ),
+    ]);
+    return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateTitle: (context) {
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
-      home: Scaffold(
-        body: body,
-      ),
+      routerConfig: router,
     );
   }
 
@@ -98,13 +105,13 @@ void main() async {
     verify(mockGroupsController.setSelectedGroup(null)).called(1);
   });
 
-  testWidgets('ValidationGroup with less than two contacts selected set showValidationGroup to true', (tester) async{
+  testWidgets(
+      'ValidationGroup with less than two contacts selected set showValidationGroup to true',
+      (tester) async {});
 
-  });
-
-  testWidgets('ValidationGroup with two contacts selected set showValidationGroup to false', (tester) async{
-
-  });
+  testWidgets(
+      'ValidationGroup with two contacts selected set showValidationGroup to false',
+      (tester) async {});
 
   testWidgets("Save button saves group and goes back", (tester) async {
     when(mockManageGroupController.group).thenReturn(Group.empty());
