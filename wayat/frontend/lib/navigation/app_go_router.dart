@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';

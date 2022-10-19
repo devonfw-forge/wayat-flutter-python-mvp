@@ -106,21 +106,6 @@ void main() async {
     expect(groupsController.selectedGroup, group);
   });
 
-  test("SetEditGroup is correct", () {
-    GroupsController groupsController =
-        GroupsController(groupsService: mockGroupsService);
-
-    expect(groupsController.editGroup, false);
-
-    groupsController.setEditGroup(true);
-
-    expect(groupsController.editGroup, true);
-
-    groupsController.setEditGroup(false);
-
-    expect(groupsController.editGroup, false);
-  });
-
   test("SetUpdatingGroup is correct", () {
     GroupsController groupsController =
         GroupsController(groupsService: mockGroupsService);

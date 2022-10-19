@@ -135,7 +135,7 @@ void main() async {
       await tester.pumpWidget(createApp(ContactProfilePage(
           contact: nonLocatedContact, navigationSource: "Contacts")));
       await tester.tap(find.widgetWithIcon(IconButton, Icons.arrow_back));
-      verify(mockHomeState.setSelectedContact(null, "")).called(1);
+      verify(mockHomeState.setSelectedContact(null)).called(1);
     });
   });
 

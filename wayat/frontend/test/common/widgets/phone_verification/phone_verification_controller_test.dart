@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
@@ -15,10 +14,8 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'phone_verification_controller_test.mocks.dart';
 
-@GenerateMocks(
-    [ProfileController, UserState, HttpProvider, PhoneVerificationController])
+@GenerateMocks([UserState, HttpProvider, PhoneVerificationController])
 void main() async {
-  final MockProfileController mockProfileController = MockProfileController();
   final MockUserState mockUserState = MockUserState();
   final MockHttpProvider mockHttpProvider = MockHttpProvider();
   MyUser fakeUser = MyUser(
@@ -35,7 +32,6 @@ void main() async {
     // await dotenv.load(fileName: ".env");
 
     GetIt.I.registerSingleton<UserState>(mockUserState);
-    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
     when(mockUserState.currentUser).thenReturn(fakeUser);

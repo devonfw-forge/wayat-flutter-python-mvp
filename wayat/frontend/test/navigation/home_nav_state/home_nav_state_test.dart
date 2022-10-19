@@ -6,24 +6,18 @@ void main() async {
   test("Initial Home State is correct", () {
     HomeNavState homeState = HomeNavState();
     expect(homeState.selectedContact, null);
-    expect(homeState.navigationSourceContactProfile, "");
   });
   test("Set selected contacts test", () {
     HomeNavState homeState = HomeNavState();
     Contact oldContact = _contactFactory("Old Contact");
     Contact newContact = _contactFactory("New contact");
-    String oldSource = "old source";
-    String newSource = "new source";
     homeState.selectedContact = oldContact;
-    homeState.navigationSourceContactProfile = oldSource;
 
     expect(homeState.selectedContact, oldContact);
-    expect(homeState.navigationSourceContactProfile, oldSource);
 
-    homeState.setSelectedContact(newContact, newSource);
+    homeState.setSelectedContact(newContact);
 
     expect(homeState.selectedContact, newContact);
-    expect(homeState.navigationSourceContactProfile, newSource);
   });
 }
 
