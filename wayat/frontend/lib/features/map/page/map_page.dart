@@ -29,14 +29,14 @@ import 'package:wayat/services/share_location/no_location_service_exception.dart
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
 
 /// Main page of wayat. Is the one displayed when the [BottomNavigationBar] is in wayat.
-class HomeMapPage extends StatelessWidget {
+class MapPage extends StatelessWidget {
   /// Used to show the [Group] list below the search bar.
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationListener statusState = GetIt.I.get<LocationListener>();
   final MapController controller;
   final PlatformService platformService;
 
-  HomeMapPage(
+  MapPage(
       {MapController? controller, PlatformService? platformService, Key? key})
       : controller = controller ?? MapController(),
         platformService = platformService ?? PlatformService(),

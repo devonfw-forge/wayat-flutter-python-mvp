@@ -53,9 +53,9 @@ class AppRouter {
           pageBuilder: (context, state) {
             return FadeTransitionPage(
               key: _scaffoldKey,
-              child: HomeGoPage(
+              child: HomePage(
                 selectedSection: HomeTab.map,
-                child: HomeMapPage(),
+                child: MapPage(),
               ),
             );
           }),
@@ -83,7 +83,7 @@ class AppRouter {
           pageBuilder: (context, state) {
             return FadeTransitionPage(
                 key: _scaffoldKey,
-                child: HomeGoPage(
+                child: HomePage(
                   selectedSection: HomeTab.contacts,
                   child: ContactsPage(state.params['kind'] ?? "friends"),
                 ));
@@ -94,7 +94,7 @@ class AppRouter {
         pageBuilder: (context, state) {
           return FadeTransitionPage(
               key: _scaffoldKey,
-              child: HomeGoPage(
+              child: HomePage(
                 selectedSection: HomeTab.contacts,
                 child: SentRequestsPage(),
               ));
@@ -105,7 +105,7 @@ class AppRouter {
           pageBuilder: (context, state) {
             return FadeTransitionPage(
                 key: _scaffoldKey,
-                child: HomeGoPage(
+                child: HomePage(
                   selectedSection: HomeTab.contacts,
                   child: GroupsPage(),
                 ));
@@ -114,7 +114,7 @@ class AppRouter {
             GoRoute(
                 path: 'create',
                 pageBuilder: (context, state) => NoTransitionPage(
-                      child: HomeGoPage(
+                      child: HomePage(
                         selectedSection: HomeTab.contacts,
                         child: ManageGroupPage(),
                       ),
@@ -124,7 +124,7 @@ class AppRouter {
                 redirect: (context, state) async => await groupsGuard(state),
                 pageBuilder: (context, state) {
                   return NoTransitionPage(
-                      child: HomeGoPage(
+                      child: HomePage(
                     selectedSection: HomeTab.contacts,
                     child: ViewGroupPage(),
                   ));
@@ -135,7 +135,7 @@ class AppRouter {
                       redirect: (context, state) async =>
                           await groupsGuard(state),
                       pageBuilder: (context, state) => NoTransitionPage(
-                            child: HomeGoPage(
+                            child: HomePage(
                               selectedSection: HomeTab.contacts,
                               child: ManageGroupPage(
                                 group: GetIt.I
@@ -150,7 +150,7 @@ class AppRouter {
           path: '/profile',
           pageBuilder: (context, state) => FadeTransitionPage(
                 key: _scaffoldKey,
-                child: HomeGoPage(
+                child: HomePage(
                   selectedSection: HomeTab.profile,
                   child: ProfilePage(),
                 ),
@@ -160,7 +160,7 @@ class AppRouter {
               path: "edit",
               pageBuilder: (context, state) {
                 return NoTransitionPage(
-                  child: HomeGoPage(
+                  child: HomePage(
                     selectedSection: HomeTab.profile,
                     child: EditProfilePage(),
                   ),
@@ -171,7 +171,7 @@ class AppRouter {
               path: "preferences",
               pageBuilder: (context, state) {
                 return NoTransitionPage(
-                  child: HomeGoPage(
+                  child: HomePage(
                     selectedSection: HomeTab.profile,
                     child: PreferencesPage(),
                   ),

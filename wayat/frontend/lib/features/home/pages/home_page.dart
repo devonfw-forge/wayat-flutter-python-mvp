@@ -13,12 +13,12 @@ import 'package:adaptive_breakpoints/adaptive_breakpoints.dart';
 /// When the platform is Desktop or Web or a tablet, it shows a side navigation bar.
 ///
 /// When the platform is Android or iOS and the screen is tall, it shows a bottom navigation bar.
-class HomeGoPage extends StatelessWidget {
+class HomePage extends StatelessWidget {
   final PlatformService platformService;
   final HomeTab selectedSection;
   final Widget child;
 
-  HomeGoPage(
+  HomePage(
       {required this.selectedSection,
       required this.child,
       PlatformService? platformService,
