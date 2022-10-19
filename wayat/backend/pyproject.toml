@@ -17,6 +17,7 @@ protobuf = "3.20.2"
 mypy = "^0.971"
 coverage = "^6.4.3"
 Pillow = "^9.2.0"
+types-requests = "^2.28.11"
 
 
 [tool.poetry.dev-dependencies]

@@ -53,6 +53,12 @@ or with a nicer report as html page:
 ```
 coverage html
 ```
+
+## Run Type Checking tests
+```
+mypy app 
+```
+
 ## Environment Configuration
 
 You can use Pydantic Settings to handle the settings or configurations for your application, with all the power of Pydantic models. The project uses Dependency Injection for managing dependencies across the application and easy mocking for testing.
