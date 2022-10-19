@@ -19,7 +19,6 @@ import 'package:wayat/features/groups/pages/view_group_page.dart';
 import 'package:wayat/features/home/pages/home_go_page.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
-import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
 import 'package:wayat/features/onboarding/pages/progress_page.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
