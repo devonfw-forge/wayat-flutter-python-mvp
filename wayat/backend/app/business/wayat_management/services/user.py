@@ -182,7 +182,7 @@ class UserService:
         # TODO Validate Send Notification
         await self._user_repository.create_friend_request(self_user.document_id, new_contacts)
         for c in new_contacts:
-            found_friend = [el for el in contacts if el.document_id == c]
+            found_friend = [el for el in contacts if el.document_id == c] if contacts is not None else []
             friend = found_friend[0] if len(found_friend) == 1 else await self._user_repository.get_or_throw(c)
             if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
                 notification = Notification(title=f"{self_user.name} sent you a friend request")
@@ -300,7 +300,7 @@ class UserService:
         loop = asyncio.get_event_loop()
 
         def sync_process() -> tuple[Response, str]:
-            res = requests.get(url)
+            res = requests.get(url)  # type: ignore
             if res.status_code != 200:
                 raise RequestException
             ext = mimetypes.guess_extension(res.headers['Content-Type'])

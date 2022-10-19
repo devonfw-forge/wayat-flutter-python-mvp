@@ -158,10 +158,15 @@ class MapService:
         await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open_self_share_location])
 
         if latitude is None or longitude is None:
-            longitude = self_user.location.value.longitude
-            latitude = self_user.location.value.latitude
+            if self_user.location is None:
+                return
+            long = self_user.location.value.longitude
+            lat = self_user.location.value.latitude
+        else:
+            lat = latitude
+            long = longitude
 
-        contacts_in_range = [c for c in contacts if self._in_range(latitude, longitude, c.location)]
+        contacts_in_range = [c for c in contacts if self._in_range(lat, long, c.location)]
 
         # Update my active status if at least one friend is looking at me
         contacts_self_sharing_location_with_and_map_open_in_range = list(

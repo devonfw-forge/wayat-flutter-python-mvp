@@ -9,6 +9,7 @@ from requests import RequestException
 from app.business.wayat_management.services.user import UserService
 from app.common.exceptions.http import NotFoundException
 from app.common.exceptions.runtime import ResourceNotFoundException
+from app.common.infra.gcp.cloud_messaging import CloudMessaging
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity, GroupInfo
 from app.domain.wayat_management.repositories.files import FileStorage, StorageSettings
@@ -48,6 +49,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo = MagicMock(UserRepository)
         self.mock_status_repo = MagicMock(StatusRepository)
         self.mock_file_repository = MagicMock(FileStorage)
+        self.mock_file_cloud_messaging = MagicMock(CloudMessaging)
         self.mock_file_repository.generate_signed_url.return_value = "created_url"
         self.storage_settings = MagicMock(StorageSettings)
         self.storage_settings.default_picture = "images/test_default"
@@ -58,6 +60,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             self.mock_user_repo,
             self.mock_status_repo,
             self.mock_file_repository,
+            self.mock_file_cloud_messaging,
             self.storage_settings
         )
 
@@ -328,7 +331,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
     async def test_handle_friend_request_should_call_repo(self):
         test_user, test_friend, accept = "user", "friend", True
         # Call to be tested
-        await self.user_service.respond_friend_request(user_uid=test_user, friend_uid=test_friend, accept=accept)
+        await self.user_service.respond_friend_request(self_user_uid=test_user, friend_uid=test_friend, accept=accept)
 
         # Asserts
         self.mock_user_repo.respond_friend_request.assert_called_with(
