@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -100,13 +99,13 @@ void main() async {
     verify(mockGroupsController.setSelectedGroup(null)).called(1);
   });
 
-  testWidgets('ValidationGroup with less than two contacts selected set showValidationGroup to true', (tester) async{
+  testWidgets(
+      'ValidationGroup with less than two contacts selected set showValidationGroup to true',
+      (tester) async {});
 
-  });
-
-  testWidgets('ValidationGroup with two contacts selected set showValidationGroup to false', (tester) async{
-
-  });
+  testWidgets(
+      'ValidationGroup with two contacts selected set showValidationGroup to false',
+      (tester) async {});
 
   testWidgets("Save button saves group and goes back", (tester) async {
     when(mockManageGroupController.group).thenReturn(Group.empty());
@@ -133,7 +132,7 @@ void main() async {
     await tester.pumpWidget(
         createApp(ManageGroupPage(controller: mockManageGroupController)));
     await tester.pumpAndSettle();
-    
+
     when(mockManageGroupController.selectedFile).thenReturn(null);
     when(mockManageGroupController.selectedFileBytes).thenReturn(null);
 

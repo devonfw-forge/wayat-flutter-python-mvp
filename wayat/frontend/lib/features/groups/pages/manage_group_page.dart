@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -22,16 +20,15 @@ class ManageGroupPage extends StatelessWidget {
   final ManageGroupController controller;
 
   final PlatformService platformService;
-  
-  ManageGroupPage({
-    ManageGroupController? controller, 
-    PlatformService? platformService,
-    Group? group, 
-    Key? key
-  }) : 
-    controller = controller ?? ManageGroupController(group: group),
-    platformService = platformService ?? PlatformService(),
-    super(key: key);
+
+  ManageGroupPage(
+      {ManageGroupController? controller,
+      PlatformService? platformService,
+      Group? group,
+      Key? key})
+      : controller = controller ?? ManageGroupController(group: group),
+        platformService = platformService ?? PlatformService(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -144,12 +141,10 @@ class ManageGroupPage extends StatelessWidget {
           onTap: () {
             if (platformService.isWeb) {
               controller.getFromSource(ImageSource.gallery);
-            }
-            else {
+            } else {
               showModalBottomSheet(
-                context: context,
-                builder: (builder) => openSelectImageSheet(context)
-              );
+                  context: context,
+                  builder: (builder) => openSelectImageSheet(context));
             }
           },
           child: const CircleAvatar(

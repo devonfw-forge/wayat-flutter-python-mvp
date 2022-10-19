@@ -181,7 +181,7 @@ void main() async {
     })).thenAnswer((_) => Future.value(true));
 
     when(mockHttpProvider.sendPostImageRequest(
-            "${APIContract.groupPicture}/id", await fileBytes, fileType))
+            "${APIContract.groupPicture}/id", fileBytes, fileType))
         .thenAnswer((_) => Future.value(mockResponseImage));
 
     GroupsService groupsService = GroupsServiceImpl();
