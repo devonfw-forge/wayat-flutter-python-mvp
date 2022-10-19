@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';

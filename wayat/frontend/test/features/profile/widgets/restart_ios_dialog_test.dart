@@ -2,25 +2,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
-import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/features/profile/widgets/restart_ios_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:mockito/annotations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'restart_ios_dialog_test.mocks.dart';
-
-@GenerateMocks([UserState, ProfileController])
 void main() async {
-  final MockProfileController mockProfileController = MockProfileController();
-
   setUpAll(() {
     HttpOverrides.global = null;
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
   });
 
   Widget createApp(Widget body) {

@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/lang/app_localizations.dart';

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -29,7 +30,7 @@ import 'contact_profile_test.mocks.dart';
   ContactProfileController,
   HomeNavState,
   HttpProvider,
-  ReceiveLocationState
+  ReceiveLocationState,
 ])
 void main() async {
   // Constants for the test contacts creation
@@ -97,7 +98,15 @@ void main() async {
   });
 
   Widget createApp(Widget body) {
-    return MaterialApp(
+    final router = GoRouter(initialLocation: "/", routes: [
+      GoRoute(
+        path: "/",
+        builder: (context, state) => Scaffold(
+          body: body,
+        ),
+      ),
+    ]);
+    return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateTitle: (context) {
@@ -105,9 +114,7 @@ void main() async {
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
-      home: Scaffold(
-        body: body,
-      ),
+      routerConfig: router,
     );
   }
 
@@ -118,24 +125,11 @@ void main() async {
       expect(find.widgetWithIcon(IconButton, Icons.arrow_back), findsOneWidget);
     });
 
-    testWidgets("The navigation source matches with the appbar title",
-        (tester) async {
-      await tester.pumpWidget(createApp(ContactProfilePage(
-          contact: nonLocatedContact,
-          navigationSource: "Navigation Source 1")));
-      expect(find.text("Navigation Source 1"), findsOneWidget);
-
-      await tester.pumpWidget(createApp(ContactProfilePage(
-          contact: nonLocatedContact,
-          navigationSource: "Navigation Source 2")));
-      expect(find.text("Navigation Source 2"), findsOneWidget);
-    });
-
     testWidgets("Exits the page correctly", (tester) async {
       await tester.pumpWidget(createApp(ContactProfilePage(
           contact: nonLocatedContact, navigationSource: "Contacts")));
       await tester.tap(find.widgetWithIcon(IconButton, Icons.arrow_back));
-      verify(mockHomeState.setSelectedContact(null, "")).called(1);
+      verify(mockHomeState.setSelectedContact(null)).called(1);
     });
   });
 

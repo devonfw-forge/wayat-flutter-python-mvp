@@ -138,16 +138,14 @@ void main() async {
 
     await tester.pumpWidget(createApp(FriendsPage()));
 
-    when(mockHomeState.setSelectedContact(contact, appLocalizations.contacts))
-        .thenReturn(null);
+    when(mockHomeState.setSelectedContact(contact)).thenReturn(null);
 
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(ContactTile));
     await tester.pumpAndSettle();
 
-    verify(mockHomeState.setSelectedContact(contact, appLocalizations.contacts))
-        .called(1);
+    verify(mockHomeState.setSelectedContact(contact)).called(1);
   });
 
   testWidgets("Tapping the icon in ContactTile removes the contact",

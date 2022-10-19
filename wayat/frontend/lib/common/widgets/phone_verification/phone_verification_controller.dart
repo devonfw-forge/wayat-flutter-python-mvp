@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/countries.dart';

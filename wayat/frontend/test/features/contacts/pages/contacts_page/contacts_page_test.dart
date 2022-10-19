@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
+import 'package:wayat/navigation/app_go_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
@@ -22,9 +24,9 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:mobx/mobx.dart' as mobx;
+
 import 'contacts_page_test.mocks.dart';
 
 @GenerateMocks([
@@ -34,7 +36,6 @@ import 'contacts_page_test.mocks.dart';
   ShareLocationState,
   ReceiveLocationState,
   LocationListener,
-  ProfileController,
   LifeCycleState,
   FriendsController,
   RequestsController,
@@ -52,7 +53,6 @@ void main() async {
   final MockReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
   final MockLocationListener mockLocationListener = MockLocationListener();
-  final MockProfileController mockProfileController = MockProfileController();
   final MockLifeCycleState mockMapState = MockLifeCycleState();
   final MockFriendsController mockFriendsController = MockFriendsController();
   final MockRequestsController mockRequestsController =
@@ -96,14 +96,19 @@ void main() async {
     GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget createApp() {
-    final appRouter = AppRouter();
-
+  Widget createApp(Widget body) {
+    final router = GoRouter(initialLocation: "/", routes: [
+      GoRoute(
+        path: "/",
+        builder: (context, state) => Scaffold(
+          body: body,
+        ),
+      ),
+    ]);
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -111,20 +116,12 @@ void main() async {
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
-      routerDelegate: appRouter.delegate(),
-      routeInformationParser: appRouter.defaultRouteParser(),
+      routerConfig: router,
     );
   }
 
-  Future navigateToContactsPage(WidgetTester tester) async {
-    await tester.pumpWidget(createApp());
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.contacts_outlined));
-    await tester.pumpAndSettle();
-  }
-
   testWidgets("The search bar appears correctly", (tester) async {
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(createApp(ContactsPage("friends")));
     const Key searchBarKey = Key("ContactsSearchBar");
 
     expect(find.byKey(searchBarKey), findsOneWidget);
@@ -140,7 +137,7 @@ void main() async {
   });
 
   testWidgets("The tab bar appears correctly", (tester) async {
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(createApp(ContactsPage("friends")));
 
     expect(find.byType(TabBar), findsOneWidget);
     expect(find.byType(Tab), findsNWidgets(3));
@@ -165,7 +162,7 @@ void main() async {
       (tester) async {
     const Key searchBarKey = Key("ContactsSearchBar");
     when(mockContactsPageController.setSearchBarText("Input")).thenReturn(null);
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(createApp(ContactsPage("friends")));
     await tester.enterText(find.byKey(searchBarKey), "Input");
     verify(mockContactsPageController.setSearchBarText("Input")).called(1);
   });

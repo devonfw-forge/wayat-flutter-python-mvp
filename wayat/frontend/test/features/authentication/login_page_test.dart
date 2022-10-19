@@ -15,12 +15,11 @@ import 'login_page_test.mocks.dart';
 
 @GenerateMocks([UserState])
 void main() async {
-  late UserState userState;
+  final UserState userState = MockUserState();
 
   setUpAll(() {
-    GetIt.I.registerSingleton<UserState>(MockUserState());
+    GetIt.I.registerSingleton<UserState>(userState);
     GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
-    userState = GetIt.I.get<UserState>();
   });
 
   Widget createApp(Widget body) {
@@ -56,14 +55,13 @@ void main() async {
     });
   });
 
-  group('Login page changes the session state', () {
-    testWidgets('Login submit button changes session state', (tester) async {
-      when(userState.login()).thenAnswer((_) => Future<void>.value());
+  testWidgets('Login submit button changes session state', (tester) async {
+    when(userState.login()).thenAnswer((_) => Future<void>.value());
+    when(userState.currentUser).thenReturn(null);
 
-      await tester.pumpWidget(createApp(const LoginPage()));
-      await tester.tap(find.byType(InkWell));
-      await tester.pumpAndSettle();
-      verify(await userState.login()).called(1);
-    });
+    await tester.pumpWidget(createApp(const LoginPage()));
+    await tester.tap(find.text(appLocalizations.loginGoogle));
+    await tester.pumpAndSettle();
+    verify(await userState.login()).called(1);
   });
 }

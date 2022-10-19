@@ -10,9 +10,9 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/features/map/widgets/platform_map_widget/mobile_map_widget.dart';
 import 'package:wayat/features/map/widgets/platform_map_widget/web_desktop_map_widget.dart';
+import 'package:wayat/navigation/app_go_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
@@ -28,10 +28,8 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
-import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
 
 import 'home_map_page_test.mocks.dart';
@@ -43,7 +41,6 @@ import 'home_map_page_test.mocks.dart';
   ShareLocationState,
   ReceiveLocationState,
   LocationListener,
-  ProfileController,
   LifeCycleState,
   FriendsController,
   RequestsController,
@@ -60,7 +57,6 @@ void main() async {
   final ReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
   final LocationListener mockLocationListener = MockLocationListener();
-  final ProfileController mockProfileController = MockProfileController();
   final LifeCycleState mockMapState = MockLifeCycleState();
   final FriendsController mockFriendsController = MockFriendsController();
   final RequestsController mockRequestsController = MockRequestsController();
@@ -118,8 +114,6 @@ void main() async {
         .thenReturn(mockReceiveLocationState);
     when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
     when(mockReceiveLocationState.contacts).thenReturn([]);
-    when(mockProfileController.currentPage)
-        .thenReturn(ProfileCurrentPages.profile);
     when(mockUserState.currentUser).thenReturn(user);
     when(mockGroupsController.updateGroups())
         .thenAnswer((_) => Future.value(true));
@@ -135,13 +129,12 @@ void main() async {
     GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
   Widget createApp() {
-    final appRouter = AppRouter();
+    final appRouter = AppGoRouter();
 
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -150,8 +143,7 @@ void main() async {
         GetIt.I.get<LangSingleton>().initialize(context);
         return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
       },
-      routerDelegate: appRouter.delegate(),
-      routeInformationParser: appRouter.defaultRouteParser(),
+      routerConfig: appRouter.router,
     );
   }
 
