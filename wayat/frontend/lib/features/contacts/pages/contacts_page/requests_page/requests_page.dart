@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
@@ -26,7 +27,7 @@ class RequestsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          header(),
+          header(context),
           const SizedBox(
             height: 10,
           ),
@@ -76,7 +77,7 @@ class RequestsPage extends StatelessWidget {
   }
 
   /// Returns a widget with friends requests number and sent navigation button
-  Widget header() {
+  Widget header(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
       child: Row(
@@ -89,9 +90,7 @@ class RequestsPage extends StatelessWidget {
             );
           }),
           NavigationButton(
-              onTap: () => GetIt.I
-                  .get<ContactsPageController>()
-                  .setContactsCurrentPage(ContactsCurrentPages.sentRequests),
+              onTap: () => context.go('/contacts/sent-requests'),
               text: appLocalizations.sentButtonNavigation)
         ],
       ),

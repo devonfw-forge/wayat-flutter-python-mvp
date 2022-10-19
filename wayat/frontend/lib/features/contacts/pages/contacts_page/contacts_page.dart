@@ -36,6 +36,7 @@ class _ContactsPageState extends State<ContactsPage>
     super.initState();
     _tabController = TabController(
         length: (widget.platformService.isWeb) ? 2 : 3, vsync: this);
+    setTabIndex();
     controller.updateTabData(_tabController.index);
   }
 
@@ -43,6 +44,11 @@ class _ContactsPageState extends State<ContactsPage>
   void didUpdateWidget(covariant ContactsPage oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    setTabIndex();
+    controller.updateTabData(_tabController.index);
+  }
+
+  void setTabIndex() {
     switch (widget.tab) {
       case 'friends':
         {
@@ -60,7 +66,6 @@ class _ContactsPageState extends State<ContactsPage>
           break;
         }
     }
-    controller.updateTabData(_tabController.index);
   }
 
   @override

@@ -3,14 +3,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
-import 'package:wayat/features/authentication/page/loading_page.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
 import 'package:wayat/features/authentication/page/phone_verification_missing_page.dart';
 import 'package:wayat/features/contact_profile/page/contact_profile_page.dart';
+import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
+import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
+import 'package:wayat/features/contacts/pages/sent_requests_page/sent_requests_page.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/pages/groups_page.dart';
 import 'package:wayat/features/groups/pages/manage_group_page.dart';
@@ -18,6 +19,9 @@ import 'package:wayat/features/groups/pages/view_group_page.dart';
 import 'package:wayat/features/home/pages/home_go_page.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
 import 'package:wayat/features/map/page/home_map_page.dart';
+import 'package:wayat/features/onboarding/controller/onboarding_progress.dart';
+import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
+import 'package:wayat/features/onboarding/pages/progress_page.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
@@ -85,6 +89,18 @@ class AppGoRouter {
                   child: ContactsPage(state.params['kind'] ?? "friends"),
                 ));
           }),
+      GoRoute(
+        redirect: sentRequestsGuard,
+        path: '/contacts/sent-requests',
+        pageBuilder: (context, state) {
+          return FadeTransitionPage(
+              key: _scaffoldKey,
+              child: HomeGoPage(
+                selectedSection: HomeTab.contacts,
+                child: SentRequestsPage(),
+              ));
+        },
+      ),
       GoRoute(
           path: '/contacts/groups',
           pageBuilder: (context, state) {
@@ -170,10 +186,17 @@ class AppGoRouter {
             return PhoneValidationPage();
           }),
       GoRoute(
-          path: '/loading',
+          redirect: onboardingGuard,
+          path: '/onboarding',
           builder: (BuildContext context, GoRouterState state) {
-            return const LoadingPage();
-          }),
+            return OnBoardingPage();
+          },
+          routes: [
+            GoRoute(
+                path: 'progress',
+                pageBuilder: (context, state) =>
+                    NoTransitionPage(child: ProgressOnboardingPage()))
+          ]),
       GoRoute(
           path: '/phone-verification-missing',
           builder: (BuildContext context, GoRouterState state) {
@@ -181,6 +204,18 @@ class AppGoRouter {
           }),
     ],
   );
+
+  FutureOr<String?> sentRequestsGuard(context, state) async {
+    RequestsController requestsController =
+        GetIt.I.get<ContactsPageController>().requestsController;
+    if (requestsController.sentRequests.isEmpty) {
+      await requestsController.updateRequests();
+    }
+    return null;
+  }
+
+  FutureOr<String?> onboardingGuard(context, state) =>
+      (platformService.isWeb) ? '/' : null;
 
   FutureOr<String?> authenticationGuard(context, state) async {
     if (await userState.isLogged()) {
@@ -202,6 +237,12 @@ class AppGoRouter {
           }
           return '/phone-verification';
         }
+      }
+      if (userState.currentUser!.onboardingCompleted == false &&
+          !platformService.isDesktopOrWeb &&
+          (state.location != '/onboarding' &&
+              state.location != '/onboarding/progress')) {
+        return '/onboarding';
       }
       if (state.location == '/') {
         log("RETURNING MAP");
