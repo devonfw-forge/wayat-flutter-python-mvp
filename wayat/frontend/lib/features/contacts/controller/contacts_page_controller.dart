@@ -44,10 +44,6 @@ abstract class _ContactsPageController with Store {
   /// Min time between any request of friends, requests or suggestions
   Duration maxTimeBetweenUpdates = const Duration(seconds: 3);
 
-  /// Current displayed page
-  @observable
-  ContactsCurrentPages currentPage = ContactsCurrentPages.contacts;
-
   _ContactsPageController(
       {FriendsController? friendsController,
       RequestsController? requestsController,
@@ -63,12 +59,6 @@ abstract class _ContactsPageController with Store {
 
   /// Text controller for searchbar
   TextEditingController searchBarController = TextEditingController();
-
-  /// Changes the value of [currentPage] and redirect to corresponing page
-  @action
-  void setContactsCurrentPage(ContactsCurrentPages currentPage) {
-    this.currentPage = currentPage;
-  }
 
   /// Sets the value of the searchbar to the text filter for friends, requests
   /// and suggestions page
