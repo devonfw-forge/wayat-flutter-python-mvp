@@ -110,7 +110,10 @@ class GroupsPage extends StatelessWidget {
             ],
           ),
           CustomTextButton(
-            onPressed: () => context.go('/contacts/groups/create'),
+            onPressed: () {
+              controller.setSelectedGroup(Group.empty());
+              context.go('/contacts/groups/create');
+            },
             text: appLocalizations.createGroup,
           )
         ],
