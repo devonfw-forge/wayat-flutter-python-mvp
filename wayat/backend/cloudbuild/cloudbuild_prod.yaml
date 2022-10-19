@@ -17,14 +17,14 @@ steps:
       - build
       - '-t'
       - >-
-        gcr.io/wayat-prod-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
+        gcr.io/wayat-prod-capgemini/wayat-flutter-python-mvp:$COMMIT_SHA
       - .
     dir: wayat/backend
   - name: gcr.io/cloud-builders/docker
     args:
       - push
       - >-
-        gcr.io/wayat-prod-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
+        gcr.io/wayat-prod-capgemini/wayat-flutter-python-mvp:$COMMIT_SHA
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     args:
       - run
@@ -32,11 +32,11 @@ steps:
       - wayat-api
       - '--image'
       - >-
-        gcr.io/wayat-prod-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
+        gcr.io/wayat-prod-capgemini/wayat-flutter-python-mvp:$COMMIT_SHA
       - '--region'
       - europe-southwest1
     entrypoint: gcloud
 images:
   - >-
-    gcr.io/wayat-prod-capgemini/github.com/devonfw-forge/wayat-flutter-python-mvp:$COMMIT_SHA
+    gcr.io/wayat-prod-capgemini/wayat-flutter-python-mvp:$COMMIT_SHA
 # [END Wayat Backend Build]
