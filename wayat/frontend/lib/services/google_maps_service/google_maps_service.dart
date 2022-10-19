@@ -66,7 +66,7 @@ class GoogleMapsService {
 
     Uri url = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "size": "500x500",
+      "size": "620x620",
       "zoom": "16",
       "key": apiKey,
     });
@@ -79,7 +79,7 @@ class GoogleMapsService {
 
     Uri signedUrl = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "size": "500x500",
+      "size": "620x620",
       "zoom": "16",
       "key": apiKey,
     });

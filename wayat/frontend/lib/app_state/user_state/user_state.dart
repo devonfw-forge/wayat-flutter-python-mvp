@@ -96,6 +96,7 @@ abstract class _UserState with Store {
   @action
   Future<void> initializeCurrentUser() async {
     currentUser ??= await authService.getUserData();
+    GetIt.I.get<LifeCycleState>().notifyAppOpenned();
   }
 
   /// Updates the [phone] of the authenticated user.
