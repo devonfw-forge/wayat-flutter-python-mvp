@@ -107,8 +107,8 @@
 
     "@_INVITATION":{},
     "inviteContacts": "Inviter des contacts à Wayat",
-    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
-    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
+    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/latest",
+    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/latest",
     "invitationText": "Texte de l'invitation",
     "invitationCopied": "Copié dans votre presse-papiers",
 
