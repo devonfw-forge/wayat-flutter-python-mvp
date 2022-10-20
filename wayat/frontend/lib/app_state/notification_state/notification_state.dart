@@ -164,16 +164,16 @@ abstract class _NotificationState with Store {
     if (platformService.targetPlatform == TargetPlatform.android) {
       return PushNotification(
           action: newMessage.data['action'],
-          contact_name: newMessage.data['contact_name']);
+          contactName: newMessage.data['contact_name']);
     }
 
     if (platformService.targetPlatform == TargetPlatform.iOS) {
       return PushNotification(
         action: newMessage.data['aps']['alert']['action'],
-        contact_name: newMessage.data['aps']['alert']['contact_name'],
+        contactName: newMessage.data['aps']['alert']['contact_name'],
       );
     }
-    return PushNotification(action: '', contact_name: '');
+    return PushNotification(action: '', contactName: '');
   }
 
   /// For handling notification when the app is open
@@ -206,7 +206,7 @@ abstract class _NotificationState with Store {
 
   showNotification(PushNotification notificationInfo) {
     showSimpleNotification(
-      Text(notificationText(notificationInfo.action, notificationInfo.contact_name)),
+      Text(notificationText(notificationInfo.action, notificationInfo.contactName)),
       // subtitle: Text(notificationInfo.contact_name),
       background: Colors.white,
       foreground: Colors.black,

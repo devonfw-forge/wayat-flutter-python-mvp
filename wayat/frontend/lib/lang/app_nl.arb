@@ -138,6 +138,6 @@
     "locationPermission": "Locatietoestemming",
     "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen",
 
-    "acceptedFriendRequest": " heeft je een vriendschapsverzoek gestuurd",
-    "receivedFriendRequest": " heeft je vriendschapsverzoek geaccepteerd"
+    "receivedFriendRequest": " heeft je een vriendschapsverzoek gestuurd",
+    "acceptedFriendRequest": " heeft je vriendschapsverzoek geaccepteerd"
 } 

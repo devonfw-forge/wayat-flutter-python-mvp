@@ -141,6 +141,6 @@
     "downloadWayat": "Download wayat",
     "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk",
 
-    "acceptedFriendRequest": " sent you a friend request",
-    "receivedFriendRequest": " has accepted your friend request"
+    "receivedFriendRequest": " sent you a friend request",
+    "acceptedFriendRequest": " has accepted your friend request"
 } 

@@ -138,6 +138,6 @@
     "locationPermission": "Standorterlaubnis",
     "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus",
 
-    "acceptedFriendRequest": " hat dir eine Freundschaftsanfrage geschickt",
-    "receivedFriendRequest": " hat deine Freundschaftsanfrage angenommen"
+    "receivedFriendRequest": " hat dir eine Freundschaftsanfrage geschickt",
+    "acceptedFriendRequest": " hat deine Freundschaftsanfrage angenommen"
 } 

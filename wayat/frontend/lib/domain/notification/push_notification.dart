@@ -1,9 +1,9 @@
 class PushNotification {
   final String action;
-  final String contact_name;
+  final String contactName;
 
   PushNotification({
     required this.action,
-    required this.contact_name
+    required this.contactName
   });
 }
