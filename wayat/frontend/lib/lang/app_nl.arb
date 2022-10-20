@@ -136,5 +136,8 @@
     "groupValidation": "U moet ten minste twee contacten selecteren",
         
     "locationPermission": "Locatietoestemming",
-    "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen"
+    "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen",
+
+    "acceptedFriendRequest": " heeft je een vriendschapsverzoek gestuurd",
+    "receivedFriendRequest": " heeft je vriendschapsverzoek geaccepteerd"
 } 
