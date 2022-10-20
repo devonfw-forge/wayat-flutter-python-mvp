@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -57,16 +58,16 @@ class HttpProvider {
   /// Sends a `POST` multipart request to upload the image located at `filePath` to `baseUrl`/`subPath`.
   Future<http.StreamedResponse> sendPostImageRequest(
     String subPath,
-    String filePath,
+    Uint8List fileBytes,
     String type,
   ) async {
     http.MultipartRequest request =
         http.MultipartRequest('POST', Uri.parse("$baseUrl/$subPath"));
-    List<int> bytes = await File(filePath).readAsBytes();
+    List<int> bytes = fileBytes;
     http.MultipartFile httpImage = http.MultipartFile.fromBytes(
         'upload_file', bytes,
         contentType: MediaType.parse(type),
-        filename: 'upload_file_${filePath.hashCode}.$type');
+        filename: 'upload_file_${fileBytes.hashCode}.$type');
     request.headers["Authorization"] =
         "Bearer ${await GetIt.I.get<UserState>().authService.getIdToken()}";
     request.files.add(httpImage);

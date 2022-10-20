@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional, NewType
 from pydantic import BaseModel
 
@@ -77,6 +78,16 @@ class HandleFriendRequestRequest(BaseModel):
 
 class UpdateContactPreferencesRequest(BaseModel):
     share_location: bool
+
+
+class NotificationActionsType(str, Enum):
+    ACCEPTED_FRIEND_REQUEST = "ACCEPTED_FRIEND_REQUEST"
+    RECEIVED_FRIEND_REQUEST = "RECEIVED_FRIEND_REQUEST"
+
+
+class NotificationData(BaseModel):
+    action: NotificationActionsType
+    contact_name: str
 
 
 def dto_to_user_with_phone_response(u: UserDTO):

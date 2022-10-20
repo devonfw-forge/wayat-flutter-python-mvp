@@ -7,6 +7,7 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/groups/group_response.dart';
 import 'package:wayat/services/groups/groups_service.dart';
@@ -18,6 +19,11 @@ class GroupsServiceImpl implements GroupsService {
   /// Makes the HTTP calls for the service.
   HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
+  PlatformService platformService;
+
+  GroupsServiceImpl({PlatformService? platformService}) : 
+    platformService = platformService ?? PlatformService();
+  
   @override
   Future<List<Group>> getAll() async {
     Map<String, dynamic> response =
@@ -57,10 +63,13 @@ class GroupsServiceImpl implements GroupsService {
     }
 
     String groupId = json.decode(response.body)["id"];
-    String type = lookupMimeType(picture.path) ?? picture.mimeType ?? "";
+    String type = picture.mimeType ?? "";
 
     await httpProvider.sendPostImageRequest(
-        "${APIContract.groupPicture}/$groupId", picture.path, type);
+      "${APIContract.groupPicture}/$groupId", 
+      await picture.readAsBytes(), 
+      type
+    );
   }
 
   @override
@@ -72,10 +81,15 @@ class GroupsServiceImpl implements GroupsService {
     });
 
     if (picture != null && response) {
-      String type = lookupMimeType(picture.path) ?? picture.mimeType ?? "";
+      String type = (!platformService.isWeb) ? 
+      lookupMimeType(picture.path) ?? picture.mimeType ?? "" :
+      picture.mimeType ?? "";
 
       await httpProvider.sendPostImageRequest(
-          "${APIContract.groupPicture}/${group.id}", picture.path, type);
+        "${APIContract.groupPicture}/${group.id}", 
+        await picture.readAsBytes(),
+        type
+      );
     }
   }
 
