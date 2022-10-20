@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -236,14 +235,11 @@ class AppRouter {
 
   FutureOr<String?> authenticationGuard(context, state) async {
     if (await userState.isLogged()) {
-      log("USER LOGGED");
       if (userState.currentUser == null) {
-        log("INITIALIZING CURRENT USER");
         await userState.initializeCurrentUser();
       }
       if (userState.currentUser!.phone.isEmpty) {
         if (platformService.isDesktopOrWeb) {
-          log("RETURNING PHONE-VERIFICATION-MISSING");
           if (state.location == '/phone-verification-missing') {
             return null;
           }
@@ -262,17 +258,13 @@ class AppRouter {
         return '/onboarding';
       }
       if (state.location == '/') {
-        log("RETURNING MAP");
         return '/map';
       }
     } else {
-      log("USER NOT LOGGED");
       if (state.location != '/login') {
-        log("RETURNING LOGIN");
         return '/login';
       }
     }
-    log("RETURNING NULL");
     return null;
   }
 }

@@ -9,7 +9,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/features/home/pages/home_page.dart';
-import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
