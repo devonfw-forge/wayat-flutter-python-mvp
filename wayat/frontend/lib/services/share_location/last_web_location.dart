@@ -27,7 +27,7 @@ class LastWebLocation {
         'latitude': lastLocation.latitude,
         'longitude': lastLocation.longitude
       },
-      'updatedTimestamp': updatedDateTime.toString(),
+      'updatedDateTime': updatedDateTime.toString(),
     };
   }
 
@@ -35,7 +35,7 @@ class LastWebLocation {
     return LastWebLocation(
       lastLocation:
           LocationData.fromMap(map['lastLocation'] as Map<String, dynamic>),
-      updatedDateTime: DateTime.parse(map['updatedTimestamp']),
+      updatedDateTime: DateTime.parse(map['updatedDateTime']),
     );
   }
 
@@ -46,7 +46,7 @@ class LastWebLocation {
 
   @override
   String toString() =>
-      'LastWebLocation(lastLocation: $lastLocation, updatedTimestamp: $updatedDateTime)';
+      'LastWebLocation(lastLocation: $lastLocation, updatedDateTime: $updatedDateTime)';
 
   @override
   bool operator ==(covariant LastWebLocation other) {
