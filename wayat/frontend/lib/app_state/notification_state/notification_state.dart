@@ -163,14 +163,14 @@ abstract class _NotificationState with Store {
   PushNotification pushNotification(RemoteMessage newMessage) {
     if (platformService.targetPlatform == TargetPlatform.android) {
       return PushNotification(
-          action: newMessage.notification!.title ?? 'No notification title',
-          contact_name: newMessage.notification!.body ?? '');
+          action: newMessage.data['action'],
+          contact_name: newMessage.data['contact_name']);
     }
 
     if (platformService.targetPlatform == TargetPlatform.iOS) {
       return PushNotification(
-        action: newMessage.data['aps']['alert']['title'],
-        contact_name: newMessage.data['aps']['alert']['body'],
+        action: newMessage.data['aps']['alert']['action'],
+        contact_name: newMessage.data['aps']['alert']['contact_name'],
       );
     }
     return PushNotification(action: '', contact_name: '');
@@ -216,7 +216,6 @@ abstract class _NotificationState with Store {
   }
 
   String notificationText(String action, String contactName) {
-
     if (action == 'ACCEPTED_FRIEND_REQUEST') {
       return contactName + appLocalizations.acceptedFriendRequest;
     }
