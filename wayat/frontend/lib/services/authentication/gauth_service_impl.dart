@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
@@ -24,7 +25,8 @@ class GoogleAuthService implements AuthService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   /// Service to login in with Google and obtain the user's data and token
-  late GoogleSignIn _googleSignIn;
+  @visibleForTesting
+  late GoogleSignIn googleSignIn;
 
   /// Whether the user has signed out from this account in this current session.
   ///
@@ -34,21 +36,24 @@ class GoogleAuthService implements AuthService {
   bool hasSignedOut = false;
 
   /// Instance of the authentication service for Firebase
-  final FirebaseAuth _auth =
-      FirebaseAuth.instanceFor(app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
+  final FirebaseAuth _auth;
 
-  GoogleAuthService({GoogleSignIn? gS, PlatformService? platformService}) {
+  GoogleAuthService(
+      {GoogleSignIn? gS, PlatformService? platformService, FirebaseAuth? auth})
+      : _auth = auth ??
+            FirebaseAuth.instanceFor(
+                app: Firebase.app(EnvModel.FIREBASE_APP_NAME)) {
     if (gS != null) {
-      _googleSignIn = gS;
+      googleSignIn = gS;
     } else {
       platformService ??= PlatformService();
       if (platformService.isWeb) {
-        _googleSignIn = GoogleSignIn(
+        googleSignIn = GoogleSignIn(
           clientId: EnvModel.WEB_CLIENT_ID,
           scopes: ['email'],
         );
       } else {
-        _googleSignIn = GoogleSignIn(
+        googleSignIn = GoogleSignIn(
           scopes: ['email'],
         );
       }
@@ -60,7 +65,7 @@ class GoogleAuthService implements AuthService {
   @override
   Future<GoogleSignInAccount?> signIn() async {
     try {
-      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+      final GoogleSignInAccount? account = await googleSignIn.signIn();
       if (account == null) return null;
       GoogleSignInAuthentication gauth = await account.authentication;
       AuthCredential credential = GoogleAuthProvider.credential(
@@ -85,7 +90,7 @@ class GoogleAuthService implements AuthService {
 
   /// Refresh the **account id token**
   ///
-  /// Throws on [Exception] if there is no authenticated user
+  /// Returns an empty string if there is no authenticated user
   @override
   Future<String> getIdToken() async {
     if (_auth.currentUser == null) return "";
@@ -99,7 +104,7 @@ class GoogleAuthService implements AuthService {
       return null;
     }
     final GoogleSignInAccount? account =
-        await _googleSignIn.signInSilently(reAuthenticate: false);
+        await googleSignIn.signInSilently(reAuthenticate: false);
     if (account == null) return null;
     GoogleSignInAuthentication gauth = await account.authentication;
     AuthCredential credential = GoogleAuthProvider.credential(
@@ -117,7 +122,7 @@ class GoogleAuthService implements AuthService {
   Future<void> signOut() async {
     GetIt.I.get<LocationListener>().closeListener();
     await _auth.signOut();
-    await _googleSignIn.disconnect();
+    await googleSignIn.disconnect();
     hasSignedOut = true;
 
     // ResetSingleton instances to reset any information for the current user
@@ -142,8 +147,8 @@ class GoogleAuthService implements AuthService {
   }
 
   @override
-  Future<void> sendDoneOnboarding() async {
-    (await httpProvider.sendPostRequest(
+  Future<bool> sendDoneOnboarding() async {
+    return (await httpProvider.sendPostRequest(
                     APIContract.userProfile, {"onboarding_completed": true}))
                 .statusCode /
             10 ==

@@ -11,11 +11,11 @@ class RequestsServiceImpl implements RequestsService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   @override
-  Future<FriendRequestRespone> getRequests() async {
+  Future<FriendRequestResponse> getRequests() async {
     Map<String, dynamic> friendRequests =
         await httpProvider.sendGetRequest(APIContract.friendRequests);
 
-    return FriendRequestRespone.fromMap(friendRequests);
+    return FriendRequestResponse.fromMap(friendRequests);
   }
 
   @override

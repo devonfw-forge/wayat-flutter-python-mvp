@@ -4,22 +4,23 @@ import 'package:flutter/foundation.dart';
 import 'package:wayat/domain/contact/contact.dart';
 
 /// Contains list of sent and received Friends request
-class FriendRequestRespone {
+class FriendRequestResponse {
   /// List of contacts that user has sent friend request
   List<Contact> sentRequests;
 
   /// List of contacts that have sent friend request to the user
   List<Contact> receivedRequests;
-  FriendRequestRespone({
+
+  FriendRequestResponse({
     required this.sentRequests,
     required this.receivedRequests,
   });
 
-  FriendRequestRespone copyWith({
+  FriendRequestResponse copyWith({
     List<Contact>? sentRequests,
     List<Contact>? receivedRequests,
   }) {
-    return FriendRequestRespone(
+    return FriendRequestResponse(
       sentRequests: sentRequests ?? this.sentRequests,
       receivedRequests: receivedRequests ?? this.receivedRequests,
     );
@@ -27,13 +28,13 @@ class FriendRequestRespone {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'sentRequests': sentRequests.map((x) => x.toMap()).toList(),
-      'receivedRequests': receivedRequests.map((x) => x.toMap()).toList(),
+      'sent_requests': sentRequests.map((x) => x.toMap()).toList(),
+      'pending_requests': receivedRequests.map((x) => x.toMap()).toList(),
     };
   }
 
-  factory FriendRequestRespone.fromMap(Map<String, dynamic> map) {
-    return FriendRequestRespone(
+  factory FriendRequestResponse.fromMap(Map<String, dynamic> map) {
+    return FriendRequestResponse(
       sentRequests: List<Contact>.from(
         (map['sent_requests'] as List<dynamic>).map<Contact>(
           (x) => Contact.fromMap(x as Map<String, dynamic>),
@@ -49,15 +50,16 @@ class FriendRequestRespone {
 
   String toJson() => json.encode(toMap());
 
-  factory FriendRequestRespone.fromJson(String source) =>
-      FriendRequestRespone.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory FriendRequestResponse.fromJson(String source) =>
+      FriendRequestResponse.fromMap(
+          json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>
       'FriendRequestRespone(sentRequests: $sentRequests, receivedRequests: $receivedRequests)';
 
   @override
-  bool operator ==(covariant FriendRequestRespone other) {
+  bool operator ==(covariant FriendRequestResponse other) {
     if (identical(this, other)) return true;
 
     return listEquals(other.sentRequests, sentRequests) &&

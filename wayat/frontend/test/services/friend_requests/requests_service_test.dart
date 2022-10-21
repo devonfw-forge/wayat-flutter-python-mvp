@@ -90,11 +90,11 @@ void main() async {
 
     RequestsService requestsService = RequestsServiceImpl();
 
-    FriendRequestRespone result = await requestsService.getRequests();
+    FriendRequestResponse result = await requestsService.getRequests();
 
     expect(
         result,
-        FriendRequestRespone(
+        FriendRequestResponse(
             sentRequests: sentRequestsContacts,
             receivedRequests: pendingRequestsContacts));
   });

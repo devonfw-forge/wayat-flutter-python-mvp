@@ -32,15 +32,6 @@ class ContactRefModel {
     required this.lastUpdated,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'uid': uid,
-      'location': location,
-      'address': address,
-      'lastUpdated': lastUpdated,
-    };
-  }
-
   factory ContactRefModel.fromMap(Map<String, dynamic> map) {
     return ContactRefModel(
       uid: map['uid'] as String,
@@ -49,8 +40,6 @@ class ContactRefModel {
       lastUpdated: map['last_updated'] as Timestamp,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory ContactRefModel.fromJson(String source) =>
       ContactRefModel.fromMap(json.decode(source) as Map<String, dynamic>);

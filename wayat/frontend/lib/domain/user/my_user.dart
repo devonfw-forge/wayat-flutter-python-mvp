@@ -49,11 +49,25 @@ abstract class _MyUser with Store {
   @override
   bool operator ==(covariant MyUser other) {
     if (identical(this, other)) return true;
-    return super == other && other.onboardingCompleted == onboardingCompleted;
+    return id == other.id &&
+        name == other.name &&
+        email == other.email &&
+        imageUrl == other.imageUrl &&
+        phonePrefix == other.phonePrefix &&
+        phone == other.phone &&
+        onboardingCompleted == other.onboardingCompleted &&
+        shareLocationEnabled == other.shareLocationEnabled;
   }
 
   @override
   int get hashCode {
-    return super.hashCode ^ onboardingCompleted.hashCode;
+    return id.hashCode ^
+        name.hashCode ^
+        email.hashCode ^
+        imageUrl.hashCode ^
+        phonePrefix.hashCode ^
+        phone.hashCode ^
+        onboardingCompleted.hashCode ^
+        shareLocationEnabled.hashCode;
   }
 }
