@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mockito/annotations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/common/widgets/buttons/custom_text_button.dart';
 import 'package:wayat/common/widgets/message_card.dart';
@@ -15,10 +13,10 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/features/groups/pages/groups_page.dart';
 import 'package:wayat/features/groups/widgets/group_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'package:mobx/mobx.dart' as mobx;
 
+import '../../../test_common/test_app.dart';
 import 'groups_page_test.mocks.dart';
 
 @GenerateMocks([GroupsController, GroupsService, ContactsPageController])
@@ -29,7 +27,6 @@ void main() async {
 
   setUpAll(() {
     HttpOverrides.global = null;
-    GetIt.I.registerSingleton(LangSingleton());
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
@@ -38,29 +35,9 @@ void main() async {
         .thenAnswer((_) => Future.value(true));
   });
 
-  Widget createApp(Widget body) {
-    final router = GoRouter(initialLocation: "/", routes: [
-      GoRoute(
-        path: "/",
-        builder: (context, state) => Scaffold(
-          body: body,
-        ),
-      ),
-    ]);
-    return MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerConfig: router,
-    );
-  }
-
   testWidgets("Groups header appears correctly", (tester) async {
     when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
-    await tester.pumpWidget(createApp(GroupsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithIcon(IconButton, Icons.keyboard_arrow_down),
@@ -74,7 +51,7 @@ void main() async {
       (tester) async {
     when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
     when(mockGroupsController.setSelectedGroup(Group.empty())).thenReturn(null);
-    await tester.pumpWidget(createApp(GroupsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: GroupsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(
@@ -86,7 +63,7 @@ void main() async {
 
   testWidgets("The no groups message appears correctly", (tester) async {
     when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([]));
-    await tester.pumpWidget(createApp(GroupsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(MessageCard, appLocalizations.noGroupsMessage),
@@ -95,7 +72,7 @@ void main() async {
     when(mockGroupsController.groups).thenReturn(mobx.ObservableList.of([
       Group(id: "", name: "", imageUrl: "https://example.com", members: [])
     ]));
-    await tester.pumpWidget(createApp(GroupsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(MessageCard, appLocalizations.noGroupsMessage),
@@ -110,7 +87,7 @@ void main() async {
           imageUrl: "https://example.com",
           members: [])
     ]));
-    await tester.pumpWidget(createApp(GroupsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: GroupsPage()));
     await tester.pumpAndSettle();
 
     expect(find.widgetWithText(GroupTile, "name"), findsOneWidget);
@@ -123,7 +100,7 @@ void main() async {
     when(mockGroupsController.groups)
         .thenReturn(mobx.ObservableList.of([group]));
     when(mockGroupsController.setSelectedGroup(group)).thenReturn(null);
-    await tester.pumpWidget(createApp(GroupsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: GroupsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithText(GroupTile, "name"));

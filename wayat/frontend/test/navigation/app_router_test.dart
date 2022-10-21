@@ -44,13 +44,12 @@ import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page
 import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/location_listener/location_listener_service.dart';
 
+import '../test_common/test_app.dart';
 import 'app_router_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -158,7 +157,6 @@ void main() async {
         mockPhoneVerificationController);
     GetIt.I.registerSingleton<OnboardingController>(mockOnboardingController);
     GetIt.I.registerSingleton<AppConfigState>(mockAppConfigState);
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
     HttpOverrides.global = null;
   });
@@ -175,18 +173,6 @@ void main() async {
         shareLocationEnabled: false);
   });
 
-  Widget createApp(AppRouter router) {
-    return MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerConfig: router.router,
-    );
-  }
-
   group("Root navigation", () {
     Future<void> navigateToRoot(tester, bool logged, bool user) async {
       when(mockUserState.isLogged())
@@ -194,8 +180,7 @@ void main() async {
       if (user == true) {
         when(mockUserState.currentUser).thenReturn(myUser);
       }
-      AppRouter router = AppRouter();
-      await tester.pumpWidget(createApp(router));
+      await tester.pumpWidget(TestApp.createApp(router: AppRouter().router));
       await tester.pumpAndSettle();
     }
 
@@ -264,8 +249,7 @@ void main() async {
           .thenAnswer((realInvocation) => Future.value(true));
       when(mockUserState.currentUser).thenReturn(myUser);
 
-      AppRouter router = AppRouter();
-      await tester.pumpWidget(createApp(router));
+      await tester.pumpWidget(TestApp.createApp(router: AppRouter().router));
       await tester.pumpAndSettle();
 
       expect(find.byType(MapPage), findsOneWidget);
@@ -459,8 +443,7 @@ void main() async {
           .thenAnswer((realInvocation) => Future.value(true));
       when(mockUserState.currentUser).thenReturn(myUser);
 
-      AppRouter router = AppRouter();
-      await tester.pumpWidget(createApp(router));
+      await tester.pumpWidget(TestApp.createApp(router: AppRouter().router));
       await tester.pumpAndSettle();
 
       expect(find.byType(MapPage), findsOneWidget);
