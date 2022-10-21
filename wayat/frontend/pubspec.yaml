@@ -115,7 +115,7 @@ flutter:
 
   uses-material-design: true
   assets:
-    - test.env
+    - testenv
     - .env
     - assets/images/
   

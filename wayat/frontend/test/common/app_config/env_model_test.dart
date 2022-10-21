@@ -4,7 +4,7 @@ import 'package:wayat/common/app_config/env_model.dart';
 
 void main() async {
   setUpAll(() async {
-    await EnvModel.loadEnvFile('test.env');
+    await EnvModel.loadEnvFile('testenv');
   });
 
   test("Env variables are correctly read", () {
