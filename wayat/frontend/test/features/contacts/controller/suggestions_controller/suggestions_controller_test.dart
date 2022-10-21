@@ -12,23 +12,11 @@ import 'package:wayat/features/contacts/controller/friends_controller/friends_co
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/import_phones_service_impl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../test_common/test_app.dart';
 import 'suggestions_controller_test.mocks.dart';
-
-Widget createApp() {
-  return MaterialApp(
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    supportedLocales: AppLocalizations.supportedLocales,
-    onGenerateTitle: (context) {
-      GetIt.I.get<LangSingleton>().initialize(context);
-      return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-    },
-  );
-}
 
 @GenerateMocks([
   ContactService,
@@ -40,7 +28,6 @@ Widget createApp() {
 void main() async {
   MockUserState mockUserState = MockUserState();
   GetIt.I.registerSingleton<UserState>(mockUserState);
-  GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
   MockContactService mockContactService = MockContactService();
   MockFriendsController mockFriendsController = MockFriendsController();
   MockRequestsController mockRequestsController = MockRequestsController();
@@ -144,7 +131,7 @@ void main() async {
 
   testWidgets('Text invitation', (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    await tester.pumpWidget(createApp());
+    await tester.pumpWidget(TestApp.createApp());
     expect(controller.platformText(), appLocalizations.invitationTextAndroid);
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     expect(controller.platformText(), appLocalizations.invitationTextIOS);

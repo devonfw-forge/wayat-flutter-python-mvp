@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -28,10 +27,9 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
-import 'package:wayat/lang/lang_singleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobx/mobx.dart' as mobx;
 
+import '../../../test_common/test_app.dart';
 import 'home_map_page_test.mocks.dart';
 
 @GenerateMocks([
@@ -118,7 +116,6 @@ void main() async {
 
     GetIt.I.allowReassignment = true;
 
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<UserState>(mockUserState);
@@ -129,30 +126,10 @@ void main() async {
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget createApp(Widget body) {
-    final router = GoRouter(initialLocation: "/", routes: [
-      GoRoute(
-        path: "/",
-        builder: (context, state) => Scaffold(
-          body: body,
-        ),
-      ),
-    ]);
-    return MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerConfig: router,
-    );
-  }
-
   testWidgets('Slider Groups without groups', (tester) async {
     when(mockGroupsController.groups).thenReturn(<Group>[].asObservable());
 
-    await tester.pumpWidget(createApp(MapPage()));
+    await tester.pumpWidget(TestApp.createApp(body: MapPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -166,7 +143,7 @@ void main() async {
     when(mockGroupsController.groups)
         .thenReturn(<Group>[myGroup].asObservable());
 
-    await tester.pumpWidget(createApp(MapPage()));
+    await tester.pumpWidget(TestApp.createApp(body: MapPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -182,7 +159,7 @@ void main() async {
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
 
-    await tester.pumpWidget(createApp(MapPage()));
+    await tester.pumpWidget(TestApp.createApp(body: MapPage()));
     await tester.pumpAndSettle();
 
     expect(mockLocationState.shareLocationEnabled, false);
@@ -199,7 +176,7 @@ void main() async {
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
 
-    await tester.pumpWidget(createApp(MapPage()));
+    await tester.pumpWidget(TestApp.createApp(body: MapPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(MobileMapWidget), findsOneWidget);
@@ -213,7 +190,7 @@ void main() async {
         .thenAnswer((_) => <Group>[myGroup].asObservable());
     when(mockLocationState.hasWebPermissions).thenReturn(true);
 
-    await tester.pumpWidget(createApp(MapPage()));
+    await tester.pumpWidget(TestApp.createApp(body: MapPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(WebDesktopMapWidget), findsOneWidget);

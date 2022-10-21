@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -28,12 +27,11 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/profile/profile_service.dart';
 
+import '../../../test_common/test_app.dart';
 import 'profile_integration_test.mocks.dart';
 
 @GenerateMocks([
@@ -53,6 +51,43 @@ import 'profile_integration_test.mocks.dart';
   PhoneVerificationController
 ])
 void main() async {
+  // It is mandatory to use a function to return the GoRouter, as if it
+  // is assigned is to a variable it won't work
+  GoRouter generateRouter() => GoRouter(initialLocation: "/profile", routes: [
+        GoRoute(
+            path: '/profile',
+            pageBuilder: (context, state) => NoTransitionPage(
+                  child: HomePage(
+                    selectedSection: HomeTab.profile,
+                    child: ProfilePage(),
+                  ),
+                ),
+            routes: [
+              GoRoute(
+                path: "edit",
+                pageBuilder: (context, state) {
+                  return NoTransitionPage(
+                    child: HomePage(
+                      selectedSection: HomeTab.profile,
+                      child: EditProfilePage(),
+                    ),
+                  );
+                },
+              ),
+              GoRoute(
+                path: "preferences",
+                pageBuilder: (context, state) {
+                  return NoTransitionPage(
+                    child: HomePage(
+                      selectedSection: HomeTab.profile,
+                      child: PreferencesPage(),
+                    ),
+                  );
+                },
+              )
+            ]),
+      ]);
+
   late MyUser user;
 
   final ReceiveLocationState mockReceiveLocationState =
@@ -76,7 +111,6 @@ void main() async {
 
   setUpAll(() async {
     HttpOverrides.global = null;
-    await dotenv.load(fileName: ".env");
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
     when(mockUserState.currentUser).thenAnswer((_) => user);
@@ -120,7 +154,6 @@ void main() async {
         onboardingCompleted: true,
         shareLocationEnabled: true);
 
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<UserState>(mockUserState);
@@ -134,54 +167,8 @@ void main() async {
         mockPhoneVerifController);
   });
 
-  Widget createApp() {
-    final router = GoRouter(initialLocation: "/profile", routes: [
-      GoRoute(
-          path: '/profile',
-          pageBuilder: (context, state) => NoTransitionPage(
-                child: HomePage(
-                  selectedSection: HomeTab.profile,
-                  child: ProfilePage(),
-                ),
-              ),
-          routes: [
-            GoRoute(
-              path: "edit",
-              pageBuilder: (context, state) {
-                return NoTransitionPage(
-                  child: HomePage(
-                    selectedSection: HomeTab.profile,
-                    child: EditProfilePage(),
-                  ),
-                );
-              },
-            ),
-            GoRoute(
-              path: "preferences",
-              pageBuilder: (context, state) {
-                return NoTransitionPage(
-                  child: HomePage(
-                    selectedSection: HomeTab.profile,
-                    child: PreferencesPage(),
-                  ),
-                );
-              },
-            )
-          ]),
-    ]);
-    return MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerConfig: router,
-    );
-  }
-
   testWidgets('Integration test for change username', (tester) async {
-    await tester.pumpWidget(createApp());
+    await tester.pumpWidget(TestApp.createApp(router: generateRouter()));
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);
@@ -237,7 +224,7 @@ void main() async {
     when(mockLocationState.shareLocationEnabled).thenReturn(true);
     when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     when(mockLocationState.setShareLocationEnabled(false)).thenReturn(null);
-    await tester.pumpWidget(createApp());
+    await tester.pumpWidget(TestApp.createApp(router: generateRouter()));
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);
@@ -257,7 +244,7 @@ void main() async {
 
   testWidgets('Integration test for LogOut', (tester) async {
     when(mockUserState.logOut()).thenAnswer((_) => Future.value());
-    await tester.pumpWidget(createApp());
+    await tester.pumpWidget(TestApp.createApp(router: generateRouter()));
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);

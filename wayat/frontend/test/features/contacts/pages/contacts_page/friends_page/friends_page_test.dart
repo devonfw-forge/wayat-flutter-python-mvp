@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
@@ -15,11 +14,10 @@ import 'package:wayat/features/contacts/controller/friends_controller/friends_co
 import 'package:wayat/features/contacts/pages/contacts_page/friends_page/friends_page.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/services/contact/contact_service.dart';
 
+import '../../../../../test_common/test_app.dart';
 import 'friends_page_test.mocks.dart';
 
 @GenerateMocks([
@@ -42,7 +40,6 @@ void main() async {
   setUpAll(() {
     HttpOverrides.global = null;
 
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     when(mockLocationListener.receiveLocationState)
@@ -54,32 +51,12 @@ void main() async {
         .thenReturn(mockFriendsController);
   });
 
-  Widget createApp(Widget body) {
-    final router = GoRouter(initialLocation: "/", routes: [
-      GoRoute(
-        path: "/",
-        builder: (context, state) => Scaffold(
-          body: body,
-        ),
-      ),
-    ]);
-    return MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerConfig: router,
-    );
-  }
-
   testWidgets("Friends page title shows the correct number of contacts",
       (tester) async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(createApp(FriendsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -88,7 +65,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["A", "B", "C"])));
 
-    await tester.pumpWidget(createApp(FriendsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -100,7 +77,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(createApp(FriendsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(
@@ -120,7 +97,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([]));
 
-    await tester.pumpWidget(createApp(FriendsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNothing);
@@ -128,7 +105,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of(_generateContacts(["A", "B", "C"])));
 
-    await tester.pumpWidget(createApp(FriendsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNWidgets(3));
@@ -143,7 +120,7 @@ void main() async {
     when(mockFriendsController.filteredContacts)
         .thenReturn(mobx.ObservableList.of([contact]));
 
-    await tester.pumpWidget(createApp(FriendsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: FriendsPage()));
 
     when(mockHomeState.setSelectedContact(contact)).thenReturn(null);
 
@@ -169,7 +146,7 @@ void main() async {
     when(mockContactsPageController.friendsController)
         .thenReturn(friendsController);
 
-    await tester.pumpWidget(createApp(FriendsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: FriendsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);

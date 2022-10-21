@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -20,11 +19,10 @@ import 'package:wayat/features/contacts/controller/requests_controller/requests_
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:mobx/mobx.dart' as mobx;
 
+import '../../../../test_common/test_app.dart';
 import 'contacts_page_test.mocks.dart';
 
 @GenerateMocks([
@@ -83,7 +81,6 @@ void main() async {
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
 
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<UserState>(mockUserState);
@@ -94,28 +91,8 @@ void main() async {
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget createApp(Widget body) {
-    final router = GoRouter(initialLocation: "/", routes: [
-      GoRoute(
-        path: "/",
-        builder: (context, state) => Scaffold(
-          body: body,
-        ),
-      ),
-    ]);
-    return MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerConfig: router,
-    );
-  }
-
   testWidgets("The search bar appears correctly", (tester) async {
-    await tester.pumpWidget(createApp(ContactsPage("friends")));
+    await tester.pumpWidget(TestApp.createApp(body: ContactsPage("friends")));
     const Key searchBarKey = Key("ContactsSearchBar");
 
     expect(find.byKey(searchBarKey), findsOneWidget);
@@ -131,7 +108,7 @@ void main() async {
   });
 
   testWidgets("The tab bar appears correctly", (tester) async {
-    await tester.pumpWidget(createApp(ContactsPage("friends")));
+    await tester.pumpWidget(TestApp.createApp(body: ContactsPage("friends")));
 
     expect(find.byType(TabBar), findsOneWidget);
     expect(find.byType(Tab), findsNWidgets(3));
@@ -156,7 +133,7 @@ void main() async {
       (tester) async {
     const Key searchBarKey = Key("ContactsSearchBar");
     when(mockContactsPageController.setSearchBarText("Input")).thenReturn(null);
-    await tester.pumpWidget(createApp(ContactsPage("friends")));
+    await tester.pumpWidget(TestApp.createApp(body: ContactsPage("friends")));
     await tester.enterText(find.byKey(searchBarKey), "Input");
     verify(mockContactsPageController.setSearchBarText("Input")).called(1);
   });
