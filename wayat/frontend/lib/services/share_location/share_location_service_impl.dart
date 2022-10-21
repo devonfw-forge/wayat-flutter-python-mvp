@@ -1,13 +1,16 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/share_location/background_location_exception.dart';
+import 'package:wayat/services/share_location/last_web_location.dart';
 import 'package:wayat/services/share_location/no_location_service_exception.dart';
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
 import 'package:wayat/services/share_location/share_location_service.dart';
@@ -17,6 +20,9 @@ import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 /// This service will share the user's location with the BackEnd
 /// when the conditions are met
 class ShareLocationServiceImpl extends ShareLocationService {
+  @visibleForTesting
+  ShareLocationServiceImpl() : super.create();
+
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   /// 1 kilometer of distance
@@ -37,8 +43,9 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late Function(LatLng) changeLocationStateCallback;
   late PlatformService platformService;
 
-  static Future<void> _checkLocationPermissions() async {
-    Location location = Location();
+  @visibleForTesting
+  static Future<void> checkLocationPermissions({Location? loc}) async {
+    Location location = loc ?? Location();
 
     // First, enable device location
     bool locationServiceEnabled = await location.serviceEnabled();
@@ -75,7 +82,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   /// Creates a ShareLocationService.
   ///
-  /// Throw a [RejectedLocationException] if the user
+  /// Throws a [RejectedLocationException] if the user
   /// rejects location permissions. Throws a [NoLocationServiceException]
   /// if the call to ```Location.requestService()``` results in an error
   static Future<ShareLocationServiceImpl> create(
@@ -84,45 +91,69 @@ class ShareLocationServiceImpl extends ShareLocationService {
     platformService ??= PlatformService();
     Location location = Location();
     PermissionStatus? webPermissionStatus;
-
-    if (!platformService.isWeb) {
-      await _checkLocationPermissions();
-    } else {
-      webPermissionStatus = await location.requestPermission();
-    }
     LocationData? initialLocation;
-    if (!(platformService.isWeb &&
-        webPermissionStatus == PermissionStatus.deniedForever)) {
-      initialLocation = await location.getLocation();
+
+    if (platformService.isWeb) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool validCache = false;
+      LastWebLocation? webLocationCache;
+
+      String? lastWebLocationJson = prefs.getString("last_web_location");
+      if (lastWebLocationJson != null) {
+        webLocationCache = LastWebLocation.fromJson(lastWebLocationJson);
+        if (DateTime.now()
+                .difference(webLocationCache.updatedDateTime)
+                .inMinutes <
+            30) {
+          validCache = true;
+        }
+      }
+
+      if (!validCache) {
+        webPermissionStatus = await location.requestPermission();
+        if (webPermissionStatus != PermissionStatus.deniedForever) {
+          initialLocation = await location.getLocation();
+          prefs.setString(
+              "last_web_location",
+              LastWebLocation(
+                      lastLocation: initialLocation,
+                      updatedDateTime: DateTime.now())
+                  .toJson());
+        } else {
+          initialLocation = LocationData.fromMap(
+              {"latitude": 48.864716, "longitude": 2.349014});
+        }
+      } else {
+        initialLocation = webLocationCache!.lastLocation;
+        webPermissionStatus = PermissionStatus.granted;
+      }
     } else {
-      initialLocation =
-          LocationData.fromMap({"latitude": 48.864716, "longitude": 2.349014});
+      await checkLocationPermissions();
+      initialLocation = await location.getLocation();
     }
 
-    return ShareLocationServiceImpl._create(
-        initialLocation,
-        mode,
-        shareLocation,
-        onLocationChangedCallback,
-        webPermissionStatus,
-        platformService);
+    return ShareLocationServiceImpl.build(initialLocation, mode, shareLocation,
+        onLocationChangedCallback, webPermissionStatus,
+        platformService: platformService);
   }
 
   /// Private factory for the location service
   ///
   /// It needs to be divided in private and public static factory to be able to
   /// make the necessary async calls in the public version
-  ShareLocationServiceImpl._create(
+  @visibleForTesting
+  ShareLocationServiceImpl.build(
       LocationData initialLocation,
       bool mode,
       bool shareLocation,
       Function(LatLng) onLocationChangedCallback,
       PermissionStatus? webPermissionStatus,
-      [PlatformService? platformService])
+      {PlatformService? platformService,
+      Location? loc})
       : super.create() {
     this.platformService = platformService ?? PlatformService();
 
-    location = Location.instance;
+    location = loc ?? Location.instance;
     activeShareMode = mode;
     lastShared = DateTime.now();
     currentLocation = initialLocation;
@@ -132,7 +163,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     // If we are not in web with denegated location permissions
     if (!(this.platformService.isWeb &&
-        webPermissionStatus != PermissionStatus.deniedForever)) {
+            webPermissionStatus == PermissionStatus.deniedForever) &&
+        shareLocationEnabled) {
       sendLocationToBack(initialLocation);
     }
 
@@ -149,7 +181,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   /// Checks all the conditions to send location to backend,
   /// including active and passive mode
-  void manageLocationChange(LocationData newLocation) {
+  Future<void> manageLocationChange(LocationData newLocation) async {
     double movedDistance = calculateDistance(newLocation);
     // Passive mode
     if (!activeShareMode) {
@@ -166,15 +198,15 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     lastShared = DateTime.now();
     currentLocation = newLocation;
-    sendLocationToBack(newLocation);
+    await sendLocationToBack(newLocation);
   }
 
   @override
   Future<void> sendLocationToBack(LocationData locationData) async {
     LatLng location = LatLng(locationData.latitude!, locationData.longitude!);
     changeLocationStateCallback(location);
-    String address =
-        await GoogleMapsService.getAddressFromCoordinates(location);
+    String address = await GoogleMapsService.getAddressFromCoordinates(location,
+        httpClient: httpProvider.client);
     await httpProvider.sendPostRequest(APIContract.updateLocation, {
       "position": {
         "longitude": locationData.longitude,
@@ -190,9 +222,9 @@ class ShareLocationServiceImpl extends ShareLocationService {
   }
 
   @override
-  void setActiveShareMode(bool activeShareMode) {
+  Future<void> setActiveShareMode(bool activeShareMode) async {
     if (activeShareMode && shareLocationEnabled && !platformService.isWeb) {
-      sendForcedLocationUpdate();
+      await sendForcedLocationUpdate();
     }
     this.activeShareMode = activeShareMode;
   }
@@ -205,39 +237,33 @@ class ShareLocationServiceImpl extends ShareLocationService {
   }
 
   /// Sends the current location to back without needing the conditions
-  Future sendForcedLocationUpdate() async {
+  Future<void> sendForcedLocationUpdate() async {
     currentLocation = await location.getLocation();
-    sendLocationToBack(currentLocation);
+    await sendLocationToBack(currentLocation);
   }
 
   @override
-  void setShareLocationEnabled(bool shareLocation) {
+  Future<void> setShareLocationEnabled(bool shareLocation) async {
     shareLocationEnabled = shareLocation;
-    if (shareLocation) {
-      shareLocationActivated();
-    } else {
-      httpProvider.sendPostRequest(
-          APIContract.preferences, {"share_location": shareLocation});
-    }
-  }
 
-  /// This method is necessary because we need to make sure that the POST to true
-  /// is received BEFORE the location update. Otherwise it would be ignored
-  Future shareLocationActivated() async {
-    await httpProvider
-        .sendPostRequest(APIContract.preferences, {"share_location": true});
-    sendForcedLocationUpdate();
+    await httpProvider.sendPostRequest(
+        APIContract.preferences, {"share_location": shareLocation});
+
+    if (shareLocation) {
+      await sendForcedLocationUpdate();
+    }
   }
 
   /// Distance will returned in ```meters```
   double calculateDistance(LocationData newLocation) {
     var p = 0.017453292519943295;
-    var c = cos;
     var a = 0.5 -
-        c((newLocation.latitude! - currentLocation.latitude!) * p) / 2 +
-        c(newLocation.latitude! * p) *
-            c(currentLocation.latitude! * p) *
-            (1 - c((newLocation.longitude! - currentLocation.longitude!) * p)) /
+        cos((newLocation.latitude! - currentLocation.latitude!) * p) / 2 +
+        cos(newLocation.latitude! * p) *
+            cos(currentLocation.latitude! * p) *
+            (1 -
+                cos((newLocation.longitude! - currentLocation.longitude!) *
+                    p)) /
             2;
     return 12742 * asin(sqrt(a)) * 1000;
   }

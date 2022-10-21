@@ -15,16 +15,15 @@ import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
-import 'package:wayat/features/map/page/home_map_page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:wayat/features/map/page/map_page.dart';
 import 'package:wayat/features/map/widgets/platform_marker_widget/mobile_marker_widget.dart';
 import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/features/map/widgets/suggestions_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:mobx/mobx.dart' show ObservableListExtension, ObservableSet;
 import 'package:wayat/services/image_service/image_service.dart';
 
+import '../../test_common/test_app.dart';
 import 'search_bar_test.mocks.dart';
 
 @GenerateMocks([
@@ -52,7 +51,6 @@ void main() async {
 
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
 
     HttpOverrides.global = null;
@@ -70,24 +68,10 @@ void main() async {
         .thenReturn(mockReceiveLocationState);
   });
 
-  Widget createApp(Widget body) {
-    return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      home: Scaffold(
-        body: body,
-      ),
-    );
-  }
-
   testWidgets("The search bar appears correctly", (tester) async {
     when(mockReceiveLocationState.contacts).thenReturn([]);
 
-    await tester.pumpWidget(createApp(HomeMapPage()));
+    await tester.pumpWidget(TestApp.createApp(body: MapPage()));
     await tester.pump();
     expect(find.byType(SearchBar), findsOneWidget);
     expect(find.widgetWithIcon(SearchBar, Icons.search), findsOneWidget);
@@ -105,7 +89,8 @@ void main() async {
     when(controller.getMarkers())
         .thenAnswer((realInvocation) => Future.value(null));
 
-    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
+    await tester
+        .pumpWidget(TestApp.createApp(body: MapPage(controller: controller)));
     await tester.pump();
     verify(controller.getMarkers()).called(greaterThanOrEqualTo(1));
   });
@@ -119,7 +104,8 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
+    await tester
+        .pumpWidget(TestApp.createApp(body: MapPage(controller: controller)));
     await tester.pump();
     expect(controller.contacts.length, 4);
     expect(controller.allMarkers.length, 4);
@@ -135,7 +121,8 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
+    await tester
+        .pumpWidget(TestApp.createApp(body: MapPage(controller: controller)));
     await tester.pump();
     expect(controller.allMarkers.length, 4);
     expect(controller.filteredMarkers.length, 4);
@@ -162,7 +149,8 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
+    await tester
+        .pumpWidget(TestApp.createApp(body: MapPage(controller: controller)));
     await tester.pump();
 
     await tester.enterText(find.byType(SearchBar), "test");
@@ -181,7 +169,8 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
+    await tester
+        .pumpWidget(TestApp.createApp(body: MapPage(controller: controller)));
     await tester.pump();
 
     await tester.enterText(find.byType(SearchBar), "test");
@@ -209,7 +198,8 @@ void main() async {
 
     MapController controller = MapController(imageService: imageService);
 
-    await tester.pumpWidget(createApp(HomeMapPage(controller: controller)));
+    await tester
+        .pumpWidget(TestApp.createApp(body: MapPage(controller: controller)));
     await tester.pump();
 
     await tester.enterText(find.byType(SearchBar), "a");
@@ -233,18 +223,18 @@ void main() async {
     when(mockController.getMarkers())
         .thenAnswer((realInvocation) => Future.value(null));
     when(mockController.contacts).thenReturn([contact]);
-    when(mockController.filteredMarkers).thenReturn(
-        ObservableSet.of({
-          MobileMarker(
-            contactLocation: _locatedContactFactory("test"),
-            onTap: () {},
-            icon: BitmapDescriptor.defaultMarker
-          )}));
+    when(mockController.filteredMarkers).thenReturn(ObservableSet.of({
+      MobileMarker(
+          contactLocation: _locatedContactFactory("test"),
+          onTap: () {},
+          icon: BitmapDescriptor.defaultMarker)
+    }));
 
     when(mockController.onSuggestionsTap(contact))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(createApp(HomeMapPage(controller: mockController)));
+    await tester.pumpWidget(
+        TestApp.createApp(body: MapPage(controller: mockController)));
     await tester.pump();
 
     await tester.enterText(find.byType(SearchBar), "a");

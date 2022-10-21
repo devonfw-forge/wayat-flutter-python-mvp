@@ -23,13 +23,6 @@ class FirestoreDataModel {
     required this.contactRefs,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'active': active,
-      'contactRefs': contactRefs.map((x) => x.toMap()).toList(),
-    };
-  }
-
   factory FirestoreDataModel.fromMap(Map<String, dynamic> map) {
     return FirestoreDataModel(
       active: map['active'] as bool,
@@ -41,8 +34,6 @@ class FirestoreDataModel {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
   factory FirestoreDataModel.fromJson(String source) =>
       FirestoreDataModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
@@ -51,9 +42,14 @@ class FirestoreDataModel {
     if (identical(this, other)) return true;
 
     return other.active == active &&
-        ListUtilsService.haveDifferentElements(other.contactRefs, contactRefs);
+        !ListUtilsService.haveDifferentElements(other.contactRefs, contactRefs);
   }
 
   @override
-  int get hashCode => active.hashCode ^ contactRefs.hashCode;
+  int get hashCode =>
+      active.hashCode ^
+      contactRefs.fold(
+          0,
+          (previousValue, element) =>
+              previousValue.hashCode ^ element.hashCode);
 }

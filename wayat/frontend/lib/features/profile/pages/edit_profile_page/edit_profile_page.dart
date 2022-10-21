@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -13,7 +14,6 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class EditProfilePage extends StatefulWidget {
   final EditProfileController controller;
-
   final PlatformService platformService;
 
   EditProfilePage(
@@ -38,7 +38,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        widget.controller.onPressedBackButton();
+        context.go('/profile');
         return true;
       },
       child: GestureDetector(
@@ -52,7 +52,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(height: 32),
               _nameTextField(),
               const SizedBox(height: 34.5),
-              PhoneVerificationField(),
+              if (widget.platformService.isMobile) PhoneVerificationField(),
             ],
           ),
         ),
@@ -75,7 +75,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   constraints: const BoxConstraints(),
                   iconSize: 25,
                   onPressed: () {
-                    widget.controller.onPressedBackButton();
+                    context.go('/profile');
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
@@ -89,8 +89,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           Observer(
             builder: (_) => TextButton(
-              onPressed: () async =>
-                  await widget.controller.onPressedSaveButton(),
+              onPressed: () {
+                widget.controller
+                    .onPressedSaveButton()
+                    .then((_) => context.go('/profile'));
+              },
               child: Text(
                 appLocalizations.save,
                 style: _textStyle(ColorTheme.primaryColor, 16),

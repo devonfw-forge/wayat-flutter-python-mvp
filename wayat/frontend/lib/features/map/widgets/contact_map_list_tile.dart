@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -45,9 +46,10 @@ class ContactMapListTile extends StatelessWidget {
                 style: const TextStyle(fontSize: 17, color: Colors.black54),
               ),
               TextButton(
-                onPressed: () => GetIt.I
-                    .get<HomeNavState>()
-                    .setSelectedContact(contact, "wayat"),
+                onPressed: () {
+                  GetIt.I.get<HomeNavState>().setSelectedContact(contact);
+                  context.go('/contact/${contact.id}');
+                },
                 style: TextButton.styleFrom(padding: EdgeInsets.zero),
                 child: Text(
                   appLocalizations.viewInformation,

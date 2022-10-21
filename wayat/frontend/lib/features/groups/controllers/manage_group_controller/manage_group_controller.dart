@@ -25,9 +25,14 @@ abstract class _ManageGroupController with Store {
   ///
   /// If the [Group] is not passed, it creates an empty one and assumes we are
   /// creating a new group. Otherwise, it assumes that we are editing said [Group].
+  ///
+  /// The contacts are updated when creating this controller because if the user
+  /// enters directly in this URL, the contact list would be empty.
   _ManageGroupController({GroupsService? groupsService, Group? group})
       : group = group ?? Group.empty(),
-        groupsService = groupsService ?? GroupsServiceImpl();
+        groupsService = groupsService ?? GroupsServiceImpl() {
+    _friendsController.updateContacts();
+  }
 
   /// The group to edit/create.
   @observable

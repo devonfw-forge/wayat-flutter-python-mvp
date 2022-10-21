@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/custom_card.dart';
 import 'package:wayat/common/widgets/switch.dart';
 import 'package:wayat/domain/user/my_user.dart';
-import 'package:wayat/features/profile/controllers/profile_current_pages.dart';
 import 'package:wayat/features/profile/widgets/delete_account_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
@@ -19,7 +18,6 @@ class ProfilePage extends StatelessWidget {
       : platformService = platformService ?? PlatformService(),
         super(key: key);
 
-  final ProfileController profileController = GetIt.I.get<ProfileController>();
   final ShareLocationState shareLocationState =
       GetIt.I.get<LocationListener>().shareLocationState;
   final UserState userState = GetIt.I.get<UserState>();
@@ -61,7 +59,8 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 32),
-                _buildShareLocationPart(),
+                _buildShareLocationPart(() => context.go("/profile/edit"),
+                    () => context.go("/profile/preferences")),
                 const Divider(),
                 const SizedBox(height: 20),
                 _buildAccountPart(context),
@@ -106,7 +105,8 @@ class ProfilePage extends StatelessWidget {
   /// - "Set do not disturb" text + Switch button
   /// - "Edit profile" custom button
   /// - "Preferences" custom button
-  Widget _buildShareLocationPart() {
+  Widget _buildShareLocationPart(
+      void Function() goToEditProgile, void Function() goToPreferences) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -123,16 +123,11 @@ class ProfilePage extends StatelessWidget {
         _activeSharingLocationButton(),
         const SizedBox(height: 24),
         CustomCard(
-            text: appLocalizations.editProfile,
-            onTap: () {
-              profileController.currentPage = ProfileCurrentPages.editProfile;
-            }),
+          text: appLocalizations.editProfile,
+          onTap: goToEditProgile,
+        ),
         const SizedBox(height: 24),
-        CustomCard(
-            text: appLocalizations.preferences,
-            onTap: () {
-              profileController.currentPage = ProfileCurrentPages.preference;
-            }),
+        CustomCard(text: appLocalizations.preferences, onTap: goToPreferences),
       ],
     );
   }
@@ -158,6 +153,7 @@ class ProfilePage extends StatelessWidget {
             text: appLocalizations.logOut,
             onTap: () {
               userState.logOut();
+              context.go('/login');
             }),
         const SizedBox(height: 24),
         CustomCard(

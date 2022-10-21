@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:app_settings/app_settings.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/contact_image.dart';
@@ -31,14 +29,14 @@ import 'package:wayat/services/share_location/no_location_service_exception.dart
 import 'package:wayat/services/share_location/rejected_location_exception.dart';
 
 /// Main page of wayat. Is the one displayed when the [BottomNavigationBar] is in wayat.
-class HomeMapPage extends StatelessWidget {
+class MapPage extends StatelessWidget {
   /// Used to show the [Group] list below the search bar.
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationListener locationListener = GetIt.I.get<LocationListener>();
   final MapController controller;
   final PlatformService platformService;
 
-  HomeMapPage(
+  MapPage(
       {MapController? controller, PlatformService? platformService, Key? key})
       : controller = controller ?? MapController(),
         platformService = platformService ?? PlatformService(),
@@ -47,7 +45,6 @@ class HomeMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     controllerGroups.updateGroups();
-    //GetIt.I.get<LifeCycleState>().notifyAppOpenned();
     controller.setOnMarkerPressed(
         (contact, icon) => showContactDialog(contact, icon, context));
 
@@ -121,7 +118,7 @@ class HomeMapPage extends StatelessWidget {
             TextButton(
               child: Text(appLocalizations.retry),
               onPressed: () async {
-                await AutoRouter.of(context).pop();
+                Navigator.of(context).pop();
                 // Open settings does not stop current app execution
                 if (serviceError) {
                   // Open settings in location section

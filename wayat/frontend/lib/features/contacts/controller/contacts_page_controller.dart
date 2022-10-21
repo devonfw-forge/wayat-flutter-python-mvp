@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wayat/features/contacts/controller/contacts_page_tabs.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 
@@ -23,15 +23,6 @@ abstract class _ContactsPageController with Store {
   /// Suggestions Controller to access its logic
   late SuggestionsController suggestionsController;
 
-  /// Index for friends page
-  static const int friendsPageIndex = 0;
-
-  /// Index for requests page
-  static const int requestsPageIndex = 1;
-
-  /// Index for suggestions page
-  static const int suggestionsPageIndex = 2;
-
   /// Time of lastUpdate of friends list
   DateTime timeFriendsUpdate = DateTime(1970);
 
@@ -43,10 +34,6 @@ abstract class _ContactsPageController with Store {
 
   /// Min time between any request of friends, requests or suggestions
   Duration maxTimeBetweenUpdates = const Duration(seconds: 3);
-
-  /// Current displayed page
-  @observable
-  ContactsCurrentPages currentPage = ContactsCurrentPages.contacts;
 
   _ContactsPageController(
       {FriendsController? friendsController,
@@ -64,12 +51,6 @@ abstract class _ContactsPageController with Store {
   /// Text controller for searchbar
   TextEditingController searchBarController = TextEditingController();
 
-  /// Changes the value of [currentPage] and redirect to corresponing page
-  @action
-  void setContactsCurrentPage(ContactsCurrentPages currentPage) {
-    this.currentPage = currentPage;
-  }
-
   /// Sets the value of the searchbar to the text filter for friends, requests
   /// and suggestions page
   @action
@@ -82,22 +63,23 @@ abstract class _ContactsPageController with Store {
   /// Updates the data of the selected tab if a duration of
   /// [maxTimeBetweenUpdates] has passed
   void updateTabData(int index) {
-    switch (index) {
-      case friendsPageIndex:
+    ContactsPageTabs currentTab = ContactsPageTabs.fromIndex(index);
+    switch (currentTab) {
+      case ContactsPageTabs.friends:
         if (timeFriendsUpdate.difference(DateTime.now()).abs() >=
             maxTimeBetweenUpdates) {
           friendsController.updateContacts();
           timeFriendsUpdate = DateTime.now();
         }
         break;
-      case requestsPageIndex:
+      case ContactsPageTabs.requests:
         if (timeRequestsUpdate.difference(DateTime.now()).abs() >=
             maxTimeBetweenUpdates) {
           requestsController.updateRequests();
           timeRequestsUpdate = DateTime.now();
         }
         break;
-      case suggestionsPageIndex:
+      case ContactsPageTabs.suggestions:
         if (timeSuggestionsUpdate.difference(DateTime.now()).abs() >=
             maxTimeBetweenUpdates) {
           suggestionsController.updateSuggestedContacts();

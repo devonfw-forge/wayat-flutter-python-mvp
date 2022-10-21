@@ -1,28 +1,28 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:url_strategy/url_strategy.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/app_state/notification_state/notification_state.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
+import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/app_config_controller.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
-import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/lang/lang_singleton.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
@@ -36,17 +36,20 @@ Future main() async {
     HttpOverrides.global = HttpDebugOverride();
   }
 
-  // AVoid # character in url (flutter web)
-  if (PlatformService().isWeb) {
-    setPathUrlStrategy();
-  }
-
   // Env file should be loaded before Firebase initialization
   await EnvModel.loadEnvFile();
 
   await Firebase.initializeApp(
       name: EnvModel.FIREBASE_APP_NAME,
       options: CustomFirebaseOptions.currentPlatformOptions);
+
+  // AVoid # character in url (flutter web)
+  if (PlatformService().isWeb) {
+    setPathUrlStrategy();
+    await FirebaseAuth.instanceFor(
+      app: Firebase.app(EnvModel.FIREBASE_APP_NAME),
+    ).idTokenChanges().first;
+  }
 
   await registerSingletons();
 
@@ -65,7 +68,6 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());
-  GetIt.I.registerLazySingleton<ProfileController>(() => ProfileController());
   GetIt.I.registerLazySingleton<AppConfigState>(() => AppConfigState());
   GetIt.I.registerLazySingleton<OnboardingController>(
       () => OnboardingController());
@@ -91,7 +93,6 @@ class Wayat extends StatefulWidget {
 /// Main application class' state
 class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// Instance of the application router, used to handle navigation declaratively
-  final _appRouter = AppRouter();
 
   /// Instance of the MapState to update when the user opens and closes the map
   final LifeCycleState lifeCycleState = GetIt.I.get<LifeCycleState>();
@@ -106,9 +107,10 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     if (PlatformService().isMobile) {
-      GetIt.I.get<NotificationState>().registerNotification();
-      GetIt.I.get<NotificationState>().messagingTerminatedAppListener();
-      GetIt.I.get<NotificationState>().messagingBackgroundAppListener();
+      NotificationState notificationState = GetIt.I.get<NotificationState>();
+      notificationState.registerNotification();
+      notificationState.messagingTerminatedAppListener();
+      notificationState.messagingBackgroundAppListener();
     }
     super.initState();
   }
@@ -155,11 +157,22 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addObserver(this);
 
+    AppRouter appRouter = AppRouter();
+
     return FutureBuilder(
         future: GetIt.I.get<AppConfigState>().initializeLocale(),
         builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
           return OverlaySupport(
               child: MaterialApp.router(
+            theme: ThemeData(
+                navigationRailTheme: const NavigationRailThemeData(
+                    selectedIconTheme: IconThemeData(color: Colors.white),
+                    unselectedIconTheme: IconThemeData(color: Colors.white54),
+                    backgroundColor: Colors.black),
+                bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                    selectedItemColor: Colors.white,
+                    unselectedItemColor: Colors.white54,
+                    backgroundColor: Colors.black)),
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -180,8 +193,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
               }
               return const Locale("en", "US");
             },
-            routerDelegate: _appRouter.delegate(),
-            routeInformationParser: _appRouter.defaultRouteParser(),
+            routerConfig: appRouter.router,
           ));
         });
   }

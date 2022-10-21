@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/basic_contact_tile.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -22,11 +23,16 @@ class ViewGroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        groupsController.setSelectedGroup(null);
+        goBack(context);
         return true;
       },
       child: groupViewContent(context),
     );
+  }
+
+  void goBack(BuildContext context) {
+    groupsController.setSelectedGroup(null);
+    context.go('/contacts/groups');
   }
 
   Widget groupViewContent(BuildContext context) {
@@ -94,7 +100,7 @@ class ViewGroupPage extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () => groupsController.setSelectedGroup(null),
+              onPressed: () => goBack(context),
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
@@ -111,13 +117,13 @@ class ViewGroupPage extends StatelessWidget {
             )
           ],
         ),
-        popUpMenu()
+        popUpMenu(context)
       ],
     );
   }
 
   /// Menu that gives the options to edit and delete [selectedGroup]
-  Widget popUpMenu() {
+  Widget popUpMenu(BuildContext context) {
     const int editGroup = 0;
     const int deleteGroup = 1;
 
@@ -146,20 +152,14 @@ class ViewGroupPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Text(appLocalizations.deleteGroup))
       ],
-      onSelected: (value) async {
+      onSelected: (value) {
         if (value == editGroup) {
-          groupsController.setEditGroup(true);
+          context.go(
+              '/contacts/groups/${groupsController.selectedGroup?.id}/edit');
         } else if (value == deleteGroup) {
-          /*
-          I find this approach better but I have not found a way to correctly
-          mock the argument for doActionAndUpdateGroups
-          groupsController.doActionAndUpdateGroups(
-              () async => await groupsController.deleteGroup(selectedGroup.id));
-              */
-          groupsController.setUpdatingGroup(true);
-          await groupsController.deleteGroup(selectedGroup.id);
-          groupsController.setUpdatingGroup(false);
-          groupsController.setSelectedGroup(null);
+          groupsController
+              .deleteGroup(selectedGroup.id)
+              .then((_) => goBack(context));
         }
       },
     );

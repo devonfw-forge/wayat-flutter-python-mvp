@@ -1,3 +1,5 @@
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/group/group.dart';
@@ -29,19 +31,6 @@ abstract class _GroupsController with Store {
   @observable
   Group? selectedGroup;
 
-  /// When [selectedGroup] is not null, decides whether we will be in
-  /// [ViewGroupPage] or in [ManageGroupPage].
-  @observable
-  bool editGroup = false;
-
-  /// Keeps the groups page list in [GroupsPage] from showing until the list
-  /// has completed updating after creating or editing a [Group].
-  ///
-  /// It is done like this because the server and connections are not fast enough
-  /// to store the [Group] picture before loading the list after editing or creating a [Group].
-  @observable
-  bool updatingGroup = false;
-
   /// Calls [GroupService.getAll] to update the user's groups. They are only
   /// updated in the UI if the response differs with the local data.
   ///
@@ -54,6 +43,14 @@ abstract class _GroupsController with Store {
       return true;
     }
     return false;
+  }
+
+  Future<void> groupsGuard(String groupId) async {
+    if (selectedGroup != null && selectedGroup?.id == groupId) {
+      return;
+    }
+    await updateGroups();
+    selectedGroup = groups.firstWhereOrNull((element) => element.id == groupId);
   }
 
   @action
@@ -69,27 +66,7 @@ abstract class _GroupsController with Store {
     selectedGroup = group;
   }
 
-  @action
-  void setEditGroup(bool editValue) {
-    editGroup = editValue;
-  }
-
-  @action
-  void setUpdatingGroup(bool updatingGroup) {
-    this.updatingGroup = updatingGroup;
-  }
-
   Future deleteGroup(String groupId) async {
     await groupsService.delete(groupId);
   }
-
-/*   
-  This is a better approach codewise for the delete and save processes,
-  but I have not managed to correctly mock/verify the arguments 
-  for this function in a testing environment
-  void doActionAndUpdateGroups(Future Function() action) async {
-    setUpdatingGroup(true);
-    await action();
-    setUpdatingGroup(false);
-  } */
 }

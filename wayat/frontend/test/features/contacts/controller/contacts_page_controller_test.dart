@@ -3,7 +3,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'contacts_page_controller_test.mocks.dart';
@@ -28,12 +27,6 @@ void main() async {
   when(mockSuggestionsController.updateSuggestedContacts())
       .thenAnswer(Future.value);
   setUpAll(() async {});
-
-  test('Check set Contacts Current Page', () async {
-    expect(controller.currentPage, ContactsCurrentPages.contacts);
-    controller.setContactsCurrentPage(ContactsCurrentPages.sentRequests);
-    expect(controller.currentPage, ContactsCurrentPages.sentRequests);
-  });
 
   test('Check set SearchbarText sets text filter in subcontrollers', () async {
     controller.setSearchBarText("test");

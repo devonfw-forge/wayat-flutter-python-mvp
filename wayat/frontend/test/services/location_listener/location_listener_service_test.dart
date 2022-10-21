@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,6 +30,12 @@ void main() async {
 
   setUpAll(() {
     GetIt.I.registerSingleton(LangSingleton());
+  });
+
+  test("setUpListener does not do anything", () {
+    onContactsRefUpdate(List<ContactLocation> list) => log("contactsRefUpdate");
+    onLocationModeUpdate(List<ContactLocation> list) =>
+        log("locationModeUpdate");
   });
 
   test("getLocationModeFromStatus is correct", () {
