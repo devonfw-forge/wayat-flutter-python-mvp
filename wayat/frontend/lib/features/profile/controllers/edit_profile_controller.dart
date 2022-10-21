@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
@@ -25,6 +26,8 @@ abstract class _EditProfileController with Store {
   /// Observable variable [currentSelectedImage], used when changing the profile picture
   @observable
   XFile? currentSelectedImage;
+  
+  Uint8List? currentSelectedImageBytes;
 
   /// Sets user name to new [newName]
   @action
@@ -34,7 +37,8 @@ abstract class _EditProfileController with Store {
 
   /// Sets user image to new [image]
   @action
-  void setNewImage(XFile? image) {
+  Future<void> setNewImage(XFile? image) async {
+    currentSelectedImageBytes = await image!.readAsBytes();
     currentSelectedImage = image;
   }
 
@@ -55,6 +59,6 @@ abstract class _EditProfileController with Store {
   Future getFromSource(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
-    setNewImage(newImage);
+    await setNewImage(newImage);
   }
 }

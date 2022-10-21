@@ -9,7 +9,7 @@ from firebase_admin.messaging import Notification
 from requests import RequestException, Response
 
 from app.business.wayat_management.models.group import GroupDTO, UsersListType
-from app.business.wayat_management.models.user import UserDTO
+from app.business.wayat_management.models.user import UserDTO, NotificationData, NotificationActionsType
 from app.common.exceptions.http import NotFoundException
 from app.common.infra.gcp.cloud_messaging import CloudMessaging
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
@@ -170,24 +170,28 @@ class UserService:
         await self._user_repository.respond_friend_request(self_uid=self_user_uid,
                                                            friend_uid=friend_uid, accept=accept)
         if accept is True:
-            # TODO: Validate notification
             self_user = await self._user_repository.get_or_throw(self_user_uid)
             friend = await self._user_repository.get_or_throw(friend_uid)
             if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
-                notification = Notification(title=f"{self_user.name} has accepted your friend request")
+                notification = NotificationData(
+                    action=NotificationActionsType.ACCEPTED_FRIEND_REQUEST,
+                    contact_name=self_user.name
+                )
                 await self._notifications_service.send_notification(tokens=friend.notifications_tokens,
-                                                                    notification=notification)
+                                                                    data=notification.dict())
 
     async def _send_friend_request(self, self_user, new_contacts: list[str], contacts: Optional[List[UserEntity]]):
-        # TODO Validate Send Notification
         await self._user_repository.create_friend_request(self_user.document_id, new_contacts)
         for c in new_contacts:
-            found_friend = [el for el in contacts if el.document_id == c]
+            found_friend = [el for el in contacts if el.document_id == c] if contacts is not None else []
             friend = found_friend[0] if len(found_friend) == 1 else await self._user_repository.get_or_throw(c)
             if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
-                notification = Notification(title=f"{self_user.name} sent you a friend request")
+                notification = NotificationData(
+                    action=NotificationActionsType.RECEIVED_FRIEND_REQUEST,
+                    contact_name=self_user.name
+                )
                 await self._notifications_service.send_notification(tokens=friend.notifications_tokens,
-                                                                    notification=notification)
+                                                                    data=notification.dict())
 
     @staticmethod
     def _remove_contact_from_all_groups(contact_id: str, groups: list[GroupInfo]):
@@ -300,7 +304,7 @@ class UserService:
         loop = asyncio.get_event_loop()
 
         def sync_process() -> tuple[Response, str]:
-            res = requests.get(url)
+            res = requests.get(url)  # type: ignore
             if res.status_code != 200:
                 raise RequestException
             ext = mimetypes.guess_extension(res.headers['Content-Type'])

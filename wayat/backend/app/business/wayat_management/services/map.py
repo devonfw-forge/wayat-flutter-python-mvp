@@ -56,6 +56,7 @@ class MapService:
                               longitude: float,
                               address: str,
                               ):
+        logger.info(f"Updating location for user {uid}")
         await self._user_repository.update_user_location(uid, latitude, longitude, address)
         await self.update_contacts_status(uid, latitude, longitude)
 
@@ -130,7 +131,7 @@ class MapService:
         new_contact_refs = await asyncio.gather(
             *[self._create_contact_ref(contact_uid, user_to_update) for contact_uid in user_to_update.contacts],
         )  # type: list[ContactRefInfo]
-
+        logger.info(f"Updating contact ref for {user_to_update.name} - {user_to_update.document_id}")
         await asyncio.gather(
             self._status_repository.set_contact_refs(uid, [ref for ref in new_contact_refs if ref is not None]),
             self._user_repository.update_last_status(uid),
@@ -149,19 +150,52 @@ class MapService:
     async def update_contacts_status(self, uid: str, latitude: float = None, longitude: float = None, force=False):
         contacts, self_user = await self._user_repository.get_contacts(uid)
         contacts_map_open = [c for c in contacts if c.map_open is True and c.map_valid_until >= get_current_time()]
-        if latitude is not None and longitude is not None:
-            contacts_in_range = [c for c in contacts if self._in_range(latitude, longitude, c.location)]
-            contacts_map_open_in_range = list(set([c.document_id for c in contacts_in_range]).intersection(
-                set([c.document_id for c in contacts_map_open])))
-            # Update my active status if at least one friend is looking at me
-            active_value = len(contacts_map_open_in_range) != 0
-            if active_value != self_user.active:
-                # Update my active status if changed only
-                await self._set_active(uid=self_user.document_id, active=active_value)
-            # Set active all contacts in range which are not already active
-            await self._set_active(uids=[c.document_id for c in contacts_in_range if not c.active], active=True)
+        contacts_map_open_self_share_location = [c for c in contacts_map_open
+                                                 if c.document_id in self_user.location_shared_with
+                                                 and self_user.share_location]
         # Update all maps that point at me
-        await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open])
+        logger.info("Updating maps pointing at me")
+        await asyncio.gather(*[self._update_contact_status(c, force) for c in contacts_map_open_self_share_location])
+
+        if latitude is None or longitude is None:
+            if self_user.location is None:
+                return
+            long = self_user.location.value.longitude
+            lat = self_user.location.value.latitude
+        else:
+            lat = latitude
+            long = longitude
+
+        contacts_in_range = [c for c in contacts if self._in_range(lat, long, c.location)]
+
+        # Update my active status if at least one friend is looking at me
+        contacts_self_sharing_location_with_and_map_open_in_range = list(
+            set(
+                [c.document_id for c in contacts_in_range]
+            ).intersection(set(
+                [c.document_id for c in contacts_map_open_self_share_location]
+            ))
+        )
+        active_value = len(contacts_self_sharing_location_with_and_map_open_in_range) != 0
+        logger.info(f"Contacts with map open in range {len(contacts_self_sharing_location_with_and_map_open_in_range)}")
+        logger.info(f"Self status {self_user.active}")
+        if active_value != self_user.active:  # Update my active status if changed only
+            logger.info(f"Updating self status {active_value}")
+            await self._set_active(uid=self_user.document_id, active=active_value)
+
+        # Set active all contacts in range and sharing location with me which are not already active
+        contacts_sharing_location_with_me = [c for c in contacts if self_user.document_id in c.location_shared_with
+                                             and c.share_location]
+        contacts_in_range_and_sharing_location_with_me_not_active = list(
+            set(
+                [c.document_id for c in contacts_in_range if c.active is False]
+            ).intersection(set(
+                [c.document_id for c in contacts_sharing_location_with_me]
+            ))
+        )
+        logger.info(f"Contacts in range sharing location with me "
+                    f"not active {len(contacts_in_range_and_sharing_location_with_me_not_active)}")
+        await self._set_active(uids=contacts_in_range_and_sharing_location_with_me_not_active, active=True)
 
     @overload
     async def _set_active(self, *, uid: str, active: bool):
@@ -173,9 +207,11 @@ class MapService:
 
     async def _set_active(self, *, uid: str = None, uids: List[str] = None, active: bool):
         if uid is not None:
+            logger.info(f"Setting active {uid} {active}")
             await self._status_repository.set_active(uid, active)
             await self._user_repository.set_active(uid, active)
         elif uids is not None:
+            logger.info(f"Setting active {uids} {active}")
             if len(uids) > 0:
                 await self._status_repository.set_active_batch(uid_list=uids, value=active)
                 await self._user_repository.set_active_batch(uid_list=uids, value=active)
@@ -184,6 +220,7 @@ class MapService:
 
     async def _update_contact_status(self, contact: UserEntity, force: bool):
         if force or self._needs_update(contact.last_status_update):
+            logger.info(f"Updating contact status for {contact.document_id} - {force}")
             await self.regenerate_map_status(user=contact)
 
     def _needs_update(self, last_updated: datetime):

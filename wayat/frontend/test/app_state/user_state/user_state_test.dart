@@ -24,9 +24,16 @@ void main() async {
   late UserState userState;
   late MockAuthService mockAuthService;
   late MockProfileService mockProfileService;
-  final MockLifeCycleState mockLifeCycleState = MockLifeCycleState();
+  late MockLifeCycleState mockLifeCycleState;
 
-  GetIt.I.registerSingleton<LifeCycleState>(mockLifeCycleState);
+  setUpAll(() {
+    mockLifeCycleState = MockLifeCycleState();
+    GetIt.I.registerSingleton<LifeCycleState>(mockLifeCycleState);
+    when(mockLifeCycleState.notifyAppOpenned())
+        .thenAnswer((_) => Future.value());
+    when(mockLifeCycleState.notifyAppClosed())
+        .thenAnswer((_) => Future.value());
+  });
 
   setUp(() {
     mockAuthService = MockAuthService();

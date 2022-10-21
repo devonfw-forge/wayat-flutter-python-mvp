@@ -1,11 +1,11 @@
 from typing import AsyncIterable
 
 from fastapi import Depends
-from google.cloud.firestore import DocumentSnapshot
+from google.cloud.firestore import DocumentSnapshot  # type: ignore
 
 from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.wayat_management.models.status import AppStatusEntity, ContactRefInfo
-from google.cloud.firestore import AsyncClient
+from google.cloud.firestore import AsyncClient # type: ignore
 
 
 class StatusRepository(BaseFirestoreRepository[AppStatusEntity]):

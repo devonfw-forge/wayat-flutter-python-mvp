@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
@@ -49,6 +50,8 @@ abstract class _ManageGroupController with Store {
   /// The selected file in case the user wants to add or change the [Group]'s picture.
   @observable
   XFile? selectedFile;
+  
+  Uint8List? selectedFileBytes;
 
   /// Textfield to edit or add the [Group.name].
   ///
@@ -84,7 +87,8 @@ abstract class _ManageGroupController with Store {
   }
 
   @action
-  void setSelectedFile(XFile? file) {
+  Future<void> setSelectedFile(XFile? file) async {
+    selectedFileBytes = await file!.readAsBytes();
     selectedFile = file;
   }
 
@@ -97,7 +101,7 @@ abstract class _ManageGroupController with Store {
   ///
   /// If the [Group]  is [Group.empty()], which means that the [Group.id] is empty,
   /// it will call the [groupService.create()], otherwise it will call [groupService.update()].
-  Future saveGroup() async {
+  Future<void> saveGroup() async {
     group.members = selectedContacts;
     group.name = (groupNameController.text != "")
         ? groupNameController.text

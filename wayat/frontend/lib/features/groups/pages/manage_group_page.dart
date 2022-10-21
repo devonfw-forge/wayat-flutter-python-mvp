@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -131,9 +130,13 @@ class ManageGroupPage extends StatelessWidget {
           splashColor: Colors.white,
           radius: 40,
           onTap: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (builder) => openSelectImageSheet(context));
+            if (platformService.isWeb) {
+              controller.getFromSource(ImageSource.gallery);
+            } else {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (builder) => openSelectImageSheet(context));
+            }
           },
           child: const CircleAvatar(
             backgroundColor: Colors.black87,

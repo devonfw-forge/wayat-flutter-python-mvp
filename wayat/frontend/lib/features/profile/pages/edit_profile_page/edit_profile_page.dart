@@ -9,7 +9,6 @@ import 'package:wayat/features/profile/controllers/edit_profile_controller.dart'
 import 'package:wayat/common/widgets/phone_verification/phone_verification_field.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io' as io;
 
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
@@ -117,9 +116,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: (widget.controller.currentSelectedImage != null)
-                    ? FileImage(io.File(
-                            widget.controller.currentSelectedImage!.path))
-                        as ImageProvider
+                    ? Image.memory(widget.controller.currentSelectedImageBytes!)
+                        .image
                     : NetworkImage(
                         GetIt.I.get<UserState>().currentUser!.imageUrl),
                 fit: BoxFit.cover,
@@ -134,9 +132,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
         },
       ),
       InkWell(
-        onTap: () => showModalBottomSheet(
-            context: context,
-            builder: (builder) => _getImageFromCameraOrGallary()),
+        onTap: () {
+          if (widget.platformService.isWeb) {
+            widget.controller.getFromSource(ImageSource.gallery);
+          } else {
+            showModalBottomSheet(
+                context: context,
+                builder: (builder) => _getImageFromCameraOrGallary());
+          }
+        },
         child: const CircleAvatar(
             backgroundColor: Colors.black,
             radius: 28,

@@ -17,7 +17,7 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 
 import 'edit_profile_controller_test.mocks.dart';
 
-@GenerateMocks([UserState, HttpProvider, PhoneVerificationController])
+@GenerateMocks([UserState, HttpProvider, PhoneVerificationController, XFile])
 void main() async {
   final MockUserState mockUserState = MockUserState();
   final MockHttpProvider mockHttpProvider = MockHttpProvider();
@@ -57,16 +57,12 @@ void main() async {
 
   testWidgets('Check setters for edit profile controller', (tester) async {
     await tester.pumpWidget(createApp());
-    EditProfileController controller = EditProfileController();
     PhoneVerificationController phoneController = PhoneVerificationController();
     phoneController.phoneNumber =
         PhoneNumber(countryISOCode: "", countryCode: "", number: "123");
     expect(phoneController.phoneNumber!.completeNumber, "123");
     phoneController.errorPhoneVerification = "errorVerification";
     expect(phoneController.errorPhoneVerification, "errorVerification");
-    XFile image = XFile("");
-    controller.setNewImage(image);
-    expect(controller.currentSelectedImage, image);
   });
 
   test("Saving information calls correct methods of user state", () async {
