@@ -136,5 +136,8 @@
     "groupValidation": "Vous devez sélectionner au moins deux contacts",
     
     "locationPermission": "Autorisation de localisation",
-    "locationPermissionNotGranted": "Autorisation de localisation non accordée, veuillez accepter les autorisations de localisation pour tout le temps. Sélectionnez-le dans la section des paramètres"
+    "locationPermissionNotGranted": "Autorisation de localisation non accordée, veuillez accepter les autorisations de localisation pour tout le temps. Sélectionnez-le dans la section des paramètres",
+
+    "receivedFriendRequest": " vous a envoyé une demande d'ami",
+    "acceptedFriendRequest": " a accepté votre demande d'ami"
 } 

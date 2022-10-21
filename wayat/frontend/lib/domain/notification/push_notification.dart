@@ -1,9 +1,9 @@
 class PushNotification {
-  final String title;
-  final String body;
+  final String action;
+  final String contactName;
 
   PushNotification({
-    required this.title,
-    required this.body
+    required this.action,
+    required this.contactName
   });
 }

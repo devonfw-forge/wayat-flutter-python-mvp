@@ -139,5 +139,8 @@
     "goToGitHubReleases": "Go to GitHub releases page",
     "goToGitHubReleasesUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/",
     "downloadWayat": "Download wayat",
-    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk"
+    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk",
+
+    "receivedFriendRequest": " sent you a friend request",
+    "acceptedFriendRequest": " has accepted your friend request"
 } 

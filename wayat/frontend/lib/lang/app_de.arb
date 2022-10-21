@@ -136,5 +136,8 @@
     "groupValidation": "Sie müssen mindestens zwei Kontakte auswählen",
         
     "locationPermission": "Standorterlaubnis",
-    "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus"
+    "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus",
+
+    "receivedFriendRequest": " hat dir eine Freundschaftsanfrage geschickt",
+    "acceptedFriendRequest": " hat deine Freundschaftsanfrage angenommen"
 } 
