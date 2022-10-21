@@ -5,6 +5,7 @@ import 'package:mobx/mobx.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wayat/services/notification/notification_service_impl.dart';
@@ -162,17 +163,17 @@ abstract class _NotificationState with Store {
   PushNotification pushNotification(RemoteMessage newMessage) {
     if (platformService.targetPlatform == TargetPlatform.android) {
       return PushNotification(
-          title: newMessage.notification!.title ?? 'No notification title',
-          body: newMessage.notification!.body ?? '');
+          action: newMessage.data['action'],
+          contactName: newMessage.data['contact_name']);
     }
 
     if (platformService.targetPlatform == TargetPlatform.iOS) {
       return PushNotification(
-        title: newMessage.data['aps']['alert']['title'],
-        body: newMessage.data['aps']['alert']['body'],
+        action: newMessage.data['aps']['alert']['action'],
+        contactName: newMessage.data['aps']['alert']['contact_name'],
       );
     }
-    return PushNotification(title: 'No title', body: '');
+    return PushNotification(action: '', contactName: '');
   }
 
   /// For handling notification when the app is open
@@ -205,12 +206,22 @@ abstract class _NotificationState with Store {
 
   showNotification(PushNotification notificationInfo) {
     showSimpleNotification(
-      Text(notificationInfo.title),
-      subtitle: Text(notificationInfo.body),
+      Text(notificationText(notificationInfo.action, notificationInfo.contactName)),
+      // subtitle: Text(notificationInfo.contact_name),
       background: Colors.white,
       foreground: Colors.black,
       leading: const NotificationBadge(),
     );
     const Duration(seconds: 10);
+  }
+
+  String notificationText(String action, String contactName) {
+    if (action == 'ACCEPTED_FRIEND_REQUEST') {
+      return contactName + appLocalizations.acceptedFriendRequest;
+    }
+    if (action == 'RECEIVED_FRIEND_REQUEST') {
+      return contactName + appLocalizations.receivedFriendRequest;
+    }
+    return '';
   }
 }
