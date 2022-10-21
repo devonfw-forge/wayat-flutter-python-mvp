@@ -95,7 +95,9 @@ class ContactProfilePage extends StatelessWidget {
               onPressed: () => goBack(context),
               icon: const Icon(Icons.arrow_back)),
           Text(
-            (navigationSource == '/contacts/friends') ? 'Contacts' : 'wayat',
+            (navigationSource == '/contacts/friends')
+                ? appLocalizations.contacts
+                : appLocalizations.appTitle,
             style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
           )
         ],
