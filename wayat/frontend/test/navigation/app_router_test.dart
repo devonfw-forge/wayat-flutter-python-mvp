@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +12,10 @@ import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/common/widgets/buttons/custom_text_button.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/domain/contact/contact.dart';
+import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
@@ -32,6 +33,9 @@ import 'package:wayat/features/contacts/pages/sent_requests_page/sent_requests_p
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/pages/groups_page.dart';
+import 'package:wayat/features/groups/pages/manage_group_page.dart';
+import 'package:wayat/features/groups/pages/view_group_page.dart';
+import 'package:wayat/features/groups/widgets/group_tile.dart';
 import 'package:wayat/features/map/page/map_page.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/features/onboarding/pages/onboarding_page.dart';
@@ -76,6 +80,14 @@ void main() async {
     imageUrl: "http://fakeimage",
     phone: "+34987654321",
   );
+
+  Group fakeGroup = Group(
+      id: "1",
+      members: [fakeContact],
+      name: "fake group",
+      imageUrl: "https://fakegroupimage");
+
+  List<Group> fakeGroups = [fakeGroup];
   MockUserState mockUserState = MockUserState();
   MockHomeNavState mockHomeNavState = MockHomeNavState();
   GroupsController mockGroupsController = MockGroupsController();
@@ -132,6 +144,8 @@ void main() async {
       .thenReturn(mobx.ObservableList.of([]));
   when(mockRequestsController.sentRequests)
       .thenReturn(mobx.ObservableList.of([]));
+  when(mockGroupsController.groups)
+      .thenReturn(mobx.ObservableList.of(fakeGroups));
 
   setUpAll(() {
     GetIt.I.registerSingleton<UserState>(mockUserState);
@@ -312,6 +326,64 @@ void main() async {
       expect(find.byType(GroupsPage), findsOneWidget);
     });
 
+    testWidgets("Navigate to create group", (tester) async {
+      await navigateToContacts(tester);
+
+      await tester.tap(find.text(appLocalizations.groupsTitle));
+
+      await tester.pumpAndSettle();
+
+      when(mockGroupsController.selectedGroup).thenReturn(fakeGroup);
+
+      await tester.tap(
+          find.widgetWithText(CustomTextButton, appLocalizations.createGroup));
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ManageGroupPage), findsOneWidget);
+    });
+
+    testWidgets("Navigate to a group profile", (tester) async {
+      await navigateToContacts(tester);
+
+      await tester.tap(find.text(appLocalizations.groupsTitle));
+
+      await tester.pumpAndSettle();
+
+      when(mockGroupsController.selectedGroup).thenReturn(fakeGroup);
+
+      await tester.tap(find.widgetWithText(GroupTile, "fake group"));
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ViewGroupPage), findsOneWidget);
+    });
+
+    testWidgets("Navigate to edit a group", (tester) async {
+      await navigateToContacts(tester);
+
+      await tester.tap(find.text(appLocalizations.groupsTitle));
+
+      await tester.pumpAndSettle();
+
+      when(mockGroupsController.selectedGroup).thenReturn(fakeGroup);
+
+      await tester.tap(find.widgetWithText(GroupTile, "fake group"));
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(PopupMenuButton));
+
+      await tester.pumpAndSettle();
+
+      await tester
+          .tap(find.widgetWithText(PopupMenuItem, appLocalizations.editGroup));
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ManageGroupPage), findsOneWidget);
+    });
+
     testWidgets("Navigate to contacts request page", (tester) async {
       await navigateToContacts(tester);
 
@@ -345,6 +417,22 @@ void main() async {
       await tester.pumpAndSettle();
 
       expect(find.byType(SuggestionsPage), findsOneWidget);
+    });
+
+    testWidgets("Navigate to contacts suggestions in web redirect to friends",
+        (tester) async {
+      await navigateToContacts(tester);
+
+      // Platform windows is set after navigate to can access the tab button of
+      // suggestions and emulate the navigation
+      debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+      await tester
+          .tap(find.widgetWithText(Tab, appLocalizations.suggestionsTab));
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ContactsPage), findsOneWidget);
+      debugDefaultTargetPlatformOverride = null;
     });
 
     testWidgets("Navigate to contacts friends from other tab", (tester) async {
