@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobx/mobx.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
@@ -49,6 +50,25 @@ abstract class _NotificationState with Store {
     requestBadgePermission: false,
     requestAlertPermission: false,
   );
+  
+  static Future<void> initialize(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin, BuildContext context) async {
+
+  InitializationSettings initializationSettings = const InitializationSettings(
+      android: AndroidInitializationSettings('app_icon'),
+      iOS: DarwinInitializationSettings(
+        requestSoundPermission: false,
+        requestBadgePermission: false,
+        requestAlertPermission: false,
+      ));
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings, onDidReceiveNotificationResponse: (response){
+      if ( response.payload != null)
+      {
+        context.go('/contacts/friends');
+      }
+    });
+
+  }
 
   /// Android notification details
   final AndroidNotificationDetails androidNotificationDetails =
@@ -128,7 +148,7 @@ abstract class _NotificationState with Store {
 
     // Check is user accept permissions
     if (authorizationStatus) {
-      messagingAppListener();
+      messagingAppListener(context);
       await getToken();
     } else {
       debugPrint('User declined or has not accepted permission');
@@ -177,37 +197,40 @@ abstract class _NotificationState with Store {
   }
 
   /// For handling notification when the app is open
-  messagingAppListener() {
+  messagingAppListener(context) {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       PushNotification notificationInfo = pushNotification(message);
       showNotification(notificationInfo);
+      context.go('/contacts/friends');
     });
   }
 
   // For handling notification when the app is in terminated state
   @action
-  messagingTerminatedAppListener() async {
+  messagingTerminatedAppListener(context) async {
     RemoteMessage? initialMessage = await messagingInstance.getInitialMessage();
     if (initialMessage != null) {
       PushNotification notificationInfo = pushNotification(initialMessage);
       notificationDetails(notificationInfo);
+      context.go('/contacts/friends');
     }
   }
 
   /// For handling notification when the app is in background
   /// but not terminated
   @action
-  messagingBackgroundAppListener() async {
+  messagingBackgroundAppListener(context) async {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       PushNotification notificationInfo = pushNotification(message);
       notificationDetails(notificationInfo);
+      context.go('/contacts/friends');
     });
   }
 
   showNotification(PushNotification notificationInfo) {
     showSimpleNotification(
-      Text(notificationText(notificationInfo.action, notificationInfo.contactName)),
-      // subtitle: Text(notificationInfo.contact_name),
+      Text(notificationText(
+          notificationInfo.action, notificationInfo.contactName)),
       background: Colors.white,
       foreground: Colors.black,
       leading: const NotificationBadge(),
