@@ -54,18 +54,22 @@ class ProfilePage extends StatelessWidget {
                   fontSize: 22),
             );
           }),
-          Container(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(
-              children: [
-                const SizedBox(height: 32),
-                _buildShareLocationPart(() => context.go("/profile/edit"),
+          Column(
+            children: [
+              const SizedBox(height: 32),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: _buildShareLocationPart(
+                    () => context.go("/profile/edit"),
                     () => context.go("/profile/preferences")),
-                const Divider(),
-                const SizedBox(height: 20),
-                _buildAccountPart(context),
-              ],
-            ),
+              ),
+              const Divider(),
+              const SizedBox(height: 20),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: _buildAccountPart(context),
+              )
+            ],
           ),
         ],
       ),

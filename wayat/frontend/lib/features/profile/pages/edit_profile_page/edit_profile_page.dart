@@ -43,17 +43,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
       },
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              _profileAppBar(),
-              _buildEditProfileImage(),
-              const SizedBox(height: 32),
-              _nameTextField(),
-              const SizedBox(height: 34.5),
-              if (widget.platformService.isMobile) PhoneVerificationField(),
-            ],
+        child: SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                if (widget.platformService.isDesktopOrWeb)
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: _profileAppBar()),
+                _buildEditProfileImage(),
+                const SizedBox(height: 32),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: _nameTextField()),
+                const SizedBox(height: 34.5),
+                if (widget.platformService.isMobile)
+                  ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: PhoneVerificationField()),
+              ],
+            ),
           ),
         ),
       ),
