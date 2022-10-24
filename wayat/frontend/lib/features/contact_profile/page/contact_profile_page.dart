@@ -67,7 +67,10 @@ class ContactProfilePage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              appBar(context),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: appBar(context),
+              ),
               ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 800),
                   child: mapSection(context, canBeLocated)),
