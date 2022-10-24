@@ -20,7 +20,10 @@ class GroupsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        child: groupsContent(context),
+        child: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: groupsContent(context)),
         onWillPop: () async {
           context.go('/contacts/friends');
           return true;
@@ -31,6 +34,8 @@ class GroupsPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
           ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 800),
