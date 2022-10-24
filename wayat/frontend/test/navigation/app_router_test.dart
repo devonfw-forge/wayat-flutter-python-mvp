@@ -153,6 +153,7 @@ void main() async {
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
+    GetIt.I.registerSingleton<GlobalKey<NavigatorState>>(GlobalKey());
     GetIt.I.registerSingleton<PhoneVerificationController>(
         mockPhoneVerificationController);
     GetIt.I.registerSingleton<OnboardingController>(mockOnboardingController);
