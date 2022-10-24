@@ -35,6 +35,7 @@ class AppRouter {
   PlatformService platformService = PlatformService();
 
   late final GoRouter router = GoRouter(
+    navigatorKey: GetIt.I.get<GlobalKey<NavigatorState>>(),
     errorBuilder: (context, state) => const ErrorPage(),
     debugLogDiagnostics: true,
     redirect: authenticationGuard,
