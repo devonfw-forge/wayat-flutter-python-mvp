@@ -3,13 +3,13 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 // ignore: depend_on_referenced_packages, implementation_imports
 import 'package:http_parser/src/media_type.dart';
+import 'package:wayat/services/common/http_provider/request_error_handler_libw.dart';
 
 /// Encapsulates the proccess of making authorized HTTP requests from the services.
 ///
@@ -38,7 +38,8 @@ class HttpProvider {
   }
 
   /// Sends a `GET` request to `baseUrl`/`subPath`.
-  Future<Map<String, dynamic>> sendGetRequest(String subPath) async {
+  Future<Map<String, dynamic>> sendGetRequest(String subPath,
+      {RequestErrorHandlerLibW? requestErrorHandler}) async {
     try {
       final headers = await getHeaders();
       http.Response resultJson =
@@ -46,33 +47,33 @@ class HttpProvider {
       return json.decode(const Utf8Decoder().convert(resultJson.bodyBytes))
           as Map<String, dynamic>;
     } on Exception {
-      print("EXCEPTION");
-      GetIt.I.get<GlobalKey<NavigatorState>>().currentContext!.go('/error');
+      RequestErrorHandlerLibW requestErrorHandlerLibW =
+          requestErrorHandler ?? RequestErrorHandlerLibW();
+      requestErrorHandlerLibW.goToErrorPage();
       return {};
     }
   }
 
   /// Sends a `POST` request to `baseUrl`/`subPath` with `body` as the content.
   Future<http.Response> sendPostRequest(
-    String subPath,
-    Map<String, dynamic> body,
-  ) async {
+      String subPath, Map<String, dynamic> body,
+      {RequestErrorHandlerLibW? requestErrorHandler}) async {
     try {
       http.Response response = await client.post(Uri.parse("$baseUrl/$subPath"),
           headers: await getHeaders(), body: jsonEncode(body));
       return response;
     } on Exception {
-      GetIt.I.get<GlobalKey<NavigatorState>>().currentContext!.go('/error');
+      RequestErrorHandlerLibW requestErrorHandlerLibW =
+          requestErrorHandler ?? RequestErrorHandlerLibW();
+      requestErrorHandlerLibW.goToErrorPage();
       return http.Response("", 500);
     }
   }
 
   /// Sends a `POST` multipart request to upload the image located at `filePath` to `baseUrl`/`subPath`.
   Future<http.StreamedResponse> sendPostImageRequest(
-    String subPath,
-    Uint8List fileBytes,
-    String type,
-  ) async {
+      String subPath, Uint8List fileBytes, String type,
+      {RequestErrorHandlerLibW? requestErrorHandler}) async {
     try {
       http.MultipartRequest request =
           http.MultipartRequest('POST', Uri.parse("$baseUrl/$subPath"));
@@ -86,13 +87,16 @@ class HttpProvider {
       request.files.add(httpImage);
       return await client.send(request);
     } on Exception {
-      GetIt.I.get<GlobalKey<NavigatorState>>().currentContext!.go('/error');
+      RequestErrorHandlerLibW requestErrorHandlerLibW =
+          requestErrorHandler ?? RequestErrorHandlerLibW();
+      requestErrorHandlerLibW.goToErrorPage();
       return http.StreamedResponse(const Stream.empty(), 500);
     }
   }
 
   /// Sends a `PUT` request to `baseUrl`/`subPath` and with `body` as content.
-  Future<bool> sendPutRequest(String subPath, Map<String, dynamic> body) async {
+  Future<bool> sendPutRequest(String subPath, Map<String, dynamic> body,
+      {RequestErrorHandlerLibW? requestErrorHandler}) async {
     try {
       http.Response resultJson = await client.put(
           Uri.parse("$baseUrl/$subPath"),
@@ -101,20 +105,25 @@ class HttpProvider {
       // Checks if a 20X status code is returned
       return resultJson.statusCode / 10 == 20;
     } on Exception {
-      GetIt.I.get<GlobalKey<NavigatorState>>().currentContext!.go('/error');
+      RequestErrorHandlerLibW requestErrorHandlerLibW =
+          requestErrorHandler ?? RequestErrorHandlerLibW();
+      requestErrorHandlerLibW.goToErrorPage();
       return false;
     }
   }
 
   /// Sends a `DEL` request to `baseUrl`/`subPath`.
-  Future<bool> sendDelRequest(String subPath) async {
+  Future<bool> sendDelRequest(String subPath,
+      {RequestErrorHandlerLibW? requestErrorHandler}) async {
     try {
       http.Response resultJson = await client
           .delete(Uri.parse("$baseUrl/$subPath"), headers: await getHeaders());
       // Checks if a 20X status code is returned
       return resultJson.statusCode / 10 == 20;
     } on Exception {
-      GetIt.I.get<GlobalKey<NavigatorState>>().currentContext!.go('/error');
+      RequestErrorHandlerLibW requestErrorHandlerLibW =
+          requestErrorHandler ?? RequestErrorHandlerLibW();
+      requestErrorHandlerLibW.goToErrorPage();
       return false;
     }
   }
