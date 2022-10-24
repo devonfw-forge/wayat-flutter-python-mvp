@@ -24,14 +24,16 @@ class LocationListenerService {
             FirebaseFirestore.instanceFor(
                 app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
 
-  late bool _lastActive;
-  late List _lastContactRefs;
+  @visibleForTesting
+  late bool lastActive;
+  @visibleForTesting
+  late List lastContactRefs;
 
   /// Subscription for the listener to status doc in Firestore
   StreamSubscription? listenerSubscription;
 
   ///SetUp listener of contactLocation mode update from status
-  Future setUpListener(
+  Future<void> setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(bool) onLocationModeUpdate}) async {
     if (GetIt.I.get<UserState>().currentUser == null) {
@@ -41,8 +43,8 @@ class LocationListenerService {
         db.collection("status").doc(GetIt.I.get<UserState>().currentUser!.id);
     FirestoreDataModel firestoreData =
         FirestoreDataModel.fromMap((await docRef.get()).data()!);
-    _lastActive = firestoreData.active;
-    _lastContactRefs = firestoreData.contactRefs;
+    lastActive = firestoreData.active;
+    lastContactRefs = firestoreData.contactRefs;
     // Update locationMode before listening
     onLocationModeUpdate(getLocationModeFromStatus(firestoreData));
     // Update contactRef before listenings
@@ -51,21 +53,30 @@ class LocationListenerService {
     // Subscribe to changes in the currentUser status document
     listenerSubscription = docRef.snapshots().listen(
       (event) async {
-        FirestoreDataModel updatedData =
-            FirestoreDataModel.fromMap(event.data()!);
-
-        if ((updatedData.active) != _lastActive) {
-          onLocationModeUpdate(getLocationModeFromStatus(updatedData));
-          _lastActive = updatedData.active;
-        }
-        if (ListUtilsService.haveDifferentElements(
-            updatedData.contactRefs, _lastContactRefs)) {
-          onContactsRefUpdate(await getContactRefsFromStatus(updatedData));
-          _lastContactRefs = firestoreData.contactRefs;
-        }
+        await onStatusUpdate(event,
+            onLocationModeUpdate: onLocationModeUpdate,
+            onContactsRefUpdate: onContactsRefUpdate);
       },
       onError: (error) => log("[ERROR] Firestore listen failed: $error"),
     );
+  }
+
+  Future<void> onStatusUpdate(DocumentSnapshot<Map<String, dynamic>> event,
+      {required Function(List<ContactLocation>) onContactsRefUpdate,
+      required Function(bool) onLocationModeUpdate,
+      ContactService? contactService}) async {
+    FirestoreDataModel updatedData = FirestoreDataModel.fromMap(event.data()!);
+
+    if ((updatedData.active) != lastActive) {
+      onLocationModeUpdate(getLocationModeFromStatus(updatedData));
+      lastActive = updatedData.active;
+    }
+    if (ListUtilsService.haveDifferentElements(
+        updatedData.contactRefs, lastContactRefs)) {
+      onContactsRefUpdate(await getContactRefsFromStatus(updatedData,
+          contactService: contactService));
+      lastContactRefs = updatedData.contactRefs;
+    }
   }
 
   /// Closes current listener to Firestore
