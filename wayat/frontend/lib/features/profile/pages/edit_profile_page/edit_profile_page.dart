@@ -111,7 +111,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               },
               child: Text(
                 appLocalizations.save,
-                style: _textStyle(ColorTheme.primaryColor, 16),
+                style: _textStyle(ColorTheme.primaryColor, 17),
                 textAlign: TextAlign.right,
               ),
             ),
