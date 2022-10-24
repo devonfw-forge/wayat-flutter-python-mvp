@@ -1,5 +1,5 @@
 import logging
-import uvicorn
+import uvicorn  # type: ignore
 
 # Init Logger for this Class
 from app.common.core import get_global_settings

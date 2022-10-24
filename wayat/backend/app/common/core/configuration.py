@@ -16,7 +16,7 @@ class GlobalSettings(BaseSettings):
     environment: str = "TEST"
     port: int = 80
     swagger_path: str = "/docs"
-    cors: List[str] | List[AnyHttpUrl] = []
+    cors: List[str] | List[AnyHttpUrl] = [] # type: ignore
 
     @validator("cors", pre=True)
     def assemble_cors_origins(cls, v: str | List[str]) -> List[str] | str:

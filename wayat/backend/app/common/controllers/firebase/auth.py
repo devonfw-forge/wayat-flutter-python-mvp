@@ -1,5 +1,5 @@
 import logging
-from firebase_admin import auth
+from firebase_admin import auth  # type: ignore
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
