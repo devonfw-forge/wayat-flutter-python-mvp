@@ -1,4 +1,7 @@
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:get_it/get_it.dart';
+import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/contact/flutter_contacts_handler_libw.dart';
 
 /// Service to read the contacts stored in the device and import them to the app.
@@ -15,8 +18,17 @@ class ContactsAddressServiceImpl {
         handler ?? FlutterContactsHandlerLibW();
     if (await contactsHandler.requestPermission()) {
       List<Contact> contacts = await contactsHandler.getContacts();
+      MyUser user = GetIt.I.get<UserState>().currentUser!;
       return contacts
-          .expand((contact) => contact.phones.map((e) => e.number))
+          .expand((contact) => contact.phones.map((e) {
+                String phoneNumber =
+                    e.number.replaceAll(RegExp(r'[^+0-9]+'), '');
+                if (phoneNumber.length ==
+                    (user.phone.length - user.phonePrefix.length)) {
+                  return user.phonePrefix + phoneNumber;
+                }
+                return phoneNumber;
+              }))
           // Delete repeated contacts
           .toSet()
           .toList();
