@@ -18,7 +18,7 @@ import 'package:wayat/services/location_listener/location_listener_service.dart'
 import 'package:wayat/services/utils/list_utils_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'user_status_service_test.mocks.dart';
+import 'location_listener_service_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<FirebaseFirestore>(),

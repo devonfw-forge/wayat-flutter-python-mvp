@@ -24,7 +24,8 @@ class ContactsAddressServiceImpl {
                 String phoneNumber =
                     e.number.replaceAll(RegExp(r'[^+0-9]+'), '');
                 if (phoneNumber.length ==
-                    (user.phone.length - user.phonePrefix.length)) {
+                        (user.phone.length - user.phonePrefix.length) &&
+                    !phoneNumber.startsWith("+")) {
                   return user.phonePrefix + phoneNumber;
                 }
                 return phoneNumber;
