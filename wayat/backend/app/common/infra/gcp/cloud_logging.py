@@ -30,7 +30,7 @@ class CloudRunJSONFormatter(logging.Formatter):
             try:
                 self._project_id = get_account_info()["project_id"]
             except Exception:  # If impossible, disable
-                self._project_id = None
+                self._project_id = None  # type: ignore
 
         super().__init__(*args, **kwargs)
 

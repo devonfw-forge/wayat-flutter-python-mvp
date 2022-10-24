@@ -16,7 +16,7 @@ class FirebaseAuthenticatedUser(User):
 
 class FirebaseService(IdentityProvider):
     def __init__(self, settings: FirebaseSettings):
-        import firebase_admin
+        import firebase_admin   # type: ignore
         firebase_credentials = firebase_admin.credentials.Certificate(settings.credentials_file)
         self._client = firebase_admin.initialize_app(credential=firebase_credentials)
 

@@ -2,7 +2,7 @@ from fastapi import Depends
 
 from app.common.infra.gcp.base_firebase_repository import BaseFirestoreRepository, get_async_client
 from app.domain.counter_management.models.counter import CounterEntity
-from google.cloud.firestore import Increment, AsyncClient
+from google.cloud.firestore import Increment, AsyncClient  # type: ignore
 
 
 class CounterRepository(BaseFirestoreRepository[CounterEntity]):
