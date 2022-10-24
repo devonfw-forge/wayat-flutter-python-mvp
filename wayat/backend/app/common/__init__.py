@@ -1,6 +1,5 @@
 from typing import Callable, Any
-from fastapi_keycloak import OIDCUser
-
+from fastapi_keycloak import OIDCUser  # type: ignore
 
 # Shortcut for checking current user and roles
 from app.common.core.identity_provider import User
@@ -23,4 +22,4 @@ def get_user(required_roles: list[str] | None = None) -> Callable[[Any], User]:
             JWTClaimsError: If any claim is invalid
             HTTPException: If any role required is not contained within the roles of the users
         """
-    return idp.get_current_user(required_roles=required_roles)
+    return idp.get_current_user(required_roles=required_roles)  # type: ignore

@@ -6,7 +6,7 @@ import 'package:restart_app/restart_app.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
-import 'package:wayat/features/profile/widgets/restart_ios_dialog.dart';
+import 'package:wayat/features/profile/widgets/restart_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/lang/language.dart';
@@ -34,17 +34,29 @@ class _PreferencesPageState extends State<PreferencesPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          context.go('/profile');
-          return true;
-        },
+      onWillPop: () async {
+        context.go('/profile');
+        return true;
+      },
+      child: SizedBox(
+        width: double.infinity,
         child: Column(
           children: [
-            _profileAppBar(),
+            if (widget.platformService.isDesktopOrWeb)
+              const SizedBox(
+                height: 20,
+              ),
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: _profileAppBar()),
             const SizedBox(height: 34.5),
-            _buildLanguageButton(),
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: _buildLanguageButton()),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Row _profileAppBar() {
@@ -92,11 +104,12 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 //For now solution is to show to the user InfoDialog with recomendation
                 //manually restarting iOS App
                 if (widget.platformService.targetPlatform ==
-                    TargetPlatform.iOS) {
+                        TargetPlatform.iOS ||
+                    widget.platformService.isDesktopOrWeb) {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return const RestartIosDialog();
+                        return const RestartDialog();
                       });
                 }
               } else {
@@ -108,7 +121,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
               style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: ColorTheme.primaryColor,
-                  fontSize: 16),
+                  fontSize: 17),
               textAlign: TextAlign.right,
             ),
           ),

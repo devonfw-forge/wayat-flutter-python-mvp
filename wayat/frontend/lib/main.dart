@@ -112,6 +112,9 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
       notificationState.messagingTerminatedAppListener(context);
       notificationState.messagingBackgroundAppListener(context);
     }
+
+    GlobalKey<NavigatorState> navKey = GlobalKey();
+    GetIt.I.registerSingleton<GlobalKey<NavigatorState>>(navKey);
     super.initState();
   }
 

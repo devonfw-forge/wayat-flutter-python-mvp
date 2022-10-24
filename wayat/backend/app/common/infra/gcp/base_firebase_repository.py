@@ -1,9 +1,10 @@
 import json
+import typing
 from functools import lru_cache
 from typing import TypeVar, Generic, Type, overload, Any, AsyncGenerator, List, Tuple, Optional
 
 from fastapi import Depends
-from google.cloud.firestore import (
+from google.cloud.firestore import (  # type: ignore
     AsyncClient,
     AsyncCollectionReference,
     AsyncDocumentReference,
@@ -139,7 +140,7 @@ class BaseFirestoreRepository(Generic[ModelType]):
             raise ValueError(f"Tried to update fields {not_defined_values} which are not present in the model")
 
     async def where_in_list(self, field: str, value_list: Any,
-                            other_filters: Optional[List[Tuple[str, str, any]]] = None) \
+                            other_filters: Optional[List[Tuple[str, str, Any]]] = None) \
             -> AsyncGenerator[ModelType, None]:
         all_generators = []
 

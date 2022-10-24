@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Optional, List, Tuple
 from fastapi import Depends
 from google.cloud import firestore
-from google.cloud.firestore import AsyncClient, AsyncTransaction
+from google.cloud.firestore import AsyncClient, AsyncTransaction  # type: ignore
 from google.cloud.firestore_v1.field_path import FieldPath
 
 from app.common.base.base_entity import new_uuid

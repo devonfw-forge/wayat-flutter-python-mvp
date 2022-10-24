@@ -1,10 +1,10 @@
 import logging
 from typing import overload, Optional
 
+import firebase_admin  # type: ignore
 from fastapi import Depends
-import firebase_admin
 from firebase_admin import messaging
-from firebase_admin.messaging import Notification, BatchResponse
+from firebase_admin.messaging import Notification, BatchResponse  # type: ignore
 
 from app.common.infra import FirebaseSettings
 from app.common.infra.gcp.utils import get_firebase_settings, run_in_executor

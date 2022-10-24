@@ -27,32 +27,30 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: (platformService.wideUi || platformService.isDesktopOrWeb)
-            ? null
-            : const PreferredSize(
-                preferredSize: Size.fromHeight(40), child: CustomAppBar()),
-        body: AdaptiveNavigationScaffold(
-          resizeToAvoidBottomInset: false,
-          body: child,
-          selectedIndex: selectedSection.index,
-          onDestinationSelected: (int index) {
-            switch (HomeTab.values[index]) {
-              case HomeTab.map:
-                context.go("/map");
-                break;
-              case HomeTab.contacts:
-                context.go("/contacts");
-                break;
-              case HomeTab.profile:
-                context.go("/profile");
-                break;
-            }
-          },
-          extendBody: true,
-          destinations: scaffoldDestinations,
-          navigationTypeResolver: navigationTypeResolver,
-        ));
+    return AdaptiveNavigationScaffold(
+      appBar: (platformService.wideUi || platformService.isDesktopOrWeb)
+          ? null
+          : const PreferredSize(
+              preferredSize: Size.fromHeight(40), child: CustomAppBar()),
+      resizeToAvoidBottomInset: false,
+      body: child,
+      selectedIndex: selectedSection.index,
+      onDestinationSelected: (int index) {
+        switch (HomeTab.values[index]) {
+          case HomeTab.map:
+            context.go("/map");
+            break;
+          case HomeTab.contacts:
+            context.go("/contacts");
+            break;
+          case HomeTab.profile:
+            context.go("/profile");
+            break;
+        }
+      },
+      destinations: scaffoldDestinations,
+      navigationTypeResolver: navigationTypeResolver,
+    );
   }
 
   NavigationType navigationTypeResolver(BuildContext context) {
