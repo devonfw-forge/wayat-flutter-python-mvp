@@ -42,17 +42,22 @@ void main() async {
         await ContactsAddressServiceImpl().getAllPhones(handler: mockHandler));
   });
 
-  test("GetAllPhones returns phones of contacts", () async {
+  test(
+      "GetAllPhones returns phones of contacts excluding duplicates and user phone",
+      () async {
     List<Contact> contacts = [
       Contact(
           name: Name(first: "Test", last: "Test"),
           phones: [Phone("(+34) 987654321"), Phone("+34-987654321")]),
       Contact(
           name: Name(first: "Test2", last: "Test"),
-          phones: [Phone("1234"), Phone("4321")]),
+          phones: [Phone("1234"), Phone("4321"), Phone("1234")]),
       Contact(
           name: Name(first: "Test3", last: "Test"),
-          phones: [Phone("111222333")])
+          phones: [Phone("111222333")]),
+      Contact(
+          name: Name(first: "User", last: "User"),
+          phones: [Phone("123456789"), Phone("+34123456789")])
     ];
 
     MockFlutterContactsHandlerLibW mockHandler =
