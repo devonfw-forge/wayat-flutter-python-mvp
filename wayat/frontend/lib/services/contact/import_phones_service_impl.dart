@@ -30,6 +30,9 @@ class ContactsAddressServiceImpl {
                 }
                 return phoneNumber;
               }))
+          .where((element) {
+            return element != user.phone;
+          })
           // Delete repeated contacts
           .toSet()
           .toList();
