@@ -34,17 +34,29 @@ class _PreferencesPageState extends State<PreferencesPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          context.go('/profile');
-          return true;
-        },
+      onWillPop: () async {
+        context.go('/profile');
+        return true;
+      },
+      child: SizedBox(
+        width: double.infinity,
         child: Column(
           children: [
-            _profileAppBar(),
+            if (widget.platformService.isDesktopOrWeb)
+              const SizedBox(
+                height: 20,
+              ),
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: _profileAppBar()),
             const SizedBox(height: 34.5),
-            _buildLanguageButton(),
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: _buildLanguageButton()),
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   Row _profileAppBar() {
@@ -108,7 +120,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
               style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: ColorTheme.primaryColor,
-                  fontSize: 16),
+                  fontSize: 17),
               textAlign: TextAlign.right,
             ),
           ),
