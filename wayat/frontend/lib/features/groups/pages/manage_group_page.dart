@@ -42,7 +42,13 @@ class ManageGroupPage extends StatelessWidget {
   Widget manageGroupContent(BuildContext context) {
     return Column(
       children: [
-        header(context),
+        if (platformService.isDesktopOrWeb)
+          const SizedBox(
+            height: 20,
+          ),
+        ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: header(context)),
         Expanded(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 800),

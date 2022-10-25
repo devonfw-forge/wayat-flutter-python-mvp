@@ -6,6 +6,7 @@ import 'package:wayat/common/widgets/basic_contact_tile.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Detailed view of the [Group], accessible normally by tapping on a [GroupTile]
 ///
@@ -16,8 +17,11 @@ import 'package:wayat/lang/app_localizations.dart';
 class ViewGroupPage extends StatelessWidget {
   final GroupsController groupsController = GetIt.I.get<GroupsController>();
   late Group selectedGroup = groupsController.selectedGroup!;
+  final PlatformService platformService;
 
-  ViewGroupPage({Key? key}) : super(key: key);
+  ViewGroupPage({Key? key, PlatformService? platformService})
+      : platformService = platformService ?? PlatformService(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,13 @@ class ViewGroupPage extends StatelessWidget {
   Widget groupViewContent(BuildContext context) {
     return Column(
       children: [
-        header(context),
+        if (platformService.isDesktopOrWeb)
+          const SizedBox(
+            height: 20,
+          ),
+        ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: header(context)),
         Expanded(
             child: Column(
           children: [
@@ -51,11 +61,14 @@ class ViewGroupPage extends StatelessWidget {
             ),
             Expanded(
               child: Container(
+                constraints: const BoxConstraints(maxWidth: 800),
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
-                    border: Border.all(color: Colors.black)),
+                    border: (platformService.isMobile)
+                        ? Border.all(color: Colors.black)
+                        : null),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,8 +117,9 @@ class ViewGroupPage extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.75,
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.75),
               child: Text(
                 key: const Key("GroupNameHeader"),
                 selectedGroup.name,
