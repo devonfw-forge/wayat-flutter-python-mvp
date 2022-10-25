@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/common/theme/colors.dart';
+import 'package:wayat/common/widgets/appbar/appbar.dart';
+import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
 import 'package:wayat/features/authentication/page/login_page.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
 import 'package:wayat/features/authentication/page/phone_verification_missing_page.dart';
@@ -23,6 +26,7 @@ import 'package:wayat/features/onboarding/pages/progress_page.dart';
 import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
 import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
 import 'package:wayat/features/profile/pages/profile_page.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
@@ -36,7 +40,7 @@ class AppRouter {
 
   late final GoRouter router = GoRouter(
     navigatorKey: GetIt.I.get<GlobalKey<NavigatorState>>(),
-    errorBuilder: (context, state) => const ErrorPage(),
+    errorBuilder: (context, state) => ErrorPage(url: state.location),
     debugLogDiagnostics: true,
     redirect: authenticationGuard,
     routes: [
@@ -271,13 +275,49 @@ class AppRouter {
 }
 
 class ErrorPage extends StatelessWidget {
-  const ErrorPage({super.key});
+  final String url;
+  const ErrorPage({required this.url, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    Map<String, String> errors = (url == "/server-error")
+        ? {"errorCode": "500", "errorMessage": appLocalizations.errorServer}
+        : {"errorCode": "404", "errorMessage": appLocalizations.errorNotFound};
+
+    return Scaffold(
+      appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(40), child: CustomAppBar()),
       body: Center(
-        child: Text("Error page"),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              errors["errorCode"]!,
+              style: const TextStyle(
+                  color: ColorTheme.primaryColor,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              errors["errorMessage"]!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            CustomTextIconButton(
+              text: appLocalizations.returnToWayat,
+              icon: Icons.arrow_back_sharp,
+              onPressed: () => context.go("/map"),
+              fontSize: 18,
+            )
+          ],
+        ),
       ),
     );
   }

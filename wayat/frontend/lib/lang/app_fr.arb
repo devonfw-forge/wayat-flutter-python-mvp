@@ -139,5 +139,9 @@
     "locationPermissionNotGranted": "Autorisation de localisation non accordée, veuillez accepter les autorisations de localisation pour tout le temps. Sélectionnez-le dans la section des paramètres",
 
     "receivedFriendRequest": " vous a envoyé une demande d'ami",
-    "acceptedFriendRequest": " a accepté votre demande d'ami"
+    "acceptedFriendRequest": " a accepté votre demande d'ami",
+    
+    "errorNotFound" : "Page non trouvée",
+    "errorServer" : "Une erreur inattendue s'est produite. Essayez à nouveau plus tard.",
+    "returnToWayat" : "Retour au wayat"
 } 
