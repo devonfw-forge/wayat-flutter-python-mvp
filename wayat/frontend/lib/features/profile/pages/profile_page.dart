@@ -63,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                     () => context.go("/profile/edit"),
                     () => context.go("/profile/preferences")),
               ),
-              const Divider(),
+              if (platformService.isMobile) const Divider(),
               const SizedBox(height: 20),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 800),
