@@ -224,4 +224,10 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         }
         await self.update(document_id=user_id, data=update)
 
+    async def remove_notifications_tokens(self, *, user_id: str, tokens: list[str]):
+        update = {
+            "notifications_tokens": firestore.ArrayRemove(tokens),
+        }
+        await self.update(document_id=user_id, data=update)
+
 
