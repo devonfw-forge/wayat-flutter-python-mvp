@@ -19,15 +19,10 @@ class GroupsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: groupsContent(context)),
-        onWillPop: () async {
-          context.go('/contacts/friends');
-          return true;
-        });
+    return SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: groupsContent(context));
   }
 
   Widget groupsContent(BuildContext context) {

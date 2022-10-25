@@ -98,7 +98,7 @@ class FriendsPage extends StatelessWidget {
             );
           }),
           NavigationButton(
-              onTap: () => context.go('/contacts/groups'),
+              onTap: () => context.go('/contacts/friends/groups'),
               text: appLocalizations.groupsTitle)
         ],
       ),
