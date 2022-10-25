@@ -24,20 +24,23 @@ class SentRequestsPage extends StatelessWidget {
         context.go('/contacts/requests');
         return true;
       },
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: header(context)),
-            const SizedBox(
-              height: 10,
-            ),
-            ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: sentRequestsList())
-          ],
+      child: SizedBox(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: header(context)),
+              const SizedBox(
+                height: 10,
+              ),
+              ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: sentRequestsList())
+            ],
+          ),
         ),
       ),
     );
