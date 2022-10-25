@@ -40,69 +40,72 @@ class ViewGroupPage extends StatelessWidget {
   }
 
   Widget groupViewContent(BuildContext context) {
-    return Column(
-      children: [
-        if (platformService.isDesktopOrWeb)
-          const SizedBox(
-            height: 20,
-          ),
-        ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: header(context)),
-        Expanded(
-            child: Column(
-          children: [
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          if (platformService.isDesktopOrWeb)
             const SizedBox(
               height: 20,
             ),
-            groupInformation(),
-            const SizedBox(
-              height: 25,
-            ),
-            Expanded(
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 800),
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)),
-                    border: (platformService.isMobile)
-                        ? Border.all(color: Colors.black)
-                        : null),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 15),
-                        child: Text(
-                          appLocalizations.groupParticipants,
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w700),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: header(context)),
+          Expanded(
+              child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              groupInformation(),
+              const SizedBox(
+                height: 25,
+              ),
+              Expanded(
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      border: (platformService.isMobile)
+                          ? Border.all(color: Colors.black)
+                          : null),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 15),
+                          child: Text(
+                            appLocalizations.groupParticipants,
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w700),
+                          ),
                         ),
-                      ),
-                      ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: selectedGroup.members.length,
-                          itemBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
-                                child: BasicContactTile(
-                                    contact: selectedGroup.members[index]),
-                              )),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
+                        ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: selectedGroup.members.length,
+                            itemBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5.0, horizontal: 10),
+                                  child: BasicContactTile(
+                                      contact: selectedGroup.members[index]),
+                                )),
+                        const SizedBox(
+                          height: 10,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
-        ))
-      ],
+              )
+            ],
+          ))
+        ],
+      ),
     );
   }
 
