@@ -51,21 +51,18 @@ abstract class _NotificationState with Store {
     requestAlertPermission: false,
   );
   
-  static Future<void> initialize(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin, BuildContext context) async {
+  Future<void> initialize(BuildContext context) async {
 
-  InitializationSettings initializationSettings = const InitializationSettings(
-      android: AndroidInitializationSettings('app_icon'),
-      iOS: DarwinInitializationSettings(
-        requestSoundPermission: false,
-        requestBadgePermission: false,
-        requestAlertPermission: false,
-      ));
+  InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS);
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings, onDidReceiveNotificationResponse: (response){
-      if ( response.payload != null)
-      {
+      // if ( response.payload != null)
+      // {
+        print('entra: '+response.toString());
         context.go('/contacts/friends');
-      }
+      // }
     });
 
   }

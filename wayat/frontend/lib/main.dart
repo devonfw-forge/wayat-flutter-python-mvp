@@ -108,6 +108,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     if (PlatformService().isMobile) {
       NotificationState notificationState = GetIt.I.get<NotificationState>();
+      notificationState.initialize(context);
       notificationState.registerNotification();
       notificationState.messagingTerminatedAppListener(context);
       notificationState.messagingBackgroundAppListener(context);
