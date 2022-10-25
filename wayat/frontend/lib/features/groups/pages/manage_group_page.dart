@@ -40,33 +40,42 @@ class ManageGroupPage extends StatelessWidget {
   }
 
   Widget manageGroupContent(BuildContext context) {
-    return Column(
-      children: [
-        header(context),
-        Expanded(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  groupPictureSection(context),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  groupName(),
-                  addParticipantsSection(context),
-                  participantsSection(context),
-                  showInfoValidGroup(),
-                  const SizedBox(
-                    height: 10,
-                  )
-                ],
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          if (platformService.isDesktopOrWeb)
+            const SizedBox(
+              height: 20,
+            ),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: header(context)),
+          Expanded(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    groupPictureSection(context),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    groupName(),
+                    addParticipantsSection(context),
+                    participantsSection(context),
+                    showInfoValidGroup(),
+                    const SizedBox(
+                      height: 10,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -244,8 +253,12 @@ class ManageGroupPage extends StatelessWidget {
         enableDrag: false,
         isScrollControlled: true,
         context: context,
+        constraints: const BoxConstraints(
+          maxWidth: 900,
+        ),
         builder: (BuildContext context) {
           return Container(
+            alignment: AlignmentDirectional.topCenter,
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
@@ -253,10 +266,18 @@ class ManageGroupPage extends StatelessWidget {
                 border: Border.all(color: Colors.black)),
             height: MediaQuery.of(context).size.height * .6,
             child: SingleChildScrollView(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [bottomSheetHeader(context), bottomSheetContactList()],
-            )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: bottomSheetHeader(context)),
+                  ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: bottomSheetContactList())
+                ],
+              ),
+            ),
           );
         });
   }
