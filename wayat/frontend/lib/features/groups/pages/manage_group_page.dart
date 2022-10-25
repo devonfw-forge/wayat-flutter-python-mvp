@@ -253,8 +253,12 @@ class ManageGroupPage extends StatelessWidget {
         enableDrag: false,
         isScrollControlled: true,
         context: context,
+        constraints: const BoxConstraints(
+          maxWidth: 900,
+        ),
         builder: (BuildContext context) {
           return Container(
+            alignment: AlignmentDirectional.topCenter,
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
@@ -262,10 +266,18 @@ class ManageGroupPage extends StatelessWidget {
                 border: Border.all(color: Colors.black)),
             height: MediaQuery.of(context).size.height * .6,
             child: SingleChildScrollView(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [bottomSheetHeader(context), bottomSheetContactList()],
-            )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: bottomSheetHeader(context)),
+                  ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: bottomSheetContactList())
+                ],
+              ),
+            ),
           );
         });
   }
