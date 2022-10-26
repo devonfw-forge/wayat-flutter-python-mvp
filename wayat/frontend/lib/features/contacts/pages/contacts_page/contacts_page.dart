@@ -89,6 +89,8 @@ class _ContactsPageState extends State<ContactsPage>
     // as we can see in the following GitHub issue where the maintainer of said package
     // offered this workaround.
     // https://github.com/tomgilder/routemaster/issues/150
+    // This also references this issue in the Flutter repository
+    // https://github.com/flutter/flutter/issues/86222
     if (!TickerMode.of(context)) {
       return const SizedBox();
     }
