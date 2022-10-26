@@ -81,6 +81,7 @@ void main() async {
     String groupId = "id";
     group.id = groupId;
     when(mockGroupsController.selectedGroup).thenReturn(group);
+    when(mockGroupsController.updateGroups()).thenAnswer((_) async => true);
     when(mockGroupsController.deleteGroup(groupId))
         .thenAnswer((_) => Future.value(null));
 
@@ -94,6 +95,7 @@ void main() async {
     await tester.pumpAndSettle();
     verify(mockGroupsController.deleteGroup(groupId)).called(1);
     verify(mockGroupsController.setSelectedGroup(null)).called(1);
+    verify(mockGroupsController.updateGroups()).called(1);
   });
 
   testWidgets("Tapping on the arrow icon changes the state to go back",

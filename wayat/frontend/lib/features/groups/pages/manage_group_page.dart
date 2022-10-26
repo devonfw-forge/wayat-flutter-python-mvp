@@ -34,7 +34,9 @@ class ManageGroupPage extends StatelessWidget {
     return WillPopScope(
         child: manageGroupContent(context),
         onWillPop: () async {
-          goBack(context);
+          if (controller.group.id == "") {
+            GetIt.I.get<GroupsController>().setSelectedGroup(null);
+          }
           return true;
         });
   }
@@ -110,7 +112,6 @@ class ManageGroupPage extends StatelessWidget {
                 } else {
                   context.go("/contacts/friends/groups/${controller.group.id}");
                 }
-                goBack(context);
               },
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
@@ -409,12 +410,5 @@ class ManageGroupPage extends StatelessWidget {
                 )),
           ])
         ]));
-  }
-
-  /// Modifies the state to redirect to the [GroupsPage]
-  void goBack(BuildContext context) {
-    if (controller.group.id == "") {
-      GetIt.I.get<GroupsController>().setSelectedGroup(null);
-    }
   }
 }
