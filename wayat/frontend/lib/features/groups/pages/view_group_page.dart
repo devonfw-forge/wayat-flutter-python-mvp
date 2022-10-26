@@ -36,7 +36,7 @@ class ViewGroupPage extends StatelessWidget {
 
   void goBack(BuildContext context) {
     groupsController.setSelectedGroup(null);
-    context.go('/contacts/friends/groups');
+    //context.go('/contacts/friends/groups');
   }
 
   Widget groupViewContent(BuildContext context) {

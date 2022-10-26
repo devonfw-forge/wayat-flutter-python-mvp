@@ -106,6 +106,11 @@ class AppRouter {
             ),
             GoRoute(
                 path: 'groups',
+                redirect: (context, state) =>
+                    (state.location == '/contacts/requests/groups' ||
+                            state.location == '/contacts/suggestions/groups')
+                        ? '/contacts/friends/groups'
+                        : null,
                 pageBuilder: (context, state) {
                   return NoTransitionPage(
                       child: HomePage(
@@ -210,6 +215,11 @@ class AppRouter {
   );
 
   FutureOr<String?> sentRequestsGuard(context, state) async {
+    if (state.location == '/contacts/friends/sent-requests' ||
+        state.location == '/contacts/suggestions/sent-requests') {
+      return '/contacts/requests/sent-requests';
+    }
+
     RequestsController requestsController =
         GetIt.I.get<ContactsPageController>().requestsController;
     if (requestsController.sentRequests.isEmpty) {
