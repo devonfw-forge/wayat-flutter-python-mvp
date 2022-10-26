@@ -124,11 +124,15 @@ class ManageGroupPage extends StatelessWidget {
         CustomTextButton(
             text: appLocalizations.save,
             onPressed: () {
-              controller.saveGroup().then((value) {
-                if (!controller.showValidationGroup) {
-                  goBack(context);
+              if (!controller.showValidationGroup) {
+                controller.saveGroup().then(
+                    (_) => GetIt.I.get<GroupsController>().updateGroups());
+
+                if (controller.group.id == "") {
+                  GetIt.I.get<GroupsController>().setSelectedGroup(null);
                 }
-              });
+                context.go("/contacts/friends/groups");
+              }
             }),
       ],
     );
