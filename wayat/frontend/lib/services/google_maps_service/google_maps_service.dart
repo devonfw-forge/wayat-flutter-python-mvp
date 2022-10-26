@@ -19,9 +19,8 @@ class GoogleMapsService {
     late Uri uri;
     // To test the web condition, the access to this variable should be
     // wrapped in its own class to allow for mocking
-    if (!platformService.isWeb &&
-        platformService.targetPlatform == TargetPlatform.android) {
-      uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    if (platformService.targetPlatform == TargetPlatform.android) {
+      uri = Uri.parse("google.navigation:q=$lat,$lng&mode=w");
     } else if (!platformService.isWeb &&
         platformService.targetPlatform == TargetPlatform.iOS) {
       //apple maps
