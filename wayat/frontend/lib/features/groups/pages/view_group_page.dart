@@ -27,7 +27,7 @@ class ViewGroupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        goBack(context);
+        groupsController.setSelectedGroup(null);
         return true;
       },
       child: groupViewContent(context),
@@ -36,7 +36,7 @@ class ViewGroupPage extends StatelessWidget {
 
   void goBack(BuildContext context) {
     groupsController.setSelectedGroup(null);
-    //context.go('/contacts/friends/groups');
+    context.go('/contacts/friends/groups');
   }
 
   Widget groupViewContent(BuildContext context) {

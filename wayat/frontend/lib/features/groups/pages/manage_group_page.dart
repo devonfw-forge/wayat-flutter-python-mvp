@@ -103,7 +103,15 @@ class ManageGroupPage extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () => goBack(context),
+              onPressed: () {
+                if (controller.group.id == "") {
+                  GetIt.I.get<GroupsController>().setSelectedGroup(null);
+                  context.go("/contacts/friends/groups");
+                } else {
+                  context.go("/contacts/friends/groups/${controller.group.id}");
+                }
+                goBack(context);
+              },
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
