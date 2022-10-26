@@ -176,7 +176,8 @@ class ViewGroupPage extends StatelessWidget {
         } else if (value == deleteGroup) {
           groupsController
               .deleteGroup(selectedGroup.id)
-              .then((_) => goBack(context));
+              .then((_) => groupsController.updateGroups());
+          goBack(context);
         }
       },
     );
