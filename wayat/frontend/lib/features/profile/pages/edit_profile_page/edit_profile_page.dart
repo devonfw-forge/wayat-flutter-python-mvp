@@ -99,9 +99,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Observer(
             builder: (_) => TextButton(
               onPressed: () {
-                widget.controller
-                    .onPressedSaveButton()
-                    .then((_) => context.go('/profile'));
+                widget.controller.onPressedSaveButton();
+                context.go('/profile');
               },
               child: Text(
                 appLocalizations.save,
