@@ -403,9 +403,9 @@ class ManageGroupPage extends StatelessWidget {
   void goBack(BuildContext context) {
     if (controller.group.id == "") {
       GetIt.I.get<GroupsController>().setSelectedGroup(null);
-      context.go("/contacts/groups");
+      context.go("/contacts/friends/groups");
     } else {
-      context.go("/contacts/groups/${controller.group.id}");
+      context.go("/contacts/friends/groups/${controller.group.id}");
     }
   }
 }

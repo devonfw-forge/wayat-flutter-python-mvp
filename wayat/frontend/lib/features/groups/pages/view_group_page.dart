@@ -36,7 +36,7 @@ class ViewGroupPage extends StatelessWidget {
 
   void goBack(BuildContext context) {
     groupsController.setSelectedGroup(null);
-    context.go('/contacts/groups');
+    context.go('/contacts/friends/groups');
   }
 
   Widget groupViewContent(BuildContext context) {
@@ -172,7 +172,7 @@ class ViewGroupPage extends StatelessWidget {
       onSelected: (value) {
         if (value == editGroup) {
           context.go(
-              '/contacts/groups/${groupsController.selectedGroup?.id}/edit');
+              '/contacts/friends/groups/${groupsController.selectedGroup?.id}/edit');
         } else if (value == deleteGroup) {
           groupsController
               .deleteGroup(selectedGroup.id)

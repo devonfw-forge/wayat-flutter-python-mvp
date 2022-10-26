@@ -97,23 +97,21 @@ class AppRouter {
               redirect: sentRequestsGuard,
               path: 'sent-requests',
               pageBuilder: (context, state) {
-                return FadeTransitionPage(
-                    key: _scaffoldKey,
+                return NoTransitionPage(
                     child: HomePage(
-                      selectedSection: HomeTab.contacts,
-                      child: SentRequestsPage(),
-                    ));
+                  selectedSection: HomeTab.contacts,
+                  child: SentRequestsPage(),
+                ));
               },
             ),
             GoRoute(
                 path: 'groups',
                 pageBuilder: (context, state) {
-                  return FadeTransitionPage(
-                      key: _scaffoldKey,
+                  return NoTransitionPage(
                       child: HomePage(
-                        selectedSection: HomeTab.contacts,
-                        child: GroupsPage(),
-                      ));
+                    selectedSection: HomeTab.contacts,
+                    child: GroupsPage(),
+                  ));
                 },
                 routes: [
                   GoRoute(

@@ -75,8 +75,8 @@ class GroupsPage extends StatelessWidget {
                               group: groups[index],
                               onPressed: () {
                                 controller.setSelectedGroup(groups[index]);
-                                context
-                                    .go('/contacts/groups/${groups[index].id}');
+                                context.go(
+                                    '/contacts/friends/groups/${groups[index].id}');
                               }),
                         );
                       });
@@ -112,7 +112,7 @@ class GroupsPage extends StatelessWidget {
           CustomTextButton(
             onPressed: () {
               controller.setSelectedGroup(Group.empty());
-              context.go('/contacts/groups/create');
+              context.go('/contacts/friends/groups/create');
             },
             text: appLocalizations.createGroup,
           )

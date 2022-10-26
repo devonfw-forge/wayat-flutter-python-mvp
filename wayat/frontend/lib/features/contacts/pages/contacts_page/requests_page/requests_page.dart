@@ -89,7 +89,7 @@ class RequestsPage extends StatelessWidget {
             );
           }),
           NavigationButton(
-              onTap: () => context.go('/contacts/sent-requests'),
+              onTap: () => context.go('/contacts/requests/sent-requests'),
               text: appLocalizations.sentButtonNavigation)
         ],
       ),
