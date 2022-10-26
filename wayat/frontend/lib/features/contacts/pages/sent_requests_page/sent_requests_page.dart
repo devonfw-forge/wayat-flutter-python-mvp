@@ -19,28 +19,22 @@ class SentRequestsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        context.go('/contacts/requests');
-        return true;
-      },
-      child: SizedBox(
-        height: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: header(context)),
-              const SizedBox(
-                height: 10,
-              ),
-              ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: sentRequestsList())
-            ],
-          ),
+    return SizedBox(
+      height: double.infinity,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: header(context)),
+            const SizedBox(
+              height: 10,
+            ),
+            ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: sentRequestsList())
+          ],
         ),
       ),
     );
