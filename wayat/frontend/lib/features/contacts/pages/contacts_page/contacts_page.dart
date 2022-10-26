@@ -36,14 +36,17 @@ class _ContactsPageState extends State<ContactsPage>
     super.initState();
     _tabController = TabController(
         length: (widget.platformService.isWeb) ? 2 : 3, vsync: this);
-    setTabIndex();
-    controller.updateTabData(_tabController.index);
+    setUpTabs();
   }
 
   @override
   void didUpdateWidget(covariant ContactsPage oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    setUpTabs();
+  }
+
+  void setUpTabs() {
     setTabIndex();
     controller.updateTabData(_tabController.index);
   }
@@ -76,6 +79,19 @@ class _ContactsPageState extends State<ContactsPage>
 
   @override
   Widget build(BuildContext context) {
+    // This hack prevents the TabBar from being shown before the page is completely built.
+    //
+    // If removed, due to what is most likely a Flutter bug, when going directly to the
+    // url '/contacts/requests/friends-requests' and then doing a context.go('/contacts/friends')
+    // it encounters a null value for 'viewportDimension' internally and crashes in debug mode.
+    //
+    // Similar issues occur when using another navigation libraries like 'routemaster'
+    // as we can see in the following GitHub issue where the maintainer of said package
+    // offered this workaround.
+    // https://github.com/tomgilder/routemaster/issues/150
+    if (!TickerMode.of(context)) {
+      return const SizedBox();
+    }
     return Column(
       children: [
         SearchBar(
