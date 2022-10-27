@@ -138,9 +138,11 @@
     "locationPermission": "Standorterlaubnis",
     "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus",
 
+    "@_NOTIFICATIONS": {},
     "receivedFriendRequest": " hat dir eine Freundschaftsanfrage geschickt",
     "acceptedFriendRequest": " hat deine Freundschaftsanfrage angenommen",
 
+    "@_ERROR_PAGE":{},
     "errorNotFound": "Seite nicht gefunden",
     "errorServer": "Ein unerwarteter Fehler ist aufgetreten.\nVersuchen Sie es später erneut.",
     "returnToWayat": "Zurück zu wayat"
