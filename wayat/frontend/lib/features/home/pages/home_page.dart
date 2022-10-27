@@ -1,9 +1,12 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:adaptive_navigation/adaptive_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
+import 'package:wayat/features/home/pages/home_tabs.dart';
 import 'package:wayat/navigation/bottom_navigation_bar/items_bottom_navigation_bar.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
+// ignore: depend_on_referenced_packages
+import 'package:adaptive_breakpoints/adaptive_breakpoints.dart';
 
 /// Main page with tabs of home, contacts and profile
 ///
@@ -12,62 +15,54 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 /// When the platform is Android or iOS and the screen is tall, it shows a bottom navigation bar.
 class HomePage extends StatelessWidget {
   final PlatformService platformService;
+  final HomeTab selectedSection;
+  final Widget child;
 
-  HomePage({
-    PlatformService? platformService,
-    Key? key,
-  })  : platformService = platformService ?? PlatformService(),
-        super(key: key);
+  HomePage(
+      {required this.selectedSection,
+      required this.child,
+      PlatformService? platformService,
+      super.key})
+      : platformService = platformService ?? PlatformService();
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsRouter(
-      routes: [
-        HomeMapRoute(),
-        ContactsWrapper(),
-        ProfileWrapper(),
-      ],
-      builder: (context, child, animation) {
-        final tabsRouter = AutoTabsRouter.of(context);
-
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: 
-              (platformService.wideUi || platformService.isDesktopOrWeb) ? null : const PreferredSize(
+    return AdaptiveNavigationScaffold(
+      appBar: (platformService.wideUi || platformService.isDesktopOrWeb)
+          ? null
+          : const PreferredSize(
               preferredSize: Size.fromHeight(40), child: CustomAppBar()),
-          body: Row(children: [
-            if (platformService.wideUi || platformService.isDesktopOrWeb)
-              NavigationRail(
-                destinations: navigationRailDestinations,
-                selectedIndex: tabsRouter.activeIndex,
-                backgroundColor: Colors.black,
-                selectedIconTheme: const IconThemeData(color: Colors.white),
-                unselectedIconTheme: const IconThemeData(color: Colors.white54),
-                selectedLabelTextStyle: const TextStyle(color: Colors.white),
-                unselectedLabelTextStyle:
-                    const TextStyle(color: Colors.white54),
-                onDestinationSelected: (index) =>
-                    tabsRouter.setActiveIndex(index),
-              ),
-            Expanded(child: child)
-          ]),
-          bottomNavigationBar:
-              (!platformService.wideUi && !platformService.isDesktopOrWeb)
-                  ? Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      color: Colors.black,
-                      child: BottomNavigationBar(
-                          type: BottomNavigationBarType.fixed,
-                          backgroundColor: Colors.black,
-                          selectedItemColor: Colors.white,
-                          unselectedItemColor: Colors.white54,
-                          currentIndex: tabsRouter.activeIndex,
-                          onTap: tabsRouter.setActiveIndex,
-                          items: bottomNavigationBarItems),
-                    )
-                  : null,
-        );
+      resizeToAvoidBottomInset: false,
+      body: child,
+      selectedIndex: selectedSection.index,
+      onDestinationSelected: (int index) {
+        switch (HomeTab.values[index]) {
+          case HomeTab.map:
+            context.go("/map");
+            break;
+          case HomeTab.contacts:
+            context.go("/contacts");
+            break;
+          case HomeTab.profile:
+            context.go("/profile");
+            break;
+        }
       },
+      destinations: scaffoldDestinations,
+      navigationTypeResolver: navigationTypeResolver,
     );
   }
+
+  NavigationType navigationTypeResolver(BuildContext context) {
+    if (_isLargeScreen(context) || _isMediumScreen(context)) {
+      return NavigationType.rail;
+    } else {
+      return NavigationType.bottom;
+    }
+  }
+
+  bool _isLargeScreen(BuildContext context) =>
+      getWindowType(context) >= AdaptiveWindowType.large;
+  bool _isMediumScreen(BuildContext context) =>
+      getWindowType(context) == AdaptiveWindowType.medium;
 }

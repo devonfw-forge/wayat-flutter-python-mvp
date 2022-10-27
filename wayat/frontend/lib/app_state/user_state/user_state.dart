@@ -20,20 +20,6 @@ class UserState = _UserState with _$UserState;
 abstract class _UserState with Store {
   GoogleSignInAccount? googleAccount;
 
-  /// Whether or not the authentication process has been completed.
-  ///
-  /// Useful for **auto_route**.
-  @computed
-  bool get finishLoggedIn =>
-      (currentUser == null) ? false : currentUser!.phone.isNotEmpty;
-
-  /// Wheter or not the user has finished the onboarding process.
-  ///
-  /// Useful for **auto_route**.
-  @computed
-  bool get hasDoneOnboarding =>
-      (currentUser == null) ? false : currentUser!.onboardingCompleted;
-
   /// Instance of the authenticated user in the app.
   ///
   /// It will be `null` if there is no authenticated user.
@@ -62,7 +48,7 @@ abstract class _UserState with Store {
     googleAccount = await authService.signIn();
     // googleAccount will be null if the user cancels the google authentication
     if (googleAccount != null) {
-      initializeCurrentUser();
+      await initializeCurrentUser();
     }
   }
 
@@ -96,6 +82,7 @@ abstract class _UserState with Store {
   @action
   Future<void> initializeCurrentUser() async {
     currentUser ??= await authService.getUserData();
+    GetIt.I.get<LifeCycleState>().notifyAppOpenned();
   }
 
   /// Updates the [phone] of the authenticated user.

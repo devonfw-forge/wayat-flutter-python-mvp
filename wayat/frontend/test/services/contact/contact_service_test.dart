@@ -16,7 +16,7 @@ import 'contact_service_test.mocks.dart';
 
 @GenerateMocks([HttpProvider, http.Response])
 void main() async {
-  HttpProvider mockHttpProvider = MockHttpProvider();
+  MockHttpProvider mockHttpProvider = MockHttpProvider();
   Map<String, dynamic> getContactsReponse = {
     "users": [
       {
@@ -85,9 +85,8 @@ void main() async {
     when(filterResponse.bodyBytes).thenReturn(
         Uint8List.fromList(jsonEncode(getContactsReponse).codeUnits));
 
-    when(mockHttpProvider.sendPostRequest(APIContract.findByPhone, {
-      "phones": ["+34123456789", "+34987654321"]
-    })).thenAnswer((_) => Future.value(filterResponse));
+    when(mockHttpProvider.sendPostRequest(APIContract.findByPhone, any))
+        .thenAnswer((_) => Future.value(filterResponse));
 
     ContactService contactService = ContactServiceImpl();
 
@@ -95,9 +94,8 @@ void main() async {
         await contactService.getFilteredContacts(importedNumbers);
 
     expect(filteredContacts, contactList);
-    verify(mockHttpProvider.sendPostRequest(APIContract.findByPhone, {
-      "phones": ["+34123456789", "+34987654321"]
-    })).called(1);
+    verify(mockHttpProvider.sendPostRequest(APIContract.findByPhone, any))
+        .called(1);
   });
 
   test("Remove contact calls the correct endpoint with correct data", () async {

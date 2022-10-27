@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
-import 'package:wayat/features/profile/widgets/restart_ios_dialog.dart';
+import 'package:wayat/features/profile/widgets/restart_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/lang/language.dart';
@@ -32,18 +33,24 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          widget.controller.onPressedBackButton();
-          return true;
-        },
-        child: Column(
-          children: [
-            _profileAppBar(),
-            const SizedBox(height: 34.5),
-            _buildLanguageButton(),
-          ],
-        ));
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          if (widget.platformService.isDesktopOrWeb)
+            const SizedBox(
+              height: 20,
+            ),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: _profileAppBar()),
+          const SizedBox(height: 34.5),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: _buildLanguageButton()),
+        ],
+      ),
+    );
   }
 
   Row _profileAppBar() {
@@ -55,13 +62,15 @@ class _PreferencesPageState extends State<PreferencesPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              InkWell(
-                  onTap: () {
-                    // Route to Profile main page
-                    widget.controller.onPressedBackButton();
+              IconButton(
+                  splashRadius: 24,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  iconSize: 24,
+                  onPressed: () {
+                    context.go('/profile');
                   },
-                  child: const Icon(Icons.arrow_back,
-                      color: Colors.black87, size: 24)),
+                  icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
                 padding: const EdgeInsets.only(left: 14),
                 child: Text(
@@ -69,7 +78,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                   style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       color: Colors.black87,
-                      fontSize: 19),
+                      fontSize: 16),
                 ),
               ),
             ],
@@ -91,15 +100,16 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 //For now solution is to show to the user InfoDialog with recomendation
                 //manually restarting iOS App
                 if (widget.platformService.targetPlatform ==
-                    TargetPlatform.iOS) {
+                        TargetPlatform.iOS ||
+                    widget.platformService.isDesktopOrWeb) {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return const RestartIosDialog();
+                        return const RestartDialog();
                       });
                 }
               } else {
-                widget.controller.onPressedBackButton();
+                context.go('/profile');
               }
             },
             child: Text(
@@ -107,7 +117,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
               style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: ColorTheme.primaryColor,
-                  fontSize: 16),
+                  fontSize: 17),
               textAlign: TextAlign.right,
             ),
           ),

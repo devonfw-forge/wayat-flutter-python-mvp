@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -11,10 +10,9 @@ import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/features/authentication/page/phone_validation_page.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:mockito/annotations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../test_common/test_app.dart';
 import 'phone_validation_page_test.mocks.dart';
 
 @GenerateMocks([UserState, PhoneVerificationController])
@@ -41,59 +39,44 @@ void main() async {
 
   setUpAll(() {
     GetIt.I.registerSingleton<UserState>(mockUserState);
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<PhoneVerificationController>(
         mockPhoneVerifController);
   });
 
-  Widget createApp(Widget body) {
-    return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      home: Scaffold(
-        body: body,
-      ),
-    );
-  }
-
   group('Phone validation page has the correct widgets', () {
     testWidgets('Phone validation page has a app title', (tester) async {
-      await tester.pumpWidget(createApp(PhoneValidationPage()));
+      await tester.pumpWidget(TestApp.createApp(body: PhoneValidationPage()));
       expect(find.widgetWithText(CustomWayatTitle, appLocalizations.appTitle),
           findsOneWidget);
     });
 
     testWidgets('Phone validation page has a login title', (tester) async {
-      await tester.pumpWidget(createApp(PhoneValidationPage()));
+      await tester.pumpWidget(TestApp.createApp(body: PhoneValidationPage()));
       expect(find.widgetWithText(CustomLoginTitle, appLocalizations.login),
           findsOneWidget);
     });
 
     testWidgets('Phone validation page has a phone description title',
         (tester) async {
-      await tester.pumpWidget(createApp(PhoneValidationPage()));
+      await tester.pumpWidget(TestApp.createApp(body: PhoneValidationPage()));
       expect(find.text(appLocalizations.phoneNumber), findsWidgets);
     });
 
     testWidgets('Phone validation page has a phone description',
         (tester) async {
-      await tester.pumpWidget(createApp(PhoneValidationPage()));
+      await tester.pumpWidget(TestApp.createApp(body: PhoneValidationPage()));
       expect(find.text(appLocalizations.phonePageDescription), findsOneWidget);
     });
 
     testWidgets('Phone validation page has a phone input field',
         (tester) async {
-      await tester.pumpWidget(createApp(PhoneValidationPage()));
+      await tester.pumpWidget(TestApp.createApp(body: PhoneValidationPage()));
       expect(find.byType(IntlPhoneField), findsOneWidget);
     });
 
     testWidgets('Phone validation page has a phone submit button',
         (tester) async {
-      await tester.pumpWidget(createApp(PhoneValidationPage()));
+      await tester.pumpWidget(TestApp.createApp(body: PhoneValidationPage()));
       expect(find.byType(CustomOutlinedButton), findsOneWidget);
     });
   });

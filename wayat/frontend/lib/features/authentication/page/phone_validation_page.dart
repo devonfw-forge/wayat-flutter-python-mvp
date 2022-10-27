@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/features/authentication/common/login_title.dart';
 import 'package:wayat/common/widgets/components/wayat_title.dart';
@@ -30,7 +31,7 @@ class PhoneValidationPage extends StatelessWidget {
                   const CustomWayatTitle(),
                   const CustomLoginTitle(),
                   _phoneDescription(),
-                  PhoneVerificationField(),
+                  PhoneVerificationField(onValidated: () => context.go('/map')),
                 ],
               ),
             ),

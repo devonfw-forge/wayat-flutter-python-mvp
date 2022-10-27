@@ -1,7 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/widgets/buttons/filled_button.dart';
 import 'package:wayat/common/widgets/buttons/text_button.dart';
@@ -9,7 +8,6 @@ import 'package:wayat/lang/app_localizations.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   final UserState userState = GetIt.I.get<UserState>();
-  final ProfileController profileController = GetIt.I.get<ProfileController>();
 
   DeleteAccountDialog({Key? key}) : super(key: key);
 
@@ -27,10 +25,13 @@ class DeleteAccountDialog extends StatelessWidget {
       title: Text(appLocalizations.deleteAccount),
       titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 16),
-      titlePadding: const EdgeInsets.all(32),
-      content: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.15,
-        width: MediaQuery.of(context).size.width,
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: 70,
+          minHeight: 50,
+          maxWidth: 400,
+          maxHeight: 400,
+        ),
         child: SingleChildScrollView(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -48,14 +49,15 @@ class DeleteAccountDialog extends StatelessWidget {
                 text: appLocalizations.delete,
                 enabled: true,
                 onPressed: () {
-                  AutoRouter.of(context).pop();
+                  Navigator.of(context).pop();
                   userState.logOut();
                   userState.deleteUser();
+                  context.go('/login');
                 }),
             CustomTextButton(
                 text: appLocalizations.cancel,
                 onPressed: () {
-                  AutoRouter.of(context).pop();
+                  Navigator.of(context).pop();
                 }),
           ],
         ),

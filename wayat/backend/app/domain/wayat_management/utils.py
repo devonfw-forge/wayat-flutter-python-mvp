@@ -3,7 +3,7 @@ from datetime import datetime, timezone, tzinfo
 from math import radians, cos, sin, asin, sqrt
 from typing import BinaryIO, Optional
 
-from PIL import Image
+from PIL import Image  # type: ignore
 
 EARTH_RADIUS_KM = 6371.001  # Average radius of earth in kilometers. Determines return value units.
 

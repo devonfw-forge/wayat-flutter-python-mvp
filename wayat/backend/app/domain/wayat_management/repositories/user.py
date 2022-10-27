@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Optional, List, Tuple
 from fastapi import Depends
 from google.cloud import firestore
-from google.cloud.firestore import AsyncClient, AsyncTransaction
+from google.cloud.firestore import AsyncClient, AsyncTransaction  # type: ignore
 from google.cloud.firestore_v1.field_path import FieldPath
 
 from app.common.base.base_entity import new_uuid
@@ -231,5 +231,12 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
     async def add_notifications_token(self, *, user_id: str, token: str):
         update = {
             "notifications_tokens": firestore.ArrayUnion([token]),
+        }
+        await self.update(document_id=user_id, data=update)
+
+
+    async def remove_notifications_tokens(self, *, user_id: str, tokens: list[str]):
+        update = {
+            "notifications_tokens": firestore.ArrayRemove(tokens),
         }
         await self.update(document_id=user_id, data=update)

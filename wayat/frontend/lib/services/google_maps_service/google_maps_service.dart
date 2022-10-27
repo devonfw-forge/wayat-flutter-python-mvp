@@ -19,9 +19,8 @@ class GoogleMapsService {
     late Uri uri;
     // To test the web condition, the access to this variable should be
     // wrapped in its own class to allow for mocking
-    if (!platformService.isWeb &&
-        platformService.targetPlatform == TargetPlatform.android) {
-      uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    if (platformService.targetPlatform == TargetPlatform.android) {
+      uri = Uri.parse("google.navigation:q=$lat,$lng&mode=w");
     } else if (!platformService.isWeb &&
         platformService.targetPlatform == TargetPlatform.iOS) {
       //apple maps
@@ -29,7 +28,7 @@ class GoogleMapsService {
     } else {
       // google maps
       uri = Uri.parse(
-          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&mode=driving");
+          "https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=walking");
     }
     if (await launcher.canLaunchUrl(uri)) {
       await launcher.launchUrl(uri);
@@ -66,7 +65,7 @@ class GoogleMapsService {
 
     Uri url = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "size": "500x500",
+      "size": "620x620",
       "zoom": "16",
       "key": apiKey,
     });
@@ -79,7 +78,7 @@ class GoogleMapsService {
 
     Uri signedUrl = Uri.https("maps.googleapis.com", "maps/api/staticmap", {
       "center": "${coords.latitude},${coords.longitude}",
-      "size": "500x500",
+      "size": "620x620",
       "zoom": "16",
       "key": apiKey,
     });

@@ -14,7 +14,9 @@ class PhoneVerificationField extends StatelessWidget {
   final MyUser user = GetIt.I.get<UserState>().currentUser!;
   final PhoneVerificationController controller =
       GetIt.I.get<PhoneVerificationController>();
+  final Function()? onValidated;
   PhoneVerificationField({
+    this.onValidated,
     Key? key,
   }) : super(key: key);
 
@@ -54,7 +56,8 @@ class PhoneVerificationField extends StatelessWidget {
                   onChanged: (PhoneNumber phone) {
                     controller.phoneNumber = phone;
                   },
-                  onSubmitted: (_) => controller.sendSMS(context));
+                  onSubmitted: (_) =>
+                      controller.sendSMS(context, onValidated: onValidated));
             },
           ),
           const SizedBox(height: 20),
@@ -62,7 +65,7 @@ class PhoneVerificationField extends StatelessWidget {
             builder: (_) => CustomOutlinedButton(
               text: appLocalizations.verifyPhoneTitle,
               onPressed: controller.isValidPhone
-                  ? () => controller.sendSMS(context)
+                  ? () => controller.sendSMS(context, onValidated: onValidated)
                   : null,
             ),
           )

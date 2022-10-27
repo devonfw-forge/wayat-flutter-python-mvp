@@ -17,8 +17,8 @@ void main() async {
       requestsService: mockRequestServiceImpl,
       friendsController: mockFriendsController);
 
-  FriendRequestRespone getRequestsResponse =
-      FriendRequestRespone(sentRequests: [
+  FriendRequestResponse getRequestsResponse =
+      FriendRequestResponse(sentRequests: [
     Contact(
         shareLocationTo: false,
         id: "1",

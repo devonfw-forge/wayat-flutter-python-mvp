@@ -157,15 +157,20 @@ class MapService:
                                                  and self_user.share_location]
         # Update all maps that point at me
         logger.info("Updating maps pointing at me")
+        
         cache = dict()
-        await asyncio.gather(*[self._update_contact_status(c, force, cache)
-                               for c in contacts_map_open_self_share_location])
+        await asyncio.gather(*[self._update_contact_status(c, force, cache) for c in contacts_map_open_self_share_location])
 
         if latitude is None or longitude is None:
-            longitude = self_user.location.value.longitude
-            latitude = self_user.location.value.latitude
+            if self_user.location is None:
+                return
+            long = self_user.location.value.longitude
+            lat = self_user.location.value.latitude
+        else:
+            lat = latitude
+            long = longitude
 
-        contacts_in_range = [c for c in contacts if self._in_range(latitude, longitude, c.location)]
+        contacts_in_range = [c for c in contacts if self._in_range(lat, long, c.location)]
 
         # Update my active status if at least one friend is looking at me
         contacts_self_sharing_location_with_and_map_open_in_range = list(
@@ -222,6 +227,7 @@ class MapService:
         if force or self._needs_update(contact.last_status_update):
             logger.info(f"Updating contact status for {contact.document_id} - {force}")
             await self.regenerate_map_status(user=contact, cache=cache)
+
 
     def _needs_update(self, last_updated: datetime):
         return (get_current_time(last_updated.tzinfo) - last_updated).seconds > self._update_threshold

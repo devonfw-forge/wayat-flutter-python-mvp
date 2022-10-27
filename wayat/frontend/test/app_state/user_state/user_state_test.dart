@@ -24,36 +24,22 @@ void main() async {
   late UserState userState;
   late MockAuthService mockAuthService;
   late MockProfileService mockProfileService;
+  late MockLifeCycleState mockLifeCycleState;
+
+  setUpAll(() {
+    mockLifeCycleState = MockLifeCycleState();
+    GetIt.I.registerSingleton<LifeCycleState>(mockLifeCycleState);
+    when(mockLifeCycleState.notifyAppOpenned())
+        .thenAnswer((_) => Future.value());
+    when(mockLifeCycleState.notifyAppClosed())
+        .thenAnswer((_) => Future.value());
+  });
 
   setUp(() {
     mockAuthService = MockAuthService();
     mockProfileService = MockProfileService();
     userState = UserState(
         authService: mockAuthService, profileService: mockProfileService);
-  });
-
-  test("Check if user has finished or not the authentication process",
-      () async {
-    // Check if user exist
-    expect(userState.finishLoggedIn, false);
-    // Check if user is not null
-    userState.currentUser = myUser;
-    expect(userState.finishLoggedIn, true);
-    //Check if user has assign a phone number
-    myUser.phone = "";
-    userState.currentUser = myUser;
-    expect(userState.finishLoggedIn, false);
-  });
-
-  test("Check if user has finished or not the onboarding process", () async {
-    expect(userState.hasDoneOnboarding, false);
-    // The generated user hasn't completed the onboarding
-    userState.currentUser = myUser;
-    expect(userState.hasDoneOnboarding, false);
-    //Check if user has assign a phone number
-    myUser.onboardingCompleted = true;
-    userState.currentUser = myUser;
-    expect(userState.hasDoneOnboarding, true);
   });
 
   test("If user hasn't log in, is logged return false", () async {
@@ -99,8 +85,6 @@ void main() async {
   });
 
   test("LogOut calls signOut in Authentication service", () async {
-    final MockLifeCycleState mockLifeCycleState = MockLifeCycleState();
-    GetIt.I.registerLazySingleton<LifeCycleState>(() => mockLifeCycleState);
     when(mockLifeCycleState.notifyAppClosed())
         .thenAnswer((_) => Future.value());
 

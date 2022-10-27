@@ -7,7 +7,7 @@ abstract class RequestsService {
   ///
   /// The Map will have two Lists of [Contact], one for sent requests with the
   /// key `sent_requests`, and the received requests with `pending_requests`.
-  Future<FriendRequestRespone> getRequests();
+  Future<FriendRequestResponse> getRequests();
 
   /// Accepts the received request from [contact].
   Future<bool> acceptRequest(Contact contact);

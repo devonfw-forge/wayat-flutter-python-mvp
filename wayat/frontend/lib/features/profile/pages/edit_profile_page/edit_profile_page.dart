@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/domain/user/my_user.dart';
@@ -8,13 +9,19 @@ import 'package:wayat/features/profile/controllers/edit_profile_controller.dart'
 import 'package:wayat/common/widgets/phone_verification/phone_verification_field.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io' as io;
+
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class EditProfilePage extends StatefulWidget {
   final EditProfileController controller;
+  final PlatformService platformService;
 
-  EditProfilePage({Key? key, EditProfileController? controller})
+  EditProfilePage(
+      {Key? key,
+      EditProfileController? controller,
+      PlatformService? platformService})
       : controller = controller ?? EditProfileController(),
+        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
@@ -29,23 +36,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        widget.controller.onPressedBackButton();
-        return true;
-      },
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: SizedBox(
+        height: double.infinity,
+        width: double.infinity,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              _profileAppBar(),
+              if (widget.platformService.isDesktopOrWeb)
+                const SizedBox(
+                  height: 20,
+                ),
+              ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: _profileAppBar()),
               _buildEditProfileImage(),
               const SizedBox(height: 32),
-              _nameTextField(),
+              ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: _nameTextField()),
               const SizedBox(height: 34.5),
-              PhoneVerificationField(),
+              if (widget.platformService.isMobile)
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: PhoneVerificationField()),
             ],
           ),
         ),
@@ -63,12 +79,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Row(
             children: [
               IconButton(
-                  splashRadius: 25,
+                  splashRadius: 24,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  iconSize: 25,
+                  iconSize: 24,
                   onPressed: () {
-                    widget.controller.onPressedBackButton();
+                    context.go('/profile');
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
@@ -82,11 +98,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           Observer(
             builder: (_) => TextButton(
-              onPressed: () async =>
-                  await widget.controller.onPressedSaveButton(),
+              onPressed: () {
+                widget.controller.onPressedSaveButton();
+                context.go('/profile');
+              },
               child: Text(
                 appLocalizations.save,
-                style: _textStyle(ColorTheme.primaryColor, 16),
+                style: _textStyle(ColorTheme.primaryColor, 17),
                 textAlign: TextAlign.right,
               ),
             ),
@@ -106,9 +124,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: (widget.controller.currentSelectedImage != null)
-                    ? FileImage(io.File(
-                            widget.controller.currentSelectedImage!.path))
-                        as ImageProvider
+                    ? Image.memory(widget.controller.currentSelectedImageBytes!)
+                        .image
                     : NetworkImage(
                         GetIt.I.get<UserState>().currentUser!.imageUrl),
                 fit: BoxFit.cover,
@@ -123,9 +140,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
         },
       ),
       InkWell(
-        onTap: () => showModalBottomSheet(
-            context: context,
-            builder: (builder) => _getImageFromCameraOrGallary()),
+        onTap: () {
+          if (widget.platformService.isWeb) {
+            widget.controller.getFromSource(ImageSource.gallery);
+          } else {
+            showModalBottomSheet(
+                context: context,
+                builder: (builder) => _getImageFromCameraOrGallary());
+          }
+        },
         child: const CircleAvatar(
             backgroundColor: Colors.black,
             radius: 28,

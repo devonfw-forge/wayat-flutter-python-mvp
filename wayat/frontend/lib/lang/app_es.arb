@@ -104,8 +104,8 @@
 
     "@_INVITATION":{},
     "inviteContacts": "Invita a tus contactos a Wayat",
-    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
-    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
+    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/latest",
+    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/latest",
     "invitationText": "Invitación texto",
     "invitationCopied": "Copiado en el portapapeles",
 
@@ -139,5 +139,12 @@
     "goToGitHubReleases": "Ir a la página de lanzamientos de GitHub",
     "goToGitHubReleasesUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/",
     "downloadWayat": "Descargar wayat",
-    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk"
+    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk",
+
+    "receivedFriendRequest": " te ha enviado una petición de amistad",
+    "acceptedFriendRequest": " ha aceptado tu petición de amistad",
+
+    "errorNotFound": "Página no encontrada",
+    "errorServer": "Ha ocurrido un error inesperado.\nInténtalo de nuevo más tarde.",
+    "returnToWayat": "Volver a wayat"
 }

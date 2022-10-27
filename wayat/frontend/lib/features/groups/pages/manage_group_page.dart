@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wayat/common/widgets/buttons/custom_outlined_button_icon.dart';
 import 'package:wayat/common/widgets/buttons/custom_text_button.dart';
@@ -14,12 +14,19 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:wayat/features/groups/widgets/create_group_contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Page that provides functionality to edit and create new [Group] entities.
 class ManageGroupPage extends StatelessWidget {
   final ManageGroupController controller;
-  ManageGroupPage({ManageGroupController? controller, Group? group, Key? key})
+  final PlatformService platformService;
+  ManageGroupPage(
+      {ManageGroupController? controller,
+      Group? group,
+      PlatformService? platformService,
+      Key? key})
       : controller = controller ?? ManageGroupController(group: group),
+        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
@@ -27,39 +34,50 @@ class ManageGroupPage extends StatelessWidget {
     return WillPopScope(
         child: manageGroupContent(context),
         onWillPop: () async {
-          goBack();
+          if (controller.group.id == "") {
+            GetIt.I.get<GroupsController>().setSelectedGroup(null);
+          }
           return true;
         });
   }
 
   Widget manageGroupContent(BuildContext context) {
-    return Column(
-      children: [
-        header(),
-        Expanded(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  groupPictureSection(context),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  groupName(),
-                  addParticipantsSection(context),
-                  participantsSection(context),
-                  showInfoValidGroup(),
-                  const SizedBox(
-                    height: 10,
-                  )
-                ],
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          if (platformService.isDesktopOrWeb)
+            const SizedBox(
+              height: 20,
+            ),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: header(context)),
+          Expanded(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    groupPictureSection(context),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    groupName(),
+                    addParticipantsSection(context),
+                    participantsSection(context),
+                    showInfoValidGroup(),
+                    const SizedBox(
+                      height: 10,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -80,14 +98,21 @@ class ManageGroupPage extends StatelessWidget {
   }
 
   /// Header that shows the back button and the "Save" button
-  Widget header() {
+  Widget header(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
             IconButton(
-              onPressed: goBack,
+              onPressed: () {
+                if (controller.group.id == "") {
+                  GetIt.I.get<GroupsController>().setSelectedGroup(null);
+                  context.go("/contacts/friends/groups");
+                } else {
+                  context.go("/contacts/friends/groups/${controller.group.id}");
+                }
+              },
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
@@ -99,19 +124,15 @@ class ManageGroupPage extends StatelessWidget {
         ),
         CustomTextButton(
             text: appLocalizations.save,
-            onPressed: () async {
-              GroupsController groupsController =
-                  GetIt.I.get<GroupsController>();
-              /*
-                I find this approach better but I have not found a way to correctly
-                mock the argument for doActionAndUpdateGroups
-                groupsController.doActionAndUpdateGroups(
-                    () async => await controller.saveGroup()); */
-              await controller.saveGroup();
+            onPressed: () {
               if (!controller.showValidationGroup) {
-                groupsController.setUpdatingGroup(true);
-                groupsController.setUpdatingGroup(false);
-                goBack();
+                controller.saveGroup().then(
+                    (_) => GetIt.I.get<GroupsController>().updateGroups());
+
+                if (controller.group.id == "") {
+                  GetIt.I.get<GroupsController>().setSelectedGroup(null);
+                }
+                context.go("/contacts/friends/groups");
               }
             }),
       ],
@@ -131,9 +152,13 @@ class ManageGroupPage extends StatelessWidget {
           splashColor: Colors.white,
           radius: 40,
           onTap: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (builder) => openSelectImageSheet(context));
+            if (platformService.isWeb) {
+              controller.getFromSource(ImageSource.gallery);
+            } else {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (builder) => openSelectImageSheet(context));
+            }
           },
           child: const CircleAvatar(
             backgroundColor: Colors.black87,
@@ -163,7 +188,11 @@ class ManageGroupPage extends StatelessWidget {
               imageProvider = NetworkImage(imageUrl);
             }
           } else {
-            imageProvider = FileImage(File(picture.path));
+            if (platformService.isWeb) {
+              imageProvider = NetworkImage(picture.path);
+            } else {
+              imageProvider = FileImage(File(picture.path));
+            }
           }
 
           return CircleAvatar(
@@ -237,8 +266,12 @@ class ManageGroupPage extends StatelessWidget {
         enableDrag: false,
         isScrollControlled: true,
         context: context,
+        constraints: const BoxConstraints(
+          maxWidth: 900,
+        ),
         builder: (BuildContext context) {
           return Container(
+            alignment: AlignmentDirectional.topCenter,
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
@@ -246,10 +279,18 @@ class ManageGroupPage extends StatelessWidget {
                 border: Border.all(color: Colors.black)),
             height: MediaQuery.of(context).size.height * .6,
             child: SingleChildScrollView(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [bottomSheetHeader(context), bottomSheetContactList()],
-            )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: bottomSheetHeader(context)),
+                  ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: bottomSheetContactList())
+                ],
+              ),
+            ),
           );
         });
   }
@@ -369,12 +410,5 @@ class ManageGroupPage extends StatelessWidget {
                 )),
           ])
         ]));
-  }
-
-  /// Modifies the state to redirect to the [GroupsPage]
-  void goBack() {
-    GroupsController groupsController = GetIt.I.get<GroupsController>();
-    groupsController.setEditGroup(false);
-    groupsController.setSelectedGroup(null);
   }
 }

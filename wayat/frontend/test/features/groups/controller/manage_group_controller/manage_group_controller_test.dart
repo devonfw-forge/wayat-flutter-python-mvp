@@ -11,7 +11,6 @@ import 'package:wayat/features/contacts/controller/contacts_page_controller.dart
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:mobx/mobx.dart' as mobx;
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'manage_group_controller_test.mocks.dart';
@@ -26,7 +25,6 @@ void main() async {
   setUpAll(() {
     // This is necessary because Group uses appLocalizations for the default group name
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     when(mockContactsPageController.friendsController)
@@ -69,14 +67,14 @@ void main() async {
     expect(manageGroupController.selectedContacts, []);
   });
 
-  test("SetSelectedFile works correctly", () {
+  test("SetSelectedFile works correctly", () async {
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
 
     ManageGroupController manageGroupController =
-        ManageGroupController(groupsService: mockGroupsService);
+      ManageGroupController(groupsService: mockGroupsService);
 
     expect(manageGroupController.selectedFile, null);
-    manageGroupController.setSelectedFile(emptyFile);
+    await manageGroupController.setSelectedFile(emptyFile);
     expect(manageGroupController.selectedFile, emptyFile);
   });
 

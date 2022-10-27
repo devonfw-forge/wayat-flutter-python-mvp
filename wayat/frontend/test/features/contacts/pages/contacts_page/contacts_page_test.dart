@@ -6,25 +6,23 @@ import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/features/contacts/pages/contacts_page/contacts_page.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:mobx/mobx.dart' as mobx;
+
+import '../../../../test_common/test_app.dart';
 import 'contacts_page_test.mocks.dart';
 
 @GenerateMocks([
@@ -34,7 +32,6 @@ import 'contacts_page_test.mocks.dart';
   ShareLocationState,
   ReceiveLocationState,
   LocationListener,
-  ProfileController,
   LifeCycleState,
   FriendsController,
   RequestsController,
@@ -52,7 +49,6 @@ void main() async {
   final MockReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
   final MockLocationListener mockLocationListener = MockLocationListener();
-  final MockProfileController mockProfileController = MockProfileController();
   final MockLifeCycleState mockMapState = MockLifeCycleState();
   final MockFriendsController mockFriendsController = MockFriendsController();
   final MockRequestsController mockRequestsController =
@@ -64,14 +60,10 @@ void main() async {
   setUpAll(() {
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockUserState.finishLoggedIn).thenReturn(true);
-    when(mockUserState.hasDoneOnboarding).thenReturn(true);
     when(mockHomeState.selectedContact).thenReturn(null);
     when(mockLocationState.initialize()).thenAnswer((_) => Future.value(null));
     when(mockLocationState.currentLocation).thenReturn(const LatLng(1, 1));
     when(mockLocationState.shareLocationEnabled).thenReturn(false);
-    when(mockContactsPageController.currentPage)
-        .thenReturn(ContactsCurrentPages.contacts);
     when(mockContactsPageController.friendsController)
         .thenReturn(mockFriendsController);
     when(mockContactsPageController.requestsController)
@@ -89,42 +81,18 @@ void main() async {
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
 
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<ProfileController>(mockProfileController);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
   });
 
-  Widget createApp() {
-    final appRouter = AppRouter();
-
-    return MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerDelegate: appRouter.delegate(),
-      routeInformationParser: appRouter.defaultRouteParser(),
-    );
-  }
-
-  Future navigateToContactsPage(WidgetTester tester) async {
-    await tester.pumpWidget(createApp());
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.contacts_outlined));
-    await tester.pumpAndSettle();
-  }
-
   testWidgets("The search bar appears correctly", (tester) async {
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(TestApp.createApp(body: ContactsPage("friends")));
     const Key searchBarKey = Key("ContactsSearchBar");
 
     expect(find.byKey(searchBarKey), findsOneWidget);
@@ -140,7 +108,7 @@ void main() async {
   });
 
   testWidgets("The tab bar appears correctly", (tester) async {
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(TestApp.createApp(body: ContactsPage("friends")));
 
     expect(find.byType(TabBar), findsOneWidget);
     expect(find.byType(Tab), findsNWidgets(3));
@@ -165,7 +133,7 @@ void main() async {
       (tester) async {
     const Key searchBarKey = Key("ContactsSearchBar");
     when(mockContactsPageController.setSearchBarText("Input")).thenReturn(null);
-    await navigateToContactsPage(tester);
+    await tester.pumpWidget(TestApp.createApp(body: ContactsPage("friends")));
     await tester.enterText(find.byKey(searchBarKey), "Input");
     verify(mockContactsPageController.setSearchBarText("Input")).called(1);
   });

@@ -107,8 +107,8 @@
 
     "@_INVITATION":{},
     "inviteContacts": "Kontakte zu Wayat einladen",
-    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
-    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
+    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/latest",
+    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/latest",
     "invitationText": "Einladungs-Text",
     "invitationCopied": "In Ihre Zwischenablage kopiert",
 
@@ -136,5 +136,12 @@
     "groupValidation": "Sie müssen mindestens zwei Kontakte auswählen",
         
     "locationPermission": "Standorterlaubnis",
-    "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus"
+    "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus",
+
+    "receivedFriendRequest": " hat dir eine Freundschaftsanfrage geschickt",
+    "acceptedFriendRequest": " hat deine Freundschaftsanfrage angenommen",
+
+    "errorNotFound": "Seite nicht gefunden",
+    "errorServer": "Ein unerwarteter Fehler ist aufgetreten.\nVersuchen Sie es später erneut.",
+    "returnToWayat": "Zurück zu wayat"
 } 

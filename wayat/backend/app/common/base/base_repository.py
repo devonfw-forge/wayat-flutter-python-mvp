@@ -23,13 +23,13 @@ class BaseSQLRepository(Generic[ModelType]):
     async def get(self, *, uid: Union[UUID, str]) -> Optional[ModelType]:
         response = await self.session.exec(
             select(self.model)
-            .where(self.model.id == uid)
+            .where(self.model.id == uid)  # type: ignore
             .options(selectinload('*'))
         )
-        response = response.one_or_none()
+        response = response.one_or_none()  # type: ignore
         if not response:
             raise NotFoundException(detail="Not found with ID {}".format(uid))
-        return response
+        return response  # type: ignore
 
     async def add(self, *, model: ModelType):
         await self.save(model=model, refresh=True)

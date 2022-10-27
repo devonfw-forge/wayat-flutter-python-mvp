@@ -71,7 +71,7 @@ class AsyncSession(_AsyncSession):
             **kw: Any,
     ) -> ScalarResult[_T]:
 
-        return await super().exec(statement=statement,
+        return await super().exec(statement=statement,  # type: ignore
                                   params=params,
                                   execution_options=execution_options,
                                   bind_arguments=bind_arguments,

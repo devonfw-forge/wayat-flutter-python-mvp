@@ -30,7 +30,7 @@ void main() async {
     StreamedResponse mockStreamedResponse = MockStreamedResponse();
     when(mockStreamedResponse.statusCode).thenReturn(200);
     when(mockHttpProvider.sendPostImageRequest(
-            APIContract.userProfilePicture, "path", ""))
+            APIContract.userProfilePicture, Uint8List.fromList([]), ""))
         .thenAnswer((_) async => mockStreamedResponse);
 
     ProfileService profileService = ProfileServiceImpl();
@@ -39,7 +39,7 @@ void main() async {
 
     expect(res, true);
     verify(mockHttpProvider.sendPostImageRequest(
-            APIContract.userProfilePicture, "path", ""))
+            APIContract.userProfilePicture, Uint8List.fromList([]), ""))
         .called(1);
   });
 

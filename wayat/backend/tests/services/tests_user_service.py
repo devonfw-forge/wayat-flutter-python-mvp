@@ -4,11 +4,13 @@ from typing import BinaryIO
 from unittest import IsolatedAsyncioTestCase
 from unittest.mock import MagicMock, patch, call
 
+from firebase_admin.messaging import SendResponse  # type: ignore
 from requests import RequestException
 
 from app.business.wayat_management.services.user import UserService
 from app.common.exceptions.http import NotFoundException
 from app.common.exceptions.runtime import ResourceNotFoundException
+from app.common.infra.gcp.cloud_messaging import CloudMessaging
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
 from app.domain.wayat_management.models.user import UserEntity, GroupInfo
 from app.domain.wayat_management.repositories.files import FileStorage, StorageSettings
@@ -48,6 +50,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_user_repo = MagicMock(UserRepository)
         self.mock_status_repo = MagicMock(StatusRepository)
         self.mock_file_repository = MagicMock(FileStorage)
+        self.mock_file_cloud_messaging = MagicMock(CloudMessaging)
         self.mock_file_repository.generate_signed_url.return_value = "created_url"
         self.storage_settings = MagicMock(StorageSettings)
         self.storage_settings.default_picture = "images/test_default"
@@ -58,6 +61,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             self.mock_user_repo,
             self.mock_status_repo,
             self.mock_file_repository,
+            self.mock_file_cloud_messaging,
             self.storage_settings
         )
 
@@ -200,7 +204,8 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             pending_requests=["test-friend-1"]
         )
 
-        test_friend_1 = FirebaseAuthenticatedUser(uid="test-friend-1", email="test@email.es", roles=[], picture="test", name="test")
+        test_friend_1 = FirebaseAuthenticatedUser(uid="test-friend-1", email="test@email.es", roles=[], picture="test",
+                                                  name="test")
         test_entity_1 = UserEntity(
             document_id=test_friend_1.uid,
             name=test_friend_1.name,
@@ -209,7 +214,8 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             image_url=test_friend_1.picture
         )
 
-        test_friend_2 = FirebaseAuthenticatedUser(uid="test-friend-2", email="test@email.es", roles=[], picture="test", name="test")
+        test_friend_2 = FirebaseAuthenticatedUser(uid="test-friend-2", email="test@email.es", roles=[], picture="test",
+                                                  name="test")
         test_entity_2 = UserEntity(
             document_id=test_friend_2.uid,
             name=test_friend_2.name,
@@ -328,7 +334,7 @@ class UserServiceTests(IsolatedAsyncioTestCase):
     async def test_handle_friend_request_should_call_repo(self):
         test_user, test_friend, accept = "user", "friend", True
         # Call to be tested
-        await self.user_service.respond_friend_request(user_uid=test_user, friend_uid=test_friend, accept=accept)
+        await self.user_service.respond_friend_request(self_user_uid=test_user, friend_uid=test_friend, accept=accept)
 
         # Asserts
         self.mock_user_repo.respond_friend_request.assert_called_with(
@@ -644,6 +650,21 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_file_repository.upload_group_image.assert_called_with(filename=f'{user}_{group_info.id}.jpeg',
                                                                         data=TEST_RESIZED_BYTES)
         self.mock_file_repository.delete.assert_called_with(reference=picture)
+
+    async def test_handle_notifications_response_should_delete_invalid_tokens(self):
+        good_result = SendResponse(resp={"name": "test"}, exception=None)
+        bad_result = SendResponse(resp={"name": "test"}, exception=Exception("Test"))
+        results = [good_result, bad_result]
+        good_token = "good_token"
+        bad_token = "bad_token"
+        tokens = [good_token, bad_token]
+        user_id = "test_user_id"
+
+        # Call under tests
+        await self.user_service.handle_notification_results(results=results, tokens=tokens, user_id=user_id)
+
+        # Asserts
+        self.mock_user_repo.remove_notifications_tokens.assert_called_with(tokens=["bad_token"], user_id=user_id)
 
 
 if __name__ == "__main__":
