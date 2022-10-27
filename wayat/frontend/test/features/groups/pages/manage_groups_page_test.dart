@@ -95,6 +95,7 @@ void main() async {
   testWidgets("Save button saves group and goes back", (tester) async {
     when(mockManageGroupController.group).thenReturn(Group.empty());
     when(mockGroupsController.setSelectedGroup(null)).thenReturn(null);
+    when(mockGroupsController.updateGroups()).thenAnswer((_) async => true);
     when(mockManageGroupController.saveGroup())
         .thenAnswer((_) => Future.value(null));
 
@@ -108,6 +109,7 @@ void main() async {
 
     verify(mockManageGroupController.saveGroup()).called(1);
     verify(mockGroupsController.setSelectedGroup(null)).called(1);
+    verify(mockGroupsController.updateGroups()).called(1);
   });
 
   testWidgets("Group image is built correctly", (tester) async {

@@ -36,39 +36,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        context.go('/profile');
-        return true;
-      },
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: SizedBox(
-          height: double.infinity,
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                if (widget.platformService.isDesktopOrWeb)
-                  const SizedBox(
-                    height: 20,
-                  ),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: SizedBox(
+        height: double.infinity,
+        width: double.infinity,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              if (widget.platformService.isDesktopOrWeb)
+                const SizedBox(
+                  height: 20,
+                ),
+              ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: _profileAppBar()),
+              _buildEditProfileImage(),
+              const SizedBox(height: 32),
+              ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: _nameTextField()),
+              const SizedBox(height: 34.5),
+              if (widget.platformService.isMobile)
                 ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 800),
-                    child: _profileAppBar()),
-                _buildEditProfileImage(),
-                const SizedBox(height: 32),
-                ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 800),
-                    child: _nameTextField()),
-                const SizedBox(height: 34.5),
-                if (widget.platformService.isMobile)
-                  ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 800),
-                      child: PhoneVerificationField()),
-              ],
-            ),
+                    child: PhoneVerificationField()),
+            ],
           ),
         ),
       ),
@@ -85,10 +79,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Row(
             children: [
               IconButton(
-                  splashRadius: 25,
+                  splashRadius: 24,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  iconSize: 25,
+                  iconSize: 24,
                   onPressed: () {
                     context.go('/profile');
                   },
@@ -105,9 +99,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Observer(
             builder: (_) => TextButton(
               onPressed: () {
-                widget.controller
-                    .onPressedSaveButton()
-                    .then((_) => context.go('/profile'));
+                widget.controller.onPressedSaveButton();
+                context.go('/profile');
               },
               child: Text(
                 appLocalizations.save,

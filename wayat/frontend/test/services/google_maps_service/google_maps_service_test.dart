@@ -31,7 +31,7 @@ void main() async {
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
 
     double lat = 1, lng = 1;
-    Uri url = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    Uri url = Uri.parse("google.navigation:q=$lat,$lng&mode=w");
 
     UrlLauncherLibW mockUrlLauncher = MockUrlLauncherLibW();
     when(mockUrlLauncher.canLaunchUrl(url)).thenAnswer((_) async => true);

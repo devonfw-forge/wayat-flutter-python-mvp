@@ -33,28 +33,22 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        context.go('/profile');
-        return true;
-      },
-      child: SizedBox(
-        width: double.infinity,
-        child: Column(
-          children: [
-            if (widget.platformService.isDesktopOrWeb)
-              const SizedBox(
-                height: 20,
-              ),
-            ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: _profileAppBar()),
-            const SizedBox(height: 34.5),
-            ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: _buildLanguageButton()),
-          ],
-        ),
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          if (widget.platformService.isDesktopOrWeb)
+            const SizedBox(
+              height: 20,
+            ),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: _profileAppBar()),
+          const SizedBox(height: 34.5),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: _buildLanguageButton()),
+        ],
       ),
     );
   }
@@ -68,13 +62,15 @@ class _PreferencesPageState extends State<PreferencesPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              InkWell(
-                  onTap: () {
-                    // Route to Profile main page
+              IconButton(
+                  splashRadius: 24,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  iconSize: 24,
+                  onPressed: () {
                     context.go('/profile');
                   },
-                  child: const Icon(Icons.arrow_back,
-                      color: Colors.black87, size: 24)),
+                  icon: const Icon(Icons.arrow_back, color: Colors.black87)),
               Padding(
                 padding: const EdgeInsets.only(left: 14),
                 child: Text(
@@ -82,7 +78,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                   style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       color: Colors.black87,
-                      fontSize: 19),
+                      fontSize: 16),
                 ),
               ),
             ],

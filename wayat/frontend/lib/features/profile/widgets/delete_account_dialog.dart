@@ -25,10 +25,13 @@ class DeleteAccountDialog extends StatelessWidget {
       title: Text(appLocalizations.deleteAccount),
       titleTextStyle: const TextStyle(
           fontWeight: FontWeight.w700, color: Colors.black87, fontSize: 16),
-      titlePadding: const EdgeInsets.all(32),
-      content: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.15,
-        width: MediaQuery.of(context).size.width,
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: 70,
+          minHeight: 50,
+          maxWidth: 400,
+          maxHeight: 400,
+        ),
         child: SingleChildScrollView(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

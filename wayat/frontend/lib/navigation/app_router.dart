@@ -91,64 +91,70 @@ class AppRouter {
                   selectedSection: HomeTab.contacts,
                   child: ContactsPage(state.params['kind'] ?? "friends"),
                 ));
-          }),
-      GoRoute(
-        redirect: sentRequestsGuard,
-        path: '/contacts/sent-requests',
-        pageBuilder: (context, state) {
-          return FadeTransitionPage(
-              key: _scaffoldKey,
-              child: HomePage(
-                selectedSection: HomeTab.contacts,
-                child: SentRequestsPage(),
-              ));
-        },
-      ),
-      GoRoute(
-          path: '/contacts/groups',
-          pageBuilder: (context, state) {
-            return FadeTransitionPage(
-                key: _scaffoldKey,
-                child: HomePage(
-                  selectedSection: HomeTab.contacts,
-                  child: GroupsPage(),
-                ));
           },
           routes: [
             GoRoute(
-                path: 'create',
-                pageBuilder: (context, state) => NoTransitionPage(
-                      child: HomePage(
-                        selectedSection: HomeTab.contacts,
-                        child: ManageGroupPage(),
-                      ),
-                    )),
+              redirect: sentRequestsGuard,
+              path: 'sent-requests',
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                    child: HomePage(
+                  selectedSection: HomeTab.contacts,
+                  child: SentRequestsPage(),
+                ));
+              },
+            ),
             GoRoute(
-                path: ':id',
-                redirect: (context, state) async => await groupsGuard(state),
+                path: 'groups',
+                redirect: (context, state) =>
+                    (state.location == '/contacts/requests/groups' ||
+                            state.location == '/contacts/suggestions/groups')
+                        ? '/contacts/friends/groups'
+                        : null,
                 pageBuilder: (context, state) {
                   return NoTransitionPage(
                       child: HomePage(
                     selectedSection: HomeTab.contacts,
-                    child: ViewGroupPage(),
+                    child: GroupsPage(),
                   ));
                 },
                 routes: [
                   GoRoute(
-                      path: 'edit',
-                      redirect: (context, state) async =>
-                          await groupsGuard(state),
+                      path: 'create',
                       pageBuilder: (context, state) => NoTransitionPage(
                             child: HomePage(
                               selectedSection: HomeTab.contacts,
-                              child: ManageGroupPage(
-                                group: GetIt.I
-                                    .get<GroupsController>()
-                                    .selectedGroup,
-                              ),
+                              child: ManageGroupPage(),
                             ),
                           )),
-                ])
+                  GoRoute(
+                      path: ':id',
+                      redirect: (context, state) async =>
+                          await groupsGuard(state),
+                      pageBuilder: (context, state) {
+                        return NoTransitionPage(
+                            child: HomePage(
+                          selectedSection: HomeTab.contacts,
+                          child: ViewGroupPage(),
+                        ));
+                      },
+                      routes: [
+                        GoRoute(
+                            path: 'edit',
+                            redirect: (context, state) async =>
+                                await groupsGuard(state),
+                            pageBuilder: (context, state) => NoTransitionPage(
+                                  child: HomePage(
+                                    selectedSection: HomeTab.contacts,
+                                    child: ManageGroupPage(
+                                      group: GetIt.I
+                                          .get<GroupsController>()
+                                          .selectedGroup,
+                                    ),
+                                  ),
+                                )),
+                      ])
+                ]),
           ]),
       GoRoute(
           path: '/profile',
@@ -209,6 +215,11 @@ class AppRouter {
   );
 
   FutureOr<String?> sentRequestsGuard(context, state) async {
+    if (state.location == '/contacts/friends/sent-requests' ||
+        state.location == '/contacts/suggestions/sent-requests') {
+      return '/contacts/requests/sent-requests';
+    }
+
     RequestsController requestsController =
         GetIt.I.get<ContactsPageController>().requestsController;
     if (requestsController.sentRequests.isEmpty) {
