@@ -134,8 +134,7 @@ class NotificationsServiceImpl implements NotificationsService {
   /// Calls a method when the app is opened via the notification
   @visibleForTesting
   void setUpOnAppOpenedWithNotification() {
-    //FirebaseMessaging.onMessageOpenedApp.listen(
-    //(RemoteMessage message) => showNotification(pushNotification(message)));
+    // context.go('/contacts/friends');
   }
 
   @visibleForTesting
