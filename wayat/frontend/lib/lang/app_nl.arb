@@ -138,9 +138,11 @@
     "locationPermission": "Locatietoestemming",
     "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen",
 
+    "@_NOTIFICATIONS": {},
     "receivedFriendRequest": " heeft je een vriendschapsverzoek gestuurd",
     "acceptedFriendRequest": " heeft je vriendschapsverzoek geaccepteerd",
     
+    "@_ERROR_PAGE":{},
     "errorNotFound": "Pagina niet gevonden",
     "errorServer": "Er is een onverwachte fout opgetreden.\nProbeer het later nog eens.",
     "returnToWayat": "Terug naar wayat"

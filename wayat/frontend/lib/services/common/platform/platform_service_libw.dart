@@ -18,6 +18,14 @@ class PlatformService {
       defaultTargetPlatform == TargetPlatform.linux ||
       isWeb;
 
+  bool get isAndroid => defaultTargetPlatform == TargetPlatform.android;
+
+  bool get isIOS => defaultTargetPlatform == TargetPlatform.iOS;
+
+  bool get isApple =>
+      defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.macOS;
+
   /// Gets the platform where the application is executed.
   ///
   /// Web is not included.

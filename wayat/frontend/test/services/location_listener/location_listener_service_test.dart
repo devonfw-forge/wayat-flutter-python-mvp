@@ -1,24 +1,22 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/location_listener/firestore_model/contact_ref_model.dart';
 import 'package:wayat/services/location_listener/firestore_model/firestore_data_model.dart';
 import 'package:wayat/services/location_listener/location_listener_service.dart';
 import 'package:wayat/services/utils/list_utils_service.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'location_listener_service_test.mocks.dart';
 
@@ -44,7 +42,6 @@ void main() async {
     when(mockHttpProvider.sendGetRequest("locationModeUpdate"))
         .thenAnswer((_) async => {});
 
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
   });
@@ -284,11 +281,10 @@ void main() async {
     expect(res, []);
   });
 
-  testWidgets(
+  test(
       "getContactRefsFromStatus returns an error message if the contacts have "
-      "ERROR_ADDRESS or no address", (tester) async {
-    await tester.pumpWidget(_createApp());
-
+      "ERROR_ADDRESS or no address", () async {
+    GetIt.I.registerSingleton<AppConfigState>(AppConfigState());
     ContactService mockContactService = MockContactService();
 
     List<String> ids = ["id1", "id2"];
@@ -369,15 +365,4 @@ MyUser myUser() => MyUser(
 
 List<ContactLocation> _generateContacts(List<String> ids) {
   return ids.map((id) => _contactFactory(id)).toList();
-}
-
-Widget _createApp() {
-  return MaterialApp(
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    supportedLocales: AppLocalizations.supportedLocales,
-    onGenerateTitle: (context) {
-      GetIt.I.get<LangSingleton>().initialize(context);
-      return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-    },
-  );
 }

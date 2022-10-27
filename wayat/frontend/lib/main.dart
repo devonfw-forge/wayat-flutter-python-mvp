@@ -4,14 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'
+    show AppLocalizations;
 import 'package:get_it/get_it.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:wayat/app_state/app_config_state/app_config_state.dart';
-import 'package:wayat/app_state/notification_state/notification_state.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
@@ -21,12 +22,13 @@ import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
+import 'package:wayat/services/notification/notification_service.dart';
+import 'package:wayat/services/notification/notifications_service_impl.dart';
 
 /// Initializes the app.
 Future main() async {
@@ -43,15 +45,22 @@ Future main() async {
       name: EnvModel.FIREBASE_APP_NAME,
       options: CustomFirebaseOptions.currentPlatformOptions);
 
+  PlatformService platformService = PlatformService();
+
+  await registerSingletons();
+
   // AVoid # character in url (flutter web)
-  if (PlatformService().isWeb) {
+  if (platformService.isWeb) {
     setPathUrlStrategy();
     await FirebaseAuth.instanceFor(
       app: Firebase.app(EnvModel.FIREBASE_APP_NAME),
     ).idTokenChanges().first;
+    // This line should be changed to this if we are going to support desktop
+    //} else if (platformService.isMobile) {
+  } else {
+    NotificationsService notificationsService = NotificationsServiceImpl();
+    await notificationsService.initialize();
   }
-
-  await registerSingletons();
 
   AppConfigController().setTimeAgoLocales();
 
@@ -63,7 +72,6 @@ Future main() async {
 /// All of the singletons are registered using lazy initialization, to ensure
 /// that only the one's that are being used will be instantiated.
 Future registerSingletons() async {
-  GetIt.I.registerLazySingleton<LangSingleton>(() => LangSingleton());
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
@@ -77,9 +85,7 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LocationListener>(() => LocationListener());
   GetIt.I.registerLazySingleton<PhoneVerificationController>(
       () => PhoneVerificationController());
-  if (PlatformService().isMobile) {
-    GetIt.I.registerLazySingleton<NotificationState>(() => NotificationState());
-  }
+  GetIt.I.registerLazySingleton<GlobalKey<NavigatorState>>(() => GlobalKey());
 }
 
 /// Main Application class
@@ -106,15 +112,6 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    if (PlatformService().isMobile) {
-      NotificationState notificationState = GetIt.I.get<NotificationState>();
-      notificationState.registerNotification();
-      notificationState.messagingTerminatedAppListener();
-      notificationState.messagingBackgroundAppListener();
-    }
-
-    GlobalKey<NavigatorState> navKey = GlobalKey();
-    GetIt.I.registerSingleton<GlobalKey<NavigatorState>>(navKey);
     super.initState();
   }
 
@@ -180,13 +177,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             locale: snapshot.data,
-            onGenerateTitle: (context) {
-              // In the app build, the context does not contain an AppLocalizations instance.
-              // However, after the title is generated the AppLocalizations instance is the
-              // first time it is not null
-              GetIt.I.get<LangSingleton>().initialize(context);
-              return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-            },
+            onGenerateTitle: (_) => appLocalizations.appTitle,
             localeResolutionCallback:
                 (Locale? locale, Iterable<Locale> supportedLocales) {
               for (Locale supportedLocale in supportedLocales) {
