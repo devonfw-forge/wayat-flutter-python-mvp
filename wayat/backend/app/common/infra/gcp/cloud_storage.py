@@ -79,7 +79,8 @@ class CloudStorage:
             raise ValueError("Either reference or prefix must be defined")
 
         for blob in blob_iterator:
-            blob.delete()
+            if blob.exists():
+                blob.delete()
 
     async def delete(self, reference: str | None = None, prefix: str | None = None):
         await self._delete(reference, prefix)

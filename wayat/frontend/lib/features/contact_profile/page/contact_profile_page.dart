@@ -62,7 +62,7 @@ class ContactProfilePage extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        goBack(context);
+        GetIt.I.get<HomeNavState>().setSelectedContact(null);
         return true;
       },
       child: Scaffold(
@@ -103,7 +103,10 @@ class ContactProfilePage extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-              onPressed: () => goBack(context),
+              onPressed: () {
+                GetIt.I.get<HomeNavState>().setSelectedContact(null);
+                context.go(navigationSource);
+              },
               icon: const Icon(Icons.arrow_back)),
           Text(
             (navigationSource == '/contacts/friends')
@@ -114,11 +117,6 @@ class ContactProfilePage extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void goBack(BuildContext context) {
-    GetIt.I.get<HomeNavState>().setSelectedContact(null);
-    context.go(navigationSource);
   }
 
   /// Returns a widget which includes a switch to enable/disable sharing location with a contact

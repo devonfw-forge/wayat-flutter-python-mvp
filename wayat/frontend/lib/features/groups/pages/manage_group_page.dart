@@ -34,7 +34,9 @@ class ManageGroupPage extends StatelessWidget {
     return WillPopScope(
         child: manageGroupContent(context),
         onWillPop: () async {
-          goBack(context);
+          if (controller.group.id == "") {
+            GetIt.I.get<GroupsController>().setSelectedGroup(null);
+          }
           return true;
         });
   }
@@ -103,7 +105,14 @@ class ManageGroupPage extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () => goBack(context),
+              onPressed: () {
+                if (controller.group.id == "") {
+                  GetIt.I.get<GroupsController>().setSelectedGroup(null);
+                  context.go("/contacts/friends/groups");
+                } else {
+                  context.go("/contacts/friends/groups/${controller.group.id}");
+                }
+              },
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
@@ -116,11 +125,15 @@ class ManageGroupPage extends StatelessWidget {
         CustomTextButton(
             text: appLocalizations.save,
             onPressed: () {
-              controller.saveGroup().then((value) {
-                if (!controller.showValidationGroup) {
-                  goBack(context);
+              if (!controller.showValidationGroup) {
+                controller.saveGroup().then(
+                    (_) => GetIt.I.get<GroupsController>().updateGroups());
+
+                if (controller.group.id == "") {
+                  GetIt.I.get<GroupsController>().setSelectedGroup(null);
                 }
-              });
+                context.go("/contacts/friends/groups");
+              }
             }),
       ],
     );
@@ -397,15 +410,5 @@ class ManageGroupPage extends StatelessWidget {
                 )),
           ])
         ]));
-  }
-
-  /// Modifies the state to redirect to the [GroupsPage]
-  void goBack(BuildContext context) {
-    if (controller.group.id == "") {
-      GetIt.I.get<GroupsController>().setSelectedGroup(null);
-      context.go("/contacts/groups");
-    } else {
-      context.go("/contacts/groups/${controller.group.id}");
-    }
   }
 }

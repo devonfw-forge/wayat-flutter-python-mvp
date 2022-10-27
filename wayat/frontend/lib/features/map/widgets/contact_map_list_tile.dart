@@ -48,7 +48,7 @@ class ContactMapListTile extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   GetIt.I.get<HomeNavState>().setSelectedContact(contact);
-                  context.go('/contact/${contact.id}');
+                  context.go('/map/contact/${contact.id}');
                 },
                 style: TextButton.styleFrom(padding: EdgeInsets.zero),
                 child: Text(

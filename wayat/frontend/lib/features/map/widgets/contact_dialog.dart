@@ -56,7 +56,7 @@ class ContactDialog extends StatelessWidget {
                   //This imperative pop is to close the contact dialog
                   Navigator.pop(context);
                   GetIt.I.get<HomeNavState>().setSelectedContact(contact);
-                  context.go('/contact/${contact.id}');
+                  context.go('/map/contact/${contact.id}');
                 },
                 enabled: true),
             const SizedBox(
