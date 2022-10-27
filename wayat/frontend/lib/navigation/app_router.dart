@@ -62,19 +62,25 @@ class AppRouter {
                 child: MapPage(),
               ),
             );
-          }),
-      GoRoute(
-        path: '/contact/:id',
-        redirect: (context, state) async => await contactProfileGuard(state),
-        pageBuilder: (context, state) {
-          return FadeTransitionPage(
-              key: _profileScaffoldKey,
-              child: ContactProfilePage(
-                  contact: GetIt.I.get<HomeNavState>().selectedContact!,
-                  navigationSource: state.extra as String? ?? "/map"));
-        },
-      ),
+          },
+          routes: [
+            GoRoute(
+              path: 'contact/:id',
+              redirect: (context, state) async =>
+                  await contactProfileGuard(state),
+              pageBuilder: (context, state) {
+                return FadeTransitionPage(
+                    key: _profileScaffoldKey,
+                    child: ContactProfilePage(
+                        contact: GetIt.I.get<HomeNavState>().selectedContact!,
+                        navigationSource: "/map"));
+              },
+            ),
+          ]),
       GoRoute(path: '/contacts', redirect: (_, __) => '/contacts/friends'),
+      GoRoute(
+          path: '/contact/:id',
+          redirect: (_, state) => '/contacts/friends/${state.params['id']}'),
       GoRoute(
           path: '/contacts/:kind(friends|requests|suggestions)',
           redirect: (context, state) {
@@ -93,6 +99,18 @@ class AppRouter {
                 ));
           },
           routes: [
+            GoRoute(
+              path: ':id',
+              redirect: (context, state) async =>
+                  await contactProfileGuard(state),
+              pageBuilder: (context, state) {
+                return FadeTransitionPage(
+                    key: _profileScaffoldKey,
+                    child: ContactProfilePage(
+                        contact: GetIt.I.get<HomeNavState>().selectedContact!,
+                        navigationSource: "/contacts/friends"));
+              },
+            ),
             GoRoute(
               redirect: sentRequestsGuard,
               path: 'sent-requests',
@@ -232,6 +250,10 @@ class AppRouter {
       (platformService.isWeb) ? '/' : null;
 
   Future<String?> contactProfileGuard(GoRouterState state) async {
+    if (state.location.startsWith("/contacts/suggestions") ||
+        state.location.startsWith("/contacts/requests")) {
+      return "/not-found";
+    }
     HomeNavState homeNavState = GetIt.I.get<HomeNavState>();
     await homeNavState.contactProfileGuard(state.params['id']!);
     if (homeNavState.selectedContact == null) {
