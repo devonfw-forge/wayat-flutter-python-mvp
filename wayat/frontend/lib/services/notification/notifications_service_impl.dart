@@ -79,18 +79,6 @@ class NotificationsServiceImpl implements NotificationsService {
     } else {
       debugPrint('User declined or has not accepted permission');
     }
-
-    await messagingInstance.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    await setUpTokenListener();
-    setUpNotificationsForegroundListener();
-    recoverLastLostNotification();
-    setUpOnAppOpenedWithNotification();
-    setUpNotificationsBackgroundListener();
   }
 
   /// Register notification when app is launched
