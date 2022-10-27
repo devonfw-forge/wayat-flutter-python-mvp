@@ -100,18 +100,6 @@ class AppRouter {
           },
           routes: [
             GoRoute(
-              path: ':id',
-              redirect: (context, state) async =>
-                  await contactProfileGuard(state),
-              pageBuilder: (context, state) {
-                return FadeTransitionPage(
-                    key: _profileScaffoldKey,
-                    child: ContactProfilePage(
-                        contact: GetIt.I.get<HomeNavState>().selectedContact!,
-                        navigationSource: "/contacts/friends"));
-              },
-            ),
-            GoRoute(
               redirect: sentRequestsGuard,
               path: 'sent-requests',
               pageBuilder: (context, state) {
@@ -173,6 +161,18 @@ class AppRouter {
                                 )),
                       ])
                 ]),
+            GoRoute(
+              path: ':id',
+              redirect: (context, state) async =>
+                  await contactProfileGuard(state),
+              pageBuilder: (context, state) {
+                return FadeTransitionPage(
+                    key: _profileScaffoldKey,
+                    child: ContactProfilePage(
+                        contact: GetIt.I.get<HomeNavState>().selectedContact!,
+                        navigationSource: "/contacts/friends"));
+              },
+            ),
           ]),
       GoRoute(
           path: '/profile',
