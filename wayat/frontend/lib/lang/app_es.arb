@@ -142,5 +142,9 @@
     "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk",
 
     "receivedFriendRequest": " te ha enviado una petición de amistad",
-    "acceptedFriendRequest": " ha aceptado tu petición de amistad"
+    "acceptedFriendRequest": " ha aceptado tu petición de amistad",
+
+    "errorNotFound": "Página no encontrada",
+    "errorServer": "Ha ocurrido un error inesperado.\nInténtalo de nuevo más tarde.",
+    "returnToWayat": "Volver a wayat"
 }

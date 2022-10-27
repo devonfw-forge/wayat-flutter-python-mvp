@@ -24,54 +24,57 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          if (platformService.isMobile)
-            Container(
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(appLocalizations.profile,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
-                          fontSize: 16))),
-            ),
-          const SizedBox(height: 16),
-          _buildProfileImage(),
-          const SizedBox(height: 16),
-          Observer(builder: (_) {
-            if (userState.currentUser == null) return const Text("");
-            String name = userState.currentUser!.name;
-            return Text(
-              name,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                  fontSize: 22),
-            );
-          }),
-          Column(
-            children: [
-              const SizedBox(height: 32),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: _buildShareLocationPart(
-                    () => context.go("/profile/edit"),
-                    () => context.go("/profile/preferences")),
+    return SizedBox(
+      width: double.infinity,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (platformService.isMobile)
+              Container(
+                alignment: AlignmentDirectional.centerStart,
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(appLocalizations.profile,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                            fontSize: 16))),
               ),
-              const Divider(),
-              const SizedBox(height: 20),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: _buildAccountPart(context),
-              )
-            ],
-          ),
-        ],
+            const SizedBox(height: 16),
+            _buildProfileImage(),
+            const SizedBox(height: 16),
+            Observer(builder: (_) {
+              if (userState.currentUser == null) return const Text("");
+              String name = userState.currentUser!.name;
+              return Text(
+                name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                    fontSize: 22),
+              );
+            }),
+            Column(
+              children: [
+                const SizedBox(height: 32),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: _buildShareLocationPart(
+                      () => context.go("/profile/edit"),
+                      () => context.go("/profile/preferences")),
+                ),
+                if (platformService.isMobile) const Divider(),
+                const SizedBox(height: 20),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: _buildAccountPart(context),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

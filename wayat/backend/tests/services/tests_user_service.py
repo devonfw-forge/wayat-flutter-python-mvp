@@ -4,6 +4,7 @@ from typing import BinaryIO
 from unittest import IsolatedAsyncioTestCase
 from unittest.mock import MagicMock, patch, call
 
+from firebase_admin.messaging import SendResponse  # type: ignore
 from requests import RequestException
 
 from app.business.wayat_management.services.user import UserService
@@ -203,7 +204,8 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             pending_requests=["test-friend-1"]
         )
 
-        test_friend_1 = FirebaseAuthenticatedUser(uid="test-friend-1", email="test@email.es", roles=[], picture="test", name="test")
+        test_friend_1 = FirebaseAuthenticatedUser(uid="test-friend-1", email="test@email.es", roles=[], picture="test",
+                                                  name="test")
         test_entity_1 = UserEntity(
             document_id=test_friend_1.uid,
             name=test_friend_1.name,
@@ -212,7 +214,8 @@ class UserServiceTests(IsolatedAsyncioTestCase):
             image_url=test_friend_1.picture
         )
 
-        test_friend_2 = FirebaseAuthenticatedUser(uid="test-friend-2", email="test@email.es", roles=[], picture="test", name="test")
+        test_friend_2 = FirebaseAuthenticatedUser(uid="test-friend-2", email="test@email.es", roles=[], picture="test",
+                                                  name="test")
         test_entity_2 = UserEntity(
             document_id=test_friend_2.uid,
             name=test_friend_2.name,
@@ -647,6 +650,21 @@ class UserServiceTests(IsolatedAsyncioTestCase):
         self.mock_file_repository.upload_group_image.assert_called_with(filename=f'{user}_{group_info.id}.jpeg',
                                                                         data=TEST_RESIZED_BYTES)
         self.mock_file_repository.delete.assert_called_with(reference=picture)
+
+    async def test_handle_notifications_response_should_delete_invalid_tokens(self):
+        good_result = SendResponse(resp={"name": "test"}, exception=None)
+        bad_result = SendResponse(resp={"name": "test"}, exception=Exception("Test"))
+        results = [good_result, bad_result]
+        good_token = "good_token"
+        bad_token = "bad_token"
+        tokens = [good_token, bad_token]
+        user_id = "test_user_id"
+
+        # Call under tests
+        await self.user_service.handle_notification_results(results=results, tokens=tokens, user_id=user_id)
+
+        # Asserts
+        self.mock_user_repo.remove_notifications_tokens.assert_called_with(tokens=["bad_token"], user_id=user_id)
 
 
 if __name__ == "__main__":

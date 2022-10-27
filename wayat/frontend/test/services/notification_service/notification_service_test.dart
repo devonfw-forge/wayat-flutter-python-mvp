@@ -5,8 +5,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-import 'package:wayat/services/notification/notification_service.dart';
-import 'package:wayat/services/notification/notification_service_impl.dart';
+import 'package:wayat/services/notification/notifications_service_impl.dart';
 
 import 'notification_service_test.mocks.dart';
 
@@ -29,11 +28,10 @@ void main() async {
             .sendPostRequest(APIContract.pushNotification, {"token": token}))
         .thenAnswer((_) async => mockHttpResponse);
 
-    NotificationService notificationService = NotificationServiceImpl();
+    NotificationsServiceImpl notificationService = NotificationsServiceImpl();
 
-    bool res = await notificationService.sendCurrentUserToken(token);
+    await notificationService.sendNotificationsToken(token);
 
-    expect(res, true);
     verify(mockHttpProvider.sendPostRequest(
         APIContract.pushNotification, {"token": token})).called(1);
   });

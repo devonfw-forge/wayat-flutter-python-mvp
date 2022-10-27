@@ -16,6 +16,7 @@ import 'package:wayat/features/contact_profile/controller/contact_profile_contro
 import 'package:wayat/lang/app_localizations.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
 /// Detailed view of a Contact Profile
@@ -33,12 +34,16 @@ class ContactProfilePage extends StatelessWidget {
   /// Controller including the logig business of this page
   final ContactProfileController controller;
 
+  final PlatformService platformService;
+
   ContactProfilePage(
       {required this.contact,
       required this.navigationSource,
       ContactProfileController? controller,
+      PlatformService? platformService,
       Key? key})
       : controller = controller ?? ContactProfileController(),
+        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
@@ -63,25 +68,28 @@ class ContactProfilePage extends StatelessWidget {
       child: Scaffold(
         appBar: const PreferredSize(
             preferredSize: Size.fromHeight(40), child: CustomAppBar()),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: appBar(context),
-              ),
-              ConstrainedBox(
+        body: SizedBox(
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 800),
-                  child: mapSection(context, canBeLocated)),
-              ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: dataSection(context, canBeLocated)),
-              divider(),
-              ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: shareMyLocationRow())
-            ],
+                  child: appBar(context),
+                ),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: mapSection(context, canBeLocated)),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: dataSection(context, canBeLocated)),
+                if (platformService.isMobile) divider(),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: shareMyLocationRow())
+              ],
+            ),
           ),
         ),
       ),
