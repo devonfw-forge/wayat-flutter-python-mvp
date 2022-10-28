@@ -211,6 +211,7 @@ class ViewGroupPage extends StatelessWidget {
       backgroundColor: Colors.black87,
       child: CircleAvatar(
         radius: 40,
+        backgroundColor: Colors.black,
         backgroundImage: NetworkImage(selectedGroup.imageUrl),
       ),
     );

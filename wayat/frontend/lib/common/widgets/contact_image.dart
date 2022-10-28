@@ -28,6 +28,7 @@ class ContactImage extends StatelessWidget {
         radius: radius,
         backgroundColor: color ?? Colors.black,
         child: CircleAvatar(
+          backgroundColor: Colors.black,
           backgroundImage: NetworkImage(imageUrl),
           radius: radius - lineWidth,
         ));
