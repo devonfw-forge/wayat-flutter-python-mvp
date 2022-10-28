@@ -32,11 +32,11 @@ steps:
       - --delete-conflicting-outputs
     dir: wayat/frontend
   # Testing:
-  # - id: "Running Tests"
-  #   name: gcr.io/$PROJECT_ID/flutter:stable
-  #   args:
-  #     - test
-  #   dir: wayat/frontend
+  - id: "Running Tests"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - test
+    dir: wayat/frontend
   # Release build:
   - id: "Generating web version"
     name: gcr.io/$PROJECT_ID/flutter:stable

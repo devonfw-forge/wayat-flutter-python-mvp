@@ -57,13 +57,15 @@ dependencies:
   # To launch google maps app
   url_launcher: ^6.1.5
   # Firebase dependencies
-  firebase_core: ^1.20.0
-  cloud_firestore: ^3.4.6
-  firebase_auth: ^3.11.2
-  firebase_messaging: ^13.1.0
+  firebase_core_platform_interface: ^4.5.2
+  firebase_core: ^2.1.1
+  cloud_firestore: ^4.0.3
+  firebase_auth: ^4.1.0
+  firebase_messaging: ^14.0.3
   image_picker: ^0.8.5+3
   # Phone verification
   firebase_phone_auth_handler: ^1.0.6
+  firebase_auth_platform_interface: ^6.1.10
   pinput: ^2.2.12
   smart_auth: ^1.0.5
   # Testing mocks
@@ -72,7 +74,7 @@ dependencies:
   google_maps_flutter_web: ^0.4.0+2
   # Icon generation
   flutter_launcher_icons: ^0.10.0
-  # Platfor app dependencies
+  # Platform app dependencies
   restart_app: ^1.1.0+1
   app_settings: ^4.1.8
   # Fix url in web
@@ -82,13 +84,12 @@ dependencies:
   # Flutter map
   flutter_map: ^3.0.0
   latlong2: ^0.8.1
-  # new experimental navigation
+  # Navigation
   go_router: ^5.1.0
+  # Notifications inside the app
   flutter_local_notifications: ^12.0.0
   overlay_support: ^2.0.1
-  # Auth phone
-  firebase_auth_platform_interface: ^6.1.10
-  # To
+  # Scaffold that automatically resizes with the screen
   adaptive_navigation: ^0.0.7
 
 
