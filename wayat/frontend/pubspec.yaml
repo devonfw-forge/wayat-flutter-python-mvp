@@ -74,7 +74,7 @@ dependencies:
   google_maps_flutter_web: ^0.4.0+2
   # Icon generation
   flutter_launcher_icons: ^0.10.0
-  # Platfor app dependencies
+  # Platform app dependencies
   restart_app: ^1.1.0+1
   app_settings: ^4.1.8
   # Fix url in web
@@ -84,11 +84,12 @@ dependencies:
   # Flutter map
   flutter_map: ^3.0.0
   latlong2: ^0.8.1
-  # new experimental navigation
+  # Navigation
   go_router: ^5.1.0
+  # Notifications inside the app
   flutter_local_notifications: ^12.0.0
   overlay_support: ^2.0.1
-  # To
+  # Scaffold that automatically resizes with the screen
   adaptive_navigation: ^0.0.7
 
 
