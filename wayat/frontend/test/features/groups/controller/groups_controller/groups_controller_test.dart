@@ -107,16 +107,16 @@ void main() async {
   });
 
   test("DeleteGroup calls the right service method", () {
-    String groupId = "id";
-    when(mockGroupsService.delete(groupId))
+    Group group = _createGroup(id: "id", name: "name");
+    when(mockGroupsService.delete(group.id))
         .thenAnswer((_) => Future.value(null));
 
     GroupsController groupsController =
         GroupsController(groupsService: mockGroupsService);
 
-    groupsController.deleteGroup(groupId);
+    groupsController.deleteGroup(group);
 
-    verify(mockGroupsService.delete(groupId)).called(1);
+    verify(mockGroupsService.delete(group.id)).called(1);
   });
 
   test("GroupsController intialized with real service", () {

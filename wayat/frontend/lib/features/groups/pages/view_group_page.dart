@@ -175,7 +175,7 @@ class ViewGroupPage extends StatelessWidget {
               '/contacts/friends/groups/${groupsController.selectedGroup?.id}/edit');
         } else if (value == deleteGroup) {
           groupsController
-              .deleteGroup(selectedGroup.id)
+              .deleteGroup(selectedGroup)
               .then((_) => groupsController.updateGroups());
           goBack(context);
         }
