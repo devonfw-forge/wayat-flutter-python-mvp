@@ -1,9 +1,3 @@
-### Build files
-windows/
-linux/
-macos/
-web-deploy/web
-
 # Temporary files
 *.g.dart
 *.gr.dart
