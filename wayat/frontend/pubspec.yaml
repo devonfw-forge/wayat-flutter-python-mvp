@@ -57,11 +57,11 @@ dependencies:
   # To launch google maps app
   url_launcher: ^6.1.5
   # Firebase dependencies
-  firebase_core_platform_interface: 4.5.1
-  firebase_core: ^1.20.0
-  cloud_firestore: ^3.4.6
-  firebase_auth: ^3.11.2
-  firebase_messaging: ^13.0.4
+  firebase_core_platform_interface: ^4.5.2
+  firebase_core: ^2.1.1
+  cloud_firestore: ^4.0.3
+  firebase_auth: ^4.1.0
+  firebase_messaging: ^14.0.3
   image_picker: ^0.8.5+3
   # Phone verification
   firebase_phone_auth_handler: ^1.0.6
