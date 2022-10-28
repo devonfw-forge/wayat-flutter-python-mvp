@@ -1,6 +1,6 @@
 # [START Wayat Frontend Build]
 steps:
-  # Cleaning:
+  # Doctor and versioning:
   - id: "Doctor and versioning"
     name: gcr.io/$PROJECT_ID/flutter:stable
     args:
