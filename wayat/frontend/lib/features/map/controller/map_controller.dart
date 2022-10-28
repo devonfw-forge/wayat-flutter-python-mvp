@@ -145,7 +145,9 @@ abstract class _MapController with Store {
   }
 
   /// Update map camera
-  void onSuggestionsTap(contact) {
+  void onSuggestionsTap(ContactLocation contact) {
+    setSearchBarText(contact.name);
+    filterMarkers();
     platformMapController.move(contact.latitude, contact.longitude);
   }
 }

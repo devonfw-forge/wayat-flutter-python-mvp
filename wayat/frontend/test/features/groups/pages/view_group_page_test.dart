@@ -82,7 +82,7 @@ void main() async {
     group.id = groupId;
     when(mockGroupsController.selectedGroup).thenReturn(group);
     when(mockGroupsController.updateGroups()).thenAnswer((_) async => true);
-    when(mockGroupsController.deleteGroup(groupId))
+    when(mockGroupsController.deleteGroup(group))
         .thenAnswer((_) => Future.value(null));
 
     await tester.pumpWidget(TestApp.createApp(body: ViewGroupPage()));
@@ -93,7 +93,7 @@ void main() async {
 
     await tester.tap(find.text(appLocalizations.deleteGroup));
     await tester.pumpAndSettle();
-    verify(mockGroupsController.deleteGroup(groupId)).called(1);
+    verify(mockGroupsController.deleteGroup(group)).called(1);
     verify(mockGroupsController.setSelectedGroup(null)).called(1);
     verify(mockGroupsController.updateGroups()).called(1);
   });

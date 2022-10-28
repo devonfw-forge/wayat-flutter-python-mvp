@@ -66,7 +66,8 @@ abstract class _GroupsController with Store {
     selectedGroup = group;
   }
 
-  Future<void> deleteGroup(String groupId) async {
-    await groupsService.delete(groupId);
+  Future<void> deleteGroup(Group group) async {
+    groups.remove(group);
+    await groupsService.delete(group.id);
   }
 }
