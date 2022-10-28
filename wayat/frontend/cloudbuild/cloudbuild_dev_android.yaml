@@ -1,6 +1,12 @@
 # [START Wayat Frontend Build]
 steps:
   # Cleaning:
+  - id: "Doctor and versioning"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - doctor
+    dir: wayat/frontend
+  # Cleaning:
   - id: "Cleaning project"
     name: gcr.io/$PROJECT_ID/flutter:stable
     args:
@@ -53,11 +59,11 @@ steps:
       - --delete-conflicting-outputs
     dir: wayat/frontend
   # Testing:
-  # - id: "Running Tests"
-  #   name: gcr.io/$PROJECT_ID/flutter:stable
-  #   args:
-  #     - test
-  #   dir: wayat/frontend
+  - id: "Running Tests"
+    name: gcr.io/$PROJECT_ID/flutter:stable
+    args:
+      - test
+    dir: wayat/frontend
   # Release build:
   - id: "Generating APK"
     name: gcr.io/$PROJECT_ID/flutter:stable
