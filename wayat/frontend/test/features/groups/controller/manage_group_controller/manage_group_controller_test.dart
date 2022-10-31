@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
@@ -29,6 +30,7 @@ void main() async {
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     when(mockContactsPageController.friendsController)
         .thenReturn(mockFriendsController);
+    GetIt.I.registerSingleton(AppConfigState());
   });
 
   test("AllContacts getter returns the contacts from the FriendsController",
@@ -71,7 +73,7 @@ void main() async {
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
 
     ManageGroupController manageGroupController =
-      ManageGroupController(groupsService: mockGroupsService);
+        ManageGroupController(groupsService: mockGroupsService);
 
     expect(manageGroupController.selectedFile, null);
     await manageGroupController.setSelectedFile(emptyFile);
@@ -90,9 +92,9 @@ void main() async {
           group: emptyGroup, groupsService: mockGroupsService);
 
       manageGroupController.saveGroup();
-      expect(manageGroupController.showValidationGroup, true);
-      verifyNever(mockGroupsService.create(emptyGroup, null)).called(0);
-      verifyNever(mockGroupsService.update(emptyGroup, null)).called(0);
+      expect(manageGroupController.isValidGroup, false);
+      verifyNever(mockGroupsService.create(emptyGroup, null));
+      verifyNever(mockGroupsService.update(emptyGroup, null));
     });
 
     test(
