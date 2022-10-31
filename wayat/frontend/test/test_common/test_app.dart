@@ -10,6 +10,10 @@ class TestApp {
 
   static Widget createApp(
       {Widget? body, GoRouter? router, BuildContext? buildContext}) {
+    if (!GetIt.I.isRegistered<AppConfigState>()) {
+      GetIt.I.registerSingleton<AppConfigState>(AppConfigState());
+    }
+
     router ??= GoRouter(initialLocation: "/", routes: [
       GoRoute(
         path: "/",
@@ -18,10 +22,6 @@ class TestApp {
         ),
       ),
     ]);
-
-    if (!GetIt.I.isRegistered<AppConfigState>()) {
-      GetIt.I.registerSingleton<AppConfigState>(AppConfigState());
-    }
 
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,

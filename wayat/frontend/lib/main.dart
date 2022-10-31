@@ -23,6 +23,8 @@ import 'package:wayat/features/contacts/controller/contacts_page_controller.dart
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/navigation/app_router.dart';
+import 'package:go_router/go_router.dart';
+import 'package:wayat/navigation/initial_route.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
@@ -72,6 +74,8 @@ Future main() async {
 /// All of the singletons are registered using lazy initialization, to ensure
 /// that only the one's that are being used will be instantiated.
 Future registerSingletons() async {
+  GetIt.I.registerSingleton<InitialLocationProvider>(
+      InitialLocationProvider(InitialLocation.map));
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
@@ -85,7 +89,9 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LocationListener>(() => LocationListener());
   GetIt.I.registerLazySingleton<PhoneVerificationController>(
       () => PhoneVerificationController());
-  GetIt.I.registerLazySingleton<GlobalKey<NavigatorState>>(() => GlobalKey());
+  if (!GetIt.I.isRegistered<GlobalKey<NavigatorState>>()) {
+    GetIt.I.registerLazySingleton<GlobalKey<NavigatorState>>(() => GlobalKey());
+  }
 }
 
 /// Main Application class
@@ -136,6 +142,14 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
             GetIt.I.get<UserState>().currentUser != null) {
           await lifeCycleState.notifyAppOpenned();
         }
+
+        NotificationsServiceImpl.checkIfOpenedWithNotification(
+            onOpenedWithNotification: (payload) {
+          GetIt.I
+              .get<GlobalKey<NavigatorState>>()
+              .currentContext
+              ?.go(payload ?? "/");
+        });
       }
       // Other states must execute a close map event, but detach is not included,
       // when the app is closed it can not send a request
