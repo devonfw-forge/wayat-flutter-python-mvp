@@ -128,3 +128,7 @@ flutter_icons:
   web:
     generate: true
     image_path: "assets/images/wayat_icon.png"
+  windows:
+    generate: true
+    image_path: "assets/images/wayat_icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
