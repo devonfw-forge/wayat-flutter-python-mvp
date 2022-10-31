@@ -27,7 +27,7 @@ def get_keycloak_settings() -> KeycloakSettings:
 
 class KeycloakService(IdentityProvider):
     def __init__(self, keycloak_settings: KeycloakSettings):
-        from fastapi_keycloak import FastAPIKeycloak
+        from fastapi_keycloak import FastAPIKeycloak  # type: ignore
         self._client = FastAPIKeycloak(server_url=keycloak_settings.auth_server,
                                        client_id=keycloak_settings.client_id,
                                        client_secret=keycloak_settings.client_secret,

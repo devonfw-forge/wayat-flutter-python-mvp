@@ -12,10 +12,13 @@ class CustomTextIconButton extends StatelessWidget {
   /// Icon from Material/Cupertino design
   final IconData icon;
 
+  final double? fontSize;
+
   const CustomTextIconButton(
       {required this.text,
       required this.icon,
       required this.onPressed,
+      this.fontSize,
       Key? key})
       : super(key: key);
 
@@ -29,7 +32,7 @@ class CustomTextIconButton extends StatelessWidget {
         ),
         label: Text(
           text,
-          style: const TextStyle(color: ColorTheme.primaryColor),
+          style: TextStyle(color: ColorTheme.primaryColor, fontSize: fontSize),
         ));
   }
 }

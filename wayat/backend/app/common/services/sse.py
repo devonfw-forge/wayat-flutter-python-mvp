@@ -24,10 +24,10 @@ class EventPublisher:
         for event_queue in queues_to_update:
             event_queue.put_nowait(event)
 
-    def subscribe(self) -> (uuid.UUID, EventSourceResponse):
+    def subscribe(self) -> tuple[uuid.UUID, EventSourceResponse]:
         subscriber_id = self._generate_id()
         logger.debug(f"Adding new subscriber with {subscriber_id=}")
-        event_queue = Queue()
+        event_queue = Queue()  # type: ignore
         self.subscribers[subscriber_id] = event_queue
         return subscriber_id, EventSourceResponse(self._event_generator(subscriber_id, event_queue))
 

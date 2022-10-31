@@ -1,10 +1,10 @@
 import logging
 from typing import overload, Optional
 
+import firebase_admin  # type: ignore
 from fastapi import Depends
-import firebase_admin
 from firebase_admin import messaging
-from firebase_admin.messaging import Notification, BatchResponse
+from firebase_admin.messaging import Notification, BatchResponse, SendResponse  # type: ignore
 
 from app.common.infra import FirebaseSettings
 from app.common.infra.gcp.utils import get_firebase_settings, run_in_executor
@@ -24,7 +24,7 @@ class CloudMessaging:
 
     # https://github.com/firebase/firebase-admin-python/blob/5b7ac0558ef89cdd386daddaf55a3d5ee3122a72/snippets/messaging/cloud_messaging.py#L24-L40
     @run_in_executor
-    def _send_simple_notification(self, tokens: list[str], data: dict[str, str]) -> BatchResponse:
+    def _send_simple_notification(self, tokens: list[str], data: dict[str, str]):
         return messaging.send_all(messages=[messaging.Message(
             data=data,
             token=token
@@ -38,20 +38,20 @@ class CloudMessaging:
         ) for token in tokens])
 
     @overload
-    async def send_notification(self, *, tokens: list[str], notification: Notification):
+    async def send_notification(self, *, tokens: list[str], notification: Notification) -> list[SendResponse]:
         ...
 
     @overload
-    async def send_notification(self, *, tokens: list[str], data: dict[str, str]):
+    async def send_notification(self, *, tokens: list[str], data: dict[str, str]) -> list[SendResponse]:
         ...
 
     async def send_notification(self, *, tokens: list[str], notification: Optional[Notification] = None,
-                                data: Optional[dict[str, str]] = None):
+                                data: Optional[dict[str, str]] = None) -> list[SendResponse]:
         # Overload handling
         if notification is not None:
-            return await self._send_notification(tokens, notification)
+            return (await self._send_notification(tokens, notification)).responses
         elif data is not None:
-            return await self._send_simple_notification(tokens, data)
+            return (await self._send_simple_notification(tokens, data)).responses
         else:
             raise ValueError("Either notification or data should not be None. Invalid parameters")
 

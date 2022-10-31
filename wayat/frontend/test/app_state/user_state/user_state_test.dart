@@ -42,30 +42,6 @@ void main() async {
         authService: mockAuthService, profileService: mockProfileService);
   });
 
-  test("Check if user has finished or not the authentication process",
-      () async {
-    // Check if user exist
-    expect(userState.finishLoggedIn, false);
-    // Check if user is not null
-    userState.currentUser = myUser;
-    expect(userState.finishLoggedIn, true);
-    //Check if user has assign a phone number
-    myUser.phone = "";
-    userState.currentUser = myUser;
-    expect(userState.finishLoggedIn, false);
-  });
-
-  test("Check if user has finished or not the onboarding process", () async {
-    expect(userState.hasDoneOnboarding, false);
-    // The generated user hasn't completed the onboarding
-    userState.currentUser = myUser;
-    expect(userState.hasDoneOnboarding, false);
-    //Check if user has assign a phone number
-    myUser.onboardingCompleted = true;
-    userState.currentUser = myUser;
-    expect(userState.hasDoneOnboarding, true);
-  });
-
   test("If user hasn't log in, is logged return false", () async {
     // Emulates previous access to the app
     when(mockAuthService.signInSilently()).thenAnswer((_) => Future.value());
@@ -109,6 +85,9 @@ void main() async {
   });
 
   test("LogOut calls signOut in Authentication service", () async {
+    when(mockLifeCycleState.notifyAppClosed())
+        .thenAnswer((_) => Future.value());
+
     when(mockAuthService.signOut()).thenAnswer((_) => Future.value(null));
 
     await userState.logOut();

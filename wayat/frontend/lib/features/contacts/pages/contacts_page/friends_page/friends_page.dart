@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -8,7 +9,6 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/features/contacts/widgets/contacts_section_title.dart';
 import 'package:wayat/features/contacts/widgets/navigation_button.dart';
@@ -32,7 +32,7 @@ class FriendsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          header(),
+          header(context),
           const SizedBox(
             height: 10,
           ),
@@ -63,8 +63,12 @@ class FriendsPage extends StatelessWidget {
                         contactsStatus.firstWhereOrNull(
                             (element) => element.id == contacts[index].id);
                     Contact selectedContact = currentContact ?? contacts[index];
-                    GetIt.I.get<HomeNavState>().setSelectedContact(
-                        selectedContact, appLocalizations.contacts);
+                    GetIt.I
+                        .get<HomeNavState>()
+                        .setSelectedContact(selectedContact);
+                    context.go(
+                      '/contacts/friends/${selectedContact.id}',
+                    );
                   },
                   contact: contacts[index],
                   iconAction: IconButton(
@@ -82,7 +86,7 @@ class FriendsPage extends StatelessWidget {
   }
 
   /// Returns widget with number of friends connected and groups navigation button
-  Widget header() {
+  Widget header(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
       child: Row(
@@ -95,9 +99,7 @@ class FriendsPage extends StatelessWidget {
             );
           }),
           NavigationButton(
-              onTap: () => GetIt.I
-                  .get<ContactsPageController>()
-                  .setContactsCurrentPage(ContactsCurrentPages.groups),
+              onTap: () => context.go('/contacts/friends/groups'),
               text: appLocalizations.groupsTitle)
         ],
       ),

@@ -13,11 +13,10 @@ import 'package:wayat/features/contacts/controller/suggestions_controller/sugges
 import 'package:wayat/features/contacts/pages/contacts_page/suggestions_page/suggestions_page.dart';
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/annotations.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 
+import '../../../../../test_common/test_app.dart';
 import 'suggestions_page_test.mocks.dart';
 
 @GenerateMocks([
@@ -35,7 +34,6 @@ void main() async {
 
   setUpAll(() {
     HttpOverrides.global = null;
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<SuggestionsController>(mockSuggestionsController);
@@ -46,20 +44,6 @@ void main() async {
         .thenAnswer((_) => Future.value([]));
   });
 
-  Widget createApp(Widget body) {
-    return MaterialApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      home: Scaffold(
-        body: body,
-      ),
-    );
-  }
-
   group("Invitation button", () {
     testWidgets('Suggestions page has a invitation button', (tester) async {
       when(mockSuggestionsController.updateSuggestedContacts())
@@ -67,7 +51,7 @@ void main() async {
       when(mockSuggestionsController.filteredSuggestions)
           .thenReturn(mobx.ObservableList<Contact>.of([]));
 
-      await tester.pumpWidget(createApp(SuggestionsPage()));
+      await tester.pumpWidget(TestApp.createApp(body: SuggestionsPage()));
       expect(
           find.widgetWithText(
               CustomInviteWayat, appLocalizations.inviteContacts),
@@ -80,7 +64,7 @@ void main() async {
       when(mockSuggestionsController.copyInvitation())
           .thenAnswer((_) => Future.value(null));
 
-      await tester.pumpWidget(createApp(SuggestionsPage()));
+      await tester.pumpWidget(TestApp.createApp(body: SuggestionsPage()));
 
       await tester.tap(find.byType(TextButton));
       verify(mockSuggestionsController.copyInvitation()).called(1);
@@ -88,7 +72,7 @@ void main() async {
   });
 
   testWidgets("Suggestions page title is correct", (tester) async {
-    await tester.pumpWidget(createApp(SuggestionsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: SuggestionsPage()));
     await tester.pumpAndSettle();
 
     expect(find.text(appLocalizations.suggestionsPageTitle), findsOneWidget);
@@ -99,7 +83,7 @@ void main() async {
     when(mockSuggestionsController.filteredSuggestions)
         .thenReturn(mobx.ObservableList.of(mobx.ObservableList.of([])));
 
-    await tester.pumpWidget(createApp(SuggestionsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: SuggestionsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNothing);
@@ -107,7 +91,7 @@ void main() async {
     when(mockSuggestionsController.filteredSuggestions).thenReturn(
         mobx.ObservableList.of(_generateContacts(["TestA", "TestB", "TestC"])));
 
-    await tester.pumpWidget(createApp(SuggestionsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: SuggestionsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsNWidgets(3));
@@ -121,7 +105,7 @@ void main() async {
     when(mockSuggestionsController.sendRequest(contact))
         .thenAnswer((_) => Future.value(null));
 
-    await tester.pumpWidget(createApp(SuggestionsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: SuggestionsPage()));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.add_circle_outline));
@@ -143,7 +127,7 @@ void main() async {
     when(mockContactsPageController.suggestionsController)
         .thenReturn(suggestionsController);
 
-    await tester.pumpWidget(createApp(SuggestionsPage()));
+    await tester.pumpWidget(TestApp.createApp(body: SuggestionsPage()));
     await tester.pumpAndSettle();
 
     expect(find.byType(ContactTile), findsOneWidget);

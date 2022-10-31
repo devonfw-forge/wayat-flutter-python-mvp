@@ -42,7 +42,7 @@ abstract class _RequestsController with Store {
   /// Update request from backend
   @action
   Future<void> updateRequests() async {
-    FriendRequestRespone requests = await _service.getRequests();
+    FriendRequestResponse requests = await _service.getRequests();
 
     if (ListUtilsService.haveDifferentElements(
         pendingRequests, requests.receivedRequests)) {

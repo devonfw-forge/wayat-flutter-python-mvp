@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/common/theme/colors.dart';
@@ -15,6 +16,7 @@ import 'package:wayat/features/contact_profile/controller/contact_profile_contro
 import 'package:wayat/lang/app_localizations.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/google_maps_service/google_maps_service.dart';
 
 /// Detailed view of a Contact Profile
@@ -32,12 +34,16 @@ class ContactProfilePage extends StatelessWidget {
   /// Controller including the logig business of this page
   final ContactProfileController controller;
 
+  final PlatformService platformService;
+
   ContactProfilePage(
       {required this.contact,
       required this.navigationSource,
       ContactProfileController? controller,
+      PlatformService? platformService,
       Key? key})
       : controller = controller ?? ContactProfileController(),
+        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
@@ -56,26 +62,34 @@ class ContactProfilePage extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        GetIt.I.get<HomeNavState>().setSelectedContact(null, "");
+        GetIt.I.get<HomeNavState>().setSelectedContact(null);
         return true;
       },
       child: Scaffold(
         appBar: const PreferredSize(
             preferredSize: Size.fromHeight(40), child: CustomAppBar()),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              appBar(),
-              mapSection(context, canBeLocated),
-              ConstrainedBox(
+        body: SizedBox(
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 800),
-                  child: dataSection(context, canBeLocated)),
-              divider(),
-              ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: shareMyLocationRow())
-            ],
+                  child: appBar(context),
+                ),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: mapSection(context, canBeLocated)),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: dataSection(context, canBeLocated)),
+                if (platformService.isMobile) divider(),
+                ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: shareMyLocationRow())
+              ],
+            ),
           ),
         ),
       ),
@@ -83,18 +97,21 @@ class ContactProfilePage extends StatelessWidget {
   }
 
   /// Returns an appBar with a return arrow to previous page
-  Widget appBar() {
+  Widget appBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
       child: Row(
         children: [
           IconButton(
               onPressed: () {
-                GetIt.I.get<HomeNavState>().setSelectedContact(null, "");
+                GetIt.I.get<HomeNavState>().setSelectedContact(null);
+                context.go(navigationSource);
               },
               icon: const Icon(Icons.arrow_back)),
           Text(
-            navigationSource,
+            (navigationSource == '/contacts/friends')
+                ? appLocalizations.contacts
+                : appLocalizations.appTitle,
             style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
           )
         ],

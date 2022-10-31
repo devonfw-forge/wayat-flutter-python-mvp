@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
@@ -81,6 +80,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
           onCodeSent: () {},
           onLoginSuccess:
               (UserCredential userCredential, bool autoVerified) async {
+            String? error;
             bool isUpdated = await userState.updatePhone(
                 widget.phoneNumber.countryCode,
                 widget.phoneNumber.completeNumber);
@@ -88,12 +88,11 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
               userState.currentUser!.phone = widget.phoneNumber.completeNumber;
               userState.currentUser!.phonePrefix =
                   widget.phoneNumber.countryCode;
-              // ignore: use_build_context_synchronously
-              AutoRouter.of(context).pop();
             } else {
-              if (widget.callbackController != null) {
-                widget.callbackController!(appLocalizations.phoneUsed);
-              }
+              error = appLocalizations.phoneUsed;
+            }
+            if (widget.callbackController != null) {
+              widget.callbackController!(error);
             }
           },
           onLoginFailed:
@@ -119,7 +118,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(appLocalizations.verifyPhoneTitle),
           IconButton(
-              onPressed: () => AutoRouter.of(context).pop(),
+              onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(Icons.close))
         ]),
         titleTextStyle: const TextStyle(
@@ -161,7 +160,7 @@ class _VerifyPhoneNumberDialogState extends State<VerifyPhoneNumberDialog>
               CustomTextButton(
                   text: appLocalizations.cancel,
                   onPressed: () {
-                    AutoRouter.of(context).pop();
+                    Navigator.of(context).pop();
                   }),
             ],
           ),

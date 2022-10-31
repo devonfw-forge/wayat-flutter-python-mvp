@@ -24,7 +24,6 @@ abstract class ShareLocationService {
   /// If start sharing the location, update it
   void setShareLocationEnabled(bool shareLocation);
 
-  /// Sets sharing the location TRUE or FALSE
-  /// If start sharing the location, update it
+  /// Whether the user has given permissions to get the location in web
   bool isWebLocationEnabled();
 }

@@ -59,7 +59,7 @@ abstract class _PhoneVerificationController with Store {
   }
 
   /// Shows verification dialog to get OTP sms
-  void sendSMS(BuildContext context) {
+  void sendSMS(BuildContext context, {Function? onValidated}) {
     if (isValidPhone) {
       showDialog(
         context: context,
@@ -67,7 +67,14 @@ abstract class _PhoneVerificationController with Store {
           phoneNumber: phoneNumber!,
           callbackController: (String? error) {
             errorPhoneVerification = error;
-            phoneNumber = null;
+            if (error != null) {
+              phoneNumber = null;
+            } else {
+              if (onValidated != null) {
+                onValidated();
+              }
+            }
+            Navigator.of(context).pop();
           },
         ),
       );

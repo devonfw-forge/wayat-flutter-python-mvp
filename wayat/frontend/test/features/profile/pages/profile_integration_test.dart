@@ -1,13 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
-import 'package:wayat/features/profile/controllers/profile_controller.dart';
+import 'package:wayat/features/home/pages/home_page.dart';
+import 'package:wayat/features/home/pages/home_tabs.dart';
+import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page.dart';
+import 'package:wayat/features/profile/pages/preferences_page/preferences_page.dart';
+import 'package:wayat/features/profile/pages/profile_page.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
@@ -19,18 +23,15 @@ import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
-import 'package:wayat/features/contacts/controller/navigation/contacts_current_pages.dart';
 import 'package:wayat/features/contacts/controller/requests_controller/requests_controller.dart';
 import 'package:wayat/features/contacts/controller/suggestions_controller/suggestions_controller.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
-import 'package:wayat/lang/lang_singleton.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:wayat/navigation/app_router.gr.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/profile/profile_service.dart';
 
+import '../../../test_common/test_app.dart';
 import 'profile_integration_test.mocks.dart';
 
 @GenerateMocks([
@@ -50,6 +51,43 @@ import 'profile_integration_test.mocks.dart';
   PhoneVerificationController
 ])
 void main() async {
+  // It is mandatory to use a function to return the GoRouter, as if it
+  // is assigned is to a variable it won't work
+  GoRouter generateRouter() => GoRouter(initialLocation: "/profile", routes: [
+        GoRoute(
+            path: '/profile',
+            pageBuilder: (context, state) => NoTransitionPage(
+                  child: HomePage(
+                    selectedSection: HomeTab.profile,
+                    child: ProfilePage(),
+                  ),
+                ),
+            routes: [
+              GoRoute(
+                path: "edit",
+                pageBuilder: (context, state) {
+                  return NoTransitionPage(
+                    child: HomePage(
+                      selectedSection: HomeTab.profile,
+                      child: EditProfilePage(),
+                    ),
+                  );
+                },
+              ),
+              GoRoute(
+                path: "preferences",
+                pageBuilder: (context, state) {
+                  return NoTransitionPage(
+                    child: HomePage(
+                      selectedSection: HomeTab.profile,
+                      child: PreferencesPage(),
+                    ),
+                  );
+                },
+              )
+            ]),
+      ]);
+
   late MyUser user;
 
   final ReceiveLocationState mockReceiveLocationState =
@@ -67,18 +105,14 @@ void main() async {
   final MockSuggestionsController mockSuggestionsController =
       MockSuggestionsController();
   final MockProfileService mockProfileService = MockProfileService();
-  final ProfileController profileController = ProfileController();
   final MockGroupsController mockGroupsController = MockGroupsController();
   final MockPhoneVerificationController mockPhoneVerifController =
       MockPhoneVerificationController();
 
   setUpAll(() async {
     HttpOverrides.global = null;
-    await dotenv.load(fileName: ".env");
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
-    when(mockUserState.finishLoggedIn).thenReturn(true);
-    when(mockUserState.hasDoneOnboarding).thenReturn(true);
     when(mockUserState.currentUser).thenAnswer((_) => user);
     when(mockUserState.updateUserName("newUsername")).thenAnswer((_) {
       user.name = "newUsername";
@@ -89,8 +123,6 @@ void main() async {
     when(mockProfileService.updateProfileName("newUsername"))
         .thenAnswer((_) => Future.value(true));
     when(mockLocationState.shareLocationEnabled).thenReturn(false);
-    when(mockContactsPageController.currentPage)
-        .thenReturn(ContactsCurrentPages.contacts);
     when(mockContactsPageController.friendsController)
         .thenReturn(mockFriendsController);
     when(mockContactsPageController.requestsController)
@@ -122,14 +154,12 @@ void main() async {
         onboardingCompleted: true,
         shareLocationEnabled: true);
 
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<ShareLocationState>(mockLocationState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
-    GetIt.I.registerSingleton<ProfileController>(profileController);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
@@ -137,30 +167,8 @@ void main() async {
         mockPhoneVerifController);
   });
 
-  Widget createApp() {
-    final appRouter = AppRouter();
-
-    return MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) {
-        GetIt.I.get<LangSingleton>().initialize(context);
-        return GetIt.I.get<LangSingleton>().appLocalizations.appTitle;
-      },
-      routerDelegate: appRouter.delegate(),
-      routeInformationParser: appRouter.defaultRouteParser(),
-    );
-  }
-
-  Future navigateToProfilePage(WidgetTester tester) async {
-    await tester.pumpWidget(createApp());
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.person_outline));
-    await tester.pumpAndSettle();
-  }
-
   testWidgets('Integration test for change username', (tester) async {
-    await navigateToProfilePage(tester);
+    await tester.pumpWidget(TestApp.createApp(router: generateRouter()));
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);
@@ -216,7 +224,7 @@ void main() async {
     when(mockLocationState.shareLocationEnabled).thenReturn(true);
     when(mockUserState.logOut()).thenAnswer((_) => Future.value());
     when(mockLocationState.setShareLocationEnabled(false)).thenReturn(null);
-    await navigateToProfilePage(tester);
+    await tester.pumpWidget(TestApp.createApp(router: generateRouter()));
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);
@@ -236,7 +244,7 @@ void main() async {
 
   testWidgets('Integration test for LogOut', (tester) async {
     when(mockUserState.logOut()).thenAnswer((_) => Future.value());
-    await navigateToProfilePage(tester);
+    await tester.pumpWidget(TestApp.createApp(router: generateRouter()));
 
     // Check the profile page is displayed
     expect(find.text(appLocalizations.profile), findsWidgets);

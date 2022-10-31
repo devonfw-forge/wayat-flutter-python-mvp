@@ -1,11 +1,11 @@
 from typing import Optional, List
 
 from fastapi import APIRouter, Depends, Body, Query
-from fastapi_keycloak import HTTPMethod, KeycloakUser, FastAPIKeycloak
+from fastapi_keycloak import HTTPMethod, KeycloakUser, FastAPIKeycloak  # type: ignore
 from pydantic import SecretStr
 from app.common import get_user, idp as _idp
 
-idp: FastAPIKeycloak = _idp.client
+idp: FastAPIKeycloak = _idp.client  # type: ignore
 
 router = APIRouter(prefix="/idp", dependencies=[Depends(get_user())])  # Protect all the paths with user authentication
 
@@ -54,7 +54,7 @@ def create_user(first_name: str, last_name: str, email: str, password: SecretStr
 
 
 @router.get("/user/{user_id}", tags=["user-management"])
-def get_user(user_id: str = None):
+def identity_get_user(user_id: str = None):
     return idp.get_user(user_id=user_id)
 
 

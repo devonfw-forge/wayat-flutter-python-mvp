@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Optional, List, Tuple
 from fastapi import Depends
 from google.cloud import firestore
-from google.cloud.firestore import AsyncClient, AsyncTransaction
+from google.cloud.firestore import AsyncClient, AsyncTransaction  # type: ignore
 from google.cloud.firestore_v1.field_path import FieldPath
 
 from app.common.base.base_entity import new_uuid
@@ -62,17 +62,26 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         user = await self.get_or_throw(uid)
         return user.groups, user
 
-    async def get_user_location(self, uid: str, force=False) -> Tuple[Location | None, list[str]]:
+    async def get_user_location(self, uid: str, force=False, cache: Optional[dict[str, UserEntity]] = None) -> \
+            Tuple[Location | None, list[str]]:
         """
         Returns the location of a User. If force=False (default), this Location will be None if the User has the
         share_location property set to False.
 
         :param force: whether to ignore share_location or not
         :param uid: the UID of the User
+        :param cache: use temporal cache to reduce number of reads
         :return: the Location of the User, or None if it's not available
         and the list of contacts with which the user is sharing
         """
-        user_entity = await self.get_or_throw(uid)
+        if cache is not None and uid in cache.keys():
+            logger.info(f"Location loaded from cache for {uid}")
+            user_entity = cache.get(uid)
+        else:
+            user_entity = await self.get_or_throw(uid)
+            if cache is not None:
+                logger.info(f"Location added to cache for {uid}")
+                cache.update({uid: user_entity})
         if user_entity.location is None:  # if not available, return None
             return None, user_entity.location_shared_with
         elif not force and not user_entity.share_location:  # if not forcing, decide on not(share_location)
@@ -164,6 +173,7 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
                     t.update(receiver_ref, update_receiver)
                 else:
                     logger.error("Trying to accept a friend request not received")
+
             await execute(transaction)
 
     async def delete_contact(self, a_id, b_id):
@@ -225,3 +235,8 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
         await self.update(document_id=user_id, data=update)
 
 
+    async def remove_notifications_tokens(self, *, user_id: str, tokens: list[str]):
+        update = {
+            "notifications_tokens": firestore.ArrayRemove(tokens),
+        }
+        await self.update(document_id=user_id, data=update)

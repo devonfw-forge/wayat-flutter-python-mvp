@@ -3,7 +3,7 @@ import mimetypes
 from functools import lru_cache
 from typing import BinaryIO
 
-from google.cloud.storage import Client, Bucket
+from google.cloud.storage import Client, Bucket  # type: ignore
 from pydantic import BaseSettings
 
 from app.common.core.configuration import load_env_file_on_settings
@@ -79,7 +79,8 @@ class CloudStorage:
             raise ValueError("Either reference or prefix must be defined")
 
         for blob in blob_iterator:
-            blob.delete()
+            if blob.exists():
+                blob.delete()
 
     async def delete(self, reference: str | None = None, prefix: str | None = None):
         await self._delete(reference, prefix)

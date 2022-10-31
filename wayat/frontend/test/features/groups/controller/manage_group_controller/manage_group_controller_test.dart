@@ -5,13 +5,13 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wayat/app_state/app_config_state/app_config_state.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:mobx/mobx.dart' as mobx;
-import 'package:wayat/lang/lang_singleton.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'manage_group_controller_test.mocks.dart';
@@ -26,11 +26,11 @@ void main() async {
   setUpAll(() {
     // This is necessary because Group uses appLocalizations for the default group name
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
-    GetIt.I.registerSingleton<LangSingleton>(LangSingleton());
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     when(mockContactsPageController.friendsController)
         .thenReturn(mockFriendsController);
+    GetIt.I.registerSingleton(AppConfigState());
   });
 
   test("AllContacts getter returns the contacts from the FriendsController",
@@ -73,7 +73,7 @@ void main() async {
     XFile emptyFile = XFile.fromData(Uint8List.fromList([]));
 
     ManageGroupController manageGroupController =
-      ManageGroupController(groupsService: mockGroupsService);
+        ManageGroupController(groupsService: mockGroupsService);
 
     expect(manageGroupController.selectedFile, null);
     await manageGroupController.setSelectedFile(emptyFile);
@@ -92,9 +92,9 @@ void main() async {
           group: emptyGroup, groupsService: mockGroupsService);
 
       manageGroupController.saveGroup();
-      expect(manageGroupController.showValidationGroup, true);
-      verifyNever(mockGroupsService.create(emptyGroup, null)).called(0);
-      verifyNever(mockGroupsService.update(emptyGroup, null)).called(0);
+      expect(manageGroupController.isValidGroup, false);
+      verifyNever(mockGroupsService.create(emptyGroup, null));
+      verifyNever(mockGroupsService.update(emptyGroup, null));
     });
 
     test(

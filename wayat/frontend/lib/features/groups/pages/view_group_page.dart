@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/basic_contact_tile.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Detailed view of the [Group], accessible normally by tapping on a [GroupTile]
 ///
@@ -15,8 +17,11 @@ import 'package:wayat/lang/app_localizations.dart';
 class ViewGroupPage extends StatelessWidget {
   final GroupsController groupsController = GetIt.I.get<GroupsController>();
   late Group selectedGroup = groupsController.selectedGroup!;
+  final PlatformService platformService;
 
-  ViewGroupPage({Key? key}) : super(key: key);
+  ViewGroupPage({Key? key, PlatformService? platformService})
+      : platformService = platformService ?? PlatformService(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,61 +34,78 @@ class ViewGroupPage extends StatelessWidget {
     );
   }
 
+  void goBack(BuildContext context) {
+    groupsController.setSelectedGroup(null);
+    context.go('/contacts/friends/groups');
+  }
+
   Widget groupViewContent(BuildContext context) {
-    return Column(
-      children: [
-        header(context),
-        Expanded(
-            child: Column(
-          children: [
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          if (platformService.isDesktopOrWeb)
             const SizedBox(
               height: 20,
             ),
-            groupInformation(),
-            const SizedBox(
-              height: 25,
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)),
-                    border: Border.all(color: Colors.black)),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 15),
-                        child: Text(
-                          appLocalizations.groupParticipants,
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w700),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: header(context)),
+          Expanded(
+              child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              groupInformation(),
+              const SizedBox(
+                height: 25,
+              ),
+              Expanded(
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      border: (platformService.isMobile)
+                          ? Border.all(color: Colors.black)
+                          : null),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 15),
+                          child: Text(
+                            appLocalizations.groupParticipants,
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w700),
+                          ),
                         ),
-                      ),
-                      ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: selectedGroup.members.length,
-                          itemBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
-                                child: BasicContactTile(
-                                    contact: selectedGroup.members[index]),
-                              )),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
+                        ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: selectedGroup.members.length,
+                            itemBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5.0, horizontal: 10),
+                                  child: BasicContactTile(
+                                      contact: selectedGroup.members[index]),
+                                )),
+                        const SizedBox(
+                          height: 10,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
-        ))
-      ],
+              )
+            ],
+          ))
+        ],
+      ),
     );
   }
 
@@ -94,12 +116,13 @@ class ViewGroupPage extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () => groupsController.setSelectedGroup(null),
+              onPressed: () => goBack(context),
               icon: const Icon(Icons.arrow_back),
               splashRadius: 20,
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.75,
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.75),
               child: Text(
                 key: const Key("GroupNameHeader"),
                 selectedGroup.name,
@@ -111,13 +134,13 @@ class ViewGroupPage extends StatelessWidget {
             )
           ],
         ),
-        popUpMenu()
+        popUpMenu(context)
       ],
     );
   }
 
   /// Menu that gives the options to edit and delete [selectedGroup]
-  Widget popUpMenu() {
+  Widget popUpMenu(BuildContext context) {
     const int editGroup = 0;
     const int deleteGroup = 1;
 
@@ -146,20 +169,15 @@ class ViewGroupPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Text(appLocalizations.deleteGroup))
       ],
-      onSelected: (value) async {
+      onSelected: (value) {
         if (value == editGroup) {
-          groupsController.setEditGroup(true);
+          context.go(
+              '/contacts/friends/groups/${groupsController.selectedGroup?.id}/edit');
         } else if (value == deleteGroup) {
-          /*
-          I find this approach better but I have not found a way to correctly
-          mock the argument for doActionAndUpdateGroups
-          groupsController.doActionAndUpdateGroups(
-              () async => await groupsController.deleteGroup(selectedGroup.id));
-              */
-          groupsController.setUpdatingGroup(true);
-          await groupsController.deleteGroup(selectedGroup.id);
-          groupsController.setUpdatingGroup(false);
-          groupsController.setSelectedGroup(null);
+          groupsController
+              .deleteGroup(selectedGroup)
+              .then((_) => groupsController.updateGroups());
+          goBack(context);
         }
       },
     );
@@ -193,6 +211,7 @@ class ViewGroupPage extends StatelessWidget {
       backgroundColor: Colors.black87,
       child: CircleAvatar(
         radius: 40,
+        backgroundColor: Colors.black,
         backgroundImage: NetworkImage(selectedGroup.imageUrl),
       ),
     );

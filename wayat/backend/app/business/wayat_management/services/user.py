@@ -5,11 +5,11 @@ from typing import BinaryIO, Optional, Tuple, List
 
 import requests
 from fastapi import Depends
-from firebase_admin.messaging import Notification
+from firebase_admin.messaging import SendResponse
 from requests import RequestException, Response
 
 from app.business.wayat_management.models.group import GroupDTO, UsersListType
-from app.business.wayat_management.models.user import UserDTO
+from app.business.wayat_management.models.user import UserDTO, NotificationData, NotificationActionsType
 from app.common.exceptions.http import NotFoundException
 from app.common.infra.gcp.cloud_messaging import CloudMessaging
 from app.common.infra.gcp.firebase import FirebaseAuthenticatedUser
@@ -170,24 +170,50 @@ class UserService:
         await self._user_repository.respond_friend_request(self_uid=self_user_uid,
                                                            friend_uid=friend_uid, accept=accept)
         if accept is True:
-            # TODO: Validate notification
             self_user = await self._user_repository.get_or_throw(self_user_uid)
             friend = await self._user_repository.get_or_throw(friend_uid)
             if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
-                notification = Notification(title=f"{self_user.name} has accepted your friend request")
-                await self._notifications_service.send_notification(tokens=friend.notifications_tokens,
-                                                                    notification=notification)
+                notification = NotificationData(
+                    action=NotificationActionsType.ACCEPTED_FRIEND_REQUEST,
+                    contact_name=self_user.name
+                )
+                result_notifications = await self._notifications_service.send_notification(
+                    tokens=friend.notifications_tokens, data=notification.dict()
+                )
+                await self.handle_notification_results(results=result_notifications,
+                                                       tokens=friend.notifications_tokens,
+                                                       user_id=friend.document_id)
 
     async def _send_friend_request(self, self_user, new_contacts: list[str], contacts: Optional[List[UserEntity]]):
-        # TODO Validate Send Notification
         await self._user_repository.create_friend_request(self_user.document_id, new_contacts)
         for c in new_contacts:
             found_friend = [el for el in contacts if el.document_id == c] if contacts is not None else []
             friend = found_friend[0] if len(found_friend) == 1 else await self._user_repository.get_or_throw(c)
             if friend.notifications_tokens and len(friend.notifications_tokens) > 0:
-                notification = Notification(title=f"{self_user.name} sent you a friend request")
-                await self._notifications_service.send_notification(tokens=friend.notifications_tokens,
-                                                                    notification=notification)
+                notification = NotificationData(
+                    action=NotificationActionsType.RECEIVED_FRIEND_REQUEST,
+                    contact_name=self_user.name
+                )
+                result_notifications = await self._notifications_service.send_notification(
+                    tokens=friend.notifications_tokens, data=notification.dict()
+                )
+                await self.handle_notification_results(results=result_notifications,
+                                                       tokens=friend.notifications_tokens,
+                                                       user_id=friend.document_id)
+
+    async def handle_notification_results(self, *,
+                                          results: list[SendResponse],  # TODO: Decouple Firebase SendResponse
+                                          tokens: list[str],
+                                          user_id: str):
+        """
+        Checks if a notification token has failed and deletes it from the user profile
+        """
+        tokens_with_errors = []
+        for i, res in enumerate(results):
+            if not res.success:
+                tokens_with_errors.append(tokens[i])
+        if len(tokens_with_errors) > 0:
+            await self._user_repository.remove_notifications_tokens(tokens=tokens_with_errors, user_id=user_id)
 
     @staticmethod
     def _remove_contact_from_all_groups(contact_id: str, groups: list[GroupInfo]):

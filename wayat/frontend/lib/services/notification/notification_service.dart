@@ -1,3 +1,3 @@
-abstract class NotificationService {
-  Future<bool> sendCurrentUserToken(String token);
+abstract class NotificationsService {
+  Future<void> initialize();
 }

@@ -107,8 +107,8 @@
 
     "@_INVITATION":{},
     "inviteContacts": "Nodig contacten uit voor Wayat.",
-    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
-    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/tag/v0.5.0",
+    "invitationTextAndroid": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/latest",
+    "invitationTextIOS": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/latest",
     "invitationText": "Uitnodigingstekst",
     "invitationCopied": "Gekopieerd naar uw klembord.",
 
@@ -136,5 +136,14 @@
     "groupValidation": "U moet ten minste twee contacten selecteren",
         
     "locationPermission": "Locatietoestemming",
-    "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen"
+    "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen",
+
+    "@_NOTIFICATIONS": {},
+    "receivedFriendRequest": " heeft je een vriendschapsverzoek gestuurd",
+    "acceptedFriendRequest": " heeft je vriendschapsverzoek geaccepteerd",
+    
+    "@_ERROR_PAGE":{},
+    "errorNotFound": "Pagina niet gevonden",
+    "errorServer": "Er is een onverwachte fout opgetreden.\nProbeer het later nog eens.",
+    "returnToWayat": "Terug naar wayat"
 } 

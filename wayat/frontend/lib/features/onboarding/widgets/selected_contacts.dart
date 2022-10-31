@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/common/widgets/buttons/text_icon_button.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
@@ -48,6 +49,7 @@ class SelectedContacts extends StatelessWidget {
           text: appLocalizations.next,
           onPressed: () {
             controller.finishOnBoarding();
+            context.go('/map');
           }),
     );
   }

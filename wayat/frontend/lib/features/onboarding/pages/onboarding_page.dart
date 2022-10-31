@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/common/theme/colors.dart';
 import 'package:wayat/common/widgets/buttons/outlined_button.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
@@ -55,8 +56,10 @@ class OnBoardingPage extends StatelessWidget {
             alignment: AlignmentDirectional.bottomCenter,
             child: CustomOutlinedButton(
                 text: appLocalizations.next,
-                onPressed: () =>
-                    controller.setOnBoardingState(OnBoardingState.current)))
+                onPressed: () {
+                  controller.setOnBoardingState(OnBoardingState.current);
+                  context.go('/onboarding/progress');
+                }))
       ])),
     );
   }

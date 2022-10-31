@@ -21,9 +21,9 @@ class GroupsServiceImpl implements GroupsService {
 
   PlatformService platformService;
 
-  GroupsServiceImpl({PlatformService? platformService}) : 
-    platformService = platformService ?? PlatformService();
-  
+  GroupsServiceImpl({PlatformService? platformService})
+      : platformService = platformService ?? PlatformService();
+
   @override
   Future<List<Group>> getAll() async {
     Map<String, dynamic> response =
@@ -63,13 +63,14 @@ class GroupsServiceImpl implements GroupsService {
     }
 
     String groupId = json.decode(response.body)["id"];
-    String type = picture.mimeType ?? "";
+    String type = (!platformService.isWeb)
+        ? lookupMimeType(picture.path) ?? picture.mimeType ?? ""
+        : picture.mimeType ?? "";
 
     await httpProvider.sendPostImageRequest(
-      "${APIContract.groupPicture}/$groupId", 
-      await picture.readAsBytes(), 
-      type
-    );
+        "${APIContract.groupPicture}/$groupId",
+        await picture.readAsBytes(),
+        type);
   }
 
   @override
@@ -81,15 +82,14 @@ class GroupsServiceImpl implements GroupsService {
     });
 
     if (picture != null && response) {
-      String type = (!platformService.isWeb) ? 
-      lookupMimeType(picture.path) ?? picture.mimeType ?? "" :
-      picture.mimeType ?? "";
+      String type = (!platformService.isWeb)
+          ? lookupMimeType(picture.path) ?? picture.mimeType ?? ""
+          : picture.mimeType ?? "";
 
       await httpProvider.sendPostImageRequest(
-        "${APIContract.groupPicture}/${group.id}", 
-        await picture.readAsBytes(),
-        type
-      );
+          "${APIContract.groupPicture}/${group.id}",
+          await picture.readAsBytes(),
+          type);
     }
   }
 
