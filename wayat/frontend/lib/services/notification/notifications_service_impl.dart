@@ -25,6 +25,7 @@ class NotificationsServiceImpl implements NotificationsService {
 
     await flutterLocalNotificationsPlugin.show(
         ++id, 'WAYAT', notification.text, notificationDetails);
+
     return;
   }
 
@@ -49,8 +50,9 @@ class NotificationsServiceImpl implements NotificationsService {
   );
 
   @override
-  Future<void> initialize(BuildContext context) async {
+  Future<void> initialize() async {
     await initializeLocalNotifications();
+
     // Check is user accept permissions
     if (await areNotificationsEnabled()) {
       await messagingInstance.setForegroundNotificationPresentationOptions(
@@ -72,9 +74,8 @@ class NotificationsServiceImpl implements NotificationsService {
           ?.createNotificationChannel(channel);
 
       await setUpTokenListener();
-      setUpNotificationsForegroundListener();
       recoverLastLostNotification();
-      setUpOnAppOpenedWithNotification(context);
+      setUpNotificationsForegroundListener();
       setUpNotificationsBackgroundListener();
     } else {
       debugPrint('User declined or has not accepted permission');
@@ -151,12 +152,6 @@ class NotificationsServiceImpl implements NotificationsService {
     }
   }
 
-  /// Calls a method when the app is opened via the notification
-  @visibleForTesting
-  void setUpOnAppOpenedWithNotification(context) {
-    context.go('/contacts/requests');
-  }
-
   @visibleForTesting
   void showNotification(PushNotification notificationInfo) {
     showSimpleNotification(Text(notificationInfo.text),
@@ -167,6 +162,7 @@ class NotificationsServiceImpl implements NotificationsService {
 
   @visibleForTesting
   Future<void> sendNotificationsToken(String token) async {
+    print("DEBUG Sending notifications token");
     await httpProvider
         .sendPostRequest(APIContract.pushNotification, {"token": token});
   }

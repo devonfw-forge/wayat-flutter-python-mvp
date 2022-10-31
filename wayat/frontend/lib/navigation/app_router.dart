@@ -39,6 +39,8 @@ class AppRouter {
   PlatformService platformService = PlatformService();
 
   late final GoRouter router = GoRouter(
+    initialLocation:
+        (GetIt.I.get<Map<String, bool>>()["map"]!) ? "/" : "/contacts/requests",
     navigatorKey: GetIt.I.get<GlobalKey<NavigatorState>>(),
     errorBuilder: (context, state) => ErrorPage(url: state.location),
     debugLogDiagnostics: true,

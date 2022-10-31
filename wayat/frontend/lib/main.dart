@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'
     show AppLocalizations;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:synchronized/synchronized.dart';
@@ -23,6 +24,7 @@ import 'package:wayat/features/contacts/controller/contacts_page_controller.dart
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
 import 'package:wayat/navigation/app_router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
@@ -58,8 +60,16 @@ Future main() async {
     // This line should be changed to this if we are going to support desktop
     //} else if (platformService.isMobile) {
   } else {
-    // NotificationsService notificationsService = NotificationsServiceImpl();
-    // await notificationsService.initialize();
+    NotificationsService notificationsService = NotificationsServiceImpl();
+    await notificationsService.initialize();
+
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+        await NotificationsServiceImpl.flutterLocalNotificationsPlugin
+            .getNotificationAppLaunchDetails();
+    if (notificationAppLaunchDetails != null &&
+        notificationAppLaunchDetails.didNotificationLaunchApp) {
+      GetIt.I.get<Map<String, bool>>()["map"] = false;
+    }
   }
 
   AppConfigController().setTimeAgoLocales();
@@ -72,6 +82,7 @@ Future main() async {
 /// All of the singletons are registered using lazy initialization, to ensure
 /// that only the one's that are being used will be instantiated.
 Future registerSingletons() async {
+  GetIt.I.registerLazySingleton<Map<String, bool>>(() => {"map": true});
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
@@ -85,7 +96,9 @@ Future registerSingletons() async {
   GetIt.I.registerLazySingleton<LocationListener>(() => LocationListener());
   GetIt.I.registerLazySingleton<PhoneVerificationController>(
       () => PhoneVerificationController());
-  GetIt.I.registerLazySingleton<GlobalKey<NavigatorState>>(() => GlobalKey());
+  if (!GetIt.I.isRegistered<GlobalKey<NavigatorState>>()) {
+    GetIt.I.registerLazySingleton<GlobalKey<NavigatorState>>(() => GlobalKey());
+  }
 }
 
 /// Main Application class
@@ -136,6 +149,21 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
             GetIt.I.get<UserState>().currentUser != null) {
           await lifeCycleState.notifyAppOpenned();
         }
+
+        final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+            await NotificationsServiceImpl.flutterLocalNotificationsPlugin
+                .getNotificationAppLaunchDetails();
+        if (notificationAppLaunchDetails != null &&
+            notificationAppLaunchDetails.didNotificationLaunchApp) {
+          BuildContext? context =
+              GetIt.I.get<GlobalKey<NavigatorState>>().currentContext;
+          if (context != null) {
+            GetIt.I
+                .get<GlobalKey<NavigatorState>>()
+                .currentContext
+                ?.go('/contacts/requests');
+          }
+        }
       }
       // Other states must execute a close map event, but detach is not included,
       // when the app is closed it can not send a request
@@ -155,13 +183,6 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// declarative router.
   @override
   Widget build(BuildContext context) {
-
-
-
-    NotificationsService notificationsService = NotificationsServiceImpl();
-    notificationsService.initialize(context);
-
-
     WidgetsBinding.instance.addObserver(this);
 
     AppRouter appRouter = AppRouter();
