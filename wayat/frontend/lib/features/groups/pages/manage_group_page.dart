@@ -85,13 +85,9 @@ class ManageGroupPage extends StatelessWidget {
   Widget showInfoValidGroup() {
     return Observer(
       builder: (context) {
-        bool showValidGroupController = controller.showValidationGroup;
-        return Visibility(
-          visible: showValidGroupController,
-          child: Text(
-            appLocalizations.groupValidation,
-            style: const TextStyle(color: Colors.red),
-          ),
+        return Text(
+          controller.errorMessage ?? "",
+          style: const TextStyle(color: Colors.red),
         );
       },
     );
@@ -125,7 +121,8 @@ class ManageGroupPage extends StatelessWidget {
         CustomTextButton(
             text: appLocalizations.save,
             onPressed: () {
-              if (!controller.showValidationGroup) {
+              controller.groupValidation();
+              if (controller.isValidGroup) {
                 controller.saveGroup().then(
                     (_) => GetIt.I.get<GroupsController>().updateGroups());
 

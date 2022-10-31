@@ -50,7 +50,8 @@ void main() async {
         .thenReturn(mobx.ObservableList.of([]));
     when(mockManageGroupController.selectedFile).thenReturn(null);
     when(mockManageGroupController.selectedFileBytes).thenReturn(null);
-    when(mockManageGroupController.showValidationGroup).thenReturn(false);
+    when(mockManageGroupController.isValidGroup).thenReturn(true);
+    when(mockManageGroupController.errorMessage).thenReturn("");
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
