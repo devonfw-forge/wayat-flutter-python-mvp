@@ -158,6 +158,8 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
         if (lifeCycleState.isAppOpened) {
           await lifeCycleState.notifyAppClosed();
         }
+        GetIt.I.get<InitialLocationProvider>().initialLocation =
+            InitialLocation.map;
       }
     });
   }
