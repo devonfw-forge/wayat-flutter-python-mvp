@@ -39,11 +39,17 @@ class GoogleAuthService implements AuthService {
   /// Instance of the authentication service for Firebase
   final FirebaseAuth _auth;
 
+  final FirebaseMessaging firebaseMessaging;
+
   GoogleAuthService(
-      {GoogleSignIn? gS, PlatformService? platformService, FirebaseAuth? auth})
+      {GoogleSignIn? gS,
+      PlatformService? platformService,
+      FirebaseAuth? auth,
+      FirebaseMessaging? messaging})
       : _auth = auth ??
             FirebaseAuth.instanceFor(
-                app: Firebase.app(EnvModel.FIREBASE_APP_NAME)) {
+                app: Firebase.app(EnvModel.FIREBASE_APP_NAME)),
+        firebaseMessaging = messaging ?? FirebaseMessaging.instance {
     if (gS != null) {
       googleSignIn = gS;
     } else {
@@ -75,7 +81,7 @@ class GoogleAuthService implements AuthService {
       );
       await _auth.signInWithCredential(credential);
       if (_auth.currentUser == null) return null;
-      String? token = await FirebaseMessaging.instance.getToken();
+      String? token = await firebaseMessaging.getToken();
       httpProvider
           .sendPostRequest(APIContract.pushNotification, {"token": token});
       return account;
