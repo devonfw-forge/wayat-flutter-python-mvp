@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
@@ -74,6 +75,9 @@ class GoogleAuthService implements AuthService {
       );
       await _auth.signInWithCredential(credential);
       if (_auth.currentUser == null) return null;
+      String? token = await FirebaseMessaging.instance.getToken();
+      httpProvider
+          .sendPostRequest(APIContract.pushNotification, {"token": token});
       return account;
     } on PlatformException {
       return null;
