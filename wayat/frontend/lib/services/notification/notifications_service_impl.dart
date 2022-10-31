@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
@@ -20,7 +21,7 @@ class NotificationsServiceImpl implements NotificationsService {
       FlutterLocalNotificationsPlugin();
 
   @override
-  Future<void> initialize() async {
+  Future<void> initialize(BuildContext context) async {
     // Check is user accept permissions
     if (await areNotificationsEnabled()) {
       await messagingInstance.setForegroundNotificationPresentationOptions(
@@ -44,7 +45,7 @@ class NotificationsServiceImpl implements NotificationsService {
       await setUpTokenListener();
       setUpNotificationsForegroundListener();
       recoverLastLostNotification();
-      setUpOnAppOpenedWithNotification();
+      setUpOnAppOpenedWithNotification(context);
     } else {
       debugPrint('User declined or has not accepted permission');
     }
@@ -133,8 +134,8 @@ class NotificationsServiceImpl implements NotificationsService {
 
   /// Calls a method when the app is opened via the notification
   @visibleForTesting
-  void setUpOnAppOpenedWithNotification() {
-    // context.go('/contacts/friends');
+  void setUpOnAppOpenedWithNotification(BuildContext context) {
+    context.go('/contacts/friends');
   }
 
   @visibleForTesting

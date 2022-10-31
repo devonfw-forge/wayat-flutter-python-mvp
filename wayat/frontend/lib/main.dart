@@ -57,8 +57,8 @@ Future main() async {
     // This line should be changed to this if we are going to support desktop
     //} else if (platformService.isMobile) {
   } else {
-    NotificationsService notificationsService = NotificationsServiceImpl();
-    await notificationsService.initialize();
+    // NotificationsService notificationsService = NotificationsServiceImpl();
+    // await notificationsService.initialize();
   }
 
   AppConfigController().setTimeAgoLocales();
@@ -155,6 +155,13 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// declarative router.
   @override
   Widget build(BuildContext context) {
+
+
+
+    NotificationsService notificationsService = NotificationsServiceImpl();
+    notificationsService.initialize(context);
+
+
     WidgetsBinding.instance.addObserver(this);
 
     AppRouter appRouter = AppRouter();
