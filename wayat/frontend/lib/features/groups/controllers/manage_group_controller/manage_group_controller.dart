@@ -38,9 +38,13 @@ abstract class _ManageGroupController with Store {
   @observable
   Group group;
 
-  /// Whether to show the error message about needing at least 2 participants.
+  /// Whether the group has at least two participants
+  @computed
+  bool get isValidGroup => errorMessage != null ? errorMessage!.isEmpty : false;
+
+  /// Message containing the error in the current Group
   @observable
-  bool showValidationGroup = false;
+  String? errorMessage;
 
   /// Returns all of the contacts that are currently selected to form part of the [Group].
   @observable
@@ -50,7 +54,7 @@ abstract class _ManageGroupController with Store {
   /// The selected file in case the user wants to add or change the [Group]'s picture.
   @observable
   XFile? selectedFile;
-  
+
   Uint8List? selectedFileBytes;
 
   /// Textfield to edit or add the [Group.name].
@@ -108,8 +112,7 @@ abstract class _ManageGroupController with Store {
         //AppLocalizations cannot be used from unit tests because they require a context to initialize
         : appLocalizations.newGroup;
 
-    groupValidation();
-    if (!showValidationGroup) {
+    if (isValidGroup) {
       if (group.id == "") {
         await groupsService.create(group, selectedFile);
       } else {
@@ -121,7 +124,11 @@ abstract class _ManageGroupController with Store {
   /// Validates that the [Group] has more than `2` participants.
   @action
   void groupValidation() {
-    showValidationGroup = selectedContacts.length < 2;
+    if (selectedContacts.length < 2) {
+      errorMessage = appLocalizations.groupValidation;
+    } else {
+      errorMessage = "";
+    }
   }
 
   /// Asigns the selected file from the user to [selectedFile].

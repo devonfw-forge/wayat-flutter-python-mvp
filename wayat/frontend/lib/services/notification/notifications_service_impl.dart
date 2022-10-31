@@ -4,10 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
+import 'package:wayat/navigation/initial_route.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wayat/services/notification/notification_service.dart';
 
 class NotificationsServiceImpl implements NotificationsService {
@@ -24,7 +26,9 @@ class NotificationsServiceImpl implements NotificationsService {
         await PushNotification.fromRemoteMessage(message);
 
     await flutterLocalNotificationsPlugin.show(
-        ++id, 'WAYAT', notification.text, notificationDetails);
+        ++id, 'WAYAT', notification.text, notificationDetails,
+        payload: notification.payload);
+
     return;
   }
 
@@ -48,9 +52,22 @@ class NotificationsServiceImpl implements NotificationsService {
         ticker: 'ticker'),
   );
 
+  static Future<void> checkIfOpenedWithNotification(
+      {required Function(String?) onOpenedWithNotification}) async {
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+        await NotificationsServiceImpl.flutterLocalNotificationsPlugin
+            .getNotificationAppLaunchDetails();
+    if (notificationAppLaunchDetails != null &&
+        notificationAppLaunchDetails.didNotificationLaunchApp) {
+      onOpenedWithNotification(
+          notificationAppLaunchDetails.notificationResponse?.payload);
+    }
+  }
+
   @override
   Future<void> initialize() async {
     await initializeLocalNotifications();
+
     // Check is user accept permissions
     if (await areNotificationsEnabled()) {
       await messagingInstance.setForegroundNotificationPresentationOptions(
@@ -72,13 +89,18 @@ class NotificationsServiceImpl implements NotificationsService {
           ?.createNotificationChannel(channel);
 
       await setUpTokenListener();
-      setUpNotificationsForegroundListener();
       recoverLastLostNotification();
-      setUpOnAppOpenedWithNotification();
+      setUpNotificationsForegroundListener();
       setUpNotificationsBackgroundListener();
     } else {
       debugPrint('User declined or has not accepted permission');
     }
+
+    await NotificationsServiceImpl.checkIfOpenedWithNotification(
+        onOpenedWithNotification: (String? payload) {
+      GetIt.I.get<InitialLocationProvider>().initialLocation =
+          InitialLocation.fromValue(payload ?? "");
+    });
   }
 
   /// Register notification when app is launched
@@ -130,8 +152,15 @@ class NotificationsServiceImpl implements NotificationsService {
   /// The background listener is handled by the OS
   @visibleForTesting
   void setUpNotificationsForegroundListener() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async =>
-        showNotification(await PushNotification.fromRemoteMessage(message)));
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      PushNotification pushNotification =
+          await PushNotification.fromRemoteMessage(message);
+      showNotification(pushNotification,
+          onNotificationTapped: () => GetIt.I
+              .get<GlobalKey<NavigatorState>>()
+              .currentContext
+              ?.go(pushNotification.payload));
+    });
   }
 
   /// Listens for upcoming notifications in the foreground
@@ -151,19 +180,28 @@ class NotificationsServiceImpl implements NotificationsService {
     }
   }
 
-  /// Calls a method when the app is opened via the notification
   @visibleForTesting
-  void setUpOnAppOpenedWithNotification() {
-    //FirebaseMessaging.onMessageOpenedApp.listen(
-    //(RemoteMessage message) => showNotification(pushNotification(message)));
-  }
-
-  @visibleForTesting
-  void showNotification(PushNotification notificationInfo) {
-    showSimpleNotification(Text(notificationInfo.text),
-        background: Colors.white,
-        foreground: Colors.black,
-        leading: const NotificationBadge());
+  void showNotification(PushNotification notificationInfo,
+      {Function()? onNotificationTapped}) {
+    showOverlayNotification((context) {
+      return GestureDetector(
+        onTap: onNotificationTapped,
+        child: Card(
+          color: Colors.white,
+          margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            child: SafeArea(
+              child: ListTile(
+                leading: SizedBox.fromSize(
+                    size: const Size(40, 40), child: const NotificationBadge()),
+                title: Text(notificationInfo.text),
+              ),
+            ),
+          ),
+        ),
+      );
+    }, duration: const Duration(milliseconds: 2000));
   }
 
   @visibleForTesting

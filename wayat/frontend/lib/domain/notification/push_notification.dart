@@ -5,8 +5,9 @@ import 'package:wayat/lang/app_localizations.dart';
 
 class PushNotification {
   final String text;
+  final String payload;
 
-  PushNotification({required this.text});
+  PushNotification({required this.text, required this.payload});
 
   static fromRemoteMessage(RemoteMessage message) async {
     if (!GetIt.I.isRegistered<AppConfigState>()) {
@@ -21,12 +22,15 @@ class PushNotification {
         message.data['aps']['alert']['contact_name'] ??
         "";
 
-    String text = (action == 'ACCEPTED_FRIEND_REQUEST')
-        ? contactName + appLocalizations.acceptedFriendRequest
-        : (action == 'RECEIVED_FRIEND_REQUEST')
-            ? action = contactName + appLocalizations.receivedFriendRequest
-            : "";
-
-    return PushNotification(text: text);
+    String text = "";
+    String payload = "";
+    if (action == 'ACCEPTED_FRIEND_REQUEST') {
+      text = contactName + appLocalizations.acceptedFriendRequest;
+      payload = "/contacts/friends";
+    } else if (action == 'RECEIVED_FRIEND_REQUEST') {
+      text = contactName + appLocalizations.receivedFriendRequest;
+      payload = "/contacts/requests";
+    }
+    return PushNotification(text: text, payload: payload);
   }
 }
