@@ -110,6 +110,7 @@ void main() async {
         MockGoogleSignInAuthentication();
     MockUserCredential mockUserCredential = MockUserCredential();
 
+    when(mockPlatformService.isMobile).thenReturn(true);
     when(mockGoogleSignIn.signIn())
         .thenAnswer((_) async => mockGoogleSignInAccount);
     when(mockGoogleSignInAccount.authentication)

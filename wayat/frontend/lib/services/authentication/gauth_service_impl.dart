@@ -39,7 +39,9 @@ class GoogleAuthService implements AuthService {
   /// Instance of the authentication service for Firebase
   final FirebaseAuth _auth;
 
-  final FirebaseMessaging firebaseMessaging;
+  FirebaseMessaging? firebaseMessaging;
+
+  late PlatformService platformService;
 
   GoogleAuthService(
       {GoogleSignIn? gS,
@@ -48,13 +50,15 @@ class GoogleAuthService implements AuthService {
       FirebaseMessaging? messaging})
       : _auth = auth ??
             FirebaseAuth.instanceFor(
-                app: Firebase.app(EnvModel.FIREBASE_APP_NAME)),
-        firebaseMessaging = messaging ?? FirebaseMessaging.instance {
+                app: Firebase.app(EnvModel.FIREBASE_APP_NAME)) {
+    this.platformService = platformService ?? PlatformService();
+    firebaseMessaging = (this.platformService.isWeb)
+        ? null
+        : messaging ?? FirebaseMessaging.instance;
     if (gS != null) {
       googleSignIn = gS;
     } else {
-      platformService ??= PlatformService();
-      if (platformService.isWeb) {
+      if (this.platformService.isWeb) {
         googleSignIn = GoogleSignIn(
           clientId: EnvModel.WEB_CLIENT_ID,
           scopes: ['email'],
@@ -81,9 +85,11 @@ class GoogleAuthService implements AuthService {
       );
       await _auth.signInWithCredential(credential);
       if (_auth.currentUser == null) return null;
-      String? token = await firebaseMessaging.getToken();
-      httpProvider
-          .sendPostRequest(APIContract.pushNotification, {"token": token});
+      if (platformService.isMobile) {
+        String? token = await firebaseMessaging?.getToken();
+        httpProvider
+            .sendPostRequest(APIContract.pushNotification, {"token": token});
+      }
       return account;
     } on PlatformException {
       return null;
