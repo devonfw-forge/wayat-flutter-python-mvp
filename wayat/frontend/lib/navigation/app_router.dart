@@ -28,6 +28,7 @@ import 'package:wayat/features/profile/pages/preferences_page/preferences_page.d
 import 'package:wayat/features/profile/pages/profile_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
+import 'package:wayat/navigation/initial_route.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class AppRouter {
@@ -40,7 +41,7 @@ class AppRouter {
 
   late final GoRouter router = GoRouter(
     initialLocation:
-        (GetIt.I.get<Map<String, bool>>()["map"]!) ? "/" : "/contacts/requests",
+        GetIt.I.get<InitialLocationProvider>().initialLocation.value,
     navigatorKey: GetIt.I.get<GlobalKey<NavigatorState>>(),
     errorBuilder: (context, state) => ErrorPage(url: state.location),
     debugLogDiagnostics: true,

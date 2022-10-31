@@ -46,6 +46,7 @@ import 'package:wayat/features/profile/pages/profile_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
+import 'package:wayat/navigation/initial_route.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/location_listener/location_listener_service.dart';
 
@@ -147,6 +148,8 @@ void main() async {
       .thenReturn(mobx.ObservableList.of(fakeGroups));
 
   setUpAll(() {
+    GetIt.I.registerSingleton<InitialLocationProvider>(
+        InitialLocationProvider(InitialLocation.map));
     GetIt.I.registerSingleton<UserState>(mockUserState);
     GetIt.I.registerSingleton<HomeNavState>(mockHomeNavState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
