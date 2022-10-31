@@ -178,7 +178,8 @@ class MapPage extends StatelessWidget {
               .toLowerCase()
               .contains(textEditingValue.text.toLowerCase()));
         },
-        onSelected: (contact) => controller.onSuggestionsTap(contact),
+        onSelected: (ContactLocation contact) =>
+            controller.onSuggestionsTap(contact),
         fieldViewBuilder:
             (context, textEditingController, focusNode, onFieldSubmitted) {
           return SearchBar(

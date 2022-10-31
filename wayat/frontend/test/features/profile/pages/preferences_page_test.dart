@@ -57,6 +57,7 @@ void main() async {
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
     GetIt.I.registerSingleton<AppConfigState>(mockAppConfigState);
     when(mockAppConfigState.language).thenReturn(null);
+    when(mockAppConfigState.locale).thenReturn(const Locale('es', 'ES'));
   });
 
   testWidgets('Change language row components', (tester) async {

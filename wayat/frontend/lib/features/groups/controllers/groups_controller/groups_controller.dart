@@ -58,7 +58,7 @@ abstract class _GroupsController with Store {
     this.groups = ObservableList.of(groups);
   }
 
-  Future createGroup(Group group, XFile picture) async {
+  Future<void> createGroup(Group group, XFile picture) async {
     await groupsService.create(group, picture);
   }
 
@@ -66,7 +66,8 @@ abstract class _GroupsController with Store {
     selectedGroup = group;
   }
 
-  Future deleteGroup(String groupId) async {
-    await groupsService.delete(groupId);
+  Future<void> deleteGroup(Group group) async {
+    groups.remove(group);
+    await groupsService.delete(group.id);
   }
 }

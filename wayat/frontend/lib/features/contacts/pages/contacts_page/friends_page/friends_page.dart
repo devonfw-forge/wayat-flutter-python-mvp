@@ -66,8 +66,9 @@ class FriendsPage extends StatelessWidget {
                     GetIt.I
                         .get<HomeNavState>()
                         .setSelectedContact(selectedContact);
-                    context.go('/contact/${selectedContact.id}',
-                        extra: "/contacts/friends");
+                    context.go(
+                      '/contacts/friends/${selectedContact.id}',
+                    );
                   },
                   contact: contacts[index],
                   iconAction: IconButton(
@@ -98,7 +99,7 @@ class FriendsPage extends StatelessWidget {
             );
           }),
           NavigationButton(
-              onTap: () => context.go('/contacts/groups'),
+              onTap: () => context.go('/contacts/friends/groups'),
               text: appLocalizations.groupsTitle)
         ],
       ),

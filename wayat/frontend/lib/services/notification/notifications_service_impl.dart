@@ -1,11 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:wayat/domain/notification/push_notification.dart';
 import 'package:wayat/features/notification/widgets/notification_badge.dart';
-import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
@@ -17,11 +15,42 @@ class NotificationsServiceImpl implements NotificationsService {
   final PlatformService platformService = PlatformService();
   HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
+  static int id = 0;
+  static Future<void> onBackMessage(RemoteMessage message) async {
+    PushNotification notification =
+        await PushNotification.fromRemoteMessage(message);
+
+    await flutterLocalNotificationsPlugin.show(
+        ++id, 'WAYAT', notification.text, notificationDetails);
+    return;
+  }
+
+  static initializeLocalNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  static NotificationDetails notificationDetails = const NotificationDetails(
+    android: AndroidNotificationDetails('wayat_android_channel', 'wayat',
+        channelDescription: 'wayat_friends_notifications',
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'ticker'),
+  );
 
   @override
   Future<void> initialize(BuildContext context) async {
+    await initializeLocalNotifications();
     // Check is user accept permissions
     if (await areNotificationsEnabled()) {
       await messagingInstance.setForegroundNotificationPresentationOptions(
@@ -46,6 +75,7 @@ class NotificationsServiceImpl implements NotificationsService {
       setUpNotificationsForegroundListener();
       recoverLastLostNotification();
       setUpOnAppOpenedWithNotification(context);
+      setUpNotificationsBackgroundListener();
     } else {
       debugPrint('User declined or has not accepted permission');
     }
@@ -97,30 +127,18 @@ class NotificationsServiceImpl implements NotificationsService {
     messagingInstance.onTokenRefresh.listen(sendNotificationsToken);
   }
 
-  /// Return notification with [newMessage]
+  /// The background listener is handled by the OS
   @visibleForTesting
-  PushNotification createPushNotification(RemoteMessage newMessage) {
-    if (platformService.isAndroid) {
-      return PushNotification(
-          action: newMessage.data['action'] ?? "",
-          contactName: newMessage.data['contact_name'] ?? "");
-    }
-
-    if (platformService.isIOS) {
-      return PushNotification(
-        action: newMessage.data['aps']['alert']['action'] ?? "",
-        contactName: newMessage.data['aps']['alert']['contact_name'] ?? "",
-      );
-    }
-    return PushNotification(action: '', contactName: '');
+  void setUpNotificationsForegroundListener() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async =>
+        showNotification(await PushNotification.fromRemoteMessage(message)));
   }
 
   /// Listens for upcoming notifications in the foreground
   /// The background listener is handled by the OS
   @visibleForTesting
-  void setUpNotificationsForegroundListener() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) =>
-        showNotification(createPushNotification(message)));
+  void setUpNotificationsBackgroundListener() {
+    FirebaseMessaging.onBackgroundMessage(onBackMessage);
   }
 
   /// Shows the last notification if it was received while the app was completely closed
@@ -128,35 +146,23 @@ class NotificationsServiceImpl implements NotificationsService {
   Future<void> recoverLastLostNotification() async {
     RemoteMessage? initialMessage = await messagingInstance.getInitialMessage();
     if (initialMessage != null) {
-      showNotification(createPushNotification(initialMessage));
+      showNotification(
+          await PushNotification.fromRemoteMessage(initialMessage));
     }
   }
 
   /// Calls a method when the app is opened via the notification
   @visibleForTesting
-  void setUpOnAppOpenedWithNotification(BuildContext context) {
-    context.go('/contacts/friends');
+  void setUpOnAppOpenedWithNotification(context) {
+    context.go('/contacts/requests');
   }
 
   @visibleForTesting
   void showNotification(PushNotification notificationInfo) {
-    showSimpleNotification(
-        Text(generateNotificationText(
-            notificationInfo.action, notificationInfo.contactName)),
+    showSimpleNotification(Text(notificationInfo.text),
         background: Colors.white,
         foreground: Colors.black,
         leading: const NotificationBadge());
-  }
-
-  @visibleForTesting
-  String generateNotificationText(String action, String contactName) {
-    if (action == 'ACCEPTED_FRIEND_REQUEST') {
-      return contactName + appLocalizations.acceptedFriendRequest;
-    }
-    if (action == 'RECEIVED_FRIEND_REQUEST') {
-      return contactName + appLocalizations.receivedFriendRequest;
-    }
-    return '';
   }
 
   @visibleForTesting

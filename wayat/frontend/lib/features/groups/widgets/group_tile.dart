@@ -37,6 +37,7 @@ class GroupTile extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(2),
                       child: CircleAvatar(
+                          backgroundColor: Colors.black,
                           backgroundImage: NetworkImage(group.imageUrl)),
                     ),
                   ),
