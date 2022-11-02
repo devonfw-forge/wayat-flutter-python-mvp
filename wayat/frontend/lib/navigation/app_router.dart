@@ -299,9 +299,6 @@ class AppRouter {
               state.location != '/onboarding/progress')) {
         return '/onboarding';
       }
-      //if (initialLocationProvider.shouldRedirect(state)) {
-      //return initialLocationProvider.initialLocation.value;
-      //}
       if (state.location == '/') {
         return '/map';
       }
