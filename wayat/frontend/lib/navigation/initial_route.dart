@@ -1,6 +1,16 @@
 class InitialLocationProvider {
   InitialLocation initialLocation;
+  bool redirected = false;
   InitialLocationProvider(this.initialLocation);
+
+  bool shouldRedirect() {
+    bool res = initialLocation != InitialLocation.map && !redirected;
+    print("DEBUG initial location ${initialLocation.value}");
+    print("DEBUG already redirected $redirected");
+    print("DEBUG shouldRedirect $res");
+    redirected = true;
+    return res;
+  }
 }
 
 enum InitialLocation {
