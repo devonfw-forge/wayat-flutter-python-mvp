@@ -94,6 +94,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     implementation "androidx.window:window:1.0.0"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
