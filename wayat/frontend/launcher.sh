@@ -72,13 +72,13 @@ function buildRelease {
     case $platform in
         android)
             cp frontend/launcher/build-android.yml .
-            docker-compose -f build-android.yml up
+            docker-compose -f build-android.yml up || exit 1
             rm ./build-android.yml
             echo -e "${green}LOCATION: build/app/outputs/flutter-apk/app-release.apk"; echo -ne ${white}
             ;;
         web) 
             cp frontend/launcher/build-web.yml .
-            docker-compose -f build-web.yml up
+            docker-compose -f build-web.yml up || exit 1
             rm ./build-web.yml
             echo -e "${green}LOCATION: build/web"; echo -ne ${white}
             ;;
@@ -94,7 +94,7 @@ function runRelease {
     esac
     cd ..
     cp frontend/launcher/build-web.yml .
-    docker-compose -f build-web.yml up
+    docker-compose -f build-web.yml up || exit 1
     rm ./build-web.yml
     cd $currentPath
     echo -e "${green}Build for ${platform} done."; echo -ne ${white}
