@@ -89,7 +89,7 @@ function buildRelease {
 
 function runRelease {
     case $platform in
-        web) echo -e "${green}Using platform ${platform} for ${mode}." ;;
+        web) echo -e "${green}Using platform ${platform} for ${mode}."; echo -ne ${white} ;;
         *) echo -e "${red}Error: Platform ${platfrom} not supported for ${mode} is not supported." >&2; echo -ne ${white}; exit 1
     esac
     cd ..
@@ -111,7 +111,7 @@ if [[ "$platform" == "" ]]; then echo -e "${red}Error: Platform not provided." >
 
 
 case $platform in
-    web | android | desktop) echo -e "${green}Using platform ${platform} for ${mode}." ;;
+    web | android | desktop) echo -e "${green}Using platform ${platform} for ${mode}."; echo -ne ${white} ;;
     *) echo -e "${red}Error: Platform ${platfrom} not supported for ${mode} is not supported." >&2; echo -ne ${white}; exit 1
 esac
 
