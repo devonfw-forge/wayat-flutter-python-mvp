@@ -10,6 +10,7 @@ import 'package:wayat/features/profile/widgets/restart_dialog.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/lang/language.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
+import 'dart:html' as html;
 
 class PreferencesPage extends StatefulWidget {
   final EditProfileController controller;
@@ -106,6 +107,9 @@ class _PreferencesPageState extends State<PreferencesPage> {
                       builder: (context) {
                         return const RestartDialog();
                       });
+                }
+                if (widget.platformService.isWeb) {
+                  html.window.location.reload();
                 }
               } else {
                 context.go('/profile');
