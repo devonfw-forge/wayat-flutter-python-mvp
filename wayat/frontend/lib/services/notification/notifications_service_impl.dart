@@ -52,6 +52,7 @@ class NotificationsServiceImpl implements NotificationsService {
         ticker: 'ticker'),
   );
 
+  static int lastNotificationId = -1;
   static Future<void> checkIfOpenedWithNotification(
       {required Function(String?) onOpenedWithNotification}) async {
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
@@ -59,8 +60,13 @@ class NotificationsServiceImpl implements NotificationsService {
             .getNotificationAppLaunchDetails();
     if (notificationAppLaunchDetails != null &&
         notificationAppLaunchDetails.didNotificationLaunchApp) {
-      onOpenedWithNotification(
-          notificationAppLaunchDetails.notificationResponse?.payload);
+      if (lastNotificationId !=
+          notificationAppLaunchDetails.notificationResponse!.id) {
+        onOpenedWithNotification(
+            notificationAppLaunchDetails.notificationResponse?.payload);
+        lastNotificationId =
+            notificationAppLaunchDetails.notificationResponse!.id!;
+      }
     }
   }
 

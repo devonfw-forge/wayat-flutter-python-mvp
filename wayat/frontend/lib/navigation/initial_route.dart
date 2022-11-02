@@ -1,6 +1,13 @@
 class InitialLocationProvider {
   InitialLocation initialLocation;
+  bool redirected = false;
   InitialLocationProvider(this.initialLocation);
+
+  bool shouldRedirect() {
+    bool res = initialLocation != InitialLocation.map && !redirected;
+    redirected = true;
+    return res;
+  }
 }
 
 enum InitialLocation {
