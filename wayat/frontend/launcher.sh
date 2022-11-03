@@ -68,17 +68,18 @@ function buildRelease {
         if [ ! -f "${flutterDockerImage}/Dockerfile" ]; then echo -e "${red}Error: Docker image not found in ${flutterDockerImage}." >&2; echo -ne ${white}; exit 1; fi
         docker build ${flutterDockerImage} -t flutter_local:3.3.6 --build-arg FLUTTER_VERSION=3.3.6
     fi
+    # Going to wayat dir to use frontend child dir as a volume
     cd ..
     case $platform in
         android)
             cp frontend/launcher/build-android.yml .
-            docker-compose -f build-android.yml up || exit 1
+            docker-compose -f build-android.yml up || ( rm ./build-android.yml && exit 1 )
             rm ./build-android.yml
             echo -e "${green}LOCATION: build/app/outputs/flutter-apk/app-release.apk"; echo -ne ${white}
             ;;
         web) 
             cp frontend/launcher/build-web.yml .
-            docker-compose -f build-web.yml up || exit 1
+            docker-compose -f build-web.yml up || ( rm ./build-web.yml && exit 1 )
             rm ./build-web.yml
             echo -e "${green}LOCATION: build/web"; echo -ne ${white}
             ;;
@@ -92,9 +93,10 @@ function runRelease {
         web) echo -e "${green}Using platform ${platform} for ${mode}."; echo -ne ${white} ;;
         *) echo -e "${red}Error: Platform ${platfrom} not supported for ${mode} is not supported." >&2; echo -ne ${white}; exit 1
     esac
+    # Going to wayat dir to use frontend child dir as a volume
     cd ..
     cp frontend/launcher/build-web.yml .
-    docker-compose -f build-web.yml up || exit 1
+    docker-compose -f build-web.yml up || ( rm ./build-web.yml && exit 1 )
     rm ./build-web.yml
     cd $currentPath
     echo -e "${green}Build for ${platform} done."; echo -ne ${white}
