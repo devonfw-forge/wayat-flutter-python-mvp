@@ -38,10 +38,11 @@ class AppRouter {
       const ValueKey<String>('contact_profile_scaffold');
   UserState userState = GetIt.I.get<UserState>();
   PlatformService platformService = PlatformService();
+  InitialLocationProvider initialLocationProvider =
+      GetIt.I.get<InitialLocationProvider>();
 
   late final GoRouter router = GoRouter(
-    initialLocation:
-        GetIt.I.get<InitialLocationProvider>().initialLocation.value,
+    initialLocation: initialLocationProvider.initialLocation.value,
     navigatorKey: GetIt.I.get<GlobalKey<NavigatorState>>(),
     errorBuilder: (context, state) => ErrorPage(url: state.location),
     debugLogDiagnostics: true,
