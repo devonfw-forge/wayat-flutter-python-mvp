@@ -21,6 +21,13 @@ class NotificationsServiceImpl implements NotificationsService {
       FlutterLocalNotificationsPlugin();
 
   static int id = 0;
+
+  /// Called when a notification is received with the app in the background or terminated.
+  ///
+  /// The annotation 'pragma('vm:entry-point')' is necessary because of an issue
+  /// from Flutter 3.3.0 onwards, provoking that, if missing, this function
+  /// would be removed during the tree shaking when building for release mode.
+  @pragma('vm:entry-point')
   static Future<void> onBackMessage(RemoteMessage message) async {
     PushNotification notification =
         await PushNotification.fromRemoteMessage(message);
@@ -52,6 +59,7 @@ class NotificationsServiceImpl implements NotificationsService {
         ticker: 'ticker'),
   );
 
+  static int lastNotificationId = -1;
   static Future<void> checkIfOpenedWithNotification(
       {required Function(String?) onOpenedWithNotification}) async {
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
@@ -59,8 +67,13 @@ class NotificationsServiceImpl implements NotificationsService {
             .getNotificationAppLaunchDetails();
     if (notificationAppLaunchDetails != null &&
         notificationAppLaunchDetails.didNotificationLaunchApp) {
-      onOpenedWithNotification(
-          notificationAppLaunchDetails.notificationResponse?.payload);
+      if (lastNotificationId !=
+          notificationAppLaunchDetails.notificationResponse!.id) {
+        onOpenedWithNotification(
+            notificationAppLaunchDetails.notificationResponse?.payload);
+        lastNotificationId =
+            notificationAppLaunchDetails.notificationResponse!.id!;
+      }
     }
   }
 
