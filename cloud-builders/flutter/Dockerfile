@@ -66,4 +66,4 @@ RUN if [ "${FLUTTER_VERSION}" = "latest" ] ; then flutter channel stable ; fi
 
 RUN flutter --version
 
-ENTRYPOINT [ "flutter" ]
+#ENTRYPOINT [ "flutter" ]
