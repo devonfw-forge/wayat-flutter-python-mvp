@@ -21,6 +21,7 @@ class NotificationsServiceImpl implements NotificationsService {
       FlutterLocalNotificationsPlugin();
 
   static int id = 0;
+  @pragma('vm:entry-point')
   static Future<void> onBackMessage(RemoteMessage message) async {
     PushNotification notification =
         await PushNotification.fromRemoteMessage(message);
