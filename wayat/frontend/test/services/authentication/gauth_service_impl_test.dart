@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -39,6 +40,8 @@ import 'gauth_service_impl_test.mocks.dart';
   MockSpec<LifeCycleState>(),
   MockSpec<HomeNavState>(),
   MockSpec<GroupsController>(),
+  MockSpec<Response>(),
+  MockSpec<FirebaseMessaging>(),
 ])
 void main() async {
   MockHttpProvider mockHttpProvider = MockHttpProvider();
@@ -46,6 +49,7 @@ void main() async {
   MockGoogleSignIn mockGoogleSignIn = MockGoogleSignIn();
   MockPlatformService mockPlatformService = MockPlatformService();
   MockLocationListener mockLocationListener = MockLocationListener();
+  MockFirebaseMessaging mockFirebaseMessaging = MockFirebaseMessaging();
 
   setUpAll(() async {
     await dotenv.load();
@@ -67,7 +71,9 @@ void main() async {
     when(mockPlatformService.isWeb).thenReturn(true);
 
     GoogleAuthService googleAuthService = GoogleAuthService(
-        auth: mockFirebaseAuth, platformService: mockPlatformService);
+        auth: mockFirebaseAuth,
+        platformService: mockPlatformService,
+        messaging: mockFirebaseMessaging);
 
     expect(
         googleAuthService.googleSignIn.clientId, dotenv.get("WEB_CLIENT_ID"));
@@ -78,7 +84,9 @@ void main() async {
     when(mockPlatformService.isWeb).thenReturn(false);
 
     GoogleAuthService googleAuthService = GoogleAuthService(
-        auth: mockFirebaseAuth, platformService: mockPlatformService);
+        auth: mockFirebaseAuth,
+        platformService: mockPlatformService,
+        messaging: mockFirebaseMessaging);
 
     expect(
         googleAuthService.googleSignIn.clientId != dotenv.get("WEB_CLIENT_ID"),
@@ -90,7 +98,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(googleAuthService.googleSignIn, mockGoogleSignIn);
   });
@@ -101,6 +110,7 @@ void main() async {
         MockGoogleSignInAuthentication();
     MockUserCredential mockUserCredential = MockUserCredential();
 
+    when(mockPlatformService.isMobile).thenReturn(true);
     when(mockGoogleSignIn.signIn())
         .thenAnswer((_) async => mockGoogleSignInAccount);
     when(mockGoogleSignInAccount.authentication)
@@ -111,13 +121,20 @@ void main() async {
             accessToken: "accessToken", idToken: "idToken")))
         .thenAnswer((_) async => mockUserCredential);
     when(mockFirebaseAuth.currentUser).thenReturn(MockUser());
+    when(mockFirebaseMessaging.getToken()).thenAnswer((_) async => "token");
+    when(mockHttpProvider.sendPostRequest(any, any))
+        .thenAnswer((_) async => MockResponse());
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.signIn(), mockGoogleSignInAccount);
+
+    verify(mockHttpProvider.sendPostRequest(
+        APIContract.pushNotification, {"token": "token"})).called(1);
   });
 
   test("SignIn returns null if there is no google account", () async {
@@ -126,7 +143,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.signIn(), null);
   });
@@ -151,7 +169,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.signIn(), null);
   });
@@ -169,7 +188,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.signIn(), null);
   });
@@ -179,7 +199,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
     when(mockHttpProvider.sendGetRequest(APIContract.userProfile))
         .thenAnswer((_) async => {
               'email': 'email',
@@ -209,7 +230,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.getIdToken(), "");
 
@@ -222,7 +244,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
     googleAuthService.hasSignedOut = true;
 
     expect(await googleAuthService.signInSilently(), null);
@@ -249,7 +272,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.signInSilently(), mockGoogleSignInAccount);
   });
@@ -260,7 +284,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.signInSilently(), null);
   });
@@ -286,7 +311,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.signInSilently(), null);
   });
@@ -299,7 +325,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.sendPhoneNumber("+34", "123456789"), true);
     verify(mockHttpProvider.sendPostRequest(APIContract.userProfile,
@@ -314,7 +341,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(await googleAuthService.sendDoneOnboarding(), true);
     verify(mockHttpProvider.sendPostRequest(
@@ -325,7 +353,8 @@ void main() async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
-        gS: mockGoogleSignIn);
+        gS: mockGoogleSignIn,
+        messaging: mockFirebaseMessaging);
 
     expect(googleAuthService.hasSignedOut, false);
 

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
@@ -39,28 +40,32 @@ class GoogleAuthService implements AuthService {
   /// Instance of the authentication service for Firebase
   late final FirebaseAuth _auth;
 
+  late final FirebaseMessaging? firebaseMessaging;
+  
   final PlatformService _platformService;
 
   GoogleAuthService({
     GoogleSignIn? gS, 
     FirebaseAuth? auth,
-    PlatformService? platformService 
+    PlatformService? platformService,
+    FirebaseMessaging? messaging
   }) : _platformService = platformService ?? PlatformService() {
     if (!_platformService.isDesktop) {
       _auth = auth ?? FirebaseAuth.instanceFor(
         app: Firebase.app(EnvModel.FIREBASE_APP_NAME)
       );
     }
+    firebaseMessaging = (_platformService.isMobile)
+        ? messaging ?? FirebaseMessaging.instance : null;
     if (gS != null) {
       googleSignIn = gS;
     } else {
-      platformService ??= PlatformService();
-      if (platformService.isWeb) {
+      if (_platformService.isWeb) {
         googleSignIn = GoogleSignIn(
           clientId: EnvModel.WEB_CLIENT_ID,
           scopes: ['email'],
         );
-      } else if (platformService.isDesktop) {
+      } else if (_platformService.isDesktop) {
         GoogleSignInDart.register(
           clientId: EnvModel.DESKTOP_CLIENT_ID
         );
@@ -91,6 +96,11 @@ class GoogleAuthService implements AuthService {
         );
         await _auth.signInWithCredential(credential);
         if (_auth.currentUser == null) return null;
+        if (_platformService.isMobile) {
+          String? token = await firebaseMessaging?.getToken();
+          httpProvider
+              .sendPostRequest(APIContract.pushNotification, {"token": token});
+        }
       }
       return account;
     } on PlatformException {

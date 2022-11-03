@@ -114,6 +114,9 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   /// To avoid sending multiple `mapOpened` and `mapClosed` requests to the server concurrently
   final Lock _lock = Lock();
 
+  /// To avoid operations depending on the platform
+  final PlatformService platformService = PlatformService();
+
   /// Called when this object is inserted into the tree.
   ///
   /// It should be changed as an [async] function or return a [Future] object.
@@ -144,14 +147,15 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
             GetIt.I.get<UserState>().currentUser != null) {
           await lifeCycleState.notifyAppOpenned();
         }
-
-        NotificationsServiceImpl.checkIfOpenedWithNotification(
-            onOpenedWithNotification: (payload) {
-          GetIt.I
-              .get<GlobalKey<NavigatorState>>()
-              .currentContext
-              ?.go(payload ?? "/");
-        });
+        if (platformService.isMobile) {
+          NotificationsServiceImpl.checkIfOpenedWithNotification(
+              onOpenedWithNotification: (payload) {
+            GetIt.I
+                .get<GlobalKey<NavigatorState>>()
+                .currentContext
+                ?.go(payload ?? "/");
+          });
+        }
       }
       // Other states must execute a close map event, but detach is not included,
       // when the app is closed it can not send a request
