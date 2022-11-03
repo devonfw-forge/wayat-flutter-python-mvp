@@ -40,6 +40,7 @@ dependencies:
   flutter_contacts: ^1.1.5
   # Google Sign In
   google_sign_in: ^5.4.2
+  google_sign_in_dartio: ^0.2.1
   # Http request for backend
   http: ^0.13.4
   # Decoding Token ID
@@ -126,3 +127,7 @@ flutter_icons:
   web:
     generate: true
     image_path: "assets/images/wayat_icon.png"
+  windows:
+    generate: true
+    image_path: "assets/images/wayat_icon.png"
+    icon_size: 48 # min:48, max:256, default: 48

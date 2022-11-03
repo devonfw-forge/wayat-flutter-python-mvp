@@ -17,6 +17,12 @@ class PlatformService {
       defaultTargetPlatform == TargetPlatform.macOS ||
       defaultTargetPlatform == TargetPlatform.linux ||
       isWeb;
+  
+  bool get isDesktop =>
+      (defaultTargetPlatform == TargetPlatform.windows ||
+      defaultTargetPlatform == TargetPlatform.macOS ||
+      defaultTargetPlatform == TargetPlatform.linux) &&
+      !isWeb;
 
   bool get isAndroid => defaultTargetPlatform == TargetPlatform.android;
 
