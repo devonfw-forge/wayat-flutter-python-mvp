@@ -80,6 +80,7 @@ function buildRelease {
         web) 
             cp frontend/launcher/build-web.yml .
             docker-compose -f build-web.yml up || ( rm ./build-web.yml && exit 1 )
+
             rm ./build-web.yml
             echo -e "${green}LOCATION: build/web"; echo -ne ${white}
             ;;
@@ -97,6 +98,7 @@ function runRelease {
     cd ..
     cp frontend/launcher/build-web.yml .
     docker-compose -f build-web.yml up || ( rm ./build-web.yml && exit 1 )
+
     rm ./build-web.yml
     cd $currentPath
     echo -e "${green}Build for ${platform} done."; echo -ne ${white}

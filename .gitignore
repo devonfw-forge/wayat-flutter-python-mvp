@@ -1,7 +1,3 @@
-wayat/frontend/windows/
-wayat/frontend/linux/
-wayat/frontend/macos/
-
 # Miscellaneous
 *.cc
 *.h

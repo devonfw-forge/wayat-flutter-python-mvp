@@ -164,7 +164,7 @@ class MapServiceTests(IsolatedAsyncioTestCase):
         self.mock_entities["user_3"].location.last_updated = now_timestamp
         datetime_mock.return_value = now_timestamp
 
-        def mocking_get_user_location(user_id: str):
+        def mocking_get_user_location(user_id: str, cache):
             return self.mock_entities[user_id].location, self.mock_entities[user_id].location_shared_with
 
         # Mock the user repo
@@ -317,4 +317,4 @@ class MapServiceTests(IsolatedAsyncioTestCase):
 
         # Call to be tested
         res = await self.map_service.regenerate_maps_containing_user(uid=uid)
-        mock_map_service.regenerate_map_status.assert_called_with(uid="test")
+        mock_map_service.regenerate_map_status.assert_called_with(uid="test", cache={})
