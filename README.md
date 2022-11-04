@@ -1,6 +1,6 @@
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
 
-<h1 style="color:rgb(115,88,255);font-weight:900;font-size:100px;font-family:Roboto">wayat <img src=wayat_icon.png width=70></h1>
+<img src=title.png height=90> <img src=wayat_icon.png height=90>
 
 
 
