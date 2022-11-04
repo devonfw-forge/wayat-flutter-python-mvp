@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firedart/firedart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:spike_firedart/gauth_service.dart';
 
 const apiKey = 'AIzaSyAjVkDrHneMPPETPX_gAR799lGkppbTdHo';
 const projectId = 'wayat-flutter';
+const email = 'test@gmail.com';
+const password = '12345678';
+const desktopClientId =
+    "887276025973-6nif2k172rsojhs0ge9daqss7jccg2j8.apps.googleusercontent.com";
 
 void main() {
+  FirebaseAuth.initialize(apiKey, VolatileStore());
   Firestore.initialize(projectId);
+
   runApp(const MyApp());
 }
 
@@ -26,12 +34,26 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   CollectionReference groceryCollection =
       Firestore.instance.collection('groceries');
+
+  late GoogleSignIn googleSignIn;
+  final GoogleAuthService authService = GoogleAuthService();
+
+  // firedartSignIn() async {
+  //   var auth = FirebaseAuth.instance;
+  //   auth.signIn(email, password);
+  //   var user = await auth.getUser();
+  //   print(user);
+  //   auth.signInState.listen((state) => print("Signed ${state ? "in" : "out"}"));
+  //   String token = await auth.tokenProvider.idToken;
+  //   print(token);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -42,41 +64,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
-              child: const Text('List Groceries'),
+              child: const Text('SignIn with Google'),
               onPressed: () async {
-                final groceries = await groceryCollection.get();
-
-                print(groceries);
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Add Grocery Item'),
-              onPressed: () async {
-                await groceryCollection.add({
-                  'fruit': 'bananas',
-                });
-                print("Add item button pressed.");
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Edit Grocery Item'),
-              onPressed: () async {
-                await groceryCollection
-                    .document('x3qQrSLNKeqvbhjg6O1P')
-                    .update({
-                  'fruit': 'Apples!',
-                });
-                print('Edit Grocery item button pressed.');
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Delete Grocery Item'),
-              onPressed: () async {
-                await groceryCollection
-                    .document('x3qQrSLNKeqvbhjg6O1P')
-                    .delete();
-
-                print('Delete Grocery Item Button Pressed.');
+                //firedartSignIn();
+                await authService.signIn();
               },
             ),
           ],
