@@ -12,6 +12,7 @@ import 'package:wayat/domain/user/my_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
 import 'package:wayat/domain/user/my_user_factory.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
 import 'package:wayat/features/onboarding/controller/onboarding_controller.dart';
@@ -37,30 +38,38 @@ class GoogleAuthService implements AuthService {
   bool hasSignedOut = false;
 
   /// Instance of the authentication service for Firebase
-  final FirebaseAuth _auth;
+  late final FirebaseAuth _auth;
 
-  FirebaseMessaging? firebaseMessaging;
+  late final FirebaseMessaging? firebaseMessaging;
 
-  late PlatformService platformService;
+  final PlatformService _platformService;
 
   GoogleAuthService(
       {GoogleSignIn? gS,
-      PlatformService? platformService,
       FirebaseAuth? auth,
+      PlatformService? platformService,
       FirebaseMessaging? messaging})
-      : _auth = auth ??
-            FirebaseAuth.instanceFor(
-                app: Firebase.app(EnvModel.FIREBASE_APP_NAME)) {
-    this.platformService = platformService ?? PlatformService();
-    firebaseMessaging = (this.platformService.isWeb)
-        ? null
-        : messaging ?? FirebaseMessaging.instance;
+      : _platformService = platformService ?? PlatformService() {
+    if (!_platformService.isDesktop) {
+      _auth = auth ??
+          FirebaseAuth.instanceFor(
+              app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
+    }
+    firebaseMessaging = (_platformService.isMobile)
+        ? messaging ?? FirebaseMessaging.instance
+        : null;
     if (gS != null) {
       googleSignIn = gS;
     } else {
-      if (this.platformService.isWeb) {
+      if (_platformService.isWeb) {
         googleSignIn = GoogleSignIn(
           clientId: EnvModel.WEB_CLIENT_ID,
+          scopes: ['email'],
+        );
+      } else if (_platformService.isDesktop) {
+        GoogleSignInDart.register(clientId: EnvModel.DESKTOP_CLIENT_ID);
+        googleSignIn = GoogleSignIn(
+          clientId: EnvModel.DESKTOP_CLIENT_ID,
           scopes: ['email'],
         );
       } else {
@@ -79,16 +88,18 @@ class GoogleAuthService implements AuthService {
       final GoogleSignInAccount? account = await googleSignIn.signIn();
       if (account == null) return null;
       GoogleSignInAuthentication gauth = await account.authentication;
-      AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: gauth.accessToken,
-        idToken: gauth.idToken,
-      );
-      await _auth.signInWithCredential(credential);
-      if (_auth.currentUser == null) return null;
-      if (platformService.isMobile) {
-        String? token = await firebaseMessaging?.getToken();
-        httpProvider
-            .sendPostRequest(APIContract.pushNotification, {"token": token});
+      if (!_platformService.isDesktop) {
+        AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: gauth.accessToken,
+          idToken: gauth.idToken,
+        );
+        await _auth.signInWithCredential(credential);
+        if (_auth.currentUser == null) return null;
+        if (_platformService.isMobile) {
+          String? token = await firebaseMessaging?.getToken();
+          httpProvider
+              .sendPostRequest(APIContract.pushNotification, {"token": token});
+        }
       }
       return account;
     } on PlatformException {
@@ -109,12 +120,14 @@ class GoogleAuthService implements AuthService {
   /// Returns an empty string if there is no authenticated user
   @override
   Future<String> getIdToken() async {
+    if (_platformService.isDesktop) return "";
     if (_auth.currentUser == null) return "";
     return await _auth.currentUser!.getIdToken();
   }
 
   @override
   Future<GoogleSignInAccount?> signInSilently() async {
+    if (_platformService.isDesktop) return null;
     if (hasSignedOut) {
       hasSignedOut = false;
       return null;
@@ -127,8 +140,10 @@ class GoogleAuthService implements AuthService {
       accessToken: gauth.accessToken,
       idToken: gauth.idToken,
     );
-    await _auth.signInWithCredential(credential);
-    if (_auth.currentUser == null) return null;
+    if (!_platformService.isDesktop) {
+      await _auth.signInWithCredential(credential);
+      if (_auth.currentUser == null) return null;
+    }
     return account;
   }
 

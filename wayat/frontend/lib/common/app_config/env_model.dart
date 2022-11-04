@@ -92,6 +92,11 @@ class EnvModel {
   static final String IOS_BUNDLE_ID =
       dotenv.get('IOS_BUNDLE_ID').replaceAll("\"", "");
 
+  /// Google Cloud desktop client id
+  // ignore: non_constant_identifier_names
+  static final String DESKTOP_CLIENT_ID =
+      dotenv.get('DESKTOP_CLIENT_ID').replaceAll("\"", "");
+
   /// Loads all the environment variables from a file.
   ///
   /// Default file name is '.env'
