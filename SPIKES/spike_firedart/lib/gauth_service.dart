@@ -56,6 +56,7 @@ class GoogleAuthService implements AuthService {
         await _auth.signInWithCredential(credential);
         if (_auth.currentUser == null) return null;
       }
+      print(_auth.currentUser);
       return account;
     } on PlatformException {
       return null;

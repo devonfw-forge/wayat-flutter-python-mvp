@@ -1,3 +1,4 @@
+import 'package:firedart/auth/user_gateway.dart';
 import 'package:flutter/material.dart';
 import 'package:firedart/firedart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,7 +9,7 @@ const projectId = 'wayat-flutter';
 const email = 'test@gmail.com';
 const password = '12345678';
 const desktopClientId =
-    "887276025973-6nif2k172rsojhs0ge9daqss7jccg2j8.apps.googleusercontent.com";
+    "887276025973-5t20nepvplh65ochp6pvrd5f76jidg1u.apps.googleusercontent.com";
 
 void main() {
   FirebaseAuth.initialize(apiKey, VolatileStore());
@@ -45,15 +46,20 @@ class _HomePageState extends State<HomePage> {
   late GoogleSignIn googleSignIn;
   final GoogleAuthService authService = GoogleAuthService();
 
-  // firedartSignIn() async {
-  //   var auth = FirebaseAuth.instance;
-  //   auth.signIn(email, password);
-  //   var user = await auth.getUser();
-  //   print(user);
-  //   auth.signInState.listen((state) => print("Signed ${state ? "in" : "out"}"));
-  //   String token = await auth.tokenProvider.idToken;
-  //   print(token);
-  // }
+  firedartSignIn() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    String token = '';
+    if (auth.isSignedIn) {
+    } else {
+      await auth.signIn(email, password);
+    }
+    user = await auth.getUser();
+    auth.signInState.listen((state) => print("Signed ${state ? "in" : "out"}"));
+    token = await auth.tokenProvider.idToken;
+    print(user);
+    print(token);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +71,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             ElevatedButton(
               child: const Text('SignIn with Google'),
-              onPressed: () async {
-                //firedartSignIn();
-                await authService.signIn();
+              onPressed: () {
+                firedartSignIn();
               },
             ),
           ],
