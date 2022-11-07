@@ -39,17 +39,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAQuE7sYC4QmKa5evrBZq2j0AxbPlQQUvA',
-    appId: '1:887276025973:web:c7fde0de8546600a5e203c',
+    appId: '1:887276025973:web:d5eb7cea81dfddb45e203c',
     messagingSenderId: '887276025973',
     projectId: 'wayat-flutter',
     authDomain: 'wayat-flutter.firebaseapp.com',
     storageBucket: 'wayat-flutter.appspot.com',
-    measurementId: 'G-BLSSR91DZ4',
+    measurementId: 'G-BQDME1BP0G',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAgT8yt4cmzRkDa0o2i8OtIysNuKDWkwDA',
-    appId: '1:887276025973:android:c9ed3ef40b6ccd005e203c',
+    appId: '1:887276025973:android:6c3e7cb0dee02ba15e203c',
     messagingSenderId: '887276025973',
     projectId: 'wayat-flutter',
     storageBucket: 'wayat-flutter.appspot.com',
@@ -57,41 +57,41 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAjVkDrHneMPPETPX_gAR799lGkppbTdHo',
-    appId: '1:887276025973:ios:d8461e155b218a1e5e203c',
+    appId: '1:887276025973:ios:22652eca1c1a60ba5e203c',
     messagingSenderId: '887276025973',
     projectId: 'wayat-flutter',
     storageBucket: 'wayat-flutter.appspot.com',
-    iosClientId: '887276025973-74s75sl14f9n4l3pvfgcbm5j6b2ad3qb.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterOauthSignin',
+    iosClientId: '887276025973-tvck2s564me0tcf5b55np2o09gakns41.apps.googleusercontent.com',
+    iosBundleId: 'com.example.spikeFiredart',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAjVkDrHneMPPETPX_gAR799lGkppbTdHo',
-    appId: '1:887276025973:ios:d8461e155b218a1e5e203c',
+    appId: '1:887276025973:ios:22652eca1c1a60ba5e203c',
     messagingSenderId: '887276025973',
     projectId: 'wayat-flutter',
     storageBucket: 'wayat-flutter.appspot.com',
-    iosClientId: '887276025973-74s75sl14f9n4l3pvfgcbm5j6b2ad3qb.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterOauthSignin',
+    iosClientId: '887276025973-tvck2s564me0tcf5b55np2o09gakns41.apps.googleusercontent.com',
+    iosBundleId: 'com.example.spikeFiredart',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyAQuE7sYC4QmKa5evrBZq2j0AxbPlQQUvA',
-    appId: '1:887276025973:web:4c93134eb10020fc5e203c',
+    appId: '1:887276025973:web:f46612d874c45a0a5e203c',
     messagingSenderId: '887276025973',
     projectId: 'wayat-flutter',
     authDomain: 'wayat-flutter.firebaseapp.com',
     storageBucket: 'wayat-flutter.appspot.com',
-    measurementId: 'G-TXR7QRPJGG',
+    measurementId: 'G-9ZGDJPL8D5',
   );
 
   static const FirebaseOptions linux = FirebaseOptions(
     apiKey: 'AIzaSyAQuE7sYC4QmKa5evrBZq2j0AxbPlQQUvA',
-    appId: '1:887276025973:web:dc3926aa62d8a6465e203c',
+    appId: '1:887276025973:web:814a32e097fdf35b5e203c',
     messagingSenderId: '887276025973',
     projectId: 'wayat-flutter',
     authDomain: 'wayat-flutter.firebaseapp.com',
     storageBucket: 'wayat-flutter.appspot.com',
-    measurementId: 'G-07CDGKDS6R',
+    measurementId: 'G-TT0LVPH0TS',
   );
 }
