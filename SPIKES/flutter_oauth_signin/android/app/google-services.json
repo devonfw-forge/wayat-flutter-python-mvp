@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "887276025973",
+    "project_id": "wayat-flutter",
+    "storage_bucket": "wayat-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887276025973:android:c9ed3ef40b6ccd005e203c",
+        "android_client_info": {
+          "package_name": "com.example.flutter_oauth_signin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887276025973-jt72euabc0thtlnml79jv1lb7v85jv8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgT8yt4cmzRkDa0o2i8OtIysNuKDWkwDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887276025973-jt72euabc0thtlnml79jv1lb7v85jv8e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "887276025973-0gv82emm2tdrk0m4utdc94vmgjloph9b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.capgemini.wayat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
