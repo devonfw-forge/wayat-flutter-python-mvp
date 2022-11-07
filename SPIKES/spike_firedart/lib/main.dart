@@ -53,7 +53,9 @@ class _HomePageState extends State<HomePage> {
           children: [
             ElevatedButton(
               child: const Text('SignIn with Google'),
-              onPressed: () {},
+              onPressed: () {
+                authService.signIn();
+              },
             ),
           ],
         ),

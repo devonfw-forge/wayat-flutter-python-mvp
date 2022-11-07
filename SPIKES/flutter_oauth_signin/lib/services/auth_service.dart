@@ -6,9 +6,12 @@ import 'package:desktop_webview_auth/twitter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
 
-const _redirectUri = 'YOUR_PROJECT_REDIRECT_URI';
-const _googleClientId = 'PASTE_YOUR_CLIENT_ID';
+const _redirectUri = 'http://localhost:5000';
+const _googleClientId =
+    '887276025973-5t20nepvplh65ochp6pvrd5f76jidg1u.apps.googleusercontent.com';
 const _twitterApiKey = 'PASTE_YOUR_TWITTER_API_KEY';
 const _twitterApiSecretKey = 'PASTE_YOUR_TWITTER_API_KEY_SECRET';
 const _facebookClientId = 'PASTE_YOUR_CLIENT_ID';
@@ -44,6 +47,7 @@ class AuthService {
   static AuthService instance = AuthService._();
 
   final _auth = FirebaseAuth.instance;
+  late GoogleSignIn gSignIn;
 
   Stream<User?> authState() {
     return _auth.authStateChanges();
@@ -63,7 +67,13 @@ class AuthService {
         case TargetPlatform.linux:
         case TargetPlatform.windows:
           {
-            final result = await DesktopWebviewAuth.signIn(
+            GoogleSignInDart.register(clientId: _googleClientId);
+
+            // gSignIn = GoogleSignIn(
+            //   clientId: _googleClientId,
+            //   scopes: ['email'],
+            // );
+            final gSignIn = await DesktopWebviewAuth.signIn(
               GoogleSignInArgs(
                 clientId: _googleClientId,
                 redirectUri: _redirectUri,
@@ -71,8 +81,8 @@ class AuthService {
               ),
             );
 
-            idToken = result?.idToken;
-            accessToken = result?.accessToken;
+            idToken = await getIdToken();
+            accessToken = gSignIn!.accessToken ?? '';
           }
           break;
         default:
@@ -93,6 +103,25 @@ class AuthService {
     } on FirebaseAuthException catch (_) {
       rethrow;
     }
+  }
+
+  @override
+  Future<String> getIdToken() async {
+    return await _auth.currentUser!.getIdToken(false);
+  }
+
+  Future<GoogleSignInAccount?> signInSilently() async {
+    final GoogleSignInAccount? account =
+        await gSignIn.signInSilently(reAuthenticate: false);
+    if (account == null) return null;
+    GoogleSignInAuthentication gauth = await account.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: gauth.accessToken,
+      idToken: gauth.idToken,
+    );
+    await _auth.signInWithCredential(credential);
+    if (_auth.currentUser == null) return null;
+    return account;
   }
 
   Future<void> twitterSignIn() async {
