@@ -1,3 +1,4 @@
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -5,20 +6,22 @@ import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
 import 'package:spike_firedart/auth_service.dart';
 import 'package:spike_firedart/main.dart';
 import 'package:spike_firedart/platform_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_desktop/firebase_auth_desktop.dart';
 
 class GoogleAuthService implements AuthService {
   @visibleForTesting
   late GoogleSignIn googleSignIn;
   bool hasSignedOut = false;
-  late final FirebaseAuth _auth;
+  late final FirebaseAuthDesktop _auth;
   final PlatformService _platformService;
 
   GoogleAuthService(
-      {GoogleSignIn? gS, FirebaseAuth? auth, PlatformService? platformService})
+      {GoogleSignIn? gS,
+      FirebaseAuthDesktop? auth,
+      PlatformService? platformService})
       : _platformService = platformService ?? PlatformService() {
     if (!_platformService.isDesktop) {
-      _auth = auth ?? FirebaseAuth.instance;
+      _auth = auth ?? FirebaseAuthDesktop.instance;
     }
     if (gS != null) {
       googleSignIn = gS;
@@ -67,7 +70,7 @@ class GoogleAuthService implements AuthService {
   Future<String> getIdToken() async {
     if (_platformService.isDesktop) return "";
     if (_auth.currentUser == null) return "";
-    return await _auth.currentUser!.getIdToken();
+    return await _auth.currentUser!.getIdToken(false);
   }
 
   Future<GoogleSignInAccount?> signInSilently() async {

@@ -27,6 +27,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  google_sign_in: ^5.4.2
+  google_sign_in_dartio: ^0.2.1
   desktop_webview_auth: ^0.0.9
   firebase_auth: ^3.3.17
   firebase_auth_desktop: ^1.0.0
@@ -35,6 +37,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_signin_button: ^2.0.0
+  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -42,7 +45,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 
