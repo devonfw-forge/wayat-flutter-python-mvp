@@ -1,21 +1,25 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:spike_firedart/firebase_options.dart';
+import 'package:spike_firedart/env_model.dart';
 import 'package:spike_firedart/gauth_service.dart';
 import 'package:firedart/firedart.dart';
+import 'dart:developer' as dev;
 
-const apiKey = 'AIzaSyAjVkDrHneMPPETPX_gAR799lGkppbTdHo';
-const projectId = 'wayat-flutter';
-const email = 'test@gmail.com';
-const password = '12345678';
-const desktopClientId =
-    "887276025973-5t20nepvplh65ochp6pvrd5f76jidg1u.apps.googleusercontent.com";
+import 'package:spike_firedart/options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  Firestore.initialize(projectId);
+
+  // Env file should be loaded before Firebase initialization
+  await EnvModel.loadEnvFile();
+
+  await Firebase.initializeApp(
+      name: EnvModel.FIREBASE_APP_NAME,
+      options: CustomFirebaseOptions.currentPlatformOptions);
+
+  Firestore.initialize(dotenv.get('PROJECT_ID'));
 
   runApp(const MyApp());
 }
@@ -66,14 +70,14 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Get Collection'),
               onPressed: () {
                 groceryCollection.get();
-                print('Print collection $groceryCollection');
+                dev.log('Print collection $groceryCollection');
               },
             ),
             ElevatedButton(
               child: const Text('Add to Collection'),
               onPressed: () {
-                groceryCollection.add({"name": "Mango"});
-                print('Add Mango item to collection');
+                groceryCollection.add({"name": "New added mango"});
+                dev.log('Add Mango item to collection');
               },
             ),
             ElevatedButton(
@@ -81,8 +85,8 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 groceryCollection
                     .document('T0T9XakXEi6UxA2yo4nj')
-                    .update({'name': 'updated bananas'});
-                print('Add Mango item to collection');
+                    .update({'name': 'Just updated bananas'});
+                dev.log('Update Bananas item in Collection');
               },
             ),
           ],

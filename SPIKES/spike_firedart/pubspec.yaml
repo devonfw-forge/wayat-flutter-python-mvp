@@ -21,6 +21,7 @@ dependencies:
   firebase_auth_platform_interface: ^6.10.1
   firebase_core_platform_interface: 4.5.1
   firedart: ^0.9.0+1
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -31,4 +32,6 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+  assets:
+    - .env
 

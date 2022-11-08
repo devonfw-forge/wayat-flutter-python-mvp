@@ -1,12 +1,13 @@
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
 import 'package:spike_firedart/auth_service.dart';
-import 'package:spike_firedart/main.dart';
 import 'package:spike_firedart/platform_service.dart';
 import 'package:firebase_auth_desktop/firebase_auth_desktop.dart';
+import 'dart:developer' as dev;
 
 class GoogleAuthService implements AuthService {
   @visibleForTesting
@@ -28,13 +29,13 @@ class GoogleAuthService implements AuthService {
     } else {
       if (_platformService.isWeb) {
         googleSignIn = GoogleSignIn(
-          clientId: desktopClientId,
+          clientId: dotenv.get('DESKTOP_CLIENT_ID'),
           scopes: ['email'],
         );
       } else if (_platformService.isDesktop) {
-        GoogleSignInDart.register(clientId: desktopClientId);
+        GoogleSignInDart.register(clientId: dotenv.get('DESKTOP_CLIENT_ID'));
         googleSignIn = GoogleSignIn(
-          clientId: desktopClientId,
+          clientId: dotenv.get('DESKTOP_CLIENT_ID'),
           scopes: ['email'],
         );
       } else {
@@ -59,7 +60,7 @@ class GoogleAuthService implements AuthService {
         await _auth.signInWithCredential(credential);
         if (_auth.currentUser == null) return null;
       }
-      print(account);
+      dev.log('$account');
       return account;
     } on PlatformException {
       return null;
