@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_core_desktop/firebase_core_desktop.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:spike_firedart/firebase_options.dart';
 import 'package:spike_firedart/gauth_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firedart/firedart.dart';
 
 const apiKey = 'AIzaSyAjVkDrHneMPPETPX_gAR799lGkppbTdHo';
 const projectId = 'wayat-flutter';
@@ -16,6 +15,7 @@ const desktopClientId =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Firestore.initialize(projectId);
 
   runApp(const MyApp());
 }
@@ -44,8 +44,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late GoogleSignIn googleSignIn;
   final GoogleAuthService authService = GoogleAuthService();
+
   CollectionReference groceryCollection =
-      FirebaseFirestore.instance.collection('groceries');
+      Firestore.instance.collection('groceries');
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,23 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Get Collection'),
               onPressed: () {
                 groceryCollection.get();
-                print(groceryCollection);
+                print('Print collection $groceryCollection');
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Add to Collection'),
+              onPressed: () {
+                groceryCollection.add({"name": "Mango"});
+                print('Add Mango item to collection');
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Update Bananas item in Collection'),
+              onPressed: () {
+                groceryCollection
+                    .document('T0T9XakXEi6UxA2yo4nj')
+                    .update({'name': 'updated bananas'});
+                print('Add Mango item to collection');
               },
             ),
           ],
