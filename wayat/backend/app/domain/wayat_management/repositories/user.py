@@ -82,6 +82,9 @@ class UserRepository(BaseFirestoreRepository[UserEntity]):
             if cache is not None:
                 logger.info(f"Location added to cache for {uid}")
                 cache.update({uid: user_entity})
+        if user_entity is None:
+            logger.info(f"User {uid} not found")
+            return None, []
         if user_entity.location is None:  # if not available, return None
             return None, user_entity.location_shared_with
         elif not force and not user_entity.share_location:  # if not forcing, decide on not(share_location)

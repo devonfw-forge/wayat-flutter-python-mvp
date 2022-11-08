@@ -5,7 +5,7 @@ from typing import BinaryIO, Optional, Tuple, List
 
 import requests
 from fastapi import Depends
-from firebase_admin.messaging import SendResponse
+from firebase_admin.messaging import SendResponse  # type: ignore
 from requests import RequestException, Response
 
 from app.business.wayat_management.models.group import GroupDTO, UsersListType
