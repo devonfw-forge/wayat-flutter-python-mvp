@@ -47,7 +47,7 @@ abstract class _AppConfigState with Store {
       case ("de"):
         return Language('Deutsch', 'de');
       case ("nl"):
-        return Language('Dutch', 'nl');
+        return Language('Nederlands', 'nl');
       default:
         return Language('English', 'en');
     }

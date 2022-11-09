@@ -23,7 +23,7 @@ void main() async {
     expect(appConfigState.getLanguage("es"), Language("Español", "es"));
     expect(appConfigState.getLanguage("fr"), Language("Français", "fr"));
     expect(appConfigState.getLanguage("de"), Language("Deutsch", "de"));
-    expect(appConfigState.getLanguage("nl"), Language("Dutch", "nl"));
+    expect(appConfigState.getLanguage("nl"), Language("Nederlands", "nl"));
     expect(appConfigState.getLanguage("en"), Language("English", "en"));
   });
 

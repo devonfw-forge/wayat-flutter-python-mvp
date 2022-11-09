@@ -10,7 +10,7 @@ class Language {
       Language('Español', 'es'),
       Language('Français', 'fr'),
       Language('Deutsch', 'de'),
-      Language('Dutch', 'nl'),
+      Language('Nederlands', 'nl'),
     ];
   }
 
