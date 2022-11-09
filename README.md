@@ -3,8 +3,6 @@
 <img src=title.png height=90> <img src=wayat_icon.png height=90>
 
 
-
-
 [![Generic badge](https://img.shields.io/badge/WAYAT-v.0.7.0-GREEN.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/os-android-GREEN.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/os-ios-GREEN.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/website-up-GREEN.svg)](https://shields.io/)
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white) ![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
@@ -15,6 +13,7 @@
 - [What is WAYAT for?](#what-is-wayat-for)
 - [Features](#features)
 - [For developers](#for-developers)
+- [Why WAYAT](#why-wayat)
 
 # What is WAYAT?
 
@@ -64,7 +63,27 @@ Check our releases if you want to start now! You just need a Google Account and 
 ![Main Screens](main_screens.png)
 
 # For developers
-There is some extra information to those who wants to check how to deploy the flutter application or check how the backend is working. Just check the next links:
+There is some extra information to those who wants to check how to deploy the flutter application or check how the back-end is working. Just check the next links:
 
 - [Frontend Documentation](https://github.com/devonfw-forge/wayat-flutter-python-mvp/tree/main/wayat/frontend#readme)
 - [Backend Documentation](https://github.com/devonfw-forge/wayat-flutter-python-mvp/tree/main/wayat/backend#readme)
+
+# Why WAYAT
+
+Wayat is part of a larger initiative sponsored by Capgemini. It' s a bundling of separate initiatives which were merged in order to be more efficient have more impact. Part of the objectives were to:
+
+ - create a real, useful reference app showing the power of Flutter (wayat)
+ - create the back-end of way-at with [devon4py](https://github.com/devonfw-forge/devon4py/), the new Python template within devonfw. Although it' s called an "incubator" due to devonfw's release policy, the stack if mature and production ready. 
+ - show the possibilities of Cloud Native development
+ - show the capabilities of Google Cloud
+ - demonstrate that it is possible to go from Ideation to MVP in 3-4 Sprints using the combination of Google' s technologies and Capgemini' s experience with Agile/Devops methodologies. 
+
+For more information, see [the pdf explaining the larger project](Presentation.pdf)
+
+# License(s)
+
+Copyright 2020 Capgemini 
+
+The source code on this site is licensed under the Apache Public License 2.0. See [LICENSE.txt](LICENSE.txt) for details.
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />The documentation (not the source code) available on this site is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
