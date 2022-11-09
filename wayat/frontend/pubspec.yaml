@@ -71,8 +71,6 @@ dependencies:
   smart_auth: ^1.0.5
   # Testing mocks
   mockito: ^5.3.0
-  # Web dependencies
-  google_maps_flutter_web: ^0.4.0+2
   # Icon generation
   flutter_launcher_icons: ^0.10.0
   # Platform app dependencies
