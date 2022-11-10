@@ -41,22 +41,23 @@ class GoogleAuthService implements AuthService {
   late final FirebaseAuth _auth;
 
   late final FirebaseMessaging? firebaseMessaging;
-  
+
   final PlatformService _platformService;
 
-  GoogleAuthService({
-    GoogleSignIn? gS, 
-    FirebaseAuth? auth,
-    PlatformService? platformService,
-    FirebaseMessaging? messaging
-  }) : _platformService = platformService ?? PlatformService() {
+  GoogleAuthService(
+      {GoogleSignIn? gS,
+      FirebaseAuth? auth,
+      PlatformService? platformService,
+      FirebaseMessaging? messaging})
+      : _platformService = platformService ?? PlatformService() {
     if (!_platformService.isDesktop) {
-      _auth = auth ?? FirebaseAuth.instanceFor(
-        app: Firebase.app(EnvModel.FIREBASE_APP_NAME)
-      );
+      _auth = auth ??
+          FirebaseAuth.instanceFor(
+              app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
     }
     firebaseMessaging = (_platformService.isMobile)
-        ? messaging ?? FirebaseMessaging.instance : null;
+        ? messaging ?? FirebaseMessaging.instance
+        : null;
     if (gS != null) {
       googleSignIn = gS;
     } else {
@@ -66,9 +67,7 @@ class GoogleAuthService implements AuthService {
           scopes: ['email'],
         );
       } else if (_platformService.isDesktop) {
-        GoogleSignInDart.register(
-          clientId: EnvModel.DESKTOP_CLIENT_ID
-        );
+        GoogleSignInDart.register(clientId: EnvModel.DESKTOP_CLIENT_ID);
         googleSignIn = GoogleSignIn(
           clientId: EnvModel.DESKTOP_CLIENT_ID,
           scopes: ['email'],

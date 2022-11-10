@@ -158,7 +158,7 @@ class MapService:
         # Update all maps that point at me
         logger.info("Updating maps pointing at me")
         
-        cache = dict()
+        cache: dict[str, UserEntity] = dict()
         await asyncio.gather(*[self._update_contact_status(c, force, cache) for c in contacts_map_open_self_share_location])
 
         if latitude is None or longitude is None:
@@ -248,7 +248,7 @@ class MapService:
         return distance < self._distance_threshold
 
     async def regenerate_maps_containing_user(self, uid: str):
-        cache = dict()
+        cache: dict[str, UserEntity] = dict()
         coroutines = [self.regenerate_map_status(uid=contact_uid, cache=cache)
                       for contact_uid in await self._status_repository.find_maps_containing_user(uid)]
         await asyncio.gather(*coroutines)
