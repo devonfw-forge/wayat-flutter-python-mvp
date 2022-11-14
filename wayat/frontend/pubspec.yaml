@@ -96,6 +96,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
+  # MobX dependencies for code generation
+  analyzer: ^4.2.0 
   # Process that generates code for MobX and json_annotation
   build_runner: ^2.1.5
   # MobX code generator
