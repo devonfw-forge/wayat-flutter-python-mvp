@@ -1,7 +1,7 @@
 name: wayat
 description: An application to share location with friends and acquaintances
 publish_to: 'none' 
-version: 0.5.0+8
+version: 0.8.0+11
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -69,9 +69,9 @@ dependencies:
   # Custom dropdown
   image_picker: ^0.8.5+3
   # Phone verification
-  firebase_phone_auth_handler: ^1.0.6
-  pinput: ^2.2.12
-  smart_auth: ^1.0.5
+  firebase_phone_auth_handler: 1.0.6
+  pinput: 2.2.12
+  smart_auth: 1.0.5
   # Testing mocks
   mockito: ^5.3.0
   # Icon generation
