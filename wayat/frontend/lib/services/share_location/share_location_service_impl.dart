@@ -127,9 +127,12 @@ class ShareLocationServiceImpl extends ShareLocationService {
         initialLocation = webLocationCache!.lastLocation;
         webPermissionStatus = PermissionStatus.granted;
       }
-    } else {
+    } else if (!platformService.isDesktop) {
       await checkLocationPermissions();
       initialLocation = await location.getLocation();
+    } else {
+      initialLocation = LocationData.fromMap(
+          {"latitude": 48.864716, "longitude": 2.349014});
     }
 
     return ShareLocationServiceImpl.build(initialLocation, mode, shareLocation,
