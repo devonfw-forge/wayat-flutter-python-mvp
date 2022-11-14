@@ -47,8 +47,8 @@ Future main() async {
 
   if (!platformService.isDesktop) {
     await Firebase.initializeApp(
-      name: EnvModel.FIREBASE_APP_NAME,
-      options: CustomFirebaseOptions.currentPlatformOptions);
+        name: EnvModel.FIREBASE_APP_NAME,
+        options: CustomFirebaseOptions.currentPlatformOptions);
   }
 
   await registerSingletons();
@@ -61,7 +61,7 @@ Future main() async {
     ).idTokenChanges().first;
     // This line should be changed to this if we are going to support desktop
     //} else if (platformService.isMobile) {
-  } else if (platformService.isMobile) {
+  } else if (platformService.isAndroid) {
     NotificationsService notificationsService = NotificationsServiceImpl();
     await notificationsService.initialize();
   }
