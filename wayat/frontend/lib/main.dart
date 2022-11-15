@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -45,22 +44,15 @@ Future main() async {
 
   PlatformService platformService = PlatformService();
 
-  if (!platformService.isDesktop) {
-    await Firebase.initializeApp(
-      name: EnvModel.FIREBASE_APP_NAME,
-      options: CustomFirebaseOptions.currentPlatformOptions);
-  }
+  await Firebase.initializeApp(
+    name: EnvModel.FIREBASE_APP_NAME,
+    options: CustomFirebaseOptions.currentPlatformOptions);
+  
+  await registerLazySingletons();
 
-  await registerSingletons();
-
-  // AVoid # character in url (flutter web)
   if (platformService.isWeb) {
+    // Avoid # character in url (flutter web)
     setPathUrlStrategy();
-    await FirebaseAuth.instanceFor(
-      app: Firebase.app(EnvModel.FIREBASE_APP_NAME),
-    ).idTokenChanges().first;
-    // This line should be changed to this if we are going to support desktop
-    //} else if (platformService.isMobile) {
   } else if (platformService.isMobile) {
     NotificationsService notificationsService = NotificationsServiceImpl();
     await notificationsService.initialize();
@@ -75,7 +67,7 @@ Future main() async {
 ///
 /// All of the singletons are registered using lazy initialization, to ensure
 /// that only the one's that are being used will be instantiated.
-Future registerSingletons() async {
+Future registerLazySingletons() async {
   GetIt.I.registerSingleton<InitialLocationProvider>(
       InitialLocationProvider(InitialLocation.map));
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
@@ -93,6 +85,27 @@ Future registerSingletons() async {
       () => PhoneVerificationController());
   if (!GetIt.I.isRegistered<GlobalKey<NavigatorState>>()) {
     GetIt.I.registerLazySingleton<GlobalKey<NavigatorState>>(() => GlobalKey());
+  }
+}
+
+Future registerSingletons() async {
+  GetIt.I.registerSingleton<InitialLocationProvider>(
+    InitialLocationProvider(InitialLocation.map));
+  GetIt.I.registerSingleton<HttpProvider>(HttpProvider());
+  GetIt.I.registerSingleton<LifeCycleState>(LifeCycleState());
+  GetIt.I.registerSingleton<UserState>(UserState());
+  GetIt.I.registerSingleton<HomeNavState>(HomeNavState());
+  GetIt.I.registerSingleton<AppConfigState>(AppConfigState());
+  GetIt.I.registerSingleton<OnboardingController>(
+    OnboardingController());
+  GetIt.I.registerSingleton<ContactsPageController>(
+    ContactsPageController());
+  GetIt.I.registerSingleton<GroupsController>(GroupsController());
+  GetIt.I.registerSingleton<LocationListener>(LocationListener());
+  GetIt.I.registerSingleton<PhoneVerificationController>(
+    PhoneVerificationController());
+  if (!GetIt.I.isRegistered<GlobalKey<NavigatorState>>()) {
+    GetIt.I.registerSingleton<GlobalKey<NavigatorState>>(GlobalKey());
   }
 }
 

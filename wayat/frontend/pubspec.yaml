@@ -1,7 +1,7 @@
 name: wayat
 description: An application to share location with friends and acquaintances
 publish_to: 'none' 
-version: 0.5.0+8
+version: 0.8.0+11
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -39,8 +39,8 @@ dependencies:
   # Handles logic to import address books contacts
   flutter_contacts: ^1.1.5
   # Google Sign In
-  google_sign_in: ^5.4.2
-  google_sign_in_dartio: ^0.2.1
+  google_sign_in: 5.4.2
+  google_sign_in_dartio: 0.2.1 # For desktop
   # Http request for backend
   http: ^0.13.4
   # Decoding Token ID
@@ -49,7 +49,6 @@ dependencies:
   phone_number: ^1.0.0
   # Phone textfield with countries
   intl_phone_field: ^3.1.0
-  json_serializable: ^6.3.1
   json_annotation: ^4.6.0
   image: ^3.2.0
   # For the x minutes ago in the Pop Up for the Map contacts
@@ -57,17 +56,20 @@ dependencies:
   # To launch google maps app
   url_launcher: ^6.1.5
   # Firebase dependencies
-  firebase_core_platform_interface: ^4.5.2
-  firebase_core: ^2.1.1
-  cloud_firestore: ^4.0.3
-  firebase_auth: ^4.1.0
-  firebase_messaging: ^14.0.3
+  firebase_core: 1.24.0
+  firebase_auth: 3.11.2
+  firebase_auth_platform_interface: 6.10.1
+  firebase_core_platform_interface: 4.5.1
+  firebase_auth_desktop: 1.0.2 # For desktop
+  firebase_core_desktop: 1.0.2 # For desktop
+  cloud_firestore: 3.5.1
+  firebase_messaging: 13.1.0
+  # Custom dropdown
   image_picker: ^0.8.5+3
   # Phone verification
-  firebase_phone_auth_handler: ^1.0.6
-  firebase_auth_platform_interface: ^6.1.10
-  pinput: ^2.2.12
-  smart_auth: ^1.0.5
+  firebase_phone_auth_handler: 1.0.6
+  pinput: 2.2.12
+  smart_auth: 1.0.5
   # Testing mocks
   mockito: ^5.3.0
   # Icon generation
@@ -104,6 +106,8 @@ dev_dependencies:
   # Dialogs
   speech_balloon: ^0.0.4
   remove_from_coverage: 2.0.0
+  # Data class generator
+  json_serializable: ^6.3.1
 
 flutter:
   # Flag to generate internationalization files

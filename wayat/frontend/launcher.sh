@@ -57,6 +57,22 @@ function checkGoogleServices {
     fi
 }
 
+function testRelease {
+    echo -e "${green}Testing app..."; echo -ne ${white}
+    # Check local flutter image with 3.3.6 version
+    if [[ "$(docker images -q flutter_local:3.3.6 2> /dev/null)" == "" ]]; then
+        if [ ! -f "${flutterDockerImage}/Dockerfile" ]; then echo -e "${red}Error: Docker image not found in ${flutterDockerImage}." >&2; echo -ne ${white}; exit 1; fi
+        docker build ${flutterDockerImage} -t flutter_local:3.3.6 --build-arg FLUTTER_VERSION=3.3.6
+    fi
+    # Going to wayat dir to use frontend child dir as a volume
+    cd ..
+    cp frontend/launcher/test.yml .
+    docker-compose -f test.yml up || ( rm ./test.yml && exit 1 )
+    rm ./test.yml
+    cd $currentPath
+    echo -e "${green}Build for ${platform} done."; echo -ne ${white}
+}
+
 function buildRelease {
     case $platform in
         web | android) echo -e "${green}Using platform ${platform} for ${mode}." ;;
@@ -111,12 +127,12 @@ if [[ "$help" == "true" ]]; then help; fi
 
 
 if [[ "$mode" == "" ]]; then echo -e "${red}Error: Mode not provided." >&2; echo -ne ${white}; exit 1; fi
-if [[ "$platform" == "" ]]; then echo -e "${red}Error: Platform not provided." >&2; echo -ne ${white}; exit 1; fi
+if [[ "$mode" != "test" && "$platform" == "" ]]; then echo -e "${red}Error: Platform not provided." >&2; echo -ne ${white}; exit 1; fi
 
 
 case $platform in
     web | android | desktop) echo -e "${green}Using platform ${platform} for ${mode}."; echo -ne ${white} ;;
-    *) echo -e "${red}Error: Platform ${platfrom} not supported for ${mode} is not supported." >&2; echo -ne ${white}; exit 1
+    *) if [[ "$mode" != "test" ]]; then echo -e "${red}Error: Platform ${platfrom} not supported for ${mode} is not supported." >&2; echo -ne ${white}; exit 1; fi
 esac
 
 checkEnvFile
@@ -125,6 +141,7 @@ checkGoogleServices
 if [[ "$platform" == "android" ]]; then checkKeystoreFile; checkPropertiesFile; fi
 
 case $mode in
+    test) testRelease ;;
     build) buildRelease ;;
     run) runRelease ;;
     *) echo -e "${red}Error: Mode ${mode} is not supported." >&2; echo -ne ${white}; exit 1
