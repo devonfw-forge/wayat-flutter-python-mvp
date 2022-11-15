@@ -45,15 +45,15 @@ Future main() async {
   PlatformService platformService = PlatformService();
 
   await Firebase.initializeApp(
-    name: EnvModel.FIREBASE_APP_NAME,
-    options: CustomFirebaseOptions.currentPlatformOptions);
-  
+      name: EnvModel.FIREBASE_APP_NAME,
+      options: CustomFirebaseOptions.currentPlatformOptions);
+
   await registerLazySingletons();
 
   if (platformService.isWeb) {
     // Avoid # character in url (flutter web)
     setPathUrlStrategy();
-  } else if (platformService.isMobile) {
+  } else if (platformService.isAndroid) {
     NotificationsService notificationsService = NotificationsServiceImpl();
     await notificationsService.initialize();
   }
@@ -90,20 +90,18 @@ Future registerLazySingletons() async {
 
 Future registerSingletons() async {
   GetIt.I.registerSingleton<InitialLocationProvider>(
-    InitialLocationProvider(InitialLocation.map));
+      InitialLocationProvider(InitialLocation.map));
   GetIt.I.registerSingleton<HttpProvider>(HttpProvider());
   GetIt.I.registerSingleton<LifeCycleState>(LifeCycleState());
   GetIt.I.registerSingleton<UserState>(UserState());
   GetIt.I.registerSingleton<HomeNavState>(HomeNavState());
   GetIt.I.registerSingleton<AppConfigState>(AppConfigState());
-  GetIt.I.registerSingleton<OnboardingController>(
-    OnboardingController());
-  GetIt.I.registerSingleton<ContactsPageController>(
-    ContactsPageController());
+  GetIt.I.registerSingleton<OnboardingController>(OnboardingController());
+  GetIt.I.registerSingleton<ContactsPageController>(ContactsPageController());
   GetIt.I.registerSingleton<GroupsController>(GroupsController());
   GetIt.I.registerSingleton<LocationListener>(LocationListener());
   GetIt.I.registerSingleton<PhoneVerificationController>(
-    PhoneVerificationController());
+      PhoneVerificationController());
   if (!GetIt.I.isRegistered<GlobalKey<NavigatorState>>()) {
     GetIt.I.registerSingleton<GlobalKey<NavigatorState>>(GlobalKey());
   }
