@@ -27,20 +27,11 @@ class CustomFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return linux;
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -75,5 +66,36 @@ class CustomFirebaseOptions {
     androidClientId: EnvModel.IOS_ANDROID_CLIENT_ID,
     iosClientId: EnvModel.IOS_CLIENT_ID,
     iosBundleId: EnvModel.IOS_BUNDLE_ID,
+  );
+  
+  static FirebaseOptions macos = FirebaseOptions(
+    apiKey: EnvModel.IOS_API_KEY,
+    appId: EnvModel.IOS_APP_ID,
+    messagingSenderId: EnvModel.MESSAGING_SENDER_ID,
+    projectId: EnvModel.PROJECT_ID,
+    storageBucket: EnvModel.STORAGE_BUCKET,
+    androidClientId: EnvModel.IOS_ANDROID_CLIENT_ID,
+    iosClientId: EnvModel.IOS_CLIENT_ID,
+    iosBundleId: EnvModel.IOS_BUNDLE_ID,
+  );
+
+  static FirebaseOptions windows = FirebaseOptions(
+    apiKey: EnvModel.ANDROID_API_KEY,
+    appId: EnvModel.WEB_APP_ID,
+    messagingSenderId: EnvModel.MESSAGING_SENDER_ID,
+    projectId: EnvModel.PROJECT_ID,
+    authDomain: EnvModel.WEB_AUTH_DOMAIN,
+    storageBucket: EnvModel.STORAGE_BUCKET,
+    measurementId: EnvModel.WEB_MEASUREMENT_ID,
+  );
+  
+  static FirebaseOptions linux = FirebaseOptions(
+    apiKey: EnvModel.ANDROID_API_KEY,
+    appId: EnvModel.WEB_APP_ID,
+    messagingSenderId: EnvModel.MESSAGING_SENDER_ID,
+    projectId: EnvModel.PROJECT_ID,
+    authDomain: EnvModel.WEB_AUTH_DOMAIN,
+    storageBucket: EnvModel.STORAGE_BUCKET,
+    measurementId: EnvModel.WEB_MEASUREMENT_ID,
   );
 }

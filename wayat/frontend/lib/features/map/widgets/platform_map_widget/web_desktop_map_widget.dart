@@ -6,6 +6,7 @@ import 'package:wayat/app_state/location_state/location_listener.dart';
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/features/map/controller/platform_map_controller/web_desktop_map_controller.dart';
 import 'package:wayat/features/map/widgets/platform_map_widget/platform_map_widget.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 /// Web and desktop flutter maps widget
 class WebDesktopMapWidget extends PlatformMapWidget {
@@ -41,7 +42,7 @@ class WebDesktopMapWidget extends PlatformMapWidget {
   List<Marker> _generateMarkers(latitude, longitude) {
     List<Marker> newMarkers = markers.map((e) => e.get() as Marker).toList();
 
-    if (shareLocationState.hasWebPermissions) {
+    if (PlatformService().isWeb && shareLocationState.hasWebPermissions) {
       newMarkers.add(Marker(
         point: LatLng(latitude, longitude),
         builder: (context) {
