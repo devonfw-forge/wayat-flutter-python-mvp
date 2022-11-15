@@ -10,17 +10,8 @@ import GoogleMaps
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     
   ) -> Bool {
-      GMSServices.provideAPIKey("IOS_API_KEY")
-      
-      // This is required to make any communication available in the action isolate.
-      FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
-          GeneratedPluginRegistrant.register(with: registry)
-      }
-      if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
-      }
-      
-      GeneratedPluginRegistrant.register(with: self)
+      GMSServices.provideAPIKey("AIzaSyBbeqmrIQ7sZDDu2rpoopeHq32WEkwJAxo")
+       GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
