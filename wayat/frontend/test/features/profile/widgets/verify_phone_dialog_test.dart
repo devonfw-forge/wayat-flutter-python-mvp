@@ -3,9 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/features/profile/widgets/pin_input_field.dart';
 import 'package:wayat/common/widgets/phone_verification/verify_phone_dialog.dart';
 import 'package:mockito/annotations.dart';
+import 'package:wayat/options.dart';
 
 import '../../../test_common/test_app.dart';
 import 'firebase_mock.dart';
@@ -16,7 +18,10 @@ void main() async {
   setupFirebaseAuthMocks();
 
   setUpAll(() async {
-    await Firebase.initializeApp();
+    await EnvModel.loadEnvFile();
+    await Firebase.initializeApp(
+    name: EnvModel.FIREBASE_APP_NAME,
+    options: CustomFirebaseOptions.currentPlatformOptions);
     GetIt.I.registerSingleton<UserState>(MockUserState());
   });
 

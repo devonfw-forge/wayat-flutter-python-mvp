@@ -35,7 +35,7 @@ class _ContactsPageState extends State<ContactsPage>
   void initState() {
     super.initState();
     _tabController = TabController(
-        length: (widget.platformService.isWeb) ? 2 : 3, vsync: this);
+        length: (widget.platformService.isDesktopOrWeb) ? 2 : 3, vsync: this);
     setUpTabs();
   }
 
@@ -117,7 +117,7 @@ class _ContactsPageState extends State<ContactsPage>
               child: TabBarView(controller: _tabController, children: [
                 FriendsPage(),
                 RequestsPage(),
-                if (!widget.platformService.isWeb) SuggestionsPage()
+                if (!widget.platformService.isDesktopOrWeb) SuggestionsPage()
               ])),
         ),
       ],
@@ -164,7 +164,7 @@ class _ContactsPageState extends State<ContactsPage>
               tabs: [
                 Tab(text: appLocalizations.friendsTab),
                 Tab(text: appLocalizations.requestsTab),
-                if (!widget.platformService.isWeb)
+                if (!widget.platformService.isDesktopOrWeb)
                   Tab(text: appLocalizations.suggestionsTab)
               ]),
         ],

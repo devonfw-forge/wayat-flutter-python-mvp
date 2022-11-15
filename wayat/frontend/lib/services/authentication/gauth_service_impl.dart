@@ -50,11 +50,9 @@ class GoogleAuthService implements AuthService {
       PlatformService? platformService,
       FirebaseMessaging? messaging})
       : _platformService = platformService ?? PlatformService() {
-    if (!_platformService.isDesktop) {
       _auth = auth ??
-          FirebaseAuth.instanceFor(
-              app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
-    }
+        FirebaseAuth.instanceFor(
+            app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
     firebaseMessaging = (_platformService.isMobile)
         ? messaging ?? FirebaseMessaging.instance
         : null;
@@ -88,18 +86,16 @@ class GoogleAuthService implements AuthService {
       final GoogleSignInAccount? account = await googleSignIn.signIn();
       if (account == null) return null;
       GoogleSignInAuthentication gauth = await account.authentication;
-      if (!_platformService.isDesktop) {
-        AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: gauth.accessToken,
-          idToken: gauth.idToken,
-        );
-        await _auth.signInWithCredential(credential);
-        if (_auth.currentUser == null) return null;
-        if (_platformService.isMobile) {
-          String? token = await firebaseMessaging?.getToken();
-          httpProvider
-              .sendPostRequest(APIContract.pushNotification, {"token": token});
-        }
+      AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: gauth.accessToken,
+        idToken: gauth.idToken,
+      );
+      await _auth.signInWithCredential(credential);
+      if (_auth.currentUser == null) return null;
+      if (_platformService.isMobile) {
+        String? token = await firebaseMessaging?.getToken();
+        httpProvider
+            .sendPostRequest(APIContract.pushNotification, {"token": token});
       }
       return account;
     } on PlatformException {
@@ -120,14 +116,12 @@ class GoogleAuthService implements AuthService {
   /// Returns an empty string if there is no authenticated user
   @override
   Future<String> getIdToken() async {
-    if (_platformService.isDesktop) return "";
     if (_auth.currentUser == null) return "";
     return await _auth.currentUser!.getIdToken();
   }
 
   @override
   Future<GoogleSignInAccount?> signInSilently() async {
-    if (_platformService.isDesktop) return null;
     if (hasSignedOut) {
       hasSignedOut = false;
       return null;
@@ -140,10 +134,8 @@ class GoogleAuthService implements AuthService {
       accessToken: gauth.accessToken,
       idToken: gauth.idToken,
     );
-    if (!_platformService.isDesktop) {
-      await _auth.signInWithCredential(credential);
-      if (_auth.currentUser == null) return null;
-    }
+    await _auth.signInWithCredential(credential);
+    if (_auth.currentUser == null) return null;
     return account;
   }
 
