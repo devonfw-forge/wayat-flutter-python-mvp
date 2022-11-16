@@ -1,3 +1,4 @@
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -146,7 +147,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
           } else {
             showModalBottomSheet(
                 context: context,
-                builder: (builder) => _getImageFromCameraOrGallary());
+                builder: (builder) {
+                  if (widget.platformService.isDesktop) {
+                    return _getImageFromCameraOrGalleryDesktop();
+                  } else {
+                    return _getImageFromCameraOrGalleryMobile();
+                  }
+                });
           }
         },
         child: const CircleAvatar(
@@ -192,7 +199,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ]),
       );
 
-  Widget _getImageFromCameraOrGallary() {
+  Widget _getImageFromCameraOrGalleryMobile() {
     return Observer(
       builder: (_) => Container(
           height: MediaQuery.of(context).size.height / 8,
@@ -223,6 +230,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   },
                   icon: const Icon(
                     Icons.image,
+                    size: 30,
+                    color: Colors.black87,
+                  ),
+                  label: Text(
+                    appLocalizations.gallery,
+                    style: const TextStyle(color: Colors.black87),
+                  )),
+            ])
+          ])),
+    );
+  }
+
+  Widget _getImageFromCameraOrGalleryDesktop() {
+    return Observer(
+      builder: (_) => Container(
+          height: MediaQuery.of(context).size.height / 8,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(children: [
+            Text(appLocalizations.chooseProfileFoto,
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 20),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              TextButton.icon(
+                  onPressed: () {
+                    widget.controller.getImageDesktop();
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.folder,
                     size: 30,
                     color: Colors.black87,
                   ),
