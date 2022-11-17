@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -78,12 +79,21 @@ void main() async {
     });
   });
 
-  testWidgets('Check dialog to change photo is showed', (tester) async {
+  testWidgets('Check dialog to change photo is showed in mobile', (tester) async {
     //Avoid overflow errors
     FlutterError.onError = null;
     await tester.pumpWidget(TestApp.createApp(body: EditProfilePage()));
     await tester.tap(find.widgetWithIcon(InkWell, Icons.edit_outlined));
     await tester.pumpAndSettle();
     expect(find.text(appLocalizations.chooseProfileFoto), findsOneWidget);
+  });
+
+  testWidgets('Check dialog to change photo is showed in desktop', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+    await tester.pumpWidget(TestApp.createApp(body: EditProfilePage()));
+    await tester.tap(find.widgetWithIcon(InkWell, Icons.edit_outlined));
+    await tester.pumpAndSettle();
+    expect(find.text(appLocalizations.chooseProfileFoto), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
   });
 }
