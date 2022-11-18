@@ -8,6 +8,7 @@ import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/ip_location/ip_location_service.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/share_location/background_location_exception.dart';
 import 'package:wayat/services/share_location/last_web_location.dart';
@@ -24,6 +25,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   ShareLocationServiceImpl() : super.create();
 
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
+  static IPLocationService ipLocationService = GetIt.I.get<IPLocationService>();
 
   /// 1 kilometer of distance
   final int passiveMinDistance = 1000;
@@ -132,6 +134,11 @@ class ShareLocationServiceImpl extends ShareLocationService {
       initialLocation = await location.getLocation();
     }
 
+    if (platformService.isDesktop) {
+      initialLocation = await ipLocationService.getLocationData();
+      print("Get desktop initial ip location = $initialLocation");
+    }
+
     return ShareLocationServiceImpl.build(initialLocation, mode, shareLocation,
         onLocationChangedCallback, webPermissionStatus,
         platformService: platformService);
@@ -166,6 +173,12 @@ class ShareLocationServiceImpl extends ShareLocationService {
             webPermissionStatus == PermissionStatus.deniedForever) &&
         shareLocationEnabled) {
       sendLocationToBack(initialLocation);
+    }
+
+    if (this.platformService.isDesktop) {
+      sendLocationToBack(initialLocation);
+      print(
+          "Sent desktop ip location to backend initialLocation = $initialLocation");
     }
 
     if (this.platformService.isMobile) {
@@ -238,7 +251,13 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   /// Sends the current location to back without needing the conditions
   Future<void> sendForcedLocationUpdate() async {
-    currentLocation = await location.getLocation();
+    if (platformService.isDesktop) {
+      currentLocation = await ipLocationService.getLocationData();
+      print(
+          "Send force location update to backend currentLocation = $currentLocation");
+    } else {
+      currentLocation = await location.getLocation();
+    }
     await sendLocationToBack(currentLocation);
   }
 
