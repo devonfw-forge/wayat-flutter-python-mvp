@@ -3,6 +3,7 @@ import 'package:wayat/app_state/location_state/receive_location/receive_location
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/location_listener/location_listener_service.dart';
+import 'package:wayat/services/location_listener/location_listener_service_impl.dart';
 
 part 'location_listener.g.dart';
 
@@ -36,13 +37,13 @@ abstract class _LocationListener with Store {
 
   /// Builds a [LocationListener].
   ///
-  /// The optional [LocationListenerService] argument is used for testing purposes.
+  /// The optional [LocationListenerServiceImpl] argument is used for testing purposes.
   _LocationListener(
       {LocationListenerService? locationListenerService,
       ReceiveLocationState? receiveLocationState,
       ShareLocationState? shareLocationState})
       : locationListenerService =
-            locationListenerService ?? LocationListenerService(),
+            locationListenerService ?? LocationListenerServiceImpl(),
         receiveLocationState = receiveLocationState ?? ReceiveLocationState(),
         shareLocationState = shareLocationState ?? ShareLocationState();
 

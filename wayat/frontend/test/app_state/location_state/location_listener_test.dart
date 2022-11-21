@@ -10,12 +10,12 @@ import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/services/share_location/share_location_service.dart';
-import 'package:wayat/services/location_listener/location_listener_service.dart';
+import 'package:wayat/services/location_listener/location_listener_service_impl.dart';
 
 import 'location_listener_test.mocks.dart';
 
 @GenerateMocks([
-  LocationListenerService,
+  LocationListenerServiceImpl,
   ShareLocationState,
   ReceiveLocationState,
   ShareLocationService,
@@ -33,14 +33,14 @@ void main() async {
   });
   test("Initial state is correct", () {
     LocationListener locationListener = LocationListener(
-        locationListenerService: MockLocationListenerService());
+        locationListenerService: MockLocationListenerServiceImpl());
     expect(locationListener.receiveLocationState.contacts, []);
     expect(locationListener.shareLocationState.activeShareMode, true);
   });
 
   test("Set Contact List is correct", () {
     LocationListener locationListener = LocationListener(
-        locationListenerService: MockLocationListenerService());
+        locationListenerService: MockLocationListenerServiceImpl());
     expect(locationListener.receiveLocationState.contacts, []);
 
     List<ContactLocation> newContactList =
@@ -52,8 +52,8 @@ void main() async {
   });
 
   test("Initialize listener sets up the service listener", () {
-    LocationListenerService mockLocationListenerService =
-        MockLocationListenerService();
+    LocationListenerServiceImpl mockLocationListenerService =
+        MockLocationListenerServiceImpl();
     LocationListener locationListener =
         LocationListener(locationListenerService: mockLocationListenerService);
     when(mockLocationListenerService.setUpListener(
@@ -73,7 +73,7 @@ void main() async {
 
   test("ContactRefs callback sets Contact List", () {
     LocationListener locationListener = LocationListener(
-        locationListenerService: MockLocationListenerService());
+        locationListenerService: MockLocationListenerServiceImpl());
     expect(locationListener.receiveLocationState.contacts, []);
 
     List<ContactLocation> newContactList =
@@ -85,8 +85,8 @@ void main() async {
   });
 
   test("LocationMode callback sets location mode", () {
-    LocationListenerService mockLocationListenerService =
-        MockLocationListenerService();
+    LocationListenerServiceImpl mockLocationListenerService =
+        MockLocationListenerServiceImpl();
     ShareLocationService mockShareLocationService = MockShareLocationService();
     LocationListener locationListener =
         LocationListener(locationListenerService: mockLocationListenerService);

@@ -15,7 +15,7 @@ import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/location_listener/firestore_model/contact_ref_model.dart';
 import 'package:wayat/services/location_listener/firestore_model/firestore_data_model.dart';
-import 'package:wayat/services/location_listener/location_listener_service.dart';
+import 'package:wayat/services/location_listener/location_listener_service_impl.dart';
 import 'package:wayat/services/utils/list_utils_service.dart';
 
 import 'location_listener_service_test.mocks.dart';
@@ -54,8 +54,8 @@ void main() async {
 
     when(mockUserState.currentUser).thenReturn(null);
 
-    LocationListenerService locationListenerService =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locationListenerService =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     locationListenerService.setUpListener(
         onContactsRefUpdate: onContactsRefUpdate,
@@ -92,8 +92,8 @@ void main() async {
     when(mockDocumentReference.snapshots()).thenAnswer((_) => mockStream);
     when(mockStream.listen(any)).thenReturn(MockStreamSubscription());
 
-    LocationListenerService locationListenerService =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locationListenerService =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     await locationListenerService.setUpListener(
         onContactsRefUpdate: onContactsRefUpdate,
@@ -115,8 +115,8 @@ void main() async {
     MyUser user = myUser();
     when(mockUserState.currentUser).thenReturn(user);
 
-    LocationListenerService locationListenerService =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locationListenerService =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     locationListenerService.lastActive = true;
     locationListenerService.lastContactRefs = <ContactRefModel>[];
@@ -141,8 +141,8 @@ void main() async {
     MyUser user = myUser();
     when(mockUserState.currentUser).thenReturn(user);
 
-    LocationListenerService locationListenerService =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locationListenerService =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     locationListenerService.lastActive = true;
     locationListenerService.lastContactRefs = <ContactRefModel>[];
@@ -180,8 +180,8 @@ void main() async {
     MyUser user = myUser();
     when(mockUserState.currentUser).thenReturn(user);
 
-    LocationListenerService locationListenerService =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locationListenerService =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     locationListenerService.lastActive = true;
     locationListenerService.lastContactRefs = <ContactRefModel>[];
@@ -203,8 +203,8 @@ void main() async {
 
     when(mockUserState.currentUser).thenReturn(null);
 
-    LocationListenerService locationListenerService =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locationListenerService =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     locationListenerService.setUpListener(
         onContactsRefUpdate: onContactsRefUpdate,
@@ -215,8 +215,8 @@ void main() async {
 
   test("getLocationModeFromStatus is correct", () {
     FirestoreDataModel data = FirestoreDataModel(active: true, contactRefs: []);
-    LocationListenerService locListenerSerrvice =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locListenerSerrvice =
+        LocationListenerServiceImpl(db: mockFirestore);
     expect(locListenerSerrvice.getLocationModeFromStatus(data), true);
 
     FirestoreDataModel data2 =
@@ -243,8 +243,8 @@ void main() async {
 
     when(mockContactService.getAll()).thenAnswer((_) async => contacts);
 
-    LocationListenerService locListenerSerrvice =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locListenerSerrvice =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     List<ContactLocation> res = await locListenerSerrvice
         .getContactRefsFromStatus(data, contactService: mockContactService);
@@ -272,8 +272,8 @@ void main() async {
 
     when(mockContactService.getAll()).thenAnswer((_) async => contacts);
 
-    LocationListenerService locListenerSerrvice =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locListenerSerrvice =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     List<ContactLocation> res = await locListenerSerrvice
         .getContactRefsFromStatus(data, contactService: mockContactService);
@@ -304,8 +304,8 @@ void main() async {
 
     when(mockContactService.getAll()).thenAnswer((_) async => contacts);
 
-    LocationListenerService locListenerSerrvice =
-        LocationListenerService(db: mockFirestore);
+    LocationListenerServiceImpl locListenerSerrvice =
+        LocationListenerServiceImpl(db: mockFirestore);
 
     List<ContactLocation> res = await locListenerSerrvice
         .getContactRefsFromStatus(data, contactService: mockContactService);
@@ -318,8 +318,8 @@ void main() async {
     "cancelListenerSubscription cancels the listener if it exists",
     () {
       MockStreamSubscription mockStreamSubscription = MockStreamSubscription();
-      LocationListenerService locListenerSerrvice =
-          LocationListenerService(db: mockFirestore);
+      LocationListenerServiceImpl locListenerSerrvice =
+          LocationListenerServiceImpl(db: mockFirestore);
       locListenerSerrvice.listenerSubscription = mockStreamSubscription;
       locListenerSerrvice.cancelListenerSubscription();
       verify(mockStreamSubscription.cancel()).called(1);
@@ -330,8 +330,8 @@ void main() async {
     "cancelListenerSubscription does not cancel the listener if it does not exists",
     () {
       MockStreamSubscription mockStreamSubscription = MockStreamSubscription();
-      LocationListenerService locListenerSerrvice =
-          LocationListenerService(db: mockFirestore);
+      LocationListenerServiceImpl locListenerSerrvice =
+          LocationListenerServiceImpl(db: mockFirestore);
       locListenerSerrvice.cancelListenerSubscription();
       verifyNever(mockStreamSubscription.cancel());
     },
