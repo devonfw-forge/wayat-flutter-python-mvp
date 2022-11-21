@@ -95,48 +95,52 @@ class ShareLocationServiceImpl extends ShareLocationService {
     PermissionStatus? webPermissionStatus;
     LocationData? initialLocation;
 
-    if (platformService.isWeb) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool validCache = false;
-      LastWebLocation? webLocationCache;
-
-      String? lastWebLocationJson = prefs.getString("last_web_location");
-      if (lastWebLocationJson != null) {
-        webLocationCache = LastWebLocation.fromJson(lastWebLocationJson);
-        if (DateTime.now()
-                .difference(webLocationCache.updatedDateTime)
-                .inMinutes <
-            30) {
-          validCache = true;
-        }
-      }
-
-      if (!validCache) {
-        webPermissionStatus = await location.requestPermission();
-        if (webPermissionStatus != PermissionStatus.deniedForever) {
-          initialLocation = await location.getLocation();
-          prefs.setString(
-              "last_web_location",
-              LastWebLocation(
-                      lastLocation: initialLocation,
-                      updatedDateTime: DateTime.now())
-                  .toJson());
-        } else {
-          initialLocation = LocationData.fromMap(
-              {"latitude": 48.864716, "longitude": 2.349014});
-        }
-      } else {
-        initialLocation = webLocationCache!.lastLocation;
-        webPermissionStatus = PermissionStatus.granted;
-      }
-    } else {
-      await checkLocationPermissions();
-      initialLocation = await location.getLocation();
-    }
-
     if (platformService.isDesktop) {
       initialLocation = await ipLocationService.getLocationData();
-      print("Get desktop initial ip location = $initialLocation");
+    } else {
+      if (platformService.isWeb) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        bool validCache = false;
+        LastWebLocation? webLocationCache;
+
+        String? lastWebLocationJson = prefs.getString("last_web_location");
+        if (lastWebLocationJson != null) {
+          webLocationCache = LastWebLocation.fromJson(lastWebLocationJson);
+          if (DateTime.now()
+                  .difference(webLocationCache.updatedDateTime)
+                  .inMinutes <
+              30) {
+            validCache = true;
+          }
+        }
+
+        if (!validCache) {
+          webPermissionStatus = await location.requestPermission();
+          if (webPermissionStatus != PermissionStatus.deniedForever) {
+            initialLocation = await location.getLocation();
+            prefs.setString(
+                "last_web_location",
+                LastWebLocation(
+                        lastLocation: initialLocation,
+                        updatedDateTime: DateTime.now())
+                    .toJson());
+          } else {
+            initialLocation = LocationData.fromMap(
+                {"latitude": 48.864716, "longitude": 2.349014});
+          }
+        } else {
+          if (webLocationCache != null) {
+            initialLocation = webLocationCache.lastLocation;
+          } else {
+            initialLocation = LocationData.fromMap(
+                {"latitude": 48.864716, "longitude": 2.349014});
+          }
+          webPermissionStatus = PermissionStatus.granted;
+        }
+      } else {
+        await checkLocationPermissions();
+        initialLocation = await location.getLocation();
+      }
     }
 
     return ShareLocationServiceImpl.build(initialLocation, mode, shareLocation,
@@ -177,8 +181,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     if (this.platformService.isDesktop) {
       sendLocationToBack(initialLocation);
-      print(
-          "Sent desktop ip location to backend initialLocation = $initialLocation");
     }
 
     if (this.platformService.isMobile) {
@@ -236,7 +238,10 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   @override
   Future<void> setActiveShareMode(bool activeShareMode) async {
-    if (activeShareMode && shareLocationEnabled && !platformService.isWeb) {
+    if (activeShareMode &&
+        shareLocationEnabled &&
+        !platformService.isWeb &&
+        !platformService.isDesktop) {
       await sendForcedLocationUpdate();
     }
     this.activeShareMode = activeShareMode;
@@ -253,8 +258,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
   Future<void> sendForcedLocationUpdate() async {
     if (platformService.isDesktop) {
       currentLocation = await ipLocationService.getLocationData();
-      print(
-          "Send force location update to backend currentLocation = $currentLocation");
     } else {
       currentLocation = await location.getLocation();
     }

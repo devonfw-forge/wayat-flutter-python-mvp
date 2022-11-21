@@ -6,9 +6,9 @@ part 'ip_data.g.dart';
 class IPData {
   final String status;
   final String country;
-  final String countryCode;
+  final String? countryCode;
   final String region;
-  final String regionName;
+  final String? regionName;
   final String city;
   final String zip;
   final double lat;
@@ -16,28 +16,26 @@ class IPData {
   final String timezone;
   final String isp;
   final String org;
-  final String welcomeAs;
+  final String? welcomeAs;
   final String query;
 
   IPData(
-    this.status,
-    this.country,
-    this.countryCode,
-    this.region,
-    this.regionName,
-    this.city,
-    this.zip,
-    this.lat,
-    this.lon,
-    this.timezone,
-    this.isp,
-    this.org,
-    this.welcomeAs,
-    this.query
-  );
+      this.status,
+      this.country,
+      this.countryCode,
+      this.region,
+      this.regionName,
+      this.city,
+      this.zip,
+      this.lat,
+      this.lon,
+      this.timezone,
+      this.isp,
+      this.org,
+      this.welcomeAs,
+      this.query);
 
-  factory IPData.fromJson(Map<String, dynamic> json) =>
-      _$IPDataFromJson(json);
+  factory IPData.fromJson(Map<String, dynamic> json) => _$IPDataFromJson(json);
 
   Map<String, dynamic> toJson() {
     return _$IPDataToJson(this);
