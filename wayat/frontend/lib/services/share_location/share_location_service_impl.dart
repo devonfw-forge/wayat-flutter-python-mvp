@@ -25,7 +25,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
   ShareLocationServiceImpl() : super.create();
 
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
-  static IPLocationService ipLocationService = GetIt.I.get<IPLocationService>();
 
   /// 1 kilometer of distance
   final int passiveMinDistance = 1000;
@@ -96,6 +95,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
     LocationData? initialLocation;
 
     if (platformService.isDesktop) {
+      IPLocationService ipLocationService = GetIt.I.get<IPLocationService>();
       initialLocation = await ipLocationService.getLocationData();
     } else {
       if (platformService.isWeb) {
@@ -257,6 +257,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   /// Sends the current location to back without needing the conditions
   Future<void> sendForcedLocationUpdate() async {
     if (platformService.isDesktop) {
+      IPLocationService ipLocationService = GetIt.I.get<IPLocationService>();
       currentLocation = await ipLocationService.getLocationData();
     } else {
       currentLocation = await location.getLocation();
