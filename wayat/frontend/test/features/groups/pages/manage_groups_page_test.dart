@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -161,7 +162,7 @@ void main() async {
     expect(find.byIcon(Icons.person_outline), findsNothing);
   });
 
-  testWidgets("Pressing edit icon opens select image bottom sheet",
+  testWidgets("Pressing edit icon opens select image bottom sheet in mobile",
       (tester) async {
     await tester.pumpWidget(TestApp.createApp(
         body: ManageGroupPage(
@@ -175,6 +176,23 @@ void main() async {
     expect(find.text(appLocalizations.camera), findsOneWidget);
     expect(find.byIcon(Icons.image), findsOneWidget);
     expect(find.text(appLocalizations.gallery), findsOneWidget);
+  });
+
+  
+
+  testWidgets('Pressing edit icon opens select image bottom sheet in desktop', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+    await tester.pumpWidget(TestApp.createApp(
+        body: ManageGroupPage(
+      controller: mockManageGroupController,
+    )));
+    await tester.tap(find.byIcon(Icons.edit_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BottomSheet), findsOneWidget);
+    expect(find.byIcon(Icons.folder), findsOneWidget);
+    expect(find.text(appLocalizations.gallery), findsOneWidget);
+    debugDefaultTargetPlatformOverride = null;
   });
 
   testWidgets("Edit fields section is correct", (tester) async {
