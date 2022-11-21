@@ -129,7 +129,12 @@ class ShareLocationServiceImpl extends ShareLocationService {
                 {"latitude": 48.864716, "longitude": 2.349014});
           }
         } else {
-          initialLocation = webLocationCache!.lastLocation;
+          if (webLocationCache != null) {
+            initialLocation = webLocationCache.lastLocation;
+          } else {
+            initialLocation = LocationData.fromMap(
+                {"latitude": 48.864716, "longitude": 2.349014});
+          }
           webPermissionStatus = PermissionStatus.granted;
         }
       } else {
