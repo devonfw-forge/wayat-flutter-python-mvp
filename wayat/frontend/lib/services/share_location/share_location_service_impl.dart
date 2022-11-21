@@ -97,7 +97,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     if (platformService.isDesktop) {
       initialLocation = await ipLocationService.getLocationData();
-      print("Get desktop initial ip location = $initialLocation");
     } else {
       if (platformService.isWeb) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -177,8 +176,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
     if (this.platformService.isDesktop) {
       sendLocationToBack(initialLocation);
-      print(
-          "Sent desktop ip location to backend initialLocation = $initialLocation");
     }
 
     if (this.platformService.isMobile) {
@@ -236,7 +233,10 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   @override
   Future<void> setActiveShareMode(bool activeShareMode) async {
-    if (activeShareMode && shareLocationEnabled && !platformService.isWeb) {
+    if (activeShareMode &&
+        shareLocationEnabled &&
+        !platformService.isWeb &&
+        !platformService.isDesktop) {
       await sendForcedLocationUpdate();
     }
     this.activeShareMode = activeShareMode;
@@ -253,8 +253,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
   Future<void> sendForcedLocationUpdate() async {
     if (platformService.isDesktop) {
       currentLocation = await ipLocationService.getLocationData();
-      print(
-          "Send force location update to backend currentLocation = $currentLocation");
     } else {
       currentLocation = await location.getLocation();
     }
