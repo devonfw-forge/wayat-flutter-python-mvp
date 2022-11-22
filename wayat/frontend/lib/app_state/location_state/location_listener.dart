@@ -19,19 +19,16 @@ class LocationListener = _LocationListener with _$LocationListener;
 abstract class _LocationListener with Store {
   /// Service that will handle all the communication with the server.
   /// regarding the user status
-  final LocationListenerService locationListenerService;
-
-  /// Location service for desktop
-  final FiredartListenerServiceImpl firedartListenerServiceImpl;
+  late final LocationListenerService locationListenerService;
 
   /// Platform
-  final PlatformService platformService;
+  late final PlatformService platformService;
 
   /// Manages the share location functionality
-  final ShareLocationState shareLocationState;
+  late final ShareLocationState shareLocationState;
 
   /// Manages the received locations
-  final ReceiveLocationState receiveLocationState;
+  late final ReceiveLocationState receiveLocationState;
 
   /// Callback that will be triggered when the contacts sharing location with
   /// us change in any way.
@@ -48,16 +45,16 @@ abstract class _LocationListener with Store {
   /// The optional [LocationListenerServiceImpl] argument is used for testing purposes.
   _LocationListener(
       {LocationListenerService? locationListenerService,
-      FiredartListenerServiceImpl? firedartListenerServiceImpl,
       PlatformService? platformService,
       ReceiveLocationState? receiveLocationState,
-      ShareLocationState? shareLocationState})
-      : locationListenerService =
-            locationListenerService ?? LocationListenerServiceImpl(),
-            firedartListenerServiceImpl = firedartListenerServiceImpl ?? FiredartListenerServiceImpl(),
-            platformService = platformService ?? PlatformService(),
-        receiveLocationState = receiveLocationState ?? ReceiveLocationState(),
+      ShareLocationState? shareLocationState}) {
+        platformService = platformService ?? PlatformService();
+        locationListenerService =
+            locationListenerService ?? ((platformService.isDesktop) ? 
+              LocationListenerServiceImpl() : FiredartListenerServiceImpl());
+        receiveLocationState = receiveLocationState ?? ReceiveLocationState();
         shareLocationState = shareLocationState ?? ShareLocationState();
+  }
 
   /// Initializes the [locationListenerService] listener for changes in the status.
   ///
@@ -65,17 +62,9 @@ abstract class _LocationListener with Store {
   ///
   /// Calls `onLocationModeUpdateCallback` when our location mode should be changed.
   Future initialize() async {
-    if (platformService.isDesktop){
-      print('DEBUG entra');
-      await firedartListenerServiceImpl.setUpListener(
-        onContactsRefUpdate: onContactsRefUpdateCallback,
-        onLocationModeUpdate: onLocationModeUpdateCallback);
-    }
-    else {
-      await locationListenerService.setUpListener(
-        onContactsRefUpdate: onContactsRefUpdateCallback,
-        onLocationModeUpdate: onLocationModeUpdateCallback);
-    }
+    await locationListenerService.setUpListener(
+      onContactsRefUpdate: onContactsRefUpdateCallback,
+      onLocationModeUpdate: onLocationModeUpdateCallback);
   }
 
   /// Closes the listener in [locationListenerService].
