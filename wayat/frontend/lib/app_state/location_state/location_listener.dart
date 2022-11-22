@@ -32,13 +32,11 @@ abstract class _LocationListener with Store {
 
   /// Callback that will be triggered when the contacts sharing location with
   /// us change in any way.
-  late Function(List<ContactLocation>) onContactsRefUpdateCallback =
-      (contacts) => receiveLocationState.setContactList(contacts);
+  late Function(List<ContactLocation>) onContactsRefUpdateCallback;
 
   /// Callback that will be triggered when the server determines that we should
   /// change the location update frecuency.
-  late Function(bool) onLocationModeUpdateCallback =
-      (locationMode) => shareLocationState.setActiveShareMode(locationMode);
+  late Function(bool) onLocationModeUpdateCallback;
 
   /// Builds a [LocationListener].
   ///
@@ -48,12 +46,16 @@ abstract class _LocationListener with Store {
       PlatformService? platformService,
       ReceiveLocationState? receiveLocationState,
       ShareLocationState? shareLocationState}) {
-        platformService = platformService ?? PlatformService();
-        locationListenerService =
-            locationListenerService ?? ((platformService.isDesktop) ? 
+        this.platformService = platformService ?? PlatformService();
+        this.locationListenerService =
+            locationListenerService ?? ((this.platformService.isDesktop) ? 
               LocationListenerServiceImpl() : FiredartListenerServiceImpl());
-        receiveLocationState = receiveLocationState ?? ReceiveLocationState();
-        shareLocationState = shareLocationState ?? ShareLocationState();
+        this.receiveLocationState = receiveLocationState ?? ReceiveLocationState();
+        this.shareLocationState = shareLocationState ?? ShareLocationState();
+        onContactsRefUpdateCallback =
+          (contacts) => this.receiveLocationState.setContactList(contacts);
+        onLocationModeUpdateCallback =
+          (locationMode) => this.shareLocationState.setActiveShareMode(locationMode);
   }
 
   /// Initializes the [locationListenerService] listener for changes in the status.
