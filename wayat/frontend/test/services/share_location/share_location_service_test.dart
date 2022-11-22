@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -37,7 +35,6 @@ void main() {
   MockPlatformService mockPlatformService = MockPlatformService();
 
   setUpAll(() async {
-    await dotenv.load();
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
     when(mockHttpProvider.client).thenReturn(mockClient);
     when(mockClient.get(any))

@@ -41,9 +41,6 @@ Future main() async {
     HttpOverrides.global = HttpDebugOverride();
   }
 
-  // Env file should be loaded before Firebase initialization
-  await EnvModel.loadEnvFile();
-
   PlatformService platformService = PlatformService();
 
   await Firebase.initializeApp(
