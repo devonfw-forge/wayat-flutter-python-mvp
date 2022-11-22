@@ -6,11 +6,11 @@ import 'package:get_it/get_it.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/contact/contact_service.dart';
-import 'package:wayat/services/location_listener/firedart/firedart_listener_service.dart';
 import 'package:firedart/firedart.dart';
 import 'package:wayat/services/location_listener/firestore_model/firestore_data_model.dart';
+import 'package:wayat/services/location_listener/location_listener_service.dart';
 
-class FiredartListenerServiceImpl extends FiredartListenerService {
+class FiredartListenerServiceImpl extends LocationListenerService {
 
   @visibleForTesting
   late bool lastActive;
@@ -32,7 +32,7 @@ class FiredartListenerServiceImpl extends FiredartListenerService {
  = Firestore.instance.collection('status').document(GetIt.I.get<UserState>().currentUser!.id);
     print('DEBUG '+docRef.toString());
     FirestoreDataModel firestoreData =
-        FirestoreDataModel.fromMap((await docRef.get()).data()!);
+        FirestoreDataModel.fromMap((await docRef.get()).);
     lastActive = firestoreData.active;
     lastContactRefs = firestoreData.contactRefs;
     // Update locationMode before listening
