@@ -27,6 +27,8 @@ import 'package:wayat/navigation/initial_route.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/ip_location/ip_location_service.dart';
+import 'package:wayat/services/common/ip_location/ip_location_service_impl.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/notification/notification_service.dart';
 import 'package:wayat/services/notification/notifications_service_impl.dart';
@@ -71,6 +73,7 @@ Future registerLazySingletons() async {
   GetIt.I.registerSingleton<InitialLocationProvider>(
       InitialLocationProvider(InitialLocation.map));
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
+  GetIt.I.registerLazySingleton<IPLocationService>(() => IPLocationServiceImpl());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());
