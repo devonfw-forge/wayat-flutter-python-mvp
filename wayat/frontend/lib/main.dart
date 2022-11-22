@@ -88,27 +88,6 @@ Future registerLazySingletons() async {
   }
 }
 
-Future registerSingletons() async {
-  GetIt.I.registerSingleton<InitialLocationProvider>(
-    InitialLocationProvider(InitialLocation.map));
-  GetIt.I.registerSingleton<HttpProvider>(HttpProvider());
-  GetIt.I.registerSingleton<LifeCycleState>(LifeCycleState());
-  GetIt.I.registerSingleton<UserState>(UserState());
-  GetIt.I.registerSingleton<HomeNavState>(HomeNavState());
-  GetIt.I.registerSingleton<AppConfigState>(AppConfigState());
-  GetIt.I.registerSingleton<OnboardingController>(
-    OnboardingController());
-  GetIt.I.registerSingleton<ContactsPageController>(
-    ContactsPageController());
-  GetIt.I.registerSingleton<GroupsController>(GroupsController());
-  GetIt.I.registerSingleton<LocationListener>(LocationListener());
-  GetIt.I.registerSingleton<PhoneVerificationController>(
-    PhoneVerificationController());
-  if (!GetIt.I.isRegistered<GlobalKey<NavigatorState>>()) {
-    GetIt.I.registerSingleton<GlobalKey<NavigatorState>>(GlobalKey());
-  }
-}
-
 /// Main Application class
 class Wayat extends StatefulWidget {
   const Wayat({Key? key}) : super(key: key);
