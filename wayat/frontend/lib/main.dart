@@ -47,15 +47,15 @@ Future main() async {
   PlatformService platformService = PlatformService();
 
   await Firebase.initializeApp(
-    name: EnvModel.FIREBASE_APP_NAME,
-    options: CustomFirebaseOptions.currentPlatformOptions);
-  
+      name: EnvModel.FIREBASE_APP_NAME,
+      options: CustomFirebaseOptions.currentPlatformOptions);
+
   await registerLazySingletons();
 
   if (platformService.isWeb) {
     // Avoid # character in url (flutter web)
     setPathUrlStrategy();
-  } else if (platformService.isMobile) {
+  } else if (platformService.isAndroid) {
     NotificationsService notificationsService = NotificationsServiceImpl();
     await notificationsService.initialize();
   }
