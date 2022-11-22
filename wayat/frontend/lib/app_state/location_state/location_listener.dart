@@ -49,7 +49,7 @@ abstract class _LocationListener with Store {
         this.platformService = platformService ?? PlatformService();
         this.locationListenerService =
             locationListenerService ?? ((this.platformService.isDesktop) ? 
-              LocationListenerServiceImpl() : FiredartListenerServiceImpl());
+              FiredartListenerServiceImpl() : LocationListenerServiceImpl());
         this.receiveLocationState = receiveLocationState ?? ReceiveLocationState();
         this.shareLocationState = shareLocationState ?? ShareLocationState();
         onContactsRefUpdateCallback =
