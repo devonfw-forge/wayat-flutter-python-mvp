@@ -299,6 +299,8 @@ void main() {
 
   test("setShareLocationEnabled is correct", () async {
     ShareLocationServiceImpl service = ShareLocationServiceImpl();
+    service.platformService = MockPlatformService();
+
     service.changeLocationStateCallback = (latlgn) => log('location changed');
     service.location = MockLocation();
     when(service.location.getLocation())

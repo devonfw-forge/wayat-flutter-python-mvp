@@ -154,7 +154,13 @@ class ManageGroupPage extends StatelessWidget {
             } else {
               showModalBottomSheet(
                   context: context,
-                  builder: (builder) => openSelectImageSheet(context));
+                  builder: (builder) {
+                  if (platformService.isDesktop) {
+                    return openSelectImageSheetDesktop(context);
+                  } else {
+                    return openSelectImageSheetMobile(context);
+                  }
+                } );
             }
           },
           child: const CircleAvatar(
@@ -368,7 +374,7 @@ class ManageGroupPage extends StatelessWidget {
   }
 
   /// Bottom sheet that contains options to select an image from the gallery or camera
-  Widget openSelectImageSheet(BuildContext context) {
+  Widget openSelectImageSheetMobile(BuildContext context) {
     return Container(
         height: MediaQuery.of(context).size.height * 0.15,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -398,6 +404,33 @@ class ManageGroupPage extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.image,
+                  size: 30,
+                  color: Colors.black87,
+                ),
+                label: Text(
+                  appLocalizations.gallery,
+                  style: const TextStyle(color: Colors.black87),
+                )),
+          ])
+        ]));
+  }
+
+  Widget openSelectImageSheetDesktop(BuildContext context) {
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.15,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Column(children: [
+          Text(appLocalizations.chooseProfileFoto,
+              style: const TextStyle(fontSize: 18)),
+          const SizedBox(height: 20),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            TextButton.icon(
+                onPressed: () {
+                  controller.getImageDesktop();
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.folder,
                   size: 30,
                   color: Colors.black87,
                 ),

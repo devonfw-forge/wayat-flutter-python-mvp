@@ -407,22 +407,6 @@ void main() async {
       expect(find.byType(SuggestionsPage), findsOneWidget);
     });
 
-    testWidgets("Navigate to contacts suggestions in web redirect to friends",
-        (tester) async {
-      await navigateToContacts(tester);
-
-      // Platform windows is set after navigate to can access the tab button of
-      // suggestions and emulate the navigation
-      debugDefaultTargetPlatformOverride = TargetPlatform.windows;
-      await tester
-          .tap(find.widgetWithText(Tab, appLocalizations.suggestionsTab));
-
-      await tester.pumpAndSettle();
-
-      expect(find.byType(ContactsPage), findsOneWidget);
-      debugDefaultTargetPlatformOverride = null;
-    });
-
     testWidgets("Navigate to contacts friends from other tab", (tester) async {
       await navigateToContacts(tester);
 

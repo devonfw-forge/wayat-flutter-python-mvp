@@ -1,3 +1,4 @@
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -59,6 +60,16 @@ abstract class _EditProfileController with Store {
   Future getFromSource(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
+    await setNewImage(newImage);
+  }
+
+  Future getImageDesktop() async {
+    const XTypeGroup typeGroup = XTypeGroup(
+      label: 'images',
+      extensions: <String>['jpg', 'png'],
+    );
+    final XFile? newImage =
+    await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
     await setNewImage(newImage);
   }
 }
