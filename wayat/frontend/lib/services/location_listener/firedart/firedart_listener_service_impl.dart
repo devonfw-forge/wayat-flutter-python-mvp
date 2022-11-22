@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,30 +26,37 @@ class FiredartListenerServiceImpl extends LocationListenerService {
   Future<void> setUpListener(
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(bool) onLocationModeUpdate}) async {
+        print('DEBUG '+GetIt.I.get<UserState>().currentUser.toString());
     if (GetIt.I.get<UserState>().currentUser == null) {
+      print('entra user vacío');
       return;
     }
     final docRef
  = Firestore.instance.collection('status').document(GetIt.I.get<UserState>().currentUser!.id);
     print('DEBUG '+docRef.toString());
-    FirestoreDataModel firestoreData =
-        FirestoreDataModel.fromMap((await docRef.get()).);
-    lastActive = firestoreData.active;
-    lastContactRefs = firestoreData.contactRefs;
-    // Update locationMode before listening
-    onLocationModeUpdate(getLocationModeFromStatus(firestoreData));
-    // Update contactRef before listenings
-    onContactsRefUpdate(await getContactRefsFromStatus(firestoreData));
 
-    // Subscribe to changes in the currentUser status document
-    listenerSubscription = docRef.snapshots().listen(
-      (event) async {
-        await onStatusUpdate(event,
-            onLocationModeUpdate: onLocationModeUpdate,
-            onContactsRefUpdate: onContactsRefUpdate);
-      },
-      onError: (error) => log("[ERROR] Firestore listen failed: $error"),
-    );
+    docRef.stream.listen((document) {
+      print('DEBUG doc: '+document.toString());
+    }, onError: (error) => log("[ERROR] Firestore listen failed: $error"));
+
+    // FirestoreDataModel firestoreData =
+    //     FirestoreDataModel.fromMap((await docRef.get()).data()!);
+    // lastActive = firestoreData.active;
+    // lastContactRefs = firestoreData.contactRefs;
+    // // Update locationMode before listening
+    // onLocationModeUpdate(getLocationModeFromStatus(firestoreData));
+    // // Update contactRef before listenings
+    // onContactsRefUpdate(await getContactRefsFromStatus(firestoreData));
+
+    // // Subscribe to changes in the currentUser status document
+    // listenerSubscription = docRef.snapshots().listen(
+    //   (event) async {
+    //     await onStatusUpdate(event,
+    //         onLocationModeUpdate: onLocationModeUpdate,
+    //         onContactsRefUpdate: onContactsRefUpdate);
+    //   },
+    //   onError: (error) => log("[ERROR] Firestore listen failed: $error"),
+    // );
   }
 
   @override
