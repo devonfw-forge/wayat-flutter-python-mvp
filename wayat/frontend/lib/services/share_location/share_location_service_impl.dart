@@ -8,6 +8,7 @@ import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/ip_location/ip_location_service.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/share_location/background_location_exception.dart';
 import 'package:wayat/services/share_location/last_web_location.dart';
@@ -93,46 +94,53 @@ class ShareLocationServiceImpl extends ShareLocationService {
     PermissionStatus? webPermissionStatus;
     LocationData? initialLocation;
 
-    if (platformService.isWeb) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool validCache = false;
-      LastWebLocation? webLocationCache;
+    if (platformService.isDesktop) {
+      IPLocationService ipLocationService = GetIt.I.get<IPLocationService>();
+      initialLocation = await ipLocationService.getLocationData();
+    } else {
+      if (platformService.isWeb) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        bool validCache = false;
+        LastWebLocation? webLocationCache;
 
-      String? lastWebLocationJson = prefs.getString("last_web_location");
-      if (lastWebLocationJson != null) {
-        webLocationCache = LastWebLocation.fromJson(lastWebLocationJson);
-        if (DateTime.now()
-                .difference(webLocationCache.updatedDateTime)
-                .inMinutes <
-            30) {
-          validCache = true;
+        String? lastWebLocationJson = prefs.getString("last_web_location");
+        if (lastWebLocationJson != null) {
+          webLocationCache = LastWebLocation.fromJson(lastWebLocationJson);
+          if (DateTime.now()
+                  .difference(webLocationCache.updatedDateTime)
+                  .inMinutes <
+              30) {
+            validCache = true;
+          }
         }
-      }
 
-      if (!validCache) {
-        webPermissionStatus = await location.requestPermission();
-        if (webPermissionStatus != PermissionStatus.deniedForever) {
-          initialLocation = await location.getLocation();
-          prefs.setString(
-              "last_web_location",
-              LastWebLocation(
-                      lastLocation: initialLocation,
-                      updatedDateTime: DateTime.now())
-                  .toJson());
+        if (!validCache) {
+          webPermissionStatus = await location.requestPermission();
+          if (webPermissionStatus != PermissionStatus.deniedForever) {
+            initialLocation = await location.getLocation();
+            prefs.setString(
+                "last_web_location",
+                LastWebLocation(
+                        lastLocation: initialLocation,
+                        updatedDateTime: DateTime.now())
+                    .toJson());
+          } else {
+            initialLocation = LocationData.fromMap(
+                {"latitude": 48.864716, "longitude": 2.349014});
+          }
         } else {
-          initialLocation = LocationData.fromMap(
-              {"latitude": 48.864716, "longitude": 2.349014});
+          if (webLocationCache != null) {
+            initialLocation = webLocationCache.lastLocation;
+          } else {
+            initialLocation = LocationData.fromMap(
+                {"latitude": 48.864716, "longitude": 2.349014});
+          }
+          webPermissionStatus = PermissionStatus.granted;
         }
       } else {
-        initialLocation = webLocationCache!.lastLocation;
-        webPermissionStatus = PermissionStatus.granted;
+        await checkLocationPermissions();
+        initialLocation = await location.getLocation();
       }
-    } else if (!platformService.isDesktop) {
-      await checkLocationPermissions();
-      initialLocation = await location.getLocation();
-    } else {
-      initialLocation = LocationData.fromMap(
-          {"latitude": 48.864716, "longitude": 2.349014});
     }
 
     return ShareLocationServiceImpl.build(initialLocation, mode, shareLocation,
@@ -168,6 +176,10 @@ class ShareLocationServiceImpl extends ShareLocationService {
     if (!(this.platformService.isWeb &&
             webPermissionStatus == PermissionStatus.deniedForever) &&
         shareLocationEnabled) {
+      sendLocationToBack(initialLocation);
+    }
+
+    if (this.platformService.isDesktop) {
       sendLocationToBack(initialLocation);
     }
 
@@ -226,7 +238,10 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   @override
   Future<void> setActiveShareMode(bool activeShareMode) async {
-    if (activeShareMode && shareLocationEnabled && !platformService.isWeb) {
+    if (activeShareMode &&
+        shareLocationEnabled &&
+        !platformService.isWeb &&
+        !platformService.isDesktop) {
       await sendForcedLocationUpdate();
     }
     this.activeShareMode = activeShareMode;
@@ -241,7 +256,12 @@ class ShareLocationServiceImpl extends ShareLocationService {
 
   /// Sends the current location to back without needing the conditions
   Future<void> sendForcedLocationUpdate() async {
-    currentLocation = await location.getLocation();
+    if (platformService.isDesktop) {
+      IPLocationService ipLocationService = GetIt.I.get<IPLocationService>();
+      currentLocation = await ipLocationService.getLocationData();
+    } else {
+      currentLocation = await location.getLocation();
+    }
     await sendLocationToBack(currentLocation);
   }
 

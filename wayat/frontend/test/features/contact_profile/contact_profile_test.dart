@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -70,7 +68,6 @@ void main() async {
   }
 
   setUpAll(() {
-    dotenv.load();
     mockLocationListener = MockLocationListener();
     mockReceiveLocationState = MockReceiveLocationState();
     mockHomeState = MockHomeNavState();

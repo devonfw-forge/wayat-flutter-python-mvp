@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
@@ -27,7 +26,6 @@ void main() async {
   late String baseUrl;
 
   setUpAll(() async {
-    await dotenv.load();
     baseUrl = EnvModel.BASE_URL;
 
     when(mockUserState.authService).thenReturn(mockAuthService);
