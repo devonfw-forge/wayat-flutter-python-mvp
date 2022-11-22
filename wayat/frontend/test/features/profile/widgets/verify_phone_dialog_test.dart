@@ -18,7 +18,6 @@ void main() async {
   setupFirebaseAuthMocks();
 
   setUpAll(() async {
-    await EnvModel.loadEnvFile();
     await Firebase.initializeApp(
     name: EnvModel.FIREBASE_APP_NAME,
     options: CustomFirebaseOptions.currentPlatformOptions);

@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
@@ -125,7 +123,6 @@ void main() async {
   });
 
   test("MapState can be created without controller", () async {
-    await dotenv.load(fileName: ".env");
     // ignore: unused_local_variable
     LifeCycleState lifeCycleState = LifeCycleState();
   });
