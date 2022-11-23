@@ -41,7 +41,7 @@ class NotificationsServiceImpl implements NotificationsService {
 
   static initializeLocalNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('@drawable/ic_stat_name');
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
