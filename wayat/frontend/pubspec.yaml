@@ -112,6 +112,8 @@ dev_dependencies:
   json_serializable: ^6.3.1
   # Env code generator
   envied_generator: ^0.2.3
+  # Splash screen
+  flutter_native_splash: ^2.2.15
 
 flutter:
   # Flag to generate internationalization files
@@ -134,3 +136,23 @@ flutter_icons:
     generate: true
     image_path: "assets/images/wayat_icon.png"
     icon_size: 48 # min:48, max:256, default: 48
+
+flutter_native_splash:
+  # Splash screen background color.
+  color: "#7358fb"
+  # Image used in the splash screen.
+  image: assets/images/wayat_splash_android_icon.png
+  # Image used as branding in the splash screen.
+  # branding: assets/images/wayat_splash_brand.png
+  # Dark mode.
+  color_dark: "#7358fb"
+  android_12:
+    image: assets/images/wayat_splash_android_icon.png
+    # Splash screen background color
+    color: "#7358fb"
+    # App icon background color.
+    icon_background_color: "#7358fb"
+    # Image used as branding in the splash screen.
+    # branding: assets/images/wayat_splash_brand.png
+    # Dark mode.
+    color_dark: "#7358fb"
