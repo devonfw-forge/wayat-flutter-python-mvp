@@ -19,7 +19,10 @@ RUN apt-get install -y \
   cmake \
   ninja-build \
   pkg-config \
-  android-sdk
+  android-sdk \
+  pkg-config \
+  libgtk-3-dev \
+  liblzma-dev
 
 RUN ls /usr/lib/android-sdk/tools/bin
 
