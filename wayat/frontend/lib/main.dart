@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firedart/firedart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'
@@ -47,6 +48,10 @@ Future main() async {
       name: EnvModel.FIREBASE_APP_NAME,
       options: CustomFirebaseOptions.currentPlatformOptions);
 
+  if (platformService.isDesktop) {
+    Firestore.initialize(EnvModel.PROJECT_ID);
+  }
+
   await registerLazySingletons();
 
   if (platformService.isWeb) {
@@ -70,7 +75,8 @@ Future registerLazySingletons() async {
   GetIt.I.registerSingleton<InitialLocationProvider>(
       InitialLocationProvider(InitialLocation.map));
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
-  GetIt.I.registerLazySingleton<IPLocationService>(() => IPLocationServiceImpl());
+  GetIt.I
+      .registerLazySingleton<IPLocationService>(() => IPLocationServiceImpl());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());

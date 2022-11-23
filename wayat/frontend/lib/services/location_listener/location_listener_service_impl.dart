@@ -64,7 +64,7 @@ class LocationListenerServiceImpl extends LocationListenerService {
   }
 
   @override
-  Future<void> onStatusUpdate(DocumentSnapshot<Map<String, dynamic>> event,
+  Future<void> onStatusUpdate(event,
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(bool) onLocationModeUpdate,
       ContactService? contactService}) async {

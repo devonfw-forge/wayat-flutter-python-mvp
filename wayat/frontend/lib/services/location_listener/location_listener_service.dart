@@ -11,7 +11,7 @@ abstract class LocationListenerService {
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(bool) onLocationModeUpdate});
 
-  Future<void> onStatusUpdate(DocumentSnapshot<Map<String, dynamic>> event,
+  Future<void> onStatusUpdate(event,
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(bool) onLocationModeUpdate,
       ContactService? contactService});
