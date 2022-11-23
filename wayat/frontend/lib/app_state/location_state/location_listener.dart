@@ -3,7 +3,7 @@ import 'package:wayat/app_state/location_state/receive_location/receive_location
 import 'package:wayat/app_state/location_state/share_location/share_location_state.dart';
 import 'package:wayat/domain/location/contact_location.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
-import 'package:wayat/services/location_listener/firedart/firedart_listener_service_impl.dart';
+import 'package:wayat/services/location_listener/firedart/rest_listener_service_impl.dart';
 import 'package:wayat/services/location_listener/location_listener_service.dart';
 import 'package:wayat/services/location_listener/location_listener_service_impl.dart';
 
