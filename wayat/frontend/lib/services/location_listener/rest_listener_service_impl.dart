@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/location/contact_location.dart';
@@ -124,13 +126,19 @@ class FiredartListenerServiceImpl extends LocationListenerService {
 
       List<ContactRefModel> contactRefs = [];
       final values = response["fields"]["contact_refs"]["arrayValue"]["values"];
-      values.map((e) {
-        print('DEBUG F'+e.toString());
-        contactRefs.add(ContactRefModel.fromMap(e['mapValue']['fields']));
-      });
-
-      print("entra3");
-
+      for (dynamic value in (values as List)) {
+        final contactRef = value['mapValue']["fields"];
+        contactRefs.add(ContactRefModel(
+          uid: contactRef["uid"]["stringValue"],
+          location: GeoPoint(
+            contactRef["location"]["geoPointValue"]["latitude"],
+            contactRef["location"]["geoPointValue"]["longitude"]
+          ),
+          address: contactRef["address"]["stringValue"],
+          lastUpdated: Timestamp.fromDate(DateFormat('yyyy-MM-ddThh:mm')
+              .parse(contactRef["last_updated"]["timestampValue"].toString())),
+        ));
+      }
       return contactRefs;
   }
   
