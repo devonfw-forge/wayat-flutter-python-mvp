@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,14 +41,14 @@ Future main() async {
     log("DEBUG MODE: Using HttpOverrides");
     HttpOverrides.global = HttpDebugOverride();
   }
-
-  PlatformService platformService = PlatformService();
+  GetIt.I.registerSingleton<PlatformService>(PlatformService());
 
   await Firebase.initializeApp(
       name: EnvModel.FIREBASE_APP_NAME,
       options: CustomFirebaseOptions.currentPlatformOptions);
 
   await registerLazySingletons();
+  PlatformService platformService = GetIt.I.get<PlatformService>();
 
   if (platformService.isWeb) {
     // Avoid # character in url (flutter web)
@@ -70,7 +71,8 @@ Future registerLazySingletons() async {
   GetIt.I.registerSingleton<InitialLocationProvider>(
       InitialLocationProvider(InitialLocation.map));
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
-  GetIt.I.registerLazySingleton<IPLocationService>(() => IPLocationServiceImpl());
+  GetIt.I
+      .registerLazySingleton<IPLocationService>(() => IPLocationServiceImpl());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());

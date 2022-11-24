@@ -2,6 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart' show TargetPlatform;
+import 'package:get_it/get_it.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 
@@ -17,7 +18,7 @@ import 'package:wayat/common/app_config/env_model.dart';
 /// ```
 class CustomFirebaseOptions {
   static FirebaseOptions get currentPlatformOptions {
-    PlatformService platformService = PlatformService(); 
+    PlatformService platformService = GetIt.I.get<PlatformService>();
     if (platformService.isWeb) {
       return web;
     }
@@ -67,7 +68,7 @@ class CustomFirebaseOptions {
     iosClientId: EnvModel.IOS_CLIENT_ID,
     iosBundleId: EnvModel.IOS_BUNDLE_ID,
   );
-  
+
   static FirebaseOptions macos = FirebaseOptions(
     apiKey: EnvModel.IOS_API_KEY,
     appId: EnvModel.IOS_APP_ID,
@@ -88,7 +89,7 @@ class CustomFirebaseOptions {
     storageBucket: EnvModel.STORAGE_BUCKET,
     measurementId: EnvModel.WEB_MEASUREMENT_ID,
   );
-  
+
   static FirebaseOptions linux = FirebaseOptions(
     apiKey: EnvModel.ANDROID_API_KEY,
     appId: EnvModel.WEB_APP_ID,
