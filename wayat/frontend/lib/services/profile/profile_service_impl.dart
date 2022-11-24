@@ -13,10 +13,9 @@ import 'package:mime/mime.dart';
 class ProfileServiceImpl implements ProfileService {
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
-  PlatformService platformService;
+  PlatformService platformService = GetIt.I.get<PlatformService>();
 
-  ProfileServiceImpl({PlatformService? platformService}) :
-    platformService = platformService ?? PlatformService();
+  ProfileServiceImpl();
 
   ///Update profile image from camera or gallery [selectedImage]
   ///
@@ -24,9 +23,9 @@ class ProfileServiceImpl implements ProfileService {
   @override
   Future<bool> uploadProfileImage(XFile? selectedImage) async {
     Uint8List fileBytes = await selectedImage!.readAsBytes();
-    String fileType = (!platformService.isWeb) ? 
-      lookupMimeType(selectedImage.path) ?? selectedImage.mimeType ?? "" :
-      selectedImage.mimeType ?? "";
+    String fileType = (!platformService.isWeb)
+        ? lookupMimeType(selectedImage.path) ?? selectedImage.mimeType ?? ""
+        : selectedImage.mimeType ?? "";
 
     StreamedResponse res = await httpProvider.sendPostImageRequest(
         APIContract.userProfilePicture, fileBytes, fileType);

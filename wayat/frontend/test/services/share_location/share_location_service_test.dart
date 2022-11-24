@@ -10,6 +10,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/ip_location/ip_location_service.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/google_maps_service/address_response/address.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_component.dart';
@@ -24,18 +25,22 @@ import 'share_location_service_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<HttpProvider>(),
   MockSpec<Client>(),
-  MockSpec<PlatformService>(),
   MockSpec<Location>(),
   MockSpec<Stream>(),
-  MockSpec<StreamSubscription>()
+  MockSpec<StreamSubscription>(),
 ])
+@GenerateMocks([PlatformService, IPLocationService])
 void main() {
   MockHttpProvider mockHttpProvider = MockHttpProvider();
   MockClient mockClient = MockClient();
   MockPlatformService mockPlatformService = MockPlatformService();
+  MockIPLocationService mockIPLocationService = MockIPLocationService();
 
   setUpAll(() async {
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
+    GetIt.I.registerSingleton<IPLocationService>(mockIPLocationService);
+
     when(mockHttpProvider.client).thenReturn(mockClient);
     when(mockClient.get(any))
         .thenAnswer((_) async => exampleGoogleMapsResponse());
@@ -222,7 +227,6 @@ void main() {
   test("setActiveShareMode: if it changes to passive, do not update location ",
       () async {
     ShareLocationServiceImpl service = ShareLocationServiceImpl();
-    service.platformService = mockPlatformService;
     service.activeShareMode = true;
     service.shareLocationEnabled = true;
 
@@ -237,12 +241,12 @@ void main() {
 
   test("setActiveShareMode: if it changes to active, update location if share ",
       () async {
+    when(mockPlatformService.isDesktop).thenReturn(true);
     ShareLocationServiceImpl service = ShareLocationServiceImpl();
     service.location = MockLocation();
     when(service.location.getLocation())
         .thenAnswer((_) async => getLocationData(1.0, 1.0));
     service.changeLocationStateCallback = (latlgn) => log('location changed');
-    service.platformService = mockPlatformService;
     service.activeShareMode = true;
     service.shareLocationEnabled = true;
 
@@ -259,8 +263,9 @@ void main() {
     await service.setActiveShareMode(true);
 
     expect(service.activeShareMode, true);
-    verify(mockHttpProvider.sendPostRequest(APIContract.updateLocation, any))
-        .called(1);
+    verifyNever(
+            mockHttpProvider.sendPostRequest(APIContract.updateLocation, any))
+        .called(0);
 
     service.shareLocationEnabled = false;
 
@@ -296,10 +301,10 @@ void main() {
 
   test("setShareLocationEnabled is correct", () async {
     ShareLocationServiceImpl service = ShareLocationServiceImpl();
-    service.platformService = MockPlatformService();
-
     service.changeLocationStateCallback = (latlgn) => log('location changed');
     service.location = MockLocation();
+    when(service.location.getLocation())
+        .thenAnswer((_) async => getLocationData(1.0, 1.0));
     when(service.location.getLocation())
         .thenAnswer((_) async => getLocationData(1.0, 1.0));
 
@@ -337,7 +342,6 @@ void main() {
         shareLocationEnabled,
         changeLocationStateCallback,
         webPermissionStatus,
-        platformService: mockPlatformService,
         loc: MockLocation());
 
     await Future.delayed(const Duration(seconds: 1));
@@ -369,7 +373,6 @@ void main() {
         shareLocationEnabled,
         changeLocationStateCallback,
         webPermissionStatus,
-        platformService: mockPlatformService,
         loc: MockLocation());
 
     await Future.delayed(const Duration(seconds: 1));
@@ -394,6 +397,7 @@ void main() {
 
     when(mockPlatformService.isWeb).thenReturn(true);
     when(mockPlatformService.isMobile).thenReturn(false);
+    when(mockPlatformService.isDesktop).thenReturn(false);
 
     ShareLocationServiceImpl service = ShareLocationServiceImpl.build(
         initialLocation,
@@ -401,7 +405,6 @@ void main() {
         shareLocationEnabled,
         changeLocationStateCallback,
         webPermissionStatus,
-        platformService: mockPlatformService,
         loc: MockLocation());
 
     await Future.delayed(const Duration(seconds: 1));
@@ -428,6 +431,7 @@ void main() {
 
     when(mockPlatformService.isWeb).thenReturn(false);
     when(mockPlatformService.isMobile).thenReturn(true);
+    when(mockPlatformService.isDesktop).thenReturn(false);
 
     when(mockLocation.enableBackgroundMode(enable: true))
         .thenAnswer((_) async => true);
@@ -440,7 +444,6 @@ void main() {
         shareLocationEnabled,
         changeLocationStateCallback,
         webPermissionStatus,
-        platformService: mockPlatformService,
         loc: mockLocation);
 
     await Future.delayed(const Duration(seconds: 1));

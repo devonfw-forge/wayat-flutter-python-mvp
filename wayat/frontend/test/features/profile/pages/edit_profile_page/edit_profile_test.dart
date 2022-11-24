@@ -12,15 +12,19 @@ import 'package:wayat/features/profile/pages/edit_profile_page/edit_profile_page
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:mockito/annotations.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
+import 'package:wayat/services/profile/profile_service.dart';
 
 import '../../../../test_common/test_app.dart';
-import 'edit_profile_test.mocks.dart';
+import '../../controllers/edit_profile_controller_test.mocks.dart';
 
-@GenerateMocks([UserState, HttpProvider, PhoneVerificationController])
+@GenerateMocks(
+    [UserState, HttpProvider, PhoneVerificationController, PlatformService])
 void main() async {
   final MockUserState mockUserState = MockUserState();
   final MockPhoneVerificationController mockPhoneVerifController =
       MockPhoneVerificationController();
+  final MockPlatformService mockPlatformService = MockPlatformService();
 
   when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
   when(mockPhoneVerifController.isValidPhone).thenReturn(false);
@@ -45,6 +49,10 @@ void main() async {
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
     GetIt.I.registerSingleton<PhoneVerificationController>(
         mockPhoneVerifController);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
+
+    when(mockPlatformService.isDesktopOrWeb).thenReturn(true);
+    when(mockPlatformService.isMobile).thenReturn(true);
   });
 
   group("Edit profile page has correct components", () {
@@ -77,7 +85,8 @@ void main() async {
     });
   });
 
-  testWidgets('Check dialog to change photo is showed in mobile', (tester) async {
+  testWidgets('Check dialog to change photo is showed in mobile',
+      (tester) async {
     //Avoid overflow errors
     FlutterError.onError = null;
     await tester.pumpWidget(TestApp.createApp(body: EditProfilePage()));
@@ -86,7 +95,8 @@ void main() async {
     expect(find.text(appLocalizations.chooseProfileFoto), findsOneWidget);
   });
 
-  testWidgets('Check dialog to change photo is showed in desktop', (tester) async {
+  testWidgets('Check dialog to change photo is showed in desktop',
+      (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.windows;
     await tester.pumpWidget(TestApp.createApp(body: EditProfilePage()));
     await tester.tap(find.widgetWithIcon(InkWell, Icons.edit_outlined));

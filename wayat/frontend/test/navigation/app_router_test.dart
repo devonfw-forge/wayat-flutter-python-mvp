@@ -48,6 +48,7 @@ import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/navigation/initial_route.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/location_listener/location_listener_service.dart';
 
 import '../test_common/test_app.dart';
@@ -69,6 +70,7 @@ import 'app_router_test.mocks.dart';
   MockSpec<OnboardingController>(),
   MockSpec<AppConfigState>(),
   MockSpec<HttpProvider>(),
+  MockSpec<PlatformService>(),
 ])
 void main() async {
   late MyUser myUser;
@@ -112,6 +114,7 @@ void main() async {
   MockOnboardingController mockOnboardingController =
       MockOnboardingController();
   MockAppConfigState mockAppConfigState = MockAppConfigState();
+  MockPlatformService mockPlatformService = MockPlatformService();
 
   when(mockLocationListener.locationListenerService)
       .thenReturn(mockLocationListenerService);
@@ -162,6 +165,8 @@ void main() async {
     GetIt.I.registerSingleton<OnboardingController>(mockOnboardingController);
     GetIt.I.registerSingleton<AppConfigState>(mockAppConfigState);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
+
     HttpOverrides.global = null;
   });
 

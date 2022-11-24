@@ -21,6 +21,7 @@ import 'package:wayat/features/groups/pages/manage_group_page.dart';
 import 'package:wayat/features/groups/widgets/create_group_contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:mobx/mobx.dart' as mobx;
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 
 import '../../../test_common/test_app.dart';
@@ -32,7 +33,8 @@ import 'manage_groups_page_test.mocks.dart';
   ContactsPageController,
   FriendsController,
   XFile,
-  GroupsService
+  GroupsService,
+  PlatformService,
 ])
 void main() async {
   ManageGroupController mockManageGroupController = MockManageGroupController();
@@ -40,6 +42,7 @@ void main() async {
       MockContactsPageController();
   FriendsController mockFriendsController = MockFriendsController();
   GroupsController mockGroupsController = MockGroupsController();
+  MockPlatformService mockPlatformService = MockPlatformService();
 
   setUpAll(() {
     HttpOverrides.global = null;
@@ -53,9 +56,12 @@ void main() async {
     when(mockManageGroupController.selectedFileBytes).thenReturn(null);
     when(mockManageGroupController.isValidGroup).thenReturn(true);
     when(mockManageGroupController.errorMessage).thenReturn("");
+    when(mockPlatformService.isDesktopOrWeb).thenReturn(true);
+    when(mockPlatformService.isWeb).thenReturn(true);
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
   });
 
   testWidgets("ManageGroups header is correct", (tester) async {
@@ -116,6 +122,7 @@ void main() async {
 
   testWidgets("Group image is built correctly", (tester) async {
     XFile mockPicture = MockXFile();
+    when(mockPlatformService.isWeb).thenReturn(true);
     when(mockPicture.path).thenReturn("");
     when(mockManageGroupController.group).thenReturn(Group.empty());
     await tester.pumpWidget(TestApp.createApp(
@@ -178,9 +185,8 @@ void main() async {
     expect(find.text(appLocalizations.gallery), findsOneWidget);
   });
 
-  
-
-  testWidgets('Pressing edit icon opens select image bottom sheet in desktop', (tester) async {
+  testWidgets('Pressing edit icon opens select image bottom sheet in desktop',
+      (tester) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.windows;
     await tester.pumpWidget(TestApp.createApp(
         body: ManageGroupPage(

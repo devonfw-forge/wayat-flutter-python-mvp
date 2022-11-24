@@ -10,6 +10,7 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:mockito/annotations.dart';
 import 'package:wayat/lang/language.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 import '../../../test_common/test_app.dart';
 import 'preferences_page_test.mocks.dart';
@@ -18,10 +19,13 @@ import 'preferences_page_test.mocks.dart';
   UserState,
   HttpProvider,
   AppConfigState,
+  PlatformService,
 ])
 void main() async {
   final MockUserState mockUserState = MockUserState();
   final MockAppConfigState mockAppConfigState = MockAppConfigState();
+  final MockPlatformService mockPlatformService = MockPlatformService();
+
   late MyUser user;
 
   List<Language> items = [
@@ -56,8 +60,11 @@ void main() async {
     when(mockUserState.currentUser).thenReturn(user);
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
     GetIt.I.registerSingleton<AppConfigState>(mockAppConfigState);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
+
     when(mockAppConfigState.language).thenReturn(null);
     when(mockAppConfigState.locale).thenReturn(const Locale('es', 'ES'));
+    when(mockPlatformService.isDesktopOrWeb).thenReturn(true);
   });
 
   testWidgets('Change language row components', (tester) async {

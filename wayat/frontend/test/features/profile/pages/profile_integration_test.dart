@@ -29,6 +29,7 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/profile/profile_service.dart';
 
 import '../../../test_common/test_app.dart';
@@ -48,7 +49,8 @@ import 'profile_integration_test.mocks.dart';
   SuggestionsController,
   HttpProvider,
   GroupsController,
-  PhoneVerificationController
+  PhoneVerificationController,
+  PlatformService,
 ])
 void main() async {
   // It is mandatory to use a function to return the GoRouter, as if it
@@ -108,9 +110,12 @@ void main() async {
   final MockGroupsController mockGroupsController = MockGroupsController();
   final MockPhoneVerificationController mockPhoneVerifController =
       MockPhoneVerificationController();
+  final MockPlatformService mockPlatformService = MockPlatformService();
 
   setUpAll(() async {
     HttpOverrides.global = null;
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
+
     when(mockContactsPageController.searchBarController)
         .thenReturn(TextEditingController());
     when(mockUserState.currentUser).thenAnswer((_) => user);
@@ -143,6 +148,7 @@ void main() async {
     when(mockPhoneVerifController.errorPhoneVerification).thenReturn("");
     when(mockPhoneVerifController.isValidPhone).thenReturn(false);
     when(mockPhoneVerifController.getISOCode()).thenReturn("ES");
+    when(mockPlatformService.wideUi).thenReturn(true);
 
     user = MyUser(
         id: "2",

@@ -34,16 +34,14 @@ class ContactProfilePage extends StatelessWidget {
   /// Controller including the logig business of this page
   final ContactProfileController controller;
 
-  final PlatformService platformService;
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
   ContactProfilePage(
       {required this.contact,
       required this.navigationSource,
       ContactProfileController? controller,
-      PlatformService? platformService,
       Key? key})
       : controller = controller ?? ContactProfileController(),
-        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override

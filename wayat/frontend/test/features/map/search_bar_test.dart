@@ -21,6 +21,7 @@ import 'package:wayat/features/map/widgets/suggestions_dialog.dart';
 import 'package:wayat/features/map/widgets/suggestions_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:mobx/mobx.dart' show ObservableListExtension, ObservableSet;
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/image_service/image_service.dart';
 
 import '../../test_common/test_app.dart';
@@ -33,7 +34,8 @@ import 'search_bar_test.mocks.dart';
   LifeCycleState,
   MapController,
   ImageService,
-  GroupsController
+  GroupsController,
+  PlatformService,
 ], customMocks: [])
 void main() async {
   late ShareLocationState mockLocationState;
@@ -41,18 +43,20 @@ void main() async {
   late ReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
   late LifeCycleState mockMapState;
+  late PlatformService mockPlatformService;
 
   setUpAll(() {
     mockLocationListener = MockLocationListener();
     mockLocationState = MockShareLocationState();
     mockReceiveLocationState = MockReceiveLocationState();
     mockMapState = MockLifeCycleState();
+    mockPlatformService = MockPlatformService();
     final GroupsController mockGroupsController = MockGroupsController();
 
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
-
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
     HttpOverrides.global = null;
 
     when(mockLocationState.initialize())
@@ -66,6 +70,7 @@ void main() async {
     when(mockLocationListener.shareLocationState).thenReturn(mockLocationState);
     when(mockLocationListener.receiveLocationState)
         .thenReturn(mockReceiveLocationState);
+    when(mockPlatformService.isDesktopOrWeb).thenReturn(true);
   });
 
   testWidgets("The search bar appears correctly", (tester) async {
@@ -232,6 +237,8 @@ void main() async {
 
     when(mockController.onSuggestionsTap(contact))
         .thenAnswer((_) => Future.value(null));
+
+    when(mockPlatformService.isMobile).thenReturn(true);
 
     await tester.pumpWidget(
         TestApp.createApp(body: MapPage(controller: mockController)));

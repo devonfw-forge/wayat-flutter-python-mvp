@@ -13,10 +13,8 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class ProfilePage extends StatelessWidget {
-  final PlatformService platformService;
-  ProfilePage({PlatformService? platformService, Key? key})
-      : platformService = platformService ?? PlatformService(),
-        super(key: key);
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
+  ProfilePage({Key? key}) : super(key: key);
 
   final ShareLocationState shareLocationState =
       GetIt.I.get<LocationListener>().shareLocationState;

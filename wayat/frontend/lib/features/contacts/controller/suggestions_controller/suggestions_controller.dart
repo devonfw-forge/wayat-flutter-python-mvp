@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/features/contacts/controller/friends_controller/friends_controller.dart';
@@ -28,6 +29,8 @@ abstract class _SuggestionsController with Store {
 
   /// Requests Controller to access its logic
   final RequestsController requestsController;
+
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
   _SuggestionsController(
       {required this.friendsController,
@@ -98,8 +101,7 @@ abstract class _SuggestionsController with Store {
   ///
   /// Returns an empty text for platforms not included in Android or IOS
   @visibleForTesting
-  String platformText([PlatformService? platformService]) {
-    platformService ??= PlatformService();
+  String platformText() {
     if (platformService.targetPlatform == TargetPlatform.android) {
       return appLocalizations.invitationTextAndroid;
     }

@@ -34,12 +34,10 @@ class MapPage extends StatelessWidget {
   final GroupsController controllerGroups = GetIt.I.get<GroupsController>();
   final LocationListener locationListener = GetIt.I.get<LocationListener>();
   final MapController controller;
-  final PlatformService platformService;
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
-  MapPage(
-      {MapController? controller, PlatformService? platformService, Key? key})
+  MapPage({MapController? controller, Key? key})
       : controller = controller ?? MapController(),
-        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override

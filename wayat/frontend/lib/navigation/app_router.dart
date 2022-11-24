@@ -37,7 +37,7 @@ class AppRouter {
   final ValueKey<String> _profileScaffoldKey =
       const ValueKey<String>('contact_profile_scaffold');
   UserState userState = GetIt.I.get<UserState>();
-  PlatformService platformService = PlatformService();
+  PlatformService platformService = GetIt.I.get<PlatformService>();
   InitialLocationProvider initialLocationProvider =
       GetIt.I.get<InitialLocationProvider>();
 
@@ -88,7 +88,7 @@ class AppRouter {
       GoRoute(
           path: '/contacts/:kind(friends|requests|suggestions)',
           redirect: (context, state) {
-            if (PlatformService().isDesktopOrWeb &&
+            if (platformService.isDesktopOrWeb &&
                 state.location == '/contacts/suggestions') {
               return '/contacts/friends';
             }

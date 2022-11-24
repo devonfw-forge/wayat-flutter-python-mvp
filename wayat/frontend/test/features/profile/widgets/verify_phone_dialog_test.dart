@@ -19,8 +19,8 @@ void main() async {
 
   setUpAll(() async {
     await Firebase.initializeApp(
-    name: EnvModel.FIREBASE_APP_NAME,
-    options: CustomFirebaseOptions.currentPlatformOptions);
+        name: EnvModel.FIREBASE_APP_NAME,
+        options: CustomFirebaseOptions.currentPlatformOptions);
     GetIt.I.registerSingleton<UserState>(MockUserState());
   });
 

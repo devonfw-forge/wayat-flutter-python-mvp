@@ -11,16 +11,25 @@ import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/profile/controllers/edit_profile_controller.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 import '../../../test_common/test_app.dart';
 import 'edit_profile_controller_test.mocks.dart';
 
-@GenerateMocks([UserState, HttpProvider, PhoneVerificationController, XFile])
+@GenerateMocks([
+  UserState,
+  HttpProvider,
+  PhoneVerificationController,
+  XFile,
+  PlatformService
+])
 void main() async {
   final MockUserState mockUserState = MockUserState();
   final MockHttpProvider mockHttpProvider = MockHttpProvider();
   final MockPhoneVerificationController mockPhoneVerifController =
       MockPhoneVerificationController();
+  final MockPlatformService mockPlatformService = MockPlatformService();
+
   MyUser fakeUser = MyUser(
       id: "id",
       name: "test",
@@ -38,6 +47,8 @@ void main() async {
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
     GetIt.I.registerSingleton<MockPhoneVerificationController>(
         mockPhoneVerifController);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
+
     when(mockUserState.currentUser).thenReturn(fakeUser);
   });
 

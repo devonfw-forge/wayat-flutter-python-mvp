@@ -30,7 +30,6 @@ import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
-import '../../../services/share_location/share_location_service_test.mocks.dart';
 import '../../../test_common/test_app.dart';
 import 'home_map_page_test.mocks.dart';
 
@@ -119,6 +118,9 @@ void main() async {
         .thenAnswer((_) => Future.value(true));
     when(mockMapController.filterGroup(myGroup))
         .thenAnswer((_) => Future.value());
+    when(mockPlatformService.isMobile).thenReturn(true);
+    when(mockPlatformService.isDesktopOrWeb).thenReturn(true);
+    when(mockPlatformService.wideUi).thenReturn(true);
 
     GetIt.I.allowReassignment = true;
 
@@ -164,6 +166,7 @@ void main() async {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[myGroup].asObservable());
+    when(mockPlatformService.isMobile).thenReturn(true);
 
     await tester.pumpWidget(TestApp.createApp(body: MapPage()));
     await tester.pumpAndSettle();

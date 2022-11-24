@@ -21,6 +21,7 @@ import 'package:wayat/features/groups/controllers/groups_controller/groups_contr
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/app_state/location_state/receive_location/receive_location_state.dart';
 import 'package:mobx/mobx.dart' as mobx;
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 import '../../../../test_common/test_app.dart';
 import 'contacts_page_test.mocks.dart';
@@ -37,6 +38,7 @@ import 'contacts_page_test.mocks.dart';
   RequestsController,
   SuggestionsController,
   GroupsController,
+  PlatformService,
 ])
 void main() async {
   HttpOverrides.global = null;
@@ -56,6 +58,7 @@ void main() async {
   final MockSuggestionsController mockSuggestionsController =
       MockSuggestionsController();
   final MockGroupsController mockGroupsController = MockGroupsController();
+  final MockPlatformService mockPlatformService = MockPlatformService();
 
   setUpAll(() {
     when(mockContactsPageController.searchBarController)
@@ -80,6 +83,7 @@ void main() async {
         .thenAnswer((_) => Future.value(true));
     when(mockGroupsController.groups)
         .thenAnswer((_) => <Group>[].asObservable());
+    when(mockPlatformService.isDesktopOrWeb).thenReturn(true);
 
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
@@ -89,6 +93,7 @@ void main() async {
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<LifeCycleState>(mockMapState);
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
   });
 
   testWidgets("The search bar appears correctly", (tester) async {

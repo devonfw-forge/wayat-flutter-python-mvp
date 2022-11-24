@@ -10,18 +10,22 @@ import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'package:wayat/services/groups/groups_service_impl.dart';
 import 'package:http/http.dart' as http;
 
 import 'groups_service_test.mocks.dart';
 
-@GenerateMocks([HttpProvider, http.Response, http.StreamedResponse])
+@GenerateMocks(
+    [HttpProvider, http.Response, http.StreamedResponse, PlatformService])
 void main() async {
   HttpProvider mockHttpProvider = MockHttpProvider();
+  MockPlatformService mockPlatformService = MockPlatformService();
 
   setUpAll(() {
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
   });
 
   test("GetAll calls the correct endpoint with the correct data", () async {
@@ -71,6 +75,7 @@ void main() async {
 
   test("Create calls the correct endpoint with the correct data", () async {
     http.Response mockResponse = MockResponse();
+    when(mockPlatformService.isWeb).thenReturn(true);
     when(mockResponse.body).thenReturn("{\"id\":\"newId\"}");
     when(mockResponse.statusCode).thenReturn(200);
     http.StreamedResponse mockResponseImage = MockStreamedResponse();

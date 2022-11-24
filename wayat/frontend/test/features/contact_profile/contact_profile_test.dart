@@ -17,7 +17,10 @@ import 'package:wayat/lang/app_localizations.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:wayat/services/common/http_provider/http_provider.dart';
 import 'package:wayat/common/widgets/switch.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
+import 'package:wayat/services/profile/profile_service.dart';
 
+import '../../app_state/user_state/user_state_test.mocks.dart';
 import '../../test_common/test_app.dart';
 import 'contact_profile_test.mocks.dart';
 
@@ -27,6 +30,7 @@ import 'contact_profile_test.mocks.dart';
   HomeNavState,
   HttpProvider,
   ReceiveLocationState,
+  PlatformService,
 ])
 void main() async {
   // Constants for the test contacts creation
@@ -39,6 +43,8 @@ void main() async {
   late HomeNavState mockHomeState;
   late ContactProfileController mockContactProfileController;
   late HttpProvider mockHttpProvider;
+  late ProfileService mockProfileService;
+  late PlatformService mockPlatformService;
 
   late Contact nonLocatedContact;
   late ContactLocation locatedContact;
@@ -72,10 +78,14 @@ void main() async {
     mockReceiveLocationState = MockReceiveLocationState();
     mockHomeState = MockHomeNavState();
     mockHttpProvider = MockHttpProvider();
+    mockProfileService = MockProfileService();
+    mockPlatformService = MockPlatformService();
 
     GetIt.I.registerSingleton<LocationListener>(mockLocationListener);
     GetIt.I.registerSingleton<HomeNavState>(mockHomeState);
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
+    GetIt.I.registerSingleton<ProfileService>(mockProfileService);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
 
     nonLocatedContact = nonLocatedContactFactory();
     locatedContact = locatedContactFactory();

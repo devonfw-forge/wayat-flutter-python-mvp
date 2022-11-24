@@ -14,11 +14,9 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 class ContactsPage extends StatefulWidget {
   final String tab;
 
-  final PlatformService platformService;
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
-  ContactsPage(this.tab, {PlatformService? platformService, Key? key})
-      : platformService = platformService ?? PlatformService(),
-        super(key: key);
+  ContactsPage(this.tab, {Key? key}) : super(key: key);
 
   @override
   State<ContactsPage> createState() => _ContactsPageState();

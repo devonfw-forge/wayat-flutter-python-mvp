@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
@@ -19,12 +20,10 @@ class MapController = _MapController with _$MapController;
 
 abstract class _MapController with Store {
   ImageService imageService;
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
-  final PlatformService platformService;
-
-  _MapController({ImageService? imageService, PlatformService? platformService})
-      : imageService = imageService ?? ImageService(),
-        platformService = platformService ?? PlatformService();
+  _MapController({ImageService? imageService})
+      : imageService = imageService ?? ImageService();
 
   @observable
   bool sharingLocation = true;

@@ -13,16 +13,24 @@ import 'package:wayat/features/contacts/controller/friends_controller/friends_co
 import 'package:wayat/features/groups/controllers/manage_group_controller/manage_group_controller.dart';
 import 'package:mobx/mobx.dart' as mobx;
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'manage_group_controller_test.mocks.dart';
 
-@GenerateMocks(
-    [ContactsPageController, FriendsController, GroupsService, HttpProvider])
+@GenerateMocks([
+  ContactsPageController,
+  FriendsController,
+  GroupsService,
+  HttpProvider,
+  PlatformService
+])
 void main() async {
   ContactsPageController mockContactsPageController =
       MockContactsPageController();
   FriendsController mockFriendsController = MockFriendsController();
   GroupsService mockGroupsService = MockGroupsService();
+  MockPlatformService mockPlatformService = MockPlatformService();
+
   setUpAll(() {
     // This is necessary because Group uses appLocalizations for the default group name
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
@@ -31,6 +39,7 @@ void main() async {
     when(mockContactsPageController.friendsController)
         .thenReturn(mockFriendsController);
     GetIt.I.registerSingleton(AppConfigState());
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
   });
 
   test("AllContacts getter returns the contacts from the FriendsController",

@@ -8,16 +8,20 @@ import 'package:mockito/mockito.dart';
 import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/groups/groups_service.dart';
 import 'package:mobx/mobx.dart' as mobx;
 
 import 'groups_controller_test.mocks.dart';
 
-@GenerateMocks([GroupsService, HttpProvider])
+@GenerateMocks([GroupsService, HttpProvider, PlatformService])
 void main() async {
   GroupsService mockGroupsService = MockGroupsService();
+  final MockPlatformService mockPlatformService = MockPlatformService();
+
   setUpAll(() {
     GetIt.I.registerSingleton<HttpProvider>(MockHttpProvider());
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
   });
   test("UpdateGroups gets groups from the service", () async {
     when(mockGroupsService.getAll()).thenAnswer((_) => Future.value([]));

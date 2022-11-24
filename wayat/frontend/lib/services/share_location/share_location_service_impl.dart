@@ -25,6 +25,7 @@ class ShareLocationServiceImpl extends ShareLocationService {
   ShareLocationServiceImpl() : super.create();
 
   final HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
   /// 1 kilometer of distance
   final int passiveMinDistance = 1000;
@@ -42,7 +43,6 @@ class ShareLocationServiceImpl extends ShareLocationService {
   late bool shareLocationEnabled;
   late PermissionStatus? webLocationPermissions;
   late Function(LatLng) changeLocationStateCallback;
-  late PlatformService platformService;
 
   @visibleForTesting
   static Future<void> checkLocationPermissions({Location? loc}) async {
@@ -143,9 +143,13 @@ class ShareLocationServiceImpl extends ShareLocationService {
       }
     }
 
-    return ShareLocationServiceImpl.build(initialLocation, mode, shareLocation,
-        onLocationChangedCallback, webPermissionStatus,
-        platformService: platformService);
+    return ShareLocationServiceImpl.build(
+      initialLocation,
+      mode,
+      shareLocation,
+      onLocationChangedCallback,
+      webPermissionStatus,
+    );
   }
 
   /// Private factory for the location service
@@ -159,11 +163,8 @@ class ShareLocationServiceImpl extends ShareLocationService {
       bool shareLocation,
       Function(LatLng) onLocationChangedCallback,
       PermissionStatus? webPermissionStatus,
-      {PlatformService? platformService,
-      Location? loc})
+      {Location? loc})
       : super.create() {
-    this.platformService = platformService ?? PlatformService();
-
     location = loc ?? Location.instance;
     activeShareMode = mode;
     lastShared = DateTime.now();
@@ -173,17 +174,17 @@ class ShareLocationServiceImpl extends ShareLocationService {
     webLocationPermissions = webPermissionStatus;
 
     // If we are not in web with denegated location permissions
-    if (!(this.platformService.isWeb &&
+    if (!(platformService.isWeb &&
             webPermissionStatus == PermissionStatus.deniedForever) &&
         shareLocationEnabled) {
       sendLocationToBack(initialLocation);
     }
 
-    if (this.platformService.isDesktop) {
+    if (platformService.isDesktop) {
       sendLocationToBack(initialLocation);
     }
 
-    if (this.platformService.isMobile) {
+    if (platformService.isMobile) {
       location.enableBackgroundMode(enable: true);
 
       location.onLocationChanged.listen((LocationData newLocation) {

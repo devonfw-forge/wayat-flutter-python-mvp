@@ -13,15 +13,10 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 class PreferencesPage extends StatefulWidget {
   final EditProfileController controller;
-  final PlatformService platformService;
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
-  PreferencesPage(
-      {super.key,
-      EditProfileController? controller,
-      PlatformService? platformService})
-      : controller = controller ?? EditProfileController(),
-        platformService = platformService ?? PlatformService();
-
+  PreferencesPage({super.key, EditProfileController? controller})
+      : controller = controller ?? EditProfileController();
   @override
   State<PreferencesPage> createState() => _PreferencesPageState();
 }

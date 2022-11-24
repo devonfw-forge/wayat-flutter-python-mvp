@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/common/app_config/env_model.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/google_maps_service/address_response/address.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_component.dart';
 import 'package:wayat/services/google_maps_service/address_response/address_response.dart';
@@ -18,11 +20,15 @@ import 'google_maps_service_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<UrlLauncherLibW>(),
   MockSpec<http.Client>(),
-  MockSpec<http.Response>()
+  MockSpec<http.Response>(),
 ])
+@GenerateMocks([PlatformService])
 void main() async {
+  MockPlatformService mockPlatformService = MockPlatformService();
+  GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
 
   test("OpenMaps launches GoogleMaps in Android", () async {
+    when(mockPlatformService.isAndroid).thenReturn(true);
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
 
     double lat = 1, lng = 1;

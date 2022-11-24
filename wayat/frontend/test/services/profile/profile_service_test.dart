@@ -7,6 +7,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/services/common/api_contract/api_contract.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/profile/profile_service.dart';
 import 'package:wayat/services/profile/profile_service_impl.dart';
 
@@ -15,13 +16,16 @@ import 'profile_service_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<HttpProvider>(),
   MockSpec<Response>(),
-  MockSpec<StreamedResponse>()
+  MockSpec<StreamedResponse>(),
+  MockSpec<PlatformService>()
 ])
 void main() async {
   HttpProvider mockHttpProvider = MockHttpProvider();
+  MockPlatformService mockPlatformService = MockPlatformService();
 
   setUpAll(() {
     GetIt.I.registerSingleton(mockHttpProvider);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
   });
 
   test("uploadProfileImage calls the correct endpoint", () async {

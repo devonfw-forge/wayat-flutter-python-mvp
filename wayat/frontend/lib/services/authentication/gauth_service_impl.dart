@@ -42,17 +42,12 @@ class GoogleAuthService implements AuthService {
 
   late final FirebaseMessaging? firebaseMessaging;
 
-  final PlatformService _platformService;
+  final PlatformService _platformService = GetIt.I.get<PlatformService>();
 
   GoogleAuthService(
-      {GoogleSignIn? gS,
-      FirebaseAuth? auth,
-      PlatformService? platformService,
-      FirebaseMessaging? messaging})
-      : _platformService = platformService ?? PlatformService() {
-      _auth = auth ??
-        FirebaseAuth.instanceFor(
-            app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
+      {GoogleSignIn? gS, FirebaseAuth? auth, FirebaseMessaging? messaging}) {
+    _auth = auth ??
+        FirebaseAuth.instanceFor(app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
     firebaseMessaging = (_platformService.isMobile)
         ? messaging ?? FirebaseMessaging.instance
         : null;

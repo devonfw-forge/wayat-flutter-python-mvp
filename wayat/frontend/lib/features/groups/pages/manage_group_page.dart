@@ -19,14 +19,9 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 /// Page that provides functionality to edit and create new [Group] entities.
 class ManageGroupPage extends StatelessWidget {
   final ManageGroupController controller;
-  final PlatformService platformService;
-  ManageGroupPage(
-      {ManageGroupController? controller,
-      Group? group,
-      PlatformService? platformService,
-      Key? key})
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
+  ManageGroupPage({ManageGroupController? controller, Group? group, Key? key})
       : controller = controller ?? ManageGroupController(group: group),
-        platformService = platformService ?? PlatformService(),
         super(key: key);
 
   @override
@@ -155,12 +150,12 @@ class ManageGroupPage extends StatelessWidget {
               showModalBottomSheet(
                   context: context,
                   builder: (builder) {
-                  if (platformService.isDesktop) {
-                    return openSelectImageSheetDesktop(context);
-                  } else {
-                    return openSelectImageSheetMobile(context);
-                  }
-                } );
+                    if (platformService.isDesktop) {
+                      return openSelectImageSheetDesktop(context);
+                    } else {
+                      return openSelectImageSheetMobile(context);
+                    }
+                  });
             }
           },
           child: const CircleAvatar(

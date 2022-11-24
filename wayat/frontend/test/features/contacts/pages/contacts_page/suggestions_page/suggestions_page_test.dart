@@ -14,6 +14,7 @@ import 'package:wayat/features/contacts/pages/contacts_page/suggestions_page/sug
 import 'package:wayat/features/contacts/widgets/contact_tile.dart';
 import 'package:wayat/lang/app_localizations.dart';
 import 'package:mockito/annotations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/contact/contact_service.dart';
 
 import '../../../../../test_common/test_app.dart';
@@ -24,19 +25,22 @@ import 'suggestions_page_test.mocks.dart';
   SuggestionsController,
   ContactService,
   FriendsController,
-  RequestsController
+  RequestsController,
+  PlatformService,
 ])
 void main() async {
   final SuggestionsController mockSuggestionsController =
       MockSuggestionsController();
   final ContactsPageController mockContactsPageController =
       MockContactsPageController();
+  final MockPlatformService mockPlatformService = MockPlatformService();
 
   setUpAll(() {
     HttpOverrides.global = null;
     GetIt.I
         .registerSingleton<ContactsPageController>(mockContactsPageController);
     GetIt.I.registerSingleton<SuggestionsController>(mockSuggestionsController);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
 
     when(mockContactsPageController.suggestionsController)
         .thenReturn(mockSuggestionsController);

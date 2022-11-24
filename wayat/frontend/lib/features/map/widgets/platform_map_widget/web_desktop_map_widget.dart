@@ -12,15 +12,10 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 class WebDesktopMapWidget extends PlatformMapWidget {
   final ShareLocationState shareLocationState =
       GetIt.I.get<LocationListener>().shareLocationState;
-  final PlatformService platformService;
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
-  WebDesktopMapWidget(
-      {required markers,
-      required controller,
-      PlatformService? platformService,
-      Key? key})
-      : platformService = platformService ?? PlatformService(),
-        super(markers: markers, controller: controller, key: key);
+  WebDesktopMapWidget({required markers, required controller, Key? key})
+      : super(markers: markers, controller: controller, key: key);
 
   @override
   Widget build(BuildContext context) {

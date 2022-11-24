@@ -14,7 +14,7 @@ import 'package:wayat/services/notification/notification_service.dart';
 
 class NotificationsServiceImpl implements NotificationsService {
   final FirebaseMessaging messagingInstance = FirebaseMessaging.instance;
-  final PlatformService platformService = PlatformService();
+  PlatformService platformService = GetIt.I.get<PlatformService>();
   HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

@@ -19,10 +19,9 @@ class GroupsServiceImpl implements GroupsService {
   /// Makes the HTTP calls for the service.
   HttpProvider httpProvider = GetIt.I.get<HttpProvider>();
 
-  PlatformService platformService;
+  PlatformService platformService = GetIt.I.get<PlatformService>();
 
-  GroupsServiceImpl({PlatformService? platformService})
-      : platformService = platformService ?? PlatformService();
+  GroupsServiceImpl();
 
   @override
   Future<List<Group>> getAll() async {

@@ -70,12 +70,9 @@ void main() async {
     when(mockPlatformService.isWeb).thenReturn(true);
 
     GoogleAuthService googleAuthService = GoogleAuthService(
-        auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
-        messaging: mockFirebaseMessaging);
+        auth: mockFirebaseAuth, messaging: mockFirebaseMessaging);
 
-    expect(
-        googleAuthService.googleSignIn.clientId, EnvModel.WEB_CLIENT_ID);
+    expect(googleAuthService.googleSignIn.clientId, EnvModel.WEB_CLIENT_ID);
     expect(googleAuthService.googleSignIn.scopes, ["email"]);
   });
 
@@ -83,16 +80,13 @@ void main() async {
     when(mockPlatformService.isWeb).thenReturn(false);
 
     GoogleAuthService googleAuthService = GoogleAuthService(
-        auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
-        messaging: mockFirebaseMessaging);
+        auth: mockFirebaseAuth, messaging: mockFirebaseMessaging);
     expect(googleAuthService.googleSignIn.scopes, ["email"]);
   });
 
   test("Creation with previous googleSignIn", () {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -122,7 +116,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -137,7 +130,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -163,7 +155,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -182,7 +173,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -193,7 +183,6 @@ void main() async {
       () async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
     when(mockHttpProvider.sendGetRequest(APIContract.userProfile))
@@ -224,7 +213,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -238,7 +226,6 @@ void main() async {
   test("signInSilenty returns null if the user has just signed out", () async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
     googleAuthService.hasSignedOut = true;
@@ -266,7 +253,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -278,7 +264,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -305,7 +290,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -319,7 +303,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -335,7 +318,6 @@ void main() async {
 
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 
@@ -347,7 +329,6 @@ void main() async {
   test("signOut is correct", () async {
     GoogleAuthService googleAuthService = GoogleAuthService(
         auth: mockFirebaseAuth,
-        platformService: mockPlatformService,
         gS: mockGoogleSignIn,
         messaging: mockFirebaseMessaging);
 

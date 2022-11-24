@@ -109,7 +109,7 @@ class _Wayat extends State<Wayat> with WidgetsBindingObserver {
   final Lock _lock = Lock();
 
   /// To avoid operations depending on the platform
-  final PlatformService platformService = PlatformService();
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
   /// Called when this object is inserted into the tree.
   ///
