@@ -87,6 +87,7 @@ class FiredartListenerServiceImpl extends LocationListenerService {
   @override
   void cancelListenerSubscription() {
     if (listenerSubscription != null) {
+      listenerSubscription!.pause();
       listenerSubscription!.cancel();
     }
   }
