@@ -63,7 +63,7 @@ class LocationListenerServiceImpl extends LocationListenerService {
     );
   }
 
-  @override
+  @visibleForTesting
   Future<void> onStatusUpdate(event,
       {required Function(List<ContactLocation>) onContactsRefUpdate,
       required Function(bool) onLocationModeUpdate,

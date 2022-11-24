@@ -8,10 +8,13 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/env_model.dart';
+import 'package:wayat/domain/contact/contact.dart';
 import 'package:wayat/domain/location/contact_location.dart';
+import 'package:wayat/lang/app_localizations.dart';
 import 'package:wayat/services/authentication/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:wayat/services/contact/contact_service.dart';
+import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/location_listener/firestore_model/contact_ref_model.dart';
 import 'package:wayat/services/location_listener/firestore_model/firestore_data_model.dart';
 import 'package:wayat/services/location_listener/location_listener_service.dart';
@@ -25,7 +28,6 @@ class FiredartListenerServiceImpl extends LocationListenerService {
 
   final String firestoreURL = "https://firestore.googleapis.com/v1/projects/${EnvModel.PROJECT_ID}/databases/(default)/documents/status";
 
-
   /// Subscription for the listener to status doc in Firestore
   StreamSubscription? listenerSubscription;
 
@@ -38,16 +40,10 @@ class FiredartListenerServiceImpl extends LocationListenerService {
       return;
     }
 
-
-    print('DEBUG ${(await getContactRefs()).toString()}');
-
-    List<ContactRefModel> contactRefs = await getContactRefs();
-    // lastActive = firestoreData.active;
-    // lastContactRefs = firestoreData.contactRefs;
-    // // Update locationMode before listening
-    // onLocationModeUpdate(getLocationModeFromStatus(firestoreData));
-    // // Update contactRef before listenings
-    // onContactsRefUpdate(await getContactRefsFromStatus(firestoreData));
+    List<ContactLocation> contacts = await contactRefsToContactLocations(
+      await getContactRefs());
+    // Update contactRef before listenings
+    onContactsRefUpdate(contacts);
 
     // docRef.stream.listen((document) async {
     //     await onStatusUpdate(document!.map,
@@ -57,29 +53,16 @@ class FiredartListenerServiceImpl extends LocationListenerService {
     
   }
 
-  @override
-  Future<void> onStatusUpdate(event, {required Function(List<ContactLocation> p1) onContactsRefUpdate, required Function(bool p1) onLocationModeUpdate, ContactService? contactService}) {
-    // TODO: implement onStatusUpdate
-    throw UnimplementedError();
-  }
-
   Future<List<ContactRefModel>> getContactRefs() async {
-
-    final Map<String,String> headers = await getHeaders();
-
-    AuthService authService = GetIt.I.get<UserState>().authService;
-
     Uri url = Uri.parse(
         "$firestoreURL/${GetIt.I.get<UserState>().currentUser!.id}");
-
     http.Response resultJson =
-          await http.Client().get(url, headers: headers);
+          await http.Client().get(url, headers: await getHeaders());
       Map<String, dynamic> response =  json.decode(const Utf8Decoder().convert(resultJson.bodyBytes))
           as Map<String, dynamic>;
-
-
       List<ContactRefModel> contactRefs = [];
       final values = response["fields"]["contact_refs"]["arrayValue"]["values"];
+      // Do mapping:
       for (dynamic value in (values as List)) {
         final contactRef = value['mapValue']["fields"];
         contactRefs.add(ContactRefModel(
@@ -89,11 +72,16 @@ class FiredartListenerServiceImpl extends LocationListenerService {
             contactRef["location"]["geoPointValue"]["longitude"]
           ),
           address: contactRef["address"]["stringValue"],
-          lastUpdated: Timestamp.fromDate(DateFormat('yyyy-MM-ddThh:mm')
-              .parse(contactRef["last_updated"]["timestampValue"].toString())),
+          lastUpdated: Timestamp.fromDate(DateTime.parse(
+            contactRef["last_updated"]["timestampValue"].toString())),
         ));
       }
       return contactRefs;
+  }
+
+  @override
+  void cancelListenerSubscription() {
+    // TODO: implement cancelListenerSubscription
   }
   
   /// Returns the necessary content and authentication headers for all server requests.
@@ -105,12 +93,39 @@ class FiredartListenerServiceImpl extends LocationListenerService {
       "Authorization": "Bearer ${await authService.getIdToken()}"
     };
   }
-  
-  @override
-  void cancelListenerSubscription() {
-    // TODO: implement cancelListenerSubscription
-  }
 
+  @visibleForTesting
+  Future<List<ContactLocation>> contactRefsToContactLocations(
+      List<ContactRefModel> contactRefs,
+      {ContactService? contactService}) async {
+    
+    ContactService service = contactService ?? ContactServiceImpl();
+    List<Contact> contacts = await service.getAll();
+
+    if (contactRefs.isNotEmpty) {
+      List<ContactLocation> contactLocations = contactRefs.map((e) {
+        Contact contact = contacts.firstWhere((contact) => contact.id == e.uid);
+        String address = e.address ?? "ERROR_ADDRESS";
+        if (address == "ERROR_ADDRESS") {
+          address = appLocalizations.errorAddress;
+        }
+        ContactLocation located = ContactLocation(
+            shareLocationTo: contact.shareLocationTo,
+            id: contact.id,
+            name: contact.name,
+            email: contact.email,
+            imageUrl: contact.imageUrl,
+            phone: contact.phone,
+            latitude: e.location.latitude,
+            longitude: e.location.longitude,
+            address: address,
+            lastUpdated: e.lastUpdated.toDate());
+        return located;
+      }).toList();
+      return contactLocations;
+    }
+    return [];
+  }
 }
 
 
