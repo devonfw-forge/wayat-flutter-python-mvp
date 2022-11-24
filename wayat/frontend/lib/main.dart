@@ -70,7 +70,8 @@ Future registerLazySingletons() async {
   GetIt.I.registerSingleton<InitialLocationProvider>(
       InitialLocationProvider(InitialLocation.map));
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
-  GetIt.I.registerLazySingleton<IPLocationService>(() => IPLocationServiceImpl());
+  GetIt.I
+      .registerLazySingleton<IPLocationService>(() => IPLocationServiceImpl());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());
