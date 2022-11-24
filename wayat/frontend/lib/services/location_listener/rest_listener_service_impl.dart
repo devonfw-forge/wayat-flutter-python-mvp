@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,11 +46,16 @@ class FiredartListenerServiceImpl extends LocationListenerService {
     // Update contactRef before listenings
     onContactsRefUpdate(contacts);
 
-    // docRef.stream.listen((document) async {
-    //     await onStatusUpdate(document!.map,
-    //         onLocationModeUpdate: onLocationModeUpdate,
-    //         onContactsRefUpdate: onContactsRefUpdate);
-    // }, onError: (error) => log("[ERROR] Firestore listen failed: $error"));
+    final Stream stream =
+      Stream.periodic(const Duration(seconds: 5), (_) async {
+        return await contactRefsToContactLocations(
+          await getContactRefs());
+      }
+    );
+
+    listenerSubscription = stream.listen((contacts) async {
+      await onContactsRefUpdate(await contacts);
+    }, onError: (error) => log("[ERROR] Firestore listen failed: $error"));
     
   }
 
@@ -81,7 +87,9 @@ class FiredartListenerServiceImpl extends LocationListenerService {
 
   @override
   void cancelListenerSubscription() {
-    // TODO: implement cancelListenerSubscription
+    if (listenerSubscription != null) {
+      listenerSubscription!.cancel();
+    }
   }
   
   /// Returns the necessary content and authentication headers for all server requests.
