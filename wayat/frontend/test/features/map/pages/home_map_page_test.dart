@@ -28,7 +28,9 @@ import 'package:wayat/features/contacts/controller/suggestions_controller/sugges
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/map/controller/map_controller.dart';
 import 'package:mobx/mobx.dart' as mobx;
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
+import '../../../services/share_location/share_location_service_test.mocks.dart';
 import '../../../test_common/test_app.dart';
 import 'home_map_page_test.mocks.dart';
 
@@ -45,6 +47,7 @@ import 'home_map_page_test.mocks.dart';
   SuggestionsController,
   GroupsController,
   MapController,
+  PlatformService,
 ])
 void main() async {
   final ContactsPageController mockContactsPageController =
@@ -62,6 +65,9 @@ void main() async {
       MockSuggestionsController();
   final GroupsController mockGroupsController = MockGroupsController();
   final MapController mockMapController = MockMapController();
+  final MockPlatformService mockPlatformService = MockPlatformService();
+
+  GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
 
   final MyUser user = MyUser(
       id: "2",

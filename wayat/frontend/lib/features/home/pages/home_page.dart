@@ -1,5 +1,6 @@
 import 'package:adaptive_navigation/adaptive_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wayat/common/widgets/appbar/appbar.dart';
 import 'package:wayat/features/home/pages/home_tabs.dart';
@@ -14,16 +15,11 @@ import 'package:adaptive_breakpoints/adaptive_breakpoints.dart';
 ///
 /// When the platform is Android or iOS and the screen is tall, it shows a bottom navigation bar.
 class HomePage extends StatelessWidget {
-  final PlatformService platformService;
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
   final HomeTab selectedSection;
   final Widget child;
 
-  HomePage(
-      {required this.selectedSection,
-      required this.child,
-      PlatformService? platformService,
-      super.key})
-      : platformService = platformService ?? PlatformService();
+  HomePage({super.key, required this.selectedSection, required this.child});
 
   @override
   Widget build(BuildContext context) {
