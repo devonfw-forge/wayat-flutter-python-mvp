@@ -18,16 +18,4 @@ abstract class LocationListenerService {
 
   /// Closes current listener to Firestore
   void cancelListenerSubscription();
-
-  /// Return active or passive location mode from Firestore status
-  @visibleForTesting
-  bool getLocationModeFromStatus(FirestoreDataModel firestoreData);
-
-  ///Return [ContactLocation]
-  ///
-  ///Get contact uid, location, address and last updated data
-  @visibleForTesting
-  Future<List<ContactLocation>> getContactRefsFromStatus(
-      FirestoreDataModel firestoreData,
-      {ContactService? contactService});
 }

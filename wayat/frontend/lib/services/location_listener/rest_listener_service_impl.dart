@@ -41,7 +41,7 @@ class FiredartListenerServiceImpl extends LocationListenerService {
 
     print('DEBUG ${(await getContactRefs()).toString()}');
 
-
+    List<ContactRefModel> contactRefs = await getContactRefs();
     // lastActive = firestoreData.active;
     // lastContactRefs = firestoreData.contactRefs;
     // // Update locationMode before listening
@@ -55,52 +55,6 @@ class FiredartListenerServiceImpl extends LocationListenerService {
     //         onContactsRefUpdate: onContactsRefUpdate);
     // }, onError: (error) => log("[ERROR] Firestore listen failed: $error"));
     
-      @override
-      void cancelListenerSubscription() {
-    // TODO: implement cancelListenerSubscription
-      }
-    
-      @override
-      Future<List<ContactLocation>> getContactRefsFromStatus(FirestoreDataModel firestoreData, {ContactService? contactService}) {
-    // TODO: implement getContactRefsFromStatus
-    throw UnimplementedError();
-      }
-    
-      @override
-      bool getLocationModeFromStatus(FirestoreDataModel firestoreData) {
-    // TODO: implement getLocationModeFromStatus
-    throw UnimplementedError();
-      }
-    
-      @override
-      Future<void> onStatusUpdate(event, {required Function(List<ContactLocation> p1) onContactsRefUpdate, required Function(bool p1) onLocationModeUpdate, ContactService? contactService}) {
-    // TODO: implement onStatusUpdate
-    throw UnimplementedError();
-      }
-    
-      @override
-      Future<void> setUpListener({required Function(List<ContactLocation> p1) onContactsRefUpdate, required Function(bool p1) onLocationModeUpdate}) {
-    // TODO: implement setUpListener
-    throw UnimplementedError();
-      }
-  }
-
-  @override
-  void cancelListenerSubscription() {
-    if (listenerSubscription != null) {
-      listenerSubscription!.cancel();
-    }
-  }
-
-  @override
-  Future<List<ContactLocation>> getContactRefsFromStatus(FirestoreDataModel firestoreData, {ContactService? contactService}) {
-    // TODO: implement getContactRefsFromStatus
-    throw UnimplementedError();
-  }
-
-  @override
-  bool getLocationModeFromStatus(FirestoreDataModel firestoreData) {
-    return firestoreData.active;
   }
 
   @override
@@ -150,6 +104,11 @@ class FiredartListenerServiceImpl extends LocationListenerService {
       "Content-Type": ContentType.json.toString(),
       "Authorization": "Bearer ${await authService.getIdToken()}"
     };
+  }
+  
+  @override
+  void cancelListenerSubscription() {
+    // TODO: implement cancelListenerSubscription
   }
 
 }

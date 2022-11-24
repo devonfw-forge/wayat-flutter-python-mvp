@@ -91,7 +91,6 @@ class LocationListenerServiceImpl extends LocationListenerService {
   }
 
   /// Return active or passive location mode from Firestore status
-  @override
   @visibleForTesting
   bool getLocationModeFromStatus(FirestoreDataModel firestoreData) {
     return firestoreData.active;
@@ -100,7 +99,6 @@ class LocationListenerServiceImpl extends LocationListenerService {
   ///Return [ContactLocation]
   ///
   ///Get contact uid, location, address and last updated data
-  @override
   @visibleForTesting
   Future<List<ContactLocation>> getContactRefsFromStatus(
       FirestoreDataModel firestoreData,
