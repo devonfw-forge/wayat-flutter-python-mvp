@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
 import 'package:wayat/app_state/user_state/user_state.dart';
 import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/domain/contact/contact.dart';
@@ -17,7 +16,6 @@ import 'package:http/http.dart' as http;
 import 'package:wayat/services/contact/contact_service.dart';
 import 'package:wayat/services/contact/contact_service_impl.dart';
 import 'package:wayat/services/location_listener/firestore_model/contact_ref_model.dart';
-import 'package:wayat/services/location_listener/firestore_model/firestore_data_model.dart';
 import 'package:wayat/services/location_listener/location_listener_service.dart';
 
 class FiredartListenerServiceImpl extends LocationListenerService {

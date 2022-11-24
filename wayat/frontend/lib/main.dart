@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firedart/firedart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'
@@ -47,10 +46,6 @@ Future main() async {
   await Firebase.initializeApp(
       name: EnvModel.FIREBASE_APP_NAME,
       options: CustomFirebaseOptions.currentPlatformOptions);
-
-  if (platformService.isDesktop) {
-    Firestore.initialize(EnvModel.PROJECT_ID);
-  }
 
   await registerLazySingletons();
 

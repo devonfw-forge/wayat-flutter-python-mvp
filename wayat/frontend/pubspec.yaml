@@ -89,7 +89,6 @@ dependencies:
   overlay_support: ^2.0.1
   # Scaffold that automatically resizes with the screen
   adaptive_navigation: ^0.0.7
-  firedart: ^0.9.0+1
   # Select files on desktop
   file_selector: ^0.9.2+2
   # Env code generation
