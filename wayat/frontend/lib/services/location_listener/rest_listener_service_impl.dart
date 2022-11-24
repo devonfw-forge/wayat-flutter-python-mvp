@@ -47,7 +47,7 @@ class FiredartListenerServiceImpl extends LocationListenerService {
     onContactsRefUpdate(contacts);
 
     final Stream stream =
-      Stream.periodic(const Duration(seconds: 5), (_) async {
+      Stream.periodic(const Duration(seconds: 30), (_) async {
         return await contactRefsToContactLocations(
           await getContactRefs());
       }
@@ -68,20 +68,22 @@ class FiredartListenerServiceImpl extends LocationListenerService {
           as Map<String, dynamic>;
       List<ContactRefModel> contactRefs = [];
       final values = response["fields"]["contact_refs"]["arrayValue"]["values"];
-      // Do mapping:
-      for (dynamic value in (values as List)) {
-        final contactRef = value['mapValue']["fields"];
-        contactRefs.add(ContactRefModel(
-          uid: contactRef["uid"]["stringValue"],
-          location: GeoPoint(
-            contactRef["location"]["geoPointValue"]["latitude"],
-            contactRef["location"]["geoPointValue"]["longitude"]
-          ),
-          address: contactRef["address"]["stringValue"],
-          lastUpdated: Timestamp.fromDate(DateTime.parse(
-            contactRef["last_updated"]["timestampValue"].toString())),
-        ));
-      }
+      if (values != null) {
+        // Do mapping:
+        for (dynamic value in (values as List)) {
+          final contactRef = value['mapValue']["fields"];
+          contactRefs.add(ContactRefModel(
+            uid: contactRef["uid"]["stringValue"],
+            location: GeoPoint(
+              contactRef["location"]["geoPointValue"]["latitude"],
+              contactRef["location"]["geoPointValue"]["longitude"]
+            ),
+            address: contactRef["address"]["stringValue"],
+            lastUpdated: Timestamp.fromDate(DateTime.parse(
+              contactRef["last_updated"]["timestampValue"].toString())),
+          ));
+        }
+      } 
       return contactRefs;
   }
 
