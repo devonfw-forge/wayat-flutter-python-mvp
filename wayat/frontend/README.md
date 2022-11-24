@@ -80,6 +80,11 @@ To generate Android and IOS icons:
 flutter pub run flutter_launcher_icons:main
 ~~~
 
+To generate splash screen:
+~~~
+flutter pub run flutter_native_splash:create
+~~~
+
 ## Considerations
 
 An *.env* file containing the following keys must be included in the root of the repository:
