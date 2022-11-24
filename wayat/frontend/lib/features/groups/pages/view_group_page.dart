@@ -17,11 +17,9 @@ import 'package:wayat/services/common/platform/platform_service_libw.dart';
 class ViewGroupPage extends StatelessWidget {
   final GroupsController groupsController = GetIt.I.get<GroupsController>();
   late Group selectedGroup = groupsController.selectedGroup!;
-  final PlatformService platformService;
+  final PlatformService platformService = GetIt.I.get<PlatformService>();
 
-  ViewGroupPage({Key? key, PlatformService? platformService})
-      : platformService = platformService ?? PlatformService(),
-        super(key: key);
+  ViewGroupPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

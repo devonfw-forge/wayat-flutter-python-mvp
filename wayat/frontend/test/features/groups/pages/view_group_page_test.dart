@@ -11,17 +11,21 @@ import 'package:wayat/domain/group/group.dart';
 import 'package:wayat/features/groups/controllers/groups_controller/groups_controller.dart';
 import 'package:wayat/features/groups/pages/view_group_page.dart';
 import 'package:wayat/lang/app_localizations.dart';
+import 'package:wayat/services/common/platform/platform_service_libw.dart';
 
 import '../../../test_common/test_app.dart';
+import '../../contacts/controller/suggestions_controller/suggestions_controller_test.mocks.dart';
 import 'groups_page_test.mocks.dart';
 
 @GenerateMocks([GroupsController])
 void main() async {
   GroupsController mockGroupsController = MockGroupsController();
+  MockPlatformService mockPlatformService = MockPlatformService();
 
   setUpAll(() {
     HttpOverrides.global = null;
     GetIt.I.registerSingleton<GroupsController>(mockGroupsController);
+    GetIt.I.registerSingleton<PlatformService>(mockPlatformService);
   });
 
   testWidgets("Header is built correctly", (tester) async {
