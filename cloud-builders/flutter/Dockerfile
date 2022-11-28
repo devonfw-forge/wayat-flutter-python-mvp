@@ -6,6 +6,7 @@ SHELL ["/bin/bash", "-c"]
 ARG FLUTTER_VERSION
 
 # Install Dependencies.
+RUN apt-get clean
 RUN apt-get update -y
 RUN apt-get install -y \
   git \
@@ -22,7 +23,15 @@ RUN apt-get install -y \
   android-sdk \
   pkg-config \
   libgtk-3-dev \
-  liblzma-dev
+  liblzma-dev \
+  libblkid1 \
+  libvlccore-dev \
+  libvlc-dev \
+  libsecret-1-dev \
+  libsecret-tools \
+  libsecret-1-0 \
+  libjsoncpp-dev \
+  libwebkit2gtk-4.0-dev
 
 RUN ls /usr/lib/android-sdk/tools/bin
 
