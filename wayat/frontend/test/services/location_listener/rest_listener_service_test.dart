@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -38,25 +40,21 @@ void main() async {
     GetIt.I.registerSingleton<HttpProvider>(mockHttpProvider);
   });
 
-  test('Cancel all subscriptions', () {
-    FiredartListenerServiceImpl firedartListenerServiceImpl =
-        FiredartListenerServiceImpl();
-
-    firedartListenerServiceImpl.cancelListenerSubscription();
-  });
-
-  test('contactRefsToContactLocations ', () {
+  test('contactRefsToContactLocations merge the data correctly', () async {
     FiredartListenerServiceImpl firedartListenerServiceImpl =
         FiredartListenerServiceImpl();
 
     ContactRefModel contactRefModel = ContactRefModel(
-      address: '',
+      address: 'address',
       lastUpdated: Timestamp.now(),
       location: const GeoPoint(10.2, 20.3),
       uid: 'id'
     );
 
-    firedartListenerServiceImpl.contactRefsToContactLocations([contactRefModel], contactService: mockContactService);
+    final located = await firedartListenerServiceImpl.contactRefsToContactLocations([contactRefModel], contactService: mockContactService);
+
+    expect(located.first.address, contactRefModel.address);
+    expect(located.first.name, contact.name);
   });
   
 }
