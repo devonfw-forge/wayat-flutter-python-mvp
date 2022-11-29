@@ -138,6 +138,12 @@
     "locationPermission": "Locatietoestemming",
     "locationPermissionNotGranted": "Locatietoestemming niet verleend, accepteer altijd locatietoestemmingen. Selecteer het in het gedeelte Instellingen",
 
+    "cannotLoginMessage": "Uw account heeft geen gevalideerd telefoonnummer.\n\nToegang tot wayat via internet:\n\n 1. Installeer wayat op uw telefoon\n2. Stel je account in via de app\n3. Log opnieuw in via internet",
+    "goToGitHubReleases": "Ga naar de pagina GitHub-releases",
+    "goToGitHubReleasesUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/",
+    "downloadWayat": "Weg downloaden",
+    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk",
+
     "@_NOTIFICATIONS": {},
     "receivedFriendRequest": " heeft je een vriendschapsverzoek gestuurd",
     "acceptedFriendRequest": " heeft je vriendschapsverzoek geaccepteerd",

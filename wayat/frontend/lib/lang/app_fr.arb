@@ -138,6 +138,12 @@
     "locationPermission": "Autorisation de localisation",
     "locationPermissionNotGranted": "Autorisation de localisation non accordée, veuillez accepter les autorisations de localisation pour tout le temps. Sélectionnez-le dans la section des paramètres",
 
+    "cannotLoginMessage": "Votre compte n'a pas de numéro de téléphone validé.\n\nPour accéder à wayat depuis le Web :\n\n 1. Installez wayat sur votre téléphone\n2. Configurez votre compte depuis l'application\n3. Connectez-vous à nouveau depuis le Web",
+    "goToGitHubReleases": "Aller à la page des versions de GitHub",
+    "goToGitHubReleasesUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/",
+    "downloadWayat": "Télécharger wayat",
+    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk",
+
     "@_NOTIFICATIONS": {},
     "receivedFriendRequest": " vous a envoyé une demande d'ami",
     "acceptedFriendRequest": " a accepté votre demande d'ami",
