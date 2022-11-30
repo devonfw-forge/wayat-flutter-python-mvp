@@ -48,7 +48,7 @@ import 'package:wayat/navigation/app_router.dart';
 import 'package:wayat/navigation/home_nav_state/home_nav_state.dart';
 import 'package:wayat/navigation/initial_route.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
-import 'package:wayat/services/location_listener/location_listener_service.dart';
+import 'package:wayat/services/location_listener/location_listener_service_impl.dart';
 
 import '../test_common/test_app.dart';
 import 'app_router_test.mocks.dart';
@@ -59,7 +59,7 @@ import 'app_router_test.mocks.dart';
   MockSpec<GroupsController>(),
   MockSpec<ContactsPageController>(),
   MockSpec<LocationListener>(),
-  MockSpec<LocationListenerService>(),
+  MockSpec<LocationListenerServiceImpl>(),
   MockSpec<ReceiveLocationState>(),
   MockSpec<ShareLocationState>(),
   MockSpec<RequestsController>(),
@@ -94,8 +94,8 @@ void main() async {
   MockContactsPageController mockContactsPageController =
       MockContactsPageController();
 
-  MockLocationListenerService mockLocationListenerService =
-      MockLocationListenerService();
+  MockLocationListenerServiceImpl mockLocationListenerService =
+      MockLocationListenerServiceImpl();
   MockReceiveLocationState mockReceiveLocationState =
       MockReceiveLocationState();
 
@@ -405,22 +405,6 @@ void main() async {
       await tester.pumpAndSettle();
 
       expect(find.byType(SuggestionsPage), findsOneWidget);
-    });
-
-    testWidgets("Navigate to contacts suggestions in web redirect to friends",
-        (tester) async {
-      await navigateToContacts(tester);
-
-      // Platform windows is set after navigate to can access the tab button of
-      // suggestions and emulate the navigation
-      debugDefaultTargetPlatformOverride = TargetPlatform.windows;
-      await tester
-          .tap(find.widgetWithText(Tab, appLocalizations.suggestionsTab));
-
-      await tester.pumpAndSettle();
-
-      expect(find.byType(ContactsPage), findsOneWidget);
-      debugDefaultTargetPlatformOverride = null;
     });
 
     testWidgets("Navigate to contacts friends from other tab", (tester) async {

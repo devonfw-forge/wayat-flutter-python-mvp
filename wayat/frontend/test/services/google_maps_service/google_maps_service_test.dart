@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mockito/annotations.dart';
@@ -23,9 +21,6 @@ import 'google_maps_service_test.mocks.dart';
   MockSpec<http.Response>()
 ])
 void main() async {
-  setUpAll(() async {
-    await dotenv.load();
-  });
 
   test("OpenMaps launches GoogleMaps in Android", () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.android;

@@ -14,6 +14,7 @@
 - [Features](#features)
 - [For developers](#for-developers)
 - [Why WAYAT](#why-wayat)
+- [License(s)](#licenses)
 
 # What is WAYAT?
 

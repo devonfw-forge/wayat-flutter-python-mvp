@@ -1,3 +1,4 @@
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -135,7 +136,18 @@ abstract class _ManageGroupController with Store {
   Future getFromSource(ImageSource source) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? newImage = await imagePicker.pickImage(source: source);
-    setSelectedFile(newImage);
+    await setSelectedFile(newImage);
     //Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  /// Asigns the selected file from the user to [selectedFile].
+  Future getImageDesktop() async {
+    const XTypeGroup typeGroup = XTypeGroup(
+      label: 'images',
+      extensions: <String>['jpg', 'png'],
+    );
+    final XFile? newImage =
+    await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+    await setSelectedFile(newImage);
   }
 }

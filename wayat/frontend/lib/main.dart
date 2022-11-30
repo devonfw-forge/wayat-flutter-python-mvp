@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,8 @@ import 'package:wayat/navigation/initial_route.dart';
 import 'package:wayat/options.dart';
 import 'package:wayat/services/common/http_debug_overrides/http_debug_overrides.dart';
 import 'package:wayat/services/common/http_provider/http_provider.dart';
+import 'package:wayat/services/common/ip_location/ip_location_service.dart';
+import 'package:wayat/services/common/ip_location/ip_location_service_impl.dart';
 import 'package:wayat/services/common/platform/platform_service_libw.dart';
 import 'package:wayat/services/notification/notification_service.dart';
 import 'package:wayat/services/notification/notifications_service_impl.dart';
@@ -40,28 +41,18 @@ Future main() async {
     HttpOverrides.global = HttpDebugOverride();
   }
 
-  // Env file should be loaded before Firebase initialization
-  await EnvModel.loadEnvFile();
-
   PlatformService platformService = PlatformService();
 
-  if (!platformService.isDesktop) {
-    await Firebase.initializeApp(
+  await Firebase.initializeApp(
       name: EnvModel.FIREBASE_APP_NAME,
       options: CustomFirebaseOptions.currentPlatformOptions);
-  }
 
-  await registerSingletons();
+  await registerLazySingletons();
 
-  // AVoid # character in url (flutter web)
   if (platformService.isWeb) {
+    // Avoid # character in url (flutter web)
     setPathUrlStrategy();
-    await FirebaseAuth.instanceFor(
-      app: Firebase.app(EnvModel.FIREBASE_APP_NAME),
-    ).idTokenChanges().first;
-    // This line should be changed to this if we are going to support desktop
-    //} else if (platformService.isMobile) {
-  } else if (platformService.isMobile) {
+  } else if (platformService.isAndroid) {
     NotificationsService notificationsService = NotificationsServiceImpl();
     await notificationsService.initialize();
   }
@@ -75,10 +66,12 @@ Future main() async {
 ///
 /// All of the singletons are registered using lazy initialization, to ensure
 /// that only the one's that are being used will be instantiated.
-Future registerSingletons() async {
+Future registerLazySingletons() async {
   GetIt.I.registerSingleton<InitialLocationProvider>(
       InitialLocationProvider(InitialLocation.map));
   GetIt.I.registerLazySingleton<HttpProvider>(() => HttpProvider());
+  GetIt.I
+      .registerLazySingleton<IPLocationService>(() => IPLocationServiceImpl());
   GetIt.I.registerLazySingleton<LifeCycleState>(() => LifeCycleState());
   GetIt.I.registerLazySingleton<UserState>(() => UserState());
   GetIt.I.registerLazySingleton<HomeNavState>(() => HomeNavState());

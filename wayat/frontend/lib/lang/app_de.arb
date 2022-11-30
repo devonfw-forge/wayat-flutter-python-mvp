@@ -138,6 +138,12 @@
     "locationPermission": "Standorterlaubnis",
     "locationPermissionNotGranted": "Standortberechtigung nicht erteilt, bitte akzeptieren Sie Standortberechtigungen für die ganze Zeit. Wählen Sie es im Abschnitt Einstellungen aus",
 
+    "cannotLoginMessage": "Ihr Konto hat keine validierte Telefonnummer.\n\nSo greifen Sie über das Internet auf Wayat zu:\n\n 1. Installieren Sie wayat auf Ihrem Telefon\n2. Richten Sie Ihr Konto über die App ein\n3. Melden Sie sich erneut über das Internet an",
+    "goToGitHubReleases": "Gehen Sie zur GitHub-Release-Seite",
+    "goToGitHubReleasesUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/",
+    "downloadWayat": "Wayat herunterladen",
+    "downloadWayatUrl": "https://github.com/devonfw-forge/wayat-flutter-python-mvp/releases/download/v0.5.0/wayat_0_5_0.apk",
+
     "@_NOTIFICATIONS": {},
     "receivedFriendRequest": " hat dir eine Freundschaftsanfrage geschickt",
     "acceptedFriendRequest": " hat deine Freundschaftsanfrage angenommen",

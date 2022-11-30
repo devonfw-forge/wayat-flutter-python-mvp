@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,6 +9,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wayat/app_state/lifecycle_state/lifecycle_state.dart';
 import 'package:wayat/app_state/location_state/location_listener.dart';
+import 'package:wayat/common/app_config/env_model.dart';
 import 'package:wayat/common/widgets/phone_verification/phone_verification_controller.dart';
 import 'package:wayat/domain/user/my_user.dart';
 import 'package:wayat/features/contacts/controller/contacts_page_controller.dart';
@@ -52,7 +52,6 @@ void main() async {
   MockFirebaseMessaging mockFirebaseMessaging = MockFirebaseMessaging();
 
   setUpAll(() async {
-    await dotenv.load();
     GetIt.I.registerLazySingleton<HttpProvider>(() => mockHttpProvider);
     GetIt.I.registerLazySingleton<PhoneVerificationController>(
         () => MockPhoneVerificationController());
@@ -76,7 +75,7 @@ void main() async {
         messaging: mockFirebaseMessaging);
 
     expect(
-        googleAuthService.googleSignIn.clientId, dotenv.get("WEB_CLIENT_ID"));
+        googleAuthService.googleSignIn.clientId, EnvModel.WEB_CLIENT_ID);
     expect(googleAuthService.googleSignIn.scopes, ["email"]);
   });
 
@@ -87,10 +86,6 @@ void main() async {
         auth: mockFirebaseAuth,
         platformService: mockPlatformService,
         messaging: mockFirebaseMessaging);
-
-    expect(
-        googleAuthService.googleSignIn.clientId != dotenv.get("WEB_CLIENT_ID"),
-        true);
     expect(googleAuthService.googleSignIn.scopes, ["email"]);
   });
 

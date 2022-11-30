@@ -29,7 +29,7 @@ abstract class _AppConfigState with Store {
 
   /// Change Language to another [language]
   @action
-  Future changeLanguage(Language newLanguage) async {
+  Future<void> changeLanguage(Language newLanguage) async {
     language = newLanguage;
     Locale newLocale =
         await LanguageConstants.setLocaleConstants(newLanguage.languageCode);
@@ -47,7 +47,7 @@ abstract class _AppConfigState with Store {
       case ("de"):
         return Language('Deutsch', 'de');
       case ("nl"):
-        return Language('Dutch', 'nl');
+        return Language('Nederlands', 'nl');
       default:
         return Language('English', 'en');
     }
