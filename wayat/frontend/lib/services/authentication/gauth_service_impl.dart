@@ -50,9 +50,8 @@ class GoogleAuthService implements AuthService {
       PlatformService? platformService,
       FirebaseMessaging? messaging})
       : _platformService = platformService ?? PlatformService() {
-      _auth = auth ??
-        FirebaseAuth.instanceFor(
-            app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
+    _auth = auth ??
+        FirebaseAuth.instanceFor(app: Firebase.app(EnvModel.FIREBASE_APP_NAME));
     firebaseMessaging = (_platformService.isMobile)
         ? messaging ?? FirebaseMessaging.instance
         : null;
@@ -116,12 +115,14 @@ class GoogleAuthService implements AuthService {
   /// Returns an empty string if there is no authenticated user
   @override
   Future<String> getIdToken() async {
+    if (_platformService.isDesktop) return "";
     if (_auth.currentUser == null) return "";
     return await _auth.currentUser!.getIdToken();
   }
 
   @override
   Future<GoogleSignInAccount?> signInSilently() async {
+    if (_platformService.isDesktop) return null;
     if (hasSignedOut) {
       hasSignedOut = false;
       return null;
@@ -134,8 +135,10 @@ class GoogleAuthService implements AuthService {
       accessToken: gauth.accessToken,
       idToken: gauth.idToken,
     );
-    await _auth.signInWithCredential(credential);
-    if (_auth.currentUser == null) return null;
+    if (!_platformService.isDesktop) {
+      await _auth.signInWithCredential(credential);
+      if (_auth.currentUser == null) return null;
+    }
     return account;
   }
 
